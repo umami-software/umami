@@ -18,50 +18,74 @@ export const runFunnel = defineTool({
   description:
     'Calculates how many visitors progressed through an ordered sequence of 2–8 steps (page paths or custom events) ' +
     'within a time window, and where they dropped off. Use this for conversion questions such as ' +
-    '"how many visitors who viewed /pricing went on to sign up?". Requires a websiteId from list_websites.',
-  inputSchema: z.object({
-    websiteId,
-    ...dateRangeInput,
-    steps: z
-      .array(
-        z.object({
-          type: z
-            .enum(['path', 'event'])
-            .describe('"path" for a page path, "event" for a custom event name.'),
-          value: z
-            .string()
-            .min(1)
-            .describe(
-              'The page path (e.g. "/pricing") or event name (e.g. "signup"). Use * as a wildcard.',
-            ),
-        }),
-      )
-      .min(2)
-      .max(8)
-      .describe('Ordered funnel steps.'),
-    windowMinutes: z
-      .number()
-      .int()
-      .positive()
-      .max(60 * 24 * 30)
-      .optional()
-      .describe('Maximum minutes allowed between the first and each following step (default 60).'),
-    filters: filtersSchema.optional(),
-  }),
+    '"how many visitors who viewed /pricing went on to sign up?". Either pass "funnelId" for a funnel saved in Umami ' +
+    '(find it with list_funnels) or define ad-hoc "steps". Requires a websiteId from list_websites.',
+  inputSchema: z
+    .object({
+      websiteId,
+      ...dateRangeInput,
+      funnelId: z
+        .string()
+        .uuid()
+        .optional()
+        .describe('ID of a saved funnel from list_funnels. Its steps and window are used.'),
+      steps: z
+        .array(
+          z.object({
+            type: z
+              .enum(['path', 'event'])
+              .describe('"path" for a page path, "event" for a custom event name.'),
+            value: z
+              .string()
+              .min(1)
+              .describe(
+                'The page path (e.g. "/pricing") or event name (e.g. "signup"). Use * as a wildcard.',
+              ),
+          }),
+        )
+        .min(2)
+        .max(8)
+        .optional()
+        .describe('Ordered funnel steps. Required unless funnelId is given.'),
+      windowMinutes: z
+        .number()
+        .int()
+        .positive()
+        .max(60 * 24 * 30)
+        .optional()
+        .describe(
+          'Maximum minutes allowed between the first and each following step (default 60). Ignored with funnelId.',
+        ),
+      filters: filtersSchema.optional(),
+    })
+    .refine(input => Boolean(input.funnelId) !== Boolean(input.steps), {
+      message: 'Provide either funnelId or steps, not both.',
+      path: ['steps'],
+    }),
   async handler(input, { client }) {
     const range = parseDateRange(input);
-    const result = await client.getWebsiteFunnelStats({
-      websiteId: input.websiteId,
-      ...range,
-      ...toFilterParams(input.filters),
-      window: input.windowMinutes ?? 60,
-      steps: JSON.stringify(input.steps),
-    });
+    const filters = toFilterParams(input.filters);
+    const result = input.funnelId
+      ? await client.getWebsiteSavedFunnelStats({
+          websiteId: input.websiteId,
+          funnelId: input.funnelId,
+          ...range,
+          ...filters,
+        })
+      : await client.getWebsiteFunnelStats({
+          websiteId: input.websiteId,
+          ...range,
+          ...filters,
+          window: input.windowMinutes ?? 60,
+          steps: JSON.stringify(input.steps),
+        });
 
     return {
       websiteId: input.websiteId,
       range: isoRange(range),
-      windowMinutes: input.windowMinutes ?? 60,
+      ...(input.funnelId
+        ? { funnelId: input.funnelId }
+        : { windowMinutes: input.windowMinutes ?? 60 }),
       steps: (Array.isArray(result) ? result : []).map((step, index) => ({
         step: index + 1,
         type: step.type,

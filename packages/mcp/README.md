@@ -23,12 +23,17 @@ user/team permission checks as the web app.
 | `get_event_properties` | Custom event property names, or the values of one property.            |
 | `get_sessions`        | Visitor sessions (paginated).                                           |
 | `get_session_stats`   | Session-level totals: visitors, visits, pageviews, events, countries.   |
+| `get_annotations`     | Dated notes on the timeline (launches, campaigns) to explain changes.  |
+| `list_segments`       | Saved segments and cohorts; pass IDs via `filters.segment` / `.cohort`. |
 | `get_session`         | One session with its activity timeline and properties.                  |
-| `run_funnel`          | Conversion funnel across page/event steps.                              |
+| `list_funnels`        | Saved funnels with their steps (get a `funnelId` for `run_funnel`).     |
+| `run_funnel`          | Conversion funnel from a saved `funnelId` or ad-hoc page/event steps.    |
+| `get_goals`           | Saved goals with conversions, visitors and rate for a range.           |
 | `run_journey`         | Most common paths visitors take.                                        |
 | `run_retention`       | Cohort retention table.                                                 |
 | `run_attribution`     | First/last-click attribution for a conversion.                          |
 | `get_revenue`         | Revenue totals, series and breakdowns.                                  |
+| `get_performance`     | Core Web Vitals (LCP, INP, CLS, FCP, TTFB) percentiles, trend, breakdown. |
 
 All tools are read-only. Dates are ISO 8601; results are paginated with a hard cap on page size.
 
@@ -116,6 +121,10 @@ For Cloud stdio, set `UMAMI_API_KEY` and omit `UMAMI_URL` and `UMAMI_API_TOKEN`:
 - Show sessions for user abc123.
 - Which pricing plans did people select in the checkout event last month?
 - How many signup events fired each day this week?
+- Run my checkout funnel for last month.
+- How are we doing against our goals this quarter?
+- Which pages have the worst LCP on mobile?
+- What happened on the day traffic spiked?
 
 ## Programmatic use
 

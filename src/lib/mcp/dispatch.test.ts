@@ -15,4 +15,23 @@ describe('MCP dispatch table', () => {
     expect(matchDispatchRoute('GET', '/api/admin/users')).toBeNull();
     expect(matchDispatchRoute('DELETE', '/api/websites/abc')).toBeNull();
   });
+
+  test('exposes saved definitions and performance as GET only', () => {
+    expect(matchDispatchRoute('GET', '/api/websites/abc/funnels/def/stats')?.params).toEqual({
+      websiteId: 'abc',
+      funnelId: 'def',
+    });
+    expect(matchDispatchRoute('GET', '/api/websites/abc/goals/def/stats')?.params).toEqual({
+      websiteId: 'abc',
+      goalId: 'def',
+    });
+
+    for (const path of ['goals', 'funnels', 'segments', 'annotations', 'performance/stats']) {
+      expect(matchDispatchRoute('GET', `/api/websites/abc/${path}`)).not.toBeNull();
+      expect(matchDispatchRoute('POST', `/api/websites/abc/${path}`)).toBeNull();
+    }
+
+    expect(matchDispatchRoute('GET', '/api/websites/abc/goals/def')).toBeNull();
+    expect(matchDispatchRoute('DELETE', '/api/websites/abc/segments/def')).toBeNull();
+  });
 });

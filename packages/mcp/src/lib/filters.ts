@@ -29,7 +29,12 @@ export const filtersSchema = z
     utmCampaign: filterValue.optional(),
     utmContent: filterValue.optional(),
     utmTerm: filterValue.optional(),
-    segment: z.string().uuid().optional().describe('Saved segment ID to apply.'),
+    segment: z
+      .string()
+      .uuid()
+      .optional()
+      .describe('Saved segment ID to apply (see list_segments).'),
+    cohort: z.string().uuid().optional().describe('Saved cohort ID to apply (see list_segments).'),
     match: z
       .enum(['all', 'any'])
       .optional()

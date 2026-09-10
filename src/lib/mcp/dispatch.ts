@@ -135,6 +135,51 @@ export const MCP_DISPATCH_ROUTES: readonly DispatchRoute[] = [
   },
   {
     method: 'GET',
+    path: '/api/websites/{websiteId}/funnels',
+    load: () => import('@/app/api/websites/[websiteId]/funnels/route'),
+  },
+  {
+    method: 'GET',
+    path: '/api/websites/{websiteId}/funnels/{funnelId}/stats',
+    load: () => import('@/app/api/websites/[websiteId]/funnels/[funnelId]/stats/route'),
+  },
+  {
+    method: 'GET',
+    path: '/api/websites/{websiteId}/goals',
+    load: () => import('@/app/api/websites/[websiteId]/goals/route'),
+  },
+  {
+    method: 'GET',
+    path: '/api/websites/{websiteId}/goals/{goalId}/stats',
+    load: () => import('@/app/api/websites/[websiteId]/goals/[goalId]/stats/route'),
+  },
+  {
+    method: 'GET',
+    path: '/api/websites/{websiteId}/segments',
+    load: () => import('@/app/api/websites/[websiteId]/segments/route'),
+  },
+  {
+    method: 'GET',
+    path: '/api/websites/{websiteId}/annotations',
+    load: () => import('@/app/api/websites/[websiteId]/annotations/route'),
+  },
+  {
+    method: 'GET',
+    path: '/api/websites/{websiteId}/performance/stats',
+    load: () => import('@/app/api/websites/[websiteId]/performance/stats/route'),
+  },
+  {
+    method: 'GET',
+    path: '/api/websites/{websiteId}/performance/chart',
+    load: () => import('@/app/api/websites/[websiteId]/performance/chart/route'),
+  },
+  {
+    method: 'GET',
+    path: '/api/websites/{websiteId}/performance/metrics',
+    load: () => import('@/app/api/websites/[websiteId]/performance/metrics/route'),
+  },
+  {
+    method: 'GET',
     path: '/api/websites/{websiteId}/journeys',
     load: () => import('@/app/api/websites/[websiteId]/journeys/route'),
   },

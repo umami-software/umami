@@ -7,6 +7,8 @@ import { createUmamiMcpServer } from './server';
 
 const WEBSITE_ID = '6f2a7e0e-2b0f-4b3f-9f0a-1234567890ab';
 const SESSION_ID = '0b3b6c2e-1f4a-4d0c-9a5e-abcdefabcdef';
+const FUNNEL_ID = '1a2b3c4d-0000-4000-8000-000000000001';
+const GOAL_ID = '1a2b3c4d-0000-4000-8000-000000000002';
 
 type Handler = (url: URL, init?: RequestInit) => { status?: number; body: unknown };
 
@@ -267,6 +269,137 @@ describe('createUmamiMcpServer', () => {
       };
     }
 
+    if (path === `/api/websites/${WEBSITE_ID}/funnels`) {
+      return {
+        body: {
+          data: [
+            {
+              id: FUNNEL_ID,
+              name: 'Checkout',
+              description: '',
+              parameters: {
+                window: 30,
+                steps: [
+                  { type: 'path', value: '/cart' },
+                  { type: 'event', value: 'purchase' },
+                ],
+              },
+              createdAt: '2024-01-01T00:00:00.000Z',
+            },
+          ],
+          count: 1,
+          page: 1,
+          pageSize: 20,
+        },
+      };
+    }
+
+    if (path === `/api/websites/${WEBSITE_ID}/funnels/${FUNNEL_ID}/stats`) {
+      return {
+        body: [
+          {
+            type: 'path',
+            value: '/cart',
+            visitors: 50,
+            previous: 0,
+            dropped: 0,
+            dropoff: 0,
+            remaining: 1,
+          },
+          {
+            type: 'event',
+            value: 'purchase',
+            visitors: 5,
+            previous: 50,
+            dropped: 45,
+            dropoff: 0.9,
+            remaining: 0.1,
+          },
+        ],
+      };
+    }
+
+    if (path === `/api/websites/${WEBSITE_ID}/goals`) {
+      return {
+        body: {
+          data: [
+            {
+              id: GOAL_ID,
+              name: 'Signups',
+              description: '',
+              parameters: { type: 'event', value: 'signup' },
+              createdAt: null,
+            },
+          ],
+          count: 1,
+          page: 1,
+          pageSize: 20,
+        },
+      };
+    }
+
+    if (path === `/api/websites/${WEBSITE_ID}/goals/${GOAL_ID}/stats`) {
+      return { body: { num: 8, total: 40 } };
+    }
+
+    if (path === `/api/websites/${WEBSITE_ID}/segments`) {
+      const type = url.searchParams.get('type');
+      return {
+        body: {
+          data: [
+            {
+              id: `seg-${type}`,
+              name: `My ${type}`,
+              type,
+              parameters: { filters: [] },
+              createdAt: null,
+            },
+          ],
+          count: 1,
+        },
+      };
+    }
+
+    if (path === `/api/websites/${WEBSITE_ID}/annotations`) {
+      return {
+        body: {
+          data: [
+            {
+              id: 'a1',
+              date: '2024-01-05T00:00:00.000Z',
+              allDay: true,
+              note: 'Launched v2',
+              createdAt: null,
+            },
+          ],
+          count: 1,
+          page: 1,
+          pageSize: 20,
+        },
+      };
+    }
+
+    if (path === `/api/websites/${WEBSITE_ID}/performance/stats`) {
+      return {
+        body: {
+          lcp: { p50: 1200, p75: 2100, p95: 4000 },
+          inp: { p50: 80, p75: 150, p95: 400 },
+          cls: { p50: 0.01, p75: 0.05, p95: 0.2 },
+          fcp: { p50: 900, p75: 1500, p95: 3000 },
+          ttfb: { p50: 200, p75: 400, p95: 900 },
+          count: 500,
+        },
+      };
+    }
+
+    if (path === `/api/websites/${WEBSITE_ID}/performance/chart`) {
+      return { body: { chart: [{ t: '2024-01-01', p50: 1100, p75: 2000, p95: 3900 }] } };
+    }
+
+    if (path === `/api/websites/${WEBSITE_ID}/performance/metrics`) {
+      return { body: [{ name: '/slow', p50: 3000, p75: 4500, p95: 8000, count: 40 }] };
+    }
+
     if (path.startsWith('/api/websites/')) {
       return {
         status: 401,
@@ -309,7 +442,12 @@ describe('createUmamiMcpServer', () => {
         'get_sessions',
         'get_session_stats',
         'get_session',
+        'list_funnels',
         'run_funnel',
+        'get_goals',
+        'get_annotations',
+        'list_segments',
+        'get_performance',
         'run_journey',
         'run_retention',
         'run_attribution',
@@ -589,6 +727,184 @@ describe('createUmamiMcpServer', () => {
     expect(harness.calls[0].url.searchParams.get('propertyName')).toBe('plan');
     expect(harness.calls[0].url.searchParams.get('eventName')).toBe('checkout');
     expect(harness.calls[0].url.searchParams.get('dataType')).toBe('1');
+  });
+
+  test('list_funnels and run_funnel with a saved funnelId', async () => {
+    const listed = await harness.client.callTool({
+      name: 'list_funnels',
+      arguments: { websiteId: WEBSITE_ID },
+    });
+
+    expect(listed.isError).toBeFalsy();
+    expect(listed.structuredContent).toMatchObject({
+      funnels: [
+        {
+          id: FUNNEL_ID,
+          name: 'Checkout',
+          windowMinutes: 30,
+          steps: [
+            { step: 1, type: 'path', value: '/cart' },
+            { step: 2, type: 'event', value: 'purchase' },
+          ],
+        },
+      ],
+      count: 1,
+    });
+
+    harness.calls.length = 0;
+
+    const ran = await harness.client.callTool({
+      name: 'run_funnel',
+      arguments: { websiteId: WEBSITE_ID, startAt: '2024-01-01', funnelId: FUNNEL_ID },
+    });
+
+    expect(ran.isError).toBeFalsy();
+    expect(ran.structuredContent).toMatchObject({
+      funnelId: FUNNEL_ID,
+      steps: [
+        { step: 1, value: '/cart', visitors: 50 },
+        { step: 2, value: 'purchase', visitors: 5, dropoffRate: 0.9 },
+      ],
+    });
+    expect(harness.calls[0].url.pathname).toBe(
+      `/api/websites/${WEBSITE_ID}/funnels/${FUNNEL_ID}/stats`,
+    );
+
+    const both = await harness.client.callTool({
+      name: 'run_funnel',
+      arguments: {
+        websiteId: WEBSITE_ID,
+        startAt: '2024-01-01',
+        funnelId: FUNNEL_ID,
+        steps: [
+          { type: 'path', value: '/' },
+          { type: 'event', value: 'signup' },
+        ],
+      },
+    });
+
+    expect(both.isError).toBe(true);
+
+    const neither = await harness.client.callTool({
+      name: 'run_funnel',
+      arguments: { websiteId: WEBSITE_ID, startAt: '2024-01-01' },
+    });
+
+    expect(neither.isError).toBe(true);
+  });
+
+  test('get_goals lists goals and computes results when a range is given', async () => {
+    const listed = await harness.client.callTool({
+      name: 'get_goals',
+      arguments: { websiteId: WEBSITE_ID },
+    });
+
+    expect(listed.isError).toBeFalsy();
+    expect(listed.structuredContent).toMatchObject({
+      goals: [{ id: GOAL_ID, name: 'Signups', type: 'event', value: 'signup' }],
+    });
+    expect(
+      (listed.structuredContent as { goals: Record<string, unknown>[] }).goals[0].results,
+    ).toBeUndefined();
+    expect(harness.calls).toHaveLength(1);
+
+    harness.calls.length = 0;
+
+    const withStats = await harness.client.callTool({
+      name: 'get_goals',
+      arguments: { websiteId: WEBSITE_ID, startAt: '2024-01-01', endAt: '2024-02-01' },
+    });
+
+    expect(withStats.isError).toBeFalsy();
+    expect(withStats.structuredContent).toMatchObject({
+      goals: [{ id: GOAL_ID, results: { conversions: 8, visitors: 40, conversionRate: 20 } }],
+    });
+    expect(harness.calls.map(call => call.url.pathname)).toEqual([
+      `/api/websites/${WEBSITE_ID}/goals`,
+      `/api/websites/${WEBSITE_ID}/goals/${GOAL_ID}/stats`,
+    ]);
+  });
+
+  test('list_segments fetches segments and cohorts', async () => {
+    const result = await harness.client.callTool({
+      name: 'list_segments',
+      arguments: { websiteId: WEBSITE_ID },
+    });
+
+    expect(result.isError).toBeFalsy();
+    expect(result.structuredContent).toMatchObject({
+      segments: [
+        { id: 'seg-segment', type: 'segment' },
+        { id: 'seg-cohort', type: 'cohort' },
+      ],
+    });
+    expect(harness.calls.map(call => call.url.searchParams.get('type')).sort()).toEqual([
+      'cohort',
+      'segment',
+    ]);
+  });
+
+  test('get_annotations passes the range and paginates', async () => {
+    const result = await harness.client.callTool({
+      name: 'get_annotations',
+      arguments: {
+        websiteId: WEBSITE_ID,
+        startAt: '2024-01-01',
+        endAt: '2024-02-01',
+        search: 'v2',
+      },
+    });
+
+    expect(result.isError).toBeFalsy();
+    expect(result.structuredContent).toMatchObject({
+      annotations: [
+        { id: 'a1', date: '2024-01-05T00:00:00.000Z', note: 'Launched v2', allDay: true },
+      ],
+      count: 1,
+      hasMore: false,
+    });
+
+    const url = harness.calls[0].url;
+
+    expect(url.searchParams.get('startAt')).toBe(String(Date.parse('2024-01-01')));
+    expect(url.searchParams.get('search')).toBe('v2');
+  });
+
+  test('get_performance returns vitals, and series + breakdown on request', async () => {
+    const summary = await harness.client.callTool({
+      name: 'get_performance',
+      arguments: { websiteId: WEBSITE_ID, startAt: '2024-01-01' },
+    });
+
+    expect(summary.isError).toBeFalsy();
+    expect(summary.structuredContent).toMatchObject({
+      measurements: 500,
+      vitals: { lcp: { p75: 2100 }, cls: { p75: 0.05 } },
+    });
+    expect(summary.structuredContent).not.toHaveProperty('series');
+    expect(harness.calls).toHaveLength(1);
+
+    harness.calls.length = 0;
+
+    const detailed = await harness.client.callTool({
+      name: 'get_performance',
+      arguments: { websiteId: WEBSITE_ID, startAt: '2024-01-01', breakdown: 'path', limit: 10 },
+    });
+
+    expect(detailed.isError).toBeFalsy();
+    expect(detailed.structuredContent).toMatchObject({
+      series: { metric: 'lcp', points: [{ date: '2024-01-01', p75: 2000 }] },
+      breakdown: {
+        metric: 'lcp',
+        type: 'path',
+        rows: [{ name: '/slow', p75: 4500, measurements: 40 }],
+      },
+    });
+    expect(harness.calls.map(call => call.url.pathname).sort()).toEqual([
+      `/api/websites/${WEBSITE_ID}/performance/chart`,
+      `/api/websites/${WEBSITE_ID}/performance/metrics`,
+      `/api/websites/${WEBSITE_ID}/performance/stats`,
+    ]);
   });
 
   test('run_funnel sends structured criteria with GET', async () => {
