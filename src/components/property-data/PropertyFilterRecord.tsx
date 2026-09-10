@@ -33,6 +33,8 @@ const STRING_OPERATORS: Operator[] = [
   OPERATORS.notEquals,
   OPERATORS.contains,
   OPERATORS.doesNotContain,
+  OPERATORS.matches,
+  OPERATORS.doesNotMatch,
   OPERATORS.regex,
   OPERATORS.notRegex,
 ];
@@ -51,6 +53,8 @@ const MULTI_OPERATORS: Operator[] = [OPERATORS.equals, OPERATORS.notEquals];
 const FREE_TEXT_OPERATORS: Operator[] = [
   OPERATORS.contains,
   OPERATORS.doesNotContain,
+  OPERATORS.matches,
+  OPERATORS.doesNotMatch,
   OPERATORS.regex,
   OPERATORS.notRegex,
 ];
@@ -120,6 +124,10 @@ export function PropertyFilterRecord({
         return t(labels.regexMatch);
       case OPERATORS.notRegex:
         return t(labels.regexNotMatch);
+      case OPERATORS.matches:
+        return t(labels.matches);
+      case OPERATORS.doesNotMatch:
+        return t(labels.doesNotMatch);
       case OPERATORS.greaterThan:
         return t(labels.greaterThan);
       case OPERATORS.lessThan:

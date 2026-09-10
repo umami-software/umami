@@ -3,6 +3,7 @@ import { EVENT_TYPE } from '@/lib/constants';
 import { CLICKHOUSE, PRISMA, runQuery } from '@/lib/db';
 import prisma from '@/lib/prisma';
 import type { QueryFilters } from '@/lib/types';
+import { hasWildcard, wildcardToLikePattern } from '@/lib/wildcard';
 
 export interface GoalParameters {
   startDate: Date;
@@ -37,9 +38,9 @@ async function relationalQuery(
 
   let operator = '=';
   let paramValue = value;
-  if (value.startsWith('*') || value.endsWith('*')) {
+  if (hasWildcard(value)) {
     operator = 'like';
-    paramValue = value.replace(/^\*|\*$/g, '%');
+    paramValue = wildcardToLikePattern(value);
   }
 
   const { filterQuery, dateQuery, joinSessionQuery, cohortQuery, queryParams } = parseFilters({
@@ -93,9 +94,9 @@ async function clickhouseQuery(
 
   let operator = '=';
   let paramValue = value;
-  if (value.startsWith('*') || value.endsWith('*')) {
+  if (hasWildcard(value)) {
     operator = 'like';
-    paramValue = value.replace(/^\*|\*$/g, '%');
+    paramValue = wildcardToLikePattern(value);
   }
 
   const { filterQuery, dateQuery, cohortQuery, queryParams } = parseFilters({

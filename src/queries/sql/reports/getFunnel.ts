@@ -2,6 +2,7 @@ import clickhouse from '@/lib/clickhouse';
 import { CLICKHOUSE, PRISMA, runQuery } from '@/lib/db';
 import prisma from '@/lib/prisma';
 import type { QueryFilters } from '@/lib/types';
+import { hasWildcard, wildcardToLikePattern } from '@/lib/wildcard';
 
 export interface FunnelStepFilter {
   property: string;
@@ -70,6 +71,8 @@ async function relationalQuery(
 
         let op = '=';
         let val = f.value;
+        // Postgres branch uses case-insensitive ilike/not ilike for wc/nwc, intentionally
+        // mirroring this file's pre-existing case-insensitive c/dnc (contains) behaviour.
         if (f.operator === 'neq') op = '!=';
         else if (f.operator === 'c') {
           op = 'ilike';
@@ -77,6 +80,12 @@ async function relationalQuery(
         } else if (f.operator === 'dnc') {
           op = 'not ilike';
           val = `%${val}%`;
+        } else if (f.operator === 'wc') {
+          op = 'ilike';
+          val = wildcardToLikePattern(val);
+        } else if (f.operator === 'nwc') {
+          op = 'not ilike';
+          val = wildcardToLikePattern(val);
         }
         extraParams[valParam] = val;
 
@@ -113,9 +122,9 @@ async function relationalQuery(
         let operator = '=';
         let paramValue = cv.value;
 
-        if (cv.value.startsWith('*') || cv.value.endsWith('*')) {
+        if (hasWildcard(cv.value)) {
           operator = 'like';
-          paramValue = cv.value.replace(/^\*|\*$/g, '%');
+          paramValue = wildcardToLikePattern(cv.value);
         }
 
         const existsClause =
@@ -223,6 +232,8 @@ async function clickhouseQuery(
 
         let op = '=';
         let val = f.value;
+        // ClickHouse branch uses case-sensitive like/not like for wc/nwc, intentionally
+        // mirroring this file's pre-existing case-sensitive c/dnc (contains) behaviour.
         if (f.operator === 'neq') op = '!=';
         else if (f.operator === 'c') {
           op = 'like';
@@ -230,6 +241,12 @@ async function clickhouseQuery(
         } else if (f.operator === 'dnc') {
           op = 'not like';
           val = `%${val}%`;
+        } else if (f.operator === 'wc') {
+          op = 'like';
+          val = wildcardToLikePattern(val);
+        } else if (f.operator === 'nwc') {
+          op = 'not like';
+          val = wildcardToLikePattern(val);
         }
         params[valParam] = val;
 
@@ -267,9 +284,9 @@ async function clickhouseQuery(
         let operator = '=';
         let paramValue = cv.value;
 
-        if (cv.value.startsWith('*') || cv.value.endsWith('*')) {
+        if (hasWildcard(cv.value)) {
           operator = 'like';
-          paramValue = cv.value.replace(/^\*|\*$/g, '%');
+          paramValue = wildcardToLikePattern(cv.value);
         }
 
         const eventAlias = levelNumber === 1 ? 'level0' : 'y';

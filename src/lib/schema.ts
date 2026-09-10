@@ -169,6 +169,8 @@ export const operatorParam = z.enum([
   'dnc',
   're',
   'nre',
+  'wc',
+  'nwc',
   't',
   'f',
   'gt',
@@ -204,7 +206,7 @@ export const funnelReportSchema = z.object({
             .array(
               z.object({
                 property: z.string().min(1),
-                operator: z.enum(['eq', 'neq', 'c', 'dnc']),
+                operator: z.enum(['eq', 'neq', 'c', 'dnc', 'wc', 'nwc']),
                 value: z.string(),
               }),
             )

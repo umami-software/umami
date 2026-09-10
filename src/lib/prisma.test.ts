@@ -24,9 +24,12 @@ vi.mock('@/generated/prisma/client', () => ({
 }));
 
 let getRawQueryClient!: typeof import('./prisma').getRawQueryClient;
+let prisma!: typeof import('./prisma').default;
 
 beforeAll(async () => {
-  ({ getRawQueryClient } = await import('./prisma'));
+  const mod = await import('./prisma');
+  getRawQueryClient = mod.getRawQueryClient;
+  prisma = mod.default;
 });
 
 interface RawQueryClient {
@@ -78,5 +81,73 @@ describe('getRawQueryClient', () => {
     const client = createClient();
 
     expect(getRawQueryClient(client, { write: true })).toBe(client);
+  });
+});
+
+describe('wildcard filters (postgres)', () => {
+  test('matches operator emits ilike against the column', () => {
+    const sql = prisma.getFilterQuery({
+      path: { name: 'path', operator: 'wc', value: '/blog/*' },
+    });
+
+    expect(sql).toContain('and website_event.url_path ilike {{path}}');
+  });
+
+  test('doesNotMatch operator emits not ilike', () => {
+    const sql = prisma.getFilterQuery({
+      path: { name: 'path', operator: 'nwc', value: '/admin/*' },
+    });
+
+    expect(sql).toContain('and website_event.url_path not ilike {{path}}');
+  });
+
+  test('a mid-string * is escaped, not translated', () => {
+    const { queryParams } = prisma.parseFilters({
+      path: { name: 'path', operator: 'wc', value: '/blog/*/comments' },
+    });
+
+    expect(queryParams.path).toBe('/blog/*/comments');
+  });
+
+  test('user-typed LIKE metacharacters are escaped', () => {
+    const { queryParams } = prisma.parseFilters({
+      path: { name: 'path', operator: 'wc', value: '/sale/100%*' },
+    });
+
+    expect(queryParams.path).toBe('/sale/100\\%%');
+  });
+
+  // one assertion per property-filter builder, because the string branch is
+  // duplicated three times in prisma.ts and it is easy to patch only one copy
+  test('getEventPropertyFilterQuery supports wildcards', () => {
+    const { filterQuery, queryParams } = prisma.parseFilters({
+      eventPropertyFilters: [
+        { propertyName: 'file', dataType: 1, operator: 'wc', value: 'liberica-*' },
+      ],
+    });
+
+    expect(filterQuery).toContain('string_value ilike');
+    expect(Object.values(queryParams)).toContain('liberica-%');
+  });
+
+  test('getSessionPropertyFilterQuery supports wildcards', () => {
+    const { filterQuery, queryParams } = prisma.parseFilters({
+      sessionPropertyFilters: [
+        { propertyName: 'plan', dataType: 1, operator: 'nwc', value: 'trial-*' },
+      ],
+    });
+
+    expect(filterQuery).toContain('string_value not ilike');
+    expect(Object.values(queryParams)).toContain('trial-%');
+  });
+
+  test('getPropertyFilterQuery supports wildcards', () => {
+    const { sql, params } = prisma.getPropertyFilterQuery(
+      [{ propertyName: 'file', dataType: 1, operator: 'wc', value: 'liberica-*' }],
+      'event',
+    );
+
+    expect(sql).toContain('string_value ilike');
+    expect(Object.values(params)).toContain('liberica-%');
   });
 });

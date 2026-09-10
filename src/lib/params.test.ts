@@ -1,6 +1,8 @@
 import { describe, expect, test } from 'vitest';
 import { DATA_TYPE, OPERATORS } from './constants';
 import {
+  isSearchOperator,
+  parseFilterValue,
   parseSessionPropertyFilters,
   parseUniversalEventPropertyFilters,
   serializeSessionPropertyFilters,
@@ -69,5 +71,30 @@ describe('session property filter params', () => {
         epf2: '1.eq',
       }),
     ).toEqual([]);
+  });
+});
+
+describe('wildcard operator parsing', () => {
+  test('parseFilterValue recognizes the wildcard operators', () => {
+    expect(parseFilterValue('wc./blog/*')).toEqual({
+      operator: OPERATORS.matches,
+      value: '/blog/*',
+    });
+    expect(parseFilterValue('nwc./admin/*')).toEqual({
+      operator: OPERATORS.doesNotMatch,
+      value: '/admin/*',
+    });
+  });
+
+  test('parseFilterValue does not mistake a value for a wildcard operator', () => {
+    expect(parseFilterValue('m.example.com')).toEqual({
+      operator: OPERATORS.equals,
+      value: ['m.example.com'],
+    });
+  });
+
+  test('wildcard operators are free-text search operators', () => {
+    expect(isSearchOperator(OPERATORS.matches)).toBe(true);
+    expect(isSearchOperator(OPERATORS.doesNotMatch)).toBe(true);
   });
 });
