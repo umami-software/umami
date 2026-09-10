@@ -83,3 +83,16 @@ export const goalDefinitionSchema = z.object({
   description: z.string().max(500).optional(),
   parameters: goalParametersSchema,
 });
+
+export const performanceStatsQuerySchema = analyticsSchema({});
+export const performanceChartQuerySchema = analyticsSchema({
+  metric: z.enum(['lcp', 'inp', 'cls', 'fcp', 'ttfb']).optional(),
+});
+export const performanceMetricsQuerySchema = analyticsSchema({
+  metric: z.enum(['lcp', 'inp', 'cls', 'fcp', 'ttfb']).optional(),
+  type: z.enum(['path', 'title', 'device', 'browser']),
+  limit: z.coerce.number().int().min(1).max(500).optional(),
+});
+export const utmMetricsQuerySchema = analyticsSchema({
+  type: z.enum(['utm_source', 'utm_medium', 'utm_campaign', 'utm_term', 'utm_content']),
+});

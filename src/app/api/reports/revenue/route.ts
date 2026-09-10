@@ -3,12 +3,12 @@ import { getQueryFilters, parseRequest, setWebsiteDate } from '@/lib/request';
 import { json, unauthorized } from '@/lib/response';
 import { reportResultSchema } from '@/lib/schema';
 import { canViewWebsiteSection } from '@/permissions';
-import { getRevenueChart, type RevenuParameters } from '@/queries/sql/reports/getRevenueChart';
+import { getRevenueChart, type RevenuParameters } from '@/queries/sql/revenue/getRevenueChart';
 import {
   getRevenueMetrics,
   type RevenueMetricsResult,
-} from '@/queries/sql/reports/getRevenueMetrics';
-import { getRevenueStats } from '@/queries/sql/reports/getRevenueStats';
+} from '@/queries/sql/revenue/getRevenueMetrics';
+import { getRevenueStats } from '@/queries/sql/revenue/getRevenueStats';
 
 export async function POST(request: Request) {
   const { auth, body, error } = await parseRequest(request, reportResultSchema);

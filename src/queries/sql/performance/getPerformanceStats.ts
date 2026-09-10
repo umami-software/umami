@@ -3,16 +3,11 @@ import { CLICKHOUSE, PRISMA, runQuery } from '@/lib/db';
 import prisma from '@/lib/prisma';
 import type { QueryFilters } from '@/lib/types';
 
-export interface PerformanceStatsResult {
-  lcp: number;
-  inp: number;
-  cls: number;
-  fcp: number;
-  ttfb: number;
-  count: number;
-}
+import type { PerformanceParameters, PerformanceResult } from './getPerformance';
 
-export async function getPerformanceStats(...args: [websiteId: string, filters: QueryFilters]) {
+export async function getPerformanceStats(
+  ...args: [websiteId: string, parameters: PerformanceParameters, filters: QueryFilters]
+) {
   return runQuery({
     [PRISMA]: () => relationalQuery(...args),
     [CLICKHOUSE]: () => clickhouseQuery(...args),
@@ -21,22 +16,34 @@ export async function getPerformanceStats(...args: [websiteId: string, filters: 
 
 async function relationalQuery(
   websiteId: string,
+  parameters: PerformanceParameters,
   filters: QueryFilters,
-): Promise<PerformanceStatsResult> {
+): Promise<PerformanceResult['summary']> {
+  const { startDate, endDate } = parameters;
   const { rawQuery, parseFilters } = prisma;
   const { filterQuery, joinSessionQuery, cohortQuery, queryParams } = parseFilters({
     ...filters,
     websiteId,
   });
 
-  const result = await rawQuery(
+  const summaryResult = await rawQuery(
     `
     select
-      percentile_cont(0.75) within group (order by lcp) as lcp,
-      percentile_cont(0.75) within group (order by inp) as inp,
-      percentile_cont(0.75) within group (order by cls) as cls,
-      percentile_cont(0.75) within group (order by fcp) as fcp,
-      percentile_cont(0.75) within group (order by ttfb) as ttfb,
+      percentile_cont(0.5) within group (order by lcp) as lcp_p50,
+      percentile_cont(0.75) within group (order by lcp) as lcp_p75,
+      percentile_cont(0.95) within group (order by lcp) as lcp_p95,
+      percentile_cont(0.5) within group (order by inp) as inp_p50,
+      percentile_cont(0.75) within group (order by inp) as inp_p75,
+      percentile_cont(0.95) within group (order by inp) as inp_p95,
+      percentile_cont(0.5) within group (order by cls) as cls_p50,
+      percentile_cont(0.75) within group (order by cls) as cls_p75,
+      percentile_cont(0.95) within group (order by cls) as cls_p95,
+      percentile_cont(0.5) within group (order by fcp) as fcp_p50,
+      percentile_cont(0.75) within group (order by fcp) as fcp_p75,
+      percentile_cont(0.95) within group (order by fcp) as fcp_p95,
+      percentile_cont(0.5) within group (order by ttfb) as ttfb_p50,
+      percentile_cont(0.75) within group (order by ttfb) as ttfb_p75,
+      percentile_cont(0.95) within group (order by ttfb) as ttfb_p95,
       count(*) as count
     from website_event
     ${cohortQuery}
@@ -46,27 +53,68 @@ async function relationalQuery(
       and website_event.created_at between {{startDate}} and {{endDate}}
       ${filterQuery}
     `,
-    queryParams,
-  );
+    { ...queryParams, startDate, endDate },
+  ).then(result => result?.[0]);
 
-  return result?.[0] || { lcp: 0, inp: 0, cls: 0, fcp: 0, ttfb: 0, count: 0 };
+  const summary = {
+    lcp: {
+      p50: Number(summaryResult?.lcp_p50 || 0),
+      p75: Number(summaryResult?.lcp_p75 || 0),
+      p95: Number(summaryResult?.lcp_p95 || 0),
+    },
+    inp: {
+      p50: Number(summaryResult?.inp_p50 || 0),
+      p75: Number(summaryResult?.inp_p75 || 0),
+      p95: Number(summaryResult?.inp_p95 || 0),
+    },
+    cls: {
+      p50: Number(summaryResult?.cls_p50 || 0),
+      p75: Number(summaryResult?.cls_p75 || 0),
+      p95: Number(summaryResult?.cls_p95 || 0),
+    },
+    fcp: {
+      p50: Number(summaryResult?.fcp_p50 || 0),
+      p75: Number(summaryResult?.fcp_p75 || 0),
+      p95: Number(summaryResult?.fcp_p95 || 0),
+    },
+    ttfb: {
+      p50: Number(summaryResult?.ttfb_p50 || 0),
+      p75: Number(summaryResult?.ttfb_p75 || 0),
+      p95: Number(summaryResult?.ttfb_p95 || 0),
+    },
+    count: Number(summaryResult?.count || 0),
+  };
+
+  return summary;
 }
 
 async function clickhouseQuery(
   websiteId: string,
+  parameters: PerformanceParameters,
   filters: QueryFilters,
-): Promise<PerformanceStatsResult> {
+): Promise<PerformanceResult['summary']> {
+  const { startDate, endDate } = parameters;
   const { rawQuery, parseFilters } = clickhouse;
   const { filterQuery, cohortQuery, queryParams } = parseFilters({ ...filters, websiteId });
 
-  const result = await rawQuery<PerformanceStatsResult>(
+  const summaryResult = await rawQuery<any>(
     `
     select
-      quantile(0.75)(lcp) as lcp,
-      quantile(0.75)(inp) as inp,
-      quantile(0.75)(cls) as cls,
-      quantile(0.75)(fcp) as fcp,
-      quantile(0.75)(ttfb) as ttfb,
+      quantile(0.5)(lcp) as lcp_p50,
+      quantile(0.75)(lcp) as lcp_p75,
+      quantile(0.95)(lcp) as lcp_p95,
+      quantile(0.5)(inp) as inp_p50,
+      quantile(0.75)(inp) as inp_p75,
+      quantile(0.95)(inp) as inp_p95,
+      quantile(0.5)(cls) as cls_p50,
+      quantile(0.75)(cls) as cls_p75,
+      quantile(0.95)(cls) as cls_p95,
+      quantile(0.5)(fcp) as fcp_p50,
+      quantile(0.75)(fcp) as fcp_p75,
+      quantile(0.95)(fcp) as fcp_p95,
+      quantile(0.5)(ttfb) as ttfb_p50,
+      quantile(0.75)(ttfb) as ttfb_p75,
+      quantile(0.95)(ttfb) as ttfb_p95,
       count() as count
     from website_event
     ${cohortQuery}
@@ -75,8 +123,37 @@ async function clickhouseQuery(
       and website_event.created_at between {startDate:DateTime64} and {endDate:DateTime64}
       ${filterQuery}
     `,
-    queryParams,
-  );
+    { ...queryParams, startDate, endDate },
+  ).then(result => result?.[0]);
 
-  return result?.[0] || { lcp: 0, inp: 0, cls: 0, fcp: 0, ttfb: 0, count: 0 };
+  const summary = {
+    lcp: {
+      p50: Number(summaryResult?.lcp_p50 || 0),
+      p75: Number(summaryResult?.lcp_p75 || 0),
+      p95: Number(summaryResult?.lcp_p95 || 0),
+    },
+    inp: {
+      p50: Number(summaryResult?.inp_p50 || 0),
+      p75: Number(summaryResult?.inp_p75 || 0),
+      p95: Number(summaryResult?.inp_p95 || 0),
+    },
+    cls: {
+      p50: Number(summaryResult?.cls_p50 || 0),
+      p75: Number(summaryResult?.cls_p75 || 0),
+      p95: Number(summaryResult?.cls_p95 || 0),
+    },
+    fcp: {
+      p50: Number(summaryResult?.fcp_p50 || 0),
+      p75: Number(summaryResult?.fcp_p75 || 0),
+      p95: Number(summaryResult?.fcp_p95 || 0),
+    },
+    ttfb: {
+      p50: Number(summaryResult?.ttfb_p50 || 0),
+      p75: Number(summaryResult?.ttfb_p75 || 0),
+      p95: Number(summaryResult?.ttfb_p95 || 0),
+    },
+    count: Number(summaryResult?.count || 0),
+  };
+
+  return summary;
 }

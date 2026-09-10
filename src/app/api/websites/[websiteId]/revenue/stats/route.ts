@@ -4,8 +4,8 @@ import { getQueryFilters, parseRequest } from '@/lib/request';
 import { json, unauthorized } from '@/lib/response';
 import { filterParams, withDateRange } from '@/lib/schema';
 import { canViewWebsiteSection } from '@/permissions';
-import type { RevenuParameters } from '@/queries/sql/reports/getRevenueChart';
-import { getRevenueStats } from '@/queries/sql/reports/getRevenueStats';
+import type { RevenuParameters } from '@/queries/sql/revenue/getRevenueChart';
+import { getRevenueStats } from '@/queries/sql/revenue/getRevenueStats';
 
 export async function GET(
   request: Request,

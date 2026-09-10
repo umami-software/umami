@@ -41,7 +41,7 @@ export * from './breakdown/getBreakdown';
 export * from './funnels/getFunnel';
 export * from './journeys/getJourney';
 export * from './retention/getRetention';
-export * from './reports/getUTM';
+export * from './utm/getUTM';
 export * from './sessions/createSession';
 export * from './sessions/getLinkedDistinctIds';
 export * from './sessions/getLinkedSessionIds';
