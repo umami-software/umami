@@ -3,6 +3,9 @@ import {
   attributionReportSchema,
   breakdownReportSchema,
   filterParams,
+  funnelReportSchema,
+  goalReportSchema,
+  pagingParams,
   heatmapReportSchema,
   journeyReportSchema,
   timezoneParam,
@@ -54,3 +57,29 @@ export const attributionQuerySchema = analyticsSchema(
 export const heatmapQuerySchema = analyticsSchema(
   heatmapReportSchema.shape.parameters.omit({ startDate: true, endDate: true }).shape,
 );
+
+export const funnelParametersSchema = funnelReportSchema.shape.parameters.omit({
+  startDate: true,
+  endDate: true,
+});
+export const goalParametersSchema = goalReportSchema.shape.parameters.omit({
+  startDate: true,
+  endDate: true,
+});
+export const funnelQuerySchema = analyticsSchema({
+  ...funnelParametersSchema.shape,
+  steps: jsonQuery(funnelParametersSchema.shape.steps),
+});
+export const goalQuerySchema = analyticsSchema(goalParametersSchema.shape);
+export const savedStatsQuerySchema = analyticsSchema({});
+export const definitionListSchema = z.object({ ...pagingParams, search: z.string().optional() });
+export const funnelDefinitionSchema = z.object({
+  name: z.string().min(1).max(200),
+  description: z.string().max(500).optional(),
+  parameters: funnelParametersSchema,
+});
+export const goalDefinitionSchema = z.object({
+  name: z.string().min(1).max(200),
+  description: z.string().max(500).optional(),
+  parameters: goalParametersSchema,
+});

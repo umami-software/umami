@@ -38,7 +38,7 @@ export * from './replays/getReplayChunks';
 export * from './replays/getSessionReplays';
 export * from './replays/saveRecording';
 export * from './breakdown/getBreakdown';
-export * from './reports/getFunnel';
+export * from './funnels/getFunnel';
 export * from './journeys/getJourney';
 export * from './retention/getRetention';
 export * from './reports/getUTM';

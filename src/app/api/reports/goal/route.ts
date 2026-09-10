@@ -2,7 +2,7 @@ import { getQueryFilters, parseRequest, setWebsiteDate } from '@/lib/request';
 import { json, unauthorized } from '@/lib/response';
 import { reportResultSchema } from '@/lib/schema';
 import { canViewWebsiteSection } from '@/permissions';
-import { type GoalParameters, getGoal } from '@/queries/sql/reports/getGoal';
+import { type GoalParameters, getGoal } from '@/queries/sql/goals/getGoal';
 
 export async function POST(request: Request) {
   const { auth, body, error } = await parseRequest(request, reportResultSchema);

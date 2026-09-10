@@ -6,7 +6,7 @@ import { ReportEditButton } from '@/components/input/ReportEditButton';
 import { ChangeLabel } from '@/components/metrics/ChangeLabel';
 import { Lightning } from '@/components/svg';
 import { formatLongNumber } from '@/lib/format';
-import type { FunnelResult } from '@/queries/sql/reports/getFunnel';
+import type { FunnelResult } from '@/queries/sql/funnels/getFunnel';
 import { FunnelEditForm } from './FunnelEditForm';
 
 interface FunnelProps {
