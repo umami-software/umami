@@ -1,16 +1,9 @@
 import { z } from 'zod';
-import { dateRangeInput, parseDateRange, timeUnit, timezone, toReportDates } from '../lib/dates';
+import { dateRangeInput, parseDateRange, timeUnit, timezone } from '../lib/dates';
 import { filtersSchema, toFilterParams } from '../lib/filters';
 import { defineTool } from '../lib/tool';
 
 const websiteId = z.string().uuid().describe('Website ID from list_websites.');
-
-function reportFilters(
-  range: { startAt: number; endAt: number },
-  filters?: z.infer<typeof filtersSchema>,
-) {
-  return { startAt: range.startAt, endAt: range.endAt, ...toFilterParams(filters) };
-}
 
 function isoRange(range: { startAt: number; endAt: number }) {
   return {
@@ -57,15 +50,12 @@ export const runFunnel = defineTool({
   }),
   async handler(input, { client }) {
     const range = parseDateRange(input);
-    const result = await client.runFunnelReport({
+    const result = await client.getWebsiteFunnelStats({
       websiteId: input.websiteId,
-      type: 'funnel',
-      filters: reportFilters(range, input.filters),
-      parameters: {
-        ...toReportDates(range),
-        window: input.windowMinutes ?? 60,
-        steps: input.steps,
-      },
+      ...range,
+      ...toFilterParams(input.filters),
+      window: input.windowMinutes ?? 60,
+      steps: JSON.stringify(input.steps),
     });
 
     return {
@@ -112,16 +102,13 @@ export const runJourney = defineTool({
   }),
   async handler(input, { client }) {
     const range = parseDateRange(input);
-    const result = await client.runJourneyReport({
+    const result = await client.getWebsiteJourneys({
       websiteId: input.websiteId,
-      type: 'journey',
-      filters: reportFilters(range, input.filters),
-      parameters: {
-        ...toReportDates(range),
-        steps: input.steps ?? 3,
-        startStep: input.startStep,
-        endStep: input.endStep,
-      },
+      ...range,
+      ...toFilterParams(input.filters),
+      steps: input.steps ?? 3,
+      startStep: input.startStep,
+      endStep: input.endStep,
     });
 
     return {
@@ -153,11 +140,11 @@ export const runRetention = defineTool({
   }),
   async handler(input, { client }) {
     const range = parseDateRange(input);
-    const result = await client.runRetentionReport({
+    const result = await client.getWebsiteRetention({
       websiteId: input.websiteId,
-      type: 'retention',
-      filters: reportFilters(range, input.filters),
-      parameters: { ...toReportDates(range), timezone: input.timezone },
+      ...range,
+      ...toFilterParams(input.filters),
+      timezone: input.timezone,
     });
 
     return {
@@ -209,16 +196,13 @@ export const runAttribution = defineTool({
   }),
   async handler(input, { client }) {
     const range = parseDateRange(input);
-    const result = (await client.runAttributionReport({
+    const result = (await client.getWebsiteAttribution({
       websiteId: input.websiteId,
-      type: 'attribution',
-      filters: reportFilters(range, input.filters),
-      parameters: {
-        ...toReportDates(range),
-        model: input.model ?? 'last-click',
-        type: input.conversionType,
-        step: input.conversion,
-      },
+      ...range,
+      ...toFilterParams(input.filters),
+      model: input.model ?? 'last-click',
+      type: input.conversionType,
+      step: input.conversion,
     })) as Record<string, unknown>;
 
     const list = (value: unknown) =>
@@ -262,17 +246,23 @@ export const getRevenue = defineTool({
   }),
   async handler(input, { client }) {
     const range = parseDateRange(input);
-    const result = (await client.runRevenueReport({
+    const params = {
       websiteId: input.websiteId,
-      type: 'revenue',
-      filters: reportFilters(range, input.filters),
-      parameters: {
-        ...toReportDates(range),
-        currency: (input.currency ?? 'USD').toUpperCase(),
-        unit: input.unit,
-        timezone: input.timezone,
-      },
-    })) as Record<string, unknown>;
+      ...range,
+      ...toFilterParams(input.filters),
+      currency: (input.currency ?? 'USD').toUpperCase(),
+      unit: input.unit,
+      timezone: input.timezone,
+    };
+    const [total, chart, country, region, referrer, channel] = await Promise.all([
+      client.getWebsiteRevenueStats(params),
+      client.getWebsiteRevenueChart(params),
+      client.getWebsiteRevenueMetrics({ ...params, type: 'country' }),
+      client.getWebsiteRevenueMetrics({ ...params, type: 'region' }),
+      client.getWebsiteRevenueMetrics({ ...params, type: 'referrer' }),
+      client.getWebsiteRevenueMetrics({ ...params, type: 'channel' }),
+    ]);
+    const result = { total, chart: chart.chart, country, region, referrer, channel };
 
     return {
       websiteId: input.websiteId,

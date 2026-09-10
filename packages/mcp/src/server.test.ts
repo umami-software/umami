@@ -159,7 +159,7 @@ describe('createUmamiMcpServer', () => {
       return { body: [{ dataKey: 'plan', stringValue: 'pro' }] };
     }
 
-    if (path === '/api/reports/funnel') {
+    if (path === `/api/websites/${WEBSITE_ID}/funnels/stats`) {
       return {
         body: [
           {
@@ -182,6 +182,25 @@ describe('createUmamiMcpServer', () => {
           },
         ],
       };
+    }
+
+    if (path === `/api/websites/${WEBSITE_ID}/revenue/stats`) {
+      return {
+        body: {
+          sum: 100,
+          count: 2,
+          average: 50,
+          unique_count: 2,
+          arpu: 50,
+          comparison: { sum: 80 },
+        },
+      };
+    }
+    if (path === `/api/websites/${WEBSITE_ID}/revenue/chart`) {
+      return { body: { chart: [{ t: '2024-01-01', sum: 100 }] } };
+    }
+    if (path === `/api/websites/${WEBSITE_ID}/revenue/metrics`) {
+      return { body: [{ name: url.searchParams.get('type'), value: 100 }] };
     }
 
     if (path.startsWith('/api/websites/')) {
@@ -379,7 +398,7 @@ describe('createUmamiMcpServer', () => {
     });
   });
 
-  test('run_funnel posts a typed report body', async () => {
+  test('run_funnel sends structured criteria with GET', async () => {
     const result = await harness.client.callTool({
       name: 'run_funnel',
       arguments: {
@@ -401,11 +420,43 @@ describe('createUmamiMcpServer', () => {
       ],
     });
 
-    const body = JSON.parse(harness.calls[0].init?.body as string);
+    const { url, init } = harness.calls[0];
+    expect(init?.method).toBe('GET');
+    expect(init?.body).toBeUndefined();
+    expect(url.pathname).toBe(`/api/websites/${WEBSITE_ID}/funnels/stats`);
+    expect(JSON.parse(url.searchParams.get('steps')!)).toHaveLength(2);
+    expect(url.searchParams.get('window')).toBe('60');
+    expect(Number(url.searchParams.get('startAt'))).toBeGreaterThan(0);
+  });
 
-    expect(body).toMatchObject({ websiteId: WEBSITE_ID, type: 'funnel' });
-    expect(body.parameters.steps).toHaveLength(2);
-    expect(body.parameters.window).toBe(60);
+  test('get_revenue composes feature APIs without changing its tool output', async () => {
+    const result = await harness.client.callTool({
+      name: 'get_revenue',
+      arguments: {
+        websiteId: WEBSITE_ID,
+        startAt: '2024-01-01',
+        endAt: '2024-01-31',
+        currency: 'eur',
+        filters: { browser: 'Chrome' },
+      },
+    });
+    expect(result.isError).toBeFalsy();
+    expect(result.structuredContent).toMatchObject({
+      currency: 'EUR',
+      total: { sum: 100, comparison: { sum: 80 } },
+      chart: [{ sum: 100 }],
+      byCountry: [{ name: 'country', value: 100 }],
+      byRegion: [{ name: 'region' }],
+      byReferrer: [{ name: 'referrer' }],
+      byChannel: [{ name: 'channel' }],
+    });
+    expect(harness.calls).toHaveLength(6);
+    for (const { url, init } of harness.calls) {
+      expect(init?.method).toBe('GET');
+      expect(url.pathname).toContain(`/websites/${WEBSITE_ID}/revenue/`);
+      expect(url.searchParams.get('currency')).toBe('EUR');
+      expect(url.searchParams.get('startAt')).toBe(String(Date.parse('2024-01-01')));
+    }
   });
 
   test('maps unauthorized website access to a helpful error', async () => {

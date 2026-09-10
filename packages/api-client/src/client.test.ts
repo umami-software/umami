@@ -80,6 +80,27 @@ describe('UmamiClient', () => {
     expect(JSON.parse(calls[0].body as string)).toMatchObject({ websiteId: 'w1', type: 'funnel' });
   });
 
+  test('sends structured funnel criteria through the GET stats API', async () => {
+    const { client, calls } = createClient([]);
+    const steps = [
+      { type: 'path', value: '/a?x=1&y=日本語' },
+      { type: 'event', value: 'signup' },
+    ];
+    await client.getWebsiteFunnelStats({
+      websiteId: 'w1',
+      startAt: 1,
+      endAt: 2,
+      window: 60,
+      steps: JSON.stringify(steps),
+      browser1: 'eq.Chrome',
+    });
+    expect(calls[0].method).toBe('GET');
+    expect(calls[0].body).toBeUndefined();
+    expect(calls[0].url.pathname).toBe('/api/websites/w1/funnels/stats');
+    expect(JSON.parse(calls[0].url.searchParams.get('steps')!)).toEqual(steps);
+    expect(calls[0].url.searchParams.get('browser1')).toBe('eq.Chrome');
+  });
+
   test('uses the Cloud base URL and API key header by default', async () => {
     const calls: Captured[] = [];
     const client = new UmamiClient({

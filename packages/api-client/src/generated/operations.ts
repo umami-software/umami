@@ -162,6 +162,22 @@ export const operations = {
     queryParams: [],
     hasBody: true,
   },
+  createWebsiteFunnel: {
+    operationId: 'createWebsiteFunnel',
+    method: 'post',
+    path: '/api/websites/{websiteId}/funnels',
+    pathParams: ['websiteId'],
+    queryParams: [],
+    hasBody: true,
+  },
+  createWebsiteGoal: {
+    operationId: 'createWebsiteGoal',
+    method: 'post',
+    path: '/api/websites/{websiteId}/goals',
+    pathParams: ['websiteId'],
+    queryParams: [],
+    hasBody: true,
+  },
   createWebsiteSegment: {
     operationId: 'createWebsiteSegment',
     method: 'post',
@@ -263,6 +279,22 @@ export const operations = {
     method: 'delete',
     path: '/api/websites/{websiteId}/annotations/{annotationId}',
     pathParams: ['websiteId', 'annotationId'],
+    queryParams: [],
+    hasBody: false,
+  },
+  deleteWebsiteFunnel: {
+    operationId: 'deleteWebsiteFunnel',
+    method: 'delete',
+    path: '/api/websites/{websiteId}/funnels/{funnelId}',
+    pathParams: ['websiteId', 'funnelId'],
+    queryParams: [],
+    hasBody: false,
+  },
+  deleteWebsiteGoal: {
+    operationId: 'deleteWebsiteGoal',
+    method: 'delete',
+    path: '/api/websites/{websiteId}/goals/{goalId}',
+    pathParams: ['websiteId', 'goalId'],
     queryParams: [],
     hasBody: false,
   },
@@ -1549,6 +1581,87 @@ export const operations = {
     queryParams: ['startAt', 'endAt', 'search', 'page', 'pageSize', 'maxResults'],
     hasBody: false,
   },
+  getWebsiteAttribution: {
+    operationId: 'getWebsiteAttribution',
+    method: 'get',
+    path: '/api/websites/{websiteId}/attribution',
+    pathParams: ['websiteId'],
+    queryParams: [
+      'path',
+      'referrer',
+      'title',
+      'query',
+      'os',
+      'browser',
+      'device',
+      'country',
+      'region',
+      'city',
+      'tag',
+      'hostname',
+      'distinctId',
+      'language',
+      'event',
+      'utmSource',
+      'utmMedium',
+      'utmCampaign',
+      'utmContent',
+      'utmTerm',
+      'segment',
+      'cohort',
+      'eventType',
+      'excludeBounce',
+      'match',
+      'startAt',
+      'endAt',
+      'timezone',
+      'unit',
+      'model',
+      'type',
+      'step',
+      'currency',
+    ],
+    hasBody: false,
+  },
+  getWebsiteBreakdown: {
+    operationId: 'getWebsiteBreakdown',
+    method: 'get',
+    path: '/api/websites/{websiteId}/breakdown',
+    pathParams: ['websiteId'],
+    queryParams: [
+      'path',
+      'referrer',
+      'title',
+      'query',
+      'os',
+      'browser',
+      'device',
+      'country',
+      'region',
+      'city',
+      'tag',
+      'hostname',
+      'distinctId',
+      'language',
+      'event',
+      'utmSource',
+      'utmMedium',
+      'utmCampaign',
+      'utmContent',
+      'utmTerm',
+      'segment',
+      'cohort',
+      'eventType',
+      'excludeBounce',
+      'match',
+      'startAt',
+      'endAt',
+      'timezone',
+      'unit',
+      'fields',
+    ],
+    hasBody: false,
+  },
   getWebsiteDateRange: {
     operationId: 'getWebsiteDateRange',
     method: 'get',
@@ -1727,6 +1840,199 @@ export const operations = {
     ],
     hasBody: false,
   },
+  getWebsiteFunnel: {
+    operationId: 'getWebsiteFunnel',
+    method: 'get',
+    path: '/api/websites/{websiteId}/funnels/{funnelId}',
+    pathParams: ['websiteId', 'funnelId'],
+    queryParams: [],
+    hasBody: false,
+  },
+  getWebsiteFunnels: {
+    operationId: 'getWebsiteFunnels',
+    method: 'get',
+    path: '/api/websites/{websiteId}/funnels',
+    pathParams: ['websiteId'],
+    queryParams: ['page', 'pageSize', 'maxResults', 'search'],
+    hasBody: false,
+  },
+  getWebsiteFunnelStats: {
+    operationId: 'getWebsiteFunnelStats',
+    method: 'get',
+    path: '/api/websites/{websiteId}/funnels/stats',
+    pathParams: ['websiteId'],
+    queryParams: [
+      'path',
+      'referrer',
+      'title',
+      'query',
+      'os',
+      'browser',
+      'device',
+      'country',
+      'region',
+      'city',
+      'tag',
+      'hostname',
+      'distinctId',
+      'language',
+      'event',
+      'utmSource',
+      'utmMedium',
+      'utmCampaign',
+      'utmContent',
+      'utmTerm',
+      'segment',
+      'cohort',
+      'eventType',
+      'excludeBounce',
+      'match',
+      'startAt',
+      'endAt',
+      'timezone',
+      'unit',
+      'window',
+      'steps',
+    ],
+    hasBody: false,
+  },
+  getWebsiteGoal: {
+    operationId: 'getWebsiteGoal',
+    method: 'get',
+    path: '/api/websites/{websiteId}/goals/{goalId}',
+    pathParams: ['websiteId', 'goalId'],
+    queryParams: [],
+    hasBody: false,
+  },
+  getWebsiteGoals: {
+    operationId: 'getWebsiteGoals',
+    method: 'get',
+    path: '/api/websites/{websiteId}/goals',
+    pathParams: ['websiteId'],
+    queryParams: ['page', 'pageSize', 'maxResults', 'search'],
+    hasBody: false,
+  },
+  getWebsiteGoalStats: {
+    operationId: 'getWebsiteGoalStats',
+    method: 'get',
+    path: '/api/websites/{websiteId}/goals/stats',
+    pathParams: ['websiteId'],
+    queryParams: [
+      'path',
+      'referrer',
+      'title',
+      'query',
+      'os',
+      'browser',
+      'device',
+      'country',
+      'region',
+      'city',
+      'tag',
+      'hostname',
+      'distinctId',
+      'language',
+      'event',
+      'utmSource',
+      'utmMedium',
+      'utmCampaign',
+      'utmContent',
+      'utmTerm',
+      'segment',
+      'cohort',
+      'eventType',
+      'excludeBounce',
+      'match',
+      'startAt',
+      'endAt',
+      'timezone',
+      'unit',
+      'type',
+      'value',
+    ],
+    hasBody: false,
+  },
+  getWebsiteHeatmaps: {
+    operationId: 'getWebsiteHeatmaps',
+    method: 'get',
+    path: '/api/websites/{websiteId}/heatmaps',
+    pathParams: ['websiteId'],
+    queryParams: [
+      'path',
+      'referrer',
+      'title',
+      'query',
+      'os',
+      'browser',
+      'device',
+      'country',
+      'region',
+      'city',
+      'tag',
+      'hostname',
+      'distinctId',
+      'language',
+      'event',
+      'utmSource',
+      'utmMedium',
+      'utmCampaign',
+      'utmContent',
+      'utmTerm',
+      'segment',
+      'cohort',
+      'eventType',
+      'excludeBounce',
+      'match',
+      'startAt',
+      'endAt',
+      'timezone',
+      'unit',
+      'urlPath',
+      'mode',
+    ],
+    hasBody: false,
+  },
+  getWebsiteJourneys: {
+    operationId: 'getWebsiteJourneys',
+    method: 'get',
+    path: '/api/websites/{websiteId}/journeys',
+    pathParams: ['websiteId'],
+    queryParams: [
+      'path',
+      'referrer',
+      'title',
+      'query',
+      'os',
+      'browser',
+      'device',
+      'country',
+      'region',
+      'city',
+      'tag',
+      'hostname',
+      'distinctId',
+      'language',
+      'event',
+      'utmSource',
+      'utmMedium',
+      'utmCampaign',
+      'utmContent',
+      'utmTerm',
+      'segment',
+      'cohort',
+      'eventType',
+      'excludeBounce',
+      'match',
+      'startAt',
+      'endAt',
+      'timezone',
+      'unit',
+      'steps',
+      'startStep',
+      'endStep',
+    ],
+    hasBody: false,
+  },
   getWebsiteMetrics: {
     operationId: 'getWebsiteMetrics',
     method: 'get',
@@ -1813,6 +2119,124 @@ export const operations = {
     ],
     hasBody: false,
   },
+  getWebsitePerformanceChart: {
+    operationId: 'getWebsitePerformanceChart',
+    method: 'get',
+    path: '/api/websites/{websiteId}/performance/chart',
+    pathParams: ['websiteId'],
+    queryParams: [
+      'path',
+      'referrer',
+      'title',
+      'query',
+      'os',
+      'browser',
+      'device',
+      'country',
+      'region',
+      'city',
+      'tag',
+      'hostname',
+      'distinctId',
+      'language',
+      'event',
+      'utmSource',
+      'utmMedium',
+      'utmCampaign',
+      'utmContent',
+      'utmTerm',
+      'segment',
+      'cohort',
+      'eventType',
+      'excludeBounce',
+      'match',
+      'startAt',
+      'endAt',
+      'timezone',
+      'unit',
+      'metric',
+    ],
+    hasBody: false,
+  },
+  getWebsitePerformanceMetrics: {
+    operationId: 'getWebsitePerformanceMetrics',
+    method: 'get',
+    path: '/api/websites/{websiteId}/performance/metrics',
+    pathParams: ['websiteId'],
+    queryParams: [
+      'path',
+      'referrer',
+      'title',
+      'query',
+      'os',
+      'browser',
+      'device',
+      'country',
+      'region',
+      'city',
+      'tag',
+      'hostname',
+      'distinctId',
+      'language',
+      'event',
+      'utmSource',
+      'utmMedium',
+      'utmCampaign',
+      'utmContent',
+      'utmTerm',
+      'segment',
+      'cohort',
+      'eventType',
+      'excludeBounce',
+      'match',
+      'startAt',
+      'endAt',
+      'timezone',
+      'unit',
+      'metric',
+      'type',
+      'limit',
+    ],
+    hasBody: false,
+  },
+  getWebsitePerformanceStats: {
+    operationId: 'getWebsitePerformanceStats',
+    method: 'get',
+    path: '/api/websites/{websiteId}/performance/stats',
+    pathParams: ['websiteId'],
+    queryParams: [
+      'path',
+      'referrer',
+      'title',
+      'query',
+      'os',
+      'browser',
+      'device',
+      'country',
+      'region',
+      'city',
+      'tag',
+      'hostname',
+      'distinctId',
+      'language',
+      'event',
+      'utmSource',
+      'utmMedium',
+      'utmCampaign',
+      'utmContent',
+      'utmTerm',
+      'segment',
+      'cohort',
+      'eventType',
+      'excludeBounce',
+      'match',
+      'startAt',
+      'endAt',
+      'timezone',
+      'unit',
+    ],
+    hasBody: false,
+  },
   getWebsiteRecorderConfig: {
     operationId: 'getWebsiteRecorderConfig',
     method: 'get',
@@ -1889,6 +2313,44 @@ export const operations = {
     path: '/api/websites/{websiteId}/reports',
     pathParams: ['websiteId'],
     queryParams: ['type', 'page', 'pageSize', 'maxResults'],
+    hasBody: false,
+  },
+  getWebsiteRetention: {
+    operationId: 'getWebsiteRetention',
+    method: 'get',
+    path: '/api/websites/{websiteId}/retention',
+    pathParams: ['websiteId'],
+    queryParams: [
+      'path',
+      'referrer',
+      'title',
+      'query',
+      'os',
+      'browser',
+      'device',
+      'country',
+      'region',
+      'city',
+      'tag',
+      'hostname',
+      'distinctId',
+      'language',
+      'event',
+      'utmSource',
+      'utmMedium',
+      'utmCampaign',
+      'utmContent',
+      'utmTerm',
+      'segment',
+      'cohort',
+      'eventType',
+      'excludeBounce',
+      'match',
+      'startAt',
+      'endAt',
+      'timezone',
+      'unit',
+    ],
     hasBody: false,
   },
   getWebsiteRevenueChart: {
@@ -2061,6 +2523,82 @@ export const operations = {
       'cohort',
       'eventType',
       'match',
+    ],
+    hasBody: false,
+  },
+  getWebsiteSavedFunnelStats: {
+    operationId: 'getWebsiteSavedFunnelStats',
+    method: 'get',
+    path: '/api/websites/{websiteId}/funnels/{funnelId}/stats',
+    pathParams: ['websiteId', 'funnelId'],
+    queryParams: [
+      'path',
+      'referrer',
+      'title',
+      'query',
+      'os',
+      'browser',
+      'device',
+      'country',
+      'region',
+      'city',
+      'tag',
+      'hostname',
+      'distinctId',
+      'language',
+      'event',
+      'utmSource',
+      'utmMedium',
+      'utmCampaign',
+      'utmContent',
+      'utmTerm',
+      'segment',
+      'cohort',
+      'eventType',
+      'excludeBounce',
+      'match',
+      'startAt',
+      'endAt',
+      'timezone',
+      'unit',
+    ],
+    hasBody: false,
+  },
+  getWebsiteSavedGoalStats: {
+    operationId: 'getWebsiteSavedGoalStats',
+    method: 'get',
+    path: '/api/websites/{websiteId}/goals/{goalId}/stats',
+    pathParams: ['websiteId', 'goalId'],
+    queryParams: [
+      'path',
+      'referrer',
+      'title',
+      'query',
+      'os',
+      'browser',
+      'device',
+      'country',
+      'region',
+      'city',
+      'tag',
+      'hostname',
+      'distinctId',
+      'language',
+      'event',
+      'utmSource',
+      'utmMedium',
+      'utmCampaign',
+      'utmContent',
+      'utmTerm',
+      'segment',
+      'cohort',
+      'eventType',
+      'excludeBounce',
+      'match',
+      'startAt',
+      'endAt',
+      'timezone',
+      'unit',
     ],
     hasBody: false,
   },
@@ -2333,6 +2871,45 @@ export const operations = {
       'eventType',
       'excludeBounce',
       'match',
+    ],
+    hasBody: false,
+  },
+  getWebsiteUtmMetrics: {
+    operationId: 'getWebsiteUtmMetrics',
+    method: 'get',
+    path: '/api/websites/{websiteId}/utm/metrics',
+    pathParams: ['websiteId'],
+    queryParams: [
+      'path',
+      'referrer',
+      'title',
+      'query',
+      'os',
+      'browser',
+      'device',
+      'country',
+      'region',
+      'city',
+      'tag',
+      'hostname',
+      'distinctId',
+      'language',
+      'event',
+      'utmSource',
+      'utmMedium',
+      'utmCampaign',
+      'utmContent',
+      'utmTerm',
+      'segment',
+      'cohort',
+      'eventType',
+      'excludeBounce',
+      'match',
+      'startAt',
+      'endAt',
+      'timezone',
+      'unit',
+      'type',
     ],
     hasBody: false,
   },
@@ -2615,6 +3192,22 @@ export const operations = {
     method: 'post',
     path: '/api/websites/{websiteId}/annotations/{annotationId}',
     pathParams: ['websiteId', 'annotationId'],
+    queryParams: [],
+    hasBody: true,
+  },
+  updateWebsiteFunnel: {
+    operationId: 'updateWebsiteFunnel',
+    method: 'post',
+    path: '/api/websites/{websiteId}/funnels/{funnelId}',
+    pathParams: ['websiteId', 'funnelId'],
+    queryParams: [],
+    hasBody: true,
+  },
+  updateWebsiteGoal: {
+    operationId: 'updateWebsiteGoal',
+    method: 'post',
+    path: '/api/websites/{websiteId}/goals/{goalId}',
+    pathParams: ['websiteId', 'goalId'],
     queryParams: [],
     hasBody: true,
   },
@@ -2901,6 +3494,28 @@ export abstract class GeneratedUmamiClient {
   }
 
   /**
+   * Create website funnel
+   * `POST /api/websites/{websiteId}/funnels`
+   */
+  createWebsiteFunnel(
+    input: OperationInput<'createWebsiteFunnel'>,
+    options?: RequestOptions,
+  ): Promise<OperationOutput<'createWebsiteFunnel'>> {
+    return this.execute('createWebsiteFunnel', input, options);
+  }
+
+  /**
+   * Create website goal
+   * `POST /api/websites/{websiteId}/goals`
+   */
+  createWebsiteGoal(
+    input: OperationInput<'createWebsiteGoal'>,
+    options?: RequestOptions,
+  ): Promise<OperationOutput<'createWebsiteGoal'>> {
+    return this.execute('createWebsiteGoal', input, options);
+  }
+
+  /**
    * Create a website segment or cohort
    * Saves a named segment or cohort with its type and filter parameters for the website.
    * `POST /api/websites/{websiteId}/segments`
@@ -3054,6 +3669,28 @@ export abstract class GeneratedUmamiClient {
     options?: RequestOptions,
   ): Promise<OperationOutput<'deleteWebsiteAnnotation'>> {
     return this.execute('deleteWebsiteAnnotation', input, options);
+  }
+
+  /**
+   * Delete website funnel
+   * `DELETE /api/websites/{websiteId}/funnels/{funnelId}`
+   */
+  deleteWebsiteFunnel(
+    input: OperationInput<'deleteWebsiteFunnel'>,
+    options?: RequestOptions,
+  ): Promise<OperationOutput<'deleteWebsiteFunnel'>> {
+    return this.execute('deleteWebsiteFunnel', input, options);
+  }
+
+  /**
+   * Delete website goal
+   * `DELETE /api/websites/{websiteId}/goals/{goalId}`
+   */
+  deleteWebsiteGoal(
+    input: OperationInput<'deleteWebsiteGoal'>,
+    options?: RequestOptions,
+  ): Promise<OperationOutput<'deleteWebsiteGoal'>> {
+    return this.execute('deleteWebsiteGoal', input, options);
   }
 
   /**
@@ -3813,6 +4450,28 @@ export abstract class GeneratedUmamiClient {
   }
 
   /**
+   * Get website attribution
+   * `GET /api/websites/{websiteId}/attribution`
+   */
+  getWebsiteAttribution(
+    input: OperationInput<'getWebsiteAttribution'>,
+    options?: RequestOptions,
+  ): Promise<OperationOutput<'getWebsiteAttribution'>> {
+    return this.execute('getWebsiteAttribution', input, options);
+  }
+
+  /**
+   * Get website breakdown
+   * `GET /api/websites/{websiteId}/breakdown`
+   */
+  getWebsiteBreakdown(
+    input: OperationInput<'getWebsiteBreakdown'>,
+    options?: RequestOptions,
+  ): Promise<OperationOutput<'getWebsiteBreakdown'>> {
+    return this.execute('getWebsiteBreakdown', input, options);
+  }
+
+  /**
    * Get the website's available date range
    * Returns the earliest and latest recorded event dates for the website.
    * `GET /api/websites/{websiteId}/daterange`
@@ -3873,6 +4532,94 @@ export abstract class GeneratedUmamiClient {
   }
 
   /**
+   * Get website funnel
+   * `GET /api/websites/{websiteId}/funnels/{funnelId}`
+   */
+  getWebsiteFunnel(
+    input: OperationInput<'getWebsiteFunnel'>,
+    options?: RequestOptions,
+  ): Promise<OperationOutput<'getWebsiteFunnel'>> {
+    return this.execute('getWebsiteFunnel', input, options);
+  }
+
+  /**
+   * Get website funnels
+   * `GET /api/websites/{websiteId}/funnels`
+   */
+  getWebsiteFunnels(
+    input: OperationInput<'getWebsiteFunnels'>,
+    options?: RequestOptions,
+  ): Promise<OperationOutput<'getWebsiteFunnels'>> {
+    return this.execute('getWebsiteFunnels', input, options);
+  }
+
+  /**
+   * Get website funnel stats
+   * `GET /api/websites/{websiteId}/funnels/stats`
+   */
+  getWebsiteFunnelStats(
+    input: OperationInput<'getWebsiteFunnelStats'>,
+    options?: RequestOptions,
+  ): Promise<OperationOutput<'getWebsiteFunnelStats'>> {
+    return this.execute('getWebsiteFunnelStats', input, options);
+  }
+
+  /**
+   * Get website goal
+   * `GET /api/websites/{websiteId}/goals/{goalId}`
+   */
+  getWebsiteGoal(
+    input: OperationInput<'getWebsiteGoal'>,
+    options?: RequestOptions,
+  ): Promise<OperationOutput<'getWebsiteGoal'>> {
+    return this.execute('getWebsiteGoal', input, options);
+  }
+
+  /**
+   * Get website goals
+   * `GET /api/websites/{websiteId}/goals`
+   */
+  getWebsiteGoals(
+    input: OperationInput<'getWebsiteGoals'>,
+    options?: RequestOptions,
+  ): Promise<OperationOutput<'getWebsiteGoals'>> {
+    return this.execute('getWebsiteGoals', input, options);
+  }
+
+  /**
+   * Get website goal stats
+   * `GET /api/websites/{websiteId}/goals/stats`
+   */
+  getWebsiteGoalStats(
+    input: OperationInput<'getWebsiteGoalStats'>,
+    options?: RequestOptions,
+  ): Promise<OperationOutput<'getWebsiteGoalStats'>> {
+    return this.execute('getWebsiteGoalStats', input, options);
+  }
+
+  /**
+   * Get website heatmaps
+   * `GET /api/websites/{websiteId}/heatmaps`
+   */
+  getWebsiteHeatmaps(
+    input: OperationInput<'getWebsiteHeatmaps'>,
+    options?: RequestOptions,
+  ): Promise<OperationOutput<'getWebsiteHeatmaps'>> {
+    return this.execute('getWebsiteHeatmaps', input, options);
+  }
+
+  /**
+   * Get website journeys
+   * `GET /api/websites/{websiteId}/journeys`
+   */
+  getWebsiteJourneys(
+    input: OperationInput<'getWebsiteJourneys'>,
+    options?: RequestOptions,
+  ): Promise<OperationOutput<'getWebsiteJourneys'>> {
+    return this.execute('getWebsiteJourneys', input, options);
+  }
+
+  /**
    * Get ranked website metrics
    * Returns the most frequent values for a dimension such as pages, referrers, countries, browsers, campaigns, or events. Counts pageviews or events for activity dimensions and unique visitors for visitor dimensions.
    * `GET /api/websites/{websiteId}/metrics`
@@ -3894,6 +4641,39 @@ export abstract class GeneratedUmamiClient {
     options?: RequestOptions,
   ): Promise<OperationOutput<'getWebsitePageviews'>> {
     return this.execute('getWebsitePageviews', input, options);
+  }
+
+  /**
+   * Get website performance chart
+   * `GET /api/websites/{websiteId}/performance/chart`
+   */
+  getWebsitePerformanceChart(
+    input: OperationInput<'getWebsitePerformanceChart'>,
+    options?: RequestOptions,
+  ): Promise<OperationOutput<'getWebsitePerformanceChart'>> {
+    return this.execute('getWebsitePerformanceChart', input, options);
+  }
+
+  /**
+   * Get website performance metrics
+   * `GET /api/websites/{websiteId}/performance/metrics`
+   */
+  getWebsitePerformanceMetrics(
+    input: OperationInput<'getWebsitePerformanceMetrics'>,
+    options?: RequestOptions,
+  ): Promise<OperationOutput<'getWebsitePerformanceMetrics'>> {
+    return this.execute('getWebsitePerformanceMetrics', input, options);
+  }
+
+  /**
+   * Get website performance stats
+   * `GET /api/websites/{websiteId}/performance/stats`
+   */
+  getWebsitePerformanceStats(
+    input: OperationInput<'getWebsitePerformanceStats'>,
+    options?: RequestOptions,
+  ): Promise<OperationOutput<'getWebsitePerformanceStats'>> {
+    return this.execute('getWebsitePerformanceStats', input, options);
   }
 
   /**
@@ -3957,6 +4737,17 @@ export abstract class GeneratedUmamiClient {
   }
 
   /**
+   * Get website retention
+   * `GET /api/websites/{websiteId}/retention`
+   */
+  getWebsiteRetention(
+    input: OperationInput<'getWebsiteRetention'>,
+    options?: RequestOptions,
+  ): Promise<OperationOutput<'getWebsiteRetention'>> {
+    return this.execute('getWebsiteRetention', input, options);
+  }
+
+  /**
    * Get website revenue over time
    * Returns revenue chart data for the selected currency, date range, and website filters.
    * `GET /api/websites/{websiteId}/revenue/chart`
@@ -4002,6 +4793,28 @@ export abstract class GeneratedUmamiClient {
     options?: RequestOptions,
   ): Promise<OperationOutput<'getWebsiteRevenueStats'>> {
     return this.execute('getWebsiteRevenueStats', input, options);
+  }
+
+  /**
+   * Get website saved funnel stats
+   * `GET /api/websites/{websiteId}/funnels/{funnelId}/stats`
+   */
+  getWebsiteSavedFunnelStats(
+    input: OperationInput<'getWebsiteSavedFunnelStats'>,
+    options?: RequestOptions,
+  ): Promise<OperationOutput<'getWebsiteSavedFunnelStats'>> {
+    return this.execute('getWebsiteSavedFunnelStats', input, options);
+  }
+
+  /**
+   * Get website saved goal stats
+   * `GET /api/websites/{websiteId}/goals/{goalId}/stats`
+   */
+  getWebsiteSavedGoalStats(
+    input: OperationInput<'getWebsiteSavedGoalStats'>,
+    options?: RequestOptions,
+  ): Promise<OperationOutput<'getWebsiteSavedGoalStats'>> {
+    return this.execute('getWebsiteSavedGoalStats', input, options);
   }
 
   /**
@@ -4158,6 +4971,17 @@ export abstract class GeneratedUmamiClient {
     options?: RequestOptions,
   ): Promise<OperationOutput<'getWebsiteStats'>> {
     return this.execute('getWebsiteStats', input, options);
+  }
+
+  /**
+   * Get website utm metrics
+   * `GET /api/websites/{websiteId}/utm/metrics`
+   */
+  getWebsiteUtmMetrics(
+    input: OperationInput<'getWebsiteUtmMetrics'>,
+    options?: RequestOptions,
+  ): Promise<OperationOutput<'getWebsiteUtmMetrics'>> {
+    return this.execute('getWebsiteUtmMetrics', input, options);
   }
 
   /**
@@ -4548,6 +5372,28 @@ export abstract class GeneratedUmamiClient {
     options?: RequestOptions,
   ): Promise<OperationOutput<'updateWebsiteAnnotation'>> {
     return this.execute('updateWebsiteAnnotation', input, options);
+  }
+
+  /**
+   * Update website funnel
+   * `POST /api/websites/{websiteId}/funnels/{funnelId}`
+   */
+  updateWebsiteFunnel(
+    input: OperationInput<'updateWebsiteFunnel'>,
+    options?: RequestOptions,
+  ): Promise<OperationOutput<'updateWebsiteFunnel'>> {
+    return this.execute('updateWebsiteFunnel', input, options);
+  }
+
+  /**
+   * Update website goal
+   * `POST /api/websites/{websiteId}/goals/{goalId}`
+   */
+  updateWebsiteGoal(
+    input: OperationInput<'updateWebsiteGoal'>,
+    options?: RequestOptions,
+  ): Promise<OperationOutput<'updateWebsiteGoal'>> {
+    return this.execute('updateWebsiteGoal', input, options);
   }
 
   /**
