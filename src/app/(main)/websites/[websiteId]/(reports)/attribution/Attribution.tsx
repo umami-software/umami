@@ -2,7 +2,7 @@ import { Column, Grid } from '@umami/react-zen';
 import { LoadingPanel } from '@/components/common/LoadingPanel';
 import { Panel } from '@/components/common/Panel';
 import { SectionHeader } from '@/components/common/SectionHeader';
-import { useMessages, useResultQuery } from '@/components/hooks';
+import { useAttributionQuery, useMessages } from '@/components/hooks';
 import { ListTable } from '@/components/metrics/ListTable';
 import { MetricCard } from '@/components/metrics/MetricCard';
 import { MetricsBar } from '@/components/metrics/MetricsBar';
@@ -26,8 +26,7 @@ export function Attribution({
   type,
   step,
 }: AttributionProps) {
-  const { data, error, isLoading } = useResultQuery<any>(
-    'attribution',
+  const { data, error, isLoading } = useAttributionQuery(
     {
       websiteId,
       startDate,
@@ -113,7 +112,7 @@ export function Attribution({
               <AttributionTable data={data?.utm_medium} title={t(labels.medium)} />
             </Panel>
             <Panel>
-              <AttributionTable data={data?.utm_cmapaign} title={t(labels.campaigns)} />
+              <AttributionTable data={data?.utm_campaign} title={t(labels.campaigns)} />
             </Panel>
             <Panel>
               <AttributionTable data={data?.utm_content} title={t(labels.content)} />

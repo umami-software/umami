@@ -1,8 +1,8 @@
 import { Box, Column, Grid, Icon, ProgressBar, Row, Text } from '@umami/react-zen';
 import { LoadingPanel } from '@/components/common/LoadingPanel';
-import { useMessages, useNavigation, useOperatorLabels, useResultQuery } from '@/components/hooks';
+import { useFunnelQuery, useMessages, useNavigation, useOperatorLabels } from '@/components/hooks';
 import { File, User } from '@/components/icons';
-import { ReportEditButton } from '@/components/input/ReportEditButton';
+import { SavedDefinitionEditButton } from '@/components/input/SavedDefinitionEditButton';
 import { ChangeLabel } from '@/components/metrics/ChangeLabel';
 import { Lightning } from '@/components/svg';
 import { formatLongNumber } from '@/lib/format';
@@ -22,8 +22,9 @@ export function Funnel({ id, name, type, parameters, websiteId, allowEdit = true
   const { t, labels } = useMessages();
   const { pathname } = useNavigation();
   const isSharePage = pathname.includes('/share/');
-  const { data, error, isLoading } = useResultQuery<Array<FunnelResult>>(type, {
+  const { data, error, isLoading } = useFunnelQuery({
     websiteId,
+    id,
     ...parameters,
   });
 
@@ -41,7 +42,8 @@ export function Funnel({ id, name, type, parameters, websiteId, allowEdit = true
         </Column>
         {allowEdit && !isSharePage && (
           <Column>
-            <ReportEditButton
+            <SavedDefinitionEditButton
+              websiteId={websiteId}
               id={id}
               name={name}
               type={type}
@@ -50,7 +52,7 @@ export function Funnel({ id, name, type, parameters, websiteId, allowEdit = true
               height="600px"
             >
               {({ close }) => <FunnelEditForm id={id} websiteId={websiteId} onClose={close} />}
-            </ReportEditButton>
+            </SavedDefinitionEditButton>
           </Column>
         )}
       </Grid>

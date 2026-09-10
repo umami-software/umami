@@ -10,7 +10,7 @@ import {
   Loading,
   TextField,
 } from '@umami/react-zen';
-import { useMessages, useMobile, useReportQuery, useUpdateQuery } from '@/components/hooks';
+import { useGoalDefinitionQuery, useMessages, useMobile, useUpdateQuery } from '@/components/hooks';
 import { ActionSelect } from '@/components/input/ActionSelect';
 import { LookupField } from '@/components/input/LookupField';
 
@@ -27,16 +27,17 @@ export function GoalEditForm({
 }) {
   const { t, labels } = useMessages();
   const { isMobile } = useMobile();
-  const { data } = useReportQuery(id);
-  const { mutateAsync, error, isPending, touch } = useUpdateQuery(`/reports${id ? `/${id}` : ''}`);
+  const { data } = useGoalDefinitionQuery(websiteId, id);
+  const { mutateAsync, error, isPending, touch } = useUpdateQuery(
+    `/websites/${websiteId}/goals${id ? `/${id}` : ''}`,
+  );
 
   const handleSubmit = async (formData: Record<string, any>) => {
     await mutateAsync(
-      { ...formData, type: 'goal', websiteId },
+      { name: formData.name, description: formData.description, parameters: formData.parameters },
       {
         onSuccess: async () => {
-          if (id) touch(`report:${id}`);
-          touch('reports:goal');
+          touch('websites:goals');
           onSave?.();
           onClose?.();
         },
@@ -72,7 +73,14 @@ export function GoalEditForm({
                   </FormField>
                   <FormField name="parameters.value" rules={{ required: t(labels.required) }}>
                     {({ field }) => {
-                      return <LookupField websiteId={websiteId} type={type} allowCustomValue {...field} />;
+                      return (
+                        <LookupField
+                          websiteId={websiteId}
+                          type={type}
+                          allowCustomValue
+                          {...field}
+                        />
+                      );
                     }}
                   </FormField>
                 </Column>
@@ -86,7 +94,14 @@ export function GoalEditForm({
                   <Column style={{ minWidth: 0 }}>
                     <FormField name="parameters.value" rules={{ required: t(labels.required) }}>
                       {({ field }) => {
-                        return <LookupField websiteId={websiteId} type={type} allowCustomValue {...field} />;
+                        return (
+                          <LookupField
+                            websiteId={websiteId}
+                            type={type}
+                            allowCustomValue
+                            {...field}
+                          />
+                        );
                       }}
                     </FormField>
                   </Column>

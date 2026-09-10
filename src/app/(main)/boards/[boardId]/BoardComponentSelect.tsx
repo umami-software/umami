@@ -1,3 +1,4 @@
+import { useModified } from '@/components/hooks/useModified';
 import { Button, Column, ListItem, Row, Select, Text, TextField } from '@umami/react-zen';
 import { useEffect, useMemo, useState } from 'react';
 import { useApi, useMessages } from '@/components/hooks';
@@ -157,9 +158,13 @@ export function BoardComponentSelect({
   const reportFields = selectedDef?.configFields?.filter(
     field => field.type === 'report' && field.reportType,
   );
+  const { modified: funnelsModified } = useModified('websites:funnels');
+  const { modified: goalsModified } = useModified('websites:goals');
   const { data: reportOptionsData, isLoading: isLoadingReportOptions } = useQuery({
     queryKey: [
       'board-component-report-options',
+      funnelsModified,
+      goalsModified,
       {
         websiteId: resolvedEntityId,
         reportTypes: reportFields?.map(field => field.reportType).join(','),
@@ -170,9 +175,7 @@ export function BoardComponentSelect({
 
       const entries = await Promise.all(
         types.map(async type => {
-          const response = await get('/reports', {
-            websiteId: resolvedEntityId,
-            type,
+          const response = await get(`/websites/${resolvedEntityId}/${type}s`, {
             pageSize: 1000,
           });
 

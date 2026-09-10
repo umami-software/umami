@@ -17,8 +17,9 @@ import { useDeleteQuery } from '@/components/hooks/queries/useDeleteQuery';
 import { Edit, MoreHorizontal, Trash } from '@/components/icons';
 import { DialogButton } from './DialogButton';
 
-export function ReportEditButton({
+export function SavedDefinitionEditButton({
   id,
+  websiteId,
   name,
   type,
   title,
@@ -30,6 +31,7 @@ export function ReportEditButton({
   onDelete,
 }: {
   id: string;
+  websiteId: string;
   name: string;
   type: string;
   title?: ReactNode;
@@ -43,7 +45,7 @@ export function ReportEditButton({
   const { t, labels, messages } = useMessages();
   const [showEdit, setShowEdit] = useState(false);
   const [showDelete, setShowDelete] = useState(false);
-  const { mutateAsync, touch } = useDeleteQuery(`/reports/${id}`);
+  const { mutateAsync, touch } = useDeleteQuery(`/websites/${websiteId}/${type}s/${id}`);
 
   const handleAction = (id: any) => {
     if (id === 'edit') {
@@ -61,7 +63,7 @@ export function ReportEditButton({
   const handleDelete = async () => {
     await mutateAsync(null, {
       onSuccess: async () => {
-        touch(`reports:${type}`);
+        touch(`websites:${type}s`);
         setShowDelete(false);
         onDelete?.();
       },

@@ -12,13 +12,7 @@ export interface JourneyParameters {
 }
 
 export interface JourneyResult {
-  e1: string;
-  e2: string;
-  e3: string;
-  e4: string;
-  e5: string;
-  e6: string;
-  e7: string;
+  items: string[];
   count: number;
 }
 

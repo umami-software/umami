@@ -18,7 +18,13 @@ import { BarChart } from '@/components/charts/BarChart';
 import { GridRow } from '@/components/common/GridRow';
 import { LoadingPanel } from '@/components/common/LoadingPanel';
 import { Panel } from '@/components/common/Panel';
-import { useLocale, useMessages, useResultQuery } from '@/components/hooks';
+import {
+  useLocale,
+  useMessages,
+  usePerformanceChartQuery,
+  usePerformanceMetricsQuery,
+  usePerformanceStatsQuery,
+} from '@/components/hooks';
 import { ListTable } from '@/components/metrics/ListTable';
 import { MetricLabel } from '@/components/metrics/MetricLabel';
 import { PerformanceCard } from '@/components/metrics/PerformanceCard';
@@ -63,12 +69,10 @@ export function Performance({ websiteId, startDate, endDate, unit }: Performance
   const { t, labels } = useMessages();
   const { locale, dateLocale } = useLocale();
 
-  const { data, error, isLoading } = useResultQuery<any>('performance', {
-    websiteId,
-    startDate,
-    endDate,
-    metric: selectedMetric,
-  });
+  const queryParams = { websiteId, startDate, endDate, unit };
+  const stats = usePerformanceStatsQuery(queryParams);
+  const chart = usePerformanceChartQuery({ ...queryParams, metric: selectedMetric });
+  const data = chart.data;
 
   const chartData: any = useMemo(() => {
     if (!data?.chart) return { datasets: [] };
@@ -158,147 +162,137 @@ export function Performance({ websiteId, startDate, endDate, unit }: Performance
           ))}
         </Select>
       </Grid>
-      <LoadingPanel data={data} isLoading={isLoading} error={error}>
-        {data && (
-          <Column gap>
-            <Grid columns={{ base: '1fr 1fr', lg: 'repeat(5, 1fr)' }} gap>
-              {METRICS.map(metric => (
-                <PerformanceCard
-                  key={metric}
-                  metric={metric}
-                  value={Number(data.summary?.[metric]?.[selectedPercentile] || 0)}
-                  label={t(labels[metric]) || metric.toUpperCase()}
-                  formatValue={(n: number) => formatMetricValue(metric, n)}
-                  onClick={() => setSelectedMetric(metric)}
-                  selected={selectedMetric === metric}
-                />
-              ))}
-            </Grid>
-            <Panel>
-              <Column gap="4" padding="4">
-                <Row justifyContent="space-between" alignItems="center">
-                  <Text weight="bold">{METRIC_LABELS[selectedMetric]}</Text>
-                  <Row gap="4">
-                    <Text size="sm" className={styles.sampleCount}>
-                      {t(labels.sampleSize)}: {formatLongNumber(data.summary?.count || 0)}
-                    </Text>
-                  </Row>
+      <Column gap>
+        <LoadingPanel data={stats.data} isLoading={stats.isLoading} error={stats.error}>
+          <Grid columns={{ base: '1fr 1fr', lg: 'repeat(5, 1fr)' }} gap>
+            {METRICS.map(metric => (
+              <PerformanceCard
+                key={metric}
+                metric={metric}
+                value={Number(stats.data?.[metric]?.[selectedPercentile] || 0)}
+                label={t(labels[metric]) || metric.toUpperCase()}
+                formatValue={(n: number) => formatMetricValue(metric, n)}
+                onClick={() => setSelectedMetric(metric)}
+                selected={selectedMetric === metric}
+              />
+            ))}
+          </Grid>
+        </LoadingPanel>
+        <LoadingPanel data={chart.data} isLoading={chart.isLoading} error={chart.error}>
+          <Panel>
+            <Column gap="4" padding="4">
+              <Row justifyContent="space-between" alignItems="center">
+                <Text weight="bold">{METRIC_LABELS[selectedMetric]}</Text>
+                <Row gap="4">
+                  <Text size="sm" className={styles.sampleCount}>
+                    {t(labels.sampleSize)}: {formatLongNumber(stats.data?.count || 0)}
+                  </Text>
                 </Row>
-                <BarChart
-                  chartData={chartData}
-                  minDate={startDate}
-                  maxDate={endDate}
-                  unit={unit}
-                  renderXLabel={renderXLabel}
-                  renderYLabel={(label: string) => {
-                    const val = Number(label);
-                    if (selectedMetric === 'cls') return val.toFixed(2);
-                    if (val >= 1000) return `${(val / 1000).toFixed(2)} s`;
-                    return `${Math.round(val)} ms`;
-                  }}
-                  height="400px"
+              </Row>
+              <BarChart
+                chartData={chartData}
+                minDate={startDate}
+                maxDate={endDate}
+                unit={unit}
+                renderXLabel={renderXLabel}
+                renderYLabel={(label: string) => {
+                  const val = Number(label);
+                  if (selectedMetric === 'cls') return val.toFixed(2);
+                  if (val >= 1000) return `${(val / 1000).toFixed(2)} s`;
+                  return `${Math.round(val)} ms`;
+                }}
+                height="400px"
+              />
+            </Column>
+          </Panel>
+        </LoadingPanel>
+        <GridRow layout="two">
+          <Panel>
+            <Tabs>
+              <Heading size="2xl">{t(labels.pages)}</Heading>
+              <TabList>
+                <Tab id="path">{t(labels.path)}</Tab>
+                <Tab id="title">{t(labels.pageTitle)}</Tab>
+              </TabList>
+              <TabPanel id="path">
+                <PerformanceMetricsTable
+                  params={{ ...queryParams, metric: selectedMetric, type: 'path' }}
+                  percentile={selectedPercentile}
+                  metricLabel={metricLabel}
+                  formatCount={formatListCount}
+                  renderLabel={({ label }: { label: string }) => <Text>{label}</Text>}
                 />
-              </Column>
-            </Panel>
-            <GridRow layout="two">
-              <Panel>
-                <Tabs>
-                  <Heading size="2xl">{t(labels.pages)}</Heading>
-                  <TabList>
-                    <Tab id="path">{t(labels.path)}</Tab>
-                    <Tab id="title">{t(labels.pageTitle)}</Tab>
-                  </TabList>
-                  <TabPanel id="path">
-                    <ListTable
-                      metric={metricLabel}
-                      showPercentage={false}
-                      formatCount={formatListCount}
-                      data={data.pages
-                        ?.filter(
-                          ({ p50, p75, p95 }: any) =>
-                            Number({ p50, p75, p95 }[selectedPercentile]) > 0,
-                        )
-                        .slice(0, 20)
-                        .map(({ name, p50, p75, p95 }: any) => ({
-                          label: name,
-                          count: Number({ p50, p75, p95 }[selectedPercentile]),
-                          percent: 0,
-                        }))}
-                      renderLabel={({ label }: { label: string }) => <Text>{label}</Text>}
-                    />
-                  </TabPanel>
-                  <TabPanel id="title">
-                    <ListTable
-                      metric={metricLabel}
-                      showPercentage={false}
-                      formatCount={formatListCount}
-                      data={data.pageTitles
-                        ?.filter(
-                          ({ p50, p75, p95 }: any) =>
-                            Number({ p50, p75, p95 }[selectedPercentile]) > 0,
-                        )
-                        .slice(0, 20)
-                        .map(({ name, p50, p75, p95 }: any) => ({
-                          label: name,
-                          count: Number({ p50, p75, p95 }[selectedPercentile]),
-                          percent: 0,
-                        }))}
-                      renderLabel={(row: any) => <MetricLabel type="title" data={row} />}
-                    />
-                  </TabPanel>
-                </Tabs>
-              </Panel>
-              <Panel>
-                <Tabs>
-                  <Heading size="2xl">{t(labels.environment)}</Heading>
-                  <TabList>
-                    <Tab id="device">{t(labels.device)}</Tab>
-                    <Tab id="browser">{t(labels.browser)}</Tab>
-                  </TabList>
-                  <TabPanel id="device">
-                    <ListTable
-                      metric={metricLabel}
-                      showPercentage={false}
-                      formatCount={formatListCount}
-                      data={data.devices
-                        ?.filter(
-                          ({ p50, p75, p95 }: any) =>
-                            Number({ p50, p75, p95 }[selectedPercentile]) > 0,
-                        )
-                        .slice(0, 20)
-                        .map(({ name, p50, p75, p95 }: any) => ({
-                          label: name,
-                          count: Number({ p50, p75, p95 }[selectedPercentile]),
-                          percent: 0,
-                        }))}
-                      renderLabel={(row: any) => <MetricLabel type="device" data={row} />}
-                    />
-                  </TabPanel>
-                  <TabPanel id="browser">
-                    <ListTable
-                      metric={metricLabel}
-                      showPercentage={false}
-                      formatCount={formatListCount}
-                      data={data.browsers
-                        ?.filter(
-                          ({ p50, p75, p95 }: any) =>
-                            Number({ p50, p75, p95 }[selectedPercentile]) > 0,
-                        )
-                        .slice(0, 20)
-                        .map(({ name, p50, p75, p95 }: any) => ({
-                          label: name,
-                          count: Number({ p50, p75, p95 }[selectedPercentile]),
-                          percent: 0,
-                        }))}
-                      renderLabel={(row: any) => <MetricLabel type="browser" data={row} />}
-                    />
-                  </TabPanel>
-                </Tabs>
-              </Panel>
-            </GridRow>
-          </Column>
-        )}
-      </LoadingPanel>
+              </TabPanel>
+              <TabPanel id="title">
+                <PerformanceMetricsTable
+                  params={{ ...queryParams, metric: selectedMetric, type: 'title' }}
+                  percentile={selectedPercentile}
+                  metricLabel={metricLabel}
+                  formatCount={formatListCount}
+                  renderLabel={(row: any) => <MetricLabel type="title" data={row} />}
+                />
+              </TabPanel>
+            </Tabs>
+          </Panel>
+          <Panel>
+            <Tabs>
+              <Heading size="2xl">{t(labels.environment)}</Heading>
+              <TabList>
+                <Tab id="device">{t(labels.device)}</Tab>
+                <Tab id="browser">{t(labels.browser)}</Tab>
+              </TabList>
+              <TabPanel id="device">
+                <PerformanceMetricsTable
+                  params={{ ...queryParams, metric: selectedMetric, type: 'device' }}
+                  percentile={selectedPercentile}
+                  metricLabel={metricLabel}
+                  formatCount={formatListCount}
+                  renderLabel={(row: any) => <MetricLabel type="device" data={row} />}
+                />
+              </TabPanel>
+              <TabPanel id="browser">
+                <PerformanceMetricsTable
+                  params={{ ...queryParams, metric: selectedMetric, type: 'browser' }}
+                  percentile={selectedPercentile}
+                  metricLabel={metricLabel}
+                  formatCount={formatListCount}
+                  renderLabel={(row: any) => <MetricLabel type="browser" data={row} />}
+                />
+              </TabPanel>
+            </Tabs>
+          </Panel>
+        </GridRow>
+      </Column>
     </Column>
+  );
+}
+
+function PerformanceMetricsTable({
+  params,
+  percentile,
+  metricLabel,
+  formatCount,
+  renderLabel,
+}: {
+  params: Parameters<typeof usePerformanceMetricsQuery>[0];
+  percentile: 'p50' | 'p75' | 'p95';
+  metricLabel: string;
+  formatCount: (value: number) => string;
+  renderLabel: (row: any) => React.ReactNode;
+}) {
+  const { data, isLoading, error } = usePerformanceMetricsQuery(params);
+  return (
+    <LoadingPanel data={data} isLoading={isLoading} error={error}>
+      <ListTable
+        metric={metricLabel}
+        showPercentage={false}
+        formatCount={formatCount}
+        data={(data ?? [])
+          .filter(row => Number(row[percentile]) > 0)
+          .slice(0, 20)
+          .map(row => ({ label: row.name, count: Number(row[percentile]), percent: 0 }))}
+        renderLabel={renderLabel}
+      />
+    </LoadingPanel>
   );
 }

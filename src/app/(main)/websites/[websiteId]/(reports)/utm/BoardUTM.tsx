@@ -2,7 +2,7 @@ import { Column, Heading, Text } from '@umami/react-zen';
 import { useEffect, useRef, useState } from 'react';
 import { PieChart } from '@/components/charts/PieChart';
 import { LoadingPanel } from '@/components/common/LoadingPanel';
-import { useDateRange, useMessages, useResultQuery } from '@/components/hooks';
+import { useDateRange, useMessages, useUTMMetricsQuery } from '@/components/hooks';
 import { ListTable } from '@/components/metrics/ListTable';
 import { CHART_COLORS } from '@/lib/constants';
 
@@ -23,14 +23,15 @@ export function BoardUTM({
     dateRange: { startDate, endDate },
   } = useDateRange();
   const { t, labels } = useMessages();
-  const { data, error, isLoading } = useResultQuery<any>('utm', {
+  const { data, error, isLoading } = useUTMMetricsQuery({
+    type: param,
     websiteId,
     startDate,
     endDate,
   });
 
   const itemLimit = Number(limit) || 10;
-  const items = (data?.[param] ?? []).slice(0, itemLimit);
+  const items = (data ?? []).slice(0, itemLimit);
   const total = items.reduce((sum, { views }) => {
     return +sum + +views;
   }, 0);
@@ -78,9 +79,7 @@ export function BoardUTM({
         <div
           style={{
             display: 'grid',
-            gridTemplateColumns: isStacked
-              ? 'minmax(0, 1fr)'
-              : 'minmax(0, 1fr) minmax(0, 1fr)',
+            gridTemplateColumns: isStacked ? 'minmax(0, 1fr)' : 'minmax(0, 1fr) minmax(0, 1fr)',
             gap: 24,
             alignItems: 'start',
           }}

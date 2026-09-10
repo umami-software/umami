@@ -13,5 +13,5 @@ export async function GET(
   const { websiteId } = await params;
   if (!(await canViewWebsiteSection(auth, websiteId, 'utm'))) return unauthorized();
   const filters = await getQueryFilters(query, websiteId);
-  return json(await getUTM(websiteId, { ...filters, column: query.type }, filters));
+  return json(await getUTM(websiteId, { startDate: filters.startDate, endDate: filters.endDate, column: query.type }, filters));
 }

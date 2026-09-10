@@ -2,7 +2,7 @@ import { Column, cn, Icon, Row, Text, Tooltip, TooltipTrigger } from '@umami/rea
 import { useMemo, useState } from 'react';
 import { firstBy } from 'thenby';
 import { LoadingPanel } from '@/components/common/LoadingPanel';
-import { useEscapeKey, useMessages, useResultQuery } from '@/components/hooks';
+import { useEscapeKey, useJourneyQuery, useMessages } from '@/components/hooks';
 import { File } from '@/components/icons';
 import { Lightning } from '@/components/svg';
 import { objectToArray } from '@/lib/data';
@@ -32,12 +32,11 @@ export function Journey({ websiteId, steps, startStep, endStep, view }: JourneyP
   const [selectedNode, setSelectedNode] = useState(null);
   const [activeNode, setActiveNode] = useState(null);
   const { t, labels } = useMessages();
-  const { data, error, isLoading } = useResultQuery<any>('journey', {
+  const { data, error, isLoading } = useJourneyQuery({
     websiteId,
     steps,
     startStep,
     endStep,
-    view,
     eventType: EVENT_TYPES[view],
   });
 
