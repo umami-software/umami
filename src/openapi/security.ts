@@ -1,4 +1,3 @@
-import { OAUTH_SCOPE_DESCRIPTIONS, type OAuthScope } from '@/lib/oauth/scopes';
 import type { ApiAuth } from '@/openapi/operation';
 
 export const securitySchemes = {
@@ -8,19 +7,6 @@ export const securitySchemes = {
     bearerFormat: 'JWT',
     description:
       'Token returned by POST /api/auth/login, or an API key (`umami_…`) created under Settings → API keys (self-hosted only).',
-  },
-  oauth2: {
-    type: 'oauth2' as const,
-    description:
-      'OAuth 2.1 access token (authorization code + PKCE). Only operations that declare an OAuth scope accept these tokens.',
-    flows: {
-      authorizationCode: {
-        authorizationUrl: '/oauth/authorize',
-        tokenUrl: '/api/oauth/token',
-        refreshUrl: '/api/oauth/token',
-        scopes: OAUTH_SCOPE_DESCRIPTIONS,
-      },
-    },
   },
   shareToken: {
     type: 'apiKey' as const,
@@ -36,16 +22,12 @@ export const securitySchemes = {
   },
 };
 
-export function getSecurityRequirements(auth: ApiAuth, scope?: OAuthScope | null) {
+export function getSecurityRequirements(auth: ApiAuth) {
   if (auth === 'none') {
     return [];
   }
 
   const requirements: Record<string, string[]>[] = [{ bearerAuth: [] }];
-
-  if (scope) {
-    requirements.push({ oauth2: [scope] });
-  }
 
   if (auth === 'bearer-or-share') {
     requirements.push({ shareToken: [], shareContext: [] });

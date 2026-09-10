@@ -37,28 +37,30 @@ Authorization: Bearer api_<your-cloud-api-key>
 
 Clients that support custom headers may use `x-umami-api-key` instead. If both headers are
 provided, they must contain the same key. Use a client that supports API-key or bearer-header
-configuration; Cloud OAuth discovery is not implemented by this endpoint.
+configuration.
 
 Cloud MCP has the same subscription requirements and website/team permissions as the Cloud API.
 All tools call the Cloud API gateway, which validates the key and routes requests to your region.
 
-## Remote: self-hosted with OAuth
+## Remote: self-hosted
 
-Add the MCP endpoint to your client:
+Generate an API key under **Settings → API keys** in your Umami instance, then configure your
+MCP client with the Streamable HTTP endpoint:
 
 ```text
 https://your-umami.example.com/mcp
 ```
 
-The client discovers `/.well-known/oauth-protected-resource/mcp`, sends you to Umami to sign in
-and approve access (`websites:read`, `analytics:read`), and receives an OAuth token. No API key
-is pasted anywhere. Clients register via Client ID Metadata Documents; dynamic client registration
-is available for compatibility (`OAUTH_DISABLE_DCR=1` turns it off).
-Registration is limited to 20 attempts per hour per IP when Redis is configured. Without Redis,
-the limit is shared by all clients in each server process and resets when that process restarts.
-Use Redis for a shared limit across multiple processes or serverless instances.
+Set the authorization header using your key:
 
-Self-hosted instances can alternatively pass an API key (`umami_…`) as the bearer token.
+```text
+Authorization: Bearer umami_<your-api-key>
+```
+
+Use a client that supports bearer tokens or custom authorization headers. The endpoint accepts
+self-hosted API keys; browser login tokens are not supported. Tools are read-only and respect
+the key owner's existing user/team permissions. Revoke the key in Settings to disconnect access.
+MCP is disabled by default. Set `MCP_ENABLED=1` to enable the endpoint.
 
 ## Local / stdio
 

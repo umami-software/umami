@@ -1,11 +1,11 @@
+import { Button, Column, Text, Tooltip, TooltipTrigger, useTheme } from '@umami/react-zen';
+import { isSameDay } from 'date-fns';
+import { useMemo } from 'react';
 import { IconLabel } from '@/components/common/IconLabel';
 import { useLocale, useMessages } from '@/components/hooks';
 import { Maximize } from '@/components/icons';
 import { getThemeColors } from '@/lib/colors';
 import { formatDate } from '@/lib/date';
-import { Button, Column, Text, Tooltip, TooltipTrigger, useTheme } from '@umami/react-zen';
-import { isSameDay } from 'date-fns';
-import { useMemo } from 'react';
 import styles from './ChartAnnotationMarkers.module.css';
 
 const MAX_TOOLTIP_ANNOTATIONS = 3;
@@ -78,35 +78,41 @@ export function ChartAnnotationMarkers({
                 padding="1"
                 borderRadius="md"
                 className={styles.note}
-                style={{ backgroundColor: 'rgba(0,0,0,0.2)', color: 'white' }}
+                style={{
+                  backgroundColor: 'rgba(0,0,0,0.8)',
+                  borderRadius: '5.25px',
+                  color: 'white',
+                  gap: '8px',
+                  padding: '12px',
+                }}
               >
                 {visibleAnnotations.map(annotation => (
                   <Column key={annotation.id} gap="1">
-                    <Text size="sm" weight="bold">
+                    <Text
+                      size="sm"
+                      weight="bold"
+                      style={{ fontSize: '12.25px', lineHeight: '17.5px' }}
+                    >
                       {formatAnnotationDate(annotation, locale)}
                     </Text>
                     <Text
                       size="sm"
                       className={annotations.length === 1 ? styles.noteFull : styles.noteText}
+                      style={{ fontSize: '12.25px', lineHeight: '17.5px' }}
                     >
                       {annotation.label}
                     </Text>
                   </Column>
                 ))}
-                {annotations.length > 1 &&
-                  (onMoreClick ? (
-                    <Button
-                      variant="quiet"
-                      className={styles.moreButton}
-                      onPress={() => onMoreClick(annotations)}
-                    >
-                      <IconLabel icon={<Maximize />}>{t(labels.view)}</IconLabel>
-                    </Button>
-                  ) : (
-                    <IconLabel icon={<Maximize />} style={{ opacity: 0.8 }}>
-                      {t(labels.view)}
-                    </IconLabel>
-                  ))}
+                {onMoreClick && (
+                  <Button
+                    variant="quiet"
+                    className={styles.moreButton}
+                    onPress={() => onMoreClick(annotations)}
+                  >
+                    <IconLabel icon={<Maximize />}>{t(labels.view)}</IconLabel>
+                  </Button>
+                )}
               </Column>
             </Tooltip>
           </TooltipTrigger>

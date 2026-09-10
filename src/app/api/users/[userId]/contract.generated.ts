@@ -10,7 +10,9 @@ const operation1 = defineOperation({
   auth: 'bearer',
   operation: {
     operationId: 'deleteUser',
-    summary: 'Delete users user id',
+    summary: 'Delete a user',
+    description:
+      'Deletes the specified user account. The current user cannot delete their own account through this operation.',
     tags: ['Users'],
     parameters: [
       {
@@ -20,6 +22,7 @@ const operation1 = defineOperation({
         schema: {
           type: 'string',
         },
+        description: 'ID of the associated user.',
       },
     ],
     responses: {
@@ -32,6 +35,7 @@ const operation1 = defineOperation({
               properties: {
                 ok: {
                   const: true,
+                  description: 'Whether the operation succeeded.',
                 },
               },
               required: ['ok'],
@@ -84,7 +88,9 @@ const operation2 = defineOperation({
   auth: 'bearer-or-share',
   operation: {
     operationId: 'getUser',
-    summary: 'Get users user id',
+    summary: 'Get a user',
+    description:
+      'Returns details for the specified user account when the caller has permission to view it.',
     tags: ['Users'],
     parameters: [
       {
@@ -94,6 +100,7 @@ const operation2 = defineOperation({
         schema: {
           type: 'string',
         },
+        description: 'ID of the associated user.',
       },
     ],
     responses: {
@@ -109,12 +116,15 @@ const operation2 = defineOperation({
                   properties: {
                     isEnabled: {
                       type: 'boolean',
+                      description: 'Whether two-factor authentication is enabled.',
                     },
                     id: {
                       type: 'string',
+                      description: 'Unique identifier of the resource.',
                     },
                     userId: {
                       type: 'string',
+                      description: 'ID of the associated user.',
                     },
                     secret: {
                       type: 'string',
@@ -122,10 +132,12 @@ const operation2 = defineOperation({
                     createdAt: {
                       type: 'string',
                       format: 'date-time',
+                      description: 'Date and time the record was created.',
                     },
                     updatedAt: {
                       type: 'string',
                       format: 'date-time',
+                      description: 'Date and time the record was last updated.',
                     },
                   },
                   required: ['isEnabled', 'id', 'userId', 'secret', 'createdAt', 'updatedAt'],
@@ -135,13 +147,16 @@ const operation2 = defineOperation({
                   properties: {
                     id: {
                       type: 'string',
+                      description: 'Unique identifier of the resource.',
                     },
                     userId: {
                       type: 'string',
+                      description: 'ID of the associated user.',
                     },
                     updatedAt: {
                       type: 'string',
                       format: 'date-time',
+                      description: 'Date and time the record was last updated.',
                     },
                     attempts: {
                       type: 'number',
@@ -149,28 +164,35 @@ const operation2 = defineOperation({
                     lockedUntil: {
                       type: 'string',
                       format: 'date-time',
+                      description: 'Time until which further authentication attempts are blocked.',
                     },
                   },
                   required: ['id', 'userId', 'updatedAt', 'attempts', 'lockedUntil'],
                 },
                 id: {
                   type: 'string',
+                  description: 'Unique identifier of the resource.',
                 },
                 createdAt: {
                   type: 'string',
                   format: 'date-time',
+                  description: 'Date and time the record was created.',
                 },
                 username: {
                   type: 'string',
+                  description: 'Username of the account.',
                 },
                 password: {
                   type: 'string',
+                  description: 'Password used to authenticate the account.',
                 },
                 role: {
                   type: 'string',
+                  description: 'Permission role assigned to the user.',
                 },
                 twoFactorRequired: {
                   type: 'boolean',
+                  description: 'Whether two-factor authentication is required.',
                 },
                 websites: {
                   type: 'array',
@@ -179,40 +201,51 @@ const operation2 = defineOperation({
                     properties: {
                       id: {
                         type: 'string',
+                        description: 'Unique identifier of the resource.',
                       },
                       userId: {
                         type: 'string',
+                        description: 'ID of the associated user.',
                       },
                       createdAt: {
                         type: 'string',
                         format: 'date-time',
+                        description: 'Date and time the record was created.',
                       },
                       updatedAt: {
                         type: 'string',
                         format: 'date-time',
+                        description: 'Date and time the record was last updated.',
                       },
                       deletedAt: {
                         type: 'string',
                         format: 'date-time',
+                        description: 'Date and time the record was deleted, if applicable.',
                       },
                       createdBy: {
                         type: 'string',
+                        description: 'ID of the user who created the resource.',
                       },
                       name: {
                         type: 'string',
+                        description: 'Display name of the resource.',
                       },
                       domain: {
                         type: 'string',
+                        description: 'Domain name associated with the resource.',
                       },
                       resetAt: {
                         type: 'string',
                         format: 'date-time',
+                        description: 'Date and time the website analytics were last reset.',
                       },
                       teamId: {
                         type: 'string',
+                        description: 'ID of the associated team.',
                       },
                       recorderEnabled: {
                         type: 'boolean',
+                        description: 'Whether recording is enabled for the website.',
                       },
                       replayConfig: {
                         anyOf: [
@@ -268,6 +301,7 @@ const operation2 = defineOperation({
                             required: ['length'],
                           },
                         ],
+                        description: 'Session replay and heatmap recording configuration.',
                       },
                     },
                     required: [
@@ -293,40 +327,51 @@ const operation2 = defineOperation({
                     properties: {
                       id: {
                         type: 'string',
+                        description: 'Unique identifier of the resource.',
                       },
                       userId: {
                         type: 'string',
+                        description: 'ID of the associated user.',
                       },
                       createdAt: {
                         type: 'string',
                         format: 'date-time',
+                        description: 'Date and time the record was created.',
                       },
                       updatedAt: {
                         type: 'string',
                         format: 'date-time',
+                        description: 'Date and time the record was last updated.',
                       },
                       deletedAt: {
                         type: 'string',
                         format: 'date-time',
+                        description: 'Date and time the record was deleted, if applicable.',
                       },
                       createdBy: {
                         type: 'string',
+                        description: 'ID of the user who created the resource.',
                       },
                       name: {
                         type: 'string',
+                        description: 'Display name of the resource.',
                       },
                       domain: {
                         type: 'string',
+                        description: 'Domain name associated with the resource.',
                       },
                       resetAt: {
                         type: 'string',
                         format: 'date-time',
+                        description: 'Date and time the website analytics were last reset.',
                       },
                       teamId: {
                         type: 'string',
+                        description: 'ID of the associated team.',
                       },
                       recorderEnabled: {
                         type: 'boolean',
+                        description: 'Whether recording is enabled for the website.',
                       },
                       replayConfig: {
                         anyOf: [
@@ -382,6 +427,7 @@ const operation2 = defineOperation({
                             required: ['length'],
                           },
                         ],
+                        description: 'Session replay and heatmap recording configuration.',
                       },
                     },
                     required: [
@@ -399,6 +445,7 @@ const operation2 = defineOperation({
                       'replayConfig',
                     ],
                   },
+                  description: 'ID of the user who created the resource.',
                 },
                 links: {
                   type: 'array',
@@ -407,33 +454,42 @@ const operation2 = defineOperation({
                     properties: {
                       id: {
                         type: 'string',
+                        description: 'Unique identifier of the resource.',
                       },
                       userId: {
                         type: 'string',
+                        description: 'ID of the associated user.',
                       },
                       createdAt: {
                         type: 'string',
                         format: 'date-time',
+                        description: 'Date and time the record was created.',
                       },
                       updatedAt: {
                         type: 'string',
                         format: 'date-time',
+                        description: 'Date and time the record was last updated.',
                       },
                       deletedAt: {
                         type: 'string',
                         format: 'date-time',
+                        description: 'Date and time the record was deleted, if applicable.',
                       },
                       name: {
                         type: 'string',
+                        description: 'Display name of the resource.',
                       },
                       teamId: {
                         type: 'string',
+                        description: 'ID of the associated team.',
                       },
                       url: {
                         type: 'string',
+                        description: 'URL associated with the resource.',
                       },
                       slug: {
                         type: 'string',
+                        description: 'URL slug used to access the resource.',
                       },
                     },
                     required: [
@@ -448,6 +504,7 @@ const operation2 = defineOperation({
                       'slug',
                     ],
                   },
+                  description: 'Tracked links associated with the user.',
                 },
                 pixels: {
                   type: 'array',
@@ -456,30 +513,38 @@ const operation2 = defineOperation({
                     properties: {
                       id: {
                         type: 'string',
+                        description: 'Unique identifier of the resource.',
                       },
                       userId: {
                         type: 'string',
+                        description: 'ID of the associated user.',
                       },
                       createdAt: {
                         type: 'string',
                         format: 'date-time',
+                        description: 'Date and time the record was created.',
                       },
                       updatedAt: {
                         type: 'string',
                         format: 'date-time',
+                        description: 'Date and time the record was last updated.',
                       },
                       deletedAt: {
                         type: 'string',
                         format: 'date-time',
+                        description: 'Date and time the record was deleted, if applicable.',
                       },
                       name: {
                         type: 'string',
+                        description: 'Display name of the resource.',
                       },
                       teamId: {
                         type: 'string',
+                        description: 'ID of the associated team.',
                       },
                       slug: {
                         type: 'string',
+                        description: 'URL slug used to access the resource.',
                       },
                     },
                     required: [
@@ -493,6 +558,7 @@ const operation2 = defineOperation({
                       'slug',
                     ],
                   },
+                  description: 'Tracking pixels associated with the user.',
                 },
                 teams: {
                   type: 'array',
@@ -501,27 +567,34 @@ const operation2 = defineOperation({
                     properties: {
                       id: {
                         type: 'string',
+                        description: 'Unique identifier of the resource.',
                       },
                       userId: {
                         type: 'string',
+                        description: 'ID of the associated user.',
                       },
                       createdAt: {
                         type: 'string',
                         format: 'date-time',
+                        description: 'Date and time the record was created.',
                       },
                       updatedAt: {
                         type: 'string',
                         format: 'date-time',
+                        description: 'Date and time the record was last updated.',
                       },
                       role: {
                         type: 'string',
+                        description: 'Permission role assigned to the user.',
                       },
                       teamId: {
                         type: 'string',
+                        description: 'ID of the associated team.',
                       },
                     },
                     required: ['id', 'userId', 'createdAt', 'updatedAt', 'role', 'teamId'],
                   },
+                  description: 'Teams associated with the user.',
                 },
                 reports: {
                   type: 'array',
@@ -530,26 +603,32 @@ const operation2 = defineOperation({
                     properties: {
                       id: {
                         type: 'string',
+                        description: 'Unique identifier of the resource.',
                       },
                       userId: {
                         type: 'string',
+                        description: 'ID of the associated user.',
                       },
                       createdAt: {
                         type: 'string',
                         format: 'date-time',
+                        description: 'Date and time the record was created.',
                       },
                       updatedAt: {
                         type: 'string',
                         format: 'date-time',
+                        description: 'Date and time the record was last updated.',
                       },
                       name: {
                         type: 'string',
+                        description: 'Display name of the resource.',
                       },
                       type: {
                         type: 'string',
                       },
                       description: {
                         type: 'string',
+                        description: 'Description of the resource.',
                       },
                       parameters: {
                         anyOf: [
@@ -605,9 +684,11 @@ const operation2 = defineOperation({
                             required: ['length'],
                           },
                         ],
+                        description: 'Configuration parameters for the resource.',
                       },
                       websiteId: {
                         type: 'string',
+                        description: 'ID of the website.',
                       },
                     },
                     required: [
@@ -622,6 +703,7 @@ const operation2 = defineOperation({
                       'websiteId',
                     ],
                   },
+                  description: 'Saved reports associated with the user.',
                 },
                 boards: {
                   type: 'array',
@@ -630,29 +712,36 @@ const operation2 = defineOperation({
                     properties: {
                       id: {
                         type: 'string',
+                        description: 'Unique identifier of the resource.',
                       },
                       userId: {
                         type: 'string',
+                        description: 'ID of the associated user.',
                       },
                       createdAt: {
                         type: 'string',
                         format: 'date-time',
+                        description: 'Date and time the record was created.',
                       },
                       updatedAt: {
                         type: 'string',
                         format: 'date-time',
+                        description: 'Date and time the record was last updated.',
                       },
                       name: {
                         type: 'string',
+                        description: 'Display name of the resource.',
                       },
                       teamId: {
                         type: 'string',
+                        description: 'ID of the associated team.',
                       },
                       type: {
                         type: 'string',
                       },
                       description: {
                         type: 'string',
+                        description: 'Description of the resource.',
                       },
                       parameters: {
                         anyOf: [
@@ -708,6 +797,7 @@ const operation2 = defineOperation({
                             required: ['length'],
                           },
                         ],
+                        description: 'Configuration parameters for the resource.',
                       },
                     },
                     required: [
@@ -722,6 +812,7 @@ const operation2 = defineOperation({
                       'parameters',
                     ],
                   },
+                  description: 'Boards associated with the user.',
                 },
                 twoFactorBackupCodes: {
                   type: 'array',
@@ -730,13 +821,16 @@ const operation2 = defineOperation({
                     properties: {
                       id: {
                         type: 'string',
+                        description: 'Unique identifier of the resource.',
                       },
                       userId: {
                         type: 'string',
+                        description: 'ID of the associated user.',
                       },
                       createdAt: {
                         type: 'string',
                         format: 'date-time',
+                        description: 'Date and time the record was created.',
                       },
                       codeHash: {
                         type: 'string',
@@ -755,9 +849,11 @@ const operation2 = defineOperation({
                     properties: {
                       id: {
                         type: 'string',
+                        description: 'Unique identifier of the resource.',
                       },
                       userId: {
                         type: 'string',
+                        description: 'ID of the associated user.',
                       },
                       otp: {
                         type: 'string',
@@ -765,6 +861,7 @@ const operation2 = defineOperation({
                       expiresAt: {
                         type: 'string',
                         format: 'date-time',
+                        description: 'Date and time the credential expires.',
                       },
                     },
                     required: ['id', 'userId', 'otp', 'expiresAt'],
@@ -777,26 +874,32 @@ const operation2 = defineOperation({
                     properties: {
                       id: {
                         type: 'string',
+                        description: 'Unique identifier of the resource.',
                       },
                       userId: {
                         type: 'string',
+                        description: 'ID of the associated user.',
                       },
                       createdAt: {
                         type: 'string',
                         format: 'date-time',
+                        description: 'Date and time the record was created.',
                       },
                       name: {
                         type: 'string',
+                        description: 'Display name of the resource.',
                       },
                       keyHash: {
                         type: 'string',
                       },
                       keyPrefix: {
                         type: 'string',
+                        description: 'Visible prefix used to identify an API key.',
                       },
                       lastUsedAt: {
                         type: 'string',
                         format: 'date-time',
+                        description: 'Date and time the credential was last used.',
                       },
                     },
                     required: [
@@ -809,121 +912,7 @@ const operation2 = defineOperation({
                       'lastUsedAt',
                     ],
                   },
-                },
-                oauthAuthorizationCodes: {
-                  type: 'array',
-                  items: {
-                    type: 'object',
-                    properties: {
-                      id: {
-                        type: 'string',
-                      },
-                      userId: {
-                        type: 'string',
-                      },
-                      createdAt: {
-                        type: 'string',
-                        format: 'date-time',
-                      },
-                      codeHash: {
-                        type: 'string',
-                      },
-                      expiresAt: {
-                        type: 'string',
-                        format: 'date-time',
-                      },
-                      clientId: {
-                        type: 'string',
-                      },
-                      redirectUri: {
-                        type: 'string',
-                      },
-                      scope: {
-                        type: 'string',
-                      },
-                      resource: {
-                        type: 'string',
-                      },
-                      codeChallenge: {
-                        type: 'string',
-                      },
-                      codeChallengeMethod: {
-                        type: 'string',
-                      },
-                      usedAt: {
-                        type: 'string',
-                        format: 'date-time',
-                      },
-                    },
-                    required: [
-                      'id',
-                      'userId',
-                      'createdAt',
-                      'codeHash',
-                      'expiresAt',
-                      'clientId',
-                      'redirectUri',
-                      'scope',
-                      'resource',
-                      'codeChallenge',
-                      'codeChallengeMethod',
-                      'usedAt',
-                    ],
-                  },
-                },
-                oauthRefreshTokens: {
-                  type: 'array',
-                  items: {
-                    type: 'object',
-                    properties: {
-                      id: {
-                        type: 'string',
-                      },
-                      userId: {
-                        type: 'string',
-                      },
-                      createdAt: {
-                        type: 'string',
-                        format: 'date-time',
-                      },
-                      expiresAt: {
-                        type: 'string',
-                        format: 'date-time',
-                      },
-                      lastUsedAt: {
-                        type: 'string',
-                        format: 'date-time',
-                      },
-                      clientId: {
-                        type: 'string',
-                      },
-                      scope: {
-                        type: 'string',
-                      },
-                      resource: {
-                        type: 'string',
-                      },
-                      tokenHash: {
-                        type: 'string',
-                      },
-                      revokedAt: {
-                        type: 'string',
-                        format: 'date-time',
-                      },
-                    },
-                    required: [
-                      'id',
-                      'userId',
-                      'createdAt',
-                      'expiresAt',
-                      'lastUsedAt',
-                      'clientId',
-                      'scope',
-                      'resource',
-                      'tokenHash',
-                      'revokedAt',
-                    ],
-                  },
+                  description: 'API keys associated with the user.',
                 },
                 _count: {
                   type: 'object',
@@ -933,21 +922,27 @@ const operation2 = defineOperation({
                     },
                     createdBy: {
                       type: 'number',
+                      description: 'ID of the user who created the resource.',
                     },
                     links: {
                       type: 'number',
+                      description: 'Tracked links associated with the user.',
                     },
                     pixels: {
                       type: 'number',
+                      description: 'Tracking pixels associated with the user.',
                     },
                     teams: {
                       type: 'number',
+                      description: 'Teams associated with the user.',
                     },
                     reports: {
                       type: 'number',
+                      description: 'Saved reports associated with the user.',
                     },
                     boards: {
                       type: 'number',
+                      description: 'Boards associated with the user.',
                     },
                     twoFactorAuth: {
                       type: 'number',
@@ -963,12 +958,7 @@ const operation2 = defineOperation({
                     },
                     apiKeys: {
                       type: 'number',
-                    },
-                    oauthAuthorizationCodes: {
-                      type: 'number',
-                    },
-                    oauthRefreshTokens: {
-                      type: 'number',
+                      description: 'API keys associated with the user.',
                     },
                   },
                   required: [
@@ -984,8 +974,6 @@ const operation2 = defineOperation({
                     'twoFactorOtpUseds',
                     'twoFactorRateLimit',
                     'apiKeys',
-                    'oauthAuthorizationCodes',
-                    'oauthRefreshTokens',
                   ],
                 },
               },
@@ -1008,8 +996,6 @@ const operation2 = defineOperation({
                 'twoFactorBackupCodes',
                 'twoFactorOtpUseds',
                 'apiKeys',
-                'oauthAuthorizationCodes',
-                'oauthRefreshTokens',
                 '_count',
               ],
             },
@@ -1044,7 +1030,8 @@ const operation3 = defineOperation({
   auth: 'bearer',
   operation: {
     operationId: 'updateUser',
-    summary: 'Create or update users user id',
+    summary: 'Update a user',
+    description: "Updates a user's password. Administrators can also change the username and role.",
     tags: ['Users'],
     parameters: [
       {
@@ -1054,6 +1041,7 @@ const operation3 = defineOperation({
         schema: {
           type: 'string',
         },
+        description: 'ID of the associated user.',
       },
     ],
     requestBody: {
@@ -1066,15 +1054,18 @@ const operation3 = defineOperation({
               username: {
                 type: 'string',
                 maxLength: 255,
+                description: 'Username of the account.',
               },
               password: {
                 type: 'string',
                 minLength: 8,
                 maxLength: 255,
+                description: 'Password used to authenticate the account.',
               },
               role: {
                 type: 'string',
                 enum: ['admin', 'user', 'view-only'],
+                description: 'Permission role assigned to the user.',
               },
             },
           },
@@ -1091,16 +1082,20 @@ const operation3 = defineOperation({
               properties: {
                 id: {
                   type: 'string',
+                  description: 'Unique identifier of the resource.',
                 },
                 createdAt: {
                   type: 'string',
                   format: 'date-time',
+                  description: 'Date and time the record was created.',
                 },
                 username: {
                   type: 'string',
+                  description: 'Username of the account.',
                 },
                 role: {
                   type: 'string',
+                  description: 'Permission role assigned to the user.',
                 },
               },
               required: ['id', 'createdAt', 'username', 'role'],

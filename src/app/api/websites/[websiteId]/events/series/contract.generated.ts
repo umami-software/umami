@@ -12,7 +12,6 @@ const operation1 = defineOperation({
     operationId: 'getWebsiteEventSeries',
     summary: 'Get websites website id events series',
     tags: ['Websites'],
-    'x-umami-oauth-scope': 'analytics:read',
     parameters: [
       {
         name: 'websiteId',

@@ -10,9 +10,10 @@ const operation1 = defineOperation({
   auth: 'bearer',
   operation: {
     operationId: 'getMe',
-    summary: 'Get me',
+    summary: 'Get my authentication details',
+    description:
+      'Returns the current authentication context, including the authenticated user or share credentials.',
     tags: ['Account'],
-    'x-umami-oauth-scope': 'websites:read',
     responses: {
       '200': {
         description: 'The operation completed successfully.',
@@ -26,30 +27,38 @@ const operation1 = defineOperation({
                   properties: {
                     id: {
                       type: 'string',
+                      description: 'Unique identifier of the resource.',
                     },
                     username: {
                       type: 'string',
+                      description: 'Username of the account.',
                     },
                     role: {
                       type: 'string',
+                      description: 'Permission role assigned to the user.',
                     },
                     isAdmin: {
                       type: 'boolean',
+                      description: 'Whether the user has administrator privileges.',
                     },
                   },
                   required: ['id', 'username', 'role', 'isAdmin'],
+                  description: 'User associated with the resource.',
                 },
                 apiKey: {
                   type: 'object',
                   properties: {
                     id: {
                       type: 'string',
+                      description: 'Unique identifier of the resource.',
                     },
                     name: {
                       type: 'string',
+                      description: 'Display name of the resource.',
                     },
                   },
                   required: ['id', 'name'],
+                  description: 'API key authentication details.',
                 },
                 authType: {
                   anyOf: [
@@ -62,37 +71,18 @@ const operation1 = defineOperation({
                     {
                       const: 'api-key',
                     },
-                    {
-                      const: 'oauth',
-                    },
                   ],
-                },
-                oauth: {
-                  type: 'object',
-                  properties: {
-                    clientId: {
-                      type: 'string',
-                    },
-                    scopes: {
-                      type: 'array',
-                      items: {
-                        type: 'string',
-                      },
-                    },
-                    tokenId: {
-                      type: 'string',
-                    },
-                  },
-                  required: ['clientId', 'scopes'],
                 },
                 shareToken: {
                   type: 'object',
                   properties: {
                     shareType: {
                       type: 'number',
+                      description: 'Type of resource made available by the share.',
                     },
                     websiteId: {
                       type: 'string',
+                      description: 'ID of the website.',
                     },
                     websiteIds: {
                       type: 'array',
@@ -102,9 +92,11 @@ const operation1 = defineOperation({
                     },
                     boardId: {
                       type: 'string',
+                      description: 'ID of the board.',
                     },
                     pixelId: {
                       type: 'string',
+                      description: 'ID of the tracking pixel.',
                     },
                     pixelIds: {
                       type: 'array',
@@ -114,6 +106,7 @@ const operation1 = defineOperation({
                     },
                     linkId: {
                       type: 'string',
+                      description: 'ID of the tracked link.',
                     },
                     linkIds: {
                       type: 'array',
@@ -154,6 +147,7 @@ const operation1 = defineOperation({
                           },
                         ],
                       },
+                      description: 'Configuration parameters for the resource.',
                     },
                   },
                 },

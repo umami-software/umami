@@ -3,10 +3,9 @@ import type { McpLogger } from '@umami/mcp';
 import { createUmamiMcpHttpHandler } from '@umami/mcp';
 import debug from 'debug';
 import { uuid } from '@/lib/crypto';
+import { getBaseUrl } from '@/lib/get-base-url';
 import { authenticateMcpRequest, mcpAuthErrorResponse } from '@/lib/mcp/auth';
 import { createInProcessFetch } from '@/lib/mcp/dispatch';
-import { getIssuer, isOAuthEnabled } from '@/lib/oauth/config';
-import { corsPreflight } from '@/lib/oauth/metadata';
 
 export const dynamic = 'force-dynamic';
 
@@ -27,10 +26,11 @@ const handler = createUmamiMcpHttpHandler({
   logger,
   onerror: error => log('handler error: %s', error?.message),
   createClient: (authInfo, ctx) => {
-    const issuer = getIssuer(ctx.requestInfo?.headers);
+    const baseUrl = getBaseUrl(ctx.requestInfo?.headers).toString().replace(/\/+$/, '');
+    const basePath = (process.env.BASE_PATH ?? '').replace(/\/+$/, '');
 
     return new UmamiClient({
-      baseUrl: `${issuer}/api`,
+      baseUrl: `${baseUrl}${basePath}/api`,
       token: authInfo.token,
       fetch: createInProcessFetch(),
     });
@@ -38,14 +38,14 @@ const handler = createUmamiMcpHttpHandler({
 });
 
 async function handle(request: Request) {
-  if (!isOAuthEnabled() && process.env.MCP_DISABLED === '1') {
+  if (process.env.MCP_ENABLED !== '1') {
     return new Response(null, { status: 404 });
   }
 
   const auth = await authenticateMcpRequest(request);
 
   if (!auth.ok) {
-    return mcpAuthErrorResponse(auth, request.headers);
+    return mcpAuthErrorResponse(auth);
   }
 
   const requestId = uuid();
@@ -55,7 +55,15 @@ async function handle(request: Request) {
 }
 
 export function OPTIONS() {
-  return corsPreflight();
+  return new Response(null, {
+    status: 204,
+    headers: {
+      'access-control-allow-origin': '*',
+      'access-control-allow-methods': 'GET, POST, DELETE, OPTIONS',
+      'access-control-allow-headers': '*',
+      'access-control-max-age': '86400',
+    },
+  });
 }
 
 export async function GET(request: Request) {

@@ -12,7 +12,6 @@ const operation1 = defineOperation({
     operationId: 'getRealtime',
     summary: 'Get realtime website id',
     tags: ['Realtime'],
-    'x-umami-oauth-scope': 'analytics:read',
     parameters: [
       {
         name: 'websiteId',

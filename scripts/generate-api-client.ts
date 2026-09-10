@@ -42,7 +42,6 @@ interface OpenApiOperation {
   parameters?: OpenApiParameter[];
   requestBody?: { required?: boolean };
   'x-umami-audience'?: string;
-  'x-umami-oauth-scope'?: string;
 }
 
 interface OpenApiDocument {
@@ -62,7 +61,6 @@ interface OperationDefinition {
   requiredQueryParams: string[];
   hasBody: boolean;
   bodyRequired: boolean;
-  scope?: string;
 }
 
 function collectOperations(document: OpenApiDocument): OperationDefinition[] {
@@ -127,7 +125,6 @@ function collectOperations(document: OpenApiDocument): OperationDefinition[] {
         requiredQueryParams,
         hasBody: !!operation.requestBody,
         bodyRequired: operation.requestBody?.required !== false && !!operation.requestBody,
-        scope: operation['x-umami-oauth-scope'],
       });
     }
   }
@@ -159,7 +156,6 @@ function renderOperations(operations: OperationDefinition[], version: string) {
         `pathParams: [${operation.pathParams.map(name => `'${name}'`).join(', ')}]`,
         `queryParams: [${operation.queryParams.map(name => `'${name}'`).join(', ')}]`,
         `hasBody: ${operation.hasBody}`,
-        ...(operation.scope ? [`scope: '${operation.scope}'`] : []),
       ];
 
       return `  ${operation.operationId}: { ${fields.join(', ')} },`;
@@ -178,7 +174,6 @@ function renderOperations(operations: OperationDefinition[], version: string) {
         operation.description,
         '',
         `\`${operation.method.toUpperCase()} ${operation.path}\``,
-        operation.scope ? `OAuth scope: \`${operation.scope}\`` : undefined,
       ]);
       const id = operation.operationId;
 
@@ -203,7 +198,6 @@ export interface OperationDefinition {
   readonly pathParams: readonly string[];
   readonly queryParams: readonly string[];
   readonly hasBody: boolean;
-  readonly scope?: string;
 }
 
 export const operations = {

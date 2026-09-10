@@ -15,7 +15,6 @@ export const API_KEY_BLOCKED_PATHS = [
   '/api/auth',
   '/api/users',
   '/api/admin',
-  '/api/oauth',
 ];
 
 export function generateApiKey() {

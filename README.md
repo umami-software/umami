@@ -54,6 +54,9 @@ Optional: set `TWO_FACTOR_ENCRYPTION_KEY` to a 64-character hex string to enable
 authentication. Generate one with `openssl rand -hex 32`. Two-factor authentication is unavailable
 and cannot be required until this key is set.
 
+MCP is disabled by default. Set `MCP_ENABLED=1` to enable the `/mcp` endpoint, then
+authenticate with an API key generated under Settings → API keys.
+
 The connection URL format:
 
 ```bash

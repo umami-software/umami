@@ -12,7 +12,6 @@ const operation1 = defineOperation({
     operationId: 'runAttributionReport',
     summary: 'Create or update reports attribution',
     tags: ['Reports'],
-    'x-umami-oauth-scope': 'analytics:read',
     requestBody: {
       required: true,
       content: {

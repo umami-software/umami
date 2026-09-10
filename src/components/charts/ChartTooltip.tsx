@@ -16,12 +16,24 @@ export function ChartTooltip({
         gap="3"
         padding="4"
         borderRadius="md"
-        style={{ backgroundColor: 'rgba(0,0,0,0.8)', color: 'white' }}
+        style={{
+          backgroundColor: 'rgba(0,0,0,0.8)',
+          borderRadius: '5.25px',
+          color: 'white',
+          gap: '10.5px',
+          padding: '14px',
+        }}
       >
-        {title && <Text size="sm">{title}</Text>}
+        {title && (
+          <Text size="sm" style={{ fontSize: '12.25px', lineHeight: '17.5px' }}>
+            {title}
+          </Text>
+        )}
         <Row alignItems="center">
           <StatusLight color={color}>
-            <Text size="sm">{value}</Text>
+            <Text size="sm" style={{ fontSize: '12.25px', lineHeight: '17.5px' }}>
+              {value}
+            </Text>
           </StatusLight>
         </Row>
       </Column>

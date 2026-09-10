@@ -12,7 +12,6 @@ const operation1 = defineOperation({
     operationId: 'runJourneyReport',
     summary: 'Create or update reports journey',
     tags: ['Reports'],
-    'x-umami-oauth-scope': 'analytics:read',
     requestBody: {
       required: true,
       content: {

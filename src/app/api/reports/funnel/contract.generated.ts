@@ -12,7 +12,6 @@ const operation1 = defineOperation({
     operationId: 'runFunnelReport',
     summary: 'Create or update reports funnel',
     tags: ['Reports'],
-    'x-umami-oauth-scope': 'analytics:read',
     requestBody: {
       required: true,
       content: {

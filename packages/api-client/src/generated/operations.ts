@@ -15,7 +15,6 @@ export interface OperationDefinition {
   readonly pathParams: readonly string[];
   readonly queryParams: readonly string[];
   readonly hasBody: boolean;
-  readonly scope?: string;
 }
 
 export const operations = {
@@ -401,7 +400,6 @@ export const operations = {
       'maxResults',
     ],
     hasBody: false,
-    scope: 'analytics:read',
   },
   getEventDataArraySeries: {
     operationId: 'getEventDataArraySeries',
@@ -719,7 +717,6 @@ export const operations = {
       'match',
     ],
     hasBody: false,
-    scope: 'analytics:read',
   },
   getEventDataPropertySeries: {
     operationId: 'getEventDataPropertySeries',
@@ -796,7 +793,6 @@ export const operations = {
       'match',
     ],
     hasBody: false,
-    scope: 'analytics:read',
   },
   getEventDataValues: {
     operationId: 'getEventDataValues',
@@ -836,7 +832,6 @@ export const operations = {
       'match',
     ],
     hasBody: false,
-    scope: 'analytics:read',
   },
   getLink: {
     operationId: 'getLink',
@@ -906,7 +901,6 @@ export const operations = {
     pathParams: [],
     queryParams: [],
     hasBody: false,
-    scope: 'websites:read',
   },
   getMyApiKeys: {
     operationId: 'getMyApiKeys',
@@ -1028,7 +1022,6 @@ export const operations = {
       'match',
     ],
     hasBody: false,
-    scope: 'analytics:read',
   },
   getReport: {
     operationId: 'getReport',
@@ -1531,7 +1524,6 @@ export const operations = {
     pathParams: ['websiteId'],
     queryParams: [],
     hasBody: false,
-    scope: 'websites:read',
   },
   getWebsiteActive: {
     operationId: 'getWebsiteActive',
@@ -1540,7 +1532,6 @@ export const operations = {
     pathParams: ['websiteId'],
     queryParams: [],
     hasBody: false,
-    scope: 'analytics:read',
   },
   getWebsiteAnnotation: {
     operationId: 'getWebsiteAnnotation',
@@ -1565,7 +1556,6 @@ export const operations = {
     pathParams: ['websiteId'],
     queryParams: [],
     hasBody: false,
-    scope: 'analytics:read',
   },
   getWebsiteEvents: {
     operationId: 'getWebsiteEvents',
@@ -1611,7 +1601,6 @@ export const operations = {
       'search',
     ],
     hasBody: false,
-    scope: 'analytics:read',
   },
   getWebsiteEventSeries: {
     operationId: 'getWebsiteEventSeries',
@@ -1651,7 +1640,6 @@ export const operations = {
       'match',
     ],
     hasBody: false,
-    scope: 'analytics:read',
   },
   getWebsiteEventStats: {
     operationId: 'getWebsiteEventStats',
@@ -1693,7 +1681,6 @@ export const operations = {
       'match',
     ],
     hasBody: false,
-    scope: 'analytics:read',
   },
   getWebsiteExpandedMetrics: {
     operationId: 'getWebsiteExpandedMetrics',
@@ -1739,7 +1726,6 @@ export const operations = {
       'match',
     ],
     hasBody: false,
-    scope: 'analytics:read',
   },
   getWebsiteMetrics: {
     operationId: 'getWebsiteMetrics',
@@ -1785,7 +1771,6 @@ export const operations = {
       'match',
     ],
     hasBody: false,
-    scope: 'analytics:read',
   },
   getWebsitePageviews: {
     operationId: 'getWebsitePageviews',
@@ -1827,7 +1812,6 @@ export const operations = {
       'match',
     ],
     hasBody: false,
-    scope: 'analytics:read',
   },
   getWebsiteRecorderConfig: {
     operationId: 'getWebsiteRecorderConfig',
@@ -2119,7 +2103,6 @@ export const operations = {
     pathParams: ['websiteId', 'sessionId'],
     queryParams: [],
     hasBody: false,
-    scope: 'analytics:read',
   },
   getWebsiteSessionActivity: {
     operationId: 'getWebsiteSessionActivity',
@@ -2128,7 +2111,6 @@ export const operations = {
     pathParams: ['websiteId', 'sessionId'],
     queryParams: ['startAt', 'endAt', 'distinctId'],
     hasBody: false,
-    scope: 'analytics:read',
   },
   getWebsiteSessionProperties: {
     operationId: 'getWebsiteSessionProperties',
@@ -2137,7 +2119,6 @@ export const operations = {
     pathParams: ['websiteId', 'sessionId'],
     queryParams: [],
     hasBody: false,
-    scope: 'analytics:read',
   },
   getWebsiteSessionReplays: {
     operationId: 'getWebsiteSessionReplays',
@@ -2203,7 +2184,6 @@ export const operations = {
       'search',
     ],
     hasBody: false,
-    scope: 'analytics:read',
   },
   getWebsiteSessionStats: {
     operationId: 'getWebsiteSessionStats',
@@ -2240,7 +2220,6 @@ export const operations = {
       'match',
     ],
     hasBody: false,
-    scope: 'analytics:read',
   },
   getWebsiteSessionsWeekly: {
     operationId: 'getWebsiteSessionsWeekly',
@@ -2356,7 +2335,6 @@ export const operations = {
       'match',
     ],
     hasBody: false,
-    scope: 'analytics:read',
   },
   getWebsiteValues: {
     operationId: 'getWebsiteValues',
@@ -2407,7 +2385,6 @@ export const operations = {
       'includeTeams',
     ],
     hasBody: false,
-    scope: 'websites:read',
   },
   login: {
     operationId: 'login',
@@ -2448,7 +2425,6 @@ export const operations = {
     pathParams: [],
     queryParams: [],
     hasBody: true,
-    scope: 'analytics:read',
   },
   runBreakdownReport: {
     operationId: 'runBreakdownReport',
@@ -2457,7 +2433,6 @@ export const operations = {
     pathParams: [],
     queryParams: [],
     hasBody: true,
-    scope: 'analytics:read',
   },
   runFunnelReport: {
     operationId: 'runFunnelReport',
@@ -2466,7 +2441,6 @@ export const operations = {
     pathParams: [],
     queryParams: [],
     hasBody: true,
-    scope: 'analytics:read',
   },
   runGoalReport: {
     operationId: 'runGoalReport',
@@ -2491,7 +2465,6 @@ export const operations = {
     pathParams: [],
     queryParams: [],
     hasBody: true,
-    scope: 'analytics:read',
   },
   runPerformanceReport: {
     operationId: 'runPerformanceReport',
@@ -2508,7 +2481,6 @@ export const operations = {
     pathParams: [],
     queryParams: [],
     hasBody: true,
-    scope: 'analytics:read',
   },
   runRevenueReport: {
     operationId: 'runRevenueReport',
@@ -2517,7 +2489,6 @@ export const operations = {
     pathParams: [],
     queryParams: [],
     hasBody: true,
-    scope: 'analytics:read',
   },
   runUtmReport: {
     operationId: 'runUtmReport',
@@ -2526,7 +2497,6 @@ export const operations = {
     pathParams: [],
     queryParams: [],
     hasBody: true,
-    scope: 'analytics:read',
   },
   saveWebsiteReplay: {
     operationId: 'saveWebsiteReplay',
@@ -3174,7 +3144,6 @@ export abstract class GeneratedUmamiClient {
    * List events with custom properties
    * Returns a page of events in the selected date range, grouping each event's custom property records together.
    * `GET /api/websites/{websiteId}/event-data`
-   * OAuth scope: `analytics:read`
    */
   getEventData(
     input: OperationInput<'getEventData'>,
@@ -3283,7 +3252,6 @@ export abstract class GeneratedUmamiClient {
    * List event property usage
    * Returns event names and their custom property names, data types, and record counts for the selected date range and filters.
    * `GET /api/websites/{websiteId}/event-data/properties`
-   * OAuth scope: `analytics:read`
    */
   getEventDataProperties(
     input: OperationInput<'getEventDataProperties'>,
@@ -3308,7 +3276,6 @@ export abstract class GeneratedUmamiClient {
    * Get event property totals
    * Returns counts of events with custom data, distinct property names, and property records for the selected date range and filters.
    * `GET /api/websites/{websiteId}/event-data/stats`
-   * OAuth scope: `analytics:read`
    */
   getEventDataStats(
     input: OperationInput<'getEventDataStats'>,
@@ -3321,7 +3288,6 @@ export abstract class GeneratedUmamiClient {
    * List event property values
    * Returns values and their occurrence counts for a custom event property, optionally restricted by event name and data type.
    * `GET /api/websites/{websiteId}/event-data/values`
-   * OAuth scope: `analytics:read`
    */
   getEventDataValues(
     input: OperationInput<'getEventDataValues'>,
@@ -3382,7 +3348,6 @@ export abstract class GeneratedUmamiClient {
    * Get my authentication details
    * Returns the current authentication context, including the authenticated user or share credentials.
    * `GET /api/me`
-   * OAuth scope: `websites:read`
    */
   getMe(
     input?: OperationInput<'getMe'>,
@@ -3479,7 +3444,6 @@ export abstract class GeneratedUmamiClient {
    * Get real-time website activity
    * Returns recent website activity and visitor data for the real-time view, applying the supplied filters.
    * `GET /api/realtime/{websiteId}`
-   * OAuth scope: `analytics:read`
    */
   getRealtime(
     input: OperationInput<'getRealtime'>,
@@ -3804,7 +3768,6 @@ export abstract class GeneratedUmamiClient {
    * Get a website
    * Returns the specified website's details and configuration.
    * `GET /api/websites/{websiteId}`
-   * OAuth scope: `websites:read`
    */
   getWebsite(
     input: OperationInput<'getWebsite'>,
@@ -3817,7 +3780,6 @@ export abstract class GeneratedUmamiClient {
    * Get active website visitors
    * Returns the number of visitors active on the website in the last few minutes.
    * `GET /api/websites/{websiteId}/active`
-   * OAuth scope: `analytics:read`
    */
   getWebsiteActive(
     input: OperationInput<'getWebsiteActive'>,
@@ -3854,7 +3816,6 @@ export abstract class GeneratedUmamiClient {
    * Get the website's available date range
    * Returns the earliest and latest recorded event dates for the website.
    * `GET /api/websites/{websiteId}/daterange`
-   * OAuth scope: `analytics:read`
    */
   getWebsiteDateRange(
     input: OperationInput<'getWebsiteDateRange'>,
@@ -3867,7 +3828,6 @@ export abstract class GeneratedUmamiClient {
    * List tracked events
    * Returns a page of pageviews and custom events in the date range, newest first. Supports filtering by event name and searching event details.
    * `GET /api/websites/{websiteId}/events`
-   * OAuth scope: `analytics:read`
    */
   getWebsiteEvents(
     input: OperationInput<'getWebsiteEvents'>,
@@ -3880,7 +3840,6 @@ export abstract class GeneratedUmamiClient {
    * Get custom event counts over time
    * Returns counts grouped by event name and time interval, optionally limited to the most frequent event names.
    * `GET /api/websites/{websiteId}/events/series`
-   * OAuth scope: `analytics:read`
    */
   getWebsiteEventSeries(
     input: OperationInput<'getWebsiteEventSeries'>,
@@ -3893,7 +3852,6 @@ export abstract class GeneratedUmamiClient {
    * Get website event statistics
    * Returns website event totals for the selected date range and filters, including totals for the comparison period.
    * `GET /api/websites/{websiteId}/events/stats`
-   * OAuth scope: `analytics:read`
    */
   getWebsiteEventStats(
     input: OperationInput<'getWebsiteEventStats'>,
@@ -3906,7 +3864,6 @@ export abstract class GeneratedUmamiClient {
    * Get detailed website metrics
    * Returns additional analytics for the selected page, event, visitor, or channel dimension, using the supplied date range and filters.
    * `GET /api/websites/{websiteId}/metrics/expanded`
-   * OAuth scope: `analytics:read`
    */
   getWebsiteExpandedMetrics(
     input: OperationInput<'getWebsiteExpandedMetrics'>,
@@ -3919,7 +3876,6 @@ export abstract class GeneratedUmamiClient {
    * Get ranked website metrics
    * Returns the most frequent values for a dimension such as pages, referrers, countries, browsers, campaigns, or events. Counts pageviews or events for activity dimensions and unique visitors for visitor dimensions.
    * `GET /api/websites/{websiteId}/metrics`
-   * OAuth scope: `analytics:read`
    */
   getWebsiteMetrics(
     input: OperationInput<'getWebsiteMetrics'>,
@@ -3932,7 +3888,6 @@ export abstract class GeneratedUmamiClient {
    * Get pageviews and sessions over time
    * Returns pageviews and sessions grouped by the requested time interval and timezone, including a comparison period when requested.
    * `GET /api/websites/{websiteId}/pageviews`
-   * OAuth scope: `analytics:read`
    */
   getWebsitePageviews(
     input: OperationInput<'getWebsitePageviews'>,
@@ -4101,7 +4056,6 @@ export abstract class GeneratedUmamiClient {
    * Get a visitor session
    * Returns details for a website session, including linked visitor identities and whether session deletion is available to the caller.
    * `GET /api/websites/{websiteId}/sessions/{sessionId}`
-   * OAuth scope: `analytics:read`
    */
   getWebsiteSession(
     input: OperationInput<'getWebsiteSession'>,
@@ -4114,7 +4068,6 @@ export abstract class GeneratedUmamiClient {
    * Get a visitor's session activity
    * Returns activity for the specified session and sessions linked by visitor identity, using the requested date range and optional distinct ID.
    * `GET /api/websites/{websiteId}/sessions/{sessionId}/activity`
-   * OAuth scope: `analytics:read`
    */
   getWebsiteSessionActivity(
     input: OperationInput<'getWebsiteSessionActivity'>,
@@ -4127,7 +4080,6 @@ export abstract class GeneratedUmamiClient {
    * Get a session's custom properties
    * Returns custom property records, data types, and values for the specified website session.
    * `GET /api/websites/{websiteId}/sessions/{sessionId}/properties`
-   * OAuth scope: `analytics:read`
    */
   getWebsiteSessionProperties(
     input: OperationInput<'getWebsiteSessionProperties'>,
@@ -4152,7 +4104,6 @@ export abstract class GeneratedUmamiClient {
    * List visitor sessions
    * Returns a page of visitor sessions in the date range, newest first. Search matches distinct ID, city, browser, operating system, or device.
    * `GET /api/websites/{websiteId}/sessions`
-   * OAuth scope: `analytics:read`
    */
   getWebsiteSessions(
     input: OperationInput<'getWebsiteSessions'>,
@@ -4165,7 +4116,6 @@ export abstract class GeneratedUmamiClient {
    * Get visitor session statistics
    * Returns aggregate session metrics for the website over the selected date range and filters.
    * `GET /api/websites/{websiteId}/sessions/stats`
-   * OAuth scope: `analytics:read`
    */
   getWebsiteSessionStats(
     input: OperationInput<'getWebsiteSessionStats'>,
@@ -4202,7 +4152,6 @@ export abstract class GeneratedUmamiClient {
    * Get website summary statistics
    * Returns pageviews, unique visitors, visits, bounces, and total time on site for the selected date range and comparison period.
    * `GET /api/websites/{websiteId}/stats`
-   * OAuth scope: `analytics:read`
    */
   getWebsiteStats(
     input: OperationInput<'getWebsiteStats'>,
@@ -4251,7 +4200,6 @@ export abstract class GeneratedUmamiClient {
    * List websites
    * Returns a paginated list of the current user's websites, optionally including websites accessible through team membership.
    * `GET /api/websites`
-   * OAuth scope: `websites:read`
    */
   listWebsites(
     input?: OperationInput<'listWebsites'>,
@@ -4312,7 +4260,6 @@ export abstract class GeneratedUmamiClient {
    * Run an attribution report
    * Calculates how traffic sources contribute to conversions using the supplied attribution settings, date range, and filters.
    * `POST /api/reports/attribution`
-   * OAuth scope: `analytics:read`
    */
   runAttributionReport(
     input: OperationInput<'runAttributionReport'>,
@@ -4325,7 +4272,6 @@ export abstract class GeneratedUmamiClient {
    * Run a breakdown report
    * Groups website activity by the selected dimensions for the requested date range and filters.
    * `POST /api/reports/breakdown`
-   * OAuth scope: `analytics:read`
    */
   runBreakdownReport(
     input: OperationInput<'runBreakdownReport'>,
@@ -4338,7 +4284,6 @@ export abstract class GeneratedUmamiClient {
    * Run a funnel report
    * Calculates visitor progression through a sequence of pages or events using the supplied funnel steps and filters.
    * `POST /api/reports/funnel`
-   * OAuth scope: `analytics:read`
    */
   runFunnelReport(
     input: OperationInput<'runFunnelReport'>,
@@ -4375,7 +4320,6 @@ export abstract class GeneratedUmamiClient {
    * Run a visitor journey report
    * Returns paths through pages or events using the supplied journey settings and website filters.
    * `POST /api/reports/journey`
-   * OAuth scope: `analytics:read`
    */
   runJourneyReport(
     input: OperationInput<'runJourneyReport'>,
@@ -4400,7 +4344,6 @@ export abstract class GeneratedUmamiClient {
    * Run a retention report
    * Calculates how groups of visitors return over time using the supplied retention settings, date range, and filters.
    * `POST /api/reports/retention`
-   * OAuth scope: `analytics:read`
    */
   runRetentionReport(
     input: OperationInput<'runRetentionReport'>,
@@ -4413,7 +4356,6 @@ export abstract class GeneratedUmamiClient {
    * Run a revenue report
    * Returns revenue trends, totals with a comparison period, and breakdowns by country, region, referrer, and channel.
    * `POST /api/reports/revenue`
-   * OAuth scope: `analytics:read`
    */
   runRevenueReport(
     input: OperationInput<'runRevenueReport'>,
@@ -4426,7 +4368,6 @@ export abstract class GeneratedUmamiClient {
    * Run a campaign report
    * Returns traffic breakdowns for UTM source, medium, campaign, term, and content using the supplied date range and filters.
    * `POST /api/reports/utm`
-   * OAuth scope: `analytics:read`
    */
   runUtmReport(
     input: OperationInput<'runUtmReport'>,

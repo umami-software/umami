@@ -74,7 +74,7 @@ export function WebsiteSelect({
   return (
     <Select
       {...props}
-      value={websiteId}
+      value={websiteId ?? null}
       isLoading={isLoading}
       allowSearch={true}
       searchValue={search}

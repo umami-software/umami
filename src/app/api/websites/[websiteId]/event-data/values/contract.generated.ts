@@ -12,7 +12,6 @@ const operation1 = defineOperation({
     operationId: 'getEventDataValues',
     summary: 'Get websites website id event data values',
     tags: ['Websites'],
-    'x-umami-oauth-scope': 'analytics:read',
     parameters: [
       {
         name: 'websiteId',

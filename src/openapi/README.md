@@ -86,14 +86,6 @@ Operation IDs are public: they become method names in `@umami/api-client`. Route
 overrides the mechanical path-based name (`getWebsitesWebsiteIdStats` -> `getWebsiteStats`).
 Never rename an operation ID without a migration note for the client.
 
-## OAuth scopes
-
-`src/lib/oauth/scopes.ts` is the single allowlist of routes that accept OAuth access tokens and
-the scope each requires. The document builder adds `x-umami-oauth-scope` and an `oauth2` security
-requirement to those operations, and fails when an allowlist entry does not match a real route.
-The same list is enforced at runtime by `checkAuth`, and mirrored by the in-process MCP dispatch
-table (`src/lib/mcp/dispatch.ts`).
-
 ## Generated API client
 
 `pnpm generate:api` regenerates the OpenAPI document and `packages/api-client/src/generated`.

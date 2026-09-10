@@ -232,31 +232,6 @@ export const operationDescriptions: Record<string, OperationDescription> = {
     description:
       "Returns a paginated list of the current user's websites, optionally including websites accessible through team membership.",
   },
-  'GET /api/oauth/authorize': {
-    summary: 'Get OAuth authorization request details',
-    description:
-      'Validates an OAuth authorization request and returns the client and requested permissions for the consent screen. Requires an interactive user session.',
-  },
-  'POST /api/oauth/authorize': {
-    summary: 'Approve or deny OAuth access',
-    description:
-      "Records the user's consent decision and returns a redirect URL. Approval includes an authorization code, the request state, and the issuer.",
-  },
-  'POST /api/oauth/register': {
-    summary: 'Register an OAuth client',
-    description:
-      'Registers a public OAuth client for clients that do not support Client ID Metadata Documents. Clients that support them should use an HTTPS metadata URL as their client ID.',
-  },
-  'POST /api/oauth/revoke': {
-    summary: 'Revoke an OAuth refresh token',
-    description:
-      'Revokes the supplied refresh token. Unknown tokens are accepted without revealing whether they existed.',
-  },
-  'POST /api/oauth/token': {
-    summary: 'Get or refresh an OAuth access token',
-    description:
-      'Exchanges an authorization code and PKCE verifier, or a refresh token, for an access token. Accepts form-encoded or JSON requests and rotates refresh tokens on use.',
-  },
   'GET /api/pixels': {
     summary: 'List my tracking pixels',
     description:

@@ -13,8 +13,7 @@ export interface DispatchRoute {
 
 /**
  * The API routes the embedded MCP server may call, dispatched in-process (no loopback HTTP).
- * This list must stay identical to `OAUTH_ROUTE_SCOPES` in `src/lib/oauth/scopes.ts`;
- * `dispatch.test.ts` enforces that. Anything not listed here is unreachable from MCP.
+ * Anything not listed here is unreachable from MCP.
  */
 export const MCP_DISPATCH_ROUTES: readonly DispatchRoute[] = [
   { method: 'GET', path: '/api/me', load: () => import('@/app/api/me/route') },
