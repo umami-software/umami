@@ -203,6 +203,70 @@ describe('createUmamiMcpServer', () => {
       return { body: [{ name: url.searchParams.get('type'), value: 100 }] };
     }
 
+    if (path === `/api/websites/${WEBSITE_ID}/daterange`) {
+      return {
+        body: { startDate: '2023-06-01T00:00:00.000Z', endDate: '2024-01-31T00:00:00.000Z' },
+      };
+    }
+
+    if (path === `/api/websites/${WEBSITE_ID}/events/stats`) {
+      return {
+        body: {
+          data: {
+            events: 30,
+            visitors: 12,
+            visits: 15,
+            uniqueEvents: 3,
+            comparison: { events: 20, visitors: 8, visits: 9, uniqueEvents: 2 },
+          },
+        },
+      };
+    }
+
+    if (path === `/api/websites/${WEBSITE_ID}/events/series`) {
+      return {
+        body: [
+          { x: 'signup', t: '2024-01-01', y: 4 },
+          { x: 'signup', t: '2024-01-02', y: 6 },
+          { x: 'checkout', t: '2024-01-01', y: 1 },
+        ],
+      };
+    }
+
+    if (path === `/api/websites/${WEBSITE_ID}/sessions/stats`) {
+      return {
+        body: {
+          pageviews: { value: 100 },
+          visitors: { value: 40 },
+          visits: { value: 50 },
+          countries: { value: 7 },
+          events: { value: 30 },
+        },
+      };
+    }
+
+    if (path === `/api/websites/${WEBSITE_ID}/event-data/properties`) {
+      return {
+        body: [
+          { eventName: 'checkout', propertyName: 'plan', dataType: 1, total: 25 },
+          { eventName: 'checkout', propertyName: 'amount', dataType: 2, total: 25 },
+        ],
+      };
+    }
+
+    if (path === `/api/websites/${WEBSITE_ID}/event-data/stats`) {
+      return { body: { events: 25, properties: 2, records: 50 } };
+    }
+
+    if (path === `/api/websites/${WEBSITE_ID}/event-data/values`) {
+      return {
+        body: [
+          { value: 'pro', total: 15 },
+          { value: 'free', total: 10 },
+        ],
+      };
+    }
+
     if (path.startsWith('/api/websites/')) {
       return {
         status: 401,
@@ -233,12 +297,17 @@ describe('createUmamiMcpServer', () => {
     expect(names).toEqual(
       [
         'list_websites',
+        'get_website_daterange',
         'get_website_stats',
         'get_website_traffic',
         'get_website_metrics',
         'get_realtime',
         'get_events',
+        'get_event_stats',
+        'get_event_series',
+        'get_event_properties',
         'get_sessions',
+        'get_session_stats',
         'get_session',
         'run_funnel',
         'run_journey',
@@ -396,6 +465,130 @@ describe('createUmamiMcpServer', () => {
         { type: 'event', name: 'signup' },
       ],
     });
+  });
+
+  test('get_website_daterange returns the available data window', async () => {
+    const result = await harness.client.callTool({
+      name: 'get_website_daterange',
+      arguments: { websiteId: WEBSITE_ID },
+    });
+
+    expect(result.isError).toBeFalsy();
+    expect(result.structuredContent).toMatchObject({
+      startAt: '2023-06-01T00:00:00.000Z',
+      endAt: '2024-01-31T00:00:00.000Z',
+      hasData: true,
+    });
+  });
+
+  test('get_event_stats summarizes current and previous periods', async () => {
+    const result = await harness.client.callTool({
+      name: 'get_event_stats',
+      arguments: {
+        websiteId: WEBSITE_ID,
+        startAt: '2024-01-01',
+        endAt: '2024-01-08',
+        compare: 'yoy',
+      },
+    });
+
+    expect(result.isError).toBeFalsy();
+    expect(result.structuredContent).toMatchObject({
+      current: { events: 30, visitors: 12, visits: 15, uniqueEvents: 3 },
+      previous: { events: 20, visitors: 8 },
+      compare: 'yoy',
+    });
+    expect(harness.calls[0].url.searchParams.get('compare')).toBe('yoy');
+  });
+
+  test('get_event_series groups rows by event name', async () => {
+    const result = await harness.client.callTool({
+      name: 'get_event_series',
+      arguments: { websiteId: WEBSITE_ID, startAt: '2024-01-01', unit: 'day', limit: 5 },
+    });
+
+    expect(result.isError).toBeFalsy();
+    expect(result.structuredContent).toMatchObject({
+      unit: 'day',
+      events: [
+        {
+          name: 'signup',
+          total: 10,
+          series: [
+            { date: '2024-01-01', value: 4 },
+            { date: '2024-01-02', value: 6 },
+          ],
+        },
+        { name: 'checkout', total: 1 },
+      ],
+    });
+    expect(harness.calls[0].url.searchParams.get('limit')).toBe('5');
+  });
+
+  test('get_session_stats unwraps value objects', async () => {
+    const result = await harness.client.callTool({
+      name: 'get_session_stats',
+      arguments: { websiteId: WEBSITE_ID, startAt: '2024-01-01', filters: { country: 'US' } },
+    });
+
+    expect(result.isError).toBeFalsy();
+    expect(result.structuredContent).toMatchObject({
+      visitors: 40,
+      visits: 50,
+      pageviews: 100,
+      events: 30,
+      countries: 7,
+    });
+    expect(harness.calls[0].url.searchParams.get('country')).toBe('US');
+  });
+
+  test('get_event_properties lists properties, then values for one property', async () => {
+    const listed = await harness.client.callTool({
+      name: 'get_event_properties',
+      arguments: { websiteId: WEBSITE_ID, startAt: '2024-01-01', eventName: 'checkout' },
+    });
+
+    expect(listed.isError).toBeFalsy();
+    expect(listed.structuredContent).toMatchObject({
+      eventName: 'checkout',
+      totals: { events: 25, properties: 2, records: 50 },
+      properties: [
+        { eventName: 'checkout', propertyName: 'plan', dataType: 'string', count: 25 },
+        { eventName: 'checkout', propertyName: 'amount', dataType: 'number', count: 25 },
+      ],
+    });
+    expect(harness.calls.map(call => call.url.pathname).sort()).toEqual([
+      `/api/websites/${WEBSITE_ID}/event-data/properties`,
+      `/api/websites/${WEBSITE_ID}/event-data/stats`,
+    ]);
+    expect(harness.calls[0].url.searchParams.get('event')).toBe('checkout');
+
+    harness.calls.length = 0;
+
+    const values = await harness.client.callTool({
+      name: 'get_event_properties',
+      arguments: {
+        websiteId: WEBSITE_ID,
+        startAt: '2024-01-01',
+        propertyName: 'plan',
+        eventName: 'checkout',
+        dataType: 'string',
+      },
+    });
+
+    expect(values.isError).toBeFalsy();
+    expect(values.structuredContent).toMatchObject({
+      propertyName: 'plan',
+      values: [
+        { value: 'pro', count: 15 },
+        { value: 'free', count: 10 },
+      ],
+    });
+    expect(harness.calls).toHaveLength(1);
+    expect(harness.calls[0].url.pathname).toBe(`/api/websites/${WEBSITE_ID}/event-data/values`);
+    expect(harness.calls[0].url.searchParams.get('propertyName')).toBe('plan');
+    expect(harness.calls[0].url.searchParams.get('eventName')).toBe('checkout');
+    expect(harness.calls[0].url.searchParams.get('dataType')).toBe('1');
   });
 
   test('run_funnel sends structured criteria with GET', async () => {

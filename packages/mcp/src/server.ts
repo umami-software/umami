@@ -11,7 +11,8 @@ export const SERVER_INSTRUCTIONS = `Umami is a privacy-focused web analytics pla
 
 Workflow:
 1. Call list_websites to find the websiteId for the site the user is asking about (match by name or domain).
-2. Use get_website_stats for totals, get_website_traffic for trends over time, get_website_metrics for rankings (top pages, referrers, countries, browsers, campaigns, events), get_realtime for current visitors, get_events / get_sessions / get_session to inspect individual activity, and run_funnel / run_journey / run_retention / run_attribution / get_revenue for reports.
+2. If unsure what dates have data, call get_website_daterange first.
+3. Use get_website_stats for totals, get_website_traffic for trends over time, get_website_metrics for rankings (top pages, referrers, countries, browsers, campaigns, events), get_realtime for current visitors, get_event_stats / get_event_series for custom event totals and trends, get_event_properties to explore the custom data sent with events, get_session_stats for session counts, get_events / get_sessions / get_session to inspect individual activity, and run_funnel / run_journey / run_retention / run_attribution / get_revenue for reports.
 
 Dates are ISO 8601 strings; endAt defaults to now. Results are paginated where noted — request another page rather than a huge pageSize. All tools are read-only.`;
 

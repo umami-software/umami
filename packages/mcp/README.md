@@ -12,12 +12,17 @@ user/team permission checks as the web app.
 | Tool                  | Purpose                                                                 |
 | --------------------- | ----------------------------------------------------------------------- |
 | `list_websites`       | Find the websites you can access (call first to get a `websiteId`).     |
+| `get_website_daterange` | Earliest and latest dates with recorded data.                         |
 | `get_website_stats`   | Pageviews, visitors, visits, bounce rate, duration + previous period.   |
 | `get_website_traffic` | Pageview/visit time series by minute, hour, day, month or year.         |
 | `get_website_metrics` | Top pages, referrers, channels, countries, browsers, devices, UTM, events. |
 | `get_realtime`        | Visitors active right now.                                              |
 | `get_events`          | Individual tracked events (paginated).                                  |
+| `get_event_stats`     | Custom event totals + previous period.                                  |
+| `get_event_series`    | Custom event counts over time, grouped by event name.                   |
+| `get_event_properties` | Custom event property names, or the values of one property.            |
 | `get_sessions`        | Visitor sessions (paginated).                                           |
+| `get_session_stats`   | Session-level totals: visitors, visits, pageviews, events, countries.   |
 | `get_session`         | One session with its activity timeline and properties.                  |
 | `run_funnel`          | Conversion funnel across page/event steps.                              |
 | `run_journey`         | Most common paths visitors take.                                        |
@@ -109,6 +114,8 @@ For Cloud stdio, set `UMAMI_API_KEY` and omit `UMAMI_URL` and `UMAMI_API_TOKEN`:
 - Where is traffic coming from?
 - What signup events occurred yesterday?
 - Show sessions for user abc123.
+- Which pricing plans did people select in the checkout event last month?
+- How many signup events fired each day this week?
 
 ## Programmatic use
 
