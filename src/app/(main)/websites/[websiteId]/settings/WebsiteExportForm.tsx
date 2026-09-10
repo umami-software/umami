@@ -51,30 +51,57 @@ export function WebsiteExportForm({
 
         const tokenRes = await fetch(
           getApiUrl(`/websites/${websiteId}/export/token?startAt=${startAt}&endAt=${endAt}`) +
-          (token ? `&token=${encodeURIComponent(token)}` : '') +
-          (shareId && shareToken ? `&shareToken=${encodeURIComponent(shareToken)}` : ''),
+            (token ? `&token=${encodeURIComponent(token)}` : '') +
+            (shareId && shareToken ? `&shareToken=${encodeURIComponent(shareToken)}` : ''),
           { method: 'POST' },
         );
 
         if (!tokenRes.ok) {
           const text = await tokenRes.text();
           let msg = 'Export failed';
-          try { msg = JSON.parse(text).error?.message || msg; } catch { /* ignore */ }
+          try {
+            msg = JSON.parse(text).error?.message || msg;
+          } catch {
+            /* ignore */
+          }
           throw new Error(msg);
         }
 
         const { downloadToken } = await tokenRes.json();
-        
-        // Let the browser handle the streamed response directly. Fetching the
-        // response and converting it to a Blob would retain the entire archive
-        // in tab memory before the download starts.
+
+        // Fetch the ZIP stream so we can detect mid-stream failures (database
+        // errors, ClickHouse timeouts, etc.).  A fire-and-forget <a> click
+        // would silently produce a truncated file on server errors.
+        const exportUrl = `${url}&downloadToken=${encodeURIComponent(downloadToken)}`;
+        const exportRes = await fetch(exportUrl);
+
+        if (!exportRes.ok) {
+          const text = await exportRes.text();
+          let msg = 'Export failed';
+          try {
+            msg = JSON.parse(text).error?.message || msg;
+          } catch {
+            /* ignore */
+          }
+          throw new Error(msg);
+        }
+
+        const blob = await exportRes.blob();
+
+        if (blob.size === 0) {
+          throw new Error('Export produced an empty file');
+        }
+
+        // Trigger the browser download from the fully-received blob.
+        const blobUrl = URL.createObjectURL(blob);
         const a = document.createElement('a');
-        a.href = `${url}&downloadToken=${encodeURIComponent(downloadToken)}`;
+        a.href = blobUrl;
         a.download = `umami_export_${websiteId}.zip`;
         a.style.display = 'none';
         document.body.appendChild(a);
         a.click();
         a.remove();
+        URL.revokeObjectURL(blobUrl);
 
         onClose();
       }
