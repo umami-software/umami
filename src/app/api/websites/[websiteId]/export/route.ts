@@ -88,7 +88,7 @@ export async function GET(
               yield csv + '\n';
             }
           } else {
-            let cursorDate: Date | undefined = undefined;
+            let cursorDate: string | undefined = undefined;
             let cursorId: string | undefined = undefined;
 
             while (true) {
@@ -114,7 +114,7 @@ export async function GET(
               }
 
               const lastRow = data[data.length - 1];
-              cursorDate = lastRow.created_at;
+              cursorDate = lastRow.created_at_cursor;
               cursorId = lastRow.id || lastRow.event_id;
             }
           }

@@ -54,7 +54,7 @@ export async function getExportEventDataClickhouseStream(websiteId: string, filt
   return resultSet.stream();
 }
 
-async function relationalQuery(websiteId: string, filters: QueryFilters & { cursorDate?: Date; cursorId?: string }) {
+async function relationalQuery(websiteId: string, filters: QueryFilters & { cursorDate?: string; cursorId?: string }) {
   const { rawQuery, parseFilters } = prisma;
   const { filterQuery, dateQuery, queryParams } = parseFilters({
     ...filters,
@@ -89,6 +89,7 @@ async function relationalQuery(websiteId: string, filters: QueryFilters & { curs
       event_data.date_value as date_value,
       event_data.data_type as data_type,
       event_data.created_at as created_at,
+      event_data.created_at::text as created_at_cursor,
       null as job_id
     from event_data
     join website_event on website_event.event_id = event_data.website_event_id

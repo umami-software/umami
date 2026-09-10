@@ -52,7 +52,7 @@ export async function getExportSessionDataClickhouseStream(websiteId: string, fi
   return resultSet.stream();
 }
 
-async function relationalQuery(websiteId: string, filters: QueryFilters & { cursorDate?: Date; cursorId?: string }) {
+async function relationalQuery(websiteId: string, filters: QueryFilters & { cursorDate?: string; cursorId?: string }) {
   const { rawQuery, parseFilters } = prisma;
   const { dateQuery, queryParams } = parseFilters({
     ...filters,
@@ -80,6 +80,7 @@ async function relationalQuery(websiteId: string, filters: QueryFilters & { curs
       session_data.data_type as data_type,
       session_data.distinct_id as distinct_id,
       session_data.created_at as created_at,
+      session_data.created_at::text as created_at_cursor,
       null as job_id
     from session_data
     where session_data.website_id = {{websiteId::uuid}}
