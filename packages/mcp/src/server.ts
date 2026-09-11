@@ -5,7 +5,7 @@ import { type AnyToolDefinition, registerTool, type ToolContext } from './lib/to
 import { allTools } from './tools';
 
 export const SERVER_NAME = 'umami';
-export const SERVER_VERSION = '1.0.0';
+export const SERVER_VERSION = '0.1.0';
 
 export const SERVER_INSTRUCTIONS = `Umami is a privacy-focused web analytics platform. These tools answer questions about website traffic, visitors, pages, referrers, events, sessions and conversion reports.
 

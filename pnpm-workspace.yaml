@@ -13,3 +13,4 @@ allowBuilds:
 minimumReleaseAgeExclude:
   - '@umami/react-zen'
   - cn@0.2.6
+  - '@umami/api-client@0.81.0'

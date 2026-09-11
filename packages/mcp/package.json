@@ -1,6 +1,6 @@
 {
   "name": "@umami/mcp",
-  "version": "1.0.0-alpha.0",
+  "version": "0.2.0",
   "description": "Model Context Protocol server for Umami analytics.",
   "author": "Umami Software, Inc. <hello@umami.is>",
   "license": "MIT",
@@ -21,15 +21,19 @@
   "engines": {
     "node": ">=20"
   },
+  "publishConfig": {
+    "access": "public"
+  },
   "scripts": {
     "build": "tsup",
+    "prepack": "pnpm --filter @umami/api-client build && pnpm run build",
     "test": "vitest run",
     "typecheck": "tsc --noEmit",
     "start": "node dist/cli.js"
   },
   "dependencies": {
     "@modelcontextprotocol/server": "^2.0.0",
-    "@umami/api-client": "workspace:*",
+    "@umami/api-client": "^0.81.0",
     "zod": "^4.4.3"
   },
   "devDependencies": {

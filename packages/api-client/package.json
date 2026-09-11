@@ -1,6 +1,6 @@
 {
   "name": "@umami/api-client",
-  "version": "1.0.0-alpha.0",
+  "version": "0.81.0",
   "description": "TypeScript client for the Umami API, generated from the Umami OpenAPI contract.",
   "author": "Umami Software, Inc. <hello@umami.is>",
   "license": "MIT",
