@@ -46,9 +46,17 @@ export function useAllWebsitesStatsQuery(options?: ReactQueryOptions<AllWebsites
   return useQuery<AllWebsitesStatsData>({
     queryKey: ['websites:all:stats', { startAt, endAt, timezone, modified }],
     queryFn: async () => {
-      const { data: websites = [] } = await get('/me/websites', {
-        pageSize: WEBSITES_PAGE_SIZE,
-      });
+      const websites: { id: string; name: string; domain: string }[] = [];
+      for (let page = 1; ; page++) {
+        const { data = [], count = 0 } = await get('/me/websites', {
+          page,
+          pageSize: WEBSITES_PAGE_SIZE,
+        });
+        websites.push(...data);
+        if (data.length < WEBSITES_PAGE_SIZE || websites.length >= count) {
+          break;
+        }
+      }
       const ids: string[] = websites.map(({ id }) => id);
 
       const charts: Record<string, { values: number[]; total: number }> = {};
