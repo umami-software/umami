@@ -7,6 +7,7 @@ const nav: { pathname: string; query: Record<string, any> } = {
 };
 
 let shareValue: any = null;
+let scopeValue: any = null;
 
 vi.mock('./useNavigation', () => ({
   useNavigation: () => nav,
@@ -14,6 +15,10 @@ vi.mock('./useNavigation', () => ({
 
 vi.mock('./context/useShare', () => ({
   useShare: () => shareValue,
+}));
+
+vi.mock('./context/useFilterScope', () => ({
+  useFilterScope: () => scopeValue,
 }));
 
 import { useFilterParameters } from './useFilterParameters';
@@ -27,6 +32,7 @@ describe('useFilterParameters', () => {
     nav.pathname = '/websites/1';
     nav.query = {};
     shareValue = null;
+    scopeValue = null;
   });
 
   test('includes filter-column params and session property filters', () => {
@@ -119,5 +125,50 @@ describe('useFilterParameters', () => {
     expect(params.match).toBeUndefined();
     // search is always passed through
     expect(params.search).toBe('s');
+  });
+  test('merges scoped filter params on top of the url', () => {
+    nav.query = { path: 'x' };
+    scopeValue = { params: { spf0: '1.eq.user_region.VastraGotaland' } };
+    const params = setup();
+
+    expect(params.path).toBe('x');
+    expect(params.spf0).toBe('1.eq.user_region.VastraGotaland');
+  });
+
+  test('renumbers scoped filters instead of replacing url filters of the same name', () => {
+    nav.query = { path: 'x', spf0: 'url-filter' };
+    scopeValue = {
+      params: { path: 'scoped', spf0: 'scoped-filter' },
+    };
+    const params = setup();
+
+    // url values survive, scoped ones are added alongside — both narrow the query
+    expect(params.path).toBe('x');
+    expect(params.path1).toBe('scoped');
+    expect(params.spf0).toBe('url-filter');
+    expect(params.spf1).toBe('scoped-filter');
+  });
+
+  test('scoped segment, cohort and match win over the url', () => {
+    nav.query = { segment: 'url-seg', cohort: 'url-co', match: 'all' };
+    scopeValue = { params: { segment: 'scoped-seg', cohort: 'scoped-co', match: 'any' } };
+    const params = setup();
+
+    expect(params.segment).toBe('scoped-seg');
+    expect(params.cohort).toBe('scoped-co');
+    expect(params.match).toBe('any');
+  });
+
+  test('applies scoped filters even when filtering is disallowed', () => {
+    // Scoped filters belong to the view definition (e.g. a board row), not the
+    // viewer's selection, so share links with allowFilter: false keep them.
+    shareValue = { parameters: { allowFilter: false } };
+    nav.query = { path: 'x' };
+    scopeValue = { params: { spf0: '1.eq.user_region.Jonkoping', segment: 'scoped-seg' } };
+    const params = setup();
+
+    expect(params).not.toHaveProperty('path');
+    expect(params.spf0).toBe('1.eq.user_region.Jonkoping');
+    expect(params.segment).toBe('scoped-seg');
   });
 });
