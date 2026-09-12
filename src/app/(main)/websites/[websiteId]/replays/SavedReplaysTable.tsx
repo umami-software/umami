@@ -3,9 +3,16 @@ import { Play } from 'lucide-react';
 import { DateDistance } from '@/components/common/DateDistance';
 import { useMessages, useNavigation } from '@/components/hooks';
 
+import { useEffect } from 'react';
+import { setReplays } from '@/store/replays';
+
 export function SavedReplaysTable({ ...props }: DataTableProps) {
   const { t, labels } = useMessages();
   const { router, updateParams } = useNavigation();
+
+  useEffect(() => {
+    setReplays(props.data || []);
+  }, [props.data]);
 
   return (
     <DataTable {...props}>
