@@ -1,8 +1,11 @@
 .git
+.next
+coverage
+geo
 docker-compose.yml
 Dockerfile
 .DS_Store
-node_modules
+**/node_modules
 .idea
 .env
 .env.*

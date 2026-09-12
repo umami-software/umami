@@ -12,6 +12,8 @@
  */
 import { spawnSync } from 'node:child_process';
 import { mkdirSync, writeFileSync } from 'node:fs';
+import { createRequire } from 'node:module';
+import { connect } from 'node:net';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { assertDisposableTarget } from '../tests/api/paths';
@@ -167,6 +169,24 @@ function composeArgs(profiles: string[], args: string[]) {
   ];
 }
 
+// Docker reports a taken host port as an opaque "ports are not available" error
+// after the image has already been built, so check up front. Probe by connecting
+// rather than binding: on Windows a second listen() on a busy port can succeed
+// unless the owner set SO_EXCLUSIVEADDRUSE, so a bind test gives false negatives.
+function isPortFree(port: number) {
+  return new Promise<boolean>(resolve => {
+    const socket = connect({ host: '127.0.0.1', port });
+    const done = (free: boolean) => {
+      socket.destroy();
+      resolve(free);
+    };
+    socket.setTimeout(1000);
+    socket.once('connect', () => done(false));
+    socket.once('timeout', () => done(true));
+    socket.once('error', () => done(true));
+  });
+}
+
 async function waitForHeartbeat(url: string, timeoutMs: number) {
   const deadline = Date.now() + timeoutMs;
   let lastError = '';
@@ -251,6 +271,24 @@ async function main() {
       }
       console.log(`Using the already-running server at ${BASE_URL} (PLAYWRIGHT_BASE_URL is set).`);
     } else {
+      // A kept stack from a previous run legitimately owns the port; only
+      // complain when something else is listening on it.
+      const ownStackRunning = capture(
+        'docker',
+        composeArgs([profile], ['ps', '-q', '--status', 'running', appService]),
+      ).trim();
+
+      if (!ownStackRunning && !(await isPortFree(Number(PORT)))) {
+        console.error(
+          `Port ${PORT} is already in use on this machine, so the umami container cannot be published there.
+` +
+            `Stop whatever is listening on ${PORT} (e.g. another dev server), or pick a different port:
+` +
+            `  UMAMI_TEST_PORT=3200 pnpm test:api`,
+        );
+        return 2;
+      }
+
       console.log(`Starting test stack (profile: ${profile}, port: ${PORT})...`);
 
       const upArgs = ['up', '-d', '--wait', '--wait-timeout', '300'];
@@ -282,7 +320,14 @@ async function main() {
       return 0;
     }
 
-    const playwrightArgs = ['exec', 'playwright', 'test', '-c', 'playwright.api.config.ts'];
+    // Invoke the Playwright CLI through the current node binary instead of
+    // `pnpm exec`: on Windows that resolves to pnpm.cmd, which Node refuses to
+    // spawn without a shell (EINVAL, CVE-2024-27980 hardening).
+    const playwrightCli = path.join(
+      path.dirname(createRequire(import.meta.url).resolve('@playwright/test/package.json')),
+      'cli.js',
+    );
+    const playwrightArgs = [playwrightCli, 'test', '-c', 'playwright.api.config.ts'];
 
     if (options.grep) {
       playwrightArgs.push('--grep', options.grep);
@@ -290,7 +335,7 @@ async function main() {
 
     playwrightArgs.push(...options.passthrough);
 
-    exitCode = run(process.platform === 'win32' ? 'pnpm.cmd' : 'pnpm', playwrightArgs, {
+    exitCode = run(process.execPath, playwrightArgs, {
       PLAYWRIGHT_BASE_URL: BASE_URL,
       PLAYWRIGHT_SKIP_WEB_SERVER: '1',
       UMAMI_TEST_DB: profile,

@@ -28,6 +28,8 @@ WORKDIR /app
 # build:openapi shells out to pnpm, so the builder stage needs it too
 RUN npm install -g pnpm@${PNPM_VERSION}
 COPY --from=deps /app/node_modules ./node_modules
+COPY --from=deps /app/packages/api-client/node_modules ./packages/api-client/node_modules
+COPY --from=deps /app/packages/mcp/node_modules ./packages/mcp/node_modules
 COPY . .
 COPY docker/proxy.ts ./src
 

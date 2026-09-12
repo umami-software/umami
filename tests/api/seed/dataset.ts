@@ -182,6 +182,13 @@ function customEvent(
 export function buildDataset(now = Date.now()): Dataset {
   const nowSec = Math.floor(now / 1000);
   const range = { startAt: (nowSec - DAYS * DAY) * 1000, endAt: now };
+  // Backdated traffic is anchored to noon UTC of each calendar day rather than
+  // to `now`, so the per-persona hour offsets below never straddle a UTC day
+  // boundary. Specs bucket by day in UTC and assert e.g. "3 purchases on each of
+  // 3 distinct days"; anchoring to `now` made that fail for runs started within
+  // a few hours after 00:00 UTC.
+  const todayStart = nowSec - (nowSec % DAY);
+  const dayAnchor = (daysAgo: number) => todayStart - daysAgo * DAY + 12 * HOUR;
   const visits: Visit[] = [];
   const batch: SendPayload[] = [];
   let pageviews = 0;
@@ -190,7 +197,7 @@ export function buildDataset(now = Date.now()): Dataset {
   // Backdated traffic: days 1..6 ago (today only receives the live events below).
   for (let day = DAYS - 1; day >= 1; day--) {
     PERSONAS.forEach((persona, index) => {
-      const start = nowSec - day * DAY - (index + 1) * HOUR;
+      const start = dayAnchor(day) - (index + 1) * HOUR;
       const pageCount = 2 + ((day + index) % 3);
       const pages = PAGES.slice(0, pageCount);
 
@@ -296,7 +303,7 @@ export function buildDataset(now = Date.now()): Dataset {
   // Secondary website (owned by the regular user): two personas, five days.
   for (let day = 5; day >= 1; day--) {
     PERSONAS.slice(0, 2).forEach((persona, index) => {
-      const timestamp = nowSec - day * DAY - (index + 1) * HOUR;
+      const timestamp = dayAnchor(day) - (index + 1) * HOUR;
 
       visits.push({
         events: [
@@ -314,13 +321,13 @@ export function buildDataset(now = Date.now()): Dataset {
       0,
       'purchase',
       { revenue: 19.99, currency: CURRENCY, quantity: 1 },
-      nowSec - 2 * DAY,
+      dayAnchor(2),
     ),
   );
 
   // Link clicks and pixel hits (sessions are keyed by the link/pixel id).
   PERSONAS.slice(0, 5).forEach((persona, index) => {
-    const timestamp = nowSec - (index + 1) * DAY - 30 * 60;
+    const timestamp = dayAnchor(index + 1) - 30 * 60;
 
     batch.push({
       type: 'event',

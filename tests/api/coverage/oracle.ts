@@ -1,4 +1,4 @@
-import { readFileSync } from 'node:fs';
+import { existsSync, readFileSync } from 'node:fs';
 import { OPENAPI_FILE } from '../paths';
 
 /**
@@ -24,6 +24,13 @@ let cached: ApiOperation[] | undefined;
 export function loadOperations(): ApiOperation[] {
   if (cached) {
     return cached;
+  }
+
+  if (!existsSync(OPENAPI_FILE)) {
+    throw new Error(
+      `Coverage oracle ${OPENAPI_FILE} is missing. It is written by tests/api/global-setup.ts; ` +
+        'run the suite through `pnpm test:api` or `pnpm test:api:run` rather than importing specs directly.',
+    );
   }
 
   const document = JSON.parse(readFileSync(OPENAPI_FILE, 'utf8'));

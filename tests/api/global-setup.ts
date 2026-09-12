@@ -1,9 +1,15 @@
 /* eslint-disable no-console */
-import { existsSync, mkdirSync, rmSync, writeFileSync } from 'node:fs';
+import { copyFileSync, existsSync, mkdirSync, rmSync, writeFileSync } from 'node:fs';
 import { type FullConfig, request } from '@playwright/test';
 import { ApiClient } from './client';
 import { disableCoverageRecording } from './coverage/recorder';
-import { assertDisposableTarget, COVERAGE_DIR, SEED_FILE } from './paths';
+import {
+  assertDisposableTarget,
+  COVERAGE_DIR,
+  LOCAL_OPENAPI_FILE,
+  OPENAPI_FILE,
+  SEED_FILE,
+} from './paths';
 import { seedEnvironment } from './seed/setup';
 
 const HEARTBEAT_TIMEOUT_MS = 120_000;
@@ -34,6 +40,48 @@ async function waitForHeartbeat(baseURL: string, timeoutMs: number) {
   );
 }
 
+/**
+ * The coverage oracle must describe the server actually under test, so fetch its
+ * generated OpenAPI document rather than assuming a local `pnpm build` ran.
+ * public/openapi.json is a gitignored build artifact and is usually absent in a
+ * checkout that only runs the Compose stack.
+ */
+async function fetchOpenApiDocument(baseURL: string) {
+  const url = `${baseURL}/openapi.json`;
+
+  try {
+    const response = await fetch(url);
+
+    if (!response.ok) {
+      throw new Error(`HTTP ${response.status}`);
+    }
+
+    const document = await response.json();
+
+    if (!document?.paths) {
+      throw new Error('response has no "paths" object');
+    }
+
+    writeFileSync(OPENAPI_FILE, JSON.stringify(document));
+    return;
+  } catch (error) {
+    if (existsSync(LOCAL_OPENAPI_FILE)) {
+      console.warn(
+        `Could not fetch ${url} (${(error as Error).message}); ` +
+          `using the locally generated ${LOCAL_OPENAPI_FILE} as the coverage oracle instead.`,
+      );
+      copyFileSync(LOCAL_OPENAPI_FILE, OPENAPI_FILE);
+      return;
+    }
+
+    throw new Error(
+      `Could not fetch the OpenAPI document from ${url} (${(error as Error).message}) and no ` +
+        `local ${LOCAL_OPENAPI_FILE} exists. The server under test must serve its generated spec ` +
+        '(it is built by `pnpm build:openapi`), or generate it locally with `pnpm openapi:generate`.',
+    );
+  }
+}
+
 export default async function globalSetup(config: FullConfig) {
   // Seeding traffic must not count towards endpoint coverage.
   disableCoverageRecording();
@@ -58,6 +106,7 @@ export default async function globalSetup(config: FullConfig) {
 
   console.log(`Waiting for ${baseURL}/api/heartbeat ...`);
   await waitForHeartbeat(baseURL, HEARTBEAT_TIMEOUT_MS);
+  await fetchOpenApiDocument(baseURL);
 
   if (skipSeed) {
     console.log(`Reusing seed state from ${SEED_FILE} (API_SKIP_SEED is set).`);

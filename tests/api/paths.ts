@@ -19,7 +19,13 @@ export const RUNTIME_DIR = path.join(
 );
 export const COVERAGE_DIR = path.join(RUNTIME_DIR, 'coverage');
 export const SEED_FILE = path.join(RUNTIME_DIR, 'seed.json');
-export const OPENAPI_FILE = path.join(ROOT_DIR, 'public/openapi.json');
+/**
+ * Coverage oracle: the OpenAPI document of the server under test, downloaded by
+ * global setup from `${BASE_URL}/openapi.json` (see tests/api/global-setup.ts).
+ */
+export const OPENAPI_FILE = path.join(RUNTIME_DIR, 'openapi.json');
+/** Locally generated spec (`pnpm openapi:generate`), used only as a fallback. */
+export const LOCAL_OPENAPI_FILE = path.join(ROOT_DIR, 'public/openapi.json');
 
 const LOOPBACK_HOSTS = new Set(['localhost', '127.0.0.1', '[::1]', '::1']);
 
