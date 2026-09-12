@@ -119,7 +119,10 @@ export function DateFilter({
             ? {
                 // Base UI's positioned wrapper contains React Zen's fullscreen popup.
                 position: 'fixed',
-                inset: 0,
+                top: 0,
+                right: 0,
+                bottom: 0,
+                left: 0,
                 width: '100vw',
                 height: '100dvh',
                 transform: 'none',
