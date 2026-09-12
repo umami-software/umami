@@ -3,9 +3,9 @@ import { fromZonedTime } from 'date-fns-tz';
 import { parseDateRange } from '@/lib/date';
 import { canViewBatchWebsites } from '@/permissions/website';
 import { parseRequest } from '@/lib/request';
-import { json } from '@/lib/response';
-import { timezoneParam } from '@/lib/schema';
-import { getWebsiteListCharts } from '@/queries/sql';
+import { badRequest, json } from '@/lib/response';
+import { timezoneParam, unitParam } from '@/lib/schema';
+import { MAX_BUCKETS, countBuckets, getWebsiteListCharts } from '@/queries/sql';
 
 const schema = z.object({
   ids: z
@@ -15,6 +15,7 @@ const schema = z.object({
   startAt: z.coerce.number().int().optional(),
   endAt: z.coerce.number().int().optional(),
   timezone: timezoneParam.optional(),
+  unit: unitParam.optional(),
 });
 
 export async function GET(request: Request) {
@@ -32,12 +33,21 @@ export async function GET(request: Request) {
     : fromZonedTime(defaultRange.startDate, timezone);
   const endDate = hasDateRange ? new Date(query.endAt) : fromZonedTime(defaultRange.endDate, timezone);
 
+  // Reject rather than truncate: a capped series would contradict the
+  // full-range total in the same response.
+  if (countBuckets(startDate, endDate, timezone, query.unit) > MAX_BUCKETS) {
+    return badRequest({
+      message: `Requested range exceeds ${MAX_BUCKETS} data points. Use a coarser unit or a shorter range.`,
+    });
+  }
+
   const websiteIds = await canViewBatchWebsites(auth, query.ids);
 
   const data = await getWebsiteListCharts(websiteIds, {
     startDate,
     endDate,
     timezone,
+    unit: query.unit,
   });
 
   return json({ data });
