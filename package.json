@@ -70,7 +70,7 @@
   ],
   "dependencies": {
     "@clickhouse/client": "^1.23.1",
-    "@dicebear/collection": "^9.4.2",
+    "@dicebear/collection": "^9.4.3",
     "@dicebear/core": "^9.4.3",
     "@playwright/test": "^1.63.0",
     "@prisma/adapter-pg": "^7.10.0",
