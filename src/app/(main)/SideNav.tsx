@@ -14,6 +14,7 @@ import { WebsiteNav } from '@/app/(main)/websites/[websiteId]/WebsiteNav';
 import { IconLabel } from '@/components/common/IconLabel';
 import Link from '@/components/common/Link';
 import { OverlayScrollArea } from '@/components/common/OverlayScrollArea';
+import styles from '@/components/common/OverlayScrollArea.module.css';
 import { useGlobalState, useMessages, useNavigation } from '@/components/hooks';
 import {
   Globe,
@@ -104,7 +105,10 @@ export function SideNav(props: any) {
           <PanelButton />
         </Row>
       </Row>
-      <OverlayScrollArea style={{ flexGrow: 1, minHeight: 0 }}>
+      <OverlayScrollArea
+        className={isCollapsed ? styles.collapsed : undefined}
+        style={{ flexGrow: 1, minHeight: 0 }}
+      >
         {websiteId ? (
           <WebsiteNav websiteId={websiteId} isCollapsed={isCollapsed} />
         ) : pathname.includes('/settings') ? (
