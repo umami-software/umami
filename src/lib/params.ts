@@ -1,6 +1,7 @@
 import { DATA_TYPE, FILTER_COLUMNS, OPERATORS } from '@/lib/constants';
 import type {
   Filter,
+  FilterGroup,
   Operator,
   PropertyFilter,
   QueryFilters,
@@ -112,6 +113,30 @@ export function filtersArrayToObject(filters: Filter[]) {
 
     return obj;
   }, {});
+}
+
+export function resolveFilterGroups(
+  groups: FilterGroup[] = [],
+  options: QueryOptions = {},
+  prefix = 'group',
+): FilterGroup[] {
+  return groups.map((group, groupIndex) => {
+    const groupPrefix = `${prefix}_${groupIndex}`;
+
+    return {
+      ...group,
+      filters: (group.filters || []).map((filter, filterIndex) => ({
+        ...filter,
+        column: options.columns?.[filter.name] ?? FILTER_COLUMNS[filter.name],
+        paramName: `${groupPrefix}_${filterIndex}`,
+      })),
+      groups: resolveFilterGroups(group.groups, options, groupPrefix),
+    };
+  });
+}
+
+export function filterGroupsToArray(groups: FilterGroup[] = []): Filter[] {
+  return groups.flatMap(group => [...(group.filters || []), ...filterGroupsToArray(group.groups)]);
 }
 
 function getPropertyFilterPrefix(key: string, prefixes: string[]) {

@@ -68,6 +68,12 @@ export interface Filter {
   paramName?: string;
 }
 
+export interface FilterGroup {
+  match: 'all' | 'any';
+  filters: Filter[];
+  groups?: FilterGroup[];
+}
+
 export interface DateRange {
   startDate: Date;
   endDate: Date;
@@ -137,6 +143,7 @@ export interface QueryFilters
   cohortFilters?: QueryFilters;
   eventPropertyFilters?: EventPropertyFilter[];
   sessionPropertyFilters?: SessionPropertyFilter[];
+  groups?: FilterGroup[];
 }
 
 export interface DateParams {

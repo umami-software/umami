@@ -21,10 +21,11 @@ import { Empty } from '@/components/common/Empty';
 import { FilterRecord } from '@/components/common/FilterRecord';
 import { type FieldGroup, useFields, useMessages, useMobile } from '@/components/hooks';
 import { Plus } from '@/components/icons';
+import type { Filter } from '@/lib/types';
 
 export interface FieldFiltersProps {
   websiteId?: string;
-  value?: { name: string; operator: string; value: string }[];
+  value?: Filter[];
   exclude?: string[];
   match?: string;
   onChange?: (data: any) => void;
