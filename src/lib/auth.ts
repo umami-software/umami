@@ -7,6 +7,7 @@ import {
   isApiKeyEnabled,
 } from '@/lib/api-key';
 import {
+  PARTIAL_AUTH_TOKEN_TYPE,
   ROLE_PERMISSIONS,
   ROLES,
   SHARE_CONTEXT_HEADER,
@@ -75,6 +76,15 @@ export async function checkAuth(request: Request) {
   }
 
   const payload = parseSecureToken(token, secret());
+
+  // The partial token issued after the password step of a 2FA login only proves
+  // knowledge of the password. It must never be accepted as a session; it is
+  // only valid for completing the challenge at /api/2fa/verify.
+  if (payload?.type === PARTIAL_AUTH_TOKEN_TYPE) {
+    log('Partial auth token rejected');
+    return null;
+  }
+
   const shareToken = await parseShareToken(request);
 
   let user = null;

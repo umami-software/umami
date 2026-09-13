@@ -1,5 +1,5 @@
 import { saveAuth } from '@/lib/auth';
-import { ROLES } from '@/lib/constants';
+import { PARTIAL_AUTH_TOKEN_TYPE, ROLES } from '@/lib/constants';
 import { hash, secret } from '@/lib/crypto';
 import { createSecureToken } from '@/lib/jwt';
 import { checkPassword } from '@/lib/password';
@@ -39,9 +39,13 @@ export async function POST(request: Request) {
       return serviceUnavailable(getTwoFactorConfigurationError());
     }
 
-    const partialToken = createSecureToken({ userId: id, type: 'partial-auth' }, secret(), {
-      expiresIn: '5m',
-    });
+    const partialToken = createSecureToken(
+      { userId: id, type: PARTIAL_AUTH_TOKEN_TYPE },
+      secret(),
+      {
+        expiresIn: '5m',
+      },
+    );
     return json({ requiresTwoFactor: true, partialToken });
   }
   // Bind token to password hash so a password change invalidates old tokens.

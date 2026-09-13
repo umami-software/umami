@@ -182,6 +182,44 @@ describe('checkAuth api keys', () => {
   });
 });
 
+describe('checkAuth 2FA partial token', () => {
+  // GHSA-vj8c-fvjv-rpg2: the partial token issued after the password step of a
+  // 2FA login must not be usable as a session on protected routes.
+  test('rejects a partial-auth token on a protected route', async () => {
+    parseSecureTokenMock.mockReturnValue({ userId: 'user-1', type: 'partial-auth' } as any);
+    mockUser();
+
+    const result = await checkAuth(authedRequest());
+
+    expect(result).toBeNull();
+    expect(getUserMock).not.toHaveBeenCalled();
+  });
+
+  test('rejects a partial-auth token even when it carries a matching password fingerprint', async () => {
+    parseSecureTokenMock.mockReturnValue({
+      userId: 'user-1',
+      type: 'partial-auth',
+      pwd: hash(PASSWORD_HASH),
+    } as any);
+    mockUser();
+
+    const result = await checkAuth(authedRequest());
+
+    expect(result).toBeNull();
+  });
+
+  test('rejects a partial-auth token in Redis mode', async () => {
+    redisMock.enabled = true;
+    parseSecureTokenMock.mockReturnValue({ userId: 'user-1', type: 'partial-auth' } as any);
+    mockUser();
+
+    const result = await checkAuth(authedRequest());
+
+    expect(result).toBeNull();
+    expect(redisMock.client.get).not.toHaveBeenCalled();
+  });
+});
+
 describe('checkAuth password fingerprint', () => {
   test('authorizes a stateless token whose fingerprint matches the current password', async () => {
     parseSecureTokenMock.mockReturnValue({ userId: 'user-1', pwd: hash(PASSWORD_HASH) } as any);
