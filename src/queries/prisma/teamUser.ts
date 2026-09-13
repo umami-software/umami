@@ -21,6 +21,7 @@ export async function getTeamUser(teamId: string, userId: string) {
     where: {
       teamId,
       userId,
+      team: { deletedAt: null },
     },
   });
 }

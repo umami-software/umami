@@ -193,6 +193,7 @@ export async function deleteTeam(teamId: string) {
       client.team.update({
         data: {
           deletedAt: new Date(),
+          accessCode: null,
         },
         where: {
           id: teamId,
