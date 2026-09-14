@@ -83,7 +83,11 @@ describe('getFunnel postgres branch', () => {
     );
 
     const [query] = prismaRawQuery.mock.calls[0];
-    expect(query.match(/and we\.created_at >= \{\{startDate}}/g)).toHaveLength(7);
+    const subsequentLevels = query.split(/,\s*level\d+ AS \(/).slice(1);
+    expect(subsequentLevels).toHaveLength(7);
+    for (const level of subsequentLevels) {
+      expect(level.match(/and we\.created_at >= \{\{startDate}}/g)).toHaveLength(1);
+    }
   });
 
   test('builds level CTEs and a UNION sum query, one per step', async () => {
