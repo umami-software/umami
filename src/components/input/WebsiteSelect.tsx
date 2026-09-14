@@ -77,7 +77,6 @@ export function WebsiteSelect({
       value={websiteId ?? null}
       isLoading={isLoading}
       allowSearch={true}
-      searchValue={search}
       onSearch={handleSearch}
       onChange={value => handleChange(value as string)}
       onOpenChange={handleOpenChange}
