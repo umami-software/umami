@@ -84,8 +84,13 @@ export function WebsiteSelect({
       renderValue={renderValue}
       buttonProps={{
         ...buttonProps,
+        className: [
+          'border-transparent bg-transparent shadow-none hover:border-transparent hover:bg-interactive active:bg-interactive-hover',
+          buttonProps?.className,
+        ]
+          .filter(Boolean)
+          .join(' '),
         style: {
-          minHeight: 40,
           gap: 0,
           justifyContent: isCollapsed ? 'start' : undefined,
           ...buttonProps?.style,

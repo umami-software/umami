@@ -1,7 +1,7 @@
 'use client';
 import { Icon, Row } from '@umami/react-zen';
 import { useNavigation } from '@/components/hooks';
-import { Slash } from '@/components/icons';
+import { Minus } from '@/components/icons';
 import { BoardSelect } from '@/components/input/BoardSelect';
 import { LinkSelect } from '@/components/input/LinkSelect';
 import { PixelSelect } from '@/components/input/PixelSelect';
@@ -52,8 +52,8 @@ export function TopNav() {
         <TeamsButton />
         {(websiteId || linkId || pixelId || boardId) && (
           <>
-            <Icon size="sm" color="muted" style={{ opacity: 0.7, margin: '0 6px' }}>
-              <Slash />
+            <Icon size="sm" color="muted" rotate={90} style={{ opacity: 0.7, margin: '0 6px' }}>
+              <Minus />
             </Icon>
             {websiteId && (
               <WebsiteSelect
@@ -61,8 +61,7 @@ export function TopNav() {
                 teamId={teamId}
                 onChange={handleWebsiteChange}
                 buttonProps={{
-                  variant: 'quiet',
-                  style: { minHeight: 40, minWidth: 200, maxWidth: 200 },
+                  style: { minWidth: 200, maxWidth: 200 },
                 }}
               />
             )}
