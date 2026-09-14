@@ -333,7 +333,7 @@ type MetricEntry = PerformanceEntry & {
   };
 
   const handleClicks = () => {
-    const trackElement = async (el: Element) => {
+    const trackElement = async (el: Element, waitForResponse = true) => {
       const eventName = el.getAttribute(eventNameAttribute);
       if (eventName) {
         const eventData: EventData = {};
@@ -343,7 +343,11 @@ type MetricEntry = PerformanceEntry & {
           if (match) eventData[match[1]] = el.getAttribute(name) as string;
         });
 
-        return track(eventName, eventData);
+        return send(
+          { ...getPayload(), name: eventName, data: eventData },
+          'event',
+          waitForResponse,
+        );
       }
     };
     const onClick = (e: MouseEvent) => {
@@ -358,9 +362,9 @@ type MetricEntry = PerformanceEntry & {
           e.ctrlKey ||
           e.shiftKey ||
           e.metaKey ||
-          (e.button && e.button === 1);
+          e.button === 1;
         if (!external) e.preventDefault();
-        return trackElement(eventEl).finally(() => {
+        return trackElement(eventEl, external).finally(() => {
           if (!external) {
             (target === '_top' ? (top as WindowProxy).location : location).href = href;
           }
@@ -381,7 +385,11 @@ type MetricEntry = PerformanceEntry & {
     (domain && !domains.includes(hostname)) ||
     (dnt && hasDoNotTrack());
 
-  const send = async (payload: Payload | null | undefined, type = 'event'): Promise<void> => {
+  const send = async (
+    payload: Payload | null | undefined,
+    type = 'event',
+    waitForResponse = true,
+  ): Promise<void> => {
     if (trackingDisabled()) return;
 
     const callback = (window as unknown as Record<string, unknown>)[beforeSend as string] as
@@ -395,7 +403,7 @@ type MetricEntry = PerformanceEntry & {
     if (!payload) return;
 
     try {
-      const res = await fetch(endpoint, {
+      const request = fetch(endpoint, {
         keepalive: true,
         method: 'POST',
         body: JSON.stringify({ type, payload }),
@@ -406,13 +414,17 @@ type MetricEntry = PerformanceEntry & {
           ...(typeof cache !== 'undefined' && { 'x-umami-cache': cache }),
         },
         credentials,
-      });
+      })
+        .then(async res => {
+          const data = (await res.json()) as { cache?: string; disabled?: boolean } | null;
+          if (data) {
+            disabled = !!data.disabled;
+            cache = data.cache;
+          }
+        })
+        .catch(() => undefined);
 
-      const data = (await res.json()) as { cache?: string; disabled?: boolean } | null;
-      if (data) {
-        disabled = !!data.disabled;
-        cache = data.cache;
-      }
+      if (waitForResponse) await request;
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (_e) {
       /* no-op */
