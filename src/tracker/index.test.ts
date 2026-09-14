@@ -37,7 +37,7 @@ test('identifies data-distinct-id before the initial page view', async () => {
   });
 });
 
-test('does not track when loaded in a frame named umami.disabled', async () => {
+const loadTracker = async (framed: boolean) => {
   const script = document.createElement('script');
   script.src = 'https://analytics.example.com/script.js';
   script.dataset.websiteId = 'website-id';
@@ -49,6 +49,7 @@ test('does not track when loaded in a frame named umami.disabled', async () => {
 
   const fetchMock = vi.fn().mockResolvedValue({ json: vi.fn().mockResolvedValue({}) });
   vi.stubGlobal('fetch', fetchMock);
+  if (framed) vi.stubGlobal('top', {});
   window.name = 'umami.disabled';
 
   try {
@@ -58,5 +59,13 @@ test('does not track when loaded in a frame named umami.disabled', async () => {
     window.name = '';
   }
 
-  expect(fetchMock).not.toHaveBeenCalled();
+  return fetchMock;
+};
+
+test('does not track when loaded in a frame named umami.disabled', async () => {
+  expect(await loadTracker(true)).not.toHaveBeenCalled();
+});
+
+test('still tracks in a top-level window named umami.disabled', async () => {
+  expect(await loadTracker(false)).toHaveBeenCalled();
 });
