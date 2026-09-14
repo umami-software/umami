@@ -13,7 +13,6 @@ import { formatAnnotationDate } from '@/components/charts/ChartAnnotationMarkers
 import { Empty } from '@/components/common/Empty';
 import { IconLabel } from '@/components/common/IconLabel';
 import { Pager } from '@/components/common/Pager';
-import { FilterButtons } from '@/components/input/FilterButtons';
 import {
   useLocale,
   useMessages,
@@ -24,6 +23,7 @@ import {
   useWebsiteAnnotationsQuery,
 } from '@/components/hooks';
 import { Edit, Plus } from '@/components/icons';
+import { FilterButtons } from '@/components/input/FilterButtons';
 import { type AnnotationRange, getAnnotationDateRangeValue } from '@/lib/annotations';
 import { AnnotationDeleteButton } from './AnnotationDeleteButton';
 import { type Annotation, AnnotationEditForm } from './AnnotationEditForm';
@@ -99,7 +99,7 @@ export function AnnotationsModal({
   const rows: Annotation[] = data?.data || [];
 
   return (
-    <Column gap>
+    <Column gap flexGrow={1}>
       <Row alignItems="center" justifyContent="space-between">
         <Heading size="xl">{t(labels.notes)}</Heading>
         {!share && (
@@ -155,7 +155,7 @@ export function AnnotationsModal({
         <Pager page={page} pageSize={PAGE_SIZE} count={data.count} onPageChange={setPage} />
       )}
       {onClose && (
-        <Row justifyContent="flex-end">
+        <Row justifyContent="flex-end" style={{ marginTop: 'auto' }}>
           <Button onPress={onClose}>{t(labels.close)}</Button>
         </Row>
       )}

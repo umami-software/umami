@@ -5,7 +5,7 @@ import ChartJS, {
   type LegendItem,
   type UpdateMode,
 } from 'chart.js/auto';
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { type ReactNode, useEffect, useMemo, useRef, useState } from 'react';
 import {
   type AnnotationMarker,
   type ChartAnnotation,
@@ -26,6 +26,7 @@ export interface ChartProps extends BoxProps {
   onTooltip?: (model: any) => void;
   hiddenLabels?: Set<string>;
   onLegendClick?: (label: string, willBeHidden: boolean) => void;
+  legendActions?: ReactNode;
   annotations?: ChartAnnotation[];
   onAnnotationClick?: (annotations: ChartAnnotation[]) => void;
   onAnnotationMoreClick?: (annotations: ChartAnnotation[]) => void;
@@ -53,6 +54,7 @@ export function Chart({
   chartOptions,
   hiddenLabels,
   onLegendClick,
+  legendActions,
   annotations,
   onAnnotationClick,
   onAnnotationMoreClick,
@@ -234,7 +236,23 @@ export function Chart({
           )}
         </div>
       </Box>
-      <Legend items={legendItems} onClick={handleLegendClick} />
+      {legendActions ? (
+        <div
+          style={{
+            display: 'grid',
+            gridTemplateColumns: '1fr auto 1fr',
+            alignItems: 'center',
+            gap: 8,
+          }}
+        >
+          <div style={{ gridColumn: 2 }}>
+            <Legend items={legendItems} onClick={handleLegendClick} />
+          </div>
+          <div style={{ justifySelf: 'end' }}>{legendActions}</div>
+        </div>
+      ) : (
+        <Legend items={legendItems} onClick={handleLegendClick} />
+      )}
     </Column>
   );
 }

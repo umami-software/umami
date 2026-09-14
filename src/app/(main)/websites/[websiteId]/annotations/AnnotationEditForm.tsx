@@ -1,23 +1,17 @@
 import {
   Button,
-  Calendar as ZenCalendar,
   Column,
-  DialogTrigger,
+  DatePicker,
   Form,
   FormButtons,
   FormField,
   FormSubmitButton,
-  Icon,
-  Label,
-  Popover,
   Text,
   TextField,
 } from '@umami/react-zen';
 import { startOfDay } from 'date-fns';
 import { useMemo, useState } from 'react';
 import { useLocale, useMessages, useTimezone, useUpdateQuery } from '@/components/hooks';
-import { Calendar } from '@/components/icons';
-import { formatDate } from '@/lib/date';
 
 export interface Annotation {
   id: string;
@@ -25,51 +19,6 @@ export interface Annotation {
   date: string;
   allDay: boolean;
   note: string;
-}
-
-function AnnotationDatePicker({
-  date,
-  label,
-  locale,
-  onChange,
-}: {
-  date: Date;
-  label: string;
-  locale: string;
-  onChange: (date: Date) => void;
-}) {
-  const [isOpen, setIsOpen] = useState(false);
-
-  const handleChange = (value: Date) => {
-    onChange(value);
-    setIsOpen(false);
-  };
-
-  return (
-    <Column gap="1">
-      <Label>{label}</Label>
-      <DialogTrigger overlayType="popover" isOpen={isOpen} onOpenChange={setIsOpen}>
-        <Button
-          variant="outline"
-          aria-label={label}
-          style={{ width: 'fit-content', cursor: 'pointer', flexDirection: 'row-reverse' }}
-        >
-          <Icon size="sm">
-            <Calendar />
-          </Icon>
-          {formatDate(date, 'PP', locale)}
-        </Button>
-        <Popover
-          side="bottom"
-          align="start"
-          sideOffset={8}
-          className="min-w-[340px] bg-surface-overlay border border-edge-muted rounded-lg shadow-lg p-4"
-        >
-          <ZenCalendar value={date} onChange={handleChange} />
-        </Popover>
-      </DialogTrigger>
-    </Column>
-  );
 }
 
 export function AnnotationEditForm({
@@ -127,11 +76,16 @@ export function AnnotationEditForm({
 
         return (
           <Column gap>
-            <AnnotationDatePicker
+            <DatePicker
+              triggerProps={{ style: { width: '100%', maxWidth: 280 } }}
               label={t(labels.date)}
-              date={date}
+              value={date}
               locale={locale}
-              onChange={setDate}
+              onChange={value => {
+                if (value) {
+                  setDate(value);
+                }
+              }}
             />
 
             <Column gap="1">

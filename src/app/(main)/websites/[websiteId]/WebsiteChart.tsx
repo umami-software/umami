@@ -1,5 +1,5 @@
 import { isSameDay } from 'date-fns';
-import { useCallback, useMemo } from 'react';
+import { type ReactNode, useCallback, useMemo } from 'react';
 import type { ChartAnnotation } from '@/components/charts/ChartAnnotationMarkers';
 import { LoadingPanel } from '@/components/common/LoadingPanel';
 import {
@@ -19,11 +19,13 @@ export function WebsiteChart({
   compareMode,
   showAnnotations,
   onAnnotationMoreClick,
+  legendActions,
 }: {
   websiteId: string;
   compareMode?: boolean;
   showAnnotations?: boolean;
   onAnnotationMoreClick?: (range: AnnotationRange) => void;
+  legendActions?: ReactNode;
 }) {
   const { timezone, localFromUtc, localToUtc } = useTimezone();
   const { dateRange, dateCompare } = useDateRange({ timezone: timezone });
@@ -135,6 +137,7 @@ export function WebsiteChart({
       <PageviewsChart
         key={value}
         data={chartData}
+        legendActions={legendActions}
         minDate={startDate}
         maxDate={endDate}
         unit={unit}

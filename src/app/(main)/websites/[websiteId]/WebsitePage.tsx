@@ -4,8 +4,8 @@ import { useState } from 'react';
 import { ExpandedViewModal } from '@/app/(main)/websites/[websiteId]/ExpandedViewModal';
 import { Panel } from '@/components/common/Panel';
 import { DialogButton } from '@/components/input/DialogButton';
-import type { AnnotationRange } from '@/lib/annotations';
 import { UnitFilter } from '@/components/input/UnitFilter';
+import type { AnnotationRange } from '@/lib/annotations';
 import { AnnotationsButton } from './annotations/AnnotationsButton';
 import { AnnotationsModal } from './annotations/AnnotationsModal';
 import { WebsiteChart } from './WebsiteChart';
@@ -28,10 +28,8 @@ export function WebsitePage({ websiteId }: { websiteId: string }) {
           websiteId={websiteId}
           showAnnotations
           onAnnotationMoreClick={setAnnotationRange}
+          legendActions={<AnnotationsButton websiteId={websiteId} />}
         />
-        <Row justifyContent="end">
-          <AnnotationsButton websiteId={websiteId} />
-        </Row>
       </Panel>
       <WebsitePanels websiteId={websiteId} />
       <ExpandedViewModal websiteId={websiteId} />
