@@ -71,7 +71,6 @@ export function TopNav() {
                 teamId={teamId}
                 onChange={handleLinkChange}
                 buttonProps={{
-                  variant: 'quiet',
                   style: { minHeight: 40, minWidth: 200, maxWidth: 200 },
                 }}
               />
@@ -82,7 +81,6 @@ export function TopNav() {
                 teamId={teamId}
                 onChange={handlePixelChange}
                 buttonProps={{
-                  variant: 'quiet',
                   style: { minHeight: 40, minWidth: 200, maxWidth: 200 },
                 }}
               />
@@ -93,7 +91,6 @@ export function TopNav() {
                 teamId={teamId}
                 onChange={handleBoardChange}
                 buttonProps={{
-                  variant: 'quiet',
                   style: { minHeight: 40, minWidth: 200, maxWidth: 200 },
                 }}
               />
