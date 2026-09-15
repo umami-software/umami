@@ -64,7 +64,7 @@ export function GoalEditForm({
             <FormField name="name" label={t(labels.name)} rules={{ required: t(labels.required) }}>
               <TextField autoFocus />
             </FormField>
-            <Column>
+            <Column gap="1">
               <Label>{t(labels.action)}</Label>
               {isMobile ? (
                 <Column gap style={{ minWidth: 0 }}>

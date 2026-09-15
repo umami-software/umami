@@ -71,6 +71,8 @@ export function TopNav() {
                 teamId={teamId}
                 onChange={handleLinkChange}
                 buttonProps={{
+                  className:
+                    'border-transparent bg-transparent shadow-none hover:border-transparent hover:bg-interactive active:bg-interactive-hover',
                   style: { minHeight: 40, minWidth: 200, maxWidth: 200 },
                 }}
               />
@@ -81,6 +83,8 @@ export function TopNav() {
                 teamId={teamId}
                 onChange={handlePixelChange}
                 buttonProps={{
+                  className:
+                    'border-transparent bg-transparent shadow-none hover:border-transparent hover:bg-interactive active:bg-interactive-hover',
                   style: { minHeight: 40, minWidth: 200, maxWidth: 200 },
                 }}
               />
@@ -91,6 +95,8 @@ export function TopNav() {
                 teamId={teamId}
                 onChange={handleBoardChange}
                 buttonProps={{
+                  className:
+                    'border-transparent bg-transparent shadow-none hover:border-transparent hover:bg-interactive active:bg-interactive-hover',
                   style: { minHeight: 40, minWidth: 200, maxWidth: 200 },
                 }}
               />

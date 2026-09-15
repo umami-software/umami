@@ -35,9 +35,8 @@ export function FilterBar({ websiteId }: { websiteId?: string }) {
   const { data, isLoading } = useWebsiteSegmentQuery(websiteId, segment || cohort);
   const canSaveSegment =
     !!websiteId &&
-    filters.length > 0 &&
+    (filters.length > 0 || sessionPropertyFilters.length > 0) &&
     eventPropertyFilters.length === 0 &&
-    sessionPropertyFilters.length === 0 &&
     !segment &&
     !cohort &&
     !pathname.includes('/share');
@@ -192,7 +191,14 @@ export function FilterBar({ websiteId }: { websiteId?: string }) {
               }}
             >
               {({ close }) => {
-                return <SegmentEditForm websiteId={websiteId} onClose={close} filters={filters} />;
+                return (
+                  <SegmentEditForm
+                    websiteId={websiteId}
+                    onClose={close}
+                    filters={filters}
+                    sessionPropertyFilters={sessionPropertyFilters}
+                  />
+                );
               }}
             </Dialog>
           </Modal>
