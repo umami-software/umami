@@ -1,15 +1,18 @@
 import { beforeEach, describe, expect, test, vi } from 'vitest';
-import { deleteWebsite, resetWebsite } from './website';
+import { deleteWebsite, getAllUserWebsitesIncludingTeamAccess, resetWebsite } from './website';
 
-const { transactionMock, redisDelMock, redisSetMock } = vi.hoisted(() => ({
+const { transactionMock, redisDelMock, redisSetMock, pagedQueryMock } = vi.hoisted(() => ({
   transactionMock: vi.fn(),
   redisDelMock: vi.fn(),
   redisSetMock: vi.fn(),
+  pagedQueryMock: vi.fn(),
 }));
 
 vi.mock('@/lib/prisma', () => ({
   default: {
     transaction: transactionMock,
+    pagedQuery: pagedQueryMock,
+    getSearchParameters: () => ({}),
   },
   getSchema: () => new URL(process.env.DATABASE_URL || '').searchParams.get('schema'),
 }));
@@ -105,6 +108,41 @@ function createDeleteTx(calls: string[]) {
     },
   };
 }
+
+describe('getAllUserWebsitesIncludingTeamAccess', () => {
+  beforeEach(() => {
+    pagedQueryMock.mockReset();
+    pagedQueryMock.mockResolvedValue({ data: [], count: 0, page: 1, pageSize: 20 });
+  });
+
+  test('lists owned websites and unowned websites of any team the user belongs to', async () => {
+    await getAllUserWebsitesIncludingTeamAccess('user-1');
+
+    expect(pagedQueryMock).toHaveBeenCalledWith(
+      'website',
+      expect.objectContaining({
+        where: {
+          OR: [
+            { userId: 'user-1' },
+            {
+              userId: null,
+              team: { deletedAt: null, members: { some: { userId: 'user-1' } } },
+            },
+          ],
+          deletedAt: null,
+        },
+        include: {
+          team: {
+            select: {
+              members: { where: { userId: 'user-1' }, select: { userId: true, role: true } },
+            },
+          },
+        },
+      }),
+      expect.anything(),
+    );
+  });
+});
 
 describe('website delete dependencies', () => {
   beforeEach(() => {

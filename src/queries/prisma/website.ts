@@ -1,6 +1,5 @@
 import { z } from 'zod';
 import type { Prisma, Website } from '@/generated/prisma/client';
-import { ROLES } from '@/lib/constants';
 import prisma, { getSchema } from '@/lib/prisma';
 import redis from '@/lib/redis';
 import { sanitizeSortFilters } from '@/lib/sort';
@@ -129,17 +128,33 @@ export async function getAllUserWebsitesIncludingTeamAccess(
         OR: [
           { userId },
           {
+            // Matches canViewWebsite: a website with a userId is visible to its owner only.
+            userId: null,
             team: {
               deletedAt: null,
               members: {
                 some: {
-                  role: { in: [ROLES.teamOwner, ROLES.teamManager] },
                   userId,
                 },
               },
             },
           },
         ],
+      },
+      include: {
+        team: {
+          select: {
+            members: {
+              where: {
+                userId,
+              },
+              select: {
+                userId: true,
+                role: true,
+              },
+            },
+          },
+        },
       },
     },
     sanitizeSortFilters(filters, WEBSITE_SORT_FIELDS, { orderBy: 'name' }),

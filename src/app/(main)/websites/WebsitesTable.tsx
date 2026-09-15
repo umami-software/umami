@@ -3,8 +3,14 @@ import { type ReactNode, useMemo } from 'react';
 import { DateDistance } from '@/components/common/DateDistance';
 import { LinkButton } from '@/components/common/LinkButton';
 import { SortableLabel } from '@/components/common/SortableLabel';
-import { useMessages, useNavigation, useWebsiteListChartsQuery } from '@/components/hooks';
+import {
+  useLoginQuery,
+  useMessages,
+  useNavigation,
+  useWebsiteListChartsQuery,
+} from '@/components/hooks';
 import { SquarePen } from '@/components/icons';
+import { PERMISSIONS, ROLE_PERMISSIONS } from '@/lib/constants';
 import { decodePunycodeDomain } from '@/lib/format';
 import { WebsiteSparkline } from './WebsiteSparkline';
 
@@ -21,6 +27,16 @@ export function WebsitesTable({
 }: WebsitesTableProps & { data?: any[] }) {
   const { t, labels } = useMessages();
   const { renderUrl } = useNavigation();
+  const { user } = useLoginQuery();
+
+  // Rows listed through team access carry the caller's membership; hide edit where it can't update.
+  const canUpdate = (row: any) =>
+    row.userId === user?.id ||
+    !row.team ||
+    row.team.members?.some(
+      ({ userId, role }: { userId: string; role: string }) =>
+        userId === user?.id && ROLE_PERMISSIONS[role]?.includes(PERMISSIONS.websiteUpdate),
+    );
   const websiteIds = useMemo(() => data.map(row => row.id), [data]);
   const chartsQuery = useWebsiteListChartsQuery(websiteIds);
   const charts = chartsQuery.data?.data || {};
@@ -80,6 +96,10 @@ export function WebsitesTable({
         <DataColumn id="action" label=" " align="end" width="48px">
           {(row: any) => {
             const websiteId = row.id;
+
+            if (!canUpdate(row)) {
+              return null;
+            }
 
             return (
               <LinkButton href={renderUrl(`/websites/${websiteId}/settings`)} variant="quiet">
