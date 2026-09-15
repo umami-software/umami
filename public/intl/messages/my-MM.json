@@ -211,7 +211,7 @@
     "needs-improvement": "တိုးတက်မှု လိုအပ်",
     "new-password": "စကားဝှက်အသစ်",
     "none": "မရှိပါ",
-    "number-of-records": "{x} {x, plural, one {မှတ်တမ်း} other {မှတ်တမ်းများ}}",
+    "number-of-records": "{x} {x, plural, other {မှတ်တမ်းများ}}",
     "ok": "OK",
     "online": "အွန်လိုင်း",
     "open": "ရောနှော",
@@ -426,7 +426,7 @@
   },
   "message": {
     "action-confirmation": "အတည်ပြုရန် အောက်ပါအကွက်တွင် {confirmation} ကို ရိုက်ထည့်ပါ။",
-    "active-users": "{x} လက်ရှိအသုံးပြုနေသူ {x, plural, one {ယောက်} other {ယောက်}}",
+    "active-users": "{x} လက်ရှိအသုံးပြုနေသူ {x, plural, other {ယောက်}}",
     "bad-request": "မမှန်ကန်သောတောင်းဆိုမှု",
     "collected-data": "စုဆောင်းထားသောဒေတာ",
     "confirm-delete": "{target} ကို ဖျက်ရန် သေချာပါသလား?",
