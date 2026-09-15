@@ -173,7 +173,7 @@ async function relationalQuery(
         and website_event.${column} = {{step}}
         ${filterQuery}`;
   const jsonDimensions = dimensions
-    .map(([name]) => `        '${name}', coalesce((select json_agg(dim_row) from ${name} dim_row), '[]'::json)`)
+    .map(([name]) => `        '${name}', coalesce((select json_agg(dim_row order by dim_row.value desc) from ${name} dim_row), '[]'::json)`)
     .join(',\n');
   const query = `
     ${eventQuery}
