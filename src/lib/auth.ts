@@ -15,11 +15,13 @@ import {
   SHARE_TOKEN_TYPE,
 } from '@/lib/constants';
 import { createAuthKey, hash, secret } from '@/lib/crypto';
-import { createSecureToken, parseSecureToken, parseToken } from '@/lib/jwt';
+import { createSecureToken, getRefreshExpiry, parseSecureToken, parseToken } from '@/lib/jwt';
 import redis from '@/lib/redis';
 import { ensureArray } from '@/lib/utils';
 import { getApiKeyByHash, updateApiKeyLastUsed } from '@/queries/prisma/apiKey';
 import { getUser } from '@/queries/prisma/user';
+import prisma from './prisma';
+import { getUserAuthSessionByRefreshHash, updateUserAuthSession } from '@/queries/prisma';
 
 const log = debug('umami:auth');
 
@@ -180,4 +182,24 @@ export function parseShareToken(request: Request) {
     log(e);
     return null;
   }
+}
+
+export async function saveRefreshToken(userId: string, refreshToken: string) {
+  await prisma.client.userAuthSession.create({
+    data: {
+      userId,
+      refreshHash: hash(refreshToken),
+      expiresAt: new Date(Date.now() + (getRefreshExpiry() * 24 * 60 * 60 * 1000)),
+    },
+  });
+}
+
+export async function revokeRefreshToken(refreshToken: string) {
+  const session = await getUserAuthSessionByRefreshHash(hash(refreshToken));
+
+  if (!session) {
+    return;
+  }
+
+  await updateUserAuthSession(session.id, { revokedAt: new Date() });
 }
