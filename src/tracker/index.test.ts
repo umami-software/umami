@@ -36,3 +36,36 @@ test('identifies data-distinct-id before the initial page view', async () => {
     payload: { id: 'visitor-id', website: 'website-id' },
   });
 });
+
+const loadTracker = async (framed: boolean) => {
+  const script = document.createElement('script');
+  script.src = 'https://analytics.example.com/script.js';
+  script.dataset.websiteId = 'website-id';
+
+  Object.defineProperties(document, {
+    currentScript: { configurable: true, value: script },
+    readyState: { configurable: true, value: 'complete' },
+  });
+
+  const fetchMock = vi.fn().mockResolvedValue({ json: vi.fn().mockResolvedValue({}) });
+  vi.stubGlobal('fetch', fetchMock);
+  if (framed) vi.stubGlobal('top', {});
+  window.name = 'umami.disabled';
+
+  try {
+    await import('./index');
+    await window.umami.track('signup-button');
+  } finally {
+    window.name = '';
+  }
+
+  return fetchMock;
+};
+
+test('does not track when loaded in a frame named umami.disabled', async () => {
+  expect(await loadTracker(true)).not.toHaveBeenCalled();
+});
+
+test('still tracks in a top-level window named umami.disabled', async () => {
+  expect(await loadTracker(false)).toHaveBeenCalled();
+});
