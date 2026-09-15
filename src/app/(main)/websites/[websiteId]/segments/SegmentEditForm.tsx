@@ -8,9 +8,8 @@ import {
   Loading,
   TextField,
 } from '@umami/react-zen';
-import { useEffect, useState } from 'react';
 import { useMessages, useUpdateQuery, useWebsiteSegmentQuery } from '@/components/hooks';
-import { FieldFilters } from '@/components/input/FieldFilters';
+import { SegmentGroupFields } from './SegmentGroupFields';
 
 export function SegmentEditForm({
   segmentId,
@@ -29,11 +28,6 @@ export function SegmentEditForm({
 }) {
   const { data } = useWebsiteSegmentQuery(websiteId, segmentId);
   const { t, labels, messages, getErrorMessage } = useMessages();
-  const [currentMatch, setCurrentMatch] = useState<string>('all');
-
-  useEffect(() => {
-    setCurrentMatch((data?.parameters as any)?.match || 'all');
-  }, [data]);
 
   const { mutateAsync, error, isPending, touch, toast } = useUpdateQuery(
     `/websites/${websiteId}/segments${segmentId ? `/${segmentId}` : ''}`,
@@ -48,7 +42,7 @@ export function SegmentEditForm({
         ...formData,
         parameters: {
           ...formData.parameters,
-          match: currentMatch !== 'all' ? currentMatch : undefined,
+          match: formData.parameters.match !== 'all' ? formData.parameters.match : undefined,
         },
       },
       {
@@ -78,12 +72,8 @@ export function SegmentEditForm({
       {showFilters && (
         <>
           <Label>{t(labels.filters)}</Label>
-          <FormField name="parameters.filters" rules={{ required: t(labels.required) }}>
-            <FieldFilters
-              websiteId={websiteId}
-              match={currentMatch}
-              onMatchChange={setCurrentMatch}
-            />
+          <FormField name="parameters" rules={{ required: t(labels.required) }}>
+            <SegmentGroupFields websiteId={websiteId} />
           </FormField>
         </>
       )}

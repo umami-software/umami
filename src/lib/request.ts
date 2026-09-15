@@ -133,7 +133,11 @@ export async function getQueryFilters(
       const segmentParams = (await getWebsiteSegment(websiteId, params.segment))
         ?.parameters as Record<string, any>;
 
-      Object.assign(filters, filtersArrayToObject(segmentParams.filters));
+      Object.assign(filters, filtersArrayToObject(segmentParams.filters || []));
+
+      if (segmentParams.groups?.length) {
+        filters.groups = segmentParams.groups;
+      }
 
       if (segmentParams.match) {
         match = segmentParams.match;
