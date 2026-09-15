@@ -1,10 +1,15 @@
 import { randomUUID } from 'node:crypto';
 import { expect, test } from './fixtures';
+import { login } from './helpers/auth';
 import { UNKNOWN_UUID } from './helpers/constants';
 import { dateRange } from './helpers/dates';
 import {
+  assertStatus,
   createTeam,
+  createUser,
+  createWebsite,
   deleteTeam,
+  deleteUser,
   deleteWebsite,
   uniqueDomain,
   uniqueName,
@@ -289,5 +294,98 @@ test.describe('Websites', () => {
     expect(gone.body).toBeNull();
 
     websiteId = '';
+  });
+});
+
+test.describe('Websites listed through team access', () => {
+  test.describe.configure({ mode: 'serial' });
+
+  const teamIds: string[] = [];
+  const websiteIds: string[] = [];
+  let memberId = '';
+  let memberToken = '';
+  let teamWebsiteId = '';
+  let otherTeamWebsiteId = '';
+
+  test.beforeAll(async ({ admin, api }) => {
+    const created = await createUser(admin, { role: 'view-only' });
+    memberId = created.id;
+    memberToken = await login(api, created);
+
+    const team = await createTeam(admin);
+    const otherTeam = await createTeam(admin);
+    teamIds.push(team.id, otherTeam.id);
+
+    assertStatus(
+      await admin.post(`/api/teams/${team.id}/users`, { userId: memberId, role: 'team-view-only' }),
+      200,
+      'add team member',
+    );
+
+    teamWebsiteId = (await createWebsite(admin, { teamId: team.id })).id;
+    otherTeamWebsiteId = (await createWebsite(admin, { teamId: otherTeam.id })).id;
+    websiteIds.push(teamWebsiteId, otherTeamWebsiteId);
+  });
+
+  test.afterAll(async ({ admin }) => {
+    for (const id of websiteIds) {
+      await deleteWebsite(admin, id);
+    }
+
+    for (const id of teamIds) {
+      await deleteTeam(admin, id);
+    }
+
+    if (memberId) {
+      await deleteUser(admin, memberId);
+    }
+  });
+
+  for (const path of ['/api/websites', '/api/me/websites', '/api/users/{userId}/websites']) {
+    test(`GET ${path}?includeTeams lists team websites for a team-view-only member`, async ({
+      api,
+      seed,
+    }) => {
+      const member = api.bearer(memberToken);
+      const url = path.replace('{userId}', memberId);
+      const withTeams = await member.get(url, { params: { includeTeams: 'true' } });
+      const withoutTeams = await member.get(url);
+      const ids = withTeams.body.data.map((w: any) => w.id);
+
+      expect(withTeams.status).toBe(200);
+      expect(ids).toContain(teamWebsiteId);
+      expect(ids).not.toContain(otherTeamWebsiteId);
+      expect(ids).not.toContain(seed.website.id);
+      expect(ids).not.toContain(seed.website2.id);
+      expect(withTeams.body.data.find((w: any) => w.id === teamWebsiteId).team.members).toEqual([
+        { userId: memberId, role: 'team-view-only' },
+      ]);
+      expect(withoutTeams.status).toBe(200);
+      expect(withoutTeams.body.data.map((w: any) => w.id)).not.toContain(teamWebsiteId);
+    });
+  }
+
+  test('the listed websites match what the member can view', async ({ api }) => {
+    const member = api.bearer(memberToken);
+    const listed = await member.get(`/api/websites/${teamWebsiteId}`);
+    const unlisted = await member.get(`/api/websites/${otherTeamWebsiteId}`);
+
+    expect(listed.status).toBe(200);
+    expect(unlisted.status).toBe(401);
+  });
+
+  test('websites leave the list when the member leaves the team', async ({ admin, api }) => {
+    const member = api.bearer(memberToken);
+    assertStatus(
+      await admin.del(`/api/teams/${teamIds[0]}/users/${memberId}`),
+      200,
+      'remove team member',
+    );
+
+    const listed = await member.get('/api/websites', { params: { includeTeams: 'true' } });
+    const view = await member.get(`/api/websites/${teamWebsiteId}`);
+
+    expect(listed.body.data.map((w: any) => w.id)).not.toContain(teamWebsiteId);
+    expect(view.status).toBe(401);
   });
 });
