@@ -18,6 +18,17 @@ export const CLICKHOUSE_DATE_FORMATS = {
   year: '%Y-01-01',
 };
 
+// Always Z-suffixed so JS parses the already-shifted local value as an unambiguous
+// instant instead of re-interpreting it in the runtime's own timezone. Matches
+// Postgres's getDateSQL convention - see prisma.ts's DATE_FORMATS.
+const CLICKHOUSE_BUCKET_FORMATS = {
+  minute: '%Y-%m-%dT%R:00Z',
+  hour: '%Y-%m-%dT%H:00:00Z',
+  day: '%Y-%m-%dT00:00:00Z',
+  month: '%Y-%m-01T00:00:00Z',
+  year: '%Y-01-01T00:00:00Z',
+};
+
 const log = debug('umami:clickhouse');
 
 const EQUALITY_OPERATORS: Operator[] = [OPERATORS.equals, OPERATORS.notEquals];
@@ -89,11 +100,12 @@ function getDateStringSQL(data: any, unit: string = 'utc', timezone?: string) {
 
 function getDateSQL(field: string, unit: string, timezone?: string) {
   const tz = normalizeTimezone(timezone);
+  const format = CLICKHOUSE_BUCKET_FORMATS[unit];
 
   if (tz) {
-    return `toDateTime(date_trunc('${unit}', ${field}, '${tz}'), '${tz}')`;
+    return `formatDateTime(date_trunc('${unit}', ${field}, '${tz}'), '${format}', '${tz}')`;
   }
-  return `toDateTime(date_trunc('${unit}', ${field}))`;
+  return `formatDateTime(date_trunc('${unit}', ${field}), '${format}')`;
 }
 
 function getSearchSQL(column: string, param: string = 'search'): string {

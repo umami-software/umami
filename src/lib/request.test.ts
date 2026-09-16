@@ -3,6 +3,11 @@ import { fetchWebsite } from '@/lib/load';
 import { getWebsiteSegment } from '@/queries/prisma';
 import { getQueryFilters } from './request';
 
+vi.hoisted(() => {
+  process.env.DATABASE_URL ??= 'postgresql://user:pass@localhost:5432/umami?schema=public';
+  delete process.env.DATABASE_REPLICA_URL;
+});
+
 vi.mock('@/lib/load', () => ({
   fetchAccount: vi.fn(),
   fetchWebsite: vi.fn(),
