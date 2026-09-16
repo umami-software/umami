@@ -13,6 +13,18 @@ if (process.env.SKIP_DB_CHECK) {
   process.exit(0);
 }
 
+const maxOpenConnections = process.env.CLICKHOUSE_MAX_OPEN_CONNECTIONS;
+
+if (
+  process.env.CLICKHOUSE_URL &&
+  maxOpenConnections !== undefined &&
+  (!/^[1-9]\d*$/.test(maxOpenConnections) ||
+    !Number.isSafeInteger(Number(maxOpenConnections)))
+) {
+  console.log('CLICKHOUSE_MAX_OPEN_CONNECTIONS must be a positive integer.');
+  process.exit(1);
+}
+
 const url = new URL(process.env.DATABASE_URL);
 
 const adapter = new PrismaPg(
