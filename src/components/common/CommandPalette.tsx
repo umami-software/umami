@@ -312,7 +312,7 @@ export function CommandPalette() {
 
   return (
     <div className={styles.overlay} onClick={handleOverlayClick}>
-      <div className={styles.container} role="dialog" aria-label="Command palette">
+      <div className={styles.container} role="dialog" aria-modal="true" aria-label="Command palette">
         {/* Search */}
         <div className={styles.searchSection}>
           <Icon className={styles.searchIcon} size="sm">
@@ -329,12 +329,19 @@ export function CommandPalette() {
             onKeyDown={handleKeyDown}
             spellCheck={false}
             autoComplete="off"
+            role="combobox"
+            aria-expanded="true"
+            aria-controls="command-palette-list"
+            aria-autocomplete="list"
+            aria-activedescendant={
+              filteredCommands[selectedIndex] ? `cmd-${filteredCommands[selectedIndex].id}` : undefined
+            }
           />
           <kbd className={styles.kbd}>Esc</kbd>
         </div>
 
         {/* Results */}
-        <div className={styles.results} ref={listRef}>
+        <div className={styles.results} ref={listRef} role="listbox" id="command-palette-list">
           {filteredCommands.length === 0 && (
             <div className={styles.empty}>
               <Icon size="lg" className={styles.emptyIcon}>
@@ -348,14 +355,17 @@ export function CommandPalette() {
           )}
           {groupedCommands.map(group => (
             <div key={group.category} className={styles.group}>
-              <div className={styles.groupLabel}>{group.category}</div>
+              <div className={styles.groupLabel} role="presentation">{group.category}</div>
               {group.items.map(cmd => {
                 flatIndex++;
                 const idx = flatIndex;
                 return (
                   <div
                     key={cmd.id}
+                    id={`cmd-${cmd.id}`}
                     className={styles.item}
+                    role="option"
+                    aria-selected={idx === selectedIndex}
                     data-selected={idx === selectedIndex}
                     data-command-item=""
                     onClick={() => cmd.action()}
