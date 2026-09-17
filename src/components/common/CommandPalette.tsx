@@ -36,7 +36,7 @@ interface Command {
 
 export function CommandPalette() {
   const { t, labels } = useMessages();
-  const { router, renderUrl, teamId } = useNavigation();
+  const { router, renderUrl, teamId, pathname } = useNavigation();
   const { isOpen, closePalette } = usePalette();
   const [search, setSearch] = useState('');
   const [selectedIndex, setSelectedIndex] = useState(0);
@@ -214,6 +214,11 @@ export function CommandPalette() {
       setSelectedIndex(0);
     }
   }, [isOpen]);
+
+  // Close on route change (e.g. browser back/forward)
+  useEffect(() => {
+    closePalette();
+  }, [pathname, closePalette]);
 
   // Scroll selected item into view
   useEffect(() => {
