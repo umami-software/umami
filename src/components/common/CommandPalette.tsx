@@ -4,7 +4,8 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import type { ReactNode } from 'react';
 import { Icon } from '@umami/react-zen';
 import { usePalette } from '@/store/palette';
-import { useLoginQuery, useMessages, useNavigation, useUserWebsitesQuery } from '@/components/hooks';
+import { useQuery } from '@tanstack/react-query';
+import { useLoginQuery, useMessages, useNavigation, useApi } from '@/components/hooks';
 import {
   ArrowDown,
   ArrowUp,
@@ -51,12 +52,43 @@ export function CommandPalette() {
     [router, renderUrl, closePalette],
   );
 
+  const { get } = useApi();
   const { user } = useLoginQuery();
-  const { data: websitesData } = useUserWebsitesQuery(
-    { userId: user?.id, teamId },
-    { pageSize: 100, includeTeams: true },
-  );
-  const websiteItems: { id: string; name: string; domain: string }[] = websitesData?.data || [];
+
+  const { data: allWebsites } = useQuery({
+    queryKey: ['websites:all', user?.id, teamId],
+    queryFn: async () => {
+      let page = 1;
+      const all: any[] = [];
+      while (true) {
+        const res = await get(
+          teamId
+            ? `/teams/${teamId}/websites`
+            : user?.id
+              ? `/users/${user.id}/websites`
+              : '/me/websites',
+          {
+            page,
+            pageSize: 100,
+            includeTeams: true,
+          },
+        );
+        if (res?.data) {
+          all.push(...res.data);
+          if (all.length >= res.count || res.data.length === 0) {
+            break;
+          }
+          page++;
+        } else {
+          break;
+        }
+      }
+      return all;
+    },
+    enabled: !!user,
+  });
+
+  const websiteItems: { id: string; name: string; domain: string }[] = allWebsites || [];
 
   const commands = useMemo<Command[]>(() => {
     const nav: Command[] = [
