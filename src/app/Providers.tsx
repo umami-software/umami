@@ -6,8 +6,6 @@ import { useEffect } from 'react';
 import { ErrorBoundary } from '@/components/common/ErrorBoundary';
 import { useLocale } from '@/components/hooks';
 import 'chartjs-adapter-date-fns';
-import { useCommandPalette } from '@/components/hooks';
-import { CommandPalette } from '@/components/common/CommandPalette';
 
 const client = new QueryClient({
   defaultOptions: {
@@ -35,8 +33,6 @@ function MessagesProvider({ children }) {
 }
 
 export function Providers({ children }) {
-  useCommandPalette();
-
   return (
     <ZenProvider>
       <RouterProvider>
@@ -44,7 +40,6 @@ export function Providers({ children }) {
           <QueryClientProvider client={client}>
             <ErrorBoundary>
               {children}
-              <CommandPalette />
             </ErrorBoundary>
           </QueryClientProvider>
         </MessagesProvider>
