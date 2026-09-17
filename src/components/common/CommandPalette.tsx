@@ -5,7 +5,7 @@ import type { ReactNode } from 'react';
 import { Icon } from '@umami/react-zen';
 import { usePalette } from '@/store/palette';
 import { useQuery } from '@tanstack/react-query';
-import { useLoginQuery, useMessages, useNavigation, useApi } from '@/components/hooks';
+import { useLoginQuery, useMessages, useModified, useNavigation, useApi } from '@/components/hooks';
 import {
   ArrowDown,
   ArrowUp,
@@ -54,9 +54,10 @@ export function CommandPalette() {
 
   const { get } = useApi();
   const { user } = useLoginQuery();
+  const { modified } = useModified('websites');
 
   const { data: allWebsites } = useQuery({
-    queryKey: ['websites:all', user?.id, teamId],
+    queryKey: ['websites:all', user?.id, teamId, modified],
     queryFn: async () => {
       let page = 1;
       const all: any[] = [];
@@ -85,7 +86,7 @@ export function CommandPalette() {
       }
       return all;
     },
-    enabled: !!user,
+    enabled: !!user && isOpen,
   });
 
   const websiteItems: { id: string; name: string; domain: string }[] = allWebsites || [];
