@@ -208,6 +208,9 @@ if (isProd && cloudMode) {
 /** @type {import('next').NextConfig} */
 export default withNextIntl({
   reactStrictMode: false,
+  devIndicators: {
+    position: 'bottom-right',
+  },
   env: {
     apiUrl,
     basePath,
@@ -233,6 +236,15 @@ export default withNextIntl({
   async rewrites() {
     return [
       ...rewrites,
+      // Preserve legacy report requests outside the published API contract.
+      {
+        source: '/api/reports/:path*',
+        destination: '/compat/api/reports/:path*',
+      },
+      {
+        source: '/api/websites/:websiteId/reports',
+        destination: '/compat/api/websites/:websiteId/reports',
+      },
       {
         source: '/telemetry.js',
         destination: '/api/scripts/telemetry',

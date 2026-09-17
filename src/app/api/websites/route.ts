@@ -1,24 +1,16 @@
-import { z } from 'zod';
-import { DOMAIN_REGEX, ENTITY_TYPE } from '@/lib/constants';
+import { ENTITY_TYPE } from '@/lib/constants';
 import { uuid } from '@/lib/crypto';
 import { fetchAccount, fetchTeam } from '@/lib/load';
 import { getQueryFilters, parseRequest } from '@/lib/request';
 import { json, unauthorized } from '@/lib/response';
-import { pagingParams, searchParams, sortingParams } from '@/lib/schema';
 import { getCloudWebsiteLimit } from '@/lib/subscription';
 import { canCreateTeamWebsite, canCreateWebsite } from '@/permissions';
 import { createShare, createWebsite, getTeamWebsiteCount, getWebsiteCount } from '@/queries/prisma';
 import { getAllUserWebsitesIncludingTeamAccess, getUserWebsites } from '@/queries/prisma/website';
+import { createWebsiteRequestSchema, listWebsitesQuerySchema } from './request-schema';
 
 export async function GET(request: Request) {
-  const schema = z.object({
-    ...pagingParams,
-    ...searchParams,
-    ...sortingParams,
-    includeTeams: z.string().optional(),
-  });
-
-  const { auth, query, error } = await parseRequest(request, schema);
+  const { auth, query, error } = await parseRequest(request, listWebsitesQuerySchema);
 
   if (error) {
     return error();
@@ -36,15 +28,7 @@ export async function GET(request: Request) {
 }
 
 export async function POST(request: Request) {
-  const schema = z.object({
-    name: z.string().trim().min(1).max(100),
-    domain: z.string().trim().regex(DOMAIN_REGEX).max(500),
-    shareId: z.string().max(50).nullable().optional(),
-    teamId: z.uuid().nullable().optional(),
-    id: z.uuid().nullable().optional(),
-  });
-
-  const { auth, body, error } = await parseRequest(request, schema);
+  const { auth, body, error } = await parseRequest(request, createWebsiteRequestSchema);
 
   if (error) {
     return error();

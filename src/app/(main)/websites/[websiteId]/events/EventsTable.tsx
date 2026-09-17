@@ -1,6 +1,5 @@
 import {
   Button,
-  Column,
   DataColumn,
   DataTable,
   type DataTableProps,
@@ -44,15 +43,15 @@ export function EventsTable(props: DataTableProps) {
       <DataColumn id="event" label={t(labels.event)} width="2fr">
         {(row: any) => {
           return (
-            <Column gap="2">
-              <Row>
+            <Row alignItems="center" gap="2" flexWrap="nowrap" style={{ minWidth: 0 }}>
+              <Row style={{ flexShrink: 0 }}>
                 <IconLabel
                   icon={row.eventName ? <Lightning /> : <Eye />}
                   label={t(row.eventName ? labels.triggeredEvent : labels.viewedPage)}
                   labelProps={{ wrap: 'nowrap' }}
                 />
               </Row>
-              <Row alignItems="center" gap>
+              <Row alignItems="center" gap flexWrap="nowrap" style={{ minWidth: 0 }}>
                 <Text
                   weight="bold"
                   style={{ maxWidth: '300px' }}
@@ -63,7 +62,7 @@ export function EventsTable(props: DataTableProps) {
                 </Text>
                 {row.hasData > 0 && <PropertiesButton websiteId={row.websiteId} eventId={row.id} />}
               </Row>
-            </Column>
+            </Row>
           );
         }}
       </DataColumn>

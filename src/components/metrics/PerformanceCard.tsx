@@ -61,7 +61,7 @@ export const PerformanceCard = ({
       paddingX="6"
       paddingY="4"
       borderRadius
-      backgroundColor="surface-base"
+      backgroundColor="surface"
       border
       gap="4"
       onClick={onClick}

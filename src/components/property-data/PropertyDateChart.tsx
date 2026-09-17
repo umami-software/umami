@@ -55,7 +55,7 @@ function InsightCard({ label, value, hint }: { label: string; value: string; hin
       paddingX="6"
       paddingY="4"
       borderRadius
-      backgroundColor="surface-base"
+      backgroundColor="surface"
       border
       gap="2"
       height="100%"

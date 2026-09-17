@@ -1,7 +1,7 @@
 ARG NODE_IMAGE_VERSION="22-alpine"
-ARG PNPM_VERSION="11.21.0"
+ARG PNPM_VERSION="12.3.4"
 # Keep in sync with the prisma/@prisma/* versions in package.json
-ARG PRISMA_VERSION="7.9.1"
+ARG PRISMA_VERSION="7.10.0"
 
 # Install dependencies only when needed
 FROM node:${NODE_IMAGE_VERSION} AS deps
@@ -10,17 +10,26 @@ ARG PNPM_VERSION
 # Check https://github.com/nodejs/docker-node/tree/b4117f9333da4138b03a546ec926ef50a31506c3#nodealpine to understand why libc6-compat might be needed.
 RUN apk add --no-cache libc6-compat
 WORKDIR /app
-COPY package.json pnpm-lock.yaml ./
+COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
+# Workspace packages (@umami/api-client, @umami/mcp) must be present for a frozen install.
+COPY packages/api-client/package.json ./packages/api-client/
+COPY packages/mcp/package.json ./packages/mcp/
+COPY packages/mcp/bin ./packages/mcp/bin/
 RUN npm install -g pnpm@${PNPM_VERSION}
 
-RUN printf 'strictDepBuilds: false\n' > pnpm-workspace.yaml
+RUN printf 'strictDepBuilds: false\n' >> pnpm-workspace.yaml
 
 RUN pnpm install --frozen-lockfile
 
 # Rebuild the source code only when needed
 FROM node:${NODE_IMAGE_VERSION} AS builder
+ARG PNPM_VERSION
 WORKDIR /app
+# build:openapi shells out to pnpm, so the builder stage needs it too
+RUN npm install -g pnpm@${PNPM_VERSION}
 COPY --from=deps /app/node_modules ./node_modules
+COPY --from=deps /app/packages/api-client/node_modules ./packages/api-client/node_modules
+COPY --from=deps /app/packages/mcp/node_modules ./packages/mcp/node_modules
 COPY . .
 COPY docker/proxy.ts ./src
 
@@ -30,7 +39,10 @@ ENV BASE_PATH=$BASE_PATH
 ENV NEXT_TELEMETRY_DISABLED=1
 ENV DATABASE_URL="postgresql://user:pass@localhost:5432/dummy"
 
-RUN npm run build-docker
+ARG SKIP_BUILD_GEO
+ENV SKIP_BUILD_GEO=$SKIP_BUILD_GEO
+
+RUN pnpm build:docker
 
 # Production image, copy all the files and run next
 FROM node:${NODE_IMAGE_VERSION} AS runner

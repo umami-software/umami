@@ -93,11 +93,15 @@ function callPOST(
   );
 }
 
-function makeComputedSessionId(sourceId: string, timestamp = Math.floor(Date.now() / 1000)) {
+function makeComputedSessionId(
+  sourceId: string,
+  timestamp = Math.floor(Date.now() / 1000),
+  distinctId?: string,
+) {
   const createdAt = new Date(timestamp * 1000);
   const sessionSalt = getSalt(process.env.SALT_ROTATION || 'month', createdAt);
 
-  return uuid(sourceId, defaultClientInfo.ip, defaultClientInfo.userAgent, sessionSalt);
+  return uuid(sourceId, defaultClientInfo.ip, defaultClientInfo.userAgent, sessionSalt, distinctId ?? '');
 }
 
 beforeEach(() => {
@@ -755,6 +759,49 @@ describe('30-minute visit expiry', () => {
 });
 
 describe('identify collection', () => {
+  test('uses distinct IDs to separate sessions with the same client fingerprint', async () => {
+    const first = await callPOST({
+      type: 'identify',
+      payload: { website: WEBSITE_ID, id: 'user-1' },
+    });
+    const second = await callPOST({
+      type: 'identify',
+      payload: { website: WEBSITE_ID, id: 'user-2' },
+    });
+
+    const firstBody = (await first.json()) as Record<string, any>;
+    const secondBody = (await second.json()) as Record<string, any>;
+
+    expect(firstBody.sessionId).not.toBe(secondBody.sessionId);
+    expect(createSessionMock.mock.calls[0][0]).toMatchObject({
+      id: firstBody.sessionId,
+      distinctId: 'user-1',
+    });
+    expect(createSessionMock.mock.calls[1][0]).toMatchObject({
+      id: secondBody.sessionId,
+      distinctId: 'user-2',
+    });
+  });
+
+  test('normalizes distinct IDs before calculating the session ID', async () => {
+    const prefix = 'a'.repeat(50);
+    const first = await callPOST({
+      type: 'identify',
+      payload: { website: WEBSITE_ID, id: `${prefix}-first` },
+    });
+    const second = await callPOST({
+      type: 'identify',
+      payload: { website: WEBSITE_ID, id: `${prefix}-second` },
+    });
+
+    const firstBody = (await first.json()) as Record<string, any>;
+    const secondBody = (await second.json()) as Record<string, any>;
+
+    expect(firstBody.sessionId).toBe(secondBody.sessionId);
+    expect(createSessionMock.mock.calls[0][0]).toMatchObject({ distinctId: prefix });
+    expect(createSessionMock.mock.calls[1][0]).toMatchObject({ distinctId: prefix });
+  });
+
   test('saves a session link and updates the session for a new distinctId', async () => {
     await callPOST({
       type: 'identify',

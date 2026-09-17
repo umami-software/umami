@@ -408,6 +408,47 @@ describe('generateTimeSeries', () => {
     expect(series).toHaveLength(1);
     expect(series[0].y).toBeNull();
   });
+
+  test('matches backend-bucketed values without re-shifting them through the system zone', () => {
+    // Backend x is already the target-zone wall clock (e.g. Tokyo's day bucket),
+    // stamped with a literal "Z". minDate/maxDate carry that same wall clock via
+    // their local getters, per the "fake zoned" Date convention from parseDateRange.
+    const minDate = new Date(2026, 6, 2); // local wall clock: 2026-07-02 00:00
+    const data = [{ x: '2026-07-02T00:00:00Z', y: 42 }];
+
+    const series = generateTimeSeries(data, minDate, minDate, 'day', 'en-US');
+
+    expect(series).toHaveLength(1);
+    expect(series[0].x).toBe('2026-07-02');
+    expect(series[0].y).toBe(42);
+  });
+
+  test('does not double-shift hour buckets near a day boundary', () => {
+    // Regression guard: an earlier version of this fix re-applied toZonedTime(x, timezone)
+    // on top of the backend's already-shifted value, pushing a 23:00 bucket into the
+    // next day. The backend value must be read back as-is (via 'UTC'), not re-shifted.
+    const minDate = new Date(2026, 6, 2, 23); // local wall clock: 2026-07-02 23:00
+    const data = [{ x: '2026-07-02T23:00:00Z', y: 7 }];
+
+    const series = generateTimeSeries(data, minDate, minDate, 'hour', 'en-US');
+
+    expect(series).toHaveLength(1);
+    expect(series[0].x).toBe('2026-07-02 23');
+    expect(series[0].y).toBe(7);
+  });
+
+  test('does not reinterpret plain local bucket keys (no "Z") as UTC', () => {
+    // Regression guard: PropertyDateChart's bucket keys have no "Z" (plain local
+    // strings) and must be read as-is, not run through the "fake-Z" reinterpretation.
+    const minDate = new Date(2026, 6, 2, 23); // local wall clock: 2026-07-02 23:00
+    const data = [{ x: '2026-07-02T23:00:00', y: 7 }];
+
+    const series = generateTimeSeries(data, minDate, minDate, 'hour', 'en-US');
+
+    expect(series).toHaveLength(1);
+    expect(series[0].x).toBe('2026-07-02 23');
+    expect(series[0].y).toBe(7);
+  });
 });
 
 describe('getDateRangeValue / getMonthDateRangeValue', () => {

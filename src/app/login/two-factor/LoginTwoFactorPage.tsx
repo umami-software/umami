@@ -17,6 +17,7 @@ import { OtpInput } from '@/components/common/OtpInput';
 import { useMessages, useTwoFactorVerifyMutation } from '@/components/hooks';
 import { Logo } from '@/components/svg';
 import { setClientAuthToken } from '@/lib/client';
+import { consumeReturnUrl } from '@/lib/return-url';
 import { setUser } from '@/store/app';
 
 export function LoginTwoFactorPage() {
@@ -64,7 +65,7 @@ export function LoginTwoFactorPage() {
       const data = await mutateAsync({ partialToken, token, backupCode });
       setClientAuthToken(data.token);
       setUser(data.user);
-      router.push('/');
+      router.push(consumeReturnUrl() ?? '/');
     } catch (err: any) {
       if (err.lockedUntil) {
         setLockUntil(new Date(err.lockedUntil));
@@ -97,10 +98,15 @@ export function LoginTwoFactorPage() {
         <Text>{t(messages.twoFactorLoginDescription)}</Text>
 
         {!!lockUntil && lockMessage && (
-          <Text style={{ color: 'var(--color-danger, red)' }}>{lockMessage}</Text>
+          <Text style={{ color: 'var(--zen-status-error)' }}>{lockMessage}</Text>
         )}
 
-        <Form onSubmit={handleSubmit} error={error ?? undefined} style={{ minWidth: 300 }}>
+        <Form
+          onSubmit={handleSubmit}
+          error={error ?? undefined}
+          defaultValues={{ backupCode: '' }}
+          style={{ minWidth: 300 }}
+        >
           {!useBackup ? (
             <Column gap="2">
               <Text weight="bold">{t(labels.twoFactorEnterCode)}</Text>

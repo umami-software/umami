@@ -350,6 +350,15 @@ export function formatDate(
   });
 }
 
+// Backend bucket values are already zone-shifted and stamped with a literal "Z",
+// so they must be read back via UTC getters, not the browser's own zone. Values
+// without a "Z" (e.g. PropertyDateChart's own bucket keys) are read as-is.
+export function parseBackendDate(value: string | number | Date): Date {
+  return typeof value === 'string' && value.endsWith('Z')
+    ? toZonedTime(new Date(value), 'UTC')
+    : new Date(value);
+}
+
 export function generateTimeSeries(
   data: { x: string; y: number; d?: string }[],
   minDate: Date,
@@ -371,7 +380,9 @@ export function generateTimeSeries(
     current = add(current, 1);
   }
 
-  const lookup = new Map(data.map(({ x, y, d }) => [formatDate(x, fmt, locale), { x, y, d }]));
+  const lookup = new Map(
+    data.map(({ x, y, d }) => [formatDate(parseBackendDate(x), fmt, locale), { x, y, d }]),
+  );
 
   return timeseries.map(t => {
     const { x, y, d } = lookup.get(t) || {};

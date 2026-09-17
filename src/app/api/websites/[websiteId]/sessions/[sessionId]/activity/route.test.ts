@@ -2,7 +2,7 @@ import { endOfMonth, startOfMonth } from 'date-fns';
 import { beforeEach, expect, test, vi } from 'vitest';
 import { getQueryFilters, parseRequest } from '@/lib/request';
 import { canViewWebsiteSection } from '@/permissions';
-import { getLinkedSessionIds, getSessionActivity } from '@/queries/sql';
+import { getLinkedDistinctIds, getLinkedSessionIds, getSessionActivity } from '@/queries/sql';
 import { GET } from './route';
 
 vi.mock('@/lib/request', () => ({
@@ -23,6 +23,7 @@ vi.mock('@/queries/sql', () => ({
 const parseRequestMock = vi.mocked(parseRequest);
 const getQueryFiltersMock = vi.mocked(getQueryFilters);
 const canViewWebsiteSectionMock = vi.mocked(canViewWebsiteSection);
+const getLinkedDistinctIdsMock = vi.mocked(getLinkedDistinctIds);
 const getLinkedSessionIdsMock = vi.mocked(getLinkedSessionIds);
 const getSessionActivityMock = vi.mocked(getSessionActivity);
 
@@ -30,6 +31,7 @@ beforeEach(() => {
   parseRequestMock.mockReset();
   getQueryFiltersMock.mockReset();
   canViewWebsiteSectionMock.mockReset();
+  getLinkedDistinctIdsMock.mockReset();
   getLinkedSessionIdsMock.mockReset();
   getSessionActivityMock.mockReset();
 });
@@ -81,4 +83,30 @@ test('uses linked session months to widen stitched activity without scanning eve
     filters,
   );
   await expect(response.json()).resolves.toEqual([{ eventId: 'event-1' }]);
+});
+
+test('keeps activity scoped to the raw session when multiple identities are linked', async () => {
+  const query = {
+    startAt: +new Date('2026-07-20T23:38:54.000Z'),
+    endAt: +new Date('2026-07-21T00:08:01.000Z'),
+  };
+  const filters = { startDate: new Date(query.startAt), endDate: new Date(query.endAt) };
+
+  parseRequestMock.mockResolvedValue({ auth: {}, query, error: undefined });
+  canViewWebsiteSectionMock.mockResolvedValue(true);
+  getLinkedDistinctIdsMock.mockResolvedValue(['distinct-1', 'distinct-2']);
+  getQueryFiltersMock.mockResolvedValue(filters);
+  getSessionActivityMock.mockResolvedValue([{ eventId: 'event-1' }]);
+
+  await GET(
+    new Request(
+      'http://localhost/api/websites/website-1/sessions/session-1/activity?startAt=1784590734000&endAt=1784592481000',
+    ),
+    {
+      params: Promise.resolve({ websiteId: 'website-1', sessionId: 'session-1' }),
+    },
+  );
+
+  expect(getLinkedSessionIdsMock).not.toHaveBeenCalled();
+  expect(getSessionActivityMock).toHaveBeenCalledWith('website-1', ['session-1'], filters);
 });

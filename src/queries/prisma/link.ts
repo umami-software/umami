@@ -1,7 +1,7 @@
-import type { Prisma } from '@/generated/prisma/client';
+import type { Link, Prisma } from '@/generated/prisma/client';
 import prisma from '@/lib/prisma';
 import { sanitizeSortFilters } from '@/lib/sort';
-import type { QueryFilters } from '@/lib/types';
+import type { PageResult, QueryFilters } from '@/lib/types';
 
 const LINK_SORT_FIELDS = ['name', 'slug', 'url', 'createdAt'] as const;
 
@@ -17,7 +17,10 @@ export async function getLink(linkId: string) {
   });
 }
 
-export async function getLinks(criteria: Prisma.LinkFindManyArgs, filters: QueryFilters = {}) {
+export async function getLinks(
+  criteria: Prisma.LinkFindManyArgs,
+  filters: QueryFilters = {},
+): Promise<PageResult<Link[]>> {
   const sortFilters = sanitizeSortFilters(filters, LINK_SORT_FIELDS);
   const { search } = sortFilters;
   const { getSearchParameters, pagedQuery } = prisma;

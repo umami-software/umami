@@ -65,7 +65,7 @@ test('clears the selected website value when the input is cleared', () => {
   expect(onChange).toHaveBeenCalledWith('');
 });
 
-test('combines values from both Journey step types', () => {
+test('combines values from both Journey step types with the typed value', () => {
   render(
     <WebsiteValueComboBox
       label="Start step"
@@ -74,11 +74,12 @@ test('combines values from both Journey step types', () => {
       additionalType="event"
       startDate={new Date('2026-08-01')}
       endDate={new Date('2026-08-03')}
-      value=""
+      value="/"
       onChange={() => {}}
     />,
   );
 
+  expect(screen.getByText('/')).toBeInTheDocument();
   expect(screen.getByText('/home')).toBeInTheDocument();
   expect(screen.getByText('signup')).toBeInTheDocument();
 });

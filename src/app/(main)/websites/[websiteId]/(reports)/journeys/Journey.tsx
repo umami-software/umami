@@ -1,9 +1,8 @@
-import { Column, Icon, Row, Text, Tooltip, TooltipTrigger } from '@umami/react-zen';
-import classNames from 'classnames';
+import { Column, cn, Icon, Row, Text, Tooltip, TooltipTrigger } from '@umami/react-zen';
 import { useMemo, useState } from 'react';
 import { firstBy } from 'thenby';
 import { LoadingPanel } from '@/components/common/LoadingPanel';
-import { useEscapeKey, useMessages, useResultQuery } from '@/components/hooks';
+import { useEscapeKey, useJourneyQuery, useMessages } from '@/components/hooks';
 import { File } from '@/components/icons';
 import { Lightning } from '@/components/svg';
 import { objectToArray } from '@/lib/data';
@@ -33,12 +32,11 @@ export function Journey({ websiteId, steps, startStep, endStep, view }: JourneyP
   const [selectedNode, setSelectedNode] = useState(null);
   const [activeNode, setActiveNode] = useState(null);
   const { t, labels } = useMessages();
-  const { data, error, isLoading } = useResultQuery<any>('journey', {
+  const { data, error, isLoading } = useJourneyQuery({
     websiteId,
     steps,
     startStep,
     endStep,
-    view,
     eventType: EVENT_TYPES[view],
   });
 
@@ -169,7 +167,7 @@ export function Journey({ websiteId, steps, startStep, endStep, view }: JourneyP
             return (
               <div
                 key={columnIndex}
-                className={classNames(styles.column, {
+                className={cn(styles.column, {
                   [styles.selected]: selectedNode,
                   [styles.active]: activeNode,
                 })}
@@ -217,7 +215,7 @@ export function Journey({ websiteId, steps, startStep, endStep, view }: JourneyP
                           onMouseLeave={() => selected && setActiveNode(null)}
                         >
                           <div
-                            className={classNames(styles.node, {
+                            className={cn(styles.node, {
                               [styles.selected]: selected,
                               [styles.active]: active,
                             })}
@@ -260,7 +258,7 @@ export function Journey({ websiteId, steps, startStep, endStep, view }: JourneyP
                                 return (
                                   <div
                                     key={`${fromIndex}${nodeIndex}${i}`}
-                                    className={classNames(styles.line, {
+                                    className={cn(styles.line, {
                                       [styles.active]:
                                         active &&
                                         activeNode?.paths.find(
@@ -274,14 +272,14 @@ export function Journey({ websiteId, steps, startStep, endStep, view }: JourneyP
                                     })}
                                     style={{ height }}
                                   >
-                                    <div className={classNames(styles.segment, styles.start)} />
+                                    <div className={cn(styles.segment, styles.start)} />
                                     <div
-                                      className={classNames(styles.segment, styles.mid)}
+                                      className={cn(styles.segment, styles.mid)}
                                       style={{
                                         height: midHeight,
                                       }}
                                     />
-                                    <div className={classNames(styles.segment, styles.end)} />
+                                    <div className={cn(styles.segment, styles.end)} />
                                   </div>
                                 );
                               })}

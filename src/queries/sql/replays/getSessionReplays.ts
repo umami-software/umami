@@ -1,13 +1,13 @@
 import clickhouse from '@/lib/clickhouse';
 import { CLICKHOUSE, PRISMA, runQuery } from '@/lib/db';
 import prisma from '@/lib/prisma';
-import type { QueryFilters } from '@/lib/types';
+import type { PageResult, QueryFilters, SessionReplaySummary } from '@/lib/types';
 
 const FUNCTION_NAME = 'getSessionReplays';
 
 export function getSessionReplays(
   ...args: [websiteId: string, filters: QueryFilters, sessionId?: string]
-) {
+): Promise<PageResult<SessionReplaySummary[]>> {
   return runQuery({
     [PRISMA]: () => relationalQuery(...args),
     [CLICKHOUSE]: () => clickhouseQuery(...args),

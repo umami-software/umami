@@ -1,7 +1,7 @@
 import { z } from 'zod';
 import { uuid } from '@/lib/crypto';
 import { getQueryFilters, parseRequest } from '@/lib/request';
-import { json, unauthorized } from '@/lib/response';
+import { badRequest, json, unauthorized } from '@/lib/response';
 import { searchParams, segmentParamSchema, segmentTypeParam } from '@/lib/schema';
 import { canUpdateWebsite, canViewSharedWebsiteFilters } from '@/permissions';
 import { createSegment, getWebsiteSegments } from '@/queries/prisma';
@@ -53,6 +53,10 @@ export async function POST(
 
   const { websiteId } = await params;
   const { type, name, parameters } = body;
+
+  if (type === 'cohort' && parameters.sessionPropertyFilters?.length) {
+    return badRequest({ message: 'Session property filters are only supported for segments.' });
+  }
 
   if (!(await canUpdateWebsite(auth, websiteId))) {
     return unauthorized();

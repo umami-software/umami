@@ -15,7 +15,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: pnpm/action-setup@v4
         with:
-          version: 10.15.1
+          version: 12.3.4
           run_install: false
       - name: Use Node.js 22
         uses: actions/setup-node@v4
@@ -23,5 +23,10 @@ jobs:
           node-version: 22
           cache: "pnpm"
       - run: pnpm install
+      - run: pnpm openapi:generate
+      - run: pnpm openapi:check --explicit
+      - run: pnpm check:api:client
+      - run: pnpm build:packages
       - run: pnpm test
+      - run: pnpm test:packages
       - run: pnpm build

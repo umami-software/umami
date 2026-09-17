@@ -134,6 +134,7 @@ export async function getQueryFilters(
         ?.parameters as Record<string, any>;
 
       Object.assign(filters, filtersArrayToObject(segmentParams.filters));
+      sessionPropertyFilters.push(...(segmentParams.sessionPropertyFilters ?? []));
 
       if (segmentParams.match) {
         match = segmentParams.match;

@@ -1,18 +1,22 @@
 import { z } from 'zod';
-import prisma from '@/lib/prisma';
 import { getBearerToken, saveAuth } from '@/lib/auth';
-import { ROLES } from '@/lib/constants';
-import { secret } from '@/lib/crypto';
+import { PARTIAL_AUTH_TOKEN_TYPE, ROLES } from '@/lib/constants';
+import { hash, secret } from '@/lib/crypto';
 import { createSecureToken, parseSecureToken } from '@/lib/jwt';
+import prisma from '@/lib/prisma';
+import redis from '@/lib/redis';
 import { parseRequest } from '@/lib/request';
 import { badRequest, json, notFound, serviceUnavailable, unauthorized } from '@/lib/response';
 import { verifyBackupCode } from '@/lib/two-factor/backup-codes';
-import { decryptSecret, getTwoFactorConfigurationError, isTwoFactorConfigured } from '@/lib/two-factor/crypto';
+import {
+  decryptSecret,
+  getTwoFactorConfigurationError,
+  isTwoFactorConfigured,
+} from '@/lib/two-factor/crypto';
 import { checkRateLimit, recordFailedAttempt, resetRateLimit } from '@/lib/two-factor/rate-limit';
 import { isOtpReplayed, markOtpUsed } from '@/lib/two-factor/replay-prevention';
 import { verifyTotp } from '@/lib/two-factor/totp';
 import { getAllUserTeams, getUser } from '@/queries/prisma';
-import redis from '@/lib/redis';
 
 export async function POST(request: Request) {
   if (process.env.CLOUD_MODE) {
@@ -30,7 +34,7 @@ export async function POST(request: Request) {
   }
 
   const payload = parseSecureToken(rawToken, secret()) as any;
-  if (!payload || payload.type !== 'partial-auth' || !payload.userId) {
+  if (!payload || payload.type !== PARTIAL_AUTH_TOKEN_TYPE || !payload.userId) {
     return unauthorized({ code: 'two-factor-error-invalid-partial-token' });
   }
 
@@ -44,7 +48,7 @@ export async function POST(request: Request) {
   }
 
   const userId = payload.userId as string;
-  const user = await getUser(userId);
+  const user = await getUser(userId, { includePassword: true });
 
   if (!user) {
     return unauthorized();
@@ -127,12 +131,14 @@ export async function POST(request: Request) {
   }
 
   const { id, role, createdAt, username } = user;
+  // Bind token to password hash so a password change invalidates old tokens.
+  const pwd = hash(user.password);
 
   let fullToken: string;
   if (redis.enabled) {
-    fullToken = await saveAuth({ userId: id, role });
+    fullToken = await saveAuth({ userId: id, role, pwd });
   } else {
-    fullToken = createSecureToken({ userId: id, role }, secret());
+    fullToken = createSecureToken({ userId: id, role, pwd }, secret());
   }
 
   const teams = await getAllUserTeams(id);

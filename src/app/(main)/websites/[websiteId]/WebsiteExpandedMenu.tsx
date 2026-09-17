@@ -11,6 +11,7 @@ import {
   Languages,
   Laptop,
   Layers,
+  Link,
   Link2,
   LogIn,
   LogOut,
@@ -25,7 +26,6 @@ import {
   Tag,
   Target,
   Type,
-  Waypoints,
 } from '@/components/icons';
 import { Lightning } from '@/components/svg';
 
@@ -58,7 +58,7 @@ export function WebsiteExpandedMenu({
           id: 'fullPath',
           label: t(labels.url),
           path: updateParams({ view: 'fullPath' }),
-          icon: <Waypoints />,
+          icon: <Link />,
         },
         {
           id: 'entry',

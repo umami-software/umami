@@ -2,7 +2,6 @@
 import { useQueryClient } from '@tanstack/react-query';
 import {
   Alert,
-  AlertDescription,
   AlertTitle,
   Box,
   Button,
@@ -193,8 +192,7 @@ export function TwoFactorSetupModal({ required, onClose }: TwoFactorSetupModalPr
 
               {error && (
                 <Alert variant="danger">
-                  <AlertTitle>{t(messages.error)}</AlertTitle>
-                  <AlertDescription>{error}</AlertDescription>
+                  <AlertTitle>{error}</AlertTitle>
                 </Alert>
               )}
 

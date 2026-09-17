@@ -52,8 +52,8 @@ beforeEach(() => {
 test('GET returns not found when the session does not exist', async () => {
   parseRequestMock.mockResolvedValue({ auth: {}, error: undefined });
   canViewWebsiteSectionMock.mockResolvedValue(true);
-   isRelationalOnlyMock.mockReturnValue(true);
-   canDeleteWebsiteMock.mockResolvedValue(false);
+  isRelationalOnlyMock.mockReturnValue(true);
+  canDeleteWebsiteMock.mockResolvedValue(false);
   getWebsiteSessionMock.mockResolvedValue(undefined);
 
   const response = await GET(
@@ -80,6 +80,7 @@ test('GET includes canDelete when relational storage and delete permission are a
     id: 'session-1',
     distinctId: 'distinct-1',
   });
+  getLinkedDistinctIdsMock.mockResolvedValue(['distinct-1']);
   getLinkedSessionIdsMock.mockResolvedValue([
     { sessionId: 'session-2', createdAt: '2026-07-24T00:00:00.000Z' },
   ]);
@@ -95,8 +96,34 @@ test('GET includes canDelete when relational storage and delete permission are a
   await expect(response.json()).resolves.toMatchObject({
     id: 'session-1',
     canDelete: true,
+    distinctIds: ['distinct-1'],
     stitchedSessionCount: 2,
   });
+});
+
+test('GET does not stitch a session with multiple linked identities', async () => {
+  parseRequestMock.mockResolvedValue({ auth: {}, error: undefined });
+  canViewWebsiteSectionMock.mockResolvedValue(true);
+  isRelationalOnlyMock.mockReturnValue(true);
+  canDeleteWebsiteMock.mockResolvedValue(false);
+  getWebsiteSessionMock.mockResolvedValue({ id: 'session-1', distinctId: 'distinct-2' });
+  getLinkedDistinctIdsMock.mockResolvedValue(['distinct-1', 'distinct-2']);
+
+  const response = await GET(
+    new Request('http://localhost/api/websites/website-1/sessions/session-1'),
+    {
+      params: Promise.resolve({ websiteId: 'website-1', sessionId: 'session-1' }),
+    },
+  );
+
+  const body = await response.json();
+
+  expect(body).toMatchObject({
+    distinctIds: ['distinct-1', 'distinct-2'],
+    stitchedSessionCount: 1,
+  });
+  expect(body).not.toHaveProperty('distinctId');
+  expect(getLinkedSessionIdsMock).not.toHaveBeenCalled();
 });
 
 test('DELETE rejects session deletion for non-relational storage', async () => {

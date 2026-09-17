@@ -1,6 +1,5 @@
-import { z } from 'zod';
 import type { Prisma } from '@/generated/prisma/client';
-import { DOMAIN_REGEX, ENTITY_TYPE } from '@/lib/constants';
+import { ENTITY_TYPE } from '@/lib/constants';
 import { uuid } from '@/lib/crypto';
 import { getRecorderConfig, getRecorderEnabled } from '@/lib/recorder';
 import { parseRequest } from '@/lib/request';
@@ -14,6 +13,7 @@ import {
   getWebsite,
   updateWebsite,
 } from '@/queries/prisma';
+import { updateWebsiteRequestSchema } from '../request-schema';
 
 export async function GET(
   request: Request,
@@ -40,25 +40,7 @@ export async function POST(
   request: Request,
   { params }: { params: Promise<{ websiteId: string }> },
 ) {
-  const schema = z.object({
-    name: z.string().trim().min(1).max(100).optional(),
-    domain: z.string().trim().regex(DOMAIN_REGEX).max(500).optional(),
-    shareId: z.string().max(50).nullable().optional(),
-    replayConfig: z
-      .object({
-        replayEnabled: z.boolean().optional(),
-        heatmapEnabled: z.boolean().optional(),
-        sampleRate: z.number().min(0).max(1).optional(),
-        heatmapSampleRate: z.number().min(0).max(1).optional(),
-        maskLevel: z.enum(['strict', 'moderate']).optional(),
-        maxDuration: z.number().int().positive().optional(),
-        blockSelector: z.string().optional(),
-      })
-      .nullable()
-      .optional(),
-  });
-
-  const { auth, body, error } = await parseRequest(request, schema);
+  const { auth, body, error } = await parseRequest(request, updateWebsiteRequestSchema);
 
   if (error) {
     return error();

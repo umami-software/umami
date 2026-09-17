@@ -94,6 +94,7 @@ export async function canViewBatchWebsites({ user, shareToken }: Auth, websiteId
           teamId: {
             in: teamIds,
           },
+          team: { deletedAt: null },
         },
         select: {
           teamId: true,

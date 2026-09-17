@@ -1,9 +1,13 @@
 .root {
-  --overlay-scrollbar-track: var(--gray-50);
-  --overlay-scrollbar-thumb: var(--gray-300);
-  --overlay-scrollbar-thumb-hover: var(--gray-400);
+  --overlay-scrollbar-track: var(--zen-palette-50);
+  --overlay-scrollbar-thumb: var(--zen-palette-300);
+  --overlay-scrollbar-thumb-hover: var(--zen-palette-400);
   --overlay-scrollbar-viewport-padding-right: 0px;
   --overlay-scrollbar-vertical-margin-right: 2px;
+}
+
+.collapsed > [data-orientation] {
+  display: none;
 }
 
 .root > :first-child {
@@ -44,8 +48,8 @@
   content: "";
 }
 
-[data-theme='dark'] .root {
-  --overlay-scrollbar-track: var(--gray-800);
-  --overlay-scrollbar-thumb: var(--gray-600);
-  --overlay-scrollbar-thumb-hover: var(--gray-500);
+[data-theme="dark"] .root {
+  --overlay-scrollbar-track: var(--zen-palette-800);
+  --overlay-scrollbar-thumb: var(--zen-palette-600);
+  --overlay-scrollbar-thumb-hover: var(--zen-palette-500);
 }

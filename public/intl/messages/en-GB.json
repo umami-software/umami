@@ -443,6 +443,7 @@
     "incorrect-username-password": "Incorrect username/password.",
     "invalid-domain": "Invalid domain",
     "invalid-value": "Invalid value",
+    "max-length": "Maximum length of {n} characters",
     "min-password-length": "Minimum length of {n} characters",
     "new-version-available": "A new version of Umami {version} is available!",
     "no-data-available": "No data available.",

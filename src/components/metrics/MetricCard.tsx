@@ -51,7 +51,7 @@ export const MetricCard = ({
       paddingX="6"
       paddingY="4"
       borderRadius
-      backgroundColor="surface-base"
+      backgroundColor="surface"
       border
       gap="4"
     >

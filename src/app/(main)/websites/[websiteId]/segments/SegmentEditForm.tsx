@@ -1,21 +1,25 @@
 import {
   Button,
+  Column,
   Form,
   FormButtons,
   FormField,
   FormSubmitButton,
-  Label,
   Loading,
+  Text,
   TextField,
 } from '@umami/react-zen';
 import { useEffect, useState } from 'react';
 import { useMessages, useUpdateQuery, useWebsiteSegmentQuery } from '@/components/hooks';
 import { FieldFilters } from '@/components/input/FieldFilters';
+import { PropertyFilters } from '@/components/property-data/PropertyFilters';
+import type { SessionPropertyFilter } from '@/lib/types';
 
 export function SegmentEditForm({
   segmentId,
   websiteId,
   filters = [],
+  sessionPropertyFilters = [],
   showFilters = true,
   onSave,
   onClose,
@@ -23,6 +27,7 @@ export function SegmentEditForm({
   segmentId?: string;
   websiteId: string;
   filters?: any[];
+  sessionPropertyFilters?: SessionPropertyFilter[];
   showFilters?: boolean;
   onSave?: () => void;
   onClose?: () => void;
@@ -69,32 +74,50 @@ export function SegmentEditForm({
   return (
     <Form
       onSubmit={handleSubmit}
-      defaultValues={data || { parameters: { filters } }}
+      defaultValues={data || { name: '', parameters: { filters, sessionPropertyFilters } }}
       error={getErrorMessage(error)}
     >
-      <FormField name="name" label={t(labels.name)} rules={{ required: t(labels.required) }}>
-        <TextField autoFocus={!segmentId} />
-      </FormField>
-      {showFilters && (
-        <>
-          <Label>{t(labels.filters)}</Label>
-          <FormField name="parameters.filters" rules={{ required: t(labels.required) }}>
-            <FieldFilters
-              websiteId={websiteId}
-              match={currentMatch}
-              onMatchChange={setCurrentMatch}
-            />
-          </FormField>
-        </>
-      )}
-      <FormButtons>
-        <Button isDisabled={isPending} onPress={onClose}>
-          {t(labels.cancel)}
-        </Button>
-        <FormSubmitButton variant="primary" data-test="button-submit" isDisabled={isPending}>
-          {t(labels.save)}
-        </FormSubmitButton>
-      </FormButtons>
+      <Column gap="4">
+        <FormField name="name" label={t(labels.name)} rules={{ required: t(labels.required) }}>
+          <TextField autoFocus={!segmentId} />
+        </FormField>
+        {showFilters && (
+          <Column gap="4">
+            <Column gap="1">
+              <Text weight="bold">{t(labels.filters)}</Text>
+              <FormField name="parameters.filters">
+                <FieldFilters
+                  websiteId={websiteId}
+                  match={currentMatch}
+                  onMatchChange={setCurrentMatch}
+                />
+              </FormField>
+            </Column>
+
+            <Column gap="1">
+              <Text weight="bold">{t(labels.sessionData)}</Text>
+              <FormField name="parameters.sessionPropertyFilters">
+                {({ field }) => (
+                  <PropertyFilters
+                    source="session"
+                    websiteId={websiteId}
+                    value={field.value ?? []}
+                    onChange={field.onChange}
+                  />
+                )}
+              </FormField>
+            </Column>
+          </Column>
+        )}
+        <FormButtons>
+          <Button isDisabled={isPending} onPress={onClose}>
+            {t(labels.cancel)}
+          </Button>
+          <FormSubmitButton variant="primary" data-test="button-submit" isDisabled={isPending}>
+            {t(labels.save)}
+          </FormSubmitButton>
+        </FormButtons>
+      </Column>
     </Form>
   );
 }

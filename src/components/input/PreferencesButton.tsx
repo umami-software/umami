@@ -17,11 +17,11 @@ export function PreferencesButton() {
       </Button>
       <Popover side="bottom" align="end">
         <Panel gap="3">
-          <Column>
+          <Column gap="1">
             <Label>{t(labels.timezone)}</Label>
             <TimezoneSetting />
           </Column>
-          <Column>
+          <Column gap="1">
             <Label>{t(labels.defaultDateRange)}</Label>
             <DateRangeSetting />
           </Column>

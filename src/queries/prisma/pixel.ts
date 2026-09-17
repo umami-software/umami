@@ -1,7 +1,7 @@
-import type { Prisma } from '@/generated/prisma/client';
+import type { Pixel, Prisma } from '@/generated/prisma/client';
 import prisma from '@/lib/prisma';
 import { sanitizeSortFilters } from '@/lib/sort';
-import type { QueryFilters } from '@/lib/types';
+import type { PageResult, QueryFilters } from '@/lib/types';
 
 const PIXEL_SORT_FIELDS = ['name', 'slug', 'createdAt'] as const;
 
@@ -17,7 +17,10 @@ export async function getPixel(pixelId: string) {
   });
 }
 
-export async function getPixels(criteria: Prisma.PixelFindManyArgs, filters: QueryFilters = {}) {
+export async function getPixels(
+  criteria: Prisma.PixelFindManyArgs,
+  filters: QueryFilters = {},
+): Promise<PageResult<Pixel[]>> {
   const sortFilters = sanitizeSortFilters(filters, PIXEL_SORT_FIELDS);
   const { search } = sortFilters;
 

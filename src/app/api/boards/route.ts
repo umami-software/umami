@@ -75,6 +75,9 @@ export async function POST(request: Request) {
     ...body,
     type: normalizeBoardType(body.type),
     id: uuid(),
+    // The column is NOT NULL with no default, so an omitted description —
+    // which the request schema allows — reaches Prisma as undefined and throws.
+    description: body.description ?? '',
     parameters: body.parameters ?? {},
     userId: !teamId ? auth.user.id : undefined,
   };
