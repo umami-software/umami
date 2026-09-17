@@ -77,7 +77,6 @@ describe('UmamiClient', () => {
     expect(calls[0].method).toBe('POST');
     expect(calls[0].url.pathname).toBe('/api/websites/w1/funnels');
     expect(JSON.parse(calls[0].body as string)).toEqual({
-      websiteId: 'w1',
       name: 'Signup funnel',
       parameters: { window: 60, steps: [] },
     });
