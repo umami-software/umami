@@ -111,9 +111,11 @@ export async function checkAuth(request: Request) {
       }
 
       // Keep an in-use session alive rather than expiring it a fixed time after
-      // login, reusing whatever window it was created with.
-      if (user) {
-        await redis.client.expire(authKey, key.ttl || AUTH_SESSION_TTL).catch(e => log(e));
+      // login, reusing the window it was created with. Sessions stored before
+      // this was recorded are left alone: their intended lifetime is unknown,
+      // and defaulting would extend the shorter ones past it.
+      if (user && key.ttl) {
+        await redis.client.expire(authKey, key.ttl).catch(e => log(e));
       }
     }
   }
