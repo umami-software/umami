@@ -38,7 +38,9 @@ export function Providers({ children }) {
       <RouterProvider>
         <MessagesProvider>
           <QueryClientProvider client={client}>
-            <ErrorBoundary>{children}</ErrorBoundary>
+            <ErrorBoundary>
+              {children}
+            </ErrorBoundary>
           </QueryClientProvider>
         </MessagesProvider>
       </RouterProvider>
