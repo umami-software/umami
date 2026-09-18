@@ -1,4 +1,5 @@
 import { beforeEach, describe, expect, test, vi } from 'vitest';
+import { AUTH_SESSION_TTL } from '@/lib/constants';
 import { hash } from '@/lib/crypto';
 import { parseSecureToken } from '@/lib/jwt';
 import redis from '@/lib/redis';
@@ -26,6 +27,7 @@ vi.mock('@/lib/redis', () => ({
     enabled: false,
     client: {
       get: vi.fn(),
+      expire: vi.fn().mockResolvedValue(true),
     },
   },
 }));
@@ -38,6 +40,7 @@ const redisMock = redis as unknown as {
   enabled: boolean;
   client: {
     get: ReturnType<typeof vi.fn>;
+    expire: ReturnType<typeof vi.fn>;
   };
 };
 
@@ -67,6 +70,8 @@ beforeEach(() => {
   updateApiKeyLastUsedMock.mockClear();
   redisMock.enabled = false;
   redisMock.client.get.mockReset();
+  redisMock.client.expire.mockReset();
+  redisMock.client.expire.mockResolvedValue(true);
 });
 
 describe('checkAuth api keys', () => {
@@ -281,5 +286,54 @@ describe('checkAuth password fingerprint', () => {
     const result = await checkAuth(authedRequest());
 
     expect(result).toBeNull();
+  });
+
+  test('refreshes the session TTL so an active user is not signed out', async () => {
+    redisMock.enabled = true;
+    parseSecureTokenMock.mockReturnValue({ authKey: 'auth:session-key' } as any);
+    redisMock.client.get.mockResolvedValue({ userId: 'user-1', pwd: hash(PASSWORD_HASH) });
+    mockUser();
+
+    await checkAuth(authedRequest());
+
+    expect(redisMock.client.expire).toHaveBeenCalledWith('auth:session-key', AUTH_SESSION_TTL);
+  });
+
+  test('refreshes using the window the session was created with', async () => {
+    redisMock.enabled = true;
+    parseSecureTokenMock.mockReturnValue({ authKey: 'auth:session-key' } as any);
+    redisMock.client.get.mockResolvedValue({
+      userId: 'user-1',
+      pwd: hash(PASSWORD_HASH),
+      ttl: 86400,
+    });
+    mockUser();
+
+    await checkAuth(authedRequest());
+
+    expect(redisMock.client.expire).toHaveBeenCalledWith('auth:session-key', 86400);
+  });
+
+  test('does not refresh the TTL of a session rejected by a password change', async () => {
+    redisMock.enabled = true;
+    parseSecureTokenMock.mockReturnValue({ authKey: 'auth:session-key' } as any);
+    redisMock.client.get.mockResolvedValue({ userId: 'user-1', pwd: hash('old-password-hash') });
+    mockUser();
+
+    await checkAuth(authedRequest());
+
+    expect(redisMock.client.expire).not.toHaveBeenCalled();
+  });
+
+  test('still authorizes when refreshing the TTL fails', async () => {
+    redisMock.enabled = true;
+    parseSecureTokenMock.mockReturnValue({ authKey: 'auth:session-key' } as any);
+    redisMock.client.get.mockResolvedValue({ userId: 'user-1', pwd: hash(PASSWORD_HASH) });
+    redisMock.client.expire.mockRejectedValue(new Error('redis down'));
+    mockUser();
+
+    const result = await checkAuth(authedRequest());
+
+    expect(result?.user?.id).toBe('user-1');
   });
 });

@@ -7,6 +7,7 @@ import {
   isApiKeyEnabled,
 } from '@/lib/api-key';
 import {
+  AUTH_SESSION_TTL,
   PARTIAL_AUTH_TOKEN_TYPE,
   ROLE_PERMISSIONS,
   ROLES,
@@ -108,6 +109,12 @@ export async function checkAuth(request: Request) {
       if (user && key.pwd && hash(user.password) !== key.pwd) {
         user = null;
       }
+
+      // Keep an in-use session alive rather than expiring it a fixed time after
+      // login, reusing whatever window it was created with.
+      if (user) {
+        await redis.client.expire(authKey, key.ttl || AUTH_SESSION_TTL).catch(e => log(e));
+      }
     }
   }
 
@@ -146,15 +153,14 @@ export async function checkAuth(request: Request) {
   };
 }
 
-export async function saveAuth(data: any, expire = 0) {
+export async function saveAuth(data: any, expire = AUTH_SESSION_TTL) {
   const authKey = `auth:${createAuthKey()}`;
 
   if (redis.enabled) {
-    await redis.client.set(authKey, data);
-
-    if (expire) {
-      await redis.client.expire(authKey, expire);
-    }
+    // The TTL must be passed to set(): the client falls back to its own short
+    // DEFAULT_TTL when called without one, which would expire the session.
+    // It is stored alongside the session so refreshes can reuse the same window.
+    await redis.client.set(authKey, { ...data, ttl: expire }, expire);
   }
 
   return createSecureToken({ authKey }, secret());

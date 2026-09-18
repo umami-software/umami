@@ -13,6 +13,9 @@ export const SHARE_CONTEXT_HEADER = 'x-umami-share-context';
 export const SHARE_TOKEN_TYPE = 'share';
 export const CACHE_TOKEN_TYPE = 'cache';
 export const PARTIAL_AUTH_TOKEN_TYPE = 'partial-auth';
+// Lifetime of a Redis-backed auth session, refreshed on every authenticated
+// request so an active user is never signed out.
+export const AUTH_SESSION_TTL = 60 * 60 * 24 * 30;
 export const HOMEPAGE_URL = 'https://umami.is';
 export const DOCS_URL = 'https://umami.is/docs';
 export const REPO_URL = 'https://github.com/umami-software/umami';
