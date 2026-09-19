@@ -100,7 +100,7 @@ export function WorldMap({ websiteId, data, ...props }: WorldMapProps) {
         </ZoomableGroup>
       </ComposableMap>
       {tooltip && (
-        <FloatingTooltip>
+        <FloatingTooltip style={{ backgroundColor: 'transparent', padding: 0 }}>
           <Box
             style={{ backgroundColor: 'rgba(0,0,0,0.8)', color: 'white' }}
             padding

@@ -87,8 +87,9 @@ export interface SplitInput {
 
 /**
  * Splits a flat input object into path params, query params and body according to the operation
- * definition. Unknown keys go to the query string for body-less operations (dynamic filter params
- * such as `browser1` or `pf_*`) and to the body otherwise.
+ * definition. Path parameters are only used to build the URL and are never sent in the query
+ * string or JSON body. Unknown keys go to the query string for body-less operations (dynamic
+ * filter params such as `browser1` or `pf_*`) and to the body otherwise.
  */
 export function splitInput(
   operation: OperationDefinition,
@@ -103,17 +104,11 @@ export function splitInput(
   for (const [key, value] of Object.entries(input)) {
     if (pathParams.has(key)) {
       path[key] = value;
-
-      if (!operation.hasBody) {
-        continue;
-      }
-    }
-
-    if (queryParams.has(key)) {
+    } else if (queryParams.has(key)) {
       query[key] = value;
     } else if (operation.hasBody) {
       body[key] = value;
-    } else if (!pathParams.has(key)) {
+    } else {
       query[key] = value;
     }
   }

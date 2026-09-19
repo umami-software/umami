@@ -8,6 +8,7 @@ import {
   Grid,
   Label,
   Loading,
+  Text,
   TextField,
 } from '@umami/react-zen';
 import { useEffect, useState } from 'react';
@@ -71,6 +72,7 @@ export function CohortEditForm({
   }
 
   const defaultValues = {
+    name: '',
     parameters: { filters, dateRange: '30day', action: { type: 'path', value: '' } },
   };
 
@@ -84,12 +86,12 @@ export function CohortEditForm({
         const type = watch('parameters.action.type');
 
         return (
-          <>
+          <Column gap="4">
             <FormField name="name" label={t(labels.name)} rules={{ required: t(labels.required) }}>
               <TextField autoFocus />
             </FormField>
 
-            <Column>
+            <Column gap="1">
               <Label>{t(labels.action)}</Label>
               <Grid columns={{ base: '1fr', md: '1fr 1fr' }} gap>
                 <Column>
@@ -110,15 +112,15 @@ export function CohortEditForm({
               </Grid>
             </Column>
 
-            <Column width="260px">
+            <Column width="260px" gap="1">
               <Label>{t(labels.dateRange)}</Label>
               <FormField name="parameters.dateRange" rules={{ required: t(labels.required) }}>
                 <DateFilter placement="bottom start" />
               </FormField>
             </Column>
 
-            <Column>
-              <Label>{t(labels.filters)}</Label>
+            <Column gap="1">
+              <Text weight="bold">{t(labels.filters)}</Text>
               <FormField name="parameters.filters">
                 <FieldFilters
                   websiteId={websiteId}
@@ -137,7 +139,7 @@ export function CohortEditForm({
                 {t(labels.save)}
               </FormSubmitButton>
             </FormButtons>
-          </>
+          </Column>
         );
       }}
     </Form>

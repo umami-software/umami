@@ -1,6 +1,6 @@
 {
   "name": "umami",
-  "version": "3.3.1",
+  "version": "3.4.0",
   "description": "A modern, privacy-focused alternative to Google Analytics.",
   "author": "Umami Software, Inc. <hello@umami.is>",
   "license": "MIT",
@@ -19,6 +19,7 @@
     "start": "next start",
     "build:docker": "npm-run-all build:db build:tracker build:recorder build:geo build:openapi build:packages build:app",
     "start:docker": "npm-run-all check:db update:tracker start:server",
+    "start-docker": "pnpm run start:docker",
     "start:env": "node scripts/start-env.js",
     "start:server": "node server.js",
     "build:app": "next build --turbo",
@@ -65,6 +66,7 @@
     "test:api:coverage": "tsx scripts/test-api.ts --coverage-report",
     "db:seed": "tsx scripts/seed-data.ts",
     "lint": "biome lint .",
+    "lint:i18n": "eloqnt lint",
     "format": "biome format --write .",
     "check": "biome check --write"
   },
@@ -136,6 +138,7 @@
   },
   "devDependencies": {
     "@biomejs/biome": "^2.5.13",
+    "@eloqnt/cli": "^0.6.18",
     "@netlify/plugin-nextjs": "^5.15.13",
     "@rollup/plugin-commonjs": "^29.0.3",
     "@rollup/plugin-node-resolve": "^16.0.3",

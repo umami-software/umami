@@ -109,7 +109,7 @@ describe('splitInput', () => {
     });
   });
 
-  test('routes unknown keys to the body for operations with a request body', () => {
+  test('routes unknown keys to the body and keeps path params out of it', () => {
     expect(
       splitInput(funnelOperation, {
         websiteId: 'w',
@@ -119,7 +119,7 @@ describe('splitInput', () => {
     ).toEqual({
       path: { websiteId: 'w' },
       query: {},
-      body: { websiteId: 'w', name: 'Signup', parameters: { steps: [] } },
+      body: { name: 'Signup', parameters: { steps: [] } },
     });
   });
 });

@@ -347,7 +347,8 @@ type MetricEntry = PerformanceEntry & {
       }
     };
     const onClick = (e: MouseEvent) => {
-      const el = e.target as Element;
+      const el = e.target as Element | null;
+      if (!el || typeof el.closest !== 'function') return;
       const eventEl = el.closest(`[${eventNameAttribute}]`);
       if (!eventEl) return;
 

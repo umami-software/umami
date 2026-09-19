@@ -82,6 +82,54 @@ describe('getRawQueryClient', () => {
   });
 });
 
+describe('getDateSQL timezone formatting', () => {
+  test('formats UTC (default) buckets with an explicit zone and a Z marker', () => {
+    // Never rely on the DB session's ambient timezone.
+    expect(prisma.getDateSQL('website_event.created_at', 'hour')).toBe(
+      `to_char(date_trunc('hour', website_event.created_at at time zone 'UTC'), 'YYYY-MM-DD"T"HH24:00:00"Z"')`,
+    );
+    expect(prisma.getDateSQL('website_event.created_at', 'hour', 'UTC')).toBe(
+      `to_char(date_trunc('hour', website_event.created_at at time zone 'UTC'), 'YYYY-MM-DD"T"HH24:00:00"Z"')`,
+    );
+  });
+
+  test('formats non-UTC buckets with the same explicit Z marker, not a bare timestamp', () => {
+    // Bare timestamps get misparsed as local-to-the-runtime, not the source zone.
+    expect(prisma.getDateSQL('website_event.created_at', 'hour', 'Asia/Tehran')).toBe(
+      `to_char(date_trunc('hour', website_event.created_at at time zone 'Asia/Tehran'), 'YYYY-MM-DD"T"HH24:00:00"Z"')`,
+    );
+  });
+});
+
+describe('getDateStringSQL timezone formatting', () => {
+  test('formats non-UTC second-precision values with an explicit Z marker', () => {
+    expect(prisma.getDateStringSQL('event_data.date_value', 'second', 'Asia/Tehran')).toBe(
+      `to_char(event_data.date_value at time zone 'Asia/Tehran', 'YYYY-MM-DD"T"HH24:MI:SS"Z"')`,
+    );
+  });
+
+  test('defaults to explicit UTC formatting regardless of unit when no timezone is given', () => {
+    expect(prisma.getDateStringSQL('event_data.date_value')).toBe(
+      `to_char(event_data.date_value at time zone 'UTC', 'YYYY-MM-DD"T"HH24:MI:SS"Z"')`,
+    );
+  });
+});
+
+describe('getDateWeeklySQL timezone formatting', () => {
+  test('falls back to UTC instead of producing invalid SQL when no timezone is given', () => {
+    // Regression test: this used to interpolate `undefined` straight into `at time zone`.
+    expect(prisma.getDateWeeklySQL('website_event.created_at')).toBe(
+      `concat(extract(dow from (website_event.created_at at time zone 'UTC')), ':', to_char((website_event.created_at at time zone 'UTC'), 'HH24'))`,
+    );
+  });
+
+  test('uses the given timezone when one is provided', () => {
+    expect(prisma.getDateWeeklySQL('website_event.created_at', 'Asia/Tehran')).toBe(
+      `concat(extract(dow from (website_event.created_at at time zone 'Asia/Tehran')), ':', to_char((website_event.created_at at time zone 'Asia/Tehran'), 'HH24'))`,
+    );
+  });
+});
+
 describe('pagedRawQuery default ordering', () => {
   function mockQueries(count = '4') {
     const queryRaw = vi.mocked((prisma.client as any).$queryRawUnsafe);

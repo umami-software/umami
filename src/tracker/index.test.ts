@@ -69,3 +69,28 @@ test('does not track when loaded in a frame named umami.disabled', async () => {
 test('still tracks in a top-level window named umami.disabled', async () => {
   expect(await loadTracker(false)).toHaveBeenCalled();
 });
+
+test('ignores clicks dispatched on non-element targets', async () => {
+  const script = document.createElement('script');
+  script.src = 'https://analytics.example.com/script.js';
+  script.dataset.websiteId = 'website-id';
+
+  Object.defineProperties(document, {
+    currentScript: { configurable: true, value: script },
+    readyState: { configurable: true, value: 'complete' },
+  });
+
+  const fetchMock = vi.fn().mockResolvedValue({ json: vi.fn().mockResolvedValue({}) });
+  vi.stubGlobal('fetch', fetchMock);
+
+  await import('./index');
+
+  const errors: ErrorEvent[] = [];
+  window.addEventListener('error', e => errors.push(e as ErrorEvent));
+
+  document.dispatchEvent(new MouseEvent('click', { bubbles: true }));
+
+  await new Promise(resolve => setTimeout(resolve, 0));
+
+  expect(errors).toHaveLength(0);
+});

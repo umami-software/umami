@@ -34,7 +34,8 @@ export async function GET(
     search,
     page,
     pageSize,
-    ...(startAt && endAt && { startDate: new Date(startAt), endDate: new Date(endAt) }),
+    ...(startAt != null &&
+      endAt != null && { startDate: new Date(startAt), endDate: new Date(endAt) }),
   });
 
   return json(annotations);

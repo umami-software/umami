@@ -5,7 +5,7 @@ import { ChartTooltip } from '@/components/charts/ChartTooltip';
 import { useLocale } from '@/components/hooks';
 import { renderNumberLabels } from '@/lib/charts';
 import { getThemeColors } from '@/lib/colors';
-import { DATE_FORMATS, formatDate } from '@/lib/date';
+import { DATE_FORMATS, formatDate, parseBackendDate } from '@/lib/date';
 import { formatLongCurrency, formatLongNumber } from '@/lib/format';
 
 const MemoChart = memo(Chart);
@@ -121,7 +121,7 @@ function BarChartComponent({
       const nextTooltip = opacity
         ? {
             title: formatDate(
-              new Date(dataPoints[0].raw?.d || dataPoints[0].raw?.x || dataPoints[0].raw),
+              parseBackendDate(dataPoints[0].raw?.d || dataPoints[0].raw?.x || dataPoints[0].raw),
               dateFormats[unit],
               locale,
             ),

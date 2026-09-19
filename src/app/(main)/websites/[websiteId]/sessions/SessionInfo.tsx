@@ -11,7 +11,10 @@ export function SessionInfo({ data }) {
   const { t, labels } = useMessages();
   const { formatValue } = useFormat();
   const { getRegionName } = useRegionNames(locale);
-  const distinctId = data?.distinctId?.trim();
+  const distinctId =
+    data?.distinctIds?.length > 1
+      ? `${data.distinctIds.length} linked IDs`
+      : data?.distinctId?.trim();
   const stitchedSessionCount = data?.stitchedSessionCount;
 
   return (
@@ -56,7 +59,7 @@ export function SessionInfo({ data }) {
       </Info>
 
       {distinctId && stitchedSessionCount > 1 && (
-        <Info label="Linked IDs" icon={<Network />}>
+        <Info label="Linked sessions" icon={<Network />}>
           {stitchedSessionCount}
         </Info>
       )}

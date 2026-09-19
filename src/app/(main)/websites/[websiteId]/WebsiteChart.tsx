@@ -27,7 +27,7 @@ export function WebsiteChart({
   onAnnotationMoreClick?: (range: AnnotationRange) => void;
   legendActions?: ReactNode;
 }) {
-  const { timezone, localFromUtc, localToUtc } = useTimezone();
+  const { timezone, fromUtc, toUtc } = useTimezone();
   const { dateRange, dateCompare } = useDateRange({ timezone: timezone });
   const { startDate, endDate, unit, value } = dateRange;
   const { startAt, endAt } = useDateParameters();
@@ -76,7 +76,7 @@ export function WebsiteChart({
     return (annotationData?.data || [])
       .filter(({ allDay }) => !isSubDayUnit || allDay === false)
       .map(({ id, date, note, allDay }) => {
-        const annotationDate = localFromUtc(new Date(date));
+        const annotationDate = fromUtc(new Date(date));
 
         return {
           id,
@@ -125,11 +125,11 @@ export function WebsiteChart({
       const { start, end } = DATE_FUNCTIONS[unit];
 
       onAnnotationMoreClick?.({
-        startAt: +localToUtc(start(markerDate)),
-        endAt: +localToUtc(end(markerDate)),
+        startAt: +toUtc(start(markerDate)),
+        endAt: +toUtc(end(markerDate)),
       });
     },
-    [localToUtc, onAnnotationMoreClick, unit],
+    [toUtc, onAnnotationMoreClick, unit],
   );
 
   return (

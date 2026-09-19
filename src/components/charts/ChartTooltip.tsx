@@ -11,7 +11,7 @@ export function ChartTooltip({
   value?: ReactNode;
 }) {
   return (
-    <FloatingTooltip>
+    <FloatingTooltip style={{ backgroundColor: 'transparent', padding: 0 }}>
       <Column
         gap="3"
         padding="4"

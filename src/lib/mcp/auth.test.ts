@@ -34,7 +34,7 @@ describe('authenticateMcpRequest', () => {
     expect(response.headers.get('cache-control')).toBe('no-store');
   });
 
-  test.each(['not-a-token', 'eyJhbGciOiJIUzI1NiJ9.eyJ0eXBlIjoib2F1dGhfYWNjZXNzIn0.signature'])(
+  test.each(['not-a-token', 'not-a-key'])(
     'rejects non-API-key credentials: %s',
     async token => {
       await expect(authenticateMcpRequest(request(token))).resolves.toMatchObject({

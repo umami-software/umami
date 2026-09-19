@@ -128,7 +128,7 @@ export function ShareEditForm({
         return (
           <Column gap="6">
             {url && (
-              <Column>
+              <Column gap="1">
                 <Label>{t(labels.shareUrl)}</Label>
                 <TextField value={url} isReadOnly allowCopy />
               </Column>
