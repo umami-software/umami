@@ -225,13 +225,15 @@ function getExcludeBounceQuery(filters: Record<string, any>) {
     `;
 }
 
-// Engaged time per visit, in seconds, reported by the tracker's data-engagement option
+// Engaged time per visit, in seconds, reported by the tracker's data-engagement option.
+// Engagement is written when the page is left, so allow up to a day (the largest single
+// report) past endDate to keep visits that end after the range.
 function getEngagementQuery() {
   return `left join (
       select session_id, visit_id, toNullable(toInt64(intDiv(sum(engagement_time), 1000))) as engagement_time
       from website_engagement
       where website_id = {websiteId:UUID}
-        and created_at between {startDate:DateTime64} and {endDate:DateTime64}
+        and created_at between {startDate:DateTime64} and {endDate:DateTime64} + interval 1 day
       group by session_id, visit_id
     ) as engagement using (session_id, visit_id)`;
 }
