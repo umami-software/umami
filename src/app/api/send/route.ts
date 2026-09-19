@@ -113,6 +113,10 @@ export async function POST(request: Request) {
       engagement,
     } = payload;
 
+    if (type === COLLECTION_TYPE.engagement && !engagement) {
+      return badRequest({ message: 'Engagement requests must include engagement.' });
+    }
+
     const sourceId = websiteId || pixelId || linkId;
 
     // Cache check

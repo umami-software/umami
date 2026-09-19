@@ -951,6 +951,13 @@ describe('engagement collection', () => {
     await expect(response.json()).resolves.toMatchObject({ visitId: 'cached-visit' });
   });
 
+  test('rejects engagement requests without engaged time', async () => {
+    const response = await callPOST({ type: 'engagement', payload: { website: WEBSITE_ID } });
+
+    expect(response.status).toBe(400);
+    expect(saveEngagementMock).not.toHaveBeenCalled();
+  });
+
   test('validates the engaged time', async () => {
     await callPOST({ type: 'event', payload: { website: WEBSITE_ID, url: '/' } });
     const schema = parseRequestMock.mock.calls[0][1] as {
