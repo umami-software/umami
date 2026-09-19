@@ -42,7 +42,7 @@ async function relationalQuery(
   websiteId: string,
   filters: QueryFilters,
 ): Promise<ChannelExpandedMetricsData[]> {
-  const { rawQuery, parseFilters, getTimestampDiffSQL } = prisma;
+  const { rawQuery, parseFilters, getTimestampDiffSQL, getEngagementQuery } = prisma;
   const { queryParams, filterQuery, joinSessionQuery, cohortQuery, excludeBounceQuery, dateQuery } =
     parseFilters({
       ...filters,
@@ -153,12 +153,13 @@ async function relationalQuery(
         count(distinct visit_stats.session_id) as "visitors",
         count(distinct visit_stats.visit_id) as "visits",
         ${bounceQuery}
-        sum(${getTimestampDiffSQL('visit_stats.min_time', 'visit_stats.max_time')}) as "totaltime"
+        sum(coalesce(engagement.engagement_time, ${getTimestampDiffSQL('visit_stats.min_time', 'visit_stats.max_time')})) as "totaltime"
       from visit_stats
       join visit_channels
         on visit_channels.session_id = visit_stats.session_id
         and visit_channels.visit_id = visit_stats.visit_id
       ${visitEventsJoin}
+      ${getEngagementQuery('visit_stats')}
       group by visit_channels.name
       order by visitors desc, visits desc
       `,
@@ -171,7 +172,7 @@ async function clickhouseQuery(
   websiteId: string,
   filters: QueryFilters,
 ): Promise<ChannelExpandedMetricsData[]> {
-  const { rawQuery, parseFilters } = clickhouse;
+  const { rawQuery, parseFilters, getEngagementQuery } = clickhouse;
   const { queryParams, filterQuery, cohortQuery, excludeBounceQuery } = parseFilters({
     ...filters,
     websiteId,
@@ -199,7 +200,7 @@ async function clickhouseQuery(
       uniq(t.session_id) as "visitors",
       uniq(t.visit_id) as "visits",
       ${bounceQuery}
-      sum(max_time-min_time) as "totaltime"
+      sum(ifNull(engagement_time, max_time-min_time)) as "totaltime"
     from (
       select
         session_id,
@@ -254,6 +255,7 @@ async function clickhouseQuery(
       group by session_id, visit_id
     ) as t
     ${visitEventsJoin}
+    ${getEngagementQuery()}
     group by name
     order by visitors desc, visits desc;
     `,

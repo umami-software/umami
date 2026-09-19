@@ -27,7 +27,7 @@ async function relationalQuery(
   websiteId: string,
   filters: QueryFilters,
 ): Promise<WebsiteStatsData[]> {
-  const { getTimestampDiffSQL, parseFilters, rawQuery } = prisma;
+  const { getEngagementQuery, getTimestampDiffSQL, parseFilters, rawQuery } = prisma;
   const { filterQuery, joinSessionQuery, cohortQuery, excludeBounceQuery, queryParams } =
     parseFilters({
       ...filters,
@@ -47,7 +47,7 @@ async function relationalQuery(
         count(distinct t.session_id) as "visitors",
         count(distinct t.visit_id) as "visits",
         ${excludeBounce ? '0' : 'coalesce(sum(case when t.c = 1 and t.has_custom_event = 0 then 1 else 0 end), 0)'} as "bounces",
-        cast(coalesce(sum(${getTimestampDiffSQL('t.min_time', 't.max_time')}), 0) as bigint) as "totaltime"
+        cast(coalesce(sum(coalesce(engagement.engagement_time, ${getTimestampDiffSQL('t.min_time', 't.max_time')})), 0) as bigint) as "totaltime"
       from (
         select
           website_event.session_id,
@@ -67,6 +67,7 @@ async function relationalQuery(
         group by 1, 2
         having sum(case when website_event.event_type NOT IN (2, 5) then 1 else 0 end) > 0
       ) as t
+      ${getEngagementQuery('t')}
       `,
       queryParams,
       FUNCTION_NAME,
@@ -97,7 +98,7 @@ async function relationalQuery(
       count(distinct t.session_id) as "visitors",
       count(distinct t.visit_id) as "visits",
       ${bounceQuery} as "bounces",
-      cast(coalesce(sum(${getTimestampDiffSQL('t.min_time', 't.max_time')}), 0) as bigint) as "totaltime"
+      cast(coalesce(sum(coalesce(engagement.engagement_time, ${getTimestampDiffSQL('t.min_time', 't.max_time')})), 0) as bigint) as "totaltime"
     from (
       select
         website_event.session_id,
@@ -116,6 +117,7 @@ async function relationalQuery(
       group by 1, 2
     ) as t
     ${visitEventsJoin}
+    ${getEngagementQuery('t')}
     `,
     queryParams,
     FUNCTION_NAME,
@@ -126,7 +128,7 @@ async function clickhouseQuery(
   websiteId: string,
   filters: QueryFilters,
 ): Promise<WebsiteStatsData[]> {
-  const { rawQuery, parseFilters } = clickhouse;
+  const { rawQuery, parseFilters, getEngagementQuery } = clickhouse;
   const { filterQuery, cohortQuery, excludeBounceQuery, queryParams } = parseFilters({
     ...filters,
     websiteId,
@@ -148,7 +150,7 @@ async function clickhouseQuery(
       uniq(t.session_id) as "visitors",
       uniq(t.visit_id) as "visits",
       ${excludeBounce ? '0' : 'sumIf(1, t.c = 1 and ifNull(e.has_custom_event, 0) = 0)'} as "bounces",
-      sum(max_time-min_time) as "totaltime"
+      sum(ifNull(engagement_time, max_time-min_time)) as "totaltime"
     from (
       select
         session_id,
@@ -172,7 +174,8 @@ async function clickhouseQuery(
         and created_at between {startDate:DateTime64} and {endDate:DateTime64}
         and event_type = ${EVENT_TYPE.customEvent}
       group by session_id, visit_id
-    ) as e using (session_id, visit_id)`};
+    ) as e using (session_id, visit_id)`}
+    ${getEngagementQuery()};
     `;
   } else {
     sql = `
@@ -181,7 +184,7 @@ async function clickhouseQuery(
       uniq(session_id) as "visitors",
       uniq(visit_id) as "visits",
       ${bounceQuery} as "bounces",
-      sum(max_time-min_time) as "totaltime"
+      sum(ifNull(engagement_time, max_time-min_time)) as "totaltime"
     from (
       select
         session_id,
@@ -200,6 +203,7 @@ async function clickhouseQuery(
       group by session_id, visit_id
       having c > 0
     ) as t
+    ${getEngagementQuery()}
     `;
   }
 

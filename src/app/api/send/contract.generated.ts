@@ -21,7 +21,7 @@ const operation1 = defineOperation({
             properties: {
               type: {
                 type: 'string',
-                enum: ['event', 'identify', 'performance'],
+                enum: ['event', 'identify', 'performance', 'engagement'],
               },
               payload: {
                 type: 'object',
@@ -107,6 +107,11 @@ const operation1 = defineOperation({
                     type: 'number',
                     minimum: 0,
                     maximum: 60000,
+                  },
+                  engagement: {
+                    type: 'integer',
+                    exclusiveMinimum: 0,
+                    maximum: 86400000,
                   },
                 },
               },

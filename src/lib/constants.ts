@@ -108,6 +108,7 @@ export const COLLECTION_TYPE = {
   event: 'event',
   identify: 'identify',
   performance: 'performance',
+  engagement: 'engagement',
   record: 'record',
 } as const;
 
