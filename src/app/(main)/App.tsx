@@ -22,7 +22,7 @@ export function App({ children }) {
   const config = useConfig();
   const { pathname, router, teamId } = useNavigation();
   const { isLoading: isTeamLoading, error: teamError } = useTeamQuery(teamId);
-  const { data: twoFactorStatus } = useTwoFactorStatusQuery(!!user && !config?.cloudMode);
+  const { data: twoFactorStatus } = useTwoFactorStatusQuery(!!user && !config.cloudMode);
   const needsTwoFactorSetup = !!(twoFactorStatus?.isRequired && !twoFactorStatus?.isEnabled);
 
   useEffect(() => {
@@ -40,7 +40,7 @@ export function App({ children }) {
     }
   }, [teamId, teamError, router]);
 
-  if (isLoading || !config || (teamId && isTeamLoading)) {
+  if (isLoading || (teamId && isTeamLoading)) {
     return <Loading placement="absolute" />;
   }
 
@@ -51,7 +51,7 @@ export function App({ children }) {
     return null;
   }
 
-  if (!user || !config) {
+  if (!user) {
     return null;
   }
 

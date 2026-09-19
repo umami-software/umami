@@ -1,7 +1,9 @@
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import { headers } from 'next/headers';
+import { connection } from 'next/server';
 import { Suspense } from 'react';
+import { getConfig } from '@/lib/config';
 import { getBaseUrl } from '@/lib/get-base-url';
 import { Providers } from './Providers';
 import '@umami/react-zen/styles.full.css';
@@ -13,7 +15,7 @@ const inter = Inter({
   variable: '--font-inter',
 });
 
-export default function ({ children }) {
+export default async function ({ children }) {
   if (process.env.DISABLE_UI) {
     return (
       <html>
@@ -21,6 +23,11 @@ export default function ({ children }) {
       </html>
     );
   }
+
+  // Force request-time rendering so config reflects runtime env, not build-time env.
+  await connection();
+
+  const config = getConfig();
 
   return (
     <html lang="en" className={`${inter.className} ${inter.variable}`}>
@@ -38,7 +45,7 @@ export default function ({ children }) {
       </head>
       <body>
         <Suspense>
-          <Providers>{children}</Providers>
+          <Providers config={config}>{children}</Providers>
         </Suspense>
       </body>
     </html>
