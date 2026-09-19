@@ -17,6 +17,7 @@ export function resolveCollectionSession({
   createdAt,
   cache,
   historical = false,
+  preserveVisit = false,
 }: {
   sourceId: string;
   ip: string;
@@ -25,6 +26,7 @@ export function resolveCollectionSession({
   createdAt: Date;
   cache?: CollectionCache | null;
   historical?: boolean;
+  preserveVisit?: boolean;
 }) {
   const now = Math.floor(Date.now() / 1000);
   const sessionSalt = getSalt(process.env.SALT_ROTATION, createdAt);
@@ -33,7 +35,7 @@ export function resolveCollectionSession({
   const sessionDrift = !!cache?.sessionId && cache.sessionId !== sessionId;
   let visitId = cache?.visitId || uuid(sessionId, visitSalt);
   let iat = cache?.iat || now;
-  if (sessionDrift || (!historical && now - iat > 1800)) {
+  if (sessionDrift || (!historical && !preserveVisit && now - iat > 1800)) {
     visitId = uuid(sessionId, visitSalt);
     iat = now;
   }
