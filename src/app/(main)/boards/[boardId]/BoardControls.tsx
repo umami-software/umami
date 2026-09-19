@@ -1,8 +1,9 @@
-import { Box } from '@umami/react-zen';
+import { Box, Row } from '@umami/react-zen';
 import { LinkControls } from '@/app/(main)/links/[linkId]/LinkControls';
 import { PixelControls } from '@/app/(main)/pixels/[pixelId]/PixelControls';
 import { WebsiteControls } from '@/app/(main)/websites/[websiteId]/WebsiteControls';
 import { useBoard } from '@/components/hooks';
+import { WebsiteDateFilter } from '@/components/input/WebsiteDateFilter';
 import { BOARD_ENTITY_TYPES, getBoardEntity, getFirstBoardComponentEntity } from '@/lib/boards';
 
 export function BoardControls() {
@@ -13,7 +14,15 @@ export function BoardControls() {
   const entityId = boardEntity.entityId || fallbackEntity.entityId;
 
   if (!entityId) {
-    return null;
+    // Boards composed only of entity-independent components (e.g. the All
+    // websites group) still need the date range to be visible and adjustable
+    return (
+      <Box marginBottom="4">
+        <Row alignItems="center" justifyContent="flex-end">
+          <WebsiteDateFilter showAllTime={false} />
+        </Row>
+      </Box>
+    );
   }
 
   return (
