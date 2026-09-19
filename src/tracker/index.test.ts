@@ -109,6 +109,22 @@ test('sends engaged time only while the page is visible and focused', async () =
   await new Promise(resolve => setTimeout(resolve, 0));
   expect(fetchMock).toHaveBeenCalledTimes(2);
 
+  // Sub-second intervals are held back and carried into the next report
+  for (const end of [14600, 20600]) {
+    now = end - 600;
+    visibilityState = 'visible';
+    document.dispatchEvent(new Event('visibilitychange'));
+    now = end;
+    visibilityState = 'hidden';
+    document.dispatchEvent(new Event('visibilitychange'));
+  }
+
+  await vi.waitFor(() => expect(fetchMock).toHaveBeenCalledTimes(3));
+  expect(JSON.parse(fetchMock.mock.calls[2][1].body)).toMatchObject({
+    type: 'engagement',
+    payload: { engagement: 1200 },
+  });
+
   delete (document as Document & { visibilityState?: string }).visibilityState;
   vi.restoreAllMocks();
 });
