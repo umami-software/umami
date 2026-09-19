@@ -648,8 +648,11 @@ type MetricEntry = PerformanceEntry & {
 
     const flush = () => {
       update();
-      if (time >= 1000) send({ ...getPayload(), engagement: Math.round(time) }, 'engagement');
-      time = 0;
+      // Carry sub-second time over to the next flush instead of dropping it
+      if (time >= 1000) {
+        send({ ...getPayload(), engagement: Math.round(time) }, 'engagement');
+        time = 0;
+      }
     };
 
     window.addEventListener('focus', update);
