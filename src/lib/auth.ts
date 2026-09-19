@@ -20,6 +20,7 @@ import { createSecureToken, parseSecureToken, parseToken } from '@/lib/jwt';
 import redis from '@/lib/redis';
 import { ensureArray } from '@/lib/utils';
 import { getApiKeyByHash, updateApiKeyLastUsed } from '@/queries/prisma/apiKey';
+import { getShare } from '@/queries/prisma/share';
 import { getUser } from '@/queries/prisma/user';
 
 const log = debug('umami:auth');
@@ -172,7 +173,7 @@ export async function hasPermission(role: string, permission: string | string[])
   return ensureArray(permission).some(e => ROLE_PERMISSIONS[role]?.includes(e));
 }
 
-export function parseShareToken(request: Request) {
+export async function parseShareToken(request: Request) {
   try {
     const token: any = parseToken(request.headers.get(SHARE_TOKEN_HEADER), secret());
 
@@ -183,7 +184,23 @@ export function parseShareToken(request: Request) {
       return null;
     }
 
-    return token;
+    // Share tokens are stateless and never expire, so the share they were minted
+    // from is re-checked on every request. Deleting a share revokes its tokens.
+    if (!token.shareId) {
+      return null;
+    }
+
+    const share = await getShare(token.shareId);
+    const entityId = token.boardId ?? token.websiteId;
+
+    if (!share || share.shareType !== token.shareType || share.entityId !== entityId) {
+      log('Share token rejected: share not found');
+      return null;
+    }
+
+    // Use the current parameters rather than the ones captured at mint time, so
+    // turning a section off takes effect for tokens that are already issued.
+    return { ...token, parameters: share.parameters };
   } catch (e) {
     log(e);
     return null;
