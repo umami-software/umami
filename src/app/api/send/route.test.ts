@@ -14,6 +14,7 @@ import { fetchWebsite } from '@/lib/load';
 import { parseRequest } from '@/lib/request';
 import {
   createSession,
+  saveEngagement,
   saveEvent,
   saveSessionData,
   saveSessionLink,
@@ -38,6 +39,7 @@ vi.mock('@/lib/request', () => ({
 
 vi.mock('@/queries/sql', () => ({
   createSession: vi.fn(),
+  saveEngagement: vi.fn(),
   saveEvent: vi.fn(),
   saveSessionData: vi.fn(),
   saveSessionLink: vi.fn(),
@@ -55,6 +57,7 @@ const fetchWebsiteMock = vi.mocked(fetchWebsite);
 const isbotMock = vi.mocked(isbot);
 const createSessionMock = vi.mocked(createSession);
 const saveEventMock = vi.mocked(saveEvent);
+const saveEngagementMock = vi.mocked(saveEngagement);
 const saveSessionDataMock = vi.mocked(saveSessionData);
 const saveSessionLinkMock = vi.mocked(saveSessionLink);
 const updateSessionMock = vi.mocked(updateSession);
@@ -903,6 +906,64 @@ describe('performance collection', () => {
       fcp: 900,
       ttfb: 300,
     });
+  });
+});
+
+describe('engagement collection', () => {
+  test('saves the engaged time for the page being left', async () => {
+    await callPOST({
+      type: 'engagement',
+      payload: {
+        website: WEBSITE_ID,
+        hostname: 'example.com',
+        url: '/docs/getting-started?ref=nav',
+        engagement: 42000,
+      },
+    });
+
+    expect(saveEventMock).not.toHaveBeenCalled();
+    expect(saveEngagementMock).toHaveBeenCalledTimes(1);
+    expect(saveEngagementMock.mock.calls[0][0]).toMatchObject({
+      websiteId: WEBSITE_ID,
+      urlPath: '/docs/getting-started',
+      engagementTime: 42000,
+    });
+  });
+
+  test('keeps the cached visit when the visit is older than 30 minutes', async () => {
+    const token = createToken(
+      {
+        type: CACHE_TOKEN_TYPE,
+        websiteId: WEBSITE_ID,
+        sessionId: makeComputedSessionId(WEBSITE_ID),
+        visitId: 'cached-visit',
+        iat: Math.floor(Date.now() / 1000) - 2000,
+      },
+      secret(),
+    );
+
+    const response = await callPOST(
+      { type: 'engagement', payload: { website: WEBSITE_ID, url: '/', engagement: 2400000 } },
+      { headers: { 'x-umami-cache': token } },
+    );
+
+    expect(saveEngagementMock.mock.calls[0][0]).toMatchObject({ visitId: 'cached-visit' });
+    await expect(response.json()).resolves.toMatchObject({ visitId: 'cached-visit' });
+  });
+
+  test('validates the engaged time', async () => {
+    await callPOST({ type: 'event', payload: { website: WEBSITE_ID, url: '/' } });
+    const schema = parseRequestMock.mock.calls[0][1] as {
+      safeParse: (value: unknown) => { success: boolean };
+    };
+    const parse = (engagement: unknown) =>
+      schema.safeParse({ type: 'engagement', payload: { website: WEBSITE_ID, engagement } })
+        .success;
+
+    expect(parse(5000)).toBe(true);
+    expect(parse(0)).toBe(false);
+    expect(parse(1.5)).toBe(false);
+    expect(parse(86400001)).toBe(false);
   });
 });
 

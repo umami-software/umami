@@ -256,6 +256,19 @@ function getExcludeBounceQuery(filters: Record<string, any>) {
     `;
 }
 
+// Engaged time per visit, in seconds, reported by the tracker's data-engagement option
+function getEngagementQuery(alias: string) {
+  return `left join (
+      select session_id, visit_id, floor(sum(engagement_time) / 1000) as "engagement_time"
+      from website_engagement
+      where website_id = {{websiteId::uuid}}
+        and created_at between {{startDate}} and {{endDate}}
+      group by 1, 2
+    ) as engagement
+      on engagement.session_id = ${alias}.session_id
+      and engagement.visit_id = ${alias}.visit_id`;
+}
+
 function getDateQuery(filters: Record<string, any>) {
   const { startDate, endDate } = filters;
 
@@ -920,6 +933,7 @@ export default {
   getDateSQL,
   getDateStringSQL,
   getDateWeeklySQL,
+  getEngagementQuery,
   getFilterQuery,
   getPropertyFilterQuery,
   getSearchParameters,
