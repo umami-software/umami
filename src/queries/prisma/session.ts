@@ -82,6 +82,13 @@ export async function deleteSession(
       },
     });
 
+    await tx.websiteEngagement.deleteMany({
+      where: {
+        websiteId,
+        sessionId,
+      },
+    });
+
     await tx.revenue.deleteMany({
       where: {
         websiteId,

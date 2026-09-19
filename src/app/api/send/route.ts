@@ -12,7 +12,14 @@ import { parseRequest } from '@/lib/request';
 import { badRequest, forbidden, json, serverError } from '@/lib/response';
 import { anyObjectParam, urlOrPathParam } from '@/lib/schema';
 import { safeDecodeURI, safeDecodeURIComponent } from '@/lib/url';
-import { createSession, saveEvent, saveSessionData, saveSessionLink, updateSession } from '@/queries/sql';
+import {
+  createSession,
+  saveEngagement,
+  saveEvent,
+  saveSessionData,
+  saveSessionLink,
+  updateSession,
+} from '@/queries/sql';
 
 interface Cache {
   websiteId: string;
@@ -31,7 +38,7 @@ const safeStringParam = () =>
   });
 
 const schema = z.object({
-  type: z.enum(['event', 'identify', 'performance']),
+  type: z.enum(['event', 'identify', 'performance', 'engagement']),
   payload: z
     .object({
       website: z.uuid().optional(),
@@ -58,6 +65,7 @@ const schema = z.object({
       cls: z.number().nonnegative().max(100).optional(),
       fcp: z.number().nonnegative().max(60000).optional(),
       ttfb: z.number().nonnegative().max(60000).optional(),
+      engagement: z.number().int().positive().max(86400000).optional(),
     })
     .refine(
       data => {
@@ -102,6 +110,7 @@ export async function POST(request: Request) {
       cls,
       fcp,
       ttfb,
+      engagement,
     } = payload;
 
     const sourceId = websiteId || pixelId || linkId;
@@ -191,8 +200,9 @@ export async function POST(request: Request) {
       iat = now;
     }
 
-    // Expire visit after 30 minutes
-    if (!timestamp && now - iat > 1800) {
+    // Expire visit after 30 minutes. Engagement is reported for the page the
+    // visitor is leaving, so it stays with the visit that page belongs to.
+    if (!timestamp && now - iat > 1800 && type !== COLLECTION_TYPE.engagement) {
       visitId = uuid(sessionId, visitSalt);
       iat = now;
     }
@@ -373,6 +383,21 @@ export async function POST(request: Request) {
         ttfb,
         createdAt,
       });
+    } else if (type === COLLECTION_TYPE.engagement) {
+      if (websiteId && engagement) {
+        const base = hostname ? `https://${hostname}` : 'https://localhost';
+        const currentUrl = new URL(url, base);
+        const urlPath = currentUrl.pathname === '/undefined' ? '' : currentUrl.pathname;
+
+        await saveEngagement({
+          websiteId,
+          sessionId,
+          visitId,
+          urlPath: safeDecodeURI(urlPath),
+          engagementTime: engagement,
+          createdAt,
+        });
+      }
     }
 
     const token = createToken(
