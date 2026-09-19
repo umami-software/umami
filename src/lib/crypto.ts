@@ -76,3 +76,7 @@ export function getSalt(saltRotation: string, createdAt: Date): string {
     ).toUTCString(),
   );
 }
+
+export function createRefreshToken() {
+  return crypto.randomBytes(64).toString('hex');
+}
