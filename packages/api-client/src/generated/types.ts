@@ -12021,7 +12021,7 @@ export interface operations {
   listWebsites: {
     parameters: {
       query?: {
-        /** @description When present, include websites accessible through owned or managed teams. */
+        /** @description When present, include websites accessible through team membership. */
         includeTeams?: string;
         /** @description Maximum number of results to include. */
         maxResults?: number;
