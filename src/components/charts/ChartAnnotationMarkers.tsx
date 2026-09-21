@@ -72,7 +72,7 @@ export function ChartAnnotationMarkers({
             >
               {annotations.length > 1 && <span className={styles.count}>{annotations.length}</span>}
             </button>
-            <Tooltip placement="top">
+            <Tooltip placement="top" className="bg-transparent p-0">
               <Column
                 gap="3"
                 padding="1"
