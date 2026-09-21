@@ -4,15 +4,17 @@ import { DateDistance } from '@/components/common/DateDistance';
 import { useMessages, useNavigation } from '@/components/hooks';
 
 import { useEffect } from 'react';
-import { setReplays } from '@/store/replays';
+import { clearReplays, setReplays } from '@/store/replays';
 
-export function SavedReplaysTable({ ...props }: DataTableProps) {
+export function SavedReplaysTable({ websiteId, ...props }: DataTableProps & { websiteId: string }) {
   const { t, labels } = useMessages();
   const { router, updateParams } = useNavigation();
 
   useEffect(() => {
-    setReplays(props.data || []);
-  }, [props.data]);
+    setReplays(websiteId, 'saved', props.data || []);
+
+    return () => clearReplays(websiteId, 'saved');
+  }, [websiteId, props.data]);
 
   return (
     <DataTable {...props}>
