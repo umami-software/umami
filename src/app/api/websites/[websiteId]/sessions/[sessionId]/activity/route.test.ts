@@ -110,3 +110,21 @@ test('keeps activity scoped to the raw session when multiple identities are link
   expect(getLinkedSessionIdsMock).not.toHaveBeenCalled();
   expect(getSessionActivityMock).toHaveBeenCalledWith('website-1', ['session-1'], filters);
 });
+
+// GHSA-55xw-prrf-hh7r / GHSA-9w7r-jhfw-vjw7
+test('requires the sessions share section', async () => {
+  const auth = { shareToken: { websiteId: 'website-1', parameters: { events: true } } };
+  parseRequestMock.mockResolvedValue({ auth, query: {}, error: undefined } as any);
+  canViewWebsiteSectionMock.mockResolvedValue(false);
+
+  const response = await GET(
+    new Request('http://localhost/api/websites/website-1/sessions/session-1/activity'),
+    {
+      params: Promise.resolve({ websiteId: 'website-1', sessionId: 'session-1' }),
+    },
+  );
+
+  expect(response.status).toBe(401);
+  expect(canViewWebsiteSectionMock).toHaveBeenCalledWith(auth, 'website-1', 'sessions');
+  expect(getSessionActivityMock).not.toHaveBeenCalled();
+});

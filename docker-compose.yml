@@ -6,7 +6,8 @@ services:
       - "3000:3000"
     environment:
       DATABASE_URL: postgresql://umami:umami@db:5432/umami
-      APP_SECRET: replace-me-with-a-random-string
+      # Generate with: openssl rand -hex 32
+      APP_SECRET: ${APP_SECRET:?Set APP_SECRET in your .env file}
       # Required for two-factor authentication, generate with: openssl rand -hex 32
       TWO_FACTOR_ENCRYPTION_KEY: replace-me-with-a-64-character-hex-string
     depends_on:

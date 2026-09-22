@@ -1,6 +1,7 @@
 import crypto from 'node:crypto';
 import { startOfDay, startOfMonth, startOfWeek } from 'date-fns';
 import { v4, v5, v7 } from 'uuid';
+import { getAppSecret } from './app-secret';
 
 const ALGORITHM = 'aes-256-gcm';
 const IV_LENGTH = 16;
@@ -54,7 +55,7 @@ export function md5(...args: string[]) {
 }
 
 export function secret() {
-  return hash(process.env.APP_SECRET || process.env.DATABASE_URL);
+  return hash(getAppSecret());
 }
 
 export function uuid(...args: any) {

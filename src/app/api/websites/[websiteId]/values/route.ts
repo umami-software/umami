@@ -39,6 +39,12 @@ export async function GET(
 
   const { type } = query;
 
+  // distinctId values identify individual visitors, so they are only available
+  // to shares that expose the Sessions section.
+  if (type === 'distinctId' && !(await canViewWebsiteSection(auth, websiteId, 'sessions'))) {
+    return unauthorized();
+  }
+
   if (!SESSION_COLUMNS.includes(type) && !EVENT_COLUMNS.includes(type) && !SEGMENT_TYPES[type]) {
     return badRequest();
   }
