@@ -226,6 +226,21 @@ describe('getOffsetDateRange', () => {
     expect(shifted.endDate).toEqual(addMonths(range.endDate, -1));
   });
 
+  test.each([
+    ['2026-09-15T12:00:00', -1], // September (30 days) -> August (31 days)
+    ['2026-02-15T12:00:00', -1], // February (28 days) -> January (31 days)
+    ['2026-04-15T12:00:00', -1], // April (30 days) -> March (31 days)
+    ['2026-02-15T12:00:00', 1], // February (28 days) -> March (31 days)
+  ])('covers the whole target month when shifting a month range from %s by %i', (now, offset) => {
+    vi.setSystemTime(new Date(now));
+    const range = parseDateRange('0month');
+    const shifted = getOffsetDateRange(range, offset);
+    const target = addMonths(range.startDate, offset);
+
+    expect(shifted.startDate).toEqual(startOfMonth(target));
+    expect(shifted.endDate).toEqual(endOfMonth(target));
+  });
+
   test('shifts year ranges (year rollover)', () => {
     const range = parseDateRange('1year');
     const shifted = getOffsetDateRange(range, 1);
