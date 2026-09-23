@@ -33,6 +33,9 @@ export function BoardRowFilterButton({
 }) {
   const { board, updateBoard } = useBoard();
   const { t, labels } = useMessages();
+  // Always set, even for an unfiltered row, so the dialog never seeds the row
+  // with the viewer's own URL filters.
+  const defaultValues = rowFilters ?? {};
 
   const handleChange: FilterEditFormProps['onChange'] = ({
     filters,
@@ -89,7 +92,7 @@ export function BoardRowFilterButton({
           )}
           <FilterEditForm
             websiteId={websiteId}
-            defaultValues={rowFilters}
+            defaultValues={defaultValues}
             onChange={handleChange}
             onClose={close}
           />

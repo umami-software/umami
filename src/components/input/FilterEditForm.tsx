@@ -44,18 +44,27 @@ export function FilterEditForm({
   } = useNavigation();
   const { filters, eventPropertyFilters, sessionPropertyFilters } = useFilters();
   const { t, labels } = useMessages();
-  const [currentFilters, setCurrentFilters] = useState(defaultValues?.filters ?? filters);
+  // defaultValues replaces the URL state wholesale rather than per field: a
+  // saved set that leaves a field empty means "none", not "whatever the page
+  // is currently filtered by".
+  const initial = defaultValues ?? {
+    filters,
+    eventPropertyFilters,
+    sessionPropertyFilters,
+    segment,
+    cohort,
+    match,
+  };
+  const [currentFilters, setCurrentFilters] = useState(initial.filters ?? []);
   const [currentEventPropertyFilters, setCurrentEventPropertyFilters] = useState(
-    defaultValues?.eventPropertyFilters ?? eventPropertyFilters,
+    initial.eventPropertyFilters ?? [],
   );
   const [currentSessionPropertyFilters, setCurrentSessionPropertyFilters] = useState(
-    defaultValues?.sessionPropertyFilters ?? sessionPropertyFilters,
+    initial.sessionPropertyFilters ?? [],
   );
-  const [currentSegment, setCurrentSegment] = useState(defaultValues?.segment ?? segment);
-  const [currentCohort, setCurrentCohort] = useState(defaultValues?.cohort ?? cohort);
-  const [currentMatch, setCurrentMatch] = useState<string>(
-    defaultValues?.match ?? match ?? 'all',
-  );
+  const [currentSegment, setCurrentSegment] = useState(initial.segment);
+  const [currentCohort, setCurrentCohort] = useState(initial.cohort);
+  const [currentMatch, setCurrentMatch] = useState<string>(initial.match ?? 'all');
   const { isMobile } = useMobile();
   const isPixelLink = !websiteId || pathname.includes('/pixels') || pathname.includes('/links');
   const isEventsPath = pathname.endsWith('/events');
