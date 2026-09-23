@@ -192,9 +192,13 @@ export function BoardEditRow({
           </TooltipTrigger>
           <BoardRowFilterButton
             rowId={rowId}
-            websiteId={scope.targetWebsiteId}
-            rowFilters={filters}
-            isActive={scope.hasFilters}
+            websiteId={scope.editWebsiteId}
+            rowFilters={scope.editValues}
+            isActive={scope.hasFilters && !scope.isStale}
+            isStale={scope.isStale}
+            // Filters only ever apply to a website column, so a row without
+            // one has nothing to filter — unless stale filters need clearing.
+            isDisabled={!scope.editWebsiteId && !scope.hasFilters}
           />
           <TooltipTrigger delay={0}>
             <Button

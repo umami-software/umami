@@ -1,9 +1,13 @@
+import { Column, Icon, Row, Text } from '@umami/react-zen';
 import { produce } from 'immer';
 import { useBoard, useMessages } from '@/components/hooks';
-import { ListFilter } from '@/components/icons';
+import { ListFilter, TriangleAlert } from '@/components/icons';
 import { DialogButton } from '@/components/input/DialogButton';
 import { FilterEditForm, type FilterEditFormProps } from '@/components/input/FilterEditForm';
 import type { BoardRowFilters } from '@/lib/types';
+
+const STALE_MESSAGE =
+  'These filters were set for a website no longer in this row, so they are not applied.';
 
 /**
  * Edits the filters saved on a single board row. Reuses the page-level filter
@@ -15,12 +19,17 @@ export function BoardRowFilterButton({
   websiteId,
   rowFilters,
   isActive,
+  isStale,
+  isDisabled,
 }: {
   rowId: string;
   websiteId?: string;
   rowFilters?: BoardRowFilters;
   /** Highlights the button so a row that already carries filters reads as such. */
   isActive?: boolean;
+  /** The saved filters target a website no longer in the row, so apply nowhere. */
+  isStale?: boolean;
+  isDisabled?: boolean;
 }) {
   const { board, updateBoard } = useBoard();
   const { t, labels } = useMessages();
@@ -60,19 +69,31 @@ export function BoardRowFilterButton({
 
   return (
     <DialogButton
-      icon={<ListFilter />}
+      icon={isStale ? <TriangleAlert /> : <ListFilter />}
       title={t(labels.filter)}
-      aria-label={t(labels.filter)}
+      aria-label={isStale ? `${t(labels.filter)}: ${STALE_MESSAGE}` : t(labels.filter)}
       variant={isActive ? 'primary' : 'outline'}
       height="min(80dvh, calc(100dvh - 40px))"
+      isDisabled={isDisabled}
+      data-test="board-row-filter-button"
     >
       {({ close }) => (
-        <FilterEditForm
-          websiteId={websiteId}
-          defaultValues={rowFilters}
-          onChange={handleChange}
-          onClose={close}
-        />
+        <Column gap="4" style={{ flex: 1, minHeight: 0 }}>
+          {isStale && (
+            <Row gap="2" alignItems="center" data-test="board-row-filter-stale">
+              <Icon size="sm">
+                <TriangleAlert />
+              </Icon>
+              <Text color="muted">{STALE_MESSAGE}</Text>
+            </Row>
+          )}
+          <FilterEditForm
+            websiteId={websiteId}
+            defaultValues={rowFilters}
+            onChange={handleChange}
+            onClose={close}
+          />
+        </Column>
       )}
     </DialogButton>
   );

@@ -125,7 +125,7 @@ test.describe('Board row filters', () => {
   test('scopes a filtered row and leaves an unfiltered one alone', async ({ page, request }) => {
     const auth = await loginPage(page, request);
     const websiteId = await addWebsiteWithId(request, auth, 'Row filter site', 'rowfilter2.com');
-    const filteredBoard = await addBoard(request, auth, websiteId, rowFilters);
+    const filteredBoard = await addBoard(request, auth, websiteId, { ...rowFilters, websiteId });
     const plainBoard = await addBoard(request, auth, websiteId);
 
     // The filtered row shows its filter and sends it with the row's queries.
@@ -206,5 +206,38 @@ test.describe('Board row filters', () => {
     await request.delete(`/api/boards/${boardId}`, { headers: authHeaders(auth) });
     await request.delete(`/api/websites/${filtered}`, { headers: authHeaders(auth) });
     await request.delete(`/api/websites/${other}`, { headers: authHeaders(auth) });
+  });
+
+  test('applies filters nowhere once their website leaves the row', async ({ page, request }) => {
+    const auth = await loginPage(page, request);
+    const authored = await addWebsiteWithId(request, auth, 'Row filter C', 'rowfilterc.com');
+    const current = await addWebsiteWithId(request, auth, 'Row filter D', 'rowfilterd.com');
+
+    // The row's only column now shows a different website than the one the
+    // filters were authored against — as after replacing the column.
+    const boardId = await addBoard(request, auth, current, {
+      ...rowFilters,
+      websiteId: authored,
+    });
+
+    const scopedRequests: string[] = [];
+    page.on('request', req => {
+      if (req.url().includes('/api/websites/')) {
+        scopedRequests.push(req.url());
+      }
+    });
+
+    await page.goto(`/boards/${boardId}`);
+    await expect.poll(() => scopedRequests.some(url => url.includes(current))).toBe(true);
+    await expect(page.getByTestId('board-row-filter-indicator')).toHaveCount(0);
+    expect(scopedRequests.some(url => url.includes('spf0='))).toBe(false);
+
+    // The filters are kept, so the board still returns them as saved.
+    const response = await request.get(`/api/boards/${boardId}`, { headers: authHeaders(auth) });
+    expect((await response.json()).parameters.rows[0].filters.websiteId).toBe(authored);
+
+    await request.delete(`/api/boards/${boardId}`, { headers: authHeaders(auth) });
+    await request.delete(`/api/websites/${authored}`, { headers: authHeaders(auth) });
+    await request.delete(`/api/websites/${current}`, { headers: authHeaders(auth) });
   });
 });
