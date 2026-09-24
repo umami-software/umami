@@ -6135,13 +6135,13 @@ export interface operations {
         content: {
           'application/json': {
             cloudMode: boolean;
-            faviconUrl: string;
-            linksUrl: string;
-            pixelsUrl: string;
+            faviconUrl?: string;
+            linksUrl?: string;
+            pixelsUrl?: string;
             privateMode: boolean;
             sessionDeletionEnabled: boolean;
             telemetryDisabled: boolean;
-            trackerScriptName: string;
+            trackerScriptName?: string;
             updatesDisabled: boolean;
           };
         };

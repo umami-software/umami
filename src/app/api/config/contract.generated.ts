@@ -50,13 +50,9 @@ const operation1 = defineOperation({
               },
               required: [
                 'cloudMode',
-                'faviconUrl',
-                'linksUrl',
-                'pixelsUrl',
                 'privateMode',
                 'sessionDeletionEnabled',
                 'telemetryDisabled',
-                'trackerScriptName',
                 'updatesDisabled',
               ],
             },
