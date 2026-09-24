@@ -6,6 +6,10 @@ import { getWebsite } from '@/queries/prisma';
 import { saveRecording } from '@/queries/sql';
 import { OPTIONS, POST } from './route';
 
+vi.hoisted(() => {
+  process.env.APP_SECRET ??= 'test-app-secret';
+});
+
 vi.mock('@/lib/detect', () => ({
   getClientInfo: vi.fn(),
   hasBlockedIp: vi.fn(),

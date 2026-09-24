@@ -9,6 +9,10 @@ import { getUser } from '@/queries/prisma/user';
 import { hashApiKey } from './api-key';
 import { checkAuth } from './auth';
 
+vi.hoisted(() => {
+  process.env.APP_SECRET ??= 'test-app-secret';
+});
+
 vi.mock('@/lib/jwt', () => ({
   parseSecureToken: vi.fn(),
   parseToken: vi.fn(() => null),

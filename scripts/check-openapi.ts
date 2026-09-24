@@ -1,7 +1,7 @@
 import { readFile } from 'node:fs/promises';
 import path from 'node:path';
 import { formatCoverageSummary } from '@/openapi/coverage';
-import { buildOpenApiDocument } from '@/openapi/document';
+import { buildOpenApiDocument, getPublishedDocument } from '@/openapi/document';
 import { getOperationKey } from '@/openapi/operation';
 import { serializeOpenApiDocument } from '@/openapi/serialize';
 
@@ -11,7 +11,7 @@ const requireExplicit =
   process.argv.includes('--explicit') || process.env.OPENAPI_REQUIRE_EXPLICIT === '1';
 const verbose = process.argv.includes('--verbose');
 const { document, coverage } = await buildOpenApiDocument('all', projectRoot);
-const expected = serializeOpenApiDocument(document);
+const expected = serializeOpenApiDocument(getPublishedDocument(document));
 let actual = '';
 
 try {

@@ -2,7 +2,8 @@
 
 Umami generates `public/openapi.json` for every App Router API handler. It statically infers a
 baseline contract from route source and replaces that baseline with a colocated, Zod-backed
-contract wherever one exists.
+contract wherever one exists. Paths listed in `UNPUBLISHED_PATHS` (`src/openapi/document.ts`) keep
+their contracts but are left out of the published document and the generated API client.
 
 `public/openapi.json` is an ignored build artifact and must not be committed. Generate it locally
 with `pnpm openapi:generate` before running checks or generating the API client.

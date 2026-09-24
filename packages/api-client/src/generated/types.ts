@@ -466,26 +466,6 @@ export interface paths {
     patch?: never;
     trace?: never;
   };
-  '/api/config': {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    /**
-     * Get application configuration
-     * @description Returns public application settings, including deployment mode, feature availability, and tracker and resource URLs.
-     */
-    get: operations['getConfig'];
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
-    trace?: never;
-  };
   '/api/dashboard': {
     parameters: {
       query?: never;
@@ -6114,36 +6094,6 @@ export interface operations {
            *     }
            */
           'application/json': components['schemas']['ApiError'];
-        };
-      };
-    };
-  };
-  getConfig: {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    requestBody?: never;
-    responses: {
-      /** @description The operation completed successfully. */
-      200: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          'application/json': {
-            cloudMode: boolean;
-            faviconUrl?: string;
-            linksUrl?: string;
-            pixelsUrl?: string;
-            privateMode: boolean;
-            sessionDeletionEnabled: boolean;
-            telemetryDisabled: boolean;
-            trackerScriptName?: string;
-            updatesDisabled: boolean;
-          };
         };
       };
     };
@@ -21720,9 +21670,59 @@ export interface operations {
         };
         content: {
           'application/json': {
-            canDelete: unknown;
-            distinctIds: unknown;
-            stitchedSessionCount: unknown;
+            /** @description Browser used by the visitor. */
+            browser: string | null;
+            /** @description Whether the caller can delete this session. */
+            canDelete: boolean;
+            /** @description City of the visitor. */
+            city: string | null;
+            /** @description Country code of the visitor. */
+            country: string | null;
+            /** @description Device category used by the visitor. */
+            device: string | null;
+            /** @description Distinct ID of the session. Omitted unless exactly one distinct ID is linked. */
+            distinctId?: string;
+            /** @description Distinct IDs linked to the session. */
+            distinctIds: string[];
+            events: number;
+            /**
+             * Format: date-time
+             * @description Date and time of the first recorded activity.
+             */
+            firstAt: string;
+            /**
+             * Format: uuid
+             * @description Unique identifier of the resource.
+             */
+            id: string;
+            /** @description Preferred language reported by the visitor browser. */
+            language: string | null;
+            /**
+             * Format: date-time
+             * @description Date and time of the most recent recorded activity.
+             */
+            lastAt: string;
+            /** @description Operating system used by the visitor. */
+            os: string | null;
+            /** @description Region or subdivision of the visitor. */
+            region: string | null;
+            /** @description Screen resolution of the visitor device. */
+            screen: string | null;
+            /** @description Number of sessions merged through the distinct ID, including this one. */
+            stitchedSessionCount: number;
+            /** @description Total visit duration in seconds. */
+            totaltime: number;
+            /** @description Pageview counts for the selected period. */
+            views: number;
+            /** @description Visit counts for the selected period. */
+            visits: number;
+            /**
+             * Format: uuid
+             * @description ID of the website.
+             */
+            websiteId: string;
+          } & {
+            [key: string]: unknown;
           };
         };
       };
@@ -21784,13 +21784,7 @@ export interface operations {
           [name: string]: unknown;
         };
         content: {
-          'application/json': {
-            /**
-             * @description Whether the operation succeeded.
-             * @constant
-             */
-            ok: true;
-          };
+          'application/json': components['schemas']['Ok'];
         };
       };
       /** @description Bad request. */
