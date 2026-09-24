@@ -825,6 +825,84 @@ describe('createUmamiMcpServer', () => {
     ]);
   });
 
+  test('get_goals finds a goalId that is not on the first page of goals', async () => {
+    // 25 goals, paged like getReports: sorted by name, 20 per page by default.
+    const goals = Array.from({ length: 25 }, (_, i) => ({
+      id: `1a2b3c4d-0000-4000-8000-1000000000${String(i + 1).padStart(2, '0')}`,
+      name: `Goal ${String(i + 1).padStart(2, '0')}`,
+      description: '',
+      parameters: { type: 'path', value: `/step-${i + 1}` },
+      createdAt: null,
+    }));
+    const target = goals[22];
+    const missing = '1a2b3c4d-0000-4000-8000-999999999999';
+    const paged = createHarness(url => {
+      const path = url.pathname;
+
+      if (path === `/api/websites/${WEBSITE_ID}/goals`) {
+        const page = Number(url.searchParams.get('page') ?? 1);
+        const pageSize = Number(url.searchParams.get('pageSize') ?? 20);
+
+        return {
+          body: {
+            data: goals.slice((page - 1) * pageSize, page * pageSize),
+            count: goals.length,
+            page,
+            pageSize,
+          },
+        };
+      }
+
+      const goal = goals.find(row => path === `/api/websites/${WEBSITE_ID}/goals/${row.id}`);
+
+      if (goal) {
+        return { body: goal };
+      }
+
+      if (path === `/api/websites/${WEBSITE_ID}/goals/${target.id}/stats`) {
+        return { body: { num: 3, total: 30 } };
+      }
+
+      return {
+        status: 404,
+        body: { error: { message: 'Not found', code: 'not-found', status: 404 } },
+      };
+    });
+    await connect(paged);
+
+    try {
+      const found = await paged.client.callTool({
+        name: 'get_goals',
+        arguments: { websiteId: WEBSITE_ID, goalId: target.id, startAt: '2024-01-01' },
+      });
+
+      expect(found.isError).toBeFalsy();
+      expect(found.structuredContent).toMatchObject({
+        goals: [
+          {
+            id: target.id,
+            name: 'Goal 23',
+            results: { conversions: 3, visitors: 30, conversionRate: 10 },
+          },
+        ],
+        count: 1,
+        hasMore: false,
+      });
+
+      const notFound = await paged.client.callTool({
+        name: 'get_goals',
+        arguments: { websiteId: WEBSITE_ID, goalId: missing },
+      });
+
+      expect(notFound.isError).toBe(true);
+      expect(notFound.structuredContent).toMatchObject({ error: { code: 'not_found' } });
+      expect((notFound.content[0] as { text: string }).text).toContain(missing);
+    } finally {
+      await paged.client.close();
+      await paged.server.close();
+    }
+  });
+
   test('list_segments fetches segments and cohorts', async () => {
     const result = await harness.client.callTool({
       name: 'list_segments',
