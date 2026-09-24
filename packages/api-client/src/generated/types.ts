@@ -6135,13 +6135,13 @@ export interface operations {
         content: {
           'application/json': {
             cloudMode: boolean;
-            faviconUrl?: string;
-            linksUrl?: string;
-            pixelsUrl?: string;
+            faviconUrl: string;
+            linksUrl: string;
+            pixelsUrl: string;
             privateMode: boolean;
             sessionDeletionEnabled: boolean;
             telemetryDisabled: boolean;
-            trackerScriptName?: string;
+            trackerScriptName: string;
             updatesDisabled: boolean;
           };
         };
@@ -12364,6 +12364,7 @@ export interface operations {
         page?: number;
         /** @description Number of results per page. */
         pageSize?: number;
+        /** @description Relative date range, for example 7d or 30day, used instead of an explicit startAt/endAt range. */
         period?:
           | 'today'
           | '24h'
@@ -13265,6 +13266,7 @@ export interface operations {
         pageSize?: number;
         /** @description Filter by page URL path. */
         path?: string;
+        /** @description Relative date range, for example 7d or 30day, used instead of an explicit startAt/endAt range. */
         period?:
           | 'today'
           | '24h'
@@ -13433,6 +13435,7 @@ export interface operations {
         pageSize?: number;
         /** @description Filter by page URL path. */
         path?: string;
+        /** @description Relative date range, for example 7d or 30day, used instead of an explicit startAt/endAt range. */
         period?:
           | 'today'
           | '24h'
@@ -13600,6 +13603,7 @@ export interface operations {
         os?: string;
         /** @description Filter by page URL path. */
         path?: string;
+        /** @description Relative date range, for example 7d or 30day, used instead of an explicit startAt/endAt range. */
         period?:
           | 'today'
           | '24h'
@@ -13741,6 +13745,7 @@ export interface operations {
         os?: string;
         /** @description Filter by page URL path. */
         path?: string;
+        /** @description Relative date range, for example 7d or 30day, used instead of an explicit startAt/endAt range. */
         period?:
           | 'today'
           | '24h'
@@ -13881,6 +13886,7 @@ export interface operations {
         os?: string;
         /** @description Filter by page URL path. */
         path?: string;
+        /** @description Relative date range, for example 7d or 30day, used instead of an explicit startAt/endAt range. */
         period?:
           | 'today'
           | '24h'
@@ -14021,6 +14027,7 @@ export interface operations {
         os?: string;
         /** @description Filter by page URL path. */
         path?: string;
+        /** @description Relative date range, for example 7d or 30day, used instead of an explicit startAt/endAt range. */
         period?:
           | 'today'
           | '24h'
@@ -14164,6 +14171,7 @@ export interface operations {
         os?: string;
         /** @description Filter by page URL path. */
         path?: string;
+        /** @description Relative date range, for example 7d or 30day, used instead of an explicit startAt/endAt range. */
         period?:
           | 'today'
           | '24h'
@@ -14375,6 +14383,7 @@ export interface operations {
         os?: string;
         /** @description Filter by page URL path. */
         path?: string;
+        /** @description Relative date range, for example 7d or 30day, used instead of an explicit startAt/endAt range. */
         period?:
           | 'today'
           | '24h'
@@ -14516,6 +14525,7 @@ export interface operations {
         os?: string;
         /** @description Filter by page URL path. */
         path?: string;
+        /** @description Relative date range, for example 7d or 30day, used instead of an explicit startAt/endAt range. */
         period?:
           | 'today'
           | '24h'
@@ -14651,6 +14661,7 @@ export interface operations {
         os?: string;
         /** @description Filter by page URL path. */
         path?: string;
+        /** @description Relative date range, for example 7d or 30day, used instead of an explicit startAt/endAt range. */
         period?:
           | 'today'
           | '24h'
@@ -14788,6 +14799,7 @@ export interface operations {
         os?: string;
         /** @description Filter by page URL path. */
         path?: string;
+        /** @description Relative date range, for example 7d or 30day, used instead of an explicit startAt/endAt range. */
         period?:
           | 'today'
           | '24h'
@@ -14925,6 +14937,7 @@ export interface operations {
         os?: string;
         /** @description Filter by page URL path. */
         path?: string;
+        /** @description Relative date range, for example 7d or 30day, used instead of an explicit startAt/endAt range. */
         period?:
           | 'today'
           | '24h'
@@ -15069,6 +15082,7 @@ export interface operations {
         pageSize?: number;
         /** @description Filter by page URL path. */
         path?: string;
+        /** @description Relative date range, for example 7d or 30day, used instead of an explicit startAt/endAt range. */
         period?:
           | 'today'
           | '24h'
@@ -15208,6 +15222,7 @@ export interface operations {
         os?: string;
         /** @description Filter by page URL path. */
         path?: string;
+        /** @description Relative date range, for example 7d or 30day, used instead of an explicit startAt/endAt range. */
         period?:
           | 'today'
           | '24h'
@@ -17558,6 +17573,7 @@ export interface operations {
         os?: string;
         /** @description Filter by page URL path. */
         path?: string;
+        /** @description Relative date range, for example 7d or 30day, used instead of an explicit startAt/endAt range. */
         period?:
           | 'today'
           | '24h'
@@ -17846,6 +17862,7 @@ export interface operations {
         os?: string;
         /** @description Filter by page URL path. */
         path?: string;
+        /** @description Relative date range, for example 7d or 30day, used instead of an explicit startAt/endAt range. */
         period?:
           | 'today'
           | '24h'
@@ -20281,6 +20298,7 @@ export interface operations {
         pageSize?: number;
         /** @description Filter by page URL path. */
         path?: string;
+        /** @description Relative date range, for example 7d or 30day, used instead of an explicit startAt/endAt range. */
         period?:
           | 'today'
           | '24h'
@@ -20444,6 +20462,7 @@ export interface operations {
         os?: string;
         /** @description Filter by page URL path. */
         path?: string;
+        /** @description Relative date range, for example 7d or 30day, used instead of an explicit startAt/endAt range. */
         period?:
           | 'today'
           | '24h'
@@ -20583,6 +20602,7 @@ export interface operations {
         os?: string;
         /** @description Filter by page URL path. */
         path?: string;
+        /** @description Relative date range, for example 7d or 30day, used instead of an explicit startAt/endAt range. */
         period?:
           | 'today'
           | '24h'
@@ -20721,6 +20741,7 @@ export interface operations {
         os?: string;
         /** @description Filter by page URL path. */
         path?: string;
+        /** @description Relative date range, for example 7d or 30day, used instead of an explicit startAt/endAt range. */
         period?:
           | 'today'
           | '24h'
@@ -20859,6 +20880,7 @@ export interface operations {
         os?: string;
         /** @description Filter by page URL path. */
         path?: string;
+        /** @description Relative date range, for example 7d or 30day, used instead of an explicit startAt/endAt range. */
         period?:
           | 'today'
           | '24h'
@@ -21002,6 +21024,7 @@ export interface operations {
         os?: string;
         /** @description Filter by page URL path. */
         path?: string;
+        /** @description Relative date range, for example 7d or 30day, used instead of an explicit startAt/endAt range. */
         period?:
           | 'today'
           | '24h'
@@ -21139,6 +21162,7 @@ export interface operations {
         os?: string;
         /** @description Filter by page URL path. */
         path?: string;
+        /** @description Relative date range, for example 7d or 30day, used instead of an explicit startAt/endAt range. */
         period?:
           | 'today'
           | '24h'
@@ -21278,6 +21302,7 @@ export interface operations {
         os?: string;
         /** @description Filter by page URL path. */
         path?: string;
+        /** @description Relative date range, for example 7d or 30day, used instead of an explicit startAt/endAt range. */
         period?:
           | 'today'
           | '24h'
@@ -21424,6 +21449,7 @@ export interface operations {
         os?: string;
         /** @description Filter by page URL path. */
         path?: string;
+        /** @description Relative date range, for example 7d or 30day, used instead of an explicit startAt/endAt range. */
         period?:
           | 'today'
           | '24h'
@@ -21568,6 +21594,7 @@ export interface operations {
         pageSize?: number;
         /** @description Filter by page URL path. */
         path?: string;
+        /** @description Relative date range, for example 7d or 30day, used instead of an explicit startAt/endAt range. */
         period?:
           | 'today'
           | '24h'
@@ -21829,6 +21856,7 @@ export interface operations {
         distinctId?: string;
         /** @description End of the date range as a Unix timestamp in milliseconds. */
         endAt?: number;
+        /** @description Relative date range, for example 7d or 30day, used instead of an explicit startAt/endAt range. */
         period?:
           | 'today'
           | '24h'
@@ -22148,6 +22176,7 @@ export interface operations {
         os?: string;
         /** @description Filter by page URL path. */
         path?: string;
+        /** @description Relative date range, for example 7d or 30day, used instead of an explicit startAt/endAt range. */
         period?:
           | 'today'
           | '24h'
@@ -22277,6 +22306,7 @@ export interface operations {
         os?: string;
         /** @description Filter by page URL path. */
         path?: string;
+        /** @description Relative date range, for example 7d or 30day, used instead of an explicit startAt/endAt range. */
         period?:
           | 'today'
           | '24h'
@@ -22697,6 +22727,7 @@ export interface operations {
         os?: string;
         /** @description Filter by page URL path. */
         path?: string;
+        /** @description Relative date range, for example 7d or 30day, used instead of an explicit startAt/endAt range. */
         period?:
           | 'today'
           | '24h'
@@ -23155,6 +23186,7 @@ export interface operations {
         endAt?: number;
         /** @description Comma-separated resource IDs. Provide between 1 and 20 IDs. */
         ids: string;
+        /** @description Relative date range, for example 7d or 30day, used instead of an explicit startAt/endAt range. */
         period?:
           | 'today'
           | '24h'
