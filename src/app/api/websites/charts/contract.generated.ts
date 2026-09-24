@@ -11,6 +11,8 @@ const operation1 = defineOperation({
   operation: {
     operationId: 'getWebsitesCharts',
     summary: 'Get websites charts',
+    description:
+      'Returns visitor totals and chart data for the requested websites the caller can view, within the selected date range.',
     tags: ['Websites'],
     parameters: [
       {
@@ -20,6 +22,7 @@ const operation1 = defineOperation({
         schema: {
           type: 'string',
         },
+        description: 'Comma-separated resource IDs. Provide between 1 and 20 IDs.',
       },
       {
         name: 'startAt',
@@ -28,6 +31,7 @@ const operation1 = defineOperation({
         schema: {
           type: 'integer',
         },
+        description: 'Start of the date range as a Unix timestamp in milliseconds.',
       },
       {
         name: 'endAt',
@@ -36,6 +40,7 @@ const operation1 = defineOperation({
         schema: {
           type: 'integer',
         },
+        description: 'End of the date range as a Unix timestamp in milliseconds.',
       },
       {
         name: 'timezone',
@@ -44,6 +49,34 @@ const operation1 = defineOperation({
         schema: {
           type: 'string',
         },
+        description:
+          'IANA time zone used to interpret dates and group results, for example America/New_York.',
+      },
+      {
+        name: 'period',
+        in: 'query',
+        required: false,
+        schema: {
+          type: 'string',
+          enum: [
+            'today',
+            '24h',
+            '7d',
+            '30d',
+            '0day',
+            '24hour',
+            '0week',
+            '7day',
+            '0month',
+            '30day',
+            '90day',
+            '0year',
+            '6month',
+            '12month',
+          ],
+        },
+        description:
+          'Relative date range, for example 7d or 30day, used instead of an explicit startAt/endAt range.',
       },
     ],
     responses: {
@@ -72,6 +105,7 @@ const operation1 = defineOperation({
                     },
                     required: ['values', 'total'],
                   },
+                  description: 'Data returned by the operation.',
                 },
               },
               required: ['data'],

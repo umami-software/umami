@@ -1,8 +1,8 @@
 import { z } from 'zod';
 import { uuid } from '@/lib/crypto';
-import { parseRequest } from '@/lib/request';
+import { parseRequest, resolvePeriodDateRange } from '@/lib/request';
 import { json, unauthorized } from '@/lib/response';
-import { annotationSchema, pagingParams, searchParams } from '@/lib/schema';
+import { annotationSchema, pagingParams, searchParams, withPeriodDateRange } from '@/lib/schema';
 import { canUpdateWebsite, canViewSharedWebsiteFilters } from '@/permissions';
 import { createAnnotation, getWebsiteAnnotations } from '@/queries/prisma';
 
@@ -10,12 +10,12 @@ export async function GET(
   request: Request,
   { params }: { params: Promise<{ websiteId: string }> },
 ) {
-  const schema = z.object({
+  const schema = withPeriodDateRange({
     startAt: z.coerce.number().optional(),
     endAt: z.coerce.number().optional(),
     ...searchParams,
     ...pagingParams,
-  });
+  }, false);
 
   const { auth, query, error } = await parseRequest(request, schema);
 
@@ -24,7 +24,7 @@ export async function GET(
   }
 
   const { websiteId } = await params;
-  const { startAt, endAt, search, page, pageSize } = query;
+  const { startAt, endAt, search, page, pageSize } = resolvePeriodDateRange(query);
 
   if (!(await canViewSharedWebsiteFilters(auth, websiteId))) {
     return unauthorized();

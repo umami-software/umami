@@ -38,7 +38,7 @@ import {
   subWeeks,
   subYears,
 } from 'date-fns';
-import { toZonedTime } from 'date-fns-tz';
+import { fromZonedTime, toZonedTime } from 'date-fns-tz';
 import { getDateLocale } from '@/lib/lang';
 import type { DateRange } from '@/lib/types';
 
@@ -50,6 +50,25 @@ export const TIME_UNIT = {
   month: 'month',
   year: 'year',
 };
+
+export const DATE_PERIODS = [
+  'today',
+  '24h',
+  '7d',
+  '30d',
+  '0day',
+  '24hour',
+  '0week',
+  '7day',
+  '0month',
+  '30day',
+  '90day',
+  '0year',
+  '6month',
+  '12month',
+] as const;
+
+export type DatePeriod = (typeof DATE_PERIODS)[number];
 
 export const DATE_FUNCTIONS = {
   minute: {
@@ -141,11 +160,39 @@ export function parseDateValue(value: string) {
   return { num: +num, unit };
 }
 
+export function getPeriodDateRange(period: DatePeriod, timezone = 'UTC', now = new Date()) {
+  switch (period) {
+    case '24h':
+      return { startDate: subHours(now, 24), endDate: now };
+    case '7d':
+      return { startDate: subDays(now, 7), endDate: now };
+    case '30d':
+      return { startDate: subDays(now, 30), endDate: now };
+    case 'today': {
+      const zonedNow = toZonedTime(now, timezone);
+
+      return {
+        startDate: fromZonedTime(startOfDay(zonedNow), timezone),
+        endDate: fromZonedTime(endOfDay(zonedNow), timezone),
+      };
+    }
+    default: {
+      const dateRange = parseDateRange(period, undefined, 'en-US', timezone, now);
+
+      return {
+        startDate: fromZonedTime(dateRange.startDate, timezone),
+        endDate: fromZonedTime(dateRange.endDate, timezone),
+      };
+    }
+  }
+}
+
 export function parseDateRange(
   value: string,
   unitValue?: string,
   locale = 'en-US',
   timezone?: string,
+  nowValue = new Date(),
 ): DateRange {
   if (typeof value !== 'string') {
     return null;
@@ -167,7 +214,7 @@ export function parseDateRange(
     };
   }
 
-  const date = new Date();
+  const date = nowValue;
   const now = timezone ? toZonedTime(date, timezone) : date;
   const dateLocale = getDateLocale(locale);
   const { num = 1, unit } = parseDateValue(value);

@@ -6135,13 +6135,13 @@ export interface operations {
         content: {
           'application/json': {
             cloudMode: boolean;
-            faviconUrl: string;
-            linksUrl: string;
-            pixelsUrl: string;
+            faviconUrl?: string;
+            linksUrl?: string;
+            pixelsUrl?: string;
             privateMode: boolean;
             sessionDeletionEnabled: boolean;
             telemetryDisabled: boolean;
-            trackerScriptName: string;
+            trackerScriptName?: string;
             updatesDisabled: boolean;
           };
         };
@@ -12021,7 +12021,7 @@ export interface operations {
   listWebsites: {
     parameters: {
       query?: {
-        /** @description When present, include websites accessible through owned or managed teams. */
+        /** @description When present, include websites accessible through team membership. */
         includeTeams?: string;
         /** @description Maximum number of results to include. */
         maxResults?: number;
@@ -12364,6 +12364,21 @@ export interface operations {
         page?: number;
         /** @description Number of results per page. */
         pageSize?: number;
+        period?:
+          | 'today'
+          | '24h'
+          | '7d'
+          | '30d'
+          | '0day'
+          | '24hour'
+          | '0week'
+          | '7day'
+          | '0month'
+          | '30day'
+          | '90day'
+          | '0year'
+          | '6month'
+          | '12month';
         /** @description Search text used to filter results. */
         search?: string;
         /** @description Start of the date range as a Unix timestamp in milliseconds. */
@@ -13213,7 +13228,7 @@ export interface operations {
   };
   getEventData: {
     parameters: {
-      query: {
+      query?: {
         /** @description Browser used by the visitor. */
         browser?: string;
         /** @description City of the visitor. */
@@ -13227,7 +13242,7 @@ export interface operations {
         /** @description Custom identifier assigned to the visitor. */
         distinctId?: string;
         /** @description End of the date range as a Unix timestamp in milliseconds. */
-        endAt: number;
+        endAt?: number;
         /** @description Filter by custom event name. */
         event?: string;
         /** @description Event type: 1 for a pageview or 2 for a custom event. */
@@ -13250,6 +13265,21 @@ export interface operations {
         pageSize?: number;
         /** @description Filter by page URL path. */
         path?: string;
+        period?:
+          | 'today'
+          | '24h'
+          | '7d'
+          | '30d'
+          | '0day'
+          | '24hour'
+          | '0week'
+          | '7day'
+          | '0month'
+          | '30day'
+          | '90day'
+          | '0year'
+          | '6month'
+          | '12month';
         /** @description Filter by page URL query string. */
         query?: string;
         /** @description Filter by referring URL. */
@@ -13259,7 +13289,7 @@ export interface operations {
         /** @description ID of a saved segment used to filter results. */
         segment?: string;
         /** @description Start of the date range as a Unix timestamp in milliseconds. */
-        startAt: number;
+        startAt?: number;
         /** @description Tag attached to the tracked activity. */
         tag?: string;
         /** @description Filter by page title. */
@@ -13378,7 +13408,7 @@ export interface operations {
         /** @description Custom identifier assigned to the visitor. */
         distinctId?: string;
         /** @description End of the date range as a Unix timestamp in milliseconds. */
-        endAt: number;
+        endAt?: number;
         /** @description Filter by custom event name. */
         event?: string;
         /** @description Name of the custom event. */
@@ -13403,6 +13433,21 @@ export interface operations {
         pageSize?: number;
         /** @description Filter by page URL path. */
         path?: string;
+        period?:
+          | 'today'
+          | '24h'
+          | '7d'
+          | '30d'
+          | '0day'
+          | '24hour'
+          | '0week'
+          | '7day'
+          | '0month'
+          | '30day'
+          | '90day'
+          | '0year'
+          | '6month'
+          | '12month';
         /** @description Filter by page URL query string. */
         query?: string;
         /** @description Filter by referring URL. */
@@ -13412,7 +13457,7 @@ export interface operations {
         /** @description ID of a saved segment used to filter results. */
         segment?: string;
         /** @description Start of the date range as a Unix timestamp in milliseconds. */
-        startAt: number;
+        startAt?: number;
         /** @description Tag attached to the tracked activity. */
         tag?: string;
         /** @description IANA time zone used to interpret dates and group results, for example America/New_York. */
@@ -13536,7 +13581,7 @@ export interface operations {
         /** @description Custom identifier assigned to the visitor. */
         distinctId?: string;
         /** @description End of the date range as a Unix timestamp in milliseconds. */
-        endAt: number;
+        endAt?: number;
         /** @description Filter by custom event name. */
         event?: string;
         /** @description Name of the custom event. */
@@ -13555,6 +13600,21 @@ export interface operations {
         os?: string;
         /** @description Filter by page URL path. */
         path?: string;
+        period?:
+          | 'today'
+          | '24h'
+          | '7d'
+          | '30d'
+          | '0day'
+          | '24hour'
+          | '0week'
+          | '7day'
+          | '0month'
+          | '30day'
+          | '90day'
+          | '0year'
+          | '6month'
+          | '12month';
         /** @description Name of the custom event or session property. */
         propertyName: string;
         /** @description Filter by page URL query string. */
@@ -13566,7 +13626,7 @@ export interface operations {
         /** @description ID of a saved segment used to filter results. */
         segment?: string;
         /** @description Start of the date range as a Unix timestamp in milliseconds. */
-        startAt: number;
+        startAt?: number;
         /** @description Tag attached to the tracked activity. */
         tag?: string;
         /** @description IANA time zone used to interpret dates and group results, for example America/New_York. */
@@ -13662,7 +13722,7 @@ export interface operations {
         /** @description Custom identifier assigned to the visitor. */
         distinctId?: string;
         /** @description End of the date range as a Unix timestamp in milliseconds. */
-        endAt: number;
+        endAt?: number;
         /** @description Filter by custom event name. */
         event?: string;
         /** @description Name of the custom event. */
@@ -13681,6 +13741,21 @@ export interface operations {
         os?: string;
         /** @description Filter by page URL path. */
         path?: string;
+        period?:
+          | 'today'
+          | '24h'
+          | '7d'
+          | '30d'
+          | '0day'
+          | '24hour'
+          | '0week'
+          | '7day'
+          | '0month'
+          | '30day'
+          | '90day'
+          | '0year'
+          | '6month'
+          | '12month';
         /** @description Name of the custom event or session property. */
         propertyName: string;
         /** @description Filter by page URL query string. */
@@ -13692,7 +13767,7 @@ export interface operations {
         /** @description ID of a saved segment used to filter results. */
         segment?: string;
         /** @description Start of the date range as a Unix timestamp in milliseconds. */
-        startAt: number;
+        startAt?: number;
         /** @description Tag attached to the tracked activity. */
         tag?: string;
         /** @description IANA time zone used to interpret dates and group results, for example America/New_York. */
@@ -13785,7 +13860,7 @@ export interface operations {
         /** @description Custom identifier assigned to the visitor. */
         distinctId?: string;
         /** @description End of the date range as a Unix timestamp in milliseconds. */
-        endAt: number;
+        endAt?: number;
         /** @description Filter by custom event name. */
         event?: string;
         /** @description Name of the custom event. */
@@ -13806,6 +13881,21 @@ export interface operations {
         os?: string;
         /** @description Filter by page URL path. */
         path?: string;
+        period?:
+          | 'today'
+          | '24h'
+          | '7d'
+          | '30d'
+          | '0day'
+          | '24hour'
+          | '0week'
+          | '7day'
+          | '0month'
+          | '30day'
+          | '90day'
+          | '0year'
+          | '6month'
+          | '12month';
         /** @description Name of the custom event or session property. */
         propertyName: string;
         /** @description Filter by page URL query string. */
@@ -13817,7 +13907,7 @@ export interface operations {
         /** @description ID of a saved segment used to filter results. */
         segment?: string;
         /** @description Start of the date range as a Unix timestamp in milliseconds. */
-        startAt: number;
+        startAt?: number;
         /** @description Tag attached to the tracked activity. */
         tag?: string;
         /** @description IANA time zone used to interpret dates and group results, for example America/New_York. */
@@ -13912,7 +14002,7 @@ export interface operations {
         /** @description Custom identifier assigned to the visitor. */
         distinctId?: string;
         /** @description End of the date range as a Unix timestamp in milliseconds. */
-        endAt: number;
+        endAt?: number;
         /** @description Filter by custom event name. */
         event?: string;
         /** @description Name of the custom event. */
@@ -13931,6 +14021,21 @@ export interface operations {
         os?: string;
         /** @description Filter by page URL path. */
         path?: string;
+        period?:
+          | 'today'
+          | '24h'
+          | '7d'
+          | '30d'
+          | '0day'
+          | '24hour'
+          | '0week'
+          | '7day'
+          | '0month'
+          | '30day'
+          | '90day'
+          | '0year'
+          | '6month'
+          | '12month';
         /** @description Name of the custom event or session property. */
         propertyName: string;
         /** @description Filter by page URL query string. */
@@ -13942,7 +14047,7 @@ export interface operations {
         /** @description ID of a saved segment used to filter results. */
         segment?: string;
         /** @description Start of the date range as a Unix timestamp in milliseconds. */
-        startAt: number;
+        startAt?: number;
         /** @description Tag attached to the tracked activity. */
         tag?: string;
         /** @description Filter by page title. */
@@ -14040,7 +14145,7 @@ export interface operations {
         /** @description Custom identifier assigned to the visitor. */
         distinctId?: string;
         /** @description End of the date range as a Unix timestamp in milliseconds. */
-        endAt: number;
+        endAt?: number;
         /** @description Filter by custom event name. */
         event?: string;
         /** @description Name of the custom event. */
@@ -14059,6 +14164,21 @@ export interface operations {
         os?: string;
         /** @description Filter by page URL path. */
         path?: string;
+        period?:
+          | 'today'
+          | '24h'
+          | '7d'
+          | '30d'
+          | '0day'
+          | '24hour'
+          | '0week'
+          | '7day'
+          | '0month'
+          | '30day'
+          | '90day'
+          | '0year'
+          | '6month'
+          | '12month';
         /** @description Name of the custom event or session property. */
         propertyName: string;
         /** @description Filter by page URL query string. */
@@ -14070,7 +14190,7 @@ export interface operations {
         /** @description ID of a saved segment used to filter results. */
         segment?: string;
         /** @description Start of the date range as a Unix timestamp in milliseconds. */
-        startAt: number;
+        startAt?: number;
         /** @description Tag attached to the tracked activity. */
         tag?: string;
         /** @description IANA time zone used to interpret dates and group results, for example America/New_York. */
@@ -14224,7 +14344,7 @@ export interface operations {
   };
   getEventDataEvents: {
     parameters: {
-      query: {
+      query?: {
         /** @description Browser used by the visitor. */
         browser?: string;
         /** @description City of the visitor. */
@@ -14238,7 +14358,7 @@ export interface operations {
         /** @description Custom identifier assigned to the visitor. */
         distinctId?: string;
         /** @description End of the date range as a Unix timestamp in milliseconds. */
-        endAt: number;
+        endAt?: number;
         /** @description Filter by custom event name. */
         event?: string;
         /** @description Event type: 1 for a pageview or 2 for a custom event. */
@@ -14255,6 +14375,21 @@ export interface operations {
         os?: string;
         /** @description Filter by page URL path. */
         path?: string;
+        period?:
+          | 'today'
+          | '24h'
+          | '7d'
+          | '30d'
+          | '0day'
+          | '24hour'
+          | '0week'
+          | '7day'
+          | '0month'
+          | '30day'
+          | '90day'
+          | '0year'
+          | '6month'
+          | '12month';
         /** @description Filter by page URL query string. */
         query?: string;
         /** @description Filter by referring URL. */
@@ -14264,7 +14399,7 @@ export interface operations {
         /** @description ID of a saved segment used to filter results. */
         segment?: string;
         /** @description Start of the date range as a Unix timestamp in milliseconds. */
-        startAt: number;
+        startAt?: number;
         /** @description Tag attached to the tracked activity. */
         tag?: string;
         /** @description Filter by page title. */
@@ -14348,7 +14483,7 @@ export interface operations {
   };
   getEventDataFields: {
     parameters: {
-      query: {
+      query?: {
         /** @description Browser used by the visitor. */
         browser?: string;
         /** @description City of the visitor. */
@@ -14362,7 +14497,7 @@ export interface operations {
         /** @description Custom identifier assigned to the visitor. */
         distinctId?: string;
         /** @description End of the date range as a Unix timestamp in milliseconds. */
-        endAt: number;
+        endAt?: number;
         /** @description Filter by custom event name. */
         event?: string;
         /** @description Name of the custom event. */
@@ -14381,6 +14516,21 @@ export interface operations {
         os?: string;
         /** @description Filter by page URL path. */
         path?: string;
+        period?:
+          | 'today'
+          | '24h'
+          | '7d'
+          | '30d'
+          | '0day'
+          | '24hour'
+          | '0week'
+          | '7day'
+          | '0month'
+          | '30day'
+          | '90day'
+          | '0year'
+          | '6month'
+          | '12month';
         /** @description Filter by page URL query string. */
         query?: string;
         /** @description Filter by referring URL. */
@@ -14390,7 +14540,7 @@ export interface operations {
         /** @description ID of a saved segment used to filter results. */
         segment?: string;
         /** @description Start of the date range as a Unix timestamp in milliseconds. */
-        startAt: number;
+        startAt?: number;
         /** @description Tag attached to the tracked activity. */
         tag?: string;
         /** @description Filter by page title. */
@@ -14470,7 +14620,7 @@ export interface operations {
   };
   getEventDataProperties: {
     parameters: {
-      query: {
+      query?: {
         /** @description Browser used by the visitor. */
         browser?: string;
         /** @description City of the visitor. */
@@ -14484,7 +14634,7 @@ export interface operations {
         /** @description Custom identifier assigned to the visitor. */
         distinctId?: string;
         /** @description End of the date range as a Unix timestamp in milliseconds. */
-        endAt: number;
+        endAt?: number;
         /** @description Filter by custom event name. */
         event?: string;
         /** @description Event type: 1 for a pageview or 2 for a custom event. */
@@ -14501,6 +14651,21 @@ export interface operations {
         os?: string;
         /** @description Filter by page URL path. */
         path?: string;
+        period?:
+          | 'today'
+          | '24h'
+          | '7d'
+          | '30d'
+          | '0day'
+          | '24hour'
+          | '0week'
+          | '7day'
+          | '0month'
+          | '30day'
+          | '90day'
+          | '0year'
+          | '6month'
+          | '12month';
         /** @description Filter by page URL query string. */
         query?: string;
         /** @description Filter by referring URL. */
@@ -14510,7 +14675,7 @@ export interface operations {
         /** @description ID of a saved segment used to filter results. */
         segment?: string;
         /** @description Start of the date range as a Unix timestamp in milliseconds. */
-        startAt: number;
+        startAt?: number;
         /** @description Tag attached to the tracked activity. */
         tag?: string;
         /** @description Filter by page title. */
@@ -14592,7 +14757,7 @@ export interface operations {
   };
   getEventDataStats: {
     parameters: {
-      query: {
+      query?: {
         /** @description Browser used by the visitor. */
         browser?: string;
         /** @description City of the visitor. */
@@ -14606,7 +14771,7 @@ export interface operations {
         /** @description Custom identifier assigned to the visitor. */
         distinctId?: string;
         /** @description End of the date range as a Unix timestamp in milliseconds. */
-        endAt: number;
+        endAt?: number;
         /** @description Filter by custom event name. */
         event?: string;
         /** @description Event type: 1 for a pageview or 2 for a custom event. */
@@ -14623,6 +14788,21 @@ export interface operations {
         os?: string;
         /** @description Filter by page URL path. */
         path?: string;
+        period?:
+          | 'today'
+          | '24h'
+          | '7d'
+          | '30d'
+          | '0day'
+          | '24hour'
+          | '0week'
+          | '7day'
+          | '0month'
+          | '30day'
+          | '90day'
+          | '0year'
+          | '6month'
+          | '12month';
         /** @description Filter by page URL query string. */
         query?: string;
         /** @description Filter by referring URL. */
@@ -14632,7 +14812,7 @@ export interface operations {
         /** @description ID of a saved segment used to filter results. */
         segment?: string;
         /** @description Start of the date range as a Unix timestamp in milliseconds. */
-        startAt: number;
+        startAt?: number;
         /** @description Tag attached to the tracked activity. */
         tag?: string;
         /** @description Filter by page title. */
@@ -14726,7 +14906,7 @@ export interface operations {
         /** @description Custom identifier assigned to the visitor. */
         distinctId?: string;
         /** @description End of the date range as a Unix timestamp in milliseconds. */
-        endAt: number;
+        endAt?: number;
         /** @description Filter by custom event name. */
         event?: string;
         /** @description Name of the custom event. */
@@ -14745,6 +14925,21 @@ export interface operations {
         os?: string;
         /** @description Filter by page URL path. */
         path?: string;
+        period?:
+          | 'today'
+          | '24h'
+          | '7d'
+          | '30d'
+          | '0day'
+          | '24hour'
+          | '0week'
+          | '7day'
+          | '0month'
+          | '30day'
+          | '90day'
+          | '0year'
+          | '6month'
+          | '12month';
         /** @description Name of the custom event or session property. */
         propertyName: string;
         /** @description Filter by page URL query string. */
@@ -14756,7 +14951,7 @@ export interface operations {
         /** @description ID of a saved segment used to filter results. */
         segment?: string;
         /** @description Start of the date range as a Unix timestamp in milliseconds. */
-        startAt: number;
+        startAt?: number;
         /** @description Tag attached to the tracked activity. */
         tag?: string;
         /** @description Filter by page title. */
@@ -14874,6 +15069,21 @@ export interface operations {
         pageSize?: number;
         /** @description Filter by page URL path. */
         path?: string;
+        period?:
+          | 'today'
+          | '24h'
+          | '7d'
+          | '30d'
+          | '0day'
+          | '24hour'
+          | '0week'
+          | '7day'
+          | '0month'
+          | '30day'
+          | '90day'
+          | '0year'
+          | '6month'
+          | '12month';
         /** @description Filter by page URL query string. */
         query?: string;
         /** @description Filter by referring URL. */
@@ -14979,7 +15189,7 @@ export interface operations {
         /** @description Custom identifier assigned to the visitor. */
         distinctId?: string;
         /** @description End of the date range as a Unix timestamp in milliseconds. */
-        endAt: number;
+        endAt?: number;
         /** @description Filter by custom event name. */
         event?: string;
         /** @description Event type: 1 for a pageview or 2 for a custom event. */
@@ -14998,6 +15208,21 @@ export interface operations {
         os?: string;
         /** @description Filter by page URL path. */
         path?: string;
+        period?:
+          | 'today'
+          | '24h'
+          | '7d'
+          | '30d'
+          | '0day'
+          | '24hour'
+          | '0week'
+          | '7day'
+          | '0month'
+          | '30day'
+          | '90day'
+          | '0year'
+          | '6month'
+          | '12month';
         /** @description Filter by page URL query string. */
         query?: string;
         /** @description Filter by referring URL. */
@@ -15007,7 +15232,7 @@ export interface operations {
         /** @description ID of a saved segment used to filter results. */
         segment?: string;
         /** @description Start of the date range as a Unix timestamp in milliseconds. */
-        startAt: number;
+        startAt?: number;
         /** @description Tag attached to the tracked activity. */
         tag?: string;
         /** @description IANA time zone used to interpret dates and group results, for example America/New_York. */
@@ -17333,6 +17558,21 @@ export interface operations {
         os?: string;
         /** @description Filter by page URL path. */
         path?: string;
+        period?:
+          | 'today'
+          | '24h'
+          | '7d'
+          | '30d'
+          | '0day'
+          | '24hour'
+          | '0week'
+          | '7day'
+          | '0month'
+          | '30day'
+          | '90day'
+          | '0year'
+          | '6month'
+          | '12month';
         /** @description Filter by page URL query string. */
         query?: string;
         /** @description Filter by referring URL. */
@@ -17606,6 +17846,21 @@ export interface operations {
         os?: string;
         /** @description Filter by page URL path. */
         path?: string;
+        period?:
+          | 'today'
+          | '24h'
+          | '7d'
+          | '30d'
+          | '0day'
+          | '24hour'
+          | '0week'
+          | '7day'
+          | '0month'
+          | '30day'
+          | '90day'
+          | '0year'
+          | '6month'
+          | '12month';
         /** @description Filter by page URL query string. */
         query?: string;
         /** @description Filter by referring URL. */
@@ -19796,7 +20051,20 @@ export interface operations {
           name: string;
           /** @description Configuration parameters for the resource. */
           parameters: {
-            [key: string]: unknown;
+            action?: {
+              type: string;
+              value: string;
+            };
+            dateRange?: string;
+            /** @description Filters applied to the analytics data. */
+            filters?: {
+              [key: string]: unknown;
+            }[];
+            /**
+             * @description Whether records must match all filters or any filter.
+             * @enum {string}
+             */
+            match?: 'all' | 'any';
           };
           /** @enum {string} */
           type: 'segment' | 'cohort';
@@ -19990,7 +20258,7 @@ export interface operations {
         /** @description Custom identifier assigned to the visitor. */
         distinctId?: string;
         /** @description End of the date range as a Unix timestamp in milliseconds. */
-        endAt: number;
+        endAt?: number;
         /** @description Filter by custom event name. */
         event?: string;
         /** @description Event type: 1 for a pageview or 2 for a custom event. */
@@ -20013,6 +20281,21 @@ export interface operations {
         pageSize?: number;
         /** @description Filter by page URL path. */
         path?: string;
+        period?:
+          | 'today'
+          | '24h'
+          | '7d'
+          | '30d'
+          | '0day'
+          | '24hour'
+          | '0week'
+          | '7day'
+          | '0month'
+          | '30day'
+          | '90day'
+          | '0year'
+          | '6month'
+          | '12month';
         /** @description Name of the custom event or session property. */
         propertyName: string;
         /** @description Filter by page URL query string. */
@@ -20024,7 +20307,7 @@ export interface operations {
         /** @description ID of a saved segment used to filter results. */
         segment?: string;
         /** @description Start of the date range as a Unix timestamp in milliseconds. */
-        startAt: number;
+        startAt?: number;
         /** @description Tag attached to the tracked activity. */
         tag?: string;
         /** @description IANA time zone used to interpret dates and group results, for example America/New_York. */
@@ -20144,7 +20427,7 @@ export interface operations {
         /** @description Custom identifier assigned to the visitor. */
         distinctId?: string;
         /** @description End of the date range as a Unix timestamp in milliseconds. */
-        endAt: number;
+        endAt?: number;
         /** @description Filter by custom event name. */
         event?: string;
         /** @description Event type: 1 for a pageview or 2 for a custom event. */
@@ -20161,6 +20444,21 @@ export interface operations {
         os?: string;
         /** @description Filter by page URL path. */
         path?: string;
+        period?:
+          | 'today'
+          | '24h'
+          | '7d'
+          | '30d'
+          | '0day'
+          | '24hour'
+          | '0week'
+          | '7day'
+          | '0month'
+          | '30day'
+          | '90day'
+          | '0year'
+          | '6month'
+          | '12month';
         /** @description Name of the custom event or session property. */
         propertyName: string;
         /** @description Filter by page URL query string. */
@@ -20172,7 +20470,7 @@ export interface operations {
         /** @description ID of a saved segment used to filter results. */
         segment?: string;
         /** @description Start of the date range as a Unix timestamp in milliseconds. */
-        startAt: number;
+        startAt?: number;
         /** @description Tag attached to the tracked activity. */
         tag?: string;
         /** @description IANA time zone used to interpret dates and group results, for example America/New_York. */
@@ -20268,7 +20566,7 @@ export interface operations {
         /** @description Custom identifier assigned to the visitor. */
         distinctId?: string;
         /** @description End of the date range as a Unix timestamp in milliseconds. */
-        endAt: number;
+        endAt?: number;
         /** @description Filter by custom event name. */
         event?: string;
         /** @description Event type: 1 for a pageview or 2 for a custom event. */
@@ -20285,6 +20583,21 @@ export interface operations {
         os?: string;
         /** @description Filter by page URL path. */
         path?: string;
+        period?:
+          | 'today'
+          | '24h'
+          | '7d'
+          | '30d'
+          | '0day'
+          | '24hour'
+          | '0week'
+          | '7day'
+          | '0month'
+          | '30day'
+          | '90day'
+          | '0year'
+          | '6month'
+          | '12month';
         /** @description Name of the custom event or session property. */
         propertyName: string;
         /** @description Filter by page URL query string. */
@@ -20296,7 +20609,7 @@ export interface operations {
         /** @description ID of a saved segment used to filter results. */
         segment?: string;
         /** @description Start of the date range as a Unix timestamp in milliseconds. */
-        startAt: number;
+        startAt?: number;
         /** @description Tag attached to the tracked activity. */
         tag?: string;
         /** @description IANA time zone used to interpret dates and group results, for example America/New_York. */
@@ -20389,7 +20702,7 @@ export interface operations {
         /** @description Custom identifier assigned to the visitor. */
         distinctId?: string;
         /** @description End of the date range as a Unix timestamp in milliseconds. */
-        endAt: number;
+        endAt?: number;
         /** @description Filter by custom event name. */
         event?: string;
         /** @description Event type: 1 for a pageview or 2 for a custom event. */
@@ -20408,6 +20721,21 @@ export interface operations {
         os?: string;
         /** @description Filter by page URL path. */
         path?: string;
+        period?:
+          | 'today'
+          | '24h'
+          | '7d'
+          | '30d'
+          | '0day'
+          | '24hour'
+          | '0week'
+          | '7day'
+          | '0month'
+          | '30day'
+          | '90day'
+          | '0year'
+          | '6month'
+          | '12month';
         /** @description Name of the custom event or session property. */
         propertyName: string;
         /** @description Filter by page URL query string. */
@@ -20419,7 +20747,7 @@ export interface operations {
         /** @description ID of a saved segment used to filter results. */
         segment?: string;
         /** @description Start of the date range as a Unix timestamp in milliseconds. */
-        startAt: number;
+        startAt?: number;
         /** @description Tag attached to the tracked activity. */
         tag?: string;
         /** @description IANA time zone used to interpret dates and group results, for example America/New_York. */
@@ -20514,7 +20842,7 @@ export interface operations {
         /** @description Custom identifier assigned to the visitor. */
         distinctId?: string;
         /** @description End of the date range as a Unix timestamp in milliseconds. */
-        endAt: number;
+        endAt?: number;
         /** @description Filter by custom event name. */
         event?: string;
         /** @description Event type: 1 for a pageview or 2 for a custom event. */
@@ -20531,6 +20859,21 @@ export interface operations {
         os?: string;
         /** @description Filter by page URL path. */
         path?: string;
+        period?:
+          | 'today'
+          | '24h'
+          | '7d'
+          | '30d'
+          | '0day'
+          | '24hour'
+          | '0week'
+          | '7day'
+          | '0month'
+          | '30day'
+          | '90day'
+          | '0year'
+          | '6month'
+          | '12month';
         /** @description Name of the custom event or session property. */
         propertyName: string;
         /** @description Filter by page URL query string. */
@@ -20542,7 +20885,7 @@ export interface operations {
         /** @description ID of a saved segment used to filter results. */
         segment?: string;
         /** @description Start of the date range as a Unix timestamp in milliseconds. */
-        startAt: number;
+        startAt?: number;
         /** @description Tag attached to the tracked activity. */
         tag?: string;
         /** @description IANA time zone used to interpret dates and group results, for example America/New_York. */
@@ -20628,7 +20971,7 @@ export interface operations {
   };
   getSessionDataProperties: {
     parameters: {
-      query: {
+      query?: {
         /** @description Browser used by the visitor. */
         browser?: string;
         /** @description City of the visitor. */
@@ -20642,7 +20985,7 @@ export interface operations {
         /** @description Custom identifier assigned to the visitor. */
         distinctId?: string;
         /** @description End of the date range as a Unix timestamp in milliseconds. */
-        endAt: number;
+        endAt?: number;
         /** @description Filter by custom event name. */
         event?: string;
         /** @description Event type: 1 for a pageview or 2 for a custom event. */
@@ -20659,6 +21002,21 @@ export interface operations {
         os?: string;
         /** @description Filter by page URL path. */
         path?: string;
+        period?:
+          | 'today'
+          | '24h'
+          | '7d'
+          | '30d'
+          | '0day'
+          | '24hour'
+          | '0week'
+          | '7day'
+          | '0month'
+          | '30day'
+          | '90day'
+          | '0year'
+          | '6month'
+          | '12month';
         /** @description Name of the custom event or session property. */
         propertyName?: string;
         /** @description Filter by page URL query string. */
@@ -20670,7 +21028,7 @@ export interface operations {
         /** @description ID of a saved segment used to filter results. */
         segment?: string;
         /** @description Start of the date range as a Unix timestamp in milliseconds. */
-        startAt: number;
+        startAt?: number;
         /** @description Tag attached to the tracked activity. */
         tag?: string;
         /** @description Filter by page title. */
@@ -20764,7 +21122,7 @@ export interface operations {
         /** @description Custom identifier assigned to the visitor. */
         distinctId?: string;
         /** @description End of the date range as a Unix timestamp in milliseconds. */
-        endAt: number;
+        endAt?: number;
         /** @description Filter by custom event name. */
         event?: string;
         /** @description Event type: 1 for a pageview or 2 for a custom event. */
@@ -20781,6 +21139,21 @@ export interface operations {
         os?: string;
         /** @description Filter by page URL path. */
         path?: string;
+        period?:
+          | 'today'
+          | '24h'
+          | '7d'
+          | '30d'
+          | '0day'
+          | '24hour'
+          | '0week'
+          | '7day'
+          | '0month'
+          | '30day'
+          | '90day'
+          | '0year'
+          | '6month'
+          | '12month';
         /** @description Name of the custom event or session property. */
         propertyName: string;
         /** @description Filter by page URL query string. */
@@ -20792,7 +21165,7 @@ export interface operations {
         /** @description ID of a saved segment used to filter results. */
         segment?: string;
         /** @description Start of the date range as a Unix timestamp in milliseconds. */
-        startAt: number;
+        startAt?: number;
         /** @description Tag attached to the tracked activity. */
         tag?: string;
         /** @description IANA time zone used to interpret dates and group results, for example America/New_York. */
@@ -20888,7 +21261,7 @@ export interface operations {
         /** @description Custom identifier assigned to the visitor. */
         distinctId?: string;
         /** @description End of the date range as a Unix timestamp in milliseconds. */
-        endAt: number;
+        endAt?: number;
         /** @description Filter by custom event name. */
         event?: string;
         /** @description Event type: 1 for a pageview or 2 for a custom event. */
@@ -20905,6 +21278,21 @@ export interface operations {
         os?: string;
         /** @description Filter by page URL path. */
         path?: string;
+        period?:
+          | 'today'
+          | '24h'
+          | '7d'
+          | '30d'
+          | '0day'
+          | '24hour'
+          | '0week'
+          | '7day'
+          | '0month'
+          | '30day'
+          | '90day'
+          | '0year'
+          | '6month'
+          | '12month';
         /** @description Name of the custom event or session property. */
         propertyName: string;
         /** @description Filter by page URL query string. */
@@ -20916,7 +21304,7 @@ export interface operations {
         /** @description ID of a saved segment used to filter results. */
         segment?: string;
         /** @description Start of the date range as a Unix timestamp in milliseconds. */
-        startAt: number;
+        startAt?: number;
         /** @description Tag attached to the tracked activity. */
         tag?: string;
         /** @description IANA time zone used to interpret dates and group results, for example America/New_York. */
@@ -21003,7 +21391,7 @@ export interface operations {
   };
   getSessionDataValues: {
     parameters: {
-      query: {
+      query?: {
         /** @description Browser used by the visitor. */
         browser?: string;
         /** @description City of the visitor. */
@@ -21019,7 +21407,7 @@ export interface operations {
         /** @description Custom identifier assigned to the visitor. */
         distinctId?: string;
         /** @description End of the date range as a Unix timestamp in milliseconds. */
-        endAt: number;
+        endAt?: number;
         /** @description Filter by custom event name. */
         event?: string;
         /** @description Event type: 1 for a pageview or 2 for a custom event. */
@@ -21036,6 +21424,21 @@ export interface operations {
         os?: string;
         /** @description Filter by page URL path. */
         path?: string;
+        period?:
+          | 'today'
+          | '24h'
+          | '7d'
+          | '30d'
+          | '0day'
+          | '24hour'
+          | '0week'
+          | '7day'
+          | '0month'
+          | '30day'
+          | '90day'
+          | '0year'
+          | '6month'
+          | '12month';
         /** @description Name of the custom event or session property. */
         propertyName?: string;
         /** @description Filter by page URL query string. */
@@ -21047,7 +21450,7 @@ export interface operations {
         /** @description ID of a saved segment used to filter results. */
         segment?: string;
         /** @description Start of the date range as a Unix timestamp in milliseconds. */
-        startAt: number;
+        startAt?: number;
         /** @description Tag attached to the tracked activity. */
         tag?: string;
         /** @description Filter by page title. */
@@ -21165,6 +21568,21 @@ export interface operations {
         pageSize?: number;
         /** @description Filter by page URL path. */
         path?: string;
+        period?:
+          | 'today'
+          | '24h'
+          | '7d'
+          | '30d'
+          | '0day'
+          | '24hour'
+          | '0week'
+          | '7day'
+          | '0month'
+          | '30day'
+          | '90day'
+          | '0year'
+          | '6month'
+          | '12month';
         /** @description Filter by page URL query string. */
         query?: string;
         /** @description Filter by referring URL. */
@@ -21276,6 +21694,7 @@ export interface operations {
         content: {
           'application/json': {
             canDelete: unknown;
+            distinctIds: unknown;
             stitchedSessionCount: unknown;
           };
         };
@@ -21405,13 +21824,28 @@ export interface operations {
   };
   getWebsiteSessionActivity: {
     parameters: {
-      query: {
+      query?: {
         /** @description Custom identifier assigned to the visitor. */
         distinctId?: string;
         /** @description End of the date range as a Unix timestamp in milliseconds. */
-        endAt: number;
+        endAt?: number;
+        period?:
+          | 'today'
+          | '24h'
+          | '7d'
+          | '30d'
+          | '0day'
+          | '24hour'
+          | '0week'
+          | '7day'
+          | '0month'
+          | '30day'
+          | '90day'
+          | '0year'
+          | '6month'
+          | '12month';
         /** @description Start of the date range as a Unix timestamp in milliseconds. */
-        startAt: number;
+        startAt?: number;
       };
       header?: never;
       path: {
@@ -21683,7 +22117,7 @@ export interface operations {
   };
   getWebsiteSessionStats: {
     parameters: {
-      query: {
+      query?: {
         /** @description Browser used by the visitor. */
         browser?: string;
         /** @description City of the visitor. */
@@ -21697,7 +22131,7 @@ export interface operations {
         /** @description Custom identifier assigned to the visitor. */
         distinctId?: string;
         /** @description End of the date range as a Unix timestamp in milliseconds. */
-        endAt: number;
+        endAt?: number;
         /** @description Filter by custom event name. */
         event?: string;
         /** @description Event type: 1 for a pageview or 2 for a custom event. */
@@ -21714,6 +22148,21 @@ export interface operations {
         os?: string;
         /** @description Filter by page URL path. */
         path?: string;
+        period?:
+          | 'today'
+          | '24h'
+          | '7d'
+          | '30d'
+          | '0day'
+          | '24hour'
+          | '0week'
+          | '7day'
+          | '0month'
+          | '30day'
+          | '90day'
+          | '0year'
+          | '6month'
+          | '12month';
         /** @description Filter by page URL query string. */
         query?: string;
         /** @description Filter by referring URL. */
@@ -21723,7 +22172,7 @@ export interface operations {
         /** @description ID of a saved segment used to filter results. */
         segment?: string;
         /** @description Start of the date range as a Unix timestamp in milliseconds. */
-        startAt: number;
+        startAt?: number;
         /** @description Tag attached to the tracked activity. */
         tag?: string;
         /** @description Filter by page title. */
@@ -21811,7 +22260,7 @@ export interface operations {
         /** @description Custom identifier assigned to the visitor. */
         distinctId?: string;
         /** @description End of the date range as a Unix timestamp in milliseconds. */
-        endAt: number;
+        endAt?: number;
         /** @description Filter by custom event name. */
         event?: string;
         /** @description Event type: 1 for a pageview or 2 for a custom event. */
@@ -21828,6 +22277,21 @@ export interface operations {
         os?: string;
         /** @description Filter by page URL path. */
         path?: string;
+        period?:
+          | 'today'
+          | '24h'
+          | '7d'
+          | '30d'
+          | '0day'
+          | '24hour'
+          | '0week'
+          | '7day'
+          | '0month'
+          | '30day'
+          | '90day'
+          | '0year'
+          | '6month'
+          | '12month';
         /** @description Filter by page URL query string. */
         query?: string;
         /** @description Filter by referring URL. */
@@ -21837,7 +22301,7 @@ export interface operations {
         /** @description ID of a saved segment used to filter results. */
         segment?: string;
         /** @description Start of the date range as a Unix timestamp in milliseconds. */
-        startAt: number;
+        startAt?: number;
         /** @description Tag attached to the tracked activity. */
         tag?: string;
         /** @description IANA time zone used to interpret dates and group results, for example America/New_York. */
@@ -22233,6 +22697,21 @@ export interface operations {
         os?: string;
         /** @description Filter by page URL path. */
         path?: string;
+        period?:
+          | 'today'
+          | '24h'
+          | '7d'
+          | '30d'
+          | '0day'
+          | '24hour'
+          | '0week'
+          | '7day'
+          | '0month'
+          | '30day'
+          | '90day'
+          | '0year'
+          | '6month'
+          | '12month';
         /** @description Filter by page URL query string. */
         query?: string;
         /** @description Filter by referring URL. */
@@ -22676,6 +23155,21 @@ export interface operations {
         endAt?: number;
         /** @description Comma-separated resource IDs. Provide between 1 and 20 IDs. */
         ids: string;
+        period?:
+          | 'today'
+          | '24h'
+          | '7d'
+          | '30d'
+          | '0day'
+          | '24hour'
+          | '0week'
+          | '7day'
+          | '0month'
+          | '30day'
+          | '90day'
+          | '0year'
+          | '6month'
+          | '12month';
         /** @description Start of the date range as a Unix timestamp in milliseconds. */
         startAt?: number;
         /** @description IANA time zone used to interpret dates and group results, for example America/New_York. */
