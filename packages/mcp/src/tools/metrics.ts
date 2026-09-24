@@ -1,6 +1,6 @@
 import { z } from 'zod';
 import { dateRangeInput, parseDateRange, timezone } from '../lib/dates';
-import { filtersSchema, toFilterParams } from '../lib/filters';
+import { pageviewFiltersSchema, toFilterParams } from '../lib/filters';
 import { clamp, DEFAULT_METRIC_LIMIT, MAX_METRIC_LIMIT } from '../lib/limits';
 import { defineTool } from '../lib/tool';
 
@@ -112,7 +112,7 @@ export const getWebsiteMetrics = defineTool({
     offset: z.number().int().nonnegative().optional().describe('Rows to skip, for paging.'),
     search: z.string().optional().describe('Only include values containing this text.'),
     timezone: timezone.optional(),
-    filters: filtersSchema.optional(),
+    filters: pageviewFiltersSchema.optional(),
   }),
   async handler(input, { client }) {
     const range = parseDateRange(input);
