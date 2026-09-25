@@ -216,13 +216,16 @@ export function WebsiteReplaySettings({ websiteId }: { websiteId: string }) {
                   onChange={v => setConsoleLevel(v as typeof consoleLevel)}
                   buttonProps={{ style: { maxWidth: '360px' } }}
                 >
-                  <ListItem id="none">none</ListItem>
-                  <ListItem id="error">errors only</ListItem>
-                  <ListItem id="warn">warnings and errors</ListItem>
-                  <ListItem id="info">info, warnings, and errors</ListItem>
-                  <ListItem id="debug">debug and above</ListItem>
-                  <ListItem id="all">all</ListItem>
+                  <ListItem id="none">{t(labels.none)}</ListItem>
+                  <ListItem id="error">{t(labels.errorsOnly)}</ListItem>
+                  <ListItem id="warn">{t(labels.warningsAndErrors)}</ListItem>
+                  <ListItem id="info">{t(labels.infoWarningsAndErrors)}</ListItem>
+                  <ListItem id="debug">{t(labels.debugAndAbove)}</ListItem>
+                  <ListItem id="all">{t(labels.all)}</ListItem>
                 </Select>
+                {consoleLevel !== 'none' && (
+                  <Text color="muted">{t(messages.consoleLogsWarning)}</Text>
+                )}
               </Column>
               <Column gap="1">
                 <Label>{t(labels.maxDuration)}</Label>

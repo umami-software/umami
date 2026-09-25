@@ -143,9 +143,9 @@ const fieldDescriptions: Record<string, string> = {
   sampleRate: 'Fraction of sessions to record for replay, from 0 to 1.',
   heatmapSampleRate: 'Fraction of sessions to record for heatmaps, from 0 to 1.',
   maskLevel:
-    'Privacy masking level used by the recorder: strict, moderate, or lax (only password inputs are masked).',
+    'Privacy masking level used by the recorder: strict, moderate, or lax (only password inputs and elements marked rr-block or rr-mask are hidden).',
   consoleLevel:
-    'Minimum browser console level captured with replays: none, error, warn, info, debug, or all.',
+    'Minimum browser console level captured with replays: none, error, warn, info, debug, or all. Fields with secret-like names are redacted.',
   blockSelector: 'CSS selector for elements excluded from recordings.',
   recordCanvas: 'Whether canvas elements are captured in replays.',
   canvasFps: 'Maximum canvas frames captured per second when canvas recording is enabled.',

@@ -42,6 +42,10 @@ import { addCustomEvent, record } from 'rrweb';
     all: ['log', 'debug', 'info', 'warn', 'error', 'trace', 'assert'],
   };
   const CONSOLE_MAX_STRING_LENGTH = 2000;
+  // Mask levels only cover the page, so hide console fields that usually hold secrets.
+  const CONSOLE_SENSITIVE_KEY =
+    /passw|secret|token|authorization|cookie|credential|api[-_]?key|private[-_]?key|^auth$/i;
+  const CONSOLE_REDACTED_VALUE = '[Redacted]';
   const CONSOLE_MAX_DEPTH = 3;
   const CONSOLE_MAX_ITEMS = 20;
 
@@ -333,13 +337,9 @@ import { addCustomEvent, record } from 'rrweb';
   const getMaskConfig = level => {
     switch (level) {
       case 'lax':
-        // Replace rrweb's default rr-block/rr-ignore/rr-mask classes so nothing is hidden.
-        // Password inputs stay masked because rrweb masks them by default.
+        // rrweb still masks password inputs and honors rr-block/rr-mask/rr-ignore by default.
         return {
-          blockClass: '__umami-rrweb-block-disabled__',
-          ignoreClass: '__umami-rrweb-ignore-disabled__',
           maskAllInputs: false,
-          maskTextClass: '__umami-rrweb-mask-disabled__',
         };
       case 'strict':
         return {
@@ -400,7 +400,9 @@ import { addCustomEvent, record } from 'rrweb';
     Object.keys(value)
       .slice(0, CONSOLE_MAX_ITEMS)
       .forEach(key => {
-        output[key] = serializeConsoleValue(value[key], seen, depth + 1);
+        output[key] = CONSOLE_SENSITIVE_KEY.test(key)
+          ? CONSOLE_REDACTED_VALUE
+          : serializeConsoleValue(value[key], seen, depth + 1);
       });
 
     return output;
@@ -413,14 +415,14 @@ import { addCustomEvent, record } from 'rrweb';
     if (!methods.length || !consoleObject) return null;
 
     const originals = {};
+    const wrappers = {};
 
     methods.forEach(method => {
       const original = consoleObject[method];
 
       if (typeof original !== 'function') return;
 
-      originals[method] = original;
-      consoleObject[method] = (...args) => {
+      const wrapper = (...args) => {
         try {
           // console.assert only logs when its first argument is falsy.
           if (replayStopFn && !replayStopped && (method !== 'assert' || !args[0])) {
@@ -435,11 +437,18 @@ import { addCustomEvent, record } from 'rrweb';
 
         return original.apply(consoleObject, args);
       };
+
+      originals[method] = original;
+      wrappers[method] = wrapper;
+      consoleObject[method] = wrapper;
     });
 
     return () => {
       Object.keys(originals).forEach(method => {
-        consoleObject[method] = originals[method];
+        // Keep wrappers other scripts added after ours; ours stops capturing once replay stops.
+        if (consoleObject[method] === wrappers[method]) {
+          consoleObject[method] = originals[method];
+        }
       });
     };
   };
