@@ -70,10 +70,33 @@ export function createAuthKey() {
   return crypto.randomBytes(16).toString('hex');
 }
 
-export function getSalt(saltRotation: string, createdAt: Date): string {
-  return hash(
-    (saltRotation === 'day' ? startOfDay : saltRotation === 'week' ? startOfWeek : startOfMonth)(
-      createdAt,
-    ).toUTCString(),
-  );
+const SALT_ROTATION_PERIODS: Record<string, (date: Date) => Date> = {
+  day: startOfDay,
+  daily: startOfDay,
+  week: startOfWeek,
+  weekly: startOfWeek,
+  month: startOfMonth,
+  monthly: startOfMonth,
+};
+
+/**
+ * Session salt, controlled by SALT_ROTATION:
+ * - unset/empty: rotates monthly (default)
+ * - day/daily, week/weekly, month/monthly: rotates on that period
+ * - any other string: a fixed salt derived from that string (no rotation)
+ */
+export function getSalt(saltRotation: string | undefined, createdAt: Date): string {
+  const value = saltRotation?.trim();
+
+  if (!value) {
+    return hash(startOfMonth(createdAt).toUTCString());
+  }
+
+  const startOfPeriod = SALT_ROTATION_PERIODS[value.toLowerCase()];
+
+  if (startOfPeriod) {
+    return hash(startOfPeriod(createdAt).toUTCString());
+  }
+
+  return hash(value);
 }

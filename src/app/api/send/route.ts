@@ -108,8 +108,7 @@ export async function POST(request: Request) {
     const now = Math.floor(Date.now() / 1000);
     const distinctId = truncateString(id, FIELD_LENGTH.distinctId);
 
-    const saltRotation = process.env.SALT_ROTATION || 'month';
-    const sessionSalt = getSalt(saltRotation, createdAt);
+    const sessionSalt = getSalt(process.env.SALT_ROTATION, createdAt);
     const visitSalt = hash(startOfHour(createdAt).toUTCString());
 
     // Identified users need a separate deterministic session from anonymous users
