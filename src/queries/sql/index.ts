@@ -1,4 +1,5 @@
 export * from './breakdown/getBreakdown';
+export * from './engagement/saveEngagement';
 export * from './events/getEventDataArraySeries';
 export * from './events/getEventDataById';
 export * from './events/getEventDataDateSeries';
