@@ -101,7 +101,6 @@
     "ipaddr.js": "^2.5.0",
     "is-ci": "^4.1.0",
     "is-docker": "^4.0.0",
-    "is-localhost-ip": "^3.0.1",
     "isbot": "^5.2.2",
     "jsonwebtoken": "^9.0.3",
     "jszip": "^3.10.2",
