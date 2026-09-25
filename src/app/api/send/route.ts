@@ -1,6 +1,5 @@
 import { startOfHour } from 'date-fns';
 import { isbot } from 'isbot';
-import { z } from 'zod';
 import clickhouse from '@/lib/clickhouse';
 import { CACHE_TOKEN_TYPE, COLLECTION_TYPE, EVENT_TYPE, FIELD_LENGTH } from '@/lib/constants';
 import { getSalt, hash, secret, uuid } from '@/lib/crypto';
@@ -10,9 +9,15 @@ import { createToken, parseToken } from '@/lib/jwt';
 import { fetchWebsite } from '@/lib/load';
 import { parseRequest } from '@/lib/request';
 import { badRequest, forbidden, json, serverError } from '@/lib/response';
-import { anyObjectParam, urlOrPathParam } from '@/lib/schema';
 import { safeDecodeURI, safeDecodeURIComponent } from '@/lib/url';
-import { createSession, saveEvent, saveSessionData, saveSessionLink, updateSession } from '@/queries/sql';
+import {
+  createSession,
+  saveEvent,
+  saveSessionData,
+  saveSessionLink,
+  updateSession,
+} from '@/queries/sql';
+import { collectionSchema } from './request-schema';
 
 interface Cache {
   websiteId: string;
@@ -22,59 +27,9 @@ interface Cache {
   sessionLinkId?: string;
 }
 
-// Reject strings whose first character is a spreadsheet formula trigger to
-// prevent CSV formula injection in analytics exports (defense-in-depth).
-const FORMULA_TRIGGER_RE = /^[=+\-@\t\r]/;
-const safeStringParam = () =>
-  z.string().refine(val => !FORMULA_TRIGGER_RE.test(val), {
-    message: 'Value must not start with =, +, -, @, tab, or carriage return',
-  });
-
-const schema = z.object({
-  type: z.enum(['event', 'identify', 'performance']),
-  payload: z
-    .object({
-      website: z.uuid().optional(),
-      link: z.uuid().optional(),
-      pixel: z.uuid().optional(),
-      data: anyObjectParam.optional(),
-      hostname: z.string().optional(),
-      language: z.string().optional(),
-      referrer: urlOrPathParam.optional(),
-      screen: z.string().optional(),
-      title: z.string().optional(),
-      url: urlOrPathParam.optional(),
-      name: safeStringParam().optional(),
-      tag: safeStringParam().optional(),
-      ip: z.string().optional(),
-      userAgent: z.string().optional(),
-      timestamp: z.coerce.number().int().optional(),
-      id: z.string().optional(),
-      browser: z.string().optional(),
-      os: z.string().optional(),
-      device: z.string().optional(),
-      lcp: z.number().nonnegative().max(60000).optional(),
-      inp: z.number().nonnegative().max(60000).optional(),
-      cls: z.number().nonnegative().max(100).optional(),
-      fcp: z.number().nonnegative().max(60000).optional(),
-      ttfb: z.number().nonnegative().max(60000).optional(),
-    })
-    .refine(
-      data => {
-        const keys = [data.website, data.link, data.pixel];
-        const count = keys.filter(Boolean).length;
-        return count === 1;
-      },
-      {
-        message: 'Exactly one of website, link, or pixel must be provided',
-        path: ['website'],
-      },
-    ),
-});
-
 export async function POST(request: Request) {
   try {
-    const { body, error } = await parseRequest(request, schema, { skipAuth: true });
+    const { body, error } = await parseRequest(request, collectionSchema, { skipAuth: true });
 
     if (error) {
       return error();
@@ -149,7 +104,7 @@ export async function POST(request: Request) {
       return forbidden();
     }
 
-    const createdAt = timestamp ? new Date(timestamp * 1000) : new Date();
+    const createdAt = timestamp !== undefined ? new Date(timestamp * 1000) : new Date();
     const now = Math.floor(Date.now() / 1000);
     const distinctId = truncateString(id, FIELD_LENGTH.distinctId);
 
@@ -192,7 +147,7 @@ export async function POST(request: Request) {
     }
 
     // Expire visit after 30 minutes
-    if (!timestamp && now - iat > 1800) {
+    if (timestamp === undefined && now - iat > 1800) {
       visitId = uuid(sessionId, visitSalt);
       iat = now;
     }

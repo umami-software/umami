@@ -64,7 +64,14 @@ export type TrackedProperties = {
 
 export type WithRequired<T, K extends keyof T> = T & { [P in K]-?: T[P] };
 
-export type EventDataValue = boolean | number | string | null | EventData | EventDataValue[];
+export type EventDataValue =
+  | boolean
+  | number
+  | string
+  | null
+  | EventData
+  | CommerceData
+  | EventDataValue[];
 
 /**
  *
@@ -75,7 +82,31 @@ export type EventDataValue = boolean | number | string | null | EventData | Even
  * - Objects have a max of 50 properties. Arrays are considered 1 property.
  */
 export interface EventData {
-  [key: string]: EventDataValue;
+  /** Reserved structured commerce data for named website events. */
+  commerce?: CommerceData;
+  [key: string]: EventDataValue | undefined;
+}
+
+export interface CommerceItem {
+  productId: string;
+  name?: string;
+  variant?: string;
+  category?: string;
+  /** Net unit price after discounts, excluding tax and shipping. */
+  price: number;
+  quantity: number;
+}
+
+export interface CommerceData {
+  currency: string;
+  market?: string;
+  cartId?: string;
+  checkoutId?: string;
+  /** Identifies a completed payment; unique within this website. Omit before payment. */
+  orderId?: string;
+  shipping?: number;
+  tax?: number;
+  items: CommerceItem[];
 }
 
 export type EventProperties = {
@@ -395,9 +426,12 @@ type MetricEntry = PerformanceEntry & {
 
     if (!payload) return;
 
+    const isCommerce = type === 'event' && !!(payload.data as EventData)?.commerce;
+
     try {
       const res = await fetch(endpoint, {
-        keepalive: true,
+        // Commerce baskets can exceed the browser's 64 KiB keepalive budget.
+        keepalive: !isCommerce,
         method: 'POST',
         body: JSON.stringify({ type, payload }),
         headers: {
@@ -409,14 +443,17 @@ type MetricEntry = PerformanceEntry & {
         credentials,
       });
 
+      if (isCommerce && !res.ok) {
+        throw new Error(`Commerce collection failed (${res.status}).`);
+      }
+
       const data = (await res.json()) as { cache?: string; disabled?: boolean } | null;
       if (data) {
         disabled = !!data.disabled;
         cache = data.cache;
       }
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    } catch (_e) {
-      /* no-op */
+    } catch (error) {
+      if (isCommerce) throw error;
     }
   };
 
