@@ -1,6 +1,7 @@
 'use client';
 import { Column, Grid } from '@umami/react-zen';
 import { WebsiteControls } from '@/app/(main)/websites/[websiteId]/WebsiteControls';
+import { Empty } from '@/components/common/Empty';
 import { LoadingPanel } from '@/components/common/LoadingPanel';
 import { Panel } from '@/components/common/Panel';
 import { SectionHeader } from '@/components/common/SectionHeader';
@@ -24,7 +25,13 @@ export function FunnelsPage({ websiteId }: { websiteId: string }) {
           <FunnelAddButton websiteId={websiteId} />
         </SectionHeader>
       )}
-      <LoadingPanel data={data} isLoading={isLoading} error={error}>
+      <LoadingPanel
+        data={data}
+        isLoading={isLoading}
+        error={error}
+        isEmpty={!data?.data?.length}
+        renderEmpty={() => <Empty />}
+      >
         {data && (
           <Grid gap>
             {data.data?.map((report: any) => (

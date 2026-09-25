@@ -2,7 +2,7 @@ import { z } from 'zod';
 import { parseEventPropertyFilters } from '@/lib/params';
 import { getQueryFilters, parseRequest } from '@/lib/request';
 import { json, unauthorized } from '@/lib/response';
-import { filterParams } from '@/lib/schema';
+import { filterParams, withPeriodDateRange } from '@/lib/schema';
 import { canViewWebsiteSection } from '@/permissions';
 import { getEventDataNumericStats } from '@/queries/sql/events/getEventDataNumericStats';
 
@@ -10,7 +10,7 @@ export async function GET(
   request: Request,
   { params }: { params: Promise<{ websiteId: string }> },
 ) {
-  const schema = z.object({
+  const schema = withPeriodDateRange({
     startAt: z.coerce.number().int(),
     endAt: z.coerce.number().int(),
     eventName: z.string(),

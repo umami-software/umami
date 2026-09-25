@@ -1,5 +1,6 @@
 import { Column, Heading, Row, Text } from '@umami/react-zen';
 import { Plus } from 'lucide-react';
+import { Empty } from '@/components/common/Empty';
 import { LoadingPanel } from '@/components/common/LoadingPanel';
 import { useMessages, useWebsiteSharesQuery } from '@/components/hooks';
 import { DialogButton } from '@/components/input/DialogButton';
@@ -39,7 +40,7 @@ export function WebsiteShareForm({ websiteId }: WebsiteShareFormProps) {
             <SharesTable data={shares} />
           </>
         ) : (
-          <Text color="muted">{t(messages.noDataAvailable)}</Text>
+          <Empty />
         )}
       </Column>
     </LoadingPanel>

@@ -1,15 +1,20 @@
 import { beforeEach, describe, expect, test, vi } from 'vitest';
-import { deleteWebsite, resetWebsite } from './website';
+import { deleteWebsite, getAllUserWebsitesIncludingTeamAccess, resetWebsite } from './website';
 
-const { transactionMock, redisDelMock, redisSetMock } = vi.hoisted(() => ({
-  transactionMock: vi.fn(),
-  redisDelMock: vi.fn(),
-  redisSetMock: vi.fn(),
-}));
+const { transactionMock, redisDelMock, redisSetMock, getSearchParametersMock, pagedQueryMock } =
+  vi.hoisted(() => ({
+    transactionMock: vi.fn(),
+    redisDelMock: vi.fn(),
+    redisSetMock: vi.fn(),
+    getSearchParametersMock: vi.fn(),
+    pagedQueryMock: vi.fn(),
+  }));
 
 vi.mock('@/lib/prisma', () => ({
   default: {
     transaction: transactionMock,
+    getSearchParameters: getSearchParametersMock,
+    pagedQuery: pagedQueryMock,
   },
   getSchema: () => new URL(process.env.DATABASE_URL || '').searchParams.get('schema'),
 }));
@@ -22,6 +27,40 @@ vi.mock('@/lib/redis', () => ({
     },
   },
 }));
+
+describe('team website access', () => {
+  beforeEach(() => {
+    getSearchParametersMock.mockReset();
+    getSearchParametersMock.mockReturnValue({});
+    pagedQueryMock.mockReset();
+    pagedQueryMock.mockResolvedValue({ data: [] });
+  });
+
+  test('includes websites for a team member because membership grants view access', async () => {
+    await getAllUserWebsitesIncludingTeamAccess('team-user');
+
+    expect(pagedQueryMock).toHaveBeenCalledWith(
+      'website',
+      expect.objectContaining({
+        where: {
+          OR: [
+            { userId: 'team-user' },
+            {
+              team: {
+                deletedAt: null,
+                members: {
+                  some: { userId: 'team-user' },
+                },
+              },
+            },
+          ],
+          deletedAt: null,
+        },
+      }),
+      expect.any(Object),
+    );
+  });
+});
 
 function createDeleteTx(calls: string[]) {
   return {

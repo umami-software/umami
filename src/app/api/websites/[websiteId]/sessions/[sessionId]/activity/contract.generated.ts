@@ -11,6 +11,8 @@ const operation1 = defineOperation({
   operation: {
     operationId: 'getWebsiteSessionActivity',
     summary: 'Get websites website id sessions session id activity',
+    description:
+      'Returns activity for the specified session and sessions linked by visitor identity, using the requested date range and optional distinct ID.',
     tags: ['Websites'],
     parameters: [
       {
@@ -20,6 +22,7 @@ const operation1 = defineOperation({
         schema: {
           type: 'string',
         },
+        description: 'ID of the website.',
       },
       {
         name: 'sessionId',
@@ -28,22 +31,25 @@ const operation1 = defineOperation({
         schema: {
           type: 'string',
         },
+        description: 'ID of the visitor session.',
       },
       {
         name: 'startAt',
         in: 'query',
-        required: true,
+        required: false,
         schema: {
           type: 'integer',
         },
+        description: 'Start of the date range as a Unix timestamp in milliseconds.',
       },
       {
         name: 'endAt',
         in: 'query',
-        required: true,
+        required: false,
         schema: {
           type: 'integer',
         },
+        description: 'End of the date range as a Unix timestamp in milliseconds.',
       },
       {
         name: 'distinctId',
@@ -52,6 +58,33 @@ const operation1 = defineOperation({
         schema: {
           type: 'string',
         },
+        description: 'Custom identifier assigned to the visitor.',
+      },
+      {
+        name: 'period',
+        in: 'query',
+        required: false,
+        schema: {
+          type: 'string',
+          enum: [
+            'today',
+            '24h',
+            '7d',
+            '30d',
+            '0day',
+            '24hour',
+            '0week',
+            '7day',
+            '0month',
+            '30day',
+            '90day',
+            '0year',
+            '6month',
+            '12month',
+          ],
+        },
+        description:
+          'Relative date range, for example 7d or 30day, used instead of an explicit startAt/endAt range.',
       },
     ],
     responses: {
@@ -74,30 +107,39 @@ const operation1 = defineOperation({
                         format: 'date-time',
                       },
                     ],
+                    description: 'Date and time the record was created.',
                   },
                   urlPath: {
                     type: 'string',
+                    description: 'Path portion of the page URL.',
                   },
                   urlQuery: {
                     type: 'string',
+                    description: 'Query string portion of the page URL.',
                   },
                   referrerDomain: {
                     type: 'string',
+                    description: 'Domain of the referring page.',
                   },
                   eventId: {
                     type: 'string',
+                    description: 'ID of the event.',
                   },
                   eventType: {
                     type: 'number',
+                    description: 'Event type: 1 for a pageview or 2 for a custom event.',
                   },
                   eventName: {
                     type: 'string',
+                    description: 'Name of the custom event.',
                   },
                   visitId: {
                     type: 'string',
+                    description: 'ID of the visit.',
                   },
                   hostname: {
                     type: 'string',
+                    description: 'Hostname on which the activity occurred.',
                   },
                   hasData: {
                     type: 'boolean',

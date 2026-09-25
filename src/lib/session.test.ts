@@ -1,5 +1,9 @@
-import { expect, test } from 'vitest';
+import { expect, test, vi } from 'vitest';
 import { uuid } from './crypto';
+
+vi.hoisted(() => {
+  process.env.APP_SECRET ??= 'test-app-secret';
+});
 
 const sourceId = '2e2fc91f-77a7-4e5d-a7b1-18a74c67b4e0';
 const sessionSalt = 'monthly-session-salt';

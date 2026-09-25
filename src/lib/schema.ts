@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { isValidTimezone, normalizeTimezone } from '@/lib/date';
+import { DATE_PERIODS, isValidTimezone, normalizeTimezone } from '@/lib/date';
 import { DATA_TYPE, FIELD_LENGTH, UNIT_TYPES } from './constants';
 
 export const timezoneParam = z
@@ -12,6 +12,48 @@ export const timezoneParam = z
 export const unitParam = z.string().refine(value => UNIT_TYPES.includes(value), {
   message: 'Invalid unit',
 });
+
+export const periodParam = z.enum(DATE_PERIODS);
+
+const periodDateRangeParams = {
+  startAt: z.coerce.number().int().optional(),
+  endAt: z.coerce.number().int().optional(),
+  period: periodParam.optional(),
+};
+
+export function withPeriodDateRange<T extends z.ZodRawShape>(shape: T, required = true) {
+  return z
+    .object({
+      ...shape,
+      ...periodDateRangeParams,
+    })
+    .superRefine((data: Record<string, unknown>, ctx) => {
+      const hasStartAt = data.startAt != null;
+      const hasEndAt = data.endAt != null;
+      const hasPeriod = data.period != null;
+
+      if (hasStartAt !== hasEndAt) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          message: 'startAt and endAt must be provided together',
+        });
+      }
+
+      if (required && !hasStartAt && !hasPeriod) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          message: 'Either startAt+endAt or period must be provided',
+        });
+      }
+
+      if (hasPeriod && (hasStartAt || hasEndAt)) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          message: 'period cannot be combined with an explicit date range',
+        });
+      }
+    });
+}
 
 export const dateRangeParams = {
   startAt: z.coerce.number().optional(),
@@ -27,16 +69,27 @@ export function withDateRange<T extends z.ZodRawShape>(shape?: T) {
   return z
     .object({
       ...dateRangeParams,
+      period: periodParam.optional(),
       ...shape,
     })
     .superRefine((data: Record<string, unknown>, ctx) => {
       const hasTimestamps = data.startAt != null && data.endAt != null;
       const hasDates = data.startDate != null && data.endDate != null;
+      const hasExplicitRange =
+        data.startAt != null || data.endAt != null || data.startDate != null || data.endDate != null;
+      const hasPeriod = data.period != null;
 
-      if (!hasTimestamps && !hasDates) {
+      if (!hasTimestamps && !hasDates && !hasPeriod) {
         ctx.addIssue({
           code: z.ZodIssueCode.custom,
-          message: 'Either startAt+endAt or startDate+endDate must be provided',
+          message: 'Either startAt+endAt, startDate+endDate, or period must be provided',
+        });
+      }
+
+      if (hasPeriod && hasExplicitRange) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          message: 'period cannot be combined with an explicit date range',
         });
       }
     });
