@@ -29,6 +29,7 @@ export async function GET(
     filters.compare ?? 'prev',
     filters.startDate,
     filters.endDate,
+    new Date(),
   );
 
   const comparison = await getWebsiteStats(websiteId, {

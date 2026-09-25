@@ -13,7 +13,6 @@ import {
   startOfYear,
   subDays,
   subHours,
-  subMinutes,
   subMonths,
   subWeeks,
   subYears,
@@ -345,13 +344,87 @@ describe('getCompareDate', () => {
     });
   });
 
-  test('previous period shifts back by the span length', () => {
-    const result = getCompareDate('prev', startDate, endDate);
-    expect(result.compare).toBe('prev');
-    // 7 days = 10080 minutes
-    expect(result.startDate).toEqual(subMinutes(startDate, 10080));
-    expect(result.endDate).toEqual(subMinutes(endDate, 10080));
-    expect(result.endDate).toEqual(startDate);
+  // Ranges include both ends (presets end at endOfHour/endOfDay and queries use `between`), so
+  // the previous period must end one millisecond before the current one starts.
+  test('previous period has the same length and ends just before the current one', () => {
+    expect(
+      getCompareDate(
+        'prev',
+        new Date('2026-07-01T00:00:00.000Z'),
+        new Date('2026-07-07T23:59:59.999Z'),
+      ),
+    ).toEqual({
+      compare: 'prev',
+      startDate: new Date('2026-06-24T00:00:00.000Z'),
+      endDate: new Date('2026-06-30T23:59:59.999Z'),
+    });
+  });
+
+  // ClickHouse reads hourly rollup rows stamped at the start of each hour. A previous period that
+  // started even 1 ms after midnight dropped the whole 12 AM hour on ClickHouse but not Postgres.
+  test('previous period of a preset starts exactly on the bucket boundary', () => {
+    const { startDate: start, endDate: end } = parseDateRange('0day');
+
+    expect(getCompareDate('prev', start, end).startDate).toEqual(addDays(start, -1));
+  });
+
+  describe('when limited to the elapsed part of the current range', () => {
+    const now = new Date('2026-07-24T19:07:00');
+    const HOUR = 60 * 60 * 1000;
+
+    // Whole hours, so hourly rollups and raw events cover exactly the same window.
+    test.each(['24hour', '0day', '7day', '30day', '0week', '0month', '6month', '0year'])(
+      '%s compares the elapsed whole hours from the start of the previous period',
+      value => {
+        const { startDate: start, endDate: end } = parseDateRange(
+          value,
+          undefined,
+          'en-US',
+          undefined,
+          now,
+        );
+        const full = getCompareDate('prev', start, end);
+        const elapsed = getCompareDate('prev', start, end, now);
+
+        expect(elapsed.startDate).toEqual(full.startDate);
+        expect(+elapsed.endDate - +elapsed.startDate + 1).toBe(
+          Math.floor((+now - +start) / HOUR) * HOUR,
+        );
+      },
+    );
+
+    test('year over year stops at the same whole hour last year', () => {
+      const { startDate: start, endDate: end } = parseDateRange(
+        '0month',
+        undefined,
+        'en-US',
+        undefined,
+        now,
+      );
+
+      expect(getCompareDate('yoy', start, end, now)).toEqual({
+        compare: 'yoy',
+        startDate: subYears(start, 1),
+        endDate: subYears(new Date('2026-07-24T18:59:59.999'), 1),
+      });
+    });
+
+    test('ranges that already ended are compared in full', () => {
+      expect(getCompareDate('prev', startDate, endDate, now)).toEqual(
+        getCompareDate('prev', startDate, endDate),
+      );
+    });
+
+    test('ranges that have not started yet compare an empty window', () => {
+      const result = getCompareDate(
+        'prev',
+        new Date('2026-08-01T00:00:00'),
+        new Date('2026-08-08T00:00:00'),
+        now,
+      );
+
+      expect(+result.endDate).toBeLessThan(+result.startDate);
+    });
   });
 
   test('returns empty object for unknown compare modes', () => {

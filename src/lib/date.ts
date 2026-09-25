@@ -360,15 +360,34 @@ export function minDate(...args: any[]) {
   return min(args.filter(n => isDate(n)));
 }
 
-export function getCompareDate(compare: string, startDate: Date, endDate: Date) {
+const HOUR_MS = 60 * 60 * 1000;
+
+export function getCompareDate(compare: string, startDate: Date, endDate: Date, now?: Date) {
+  // Ranges include both ends, so a period is one millisecond longer than endDate - startDate.
+  const length = +endDate - +startDate + 1;
+  // With `now`, compare only the elapsed part, in whole hours so that ClickHouse's hourly
+  // rollups and relational raw events cover exactly the same window.
+  const compared =
+    now && now < endDate
+      ? Math.max(0, Math.floor((+now - +startDate) / HOUR_MS) * HOUR_MS)
+      : length;
+
   if (compare === 'yoy') {
-    return { compare, startDate: subYears(startDate, 1), endDate: subYears(endDate, 1) };
+    return {
+      compare,
+      startDate: subYears(startDate, 1),
+      endDate: subYears(new Date(+startDate + compared - 1), 1),
+    };
   }
 
   if (compare === 'prev') {
-    const diff = differenceInMinutes(endDate, startDate);
+    const compareStartDate = new Date(+startDate - length);
 
-    return { compare, startDate: subMinutes(startDate, diff), endDate: subMinutes(endDate, diff) };
+    return {
+      compare,
+      startDate: compareStartDate,
+      endDate: new Date(+compareStartDate + compared - 1),
+    };
   }
 
   return {};

@@ -1,12 +1,13 @@
 import { LoadingPanel } from '@/components/common/LoadingPanel';
-import { useDateRange, useMessages } from '@/components/hooks';
+import { useDateRange, useMessages, useTimezone } from '@/components/hooks';
 import { useEventStatsQuery } from '@/components/hooks/queries/useEventStatsQuery';
 import { MetricCard } from '@/components/metrics/MetricCard';
 import { MetricsBar } from '@/components/metrics/MetricsBar';
 import { formatLongNumber } from '@/lib/format';
 
 export function EventsMetricsBar({ websiteId }: { websiteId: string }) {
-  const { isAllTime } = useDateRange();
+  const { timezone } = useTimezone();
+  const { isAllTime, hasComparison } = useDateRange({ timezone });
   const { t, labels, getErrorMessage } = useMessages();
   const { data, isLoading, isFetching, error } = useEventStatsQuery({
     websiteId,
@@ -60,7 +61,7 @@ export function EventsMetricsBar({ websiteId }: { websiteId: string }) {
               label={label}
               change={change}
               formatValue={formatValue}
-              showChange={!isAllTime}
+              showChange={!isAllTime && hasComparison}
             />
           );
         })}
