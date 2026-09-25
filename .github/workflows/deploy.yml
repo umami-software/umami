@@ -1,0 +1,72 @@
+name: Deploy
+
+on:
+  push:
+    branches: [master]
+  workflow_dispatch:
+
+concurrency:
+  group: deploy-${{ github.ref_name }}
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: [grayelement1, gmanalytics]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build and tag image
+        run: |
+          docker build \
+            -t gmanalytics:latest \
+            -f Dockerfile \
+            .
+
+      - name: Remove old containers
+        run: |
+          docker rm -f gmanalytics || true
+          docker rm -f gmanalytics-db || true
+
+      - name: Create isolated network
+        run: docker network create gmanalytics_network || true
+
+      - name: Start PostgreSQL
+        run: |
+          docker run -d \
+            --name gmanalytics-db \
+            --network gmanalytics_network \
+            --restart always \
+            -e POSTGRES_DB=umami \
+            -e POSTGRES_USER=umami \
+            -e POSTGRES_PASSWORD="${{ secrets.POSTGRES_PASSWORD }}" \
+            postgres:15-alpine
+
+      - name: Start Umami
+        run: |
+          docker run -d \
+            --name gmanalytics \
+            --network gmanalytics_network \
+            --restart always \
+            -e DATABASE_URL="postgresql://umami:${{ secrets.POSTGRES_PASSWORD }}@gmanalytics-db:5432/umami" \
+            -e APP_SECRET="${{ secrets.APP_SECRET }}" \
+            -e TWO_FACTOR_ENCRYPTION_KEY="${{ secrets.TWO_FACTOR_ENCRYPTION_KEY }}" \
+            gmanalytics:latest
+
+          docker network connect npm_default gmanalytics
+
+      - name: Health check
+        run: |
+          for i in $(seq 1 30); do
+            docker exec gmanalytics curl -sf http://localhost:3000/ && exit 0
+            sleep 2
+          done
+          exit 1
+
+      - name: Prune old images
+        run: docker image prune -f
