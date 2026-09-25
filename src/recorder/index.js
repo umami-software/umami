@@ -31,18 +31,36 @@ import { addCustomEvent, record } from 'rrweb';
   };
   const HEATMAP_FLUSH_EVENT_COUNT = 20;
   const HEATMAP_FLUSH_INTERVAL = 5000;
+  const CANVAS_IMAGE_TYPE = 'image/webp';
+  const CONSOLE_EVENT_TAG = 'umami.console';
+  const CONSOLE_LEVELS = {
+    none: [],
+    error: ['error'],
+    warn: ['warn', 'error'],
+    info: ['info', 'warn', 'error'],
+    debug: ['debug', 'info', 'warn', 'error'],
+    all: ['log', 'debug', 'info', 'warn', 'error', 'trace', 'assert'],
+  };
+  const CONSOLE_MAX_STRING_LENGTH = 2000;
+  const CONSOLE_MAX_DEPTH = 3;
+  const CONSOLE_MAX_ITEMS = 20;
 
   let replayEnabled = false;
   let heatmapEnabled = false;
   let sampleRate = 0.15;
   let heatmapSampleRate = 0.15;
   let maskLevel = 'moderate';
+  let consoleLevel = 'none';
   let maxDuration = 300000;
   let blockSelector = '';
+  let recordCanvas = false;
+  let canvasFps = 15;
+  let canvasQuality = 0.6;
 
   let replayBuffer = [];
   let heatmapBuffer = [];
   let replayStopFn = null;
+  let restoreConsole = null;
   let replayFlushTimer = null;
   let heatmapFlushTimer = null;
   let replayStartTime = null;
@@ -305,10 +323,24 @@ import { addCustomEvent, record } from 'rrweb';
       replayStopFn();
       replayStopFn = null;
     }
+
+    if (restoreConsole) {
+      restoreConsole();
+      restoreConsole = null;
+    }
   };
 
   const getMaskConfig = level => {
     switch (level) {
+      case 'lax':
+        // Replace rrweb's default rr-block/rr-ignore/rr-mask classes so nothing is hidden.
+        // Password inputs stay masked because rrweb masks them by default.
+        return {
+          blockClass: '__umami-rrweb-block-disabled__',
+          ignoreClass: '__umami-rrweb-ignore-disabled__',
+          maskAllInputs: false,
+          maskTextClass: '__umami-rrweb-mask-disabled__',
+        };
       case 'strict':
         return {
           maskAllInputs: true,
@@ -319,6 +351,97 @@ import { addCustomEvent, record } from 'rrweb';
           maskAllInputs: true,
         };
     }
+  };
+
+  const truncate = value =>
+    value.length > CONSOLE_MAX_STRING_LENGTH
+      ? `${value.slice(0, CONSOLE_MAX_STRING_LENGTH)}...`
+      : value;
+
+  const serializeConsoleValue = (value, seen = new WeakSet(), depth = 0) => {
+    if (value === null || value === undefined) return value;
+
+    const type = typeof value;
+
+    if (type === 'string') return truncate(value);
+    if (type === 'number' || type === 'boolean') return value;
+    if (type === 'bigint' || type === 'symbol' || type === 'function') return String(value);
+
+    if (value instanceof Error) {
+      return {
+        name: value.name,
+        message: truncate(String(value.message)),
+        stack: truncate(value.stack || ''),
+      };
+    }
+
+    if (typeof Element !== 'undefined' && value instanceof Element) {
+      const id = value.id ? `#${value.id}` : '';
+      const className = value.className
+        ? `.${String(value.className).trim().split(/\s+/).join('.')}`
+        : '';
+
+      return `<${value.tagName.toLowerCase()}${id}${className}>`;
+    }
+
+    if (seen.has(value)) return '[Circular]';
+    if (depth >= CONSOLE_MAX_DEPTH) return `[${value.constructor?.name || 'Object'}]`;
+
+    seen.add(value);
+
+    if (Array.isArray(value)) {
+      return value
+        .slice(0, CONSOLE_MAX_ITEMS)
+        .map(item => serializeConsoleValue(item, seen, depth + 1));
+    }
+
+    const output = {};
+
+    Object.keys(value)
+      .slice(0, CONSOLE_MAX_ITEMS)
+      .forEach(key => {
+        output[key] = serializeConsoleValue(value[key], seen, depth + 1);
+      });
+
+    return output;
+  };
+
+  const startConsoleCapture = level => {
+    const methods = CONSOLE_LEVELS[level] || [];
+    const consoleObject = window.console;
+
+    if (!methods.length || !consoleObject) return null;
+
+    const originals = {};
+
+    methods.forEach(method => {
+      const original = consoleObject[method];
+
+      if (typeof original !== 'function') return;
+
+      originals[method] = original;
+      consoleObject[method] = (...args) => {
+        try {
+          // console.assert only logs when its first argument is falsy.
+          if (replayStopFn && !replayStopped && (method !== 'assert' || !args[0])) {
+            addCustomEvent(CONSOLE_EVENT_TAG, {
+              level: method,
+              args: args.map(arg => serializeConsoleValue(arg)),
+            });
+          }
+        } catch {
+          // Ignore capture failures so the page's own console call always runs.
+        }
+
+        return original.apply(consoleObject, args);
+      };
+    });
+
+    return () => {
+      Object.keys(originals).forEach(method => {
+        consoleObject[method] = originals[method];
+      });
+    };
   };
 
   const shouldSample = value => {
@@ -488,7 +611,16 @@ import { addCustomEvent, record } from 'rrweb';
         headMetaAuthorship: true,
         headMetaVerification: true,
       },
-      recordCanvas: false,
+      recordCanvas,
+      ...(recordCanvas && {
+        sampling: {
+          canvas: canvasFps,
+        },
+        dataURLOptions: {
+          type: CANVAS_IMAGE_TYPE,
+          quality: canvasQuality,
+        },
+      }),
       recordCrossOriginIframes: false,
       checkoutEveryNms: 30000,
       ...(blockSelector && { blockSelector }),
@@ -497,7 +629,10 @@ import { addCustomEvent, record } from 'rrweb';
     if (replayStopped && replayStopFn) {
       replayStopFn();
       replayStopFn = null;
+      return;
     }
+
+    restoreConsole = startConsoleCapture(consoleLevel);
   };
 
   const beginHeatmapCapture = () => {
@@ -691,8 +826,12 @@ import { addCustomEvent, record } from 'rrweb';
       if (typeof data.sampleRate === 'number') sampleRate = data.sampleRate;
       if (typeof data.heatmapSampleRate === 'number') heatmapSampleRate = data.heatmapSampleRate;
       if (typeof data.maskLevel === 'string') maskLevel = data.maskLevel;
+      if (typeof data.consoleLevel === 'string') consoleLevel = data.consoleLevel;
       if (typeof data.maxDuration === 'number') maxDuration = data.maxDuration;
       if (typeof data.blockSelector === 'string') blockSelector = data.blockSelector;
+      if (typeof data.recordCanvas === 'boolean') recordCanvas = data.recordCanvas;
+      if (typeof data.canvasFps === 'number') canvasFps = data.canvasFps;
+      if (typeof data.canvasQuality === 'number') canvasQuality = data.canvasQuality;
     } catch {
       return;
     }

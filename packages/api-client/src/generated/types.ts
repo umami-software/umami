@@ -2889,16 +2889,27 @@ export interface components {
     ReplayConfig: {
       /** @description CSS selector for elements excluded from recordings. */
       blockSelector?: string;
+      /** @description Maximum canvas frames captured per second when canvas recording is enabled. */
+      canvasFps?: number;
+      /** @description Image quality for captured canvas frames, from 0 to 1. */
+      canvasQuality?: number;
+      /**
+       * @description Minimum browser console level captured with replays: none, error, warn, info, debug, or all.
+       * @enum {string}
+       */
+      consoleLevel?: 'none' | 'error' | 'warn' | 'info' | 'debug' | 'all';
       /** @description Whether heatmap recording is enabled. */
       heatmapEnabled?: boolean;
       /** @description Fraction of sessions to record for heatmaps, from 0 to 1. */
       heatmapSampleRate?: number;
       /**
-       * @description Privacy masking level used by the recorder: strict or moderate.
+       * @description Privacy masking level used by the recorder: strict, moderate, or lax (only password inputs are masked).
        * @enum {string}
        */
-      maskLevel?: 'strict' | 'moderate';
+      maskLevel?: 'lax' | 'strict' | 'moderate';
       maxDuration?: number;
+      /** @description Whether canvas elements are captured in replays. */
+      recordCanvas?: boolean;
       /** @description Whether session replay recording is enabled. */
       replayEnabled?: boolean;
       /** @description Fraction of sessions to record for replay, from 0 to 1. */
@@ -2909,16 +2920,27 @@ export interface components {
     ReplayConfigInput: {
       /** @description CSS selector for elements excluded from recordings. */
       blockSelector?: string;
+      /** @description Maximum canvas frames captured per second when canvas recording is enabled. */
+      canvasFps?: number;
+      /** @description Image quality for captured canvas frames, from 0 to 1. */
+      canvasQuality?: number;
+      /**
+       * @description Minimum browser console level captured with replays: none, error, warn, info, debug, or all.
+       * @enum {string}
+       */
+      consoleLevel?: 'none' | 'error' | 'warn' | 'info' | 'debug' | 'all';
       /** @description Whether heatmap recording is enabled. */
       heatmapEnabled?: boolean;
       /** @description Fraction of sessions to record for heatmaps, from 0 to 1. */
       heatmapSampleRate?: number;
       /**
-       * @description Privacy masking level used by the recorder: strict or moderate.
+       * @description Privacy masking level used by the recorder: strict, moderate, or lax (only password inputs are masked).
        * @enum {string}
        */
-      maskLevel?: 'strict' | 'moderate';
+      maskLevel?: 'lax' | 'strict' | 'moderate';
       maxDuration?: number;
+      /** @description Whether canvas elements are captured in replays. */
+      recordCanvas?: boolean;
       /** @description Whether session replay recording is enabled. */
       replayEnabled?: boolean;
       /** @description Fraction of sessions to record for replay, from 0 to 1. */

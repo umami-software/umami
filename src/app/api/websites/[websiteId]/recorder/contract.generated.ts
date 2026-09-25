@@ -64,6 +64,31 @@ const operation1 = defineOperation({
                         {
                           const: 'moderate',
                         },
+                        {
+                          const: 'lax',
+                        },
+                      ],
+                    },
+                    consoleLevel: {
+                      anyOf: [
+                        {
+                          const: 'none',
+                        },
+                        {
+                          const: 'error',
+                        },
+                        {
+                          const: 'warn',
+                        },
+                        {
+                          const: 'info',
+                        },
+                        {
+                          const: 'debug',
+                        },
+                        {
+                          const: 'all',
+                        },
                       ],
                     },
                     maxDuration: {
@@ -71,6 +96,15 @@ const operation1 = defineOperation({
                     },
                     blockSelector: {
                       type: 'string',
+                    },
+                    recordCanvas: {
+                      type: 'boolean',
+                    },
+                    canvasFps: {
+                      type: 'number',
+                    },
+                    canvasQuality: {
+                      type: 'number',
                     },
                   },
                   required: [
@@ -80,8 +114,12 @@ const operation1 = defineOperation({
                     'sampleRate',
                     'heatmapSampleRate',
                     'maskLevel',
+                    'consoleLevel',
                     'maxDuration',
                     'blockSelector',
+                    'recordCanvas',
+                    'canvasFps',
+                    'canvasQuality',
                   ],
                 },
               ],

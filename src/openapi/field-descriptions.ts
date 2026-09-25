@@ -142,8 +142,14 @@ const fieldDescriptions: Record<string, string> = {
   heatmapEnabled: 'Whether heatmap recording is enabled.',
   sampleRate: 'Fraction of sessions to record for replay, from 0 to 1.',
   heatmapSampleRate: 'Fraction of sessions to record for heatmaps, from 0 to 1.',
-  maskLevel: 'Privacy masking level used by the recorder: strict or moderate.',
+  maskLevel:
+    'Privacy masking level used by the recorder: strict, moderate, or lax (only password inputs are masked).',
+  consoleLevel:
+    'Minimum browser console level captured with replays: none, error, warn, info, debug, or all.',
   blockSelector: 'CSS selector for elements excluded from recordings.',
+  recordCanvas: 'Whether canvas elements are captured in replays.',
+  canvasFps: 'Maximum canvas frames captured per second when canvas recording is enabled.',
+  canvasQuality: 'Image quality for captured canvas frames, from 0 to 1.',
   allDay: 'Whether the annotation applies to the entire day.',
   note: 'Text of the annotation.',
   apiKey: 'API key authentication details.',
