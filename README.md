@@ -21,6 +21,10 @@
 
 A detailed getting started guide can be found at [umami.is/docs](https://umami.is/docs/).
 
+[![Deploy with Zenith](https://cdn.zenith.hosting/buttons/deploy-with-zenith.svg)](https://zenith.hosting/host/umami)
+
+One-click managed Umami, with no server to set up: storage, backups and a free subdomain included. A share of every subscription goes back to Umami.
+
 ---
 
 ## 🛠 Installing from Source
