@@ -457,6 +457,34 @@ export function generateTimeSeries(
   });
 }
 
+const BUCKET_FORMAT = "yyyy-MM-dd'T'HH:mm:ss";
+
+// Places each comparison bucket at the same position in the current period (hour N of
+// yesterday under hour N of today), so an empty bucket in either period cannot shift the
+// series. Buckets are zero-filled through endDate and omitted after it, so the comparison
+// stops where the current period does. All dates are wall-clock dates in the display timezone.
+export function alignCompareSeries(
+  data: { x: string; y: number }[],
+  compareStartDate: Date,
+  startDate: Date,
+  endDate: Date,
+  unit: string,
+) {
+  const { add, diff, start } = DATE_FUNCTIONS[unit];
+  const compareStart = start(compareStartDate);
+  const currentStart = start(startDate);
+  const values = new Map(
+    data.map(({ x, y }) => [diff(start(parseBackendDate(x)), compareStart), { x, y }]),
+  );
+  const count = diff(start(endDate), currentStart) + 1;
+
+  return Array.from({ length: Math.max(0, count) }, (_, i) => ({
+    x: formatDate(add(currentStart, i), BUCKET_FORMAT),
+    y: values.get(i)?.y ?? 0,
+    d: values.get(i)?.x ?? formatDate(add(compareStart, i), BUCKET_FORMAT),
+  }));
+}
+
 export function getDateRangeValue(startDate: Date, endDate: Date) {
   return `range:${startDate.getTime()}:${endDate.getTime()}`;
 }

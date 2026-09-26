@@ -19,6 +19,7 @@ import {
 } from 'date-fns';
 import { afterEach, beforeEach, describe, expect, test, vi } from 'vitest';
 import {
+  alignCompareSeries,
   formatDate,
   generateTimeSeries,
   getAllowedUnits,
@@ -429,6 +430,56 @@ describe('getCompareDate', () => {
 
   test('returns empty object for unknown compare modes', () => {
     expect(getCompareDate('unknown', startDate, endDate)).toEqual({});
+  });
+});
+
+describe('alignCompareSeries', () => {
+  // Backend series only include buckets with data. Pairing them by array index put yesterday's
+  // 1 AM under today's 12 AM whenever yesterday's 12 AM hour was empty.
+  const yesterday = new Date('2026-09-24T00:00:00');
+  const today = new Date('2026-09-25T00:00:00');
+  const endOfToday = new Date('2026-09-25T04:59:59.999');
+  const previous = [
+    { x: '2026-09-24T01:00:00Z', y: 5 },
+    { x: '2026-09-24T03:00:00Z', y: 7 },
+  ];
+
+  function chartValues(endDate: Date) {
+    return generateTimeSeries(
+      alignCompareSeries(previous, yesterday, today, endDate, 'hour'),
+      today,
+      endOfToday,
+      'hour',
+      'en-US',
+    );
+  }
+
+  test('lines up hour N of the previous day under hour N of the current day', () => {
+    const series = chartValues(endOfToday);
+
+    // Hours with no traffic yesterday plot as zero instead of shifting the later hours.
+    expect(series.map(({ y }) => y)).toEqual([0, 5, 0, 7, 0]);
+    expect(series[1].d).toBe('2026-09-24T01:00:00Z');
+    expect(series[0].d).toBe('2026-09-24T00:00:00');
+  });
+
+  test('stops the comparison at the current hour', () => {
+    const series = chartValues(new Date('2026-09-25T02:35:00'));
+
+    expect(series.map(({ y }) => y)).toEqual([0, 5, 0, null, null]);
+  });
+
+  test('keeps day positions when the previous period is in a different month', () => {
+    const aligned = alignCompareSeries(
+      [{ x: '2026-08-02T00:00:00Z', y: 3 }],
+      new Date('2026-08-01T00:00:00'),
+      new Date('2026-09-01T00:00:00'),
+      new Date('2026-09-30T23:59:59.999'),
+      'day',
+    );
+
+    expect(aligned).toHaveLength(30);
+    expect(aligned[1]).toEqual({ x: '2026-09-02T00:00:00', y: 3, d: '2026-08-02T00:00:00Z' });
   });
 });
 

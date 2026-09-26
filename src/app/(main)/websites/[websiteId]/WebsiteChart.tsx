@@ -12,7 +12,7 @@ import {
 import { useWebsitePageviewsQuery } from '@/components/hooks/queries/useWebsitePageviewsQuery';
 import { PageviewsChart } from '@/components/metrics/PageviewsChart';
 import { type AnnotationRange, getAnnotationDateRangeValue } from '@/lib/annotations';
-import { DATE_FUNCTIONS } from '@/lib/date';
+import { alignCompareSeries, DATE_FUNCTIONS, minDate } from '@/lib/date';
 
 export function WebsiteChart({
   websiteId,
@@ -50,25 +50,32 @@ export function WebsiteChart({
       return { pageviews: [], sessions: [] };
     }
 
+    // The comparison stops at the current bucket; later buckets have nothing to compare against.
+    const compareEndDate = minDate(fromUtc(new Date()), endDate);
+
     return {
       pageviews,
       sessions,
       ...(compare && {
         compare: {
-          pageviews: pageviews.map(({ x }, i) => ({
-            x,
-            y: compare.pageviews[i]?.y,
-            d: compare.pageviews[i]?.x,
-          })),
-          sessions: sessions.map(({ x }, i) => ({
-            x,
-            y: compare.sessions[i]?.y,
-            d: compare.sessions[i]?.x,
-          })),
+          pageviews: alignCompareSeries(
+            compare.pageviews,
+            fromUtc(compare.startDate),
+            startDate,
+            compareEndDate,
+            unit,
+          ),
+          sessions: alignCompareSeries(
+            compare.sessions,
+            fromUtc(compare.startDate),
+            startDate,
+            compareEndDate,
+            unit,
+          ),
         },
       }),
     };
-  }, [data, startDate, endDate, unit]);
+  }, [data, startDate, endDate, unit, timezone]);
 
   const annotations = useMemo<ChartAnnotation[]>(() => {
     const isSubDayUnit = unit === 'hour' || unit === 'minute';
