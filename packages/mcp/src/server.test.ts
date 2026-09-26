@@ -513,6 +513,37 @@ describe('createUmamiMcpServer', () => {
     expect(harness.calls).toHaveLength(0);
   });
 
+  test('pageview tools reject the event filter, event tools accept it', async () => {
+    for (const name of [
+      'get_website_stats',
+      'get_website_traffic',
+      'get_website_metrics',
+      'get_performance',
+    ]) {
+      const result = await harness.client.callTool({
+        name,
+        arguments: {
+          websiteId: WEBSITE_ID,
+          startAt: '2024-01-01',
+          type: 'path',
+          filters: { event: 'signup' },
+        },
+      });
+
+      expect(result.isError, name).toBe(true);
+    }
+
+    expect(harness.calls).toHaveLength(0);
+
+    const result = await harness.client.callTool({
+      name: 'get_event_stats',
+      arguments: { websiteId: WEBSITE_ID, startAt: '2024-01-01', filters: { event: 'signup' } },
+    });
+
+    expect(result.isError).toBeFalsy();
+    expect(harness.calls[0].url.searchParams.get('event')).toBe('signup');
+  });
+
   test('get_website_traffic returns series with friendly keys', async () => {
     const result = await harness.client.callTool({
       name: 'get_website_traffic',
