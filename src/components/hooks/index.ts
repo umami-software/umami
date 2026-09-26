@@ -11,9 +11,6 @@ export * from './context/useWebsite';
 
 // Query hooks
 export * from './queries/useActiveUsersQuery';
-export * from './queries/useBillingMetricsQuery';
-export * from './queries/useBillingProvidersQuery';
-export * from './queries/useBillingQuery';
 export * from './queries/useBoardQuery';
 export * from './queries/useBoardSharesQuery';
 export * from './queries/useBoardsQuery';
@@ -27,6 +24,9 @@ export * from './queries/useLinkQuery';
 export * from './queries/useLinkSharesQuery';
 export * from './queries/useLinksQuery';
 export * from './queries/useLoginQuery';
+export * from './queries/usePaymentProviderMetricsQuery';
+export * from './queries/usePaymentProviderQuery';
+export * from './queries/usePaymentProvidersQuery';
 export * from './queries/useTwoFactorStatusQuery';
 export * from './queries/useTwoFactorUserStatus';
 export * from './queries/useTwoFactorVerifyMutation';

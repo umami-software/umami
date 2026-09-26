@@ -1,5 +1,3 @@
-export * from './billing/getARR';
-export * from './billing/getMRR';
 export * from './events/getEventDataArraySeries';
 export * from './events/getEventDataById';
 export * from './events/getEventDataDateSeries';
@@ -35,6 +33,9 @@ export * from './heatmap/saveHeatmapEvents';
 export * from './pageviews/getPageviewExpandedMetrics';
 export * from './pageviews/getPageviewMetrics';
 export * from './pageviews/getPageviewStats';
+export * from './paymentProvider/getARR';
+export * from './paymentProvider/getMRR';
+export * from './paymentProvider/upsertInvoiceBatch';
 export * from './performance/getPerformanceStats';
 export * from './replays/getReplayChunks';
 export * from './replays/getSessionReplays';

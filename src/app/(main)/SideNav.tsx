@@ -67,9 +67,9 @@ export function SideNav(props: any) {
       icon: <Grid2x2 />,
     },
     {
-      id: 'billing',
-      label: t(labels.billing),
-      path: '/billing',
+      id: 'payment-providers',
+      label: t(labels.paymentProviders),
+      path: '/payment-providers',
       icon: <BadgeDollarSign />,
     },
   ];

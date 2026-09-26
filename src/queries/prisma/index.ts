@@ -1,6 +1,6 @@
-export * from './billing';
 export * from './board';
 export * from './link';
+export * from './paymentProvider';
 export * from './pixel';
 export * from './report';
 export * from './segment';

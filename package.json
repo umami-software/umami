@@ -48,7 +48,7 @@
     "test:e2e": "playwright test",
     "test:e2e:ui": "playwright test --ui",
     "seed-data": "tsx scripts/seed-data.ts",
-    "sync-billing": "tsx scripts/sync-billing.ts",
+    "sync-payment-provider": "tsx scripts/sync-payment-provider.ts",
     "lint": "biome lint .",
     "format": "biome format --write .",
     "check": "biome check --write"

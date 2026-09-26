@@ -32,7 +32,7 @@ model User {
   twoFactorBackupCodes TwoFactorBackupCode[]
   twoFactorOtpUseds    TwoFactorOtpUsed[]
   twoFactorRateLimit   TwoFactorRateLimit?
-  billings             Billing[]
+  paymentProviders      PaymentProvider[]
 
   @@map("user")
 }
@@ -228,7 +228,7 @@ model Team {
   links    Link[]
   pixels   Pixel[]
   boards   Board[]
-  billings Billing[]
+  paymentProviders PaymentProvider[]
 
   @@index([accessCode])
   @@map("team")
@@ -306,8 +306,8 @@ model Revenue {
   @@map("revenue")
 }
 
-model Billing {
-  id             String    @id() @map("billing_id") @db.Uuid
+model PaymentProvider {
+  id             String    @id() @map("payment_provider_id") @db.Uuid
   name           String    @db.VarChar(100)
   provider       String    @db.VarChar(50)
   userId         String?   @map("user_id") @db.Uuid
@@ -323,18 +323,18 @@ model Billing {
 
   user    User?           @relation(fields: [userId], references: [id])
   team    Team?           @relation(fields: [teamId], references: [id])
-  invoices BillingInvoice[]
+  invoices PaymentProviderInvoice[]
 
   @@unique([name, userId])
   @@unique([name, teamId])
   @@index([userId])
   @@index([teamId])
-  @@map("billing")
+  @@map("payment_provider")
 }
 
-model BillingInvoice {
+model PaymentProviderInvoice {
   id                String   @id() @map("line_id") @db.VarChar(255)
-  billingId         String   @map("billing_id") @db.Uuid
+  paymentProviderId String   @map("payment_provider_id") @db.Uuid
   invoiceId         String   @map("invoice_id") @db.VarChar(255)
   customerId        String   @map("customer_id") @db.VarChar(255)
   invoiceStatus     String   @map("invoice_status") @db.VarChar(50)
@@ -346,13 +346,13 @@ model BillingInvoice {
   periodMonths      Int      @map("period_months")
   mrrCents          Int      @map("mrr_cents")
 
-  billing Billing @relation(fields: [billingId], references: [id])
+  paymentProvider PaymentProvider @relation(fields: [paymentProviderId], references: [id])
 
-  @@index([billingId])
+  @@index([paymentProviderId])
   @@index([invoiceId])
   @@index([customerId])
   @@index([usageType])
-  @@map("billing_invoice")
+  @@map("payment_provider_invoice")
 }
 
 model Link {
