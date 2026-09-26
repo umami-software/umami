@@ -3,7 +3,7 @@ import { WebsiteNav } from '@/app/(main)/websites/[websiteId]/WebsiteNav';
 import { IconLabel } from '@/components/common/IconLabel';
 import Link from '@/components/common/Link';
 import { useMessages, useNavigation } from '@/components/hooks';
-import { Globe, Grid2x2, LayoutDashboard, LinkIcon } from '@/components/icons';
+import { ChartColumnStacked, Globe, Grid2x2, LayoutDashboard, LinkIcon } from '@/components/icons';
 import { MobileMenuButton } from '@/components/input/MobileMenuButton';
 import { UserButton } from '@/components/input/UserButton';
 import { Logo } from '@/components/svg';
@@ -29,6 +29,12 @@ export function MobileNav() {
       label: t(labels.websites),
       path: '/websites',
       icon: <Globe />,
+    },
+    {
+      id: 'overview',
+      label: t(labels.overview),
+      path: '/overview',
+      icon: <ChartColumnStacked />,
     },
     {
       id: 'links',
