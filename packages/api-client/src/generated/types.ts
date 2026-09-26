@@ -897,7 +897,7 @@ export interface paths {
     put?: never;
     /**
      * Send tracking data
-     * @description Collects a pageview, custom event, visitor identification, or performance payload and returns session information and a tracking cache token when accepted.
+     * @description Collects a pageview, custom event, visitor identification, or performance payload and returns session information and a tracking cache token when accepted. Named website events can include structured payload.data.commerce, which is extracted into dedicated commerce tables.
      */
     post: operations['send'];
     delete?: never;
@@ -8938,54 +8938,125 @@ export interface operations {
     };
     requestBody: {
       content: {
-        'application/json': {
-          payload: {
-            /** @description Browser used by the visitor. */
-            browser?: string;
-            cls?: number;
-            /** @description Data returned by the operation. */
-            data?: {
-              [key: string]: unknown;
+        'application/json':
+          | {
+              payload: {
+                /** @description Browser used by the visitor. */
+                browser?: string;
+                cls?: number;
+                /** @description Data returned by the operation. */
+                data?: {
+                  [key: string]: unknown;
+                };
+                /** @description Device category used by the visitor. */
+                device?: string;
+                fcp?: number;
+                /** @description Hostname on which the activity occurred. */
+                hostname?: string;
+                /** @description Unique identifier of the resource. */
+                id?: string;
+                inp?: number;
+                ip?: string;
+                /** @description Preferred language reported by the visitor browser. */
+                language?: string;
+                lcp?: number;
+                /** Format: uuid */
+                link?: string;
+                /** @description Display name of the resource. */
+                name?: string;
+                /** @description Operating system used by the visitor. */
+                os?: string;
+                /** Format: uuid */
+                pixel?: string;
+                /** @description URL of the referring page. */
+                referrer?: string;
+                /** @description Screen resolution of the visitor device. */
+                screen?: string;
+                /** @description Tag attached to the tracked activity. */
+                tag?: string;
+                timestamp?: number;
+                /** @description Title of the page. */
+                title?: string;
+                ttfb?: number;
+                /** @description URL associated with the resource. */
+                url?: string;
+                userAgent?: string;
+                /** Format: uuid */
+                website?: string;
+              };
+              /** @enum {string} */
+              type: 'identify' | 'performance';
+            }
+          | {
+              payload: {
+                /** @description Browser used by the visitor. */
+                browser?: string;
+                cls?: number;
+                /** @description Data returned by the operation. */
+                data?: {
+                  commerce?: {
+                    cartId?: string;
+                    checkoutId?: string;
+                    /** @description Currency code used for revenue values. */
+                    currency: string;
+                    items: {
+                      category?: string;
+                      /** @description Display name of the resource. */
+                      name?: string;
+                      price: number;
+                      productId: string;
+                      quantity: number;
+                      variant?: string;
+                    }[];
+                    market?: string;
+                    orderId?: string;
+                    /** @default 0 */
+                    shipping?: number;
+                    /** @default 0 */
+                    tax?: number;
+                  };
+                } & {
+                  [key: string]: unknown;
+                };
+                /** @description Device category used by the visitor. */
+                device?: string;
+                fcp?: number;
+                /** @description Hostname on which the activity occurred. */
+                hostname?: string;
+                /** @description Unique identifier of the resource. */
+                id?: string;
+                inp?: number;
+                ip?: string;
+                /** @description Preferred language reported by the visitor browser. */
+                language?: string;
+                lcp?: number;
+                /** Format: uuid */
+                link?: string;
+                /** @description Display name of the resource. */
+                name?: string;
+                /** @description Operating system used by the visitor. */
+                os?: string;
+                /** Format: uuid */
+                pixel?: string;
+                /** @description URL of the referring page. */
+                referrer?: string;
+                /** @description Screen resolution of the visitor device. */
+                screen?: string;
+                /** @description Tag attached to the tracked activity. */
+                tag?: string;
+                timestamp?: number;
+                /** @description Title of the page. */
+                title?: string;
+                ttfb?: number;
+                /** @description URL associated with the resource. */
+                url?: string;
+                userAgent?: string;
+                /** Format: uuid */
+                website?: string;
+              };
+              /** @constant */
+              type: 'event';
             };
-            /** @description Device category used by the visitor. */
-            device?: string;
-            fcp?: number;
-            /** @description Hostname on which the activity occurred. */
-            hostname?: string;
-            /** @description Unique identifier of the resource. */
-            id?: string;
-            inp?: number;
-            ip?: string;
-            /** @description Preferred language reported by the visitor browser. */
-            language?: string;
-            lcp?: number;
-            /** Format: uuid */
-            link?: string;
-            /** @description Display name of the resource. */
-            name?: unknown;
-            /** @description Operating system used by the visitor. */
-            os?: string;
-            /** Format: uuid */
-            pixel?: string;
-            /** @description URL of the referring page. */
-            referrer?: string;
-            /** @description Screen resolution of the visitor device. */
-            screen?: string;
-            /** @description Tag attached to the tracked activity. */
-            tag?: unknown;
-            timestamp?: number;
-            /** @description Title of the page. */
-            title?: string;
-            ttfb?: number;
-            /** @description URL associated with the resource. */
-            url?: string;
-            userAgent?: string;
-            /** Format: uuid */
-            website?: string;
-          };
-          /** @enum {string} */
-          type: 'event' | 'identify' | 'performance';
-        };
       };
     };
     responses: {

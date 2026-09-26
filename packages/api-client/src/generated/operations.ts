@@ -4935,7 +4935,7 @@ export abstract class GeneratedUmamiClient {
 
   /**
    * Send tracking data
-   * Collects a pageview, custom event, visitor identification, or performance payload and returns session information and a tracking cache token when accepted.
+   * Collects a pageview, custom event, visitor identification, or performance payload and returns session information and a tracking cache token when accepted. Named website events can include structured payload.data.commerce, which is extracted into dedicated commerce tables.
    * `POST /api/send`
    */
   send(input: OperationInput<'send'>, options?: RequestOptions): Promise<OperationOutput<'send'>> {
