@@ -68,7 +68,11 @@ RUN set -x \
 
 RUN echo {} > package.json
 
-RUN printf "allowBuilds:\n  '@prisma/engines': true\n  prisma: false\nverifyDepsBeforeRun: false\n" > pnpm-workspace.yaml
+# Apply the shared security overrides to the runner's separate dependency install.
+COPY pnpm-workspace.yaml /tmp/pnpm-workspace.yaml
+RUN printf "allowBuilds:\n  '@prisma/engines': true\n  prisma: false\nverifyDepsBeforeRun: false\n" > pnpm-workspace.yaml \
+    && awk '/^overrides:/{f=1;print;next} f&&/^[^ #]/{f=0} f' /tmp/pnpm-workspace.yaml >> pnpm-workspace.yaml \
+    && rm /tmp/pnpm-workspace.yaml
 
 # Script dependencies
 RUN pnpm add npm-run-all dotenv chalk semver \
