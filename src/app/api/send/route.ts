@@ -12,6 +12,7 @@ import { badRequest, forbidden, json, serverError } from '@/lib/response';
 import { safeDecodeURI, safeDecodeURIComponent } from '@/lib/url';
 import {
   createSession,
+  saveEngagement,
   saveEvent,
   saveSessionData,
   saveSessionLink,
@@ -57,7 +58,12 @@ export async function POST(request: Request) {
       cls,
       fcp,
       ttfb,
+      engagement,
     } = payload;
+
+    if (type === COLLECTION_TYPE.engagement && !engagement) {
+      return badRequest({ message: 'Engagement requests must include engagement.' });
+    }
 
     const sourceId = websiteId || pixelId || linkId;
 
@@ -145,8 +151,9 @@ export async function POST(request: Request) {
       iat = now;
     }
 
-    // Expire visit after 30 minutes
-    if (timestamp === undefined && now - iat > 1800) {
+    // Expire visit after 30 minutes. Engagement is reported for the page the
+    // visitor is leaving, so it stays with the visit that page belongs to.
+    if (timestamp === undefined && now - iat > 1800 && type !== COLLECTION_TYPE.engagement) {
       visitId = uuid(sessionId, visitSalt);
       iat = now;
     }
@@ -327,6 +334,21 @@ export async function POST(request: Request) {
         ttfb,
         createdAt,
       });
+    } else if (type === COLLECTION_TYPE.engagement) {
+      if (websiteId && engagement) {
+        const base = hostname ? `https://${hostname}` : 'https://localhost';
+        const currentUrl = new URL(url, base);
+        const urlPath = currentUrl.pathname === '/undefined' ? '' : currentUrl.pathname;
+
+        await saveEngagement({
+          websiteId,
+          sessionId,
+          visitId,
+          urlPath: safeDecodeURI(urlPath),
+          engagementTime: engagement,
+          createdAt,
+        });
+      }
     }
 
     const token = createToken(
