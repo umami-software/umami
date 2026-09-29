@@ -513,6 +513,55 @@ describe('createUmamiMcpServer', () => {
     expect(harness.calls).toHaveLength(0);
   });
 
+  test('pageview tools reject the event filter, event tools accept it', async () => {
+    for (const name of [
+      'get_website_stats',
+      'get_website_traffic',
+      'get_website_metrics',
+      'get_performance',
+    ]) {
+      const result = await harness.client.callTool({
+        name,
+        arguments: {
+          websiteId: WEBSITE_ID,
+          startAt: '2024-01-01',
+          type: 'path',
+          filters: { event: 'signup' },
+        },
+      });
+
+      expect(result.isError, name).toBe(true);
+      expect(JSON.stringify(result.content), name).toContain('event');
+    }
+
+    expect(harness.calls).toHaveLength(0);
+
+    const result = await harness.client.callTool({
+      name: 'get_event_stats',
+      arguments: { websiteId: WEBSITE_ID, startAt: '2024-01-01', filters: { event: 'signup' } },
+    });
+
+    expect(result.isError).toBeFalsy();
+    expect(harness.calls[0].url.searchParams.get('event')).toBe('signup');
+  });
+
+  // The event ranking queries custom events, so it can still narrow by event name.
+  test('get_website_metrics keeps the event filter for the event ranking', async () => {
+    const result = await harness.client.callTool({
+      name: 'get_website_metrics',
+      arguments: {
+        websiteId: WEBSITE_ID,
+        startAt: '2024-01-01',
+        type: 'event',
+        filters: { event: 'c.checkout' },
+      },
+    });
+
+    expect(result.isError).toBeFalsy();
+    expect(harness.calls[0].url.pathname).toMatch(/\/metrics$/);
+    expect(harness.calls[0].url.searchParams.get('event')).toBe('c.checkout');
+  });
+
   test('get_website_traffic returns series with friendly keys', async () => {
     const result = await harness.client.callTool({
       name: 'get_website_traffic',
