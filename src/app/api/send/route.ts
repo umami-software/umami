@@ -1,8 +1,8 @@
-import { startOfHour } from 'date-fns';
 import { isbot } from 'isbot';
 import clickhouse from '@/lib/clickhouse';
+import { type CollectionCache, resolveCollectionSession } from '@/lib/collection-session';
 import { CACHE_TOKEN_TYPE, COLLECTION_TYPE, EVENT_TYPE, FIELD_LENGTH } from '@/lib/constants';
-import { getSalt, hash, secret, uuid } from '@/lib/crypto';
+import { hash, secret } from '@/lib/crypto';
 import { getClientInfo, hasBlockedIp } from '@/lib/detect';
 import { truncateString } from '@/lib/format';
 import { createToken, parseToken } from '@/lib/jwt';
@@ -19,14 +19,6 @@ import {
 } from '@/queries/sql';
 import { collectionSchema } from './request-schema';
 
-interface Cache {
-  websiteId: string;
-  sessionId: string;
-  visitId: string;
-  iat: number;
-  sessionLinkId?: string;
-}
-
 export async function POST(request: Request) {
   try {
     const { body, error } = await parseRequest(request, collectionSchema, { skipAuth: true });
@@ -36,6 +28,11 @@ export async function POST(request: Request) {
     }
 
     const { type, payload } = body;
+
+    if (type === 'error') {
+      const { collectError } = await import('@/lib/errors/collect');
+      return collectError(request, payload);
+    }
 
     const {
       website: websiteId,
@@ -62,7 +59,7 @@ export async function POST(request: Request) {
     const sourceId = websiteId || pixelId || linkId;
 
     // Cache check
-    let cache: Cache | null = null;
+    let cache: CollectionCache | null = null;
 
     if (websiteId) {
       const cacheHeader = request.headers.get('x-umami-cache');
@@ -70,7 +67,7 @@ export async function POST(request: Request) {
       if (cacheHeader) {
         const result = await parseToken(cacheHeader, secret());
 
-        if (result?.type === CACHE_TOKEN_TYPE) {
+        if (result?.type === CACHE_TOKEN_TYPE && result.websiteId === websiteId) {
           cache = result;
         }
       }
@@ -105,16 +102,17 @@ export async function POST(request: Request) {
     }
 
     const createdAt = timestamp !== undefined ? new Date(timestamp * 1000) : new Date();
-    const now = Math.floor(Date.now() / 1000);
     const distinctId = truncateString(id, FIELD_LENGTH.distinctId);
 
-    const sessionSalt = getSalt(process.env.SALT_ROTATION, createdAt);
-    const visitSalt = hash(startOfHour(createdAt).toUTCString());
-
-    // Identified users need a separate deterministic session from anonymous users
-    // who happen to share the same IP address and user agent.
-    const sessionId = uuid(sourceId, ip, userAgent, sessionSalt, distinctId ?? '');
-    const sessionDrift = !!websiteId && !!cache?.sessionId && cache.sessionId !== sessionId;
+    const { sessionId, visitId, iat, sessionDrift } = resolveCollectionSession({
+      sourceId,
+      ip,
+      userAgent,
+      distinctId,
+      createdAt,
+      cache,
+      historical: timestamp !== undefined,
+    });
     const shouldEnsureSession = !clickhouse.enabled && sessionDrift;
 
     // Create a session if not found
@@ -133,22 +131,6 @@ export async function POST(request: Request) {
         distinctId,
         createdAt,
       });
-    }
-
-    // Visit info
-    let visitId = cache?.visitId || uuid(sessionId, visitSalt);
-    let iat = cache?.iat || now;
-
-    // A drifted cache session should start a fresh visit on the recomputed session.
-    if (sessionDrift) {
-      visitId = uuid(sessionId, visitSalt);
-      iat = now;
-    }
-
-    // Expire visit after 30 minutes
-    if (timestamp === undefined && now - iat > 1800) {
-      visitId = uuid(sessionId, visitSalt);
-      iat = now;
     }
 
     if (type === COLLECTION_TYPE.event) {

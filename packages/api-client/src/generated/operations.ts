@@ -1659,6 +1659,98 @@ export const operations = {
     queryParams: [],
     hasBody: false,
   },
+  getWebsiteErrorEvent: {
+    operationId: 'getWebsiteErrorEvent',
+    method: 'get',
+    path: '/api/websites/{websiteId}/errors/{issueId}/events/{eventId}',
+    pathParams: ['websiteId', 'issueId', 'eventId'],
+    queryParams: [],
+    hasBody: false,
+  },
+  getWebsiteErrorEvents: {
+    operationId: 'getWebsiteErrorEvents',
+    method: 'get',
+    path: '/api/websites/{websiteId}/errors/{issueId}/events',
+    pathParams: ['websiteId', 'issueId'],
+    queryParams: [
+      'startAt',
+      'endAt',
+      'page',
+      'pageSize',
+      'status',
+      'search',
+      'release',
+      'environment',
+      'browser',
+      'urlPath',
+    ],
+    hasBody: false,
+  },
+  getWebsiteErrorIssue: {
+    operationId: 'getWebsiteErrorIssue',
+    method: 'get',
+    path: '/api/websites/{websiteId}/errors/{issueId}',
+    pathParams: ['websiteId', 'issueId'],
+    queryParams: [
+      'startAt',
+      'endAt',
+      'page',
+      'pageSize',
+      'status',
+      'search',
+      'release',
+      'environment',
+      'browser',
+      'urlPath',
+    ],
+    hasBody: false,
+  },
+  getWebsiteErrors: {
+    operationId: 'getWebsiteErrors',
+    method: 'get',
+    path: '/api/websites/{websiteId}/errors',
+    pathParams: ['websiteId'],
+    queryParams: [
+      'startAt',
+      'endAt',
+      'page',
+      'pageSize',
+      'status',
+      'search',
+      'release',
+      'environment',
+      'browser',
+      'urlPath',
+    ],
+    hasBody: false,
+  },
+  getWebsiteErrorSettings: {
+    operationId: 'getWebsiteErrorSettings',
+    method: 'get',
+    path: '/api/websites/{websiteId}/errors/settings',
+    pathParams: ['websiteId'],
+    queryParams: [],
+    hasBody: false,
+  },
+  getWebsiteErrorStats: {
+    operationId: 'getWebsiteErrorStats',
+    method: 'get',
+    path: '/api/websites/{websiteId}/errors/stats',
+    pathParams: ['websiteId'],
+    queryParams: [
+      'startAt',
+      'endAt',
+      'page',
+      'pageSize',
+      'status',
+      'search',
+      'release',
+      'environment',
+      'browser',
+      'urlPath',
+    ],
+    hasBody: false,
+  },
   getWebsiteEvents: {
     operationId: 'getWebsiteEvents',
     method: 'get',
@@ -3096,6 +3188,22 @@ export const operations = {
     queryParams: [],
     hasBody: true,
   },
+  updateWebsiteErrorIssue: {
+    operationId: 'updateWebsiteErrorIssue',
+    method: 'patch',
+    path: '/api/websites/{websiteId}/errors/{issueId}',
+    pathParams: ['websiteId', 'issueId'],
+    queryParams: [],
+    hasBody: true,
+  },
+  updateWebsiteErrorSettings: {
+    operationId: 'updateWebsiteErrorSettings',
+    method: 'put',
+    path: '/api/websites/{websiteId}/errors/settings',
+    pathParams: ['websiteId'],
+    queryParams: [],
+    hasBody: true,
+  },
   updateWebsiteFunnel: {
     operationId: 'updateWebsiteFunnel',
     method: 'post',
@@ -4337,6 +4445,72 @@ export abstract class GeneratedUmamiClient {
   }
 
   /**
+   * Get an error occurrence
+   * `GET /api/websites/{websiteId}/errors/{issueId}/events/{eventId}`
+   */
+  getWebsiteErrorEvent(
+    input: OperationInput<'getWebsiteErrorEvent'>,
+    options?: RequestOptions,
+  ): Promise<OperationOutput<'getWebsiteErrorEvent'>> {
+    return this.execute('getWebsiteErrorEvent', input, options);
+  }
+
+  /**
+   * List issue occurrences
+   * `GET /api/websites/{websiteId}/errors/{issueId}/events`
+   */
+  getWebsiteErrorEvents(
+    input: OperationInput<'getWebsiteErrorEvents'>,
+    options?: RequestOptions,
+  ): Promise<OperationOutput<'getWebsiteErrorEvents'>> {
+    return this.execute('getWebsiteErrorEvents', input, options);
+  }
+
+  /**
+   * Get an error issue
+   * `GET /api/websites/{websiteId}/errors/{issueId}`
+   */
+  getWebsiteErrorIssue(
+    input: OperationInput<'getWebsiteErrorIssue'>,
+    options?: RequestOptions,
+  ): Promise<OperationOutput<'getWebsiteErrorIssue'>> {
+    return this.execute('getWebsiteErrorIssue', input, options);
+  }
+
+  /**
+   * List website error issues
+   * `GET /api/websites/{websiteId}/errors`
+   */
+  getWebsiteErrors(
+    input: OperationInput<'getWebsiteErrors'>,
+    options?: RequestOptions,
+  ): Promise<OperationOutput<'getWebsiteErrors'>> {
+    return this.execute('getWebsiteErrors', input, options);
+  }
+
+  /**
+   * Get error tracking settings
+   * `GET /api/websites/{websiteId}/errors/settings`
+   */
+  getWebsiteErrorSettings(
+    input: OperationInput<'getWebsiteErrorSettings'>,
+    options?: RequestOptions,
+  ): Promise<OperationOutput<'getWebsiteErrorSettings'>> {
+    return this.execute('getWebsiteErrorSettings', input, options);
+  }
+
+  /**
+   * Get website error totals and trend
+   * `GET /api/websites/{websiteId}/errors/stats`
+   */
+  getWebsiteErrorStats(
+    input: OperationInput<'getWebsiteErrorStats'>,
+    options?: RequestOptions,
+  ): Promise<OperationOutput<'getWebsiteErrorStats'>> {
+    return this.execute('getWebsiteErrorStats', input, options);
+  }
+
+  /**
    * List tracked events
    * Returns a page of pageviews and custom events in the date range, newest first. Supports filtering by event name and searching event details.
    * `GET /api/websites/{websiteId}/events`
@@ -5081,6 +5255,28 @@ export abstract class GeneratedUmamiClient {
     options?: RequestOptions,
   ): Promise<OperationOutput<'updateWebsiteAnnotation'>> {
     return this.execute('updateWebsiteAnnotation', input, options);
+  }
+
+  /**
+   * Change error issue status
+   * `PATCH /api/websites/{websiteId}/errors/{issueId}`
+   */
+  updateWebsiteErrorIssue(
+    input: OperationInput<'updateWebsiteErrorIssue'>,
+    options?: RequestOptions,
+  ): Promise<OperationOutput<'updateWebsiteErrorIssue'>> {
+    return this.execute('updateWebsiteErrorIssue', input, options);
+  }
+
+  /**
+   * Configure error tracking
+   * `PUT /api/websites/{websiteId}/errors/settings`
+   */
+  updateWebsiteErrorSettings(
+    input: OperationInput<'updateWebsiteErrorSettings'>,
+    options?: RequestOptions,
+  ): Promise<OperationOutput<'updateWebsiteErrorSettings'>> {
+    return this.execute('updateWebsiteErrorSettings', input, options);
   }
 
   /**

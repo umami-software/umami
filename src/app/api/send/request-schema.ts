@@ -1,5 +1,6 @@
 import { z } from 'zod';
 import { commerceSchema } from '@/lib/commerce';
+import { errorCollectionSchema } from '@/lib/errors/schema';
 import { anyObjectParam, urlOrPathParam } from '@/lib/schema';
 
 // Reject strings whose first character is a spreadsheet formula trigger to
@@ -39,6 +40,7 @@ const payloadSchema = z.object({
 
 export const collectionSchema = z
   .discriminatedUnion('type', [
+    errorCollectionSchema,
     z.object({
       type: z.enum(['identify', 'performance']),
       payload: payloadSchema,
@@ -51,6 +53,7 @@ export const collectionSchema = z
     }),
   ])
   .superRefine(({ type, payload }, ctx) => {
+    if (type === 'error') return;
     if (type === 'event' && payload.data?.commerce && (!payload.website || !payload.name?.trim())) {
       ctx.addIssue({
         code: 'custom',

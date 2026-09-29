@@ -4,6 +4,7 @@ import prisma, { getSchema } from '@/lib/prisma';
 import redis from '@/lib/redis';
 import { sanitizeSortFilters } from '@/lib/sort';
 import type { PageResult, QueryFilters } from '@/lib/types';
+import { deleteClickHouseErrors } from '@/queries/sql/errors/store';
 
 const WEBSITE_SORT_FIELDS = ['name', 'domain', 'createdAt'] as const;
 
@@ -49,6 +50,13 @@ async function deleteWebsiteDependentData(tx: any, websiteId: string) {
 
   await tx.$executeRawUnsafe(
     `
+      with deleted_error_events as (
+        delete from error_event where website_id = $1
+      ), deleted_error_issues as (
+        delete from error_issue where website_id = $1
+      ), deleted_error_limits as (
+        delete from error_rate_limit where website_id = $1
+      )
       delete from event_data
       using website_event
       where event_data.website_event_id = website_event.event_id
@@ -205,6 +213,7 @@ export async function updateWebsite(
 }
 
 export async function resetWebsite(websiteId: string) {
+  await deleteClickHouseErrors(websiteId);
   const { transaction } = prisma;
   const cloudMode = !!process.env.CLOUD_MODE;
 
@@ -234,6 +243,7 @@ export async function resetWebsite(websiteId: string) {
 }
 
 export async function deleteWebsite(websiteId: string) {
+  await deleteClickHouseErrors(websiteId);
   const { transaction } = prisma;
   const cloudMode = !!process.env.CLOUD_MODE;
 

@@ -163,6 +163,7 @@ export const labels: Record<string, string> = {
   laptop: 'label.laptop',
   tablet: 'label.tablet',
   mobile: 'label.mobile',
+  monitoring: 'label.monitoring',
   toggleCharts: 'label.toggle-charts',
   title: 'label.title',
   view: 'label.view',

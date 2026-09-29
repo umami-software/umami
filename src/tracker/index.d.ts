@@ -1,3 +1,5 @@
+import { type ErrorCaptureOptions } from './errors';
+export type { ErrorCaptureOptions } from './errors';
 /** Public types for the browser tracker. */
 export type TrackedProperties = {
   /**
@@ -109,6 +111,8 @@ export type CustomEventFunction = (
   props: PageViewProperties,
 ) => EventProperties | PageViewProperties;
 export type UmamiTracker = {
+  /** Capture an exception when data-errors is enabled. Never throws. */
+  captureException: (error: unknown, options?: ErrorCaptureOptions) => Promise<void>;
   track: {
     /**
      * Track a page view

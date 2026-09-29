@@ -93,6 +93,7 @@ export function App({ children }) {
           src={`${process.env.basePath || ''}/script.js`}
           data-cache="true"
           data-performance="true"
+          data-errors="true"
         />
       )}
       {process.env.selfRecord && (

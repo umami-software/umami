@@ -1,3 +1,7 @@
+import { createErrorCollector, type ErrorCaptureOptions } from './errors';
+
+export type { ErrorCaptureOptions } from './errors';
+
 /** Public types for the browser tracker. */
 export type TrackedProperties = {
   /**
@@ -122,6 +126,8 @@ export type CustomEventFunction = (
 ) => EventProperties | PageViewProperties;
 
 export type UmamiTracker = {
+  /** Capture an exception when data-errors is enabled. Never throws. */
+  captureException: (error: unknown, options?: ErrorCaptureOptions) => Promise<void>;
   track: {
     /**
      * Track a page view
@@ -666,14 +672,6 @@ type MetricEntry = PerformanceEntry & {
 
   /* Start */
 
-  if (!window.umami) {
-    window.umami = {
-      track,
-      identify,
-      getSession: () => ({ cache, website }),
-    } as UmamiTracker;
-  }
-
   let currentUrl = normalize(href);
   let currentRef = normalize(referrer);
 
@@ -682,6 +680,33 @@ type MetricEntry = PerformanceEntry & {
   let cache: string | undefined;
   let identity = distinctId;
   let flushPerformance: (() => void) | undefined;
+
+  if (!window.umami) {
+    const errors = createErrorCollector({
+      endpoint,
+      enabled: config('errors') === _true,
+      disabled: () => !!trackingDisabled(),
+      context: getPayload,
+      cache: () => cache,
+      updateCache: token => {
+        cache = token;
+      },
+      release: config('release') || '',
+      environment: config('environment') || 'production',
+      beforeSend: async payload => {
+        const callback = (window as unknown as Record<string, unknown>)[beforeSend as string] as
+          | BeforeSend
+          | undefined;
+        return typeof callback === 'function' ? callback('error', payload) : payload;
+      },
+    });
+    window.umami = {
+      track,
+      identify,
+      getSession: () => ({ cache, website }),
+      ...errors,
+    } as UmamiTracker;
+  }
 
   if (distinctId) {
     void identify(distinctId);

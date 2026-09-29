@@ -56,3 +56,7 @@ export async function httpPost(path: string, params: object = {}, headers: objec
 export async function httpPut(path: string, params: object = {}, headers: object = {}) {
   return request('PUT', path, JSON.stringify(params), headers);
 }
+
+export async function httpPatch(path: string, params: object = {}, headers: object = {}) {
+  return request('PATCH', path, JSON.stringify(params), headers);
+}
