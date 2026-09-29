@@ -33,6 +33,7 @@ model User {
   twoFactorOtpUseds    TwoFactorOtpUsed[]
   twoFactorRateLimit   TwoFactorRateLimit?
   apiKeys              ApiKey[]
+  userAuthSessions UserAuthSession[]
 
   @@map("user")
 }
@@ -92,6 +93,20 @@ model ApiKey {
 
   @@index([userId])
   @@map("api_key")
+}
+
+model UserAuthSession {
+  id          String    @id @default(uuid())
+  userId      String
+  refreshHash String    @unique
+  expiresAt   DateTime  @map("expires_at")
+  revokedAt   DateTime? @map("revoked_at")
+  createdAt   DateTime  @default(now())
+
+  user User @relation(fields: [userId], references: [id])
+
+  @@index([userId])
+  @@map("user_auth_session")
 }
 
 model Session {

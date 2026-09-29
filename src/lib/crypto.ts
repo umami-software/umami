@@ -100,3 +100,7 @@ export function getSalt(saltRotation: string | undefined, createdAt: Date): stri
 
   return hash(value);
 }
+
+export function createRefreshToken() {
+  return crypto.randomBytes(64).toString('hex');
+}
