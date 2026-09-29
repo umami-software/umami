@@ -32,10 +32,10 @@ export async function GET(
     getEventMetrics(websiteId, { type: 'event' }, filters),
     getPageviewMetrics(websiteId, { type: 'path' }, filters),
     getPageviewMetrics(websiteId, { type: 'referrer' }, filters),
-    getSessionMetrics(websiteId, { type: 'browser' }, filters),
-    getSessionMetrics(websiteId, { type: 'os' }, filters),
-    getSessionMetrics(websiteId, { type: 'device' }, filters),
-    getSessionMetrics(websiteId, { type: 'country' }, filters),
+    getSessionMetrics(websiteId, { type: 'browser' }, filters).then(r => r.data),
+    getSessionMetrics(websiteId, { type: 'os' }, filters).then(r => r.data),
+    getSessionMetrics(websiteId, { type: 'device' }, filters).then(r => r.data),
+    getSessionMetrics(websiteId, { type: 'country' }, filters).then(r => r.data),
   ]);
 
   const zip = new JSZip();
