@@ -31,24 +31,39 @@ export const errorCollectionSchema = z.object({
   type: z.literal('error'),
   payload: errorPayloadSchema,
 });
+const errorFilterFields = {
+  startAt: z.coerce.number().int().min(0).max(4102444800000),
+  endAt: z.coerce.number().int().min(0).max(4102444800000),
+  status: errorStatusSchema.optional(),
+  search: z.string().max(200).optional(),
+  release: z.string().max(100).optional(),
+  environment: z.string().max(50).optional(),
+  browser: z.string().max(50).optional(),
+  urlPath: z.string().max(500).optional(),
+};
+const dateRangeRefinement = [
+  (v: { startAt: number; endAt: number }) => v.endAt >= v.startAt,
+  { message: 'The end of the date range must follow its start.' },
+] as const;
 export const errorQuerySchema = z
   .object({
-    startAt: z.coerce.number().int().min(0).max(4102444800000),
-    endAt: z.coerce.number().int().min(0).max(4102444800000),
+    ...errorFilterFields,
     page: z.coerce.number().int().min(1).max(10000).default(1),
     pageSize: z.coerce.number().int().min(1).max(100).default(25),
-    status: errorStatusSchema.optional(),
-    search: z.string().max(200).optional(),
-    release: z.string().max(100).optional(),
-    environment: z.string().max(50).optional(),
-    browser: z.string().max(50).optional(),
-    urlPath: z.string().max(500).optional(),
   })
-  .refine(v => v.endAt >= v.startAt, {
-    message: 'The end of the date range must follow its start.',
-  });
+  .refine(...dateRangeRefinement);
+export const errorValueTypeSchema = z.enum(['release', 'environment', 'browser', 'urlPath']);
+export const errorValuesQuerySchema = z
+  .object({
+    ...errorFilterFields,
+    type: errorValueTypeSchema,
+    value: z.string().max(500).optional(),
+  })
+  .refine(...dateRangeRefinement);
 export type ErrorPayload = z.infer<typeof errorPayloadSchema>;
 export type ErrorQuery = z.infer<typeof errorQuerySchema>;
+export type ErrorValuesQuery = z.infer<typeof errorValuesQuerySchema>;
+export type ErrorValueType = z.infer<typeof errorValueTypeSchema>;
 export type ErrorStatus = z.infer<typeof errorStatusSchema>;
 
 export interface ErrorFrame {

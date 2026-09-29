@@ -1675,14 +1675,14 @@ export const operations = {
     queryParams: [
       'startAt',
       'endAt',
-      'page',
-      'pageSize',
       'status',
       'search',
       'release',
       'environment',
       'browser',
       'urlPath',
+      'page',
+      'pageSize',
     ],
     hasBody: false,
   },
@@ -1694,14 +1694,33 @@ export const operations = {
     queryParams: [
       'startAt',
       'endAt',
-      'page',
-      'pageSize',
       'status',
       'search',
       'release',
       'environment',
       'browser',
       'urlPath',
+      'page',
+      'pageSize',
+    ],
+    hasBody: false,
+  },
+  getWebsiteErrorIssueValues: {
+    operationId: 'getWebsiteErrorIssueValues',
+    method: 'get',
+    path: '/api/websites/{websiteId}/errors/{issueId}/values',
+    pathParams: ['websiteId', 'issueId'],
+    queryParams: [
+      'startAt',
+      'endAt',
+      'status',
+      'search',
+      'release',
+      'environment',
+      'browser',
+      'urlPath',
+      'type',
+      'value',
     ],
     hasBody: false,
   },
@@ -1713,14 +1732,14 @@ export const operations = {
     queryParams: [
       'startAt',
       'endAt',
-      'page',
-      'pageSize',
       'status',
       'search',
       'release',
       'environment',
       'browser',
       'urlPath',
+      'page',
+      'pageSize',
     ],
     hasBody: false,
   },
@@ -1740,14 +1759,33 @@ export const operations = {
     queryParams: [
       'startAt',
       'endAt',
-      'page',
-      'pageSize',
       'status',
       'search',
       'release',
       'environment',
       'browser',
       'urlPath',
+      'page',
+      'pageSize',
+    ],
+    hasBody: false,
+  },
+  getWebsiteErrorValues: {
+    operationId: 'getWebsiteErrorValues',
+    method: 'get',
+    path: '/api/websites/{websiteId}/errors/values',
+    pathParams: ['websiteId'],
+    queryParams: [
+      'startAt',
+      'endAt',
+      'status',
+      'search',
+      'release',
+      'environment',
+      'browser',
+      'urlPath',
+      'type',
+      'value',
     ],
     hasBody: false,
   },
@@ -4478,6 +4516,17 @@ export abstract class GeneratedUmamiClient {
   }
 
   /**
+   * List distinct values of an error filter field for one issue
+   * `GET /api/websites/{websiteId}/errors/{issueId}/values`
+   */
+  getWebsiteErrorIssueValues(
+    input: OperationInput<'getWebsiteErrorIssueValues'>,
+    options?: RequestOptions,
+  ): Promise<OperationOutput<'getWebsiteErrorIssueValues'>> {
+    return this.execute('getWebsiteErrorIssueValues', input, options);
+  }
+
+  /**
    * List website error issues
    * `GET /api/websites/{websiteId}/errors`
    */
@@ -4508,6 +4557,17 @@ export abstract class GeneratedUmamiClient {
     options?: RequestOptions,
   ): Promise<OperationOutput<'getWebsiteErrorStats'>> {
     return this.execute('getWebsiteErrorStats', input, options);
+  }
+
+  /**
+   * List distinct values of an error filter field
+   * `GET /api/websites/{websiteId}/errors/values`
+   */
+  getWebsiteErrorValues(
+    input: OperationInput<'getWebsiteErrorValues'>,
+    options?: RequestOptions,
+  ): Promise<OperationOutput<'getWebsiteErrorValues'>> {
+    return this.execute('getWebsiteErrorValues', input, options);
   }
 
   /**

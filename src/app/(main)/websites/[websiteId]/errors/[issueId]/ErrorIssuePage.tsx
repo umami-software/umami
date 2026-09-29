@@ -109,7 +109,7 @@ export function ErrorIssuePage({ websiteId, issueId }: { websiteId: string; issu
         )}
       </LoadingPanel>
       <Panel title={t('occurrences')}>
-        <ErrorFilters issue />
+        <ErrorFilters websiteId={websiteId} issueId={issueId} />
         <DataGrid query={events} allowSearch searchWidth={280} autoFocus={false}>
           {({ data }) => (
             <DataTable data={data}>

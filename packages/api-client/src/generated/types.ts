@@ -1513,6 +1513,23 @@ export interface paths {
     patch?: never;
     trace?: never;
   };
+  '/api/websites/{websiteId}/errors/{issueId}/values': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /** List distinct values of an error filter field for one issue */
+    get: operations['getWebsiteErrorIssueValues'];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
   '/api/websites/{websiteId}/errors/settings': {
     parameters: {
       query?: never;
@@ -1540,6 +1557,23 @@ export interface paths {
     };
     /** Get website error totals and trend */
     get: operations['getWebsiteErrorStats'];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/websites/{websiteId}/errors/values': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /** List distinct values of an error filter field */
+    get: operations['getWebsiteErrorValues'];
     put?: never;
     post?: never;
     delete?: never;
@@ -13877,6 +13911,78 @@ export interface operations {
       };
     };
   };
+  getWebsiteErrorIssueValues: {
+    parameters: {
+      query: {
+        /** @description Browser used by the visitor. */
+        browser?: string;
+        /** @description End of the date range as a Unix timestamp in milliseconds. */
+        endAt: number;
+        environment?: string;
+        release?: string;
+        /** @description Search text used to filter results. */
+        search?: string;
+        /** @description Start of the date range as a Unix timestamp in milliseconds. */
+        startAt: number;
+        status?: 'unresolved' | 'resolved' | 'ignored';
+        /** @description Type of resource or analytics dimension to return. */
+        type: 'release' | 'environment' | 'browser' | 'urlPath';
+        /** @description Path portion of the page URL. */
+        urlPath?: string;
+        value?: string;
+      };
+      header?: never;
+      path: {
+        issueId: string;
+        /** @description ID of the website. */
+        websiteId: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Successful response. */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': {
+            /** @description Number of matching records. */
+            count: number;
+            value: string;
+          }[];
+        };
+      };
+      /** @description Invalid request. */
+      400: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['ApiError'];
+        };
+      };
+      /** @description Authenticated website access required. */
+      401: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['ApiError'];
+        };
+      };
+      /** @description Website, issue, or occurrence not found. */
+      404: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['ApiError'];
+        };
+      };
+    };
+  };
   getWebsiteErrorSettings: {
     parameters: {
       query?: never;
@@ -14036,6 +14142,77 @@ export interface operations {
             /** @description Visit counts for the selected period. */
             visits: number;
           };
+        };
+      };
+      /** @description Invalid request. */
+      400: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['ApiError'];
+        };
+      };
+      /** @description Authenticated website access required. */
+      401: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['ApiError'];
+        };
+      };
+      /** @description Website, issue, or occurrence not found. */
+      404: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['ApiError'];
+        };
+      };
+    };
+  };
+  getWebsiteErrorValues: {
+    parameters: {
+      query: {
+        /** @description Browser used by the visitor. */
+        browser?: string;
+        /** @description End of the date range as a Unix timestamp in milliseconds. */
+        endAt: number;
+        environment?: string;
+        release?: string;
+        /** @description Search text used to filter results. */
+        search?: string;
+        /** @description Start of the date range as a Unix timestamp in milliseconds. */
+        startAt: number;
+        status?: 'unresolved' | 'resolved' | 'ignored';
+        /** @description Type of resource or analytics dimension to return. */
+        type: 'release' | 'environment' | 'browser' | 'urlPath';
+        /** @description Path portion of the page URL. */
+        urlPath?: string;
+        value?: string;
+      };
+      header?: never;
+      path: {
+        /** @description ID of the website. */
+        websiteId: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Successful response. */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': {
+            /** @description Number of matching records. */
+            count: number;
+            value: string;
+          }[];
         };
       };
       /** @description Invalid request. */

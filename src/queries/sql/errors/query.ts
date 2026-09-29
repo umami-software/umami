@@ -1,5 +1,5 @@
 import clickhouse from '@/lib/clickhouse';
-import type { ErrorQuery } from '@/lib/errors/schema';
+import type { ErrorQuery, ErrorValuesQuery } from '@/lib/errors/schema';
 import prisma from '@/lib/prisma';
 
 export interface ErrorScope {
@@ -8,7 +8,9 @@ export interface ErrorScope {
   retentionDays: number;
 }
 
-async function queryContext(scope: ErrorScope, filters?: ErrorQuery, issueId?: string) {
+type ErrorFilters = Omit<ErrorQuery, 'page' | 'pageSize'>;
+
+async function queryContext(scope: ErrorScope, filters?: ErrorFilters, issueId?: string) {
   const ch = clickhouse.enabled;
   const params: Record<string, any> = {
     websiteId: scope.websiteId,
@@ -130,6 +132,40 @@ export async function getErrorStats(scope: ErrorScope, filters: ErrorQuery, issu
     issues: Number(total.issues),
     series: series.map(row => ({ date: row.date, occurrences: Number(row.occurrences) })),
   };
+}
+
+const VALUE_COLUMNS = {
+  release: 'release',
+  environment: 'environment',
+  browser: 'browser',
+  urlPath: 'url_path',
+} as const;
+
+export async function getErrorValues(
+  scope: ErrorScope,
+  { type, value, ...filters }: ErrorValuesQuery,
+  issueId?: string,
+) {
+  // Exclude the field's own filter so every value remains selectable.
+  const { from, run, param, ch } = await queryContext(
+    scope,
+    { ...filters, [type]: undefined },
+    issueId,
+  );
+  const column = VALUE_COLUMNS[type];
+  const search = value
+    ? ` and ${
+        ch
+          ? `positionCaseInsensitive(${column}, ${param('value')}) > 0`
+          : `position(${param('value')} in lower(${column})) > 0`
+      }`
+    : '';
+  const rows = await run(
+    `select ${column} as "value", count(*) as "count" ${from} and ${column} != ''${search}
+    group by ${column} order by "count" desc, ${column} limit 100`,
+    value ? { value: value.toLowerCase() } : {},
+  );
+  return rows.map(row => ({ value: row.value, count: Number(row.count) }));
 }
 
 export async function getErrorEvents(scope: ErrorScope, issueId: string, filters: ErrorQuery) {

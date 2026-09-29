@@ -66,6 +66,7 @@ export const errorResponses = {
     tags: z.record(z.string(), z.string()),
     replayId: z.uuid().nullable(),
   }),
+  values: z.array(z.object({ value: z.string(), count: z.number() })),
   settings: z.object({ enabled: z.boolean(), retentionDays: z.number(), canManage: z.boolean() }),
   ok: okSchema,
 };

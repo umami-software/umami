@@ -542,7 +542,7 @@
     "environment": "Environment",
     "browser": "Browser",
     "urlPath": "Page path",
-    "apply": "Apply",
+    "all": "All",
     "previous": "Previous",
     "next": "Next",
     "pageCount": "Page {page} of {pages}",

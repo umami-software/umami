@@ -30,7 +30,7 @@ export function ErrorsPage({ websiteId }: { websiteId: string }) {
         {stats.data && <ErrorStats data={stats.data} {...filters} />}
       </LoadingPanel>
       <Panel title={t('title')}>
-        <ErrorFilters />
+        <ErrorFilters websiteId={websiteId} />
         <DataGrid query={issues} allowSearch searchWidth={280} autoFocus={false}>
           {({ data }) => (
             <DataTable data={data}>
