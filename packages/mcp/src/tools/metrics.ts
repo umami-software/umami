@@ -1,6 +1,7 @@
 import { z } from 'zod';
 import { dateRangeInput, parseDateRange, timezone } from '../lib/dates';
-import { pageviewFiltersSchema, toFilterParams } from '../lib/filters';
+import { McpToolError } from '../lib/errors';
+import { filtersSchema, toFilterParams } from '../lib/filters';
 import { clamp, DEFAULT_METRIC_LIMIT, MAX_METRIC_LIMIT } from '../lib/limits';
 import { defineTool } from '../lib/tool';
 
@@ -112,9 +113,22 @@ export const getWebsiteMetrics = defineTool({
     offset: z.number().int().nonnegative().optional().describe('Rows to skip, for paging.'),
     search: z.string().optional().describe('Only include values containing this text.'),
     timezone: timezone.optional(),
-    filters: pageviewFiltersSchema.optional(),
+    filters: filtersSchema
+      .optional()
+      .describe(
+        'Optional analytics filters. filters.event only applies when type is "event"; for other types, use the event tools.',
+      ),
   }),
   async handler(input, { client }) {
+    // Only the event ranking queries custom events; the other types count pageview or session
+    // rows, which never match an event name (#3886).
+    if (input.filters?.event && input.type !== 'event') {
+      throw new McpToolError(
+        'invalid_input',
+        'filters.event only applies when type is "event". To analyze a custom event, use get_event_stats or get_event_series.',
+      );
+    }
+
     const range = parseDateRange(input);
     const limit = clamp(input.limit, DEFAULT_METRIC_LIMIT, MAX_METRIC_LIMIT);
     const rows = (await client.getWebsiteMetrics({
