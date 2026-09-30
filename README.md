@@ -40,31 +40,61 @@ pnpm install
 
 ### Configure Umami
 
-Create an `.env` file with the following:
+Copy the example file and fill it in:
+
+```bash
+cp .env.example .env
+```
+
+At minimum, set these two:
 
 ```bash
 DATABASE_URL=connection-url
+APP_SECRET=random-string
 ```
 
-Optional: set `API_URL` to change the base URL used by internal UI API calls.
-Relative paths are served under `BASE_PATH`; absolute URLs are proxied through the local `/api` route.
-For example, `API_URL=/internal-api` or `API_URL=https://api.example.com/api`.
-
-Browser error tracking is available as an opt-in website feature. See the
-[error tracking guide](docs/error-tracking.md) for setup, migrations, and retention scheduling.
-
-Optional: set `TWO_FACTOR_ENCRYPTION_KEY` to a 64-character hex string to enable two-factor
-authentication. Generate one with `openssl rand -hex 32`. Two-factor authentication is unavailable
-and cannot be required until this key is set.
-
-MCP is disabled by default. Set `MCP_ENABLED=1` to enable the `/mcp` endpoint, then
-authenticate with an API key generated under Settings → API keys.
+`APP_SECRET` signs and encrypts session tokens. If it is not set, Umami silently falls back to
+deriving the key from `DATABASE_URL` — which means anyone who knows your database connection
+string can forge a session token, and changing the connection string later invalidates every
+session. Generate one with `openssl rand -base64 32`. Changing it after setup will log out all
+sessions; this is expected.
 
 The connection URL format:
 
 ```bash
 postgresql://username:mypassword@localhost:5432/mydb
 ```
+
+#### Optional variables
+
+`TWO_FACTOR_ENCRYPTION_KEY` — a 64-character hex string that enables two-factor authentication.
+Generate one with `openssl rand -hex 32`. Two-factor authentication is unavailable and cannot be
+required until this key is set.
+
+`DIRECT_DATABASE_URL` — a direct (unpooled) connection string used for schema migrations only.
+Set this when your database URL points at a connection pooler (PgBouncer, Supabase, Neon), since
+migrations cannot run over a pooled connection. Normal queries keep using `DATABASE_URL`.
+
+`REDIS_URL` — enables Redis-backed sessions, which can be revoked server-side. Without it, sessions
+are stateless signed tokens and logging out cannot invalidate a token that was already issued.
+
+`API_URL` — changes the base URL used by internal UI API calls. Relative paths are served under
+`BASE_PATH`; absolute URLs are proxied through the local `/api` route. For example,
+`API_URL=/internal-api` or `API_URL=https://api.example.com/api`.
+
+`MCP_ENABLED` — set to `1` to enable the `/mcp` endpoint, then authenticate with an API key
+generated under Settings → API keys. Disabled by default.
+
+`SKIP_DB_CHECK` / `SKIP_DB_MIGRATION` — set to `1` to bypass the build-time database connectivity
+check or migration step, for example in CI against a dummy URL.
+
+`DISABLE_LOGIN` / `CLOUD_MODE` — render the login page blank. Do not set these for a normal
+self-hosted install.
+
+#### Other features
+
+Browser error tracking is available as an opt-in website feature. See the
+[error tracking guide](docs/error-tracking.md) for setup, migrations, and retention scheduling.
 
 ### Build the Application
 
@@ -73,6 +103,10 @@ pnpm run build
 ```
 
 The build step will create tables in your database if you are installing for the first time. It will also create a login user with username **admin** and password **umami**.
+
+Change that password immediately after the first login — it is public knowledge, so any
+unmodified install is effectively open. Use Settings → Change password, or `PUT /api/me/password`.
+Passwords must be at least 8 characters.
 
 ### Start the Application
 
