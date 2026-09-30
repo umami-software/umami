@@ -493,7 +493,6 @@ type MetricEntry = PerformanceEntry & {
       identity = nextIdentity;
     }
 
-    cache = '';
     return send(
       {
         ...getPayload(),

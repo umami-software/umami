@@ -12,6 +12,7 @@ import { badRequest, forbidden, json, serverError } from '@/lib/response';
 import { safeDecodeURI, safeDecodeURIComponent } from '@/lib/url';
 import {
   createSession,
+  getLinkedDistinctIds,
   saveEvent,
   saveSessionData,
   saveSessionLink,
@@ -104,7 +105,7 @@ export async function POST(request: Request) {
     const createdAt = timestamp !== undefined ? new Date(timestamp * 1000) : new Date();
     const distinctId = truncateString(id, FIELD_LENGTH.distinctId);
 
-    const { sessionId, visitId, iat, sessionDrift } = resolveCollectionSession({
+    let { sessionId, visitId, iat, sessionDrift } = resolveCollectionSession({
       sourceId,
       ip,
       userAgent,
@@ -113,6 +114,21 @@ export async function POST(request: Request) {
       cache,
       historical: timestamp !== undefined,
     });
+
+    if (distinctId && cache?.sessionId) {
+      if (cache.sessionLinkId === hash(cache.sessionId, distinctId)) {
+        sessionId = cache.sessionId;
+        visitId = cache.visitId || visitId;
+        sessionDrift = false;
+      } else {
+        const existingIds = await getLinkedDistinctIds(websiteId, cache.sessionId);
+        if (existingIds.length === 0 || existingIds.includes(distinctId)) {
+          sessionId = cache.sessionId;
+          visitId = cache.visitId || visitId;
+          sessionDrift = false;
+        }
+      }
+    }
     const shouldEnsureSession = !clickhouse.enabled && sessionDrift;
 
     // Create a session if not found
