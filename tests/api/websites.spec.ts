@@ -101,11 +101,24 @@ test.describe('Websites', () => {
     expect(other.body.data.map((w: any) => w.id)).not.toContain(websiteId);
   });
 
-  test('GET /api/websites?includeTeams includes team websites', async ({ admin }) => {
+  test('GET /api/websites?includeTeams includes team websites', async ({
+    admin,
+    viewer,
+    seed,
+  }) => {
     const response = await admin.get('/api/websites', { params: { includeTeams: 'true' } });
 
     expect(response.status).toBe(200);
     expect(response.body.data.map((w: any) => w.id)).toContain(teamWebsiteId);
+
+    const team = await admin.get(`/api/teams/${teamId}`);
+    await viewer.post('/api/teams/join', { accessCode: team.body.accessCode });
+
+    const memberResponse = await viewer.get('/api/websites', { params: { includeTeams: 'true' } });
+    expect(memberResponse.status).toBe(200);
+    expect(memberResponse.body.data.map((w: any) => w.id)).toContain(teamWebsiteId);
+
+    await admin.del(`/api/teams/${teamId}/users/${seed.viewer.id}`);
   });
 
   test('GET /api/websites/{websiteId} returns a website', async ({
