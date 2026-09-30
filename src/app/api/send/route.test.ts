@@ -589,27 +589,25 @@ describe('cache token handling', () => {
     expect(body.visitId).toBe(savedEvent.visitId);
   });
 
-  test('a valid cache token creates the computed session before identify writes when the cached session differs', async () => {
-    const token = makeCacheToken({ sessionId: 'cached-session' });
+  test('a valid cache token reuses the anonymous session when the visitor identifies', async () => {
+    const anonSessionId = makeComputedSessionId(WEBSITE_ID);
+    const token = makeCacheToken({ sessionId: anonSessionId });
 
     const response = await callPOST(
       { type: 'identify', payload: { website: WEBSITE_ID, id: 'user-42', data: { plan: 'pro' } } },
       { headers: { 'x-umami-cache': token } },
     );
 
-    expect(createSessionMock).toHaveBeenCalledTimes(1);
-    const createdSession = createSessionMock.mock.calls[0][0] as Record<string, any>;
+    expect(createSessionMock).not.toHaveBeenCalled();
     const savedLink = saveSessionLinkMock.mock.calls[0][0] as Record<string, any>;
     const updatedSession = updateSessionMock.mock.calls[0][0] as Record<string, any>;
     const savedSessionData = saveSessionDataMock.mock.calls[0][0] as Record<string, any>;
     const body = (await response.json()) as Record<string, any>;
 
-    expect(createdSession.id).not.toBe('cached-session');
-    expect(savedLink.sessionId).toBe(createdSession.id);
-    expect(updatedSession.sessionId).toBe(createdSession.id);
-    expect(savedSessionData.sessionId).toBe(createdSession.id);
-    expect(body.sessionId).toBe(createdSession.id);
-    expect(body.visitId).not.toBe('cached-visit');
+    expect(savedLink.sessionId).toBe(anonSessionId);
+    expect(updatedSession.sessionId).toBe(anonSessionId);
+    expect(savedSessionData.sessionId).toBe(anonSessionId);
+    expect(body.sessionId).toBe(anonSessionId);
   });
 
   test('a drifted cache token resets the visit in clickhouse mode without creating a session row', async () => {

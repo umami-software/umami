@@ -116,27 +116,49 @@ export async function POST(request: Request) {
     });
 
     // Reuse the anonymous session when the same visitor identifies, but only if:
-    // the client fingerprint has not changed (no genuine session drift from IP/UA change) and session is not already claimed by a different identity
-    if (distinctId && cache?.sessionId && !sessionDrift) {
-      let canReuse = false;
+    //  - the client fingerprint (IP/UA) has not genuinely changed
+    //  - the session is not already claimed by a different identity
+    // We never override visitId/iat so the 30-minute visit expiry from
+    // resolveCollectionSession is always respected.
+    //
+    // sessionDrift is true whenever cache.sessionId !== computed sessionId.
+    // That includes the normal identify transition (distinctId changes the hash).
+    // To tell apart "same client, new identity" from "different client", we
+    // recompute the session ID without distinctId and compare to the cached one.
+    if (distinctId && cache?.sessionId && sessionDrift) {
+      const { sessionId: fingerprintSessionId } = resolveCollectionSession({
+        sourceId,
+        ip,
+        userAgent,
+        createdAt,
+        cache,
+        historical: timestamp !== undefined,
+      });
+      // If the fingerprint-only ID still doesn't match the cache, the client
+      // itself changed (IP or UA rotation) — do not reuse.
+      const clientChanged = fingerprintSessionId !== cache.sessionId;
 
-      if (cache.sessionLinkId === hash(cache.sessionId, distinctId)) {
-        // Fast path: the cache token already proves this user owns the session
-        canReuse = true;
-      } else {
-        // Slow path: ask the DB whether the session is unclaimed or owned by us
-        try {
-          const existingIds = await getLinkedDistinctIds(websiteId, cache.sessionId);
-          canReuse = existingIds.length === 0 || existingIds.includes(distinctId);
-        } catch {
-          // Best-effort: if the lookup fails, fall through to the new session
-          // so collection is never blocked by an identity-link read failure.
+      if (!clientChanged) {
+        let canReuse = false;
+
+        if (cache.sessionLinkId === hash(cache.sessionId, distinctId)) {
+          // Fast path: the cache token already proves this user owns the session
+          canReuse = true;
+        } else {
+          // Slow path: ask the DB whether the session is unclaimed or owned by us
+          try {
+            const existingIds = await getLinkedDistinctIds(websiteId, cache.sessionId);
+            canReuse = existingIds.length === 0 || existingIds.includes(distinctId);
+          } catch {
+            // Best-effort: if the lookup fails, fall through to the new session
+            // so collection is never blocked by an identity-link read failure.
+          }
         }
-      }
 
-      if (canReuse) {
-        sessionId = cache.sessionId;
-        sessionDrift = false;
+        if (canReuse) {
+          sessionId = cache.sessionId;
+          sessionDrift = false;
+        }
       }
     }
     const shouldEnsureSession = !clickhouse.enabled && sessionDrift;
