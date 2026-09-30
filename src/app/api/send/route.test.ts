@@ -14,6 +14,7 @@ import { fetchWebsite } from '@/lib/load';
 import { parseRequest } from '@/lib/request';
 import {
   createSession,
+  getLinkedDistinctIds,
   saveEvent,
   saveSessionData,
   saveSessionLink,
@@ -38,6 +39,7 @@ vi.mock('@/lib/request', () => ({
 
 vi.mock('@/queries/sql', () => ({
   createSession: vi.fn(),
+  getLinkedDistinctIds: vi.fn(),
   saveEvent: vi.fn(),
   saveSessionData: vi.fn(),
   saveSessionLink: vi.fn(),
@@ -54,6 +56,7 @@ const hasBlockedIpMock = vi.mocked(hasBlockedIp);
 const fetchWebsiteMock = vi.mocked(fetchWebsite);
 const isbotMock = vi.mocked(isbot);
 const createSessionMock = vi.mocked(createSession);
+const getLinkedDistinctIdsMock = vi.mocked(getLinkedDistinctIds);
 const saveEventMock = vi.mocked(saveEvent);
 const saveSessionDataMock = vi.mocked(saveSessionData);
 const saveSessionLinkMock = vi.mocked(saveSessionLink);
@@ -116,6 +119,7 @@ beforeEach(() => {
   fetchWebsiteMock.mockResolvedValue({ id: WEBSITE_ID } as any);
   getClientInfoMock.mockResolvedValue({ ...defaultClientInfo } as any);
   createSessionMock.mockResolvedValue(undefined as any);
+  getLinkedDistinctIdsMock.mockResolvedValue([]);
   saveEventMock.mockResolvedValue(undefined as any);
   saveSessionDataMock.mockResolvedValue(undefined as any);
   saveSessionLinkMock.mockResolvedValue(undefined as any);

@@ -115,18 +115,28 @@ export async function POST(request: Request) {
       historical: timestamp !== undefined,
     });
 
-    if (distinctId && cache?.sessionId) {
+    // Reuse the anonymous session when the same visitor identifies, but only if:
+    // the client fingerprint has not changed (no genuine session drift from IP/UA change) and session is not already claimed by a different identity
+    if (distinctId && cache?.sessionId && !sessionDrift) {
+      let canReuse = false;
+
       if (cache.sessionLinkId === hash(cache.sessionId, distinctId)) {
-        sessionId = cache.sessionId;
-        visitId = cache.visitId || visitId;
-        sessionDrift = false;
+        // Fast path: the cache token already proves this user owns the session
+        canReuse = true;
       } else {
-        const existingIds = await getLinkedDistinctIds(websiteId, cache.sessionId);
-        if (existingIds.length === 0 || existingIds.includes(distinctId)) {
-          sessionId = cache.sessionId;
-          visitId = cache.visitId || visitId;
-          sessionDrift = false;
+        // Slow path: ask the DB whether the session is unclaimed or owned by us
+        try {
+          const existingIds = await getLinkedDistinctIds(websiteId, cache.sessionId);
+          canReuse = existingIds.length === 0 || existingIds.includes(distinctId);
+        } catch {
+          // Best-effort: if the lookup fails, fall through to the new session
+          // so collection is never blocked by an identity-link read failure.
         }
+      }
+
+      if (canReuse) {
+        sessionId = cache.sessionId;
+        sessionDrift = false;
       }
     }
     const shouldEnsureSession = !clickhouse.enabled && sessionDrift;
