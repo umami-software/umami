@@ -5,6 +5,7 @@ import { LoadingPanel } from '@/components/common/LoadingPanel';
 import { useLocale, useMessages, useWeeklyTrafficQuery } from '@/components/hooks';
 import { getDayOfWeekAsDate } from '@/lib/date';
 import { formatLongNumber } from '@/lib/format';
+import { getHour12 } from '@/lib/lang';
 
 export function WeeklyTraffic({ websiteId }: { websiteId: string }) {
   const { data, isLoading, error } = useWeeklyTrafficQuery(websiteId);
@@ -53,9 +54,11 @@ export function WeeklyTraffic({ websiteId }: { websiteId: string }) {
               {Array(24)
                 .fill(null)
                 .map((_, i) => {
-                  const label = format(addHours(startOfDay(new Date()), i), 'haaa', {
-                    locale: dateLocale,
-                  });
+                  const label = format(
+                    addHours(startOfDay(new Date()), i),
+                    getHour12() === false ? 'H' : 'haaa',
+                    { locale: dateLocale },
+                  );
                   return (
                     <Row key={i} justifyContent="flex-end">
                       <Text color="muted" size="sm">

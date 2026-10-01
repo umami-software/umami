@@ -1,3 +1,4 @@
+import type { Locale } from 'date-fns';
 import {
   arSA,
   az,
@@ -106,8 +107,48 @@ export const languages = {
   'zh-TW': { label: '中文(繁體)', dateLocale: zhTW },
 };
 
+let hour12: boolean | undefined;
+
+const hour12Locales = new Map<Locale, Locale>();
+
+// Overrides the clock format of localized time tokens (p/pp/PPpp), which
+// otherwise follow the locale's own convention. Pass undefined to disable.
+export function setHour12(value: boolean | undefined) {
+  hour12 = value;
+  hour12Locales.clear();
+}
+
+export function getHour12() {
+  return hour12;
+}
+
+function getHour12Locale(locale: Locale): Locale {
+  let override = hour12Locales.get(locale);
+
+  if (!override) {
+    override = {
+      ...locale,
+      formatLong: {
+        ...locale.formatLong,
+        time: ({ width }) => {
+          const patterns: Record<string, string> = hour12
+            ? { short: 'h:mm a', medium: 'h:mm:ss a' }
+            : { short: 'HH:mm', medium: 'HH:mm:ss' };
+          return patterns[width] ?? locale.formatLong.time({ width });
+        },
+      },
+    };
+
+    hour12Locales.set(locale, override);
+  }
+
+  return override;
+}
+
 export function getDateLocale(locale: string) {
-  return languages[locale]?.dateLocale || enUS;
+  const dateLocale = languages[locale]?.dateLocale || enUS;
+
+  return hour12 === undefined ? dateLocale : getHour12Locale(dateLocale);
 }
 
 export function getTextDirection(locale: string) {

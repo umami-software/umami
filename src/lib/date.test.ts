@@ -40,6 +40,7 @@ import {
   parseDateRange,
   parseDateValue,
 } from './date';
+import { setHour12 } from './lang';
 
 // A fixed instant used across timezone-sensitive tests. All expected date
 // values are recomputed with the same date-fns helpers the implementation
@@ -526,6 +527,40 @@ describe('formatDate', () => {
   test('accepts numeric timestamp input', () => {
     const date = new Date('2026-07-24T00:00:00');
     expect(formatDate(date.getTime(), 'yyyy')).toBe('2026');
+  });
+});
+
+describe('formatDate clock format', () => {
+  const date = new Date(2026, 9, 1, 13, 5, 9);
+
+  afterEach(() => {
+    setHour12(undefined);
+  });
+
+  test('follows the locale convention by default', () => {
+    expect(formatDate(date, 'p')).toBe('1:05 PM');
+    expect(formatDate(date, 'p', 'de-DE')).toBe('13:05');
+  });
+
+  test('forces 24-hour time regardless of locale', () => {
+    setHour12(false);
+    expect(formatDate(date, 'p')).toBe('13:05');
+    expect(formatDate(date, 'pp')).toBe('13:05:09');
+    expect(formatDate(date, 'p', 'de-DE')).toBe('13:05');
+    expect(formatDate(date, 'PPpp')).toBe('Oct 1, 2026, 13:05:09');
+  });
+
+  test('forces 12-hour time regardless of locale', () => {
+    setHour12(true);
+    expect(formatDate(date, 'p', 'de-DE')).toBe('1:05 nachm.');
+    expect(formatDate(date, 'pp', 'de-DE')).toBe('1:05:09 nachm.');
+    expect(formatDate(date, 'p')).toBe('1:05 PM');
+  });
+
+  test('leaves date-only patterns untouched', () => {
+    setHour12(false);
+    expect(formatDate(date, 'PP')).toBe('Oct 1, 2026');
+    expect(formatDate(date, 'yyyy-MM-dd')).toBe('2026-10-01');
   });
 });
 
