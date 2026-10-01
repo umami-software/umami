@@ -1,5 +1,7 @@
+import { isUmamiApiError } from '@umami/api-client';
 import { z } from 'zod';
 import { isoTimestamp, parseDateRange, toIso } from '../lib/dates';
+import { McpToolError } from '../lib/errors';
 import { filtersSchema, toFilterParams } from '../lib/filters';
 import { clamp, DEFAULT_PAGE_SIZE, MAX_PAGE_SIZE, pageInfo } from '../lib/limits';
 import { defineTool } from '../lib/tool';
@@ -15,6 +17,13 @@ interface GoalRow {
 interface GoalStats {
   num?: number;
   total?: number;
+}
+
+interface GoalList {
+  data?: GoalRow[];
+  count?: number;
+  page?: number;
+  pageSize?: number;
 }
 
 export const getGoals = defineTool({
@@ -44,14 +53,36 @@ export const getGoals = defineTool({
     filters: filtersSchema.optional(),
   }),
   async handler(input, { client }) {
-    const result = (await client.getWebsiteGoals({
-      websiteId: input.websiteId,
-      search: input.search,
-      page: input.page ?? 1,
-      pageSize: clamp(input.pageSize, DEFAULT_PAGE_SIZE, MAX_PAGE_SIZE),
-    })) as { data?: GoalRow[]; count?: number; page?: number; pageSize?: number };
+    let result: GoalList;
 
-    const rows = (result?.data ?? []).filter(row => !input.goalId || row.id === input.goalId);
+    // The goal list is paged, so a goalId filter over one page misses goals on later pages.
+    if (input.goalId) {
+      try {
+        const goal = (await client.getWebsiteGoal({
+          websiteId: input.websiteId,
+          goalId: input.goalId,
+        })) as unknown as GoalRow;
+        result = { data: [goal], count: 1, page: 1, pageSize: 1 };
+      } catch (error) {
+        if (isUmamiApiError(error) && error.status === 404) {
+          throw new McpToolError(
+            'not_found',
+            `Goal ${input.goalId} was not found for website ${input.websiteId}. Call get_goals without goalId to list the goals.`,
+          );
+        }
+
+        throw error;
+      }
+    } else {
+      result = (await client.getWebsiteGoals({
+        websiteId: input.websiteId,
+        search: input.search,
+        page: input.page ?? 1,
+        pageSize: clamp(input.pageSize, DEFAULT_PAGE_SIZE, MAX_PAGE_SIZE),
+      })) as GoalList;
+    }
+
+    const rows = result?.data ?? [];
     const range = input.startAt
       ? parseDateRange({ startAt: input.startAt, endAt: input.endAt })
       : null;
