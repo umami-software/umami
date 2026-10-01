@@ -36,7 +36,7 @@ export async function POST(
 ) {
   const schema = z.object({
     type: segmentTypeParam,
-    name: z.string().max(200),
+    name: z.string().min(1).max(200),
     parameters: segmentParamSchema,
   });
 
@@ -51,6 +51,13 @@ export async function POST(
 
   if (type === 'cohort' && parameters.sessionPropertyFilters?.length) {
     return badRequest({ message: 'Session property filters are only supported for segments.' });
+  }
+
+  if (
+    type === 'cohort' &&
+    (!parameters.action?.type || !parameters.action?.value || !parameters.dateRange)
+  ) {
+    return badRequest({ message: 'Cohorts require an action type, action value, and date range.' });
   }
 
   if (!(await canUpdateWebsite(auth, websiteId))) {
