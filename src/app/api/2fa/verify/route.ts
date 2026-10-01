@@ -3,6 +3,7 @@ import { getBearerToken, saveAuth } from '@/lib/auth';
 import { PARTIAL_AUTH_TOKEN_TYPE, ROLES } from '@/lib/constants';
 import { hash, secret } from '@/lib/crypto';
 import { createSecureToken, parseSecureToken } from '@/lib/jwt';
+import { addTeamBillingStatus } from '@/lib/load';
 import prisma from '@/lib/prisma';
 import redis from '@/lib/redis';
 import { parseRequest } from '@/lib/request';
@@ -141,7 +142,7 @@ export async function POST(request: Request) {
     fullToken = createSecureToken({ userId: id, role, pwd }, secret());
   }
 
-  const teams = await getAllUserTeams(id);
+  const teams = await addTeamBillingStatus(await getAllUserTeams(id));
 
   return json({
     token: fullToken,

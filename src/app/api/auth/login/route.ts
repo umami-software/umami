@@ -2,6 +2,7 @@ import { saveAuth } from '@/lib/auth';
 import { PARTIAL_AUTH_TOKEN_TYPE, ROLES } from '@/lib/constants';
 import { hash, secret } from '@/lib/crypto';
 import { createSecureToken } from '@/lib/jwt';
+import { addTeamBillingStatus } from '@/lib/load';
 import { checkPassword } from '@/lib/password';
 import prisma from '@/lib/prisma';
 import redis from '@/lib/redis';
@@ -59,7 +60,7 @@ export async function POST(request: Request) {
     token = createSecureToken({ userId: user.id, role, pwd }, secret());
   }
 
-  const teams = await getAllUserTeams(id);
+  const teams = await addTeamBillingStatus(await getAllUserTeams(id));
 
   return json({
     token,

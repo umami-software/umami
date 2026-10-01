@@ -6,7 +6,7 @@ import { corsPreflight, withCorsHeaders } from '@/lib/cors';
 import { secret } from '@/lib/crypto';
 import { getClientInfo, hasBlockedIp } from '@/lib/detect';
 import { parseToken } from '@/lib/jwt';
-import { fetchAccount, fetchTeam } from '@/lib/load';
+import { fetchAccount, fetchTeam, isWebsiteCollectionBlocked } from '@/lib/load';
 import { getRecorderConfig } from '@/lib/recorder';
 import { getReplayEventCount } from '@/lib/replay';
 import { parseRequest } from '@/lib/request';
@@ -167,6 +167,10 @@ export async function POST(request: Request) {
 
     if (!website.recorderEnabled) {
       return withCorsHeaders(json({ ok: false, reason: 'recorder_disabled' }));
+    }
+
+    if (process.env.CLOUD_MODE && (await isWebsiteCollectionBlocked(website))) {
+      return withCorsHeaders(forbidden({ message: 'Collection blocked.' }));
     }
 
     if (process.env.CLOUD_MODE) {

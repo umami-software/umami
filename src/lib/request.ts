@@ -3,7 +3,7 @@ import { z } from 'zod';
 import { checkAuth } from '@/lib/auth';
 import { DEFAULT_PAGE_SIZE, FILTER_COLUMNS, OPERATORS } from '@/lib/constants';
 import { getAllowedUnits, getMinimumUnit, getPeriodDateRange, maxDate, parseDateRange } from '@/lib/date';
-import { fetchAccount, fetchWebsite } from '@/lib/load';
+import { fetchWebsite } from '@/lib/load';
 import {
   filtersArrayToObject,
   parseSessionPropertyFilters,

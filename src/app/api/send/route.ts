@@ -6,7 +6,7 @@ import { hash, secret } from '@/lib/crypto';
 import { getClientInfo, hasBlockedIp } from '@/lib/detect';
 import { truncateString } from '@/lib/format';
 import { createToken, parseToken } from '@/lib/jwt';
-import { fetchWebsite } from '@/lib/load';
+import { fetchWebsite, isWebsiteCollectionBlocked } from '@/lib/load';
 import { parseRequest } from '@/lib/request';
 import { badRequest, forbidden, json, serverError } from '@/lib/response';
 import { safeDecodeURI, safeDecodeURIComponent } from '@/lib/url';
@@ -72,13 +72,16 @@ export async function POST(request: Request) {
         }
       }
 
-      // Find website
-      if (!cache?.websiteId) {
-        const website = await fetchWebsite(websiteId);
+      // Fetch even when the client supplied a cache token so account blocks
+      // take effect immediately for existing visitors.
+      const website = await fetchWebsite(websiteId);
 
-        if (!website) {
-          return badRequest({ message: 'Website not found.' });
-        }
+      if (!website) {
+        return badRequest({ message: 'Website not found.' });
+      }
+
+      if (process.env.CLOUD_MODE && (await isWebsiteCollectionBlocked(website))) {
+        return forbidden({ message: 'Collection blocked.' });
       }
     }
 
