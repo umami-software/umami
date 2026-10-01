@@ -72,3 +72,44 @@ test('combines a saved segment\'s session property filters with active filters',
   expect(filters.startDate).toEqual(new Date('2026-09-01T00:00:00.000Z'));
   expect(filters.endDate).toEqual(new Date('2026-09-02T00:00:00.000Z'));
 });
+
+// The API accepts segments and cohorts without `filters` (e.g. created through the API or by
+// older versions), so applying one must not throw.
+test('applies a saved segment that has no filters array', async () => {
+  getWebsiteSegmentMock.mockResolvedValue({
+    parameters: {
+      sessionPropertyFilters: [{ propertyName: 'plan', dataType: 1, operator: 'eq', value: 'pro' }],
+    },
+  } as any);
+
+  const filters = await getQueryFilters(
+    {
+      startAt: String(+new Date('2026-09-01T00:00:00.000Z')),
+      endAt: String(+new Date('2026-09-02T00:00:00.000Z')),
+      segment: 'segment-1',
+    },
+    'website-1',
+  );
+
+  expect(filters.sessionPropertyFilters).toEqual([
+    { propertyName: 'plan', dataType: 1, operator: 'eq', value: 'pro' },
+  ]);
+});
+
+test('applies a saved cohort that has no filters array', async () => {
+  getWebsiteSegmentMock.mockResolvedValue({
+    parameters: { dateRange: '30day', action: { type: 'path', value: '/signup' } },
+  } as any);
+
+  const filters = await getQueryFilters(
+    {
+      startAt: String(+new Date('2026-09-01T00:00:00.000Z')),
+      endAt: String(+new Date('2026-09-02T00:00:00.000Z')),
+      cohort: 'cohort-1',
+    },
+    'website-1',
+  );
+
+  expect(filters).toMatchObject({ cohort_path: 'eq./signup' });
+  expect(filters).toHaveProperty('cohort_startDate');
+});
