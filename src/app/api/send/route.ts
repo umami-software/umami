@@ -12,10 +12,10 @@ import { badRequest, forbidden, json, serverError } from '@/lib/response';
 import { safeDecodeURI, safeDecodeURIComponent } from '@/lib/url';
 import {
   createSession,
-  getLinkedDistinctIds,
   saveEvent,
   saveSessionData,
   saveSessionLink,
+  tryClaimAnonymousSession,
   updateSession,
 } from '@/queries/sql';
 import { collectionSchema } from './request-schema';
@@ -145,10 +145,17 @@ export async function POST(request: Request) {
           // Fast path: the cache token already proves this user owns the session
           canReuse = true;
         } else {
-          // Slow path: ask the DB whether the session is unclaimed or owned by us
+          // Slow path: atomically check-and-claim the session in the DB.
+          // tryClaimAnonymousSession inserts a link in a single statement
+          // guarded by a NOT EXISTS subquery, preventing concurrent identities
+          // from both claiming the same anonymous session (TOCTOU race).
           try {
-            const existingIds = await getLinkedDistinctIds(websiteId, cache.sessionId);
-            canReuse = existingIds.length === 0 || existingIds.includes(distinctId);
+            canReuse = await tryClaimAnonymousSession({
+              websiteId,
+              sessionId: cache.sessionId,
+              distinctId,
+              createdAt,
+            });
           } catch {
             // Best-effort: if the lookup fails, fall through to the new session
             // so collection is never blocked by an identity-link read failure.
