@@ -21,6 +21,7 @@ import { LoadingPanel } from '@/components/common/LoadingPanel';
 import { useHeatmapQuery, useMobile } from '@/components/hooks';
 import { ListCheck } from '@/components/icons';
 import { formatLongNumber } from '@/lib/format';
+import { getSnapshotForGroup, getSnapshotFrame, type SnapshotFrame } from '@/lib/heatmap-preview';
 import type { HeatmapMode, HeatmapPoint, HeatmapResult, HeatmapSnapshot } from '@/queries/sql';
 import styles from './Heatmap.module.css';
 
@@ -662,15 +663,29 @@ function ClickHeatmapView({
     [visible],
   );
 
+  const previewSnapshot = useMemo(() => {
+    if (!snapshot || !viewport) {
+      return snapshot;
+    }
+
+    return getSnapshotForGroup(
+      snapshot,
+      points.filter(point => getScreenWidthBucketWidth(point.viewportW) === viewport.width),
+    );
+  }, [points, snapshot, viewport]);
   const handleSnapshotReady = useCallback(() => setSnapshotReady(true), []);
-  const hasSnapshot = Boolean(snapshot);
+  const hasSnapshot = Boolean(previewSnapshot);
+  const snapshotFrame = useMemo(
+    () => (previewSnapshot && viewport ? getSnapshotFrame(previewSnapshot, viewport.width) : null),
+    [previewSnapshot, viewport],
+  );
 
   useEffect(() => {
     setSnapshotReady(!hasSnapshot);
-  }, [hasSnapshot, snapshot?.id]);
+  }, [hasSnapshot, previewSnapshot?.id]);
   const overlayGutter = Math.max(48, Math.round((viewport?.width ?? 1920) * 0.04));
   const maxPointX = visible.reduce((max, point) => Math.max(max, point.pageX), 0);
-  const snapshotHeight = snapshot ? getSnapshotFrameHeight(snapshot) : 0;
+  const snapshotHeight = snapshotFrame ? Math.round(snapshotFrame.scaledHeight) : 0;
   // Keep the canvas sized to real content and clip outlier clicks instead of stretching it.
   const baseWidth = Math.max(viewport?.pageW ?? 0, maxPointX + overlayGutter, 1);
   const renderWidth = viewport?.width ?? snapshot?.viewportW ?? baseWidth;
@@ -761,8 +776,12 @@ function ClickHeatmapView({
             >
               <div className={styles.snapshotClip}>
                 {shouldRenderSnapshot && !snapshotReady && <CanvasLoading />}
-                {shouldRenderSnapshot && snapshot && (
-                  <SnapshotPreview snapshot={snapshot} onReady={handleSnapshotReady} />
+                {shouldRenderSnapshot && snapshotFrame && (
+                  <SnapshotPreview
+                    id={previewSnapshot?.id ?? ''}
+                    frame={snapshotFrame}
+                    onReady={handleSnapshotReady}
+                  />
                 )}
               </div>
               {showOverlay && (
@@ -817,11 +836,6 @@ function ScrollHeatmapView({
   const { isPhone } = useMobile();
   const [snapshotReady, setSnapshotReady] = useState(false);
   const handleSnapshotReady = useCallback(() => setSnapshotReady(true), []);
-  const hasSnapshot = Boolean(snapshot);
-
-  useEffect(() => {
-    setSnapshotReady(!hasSnapshot);
-  }, [hasSnapshot, snapshot?.id]);
   const scrollMetrics = useMemo(() => getScrollScreenWidthMetrics(scroll), [scroll]);
   const screenWidthBuckets = useMemo(
     () => getScreenWidthBuckets(scrollMetrics, { pageSize: 'weightedAverage' }),
@@ -832,12 +846,33 @@ function ScrollHeatmapView({
     () => getSelectedScrollBuckets(scroll, viewport),
     [scroll, viewport],
   );
+  const previewSnapshot = useMemo(() => {
+    if (!snapshot || !viewport) {
+      return snapshot;
+    }
+
+    return getSnapshotForGroup(
+      snapshot,
+      scrollMetrics.filter(
+        metric => getScreenWidthBucketWidth(metric.viewportW) === viewport.width,
+      ),
+    );
+  }, [scrollMetrics, snapshot, viewport]);
+  const hasSnapshot = Boolean(previewSnapshot);
+  const snapshotFrame = useMemo(
+    () => (previewSnapshot && viewport ? getSnapshotFrame(previewSnapshot, viewport.width) : null),
+    [previewSnapshot, viewport],
+  );
+
+  useEffect(() => {
+    setSnapshotReady(!hasSnapshot);
+  }, [hasSnapshot, previewSnapshot?.id]);
   const totalSessions = viewport?.count ?? 0;
   const pageW = viewport?.pageW ?? scroll?.pageW ?? 0;
   const pageH = viewport?.pageH ?? scroll?.pageH ?? 0;
   const viewportW = viewport?.width ?? scroll?.viewportW ?? 0;
   const viewportH = viewport?.viewportH ?? scroll?.viewportH ?? 0;
-  const snapshotHeight = snapshot ? getSnapshotFrameHeight(snapshot) : 0;
+  const snapshotHeight = snapshotFrame ? Math.round(snapshotFrame.scaledHeight) : 0;
   const baseWidth = Math.max(pageW, 1);
   const baseHeight = Math.max(snapshotHeight || pageH, 640);
   const renderWidth = viewport?.width ?? snapshot?.viewportW ?? viewportW ?? baseWidth;
@@ -943,8 +978,12 @@ function ScrollHeatmapView({
               }}
             >
               {shouldRenderSnapshot && !snapshotReady && <CanvasLoading />}
-              {shouldRenderSnapshot && snapshot && (
-                <SnapshotPreview snapshot={snapshot} onReady={handleSnapshotReady} />
+              {shouldRenderSnapshot && snapshotFrame && (
+                <SnapshotPreview
+                  id={previewSnapshot?.id ?? ''}
+                  frame={snapshotFrame}
+                  onReady={handleSnapshotReady}
+                />
               )}
               {showOverlay && (
                 <div className={styles.overlay}>
@@ -988,31 +1027,29 @@ function ScrollHeatmapView({
   );
 }
 
-function getSnapshotFrameHeight(snapshot: HeatmapSnapshot) {
-  const { pageH, viewportH } = snapshot;
-
-  // Use the recorded viewport height for near-single-screen pages so `100vh` matches the visitor's screen.
-  if (pageH <= viewportH * 1.25) {
-    return viewportH;
-  }
-
-  return pageH;
-}
-
 function SnapshotPreview({
-  snapshot,
+  id,
+  frame,
   onReady,
 }: {
-  snapshot: HeatmapSnapshot;
+  id: string;
+  frame: SnapshotFrame;
   onReady: () => void;
 }) {
-  return <IframeSnapshot snapshot={snapshot} onReady={onReady} />;
+  return <IframeSnapshot id={id} frame={frame} onReady={onReady} />;
 }
 
-function IframeSnapshot({ snapshot, onReady }: { snapshot: HeatmapSnapshot; onReady: () => void }) {
+function IframeSnapshot({
+  id,
+  frame,
+  onReady,
+}: {
+  id: string;
+  frame: SnapshotFrame;
+  onReady: () => void;
+}) {
   const [available, setAvailable] = useState(true);
-  const iframeUrl = snapshot.url;
-  const frameHeight = getSnapshotFrameHeight(snapshot);
+  const iframeUrl = frame.url;
 
   useEffect(() => {
     setAvailable(true);
@@ -1020,7 +1057,7 @@ function IframeSnapshot({ snapshot, onReady }: { snapshot: HeatmapSnapshot; onRe
     const readyTimer = window.setTimeout(() => onReady(), 1500);
 
     return () => window.clearTimeout(readyTimer);
-  }, [onReady, snapshot.id]);
+  }, [onReady, id]);
 
   const handleLoad = useCallback(() => onReady(), [onReady]);
   const handleError = useCallback(() => {
@@ -1032,14 +1069,19 @@ function IframeSnapshot({ snapshot, onReady }: { snapshot: HeatmapSnapshot; onRe
     return null;
   }
 
+  // The page is laid out at the visitor's real size and then scaled down to the
+  // selected screen width, the same factor used to normalize the clicks.
   return (
     <div
       className={styles.snapshot}
       style={{
-        height: Math.max(1, frameHeight),
+        width: frame.width,
+        height: frame.height,
+        transform: `scale(${frame.scale})`,
       }}
     >
       <iframe
+        key={iframeUrl}
         className={`${styles.snapshotIframe} rr-block`}
         src={iframeUrl}
         title={iframeUrl}
