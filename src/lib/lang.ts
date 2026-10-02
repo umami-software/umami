@@ -132,8 +132,18 @@ function getHour12Locale(locale: Locale): Locale {
         ...locale.formatLong,
         time: ({ width }) => {
           const patterns: Record<string, string> = hour12
-            ? { short: 'h:mm a', medium: 'h:mm:ss a' }
-            : { short: 'HH:mm', medium: 'HH:mm:ss' };
+            ? {
+                short: 'h:mm a',
+                medium: 'h:mm:ss a',
+                long: 'h:mm:ss a zzz',
+                full: 'h:mm:ss a zzzz',
+              }
+            : {
+                short: 'HH:mm',
+                medium: 'HH:mm:ss',
+                long: 'HH:mm:ss zzz',
+                full: 'HH:mm:ss zzzz',
+              };
           return patterns[width] ?? locale.formatLong.time({ width });
         },
       },

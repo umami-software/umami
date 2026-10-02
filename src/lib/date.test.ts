@@ -546,6 +546,8 @@ describe('formatDate clock format', () => {
     setHour12(false);
     expect(formatDate(date, 'p')).toBe('13:05');
     expect(formatDate(date, 'pp')).toBe('13:05:09');
+    expect(formatDate(date, 'ppp')).toMatch(/^13:05:09 /);
+    expect(formatDate(date, 'pppp')).toMatch(/^13:05:09 /);
     expect(formatDate(date, 'p', 'de-DE')).toBe('13:05');
     expect(formatDate(date, 'PPpp')).toBe('Oct 1, 2026, 13:05:09');
   });
@@ -554,6 +556,7 @@ describe('formatDate clock format', () => {
     setHour12(true);
     expect(formatDate(date, 'p', 'de-DE')).toBe('1:05 nachm.');
     expect(formatDate(date, 'pp', 'de-DE')).toBe('1:05:09 nachm.');
+    expect(formatDate(date, 'ppp', 'de-DE')).toMatch(/^1:05:09 nachm\. /);
     expect(formatDate(date, 'p')).toBe('1:05 PM');
   });
 
