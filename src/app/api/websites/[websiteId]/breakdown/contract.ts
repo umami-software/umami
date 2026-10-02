@@ -39,6 +39,16 @@ export const operations = [
                     totaltime: {
                       type: 'number',
                     },
+                    orders: {
+                      type: 'number',
+                      description:
+                        'Completed orders in the requested currency. Present when currency is set.',
+                    },
+                    revenue: {
+                      type: 'number',
+                      description:
+                        'Revenue in the requested currency. Present when currency is set.',
+                    },
                   },
                   required: ['views', 'visitors', 'visits', 'bounces', 'totaltime'],
                   additionalProperties: {

@@ -17,6 +17,7 @@ export * from './queries/useBoardQuery';
 export * from './queries/useBoardSharesQuery';
 export * from './queries/useBoardsQuery';
 export * from './queries/useBreakdownQuery';
+export * from './queries/useCommerceQueries';
 export * from './queries/useDashboardQuery';
 export * from './queries/useDateRangeQuery';
 export * from './queries/useDeleteQuery';

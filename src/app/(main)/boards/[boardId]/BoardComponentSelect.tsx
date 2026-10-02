@@ -28,6 +28,7 @@ const COMPONENT_GROUP_ORDER: string[] = [
   'Realtime',
   'Growth',
   'Revenue',
+  'Commerce',
   'Content',
 ];
 

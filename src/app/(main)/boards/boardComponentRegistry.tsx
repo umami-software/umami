@@ -1,8 +1,15 @@
 import type { ComponentType } from 'react';
 import { TextBlock } from '@/app/(main)/boards/TextBlock';
-import { BoardFunnel } from '@/app/(main)/websites/[websiteId]/(reports)/funnels/BoardFunnel';
 import { LinkMetricsBar } from '@/app/(main)/links/[linkId]/LinkMetricsBar';
 import { PixelMetricsBar } from '@/app/(main)/pixels/[pixelId]/PixelMetricsBar';
+import {
+  BoardCommerceChart,
+  BoardCommerceCheckout,
+  BoardCommerceMetricsBar,
+  BoardCommerceMetricsTable,
+  BoardCommerceProducts,
+} from '@/app/(main)/websites/[websiteId]/(reports)/commerce/BoardCommerce';
+import { BoardFunnel } from '@/app/(main)/websites/[websiteId]/(reports)/funnels/BoardFunnel';
 import { BoardGoal } from '@/app/(main)/websites/[websiteId]/(reports)/goals/BoardGoal';
 import { BoardRevenueChart } from '@/app/(main)/websites/[websiteId]/(reports)/revenue/BoardRevenueChart';
 import { BoardRevenueMetricsBar } from '@/app/(main)/websites/[websiteId]/(reports)/revenue/BoardRevenueMetricsBar';
@@ -24,6 +31,7 @@ import {
   Globe,
   PanelTop,
   Sheet,
+  ShoppingCart,
   Target,
   Users,
 } from '@/components/icons';
@@ -129,6 +137,31 @@ const CURRENCY_OPTIONS = CURRENCIES.map(({ id, name }) => ({
   label: `${id} - ${name}`,
   value: id,
 }));
+
+/** `auto` uses the website's currency with the most orders in the period. */
+export const COMMERCE_AUTO_CURRENCY = 'auto';
+
+const COMMERCE_CURRENCY_FIELD: ConfigField = {
+  name: 'currency',
+  label: 'Currency',
+  type: 'select',
+  options: [{ label: 'Most orders', value: COMMERCE_AUTO_CURRENCY }, ...CURRENCY_OPTIONS],
+  defaultValue: COMMERCE_AUTO_CURRENCY,
+};
+
+const COMMERCE_METRIC_TYPE_OPTIONS = [
+  { label: 'Channels', value: 'channel' },
+  { label: 'Referrers', value: 'referrer' },
+  { label: 'UTM sources', value: 'utmSource' },
+  { label: 'UTM campaigns', value: 'utmCampaign' },
+  { label: 'Entry pages', value: 'entry' },
+  { label: 'Countries', value: 'country' },
+  { label: 'Regions', value: 'region' },
+  { label: 'Markets', value: 'market' },
+  { label: 'Devices', value: 'device' },
+  { label: 'Browsers', value: 'browser' },
+  { label: 'Events', value: 'event' },
+];
 
 const PixelMetricsBarAdapter = ({ websiteId }: { websiteId?: string }) =>
   websiteId ? <PixelMetricsBar pixelId={websiteId} /> : null;
@@ -321,6 +354,87 @@ const componentDefinitions: ComponentDefinition[] = [
         defaultValue: DEFAULT_CURRENCY,
       },
     ],
+  },
+
+  {
+    type: 'CommerceMetricsBar',
+    name: 'Commerce metrics bar',
+    description: 'Revenue, orders, average order value, buyers and conversion',
+    category: 'overview',
+    group: 'Commerce',
+    icon: PanelTop,
+    component: BoardCommerceMetricsBar,
+    defaultProps: { currency: COMMERCE_AUTO_CURRENCY },
+    configFields: [COMMERCE_CURRENCY_FIELD],
+  },
+  {
+    type: 'CommerceChart',
+    name: 'Commerce revenue chart',
+    description: 'Revenue from completed orders over time',
+    category: 'visualization',
+    group: 'Commerce',
+    icon: ChartColumnBig,
+    component: BoardCommerceChart,
+    defaultProps: { currency: COMMERCE_AUTO_CURRENCY },
+    configFields: [COMMERCE_CURRENCY_FIELD],
+  },
+  {
+    type: 'CommerceMetricsTable',
+    name: 'Commerce revenue table',
+    description: 'Order revenue by source, location, market or device',
+    category: 'tables',
+    group: 'Commerce',
+    icon: Sheet,
+    component: BoardCommerceMetricsTable,
+    defaultProps: { type: 'channel', currency: COMMERCE_AUTO_CURRENCY, limit: 10 },
+    configFields: [
+      {
+        name: 'type',
+        label: 'Metric type',
+        type: 'select',
+        options: COMMERCE_METRIC_TYPE_OPTIONS,
+        defaultValue: 'channel',
+      },
+      COMMERCE_CURRENCY_FIELD,
+      {
+        name: 'limit',
+        label: 'Rows',
+        type: 'select',
+        options: LIMIT_OPTIONS,
+        defaultValue: '10',
+      },
+    ],
+  },
+  {
+    type: 'CommerceProducts',
+    name: 'Top products',
+    description: 'Products with the most revenue',
+    category: 'tables',
+    group: 'Commerce',
+    icon: ShoppingCart,
+    component: BoardCommerceProducts,
+    defaultProps: { currency: COMMERCE_AUTO_CURRENCY, limit: 10 },
+    configFields: [
+      COMMERCE_CURRENCY_FIELD,
+      {
+        name: 'limit',
+        label: 'Rows',
+        type: 'select',
+        options: LIMIT_OPTIONS,
+        defaultValue: '10',
+      },
+    ],
+  },
+  {
+    type: 'CommerceCheckout',
+    name: 'Checkout funnel',
+    description: 'Sessions reaching cart, checkout and payment',
+    category: 'overview',
+    group: 'Commerce',
+    icon: GitBranch,
+    component: BoardCommerceCheckout,
+    defaultProps: { currency: COMMERCE_AUTO_CURRENCY },
+    configFields: [COMMERCE_CURRENCY_FIELD],
   },
 
   // Tables

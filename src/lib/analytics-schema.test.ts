@@ -33,3 +33,41 @@ describe('analytics GET schemas', () => {
     });
   });
 });
+
+describe('commerce GET schemas', () => {
+  test('uppercases the currency and requires a three-letter code', async () => {
+    const { commerceStatsQuerySchema } = await import('./analytics-schema');
+
+    expect(commerceStatsQuerySchema.parse({ ...range, currency: 'eur' }).currency).toBe('EUR');
+    expect(commerceStatsQuerySchema.safeParse(range).success).toBe(false);
+    expect(commerceStatsQuerySchema.safeParse({ ...range, currency: 'EURO' }).success).toBe(false);
+  });
+
+  test('restricts dimensions, groupings and models to known values', async () => {
+    const {
+      commerceAttributionQuerySchema,
+      commerceMetricsQuerySchema,
+      commerceProductsQuerySchema,
+    } = await import('./analytics-schema');
+    const base = { ...range, currency: 'USD' };
+
+    expect(commerceMetricsQuerySchema.safeParse({ ...base, type: 'channel' }).success).toBe(true);
+    expect(commerceMetricsQuerySchema.safeParse({ ...base, type: 'url_path' }).success).toBe(false);
+    expect(commerceProductsQuerySchema.safeParse({ ...base, sort: 'name; drop' }).success).toBe(
+      false,
+    );
+    expect(
+      commerceProductsQuerySchema.parse({ ...base, groupBy: 'category', page: '2' }),
+    ).toMatchObject({ groupBy: 'category', page: 2 });
+    expect(commerceAttributionQuerySchema.safeParse({ ...base, model: 'linear' }).success).toBe(
+      false,
+    );
+  });
+
+  test('breakdown accepts an optional revenue currency', async () => {
+    const parsed = breakdownQuerySchema.parse({ ...range, fields: '["path"]', currency: 'gbp' });
+
+    expect(parsed.currency).toBe('GBP');
+    expect(breakdownQuerySchema.parse({ ...range, fields: '["path"]' }).currency).toBeUndefined();
+  });
+});

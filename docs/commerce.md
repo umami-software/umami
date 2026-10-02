@@ -98,7 +98,7 @@ PostgreSQL, `order_id != ''` in ClickHouse) and keep currencies separate.
 
 ## Deployment and remaining work
 
-Apply the unreleased PostgreSQL 27_add_commerce and ClickHouse 15_add_commerce.sql
+Apply the unreleased PostgreSQL 28_add_commerce and ClickHouse 15_add_commerce.sql
 migrations before sending commerce. Regenerate Prisma and rebuild/deploy the
 tracker. The ClickHouse bootstrap schema includes the tables. Implementation work
 does not apply migrations automatically.
@@ -108,6 +108,66 @@ External cloud/ClickHouse lifecycle jobs must purge both tables and clean up
 unreferenced snapshots. Those jobs are not in this repository and remain a cloud
 deployment prerequisite. Never purge snapshots referenced by current parents.
 
-This increment covers collection and storage. Payment/product queries,
-configurable event-name funnels, commerce UI, saved reports and database integration
-verification remain future work.
+## Reporting
+
+The website **Commerce** report (Growth → Commerce, share section `commerce`) has five
+tabs. Every query is built on `src/queries/sql/commerce/commerceQuery.ts`, which applies
+the storage rules above in one place:
+
+- Orders and revenue count completed payments only (`order_id` set). Cart and checkout
+  events are read only by the checkout funnel.
+- One currency at a time. Amounts are never summed or converted across currencies.
+  Without an explicit choice the currency with the most orders is used.
+- ClickHouse reads `commerce_event FINAL` and `commerce_item FINAL`, joined on
+  `commerce_event_id` and `snapshot_id`, so retries and superseded snapshots never count.
+- Website filters, segments and cohorts select sessions, as in the revenue report.
+  A market filter narrows orders; a product or category filter keeps orders containing
+  it and values them by that product's net line totals.
+- Revenue is the order total including tax and shipping; product revenue is net line totals.
+
+| Tab | Contents |
+| --- | --- |
+| Overview | Revenue, orders, AOV, buyers, conversion (converted visits / visits), revenue per visitor, units per order with comparison; revenue chart; revenue by channel, referrer, UTM, country, region, city, market, device, browser, OS, entry page and event; orders with item detail |
+| Products | Products, variants or categories by revenue, units or orders; units-per-order distribution; frequently bought together; per-product detail |
+| Checkout | Sessions reaching cart → checkout → payment, abandoned carts and checkouts with their value, median time to purchase |
+| Customers | Buyers, new vs returning, repeat purchase rate, revenue per buyer, median time and visits to first purchase, buyer list |
+| Attribution | Revenue by channel, referrer, ad platform, landing page and UTM, first click or last non-direct click |
+
+Definitions:
+
+- **Checkout stages** are inferred from IDs: an `orderId` is a payment, a `checkoutId`
+  without an order is checkout, anything else is cart. A session counts toward every stage
+  up to the furthest it reached, so sites that skip cart events still get a funnel.
+  Funnels over arbitrary event names remain available in the Funnels report.
+- **Buyers** are the visitor's distinct ID (`session_link`) when identified, otherwise the
+  session. A buyer is **new** when their first-ever payment (any currency) is in the range.
+  Time and visits to first purchase are measured within the purchasing session.
+- **Attribution** touches are the visits of the purchasing session that started before the
+  order, looking back 30 days before the range. Last click is the latest touch with an
+  external referrer, campaign or ad click ID, falling back to the latest touch.
+- **Acquisition dimensions** (referrer, channel, UTM, entry) on the Overview tab describe the
+  visit in which the order was placed.
+
+Elsewhere:
+
+- **Breakdown** can add orders and revenue for one currency, joined per visit. A visit that
+  spans several rows contributes its orders to each, as it does to visitor counts. Shares
+  need the Commerce section to request it.
+- **Goals** and **cohorts** accept a *Completed order* action, optionally limited to one
+  product (`*` for any).
+- **Boards** offer commerce metrics, revenue chart, revenue table, top products and the
+  checkout funnel. The overview metrics bar shows revenue when the site has orders.
+- **API**: `GET /api/websites/{websiteId}/commerce/{currencies,stats,chart,metrics,orders,
+  orders/{commerceEventId},products,baskets,checkout,abandoned,customers,buyers,attribution}`.
+  `buyers` also requires the Sessions section on shares.
+- **MCP**: `get_commerce` and `get_commerce_products`. They need an API client with the
+  commerce operations; the embedded `/mcp` endpoint has them, and the standalone CLI gets
+  them once `@umami/api-client` is published with them and `@umami/mcp` depends on it.
+
+ClickHouse migrations are applied by hand. Until 15_add_commerce.sql is applied the report
+shows its empty state, the overview omits revenue, and other commerce queries fail with a
+message naming the migration instead of querying missing tables (checked once, rechecked
+every minute while missing).
+
+Refunds, split payments, order edits, currency conversion and the external ClickHouse
+purge jobs remain future work and need their own contracts.

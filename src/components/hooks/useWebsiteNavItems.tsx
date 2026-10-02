@@ -6,6 +6,7 @@ import {
   Eye,
   Flame,
   Sheet,
+  ShoppingCart,
   Tag,
   User,
   UserPlus,
@@ -31,6 +32,14 @@ export function useWebsiteNavItems(websiteId: string) {
       view: undefined,
       unit: undefined,
       excludeBounce: undefined,
+      // Commerce report state
+      tab: undefined,
+      market: undefined,
+      product: undefined,
+      order: undefined,
+      group: undefined,
+      sort: undefined,
+      model: undefined,
     });
 
   const items = [
@@ -147,6 +156,12 @@ export function useWebsiteNavItems(websiteId: string) {
           label: t(labels.revenue),
           icon: <Money />,
           path: renderPath('/revenue'),
+        },
+        {
+          id: 'commerce',
+          label: t(labels.commerce),
+          icon: <ShoppingCart />,
+          path: renderPath('/commerce'),
         },
         {
           id: 'attribution',
