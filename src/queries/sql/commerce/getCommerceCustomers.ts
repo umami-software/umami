@@ -11,7 +11,6 @@ import {
   toNumber,
   toNumbers,
 } from './commerceQuery';
-import { requireClickhouseCommerceTables } from './commerceTables';
 
 /*
  * A buyer is the visitor's distinct ID when it has been identified, otherwise the session.
@@ -55,10 +54,7 @@ export async function getCommerceCustomers(
 ): Promise<CommerceCustomers> {
   const row = await runQuery({
     [PRISMA]: () => relationalQuery(...args),
-    [CLICKHOUSE]: async () => {
-      await requireClickhouseCommerceTables();
-      return clickhouseQuery(...args);
-    },
+    [CLICKHOUSE]: () => clickhouseQuery(...args),
   });
 
   return deriveCustomers(row || {});
@@ -292,10 +288,7 @@ export async function getCommerceBuyers(
 ): Promise<PageResult<CommerceBuyer[]>> {
   const result = await runQuery({
     [PRISMA]: () => relationalBuyersQuery(...args),
-    [CLICKHOUSE]: async () => {
-      await requireClickhouseCommerceTables();
-      return clickhouseBuyersQuery(...args);
-    },
+    [CLICKHOUSE]: () => clickhouseBuyersQuery(...args),
   });
 
   return {

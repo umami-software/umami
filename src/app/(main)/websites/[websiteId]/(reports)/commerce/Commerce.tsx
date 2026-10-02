@@ -1,6 +1,8 @@
-import { Column, Loading, Tab, TabList, TabPanel, Tabs, Text } from '@umami/react-zen';
+import { Column, Loading, Tab, TabList, TabPanel, Tabs } from '@umami/react-zen';
+import { EmptyPlaceholder } from '@/components/common/EmptyPlaceholder';
 import { Panel } from '@/components/common/Panel';
 import { useMessages, useNavigation } from '@/components/hooks';
+import { ShoppingCart } from '@/components/icons';
 import { SessionModal } from '../../sessions/SessionModal';
 import { CommerceAttribution } from './CommerceAttribution';
 import { CommerceCheckout } from './CommerceCheckout';
@@ -46,10 +48,12 @@ export function Commerce({ websiteId, startDate, endDate, unit }: CommerceProps)
   if (!hasData) {
     return (
       <Panel>
-        <Column gap="2" padding="6" alignItems="center">
-          <Text weight="bold">{t('commerce.noData')}</Text>
-          <Text color="muted">{t('commerce.noOrdersDescription')}</Text>
-        </Column>
+        <EmptyPlaceholder
+          icon={<ShoppingCart />}
+          title={t('commerce.noData')}
+          description={t('commerce.noOrdersDescription')}
+          minHeight="400px"
+        />
       </Panel>
     );
   }

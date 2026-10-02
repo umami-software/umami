@@ -2,7 +2,6 @@ import clickhouse from '@/lib/clickhouse';
 import { CLICKHOUSE, PRISMA, runQuery } from '@/lib/db';
 import prisma from '@/lib/prisma';
 import { toNumbers } from './commerceQuery';
-import { requireClickhouseCommerceTables } from './commerceTables';
 
 const FUNCTION_NAME = 'getCommerceOrder';
 
@@ -41,10 +40,7 @@ export async function getCommerceOrder(
 ): Promise<CommerceOrderDetail | null> {
   const result = await runQuery({
     [PRISMA]: () => relationalQuery(...args),
-    [CLICKHOUSE]: async () => {
-      await requireClickhouseCommerceTables();
-      return clickhouseQuery(...args);
-    },
+    [CLICKHOUSE]: () => clickhouseQuery(...args),
   });
 
   if (!result?.order) {

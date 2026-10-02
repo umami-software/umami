@@ -3,7 +3,6 @@ import { CLICKHOUSE, PRISMA, runQuery } from '@/lib/db';
 import prisma from '@/lib/prisma';
 import type { QueryFilters } from '@/lib/types';
 import { toNumbers } from './commerceQuery';
-import { hasClickhouseCommerceTables } from './commerceTables';
 
 const FUNCTION_NAME = 'getCommerceCurrencies';
 
@@ -26,9 +25,7 @@ export async function getCommerceCurrencies(
 ): Promise<CommerceCurrency[]> {
   const rows: CommerceCurrency[] = await runQuery({
     [PRISMA]: () => relationalQuery(...args),
-    // Without the commerce tables the website simply has no commerce data to list.
-    [CLICKHOUSE]: async () =>
-      (await hasClickhouseCommerceTables()) ? clickhouseQuery(...args) : [],
+    [CLICKHOUSE]: () => clickhouseQuery(...args),
   });
 
   return (rows || []).map(row => toNumbers(row, ['orders', 'revenue', 'events']));

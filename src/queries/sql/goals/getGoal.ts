@@ -3,7 +3,6 @@ import { EVENT_TYPE } from '@/lib/constants';
 import { CLICKHOUSE, PRISMA, runQuery } from '@/lib/db';
 import prisma from '@/lib/prisma';
 import type { QueryFilters } from '@/lib/types';
-import { requireClickhouseCommerceTables } from '../commerce/commerceTables';
 
 export interface GoalParameters {
   startDate: Date;
@@ -107,7 +106,6 @@ async function clickhouseQuery(
   const { rawQuery, parseFilters } = clickhouse;
 
   if (type === ORDER_GOAL_TYPE) {
-    await requireClickhouseCommerceTables();
     return clickhouseOrderQuery(websiteId, parameters, filters);
   }
 

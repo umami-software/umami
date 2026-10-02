@@ -19,7 +19,6 @@ import {
   getVisitEntriesCte,
   toNumber,
 } from './commerceQuery';
-import { requireClickhouseCommerceTables } from './commerceTables';
 
 /*
  * Revenue attribution. Every visit of the purchasing session that started before the
@@ -65,10 +64,7 @@ export async function getCommerceAttribution(
   const rows: { dimension: string; name: string; revenue: unknown; orders: unknown }[] =
     await runQuery({
       [PRISMA]: () => relationalQuery(...args),
-      [CLICKHOUSE]: async () => {
-        await requireClickhouseCommerceTables();
-        return clickhouseQuery(...args);
-      },
+      [CLICKHOUSE]: () => clickhouseQuery(...args),
     });
 
   return groupAttribution(rows || [], args[3]);

@@ -9,7 +9,6 @@ import {
   getRelationalCommerceQuery,
   toNumbers,
 } from './commerceQuery';
-import { requireClickhouseCommerceTables } from './commerceTables';
 
 const FUNCTION_NAME = 'getCommerceBaskets';
 const PAIR_LIMIT = 20;
@@ -42,10 +41,7 @@ export async function getCommerceBaskets(
 ): Promise<CommerceBaskets> {
   const result = await runQuery({
     [PRISMA]: () => relationalQuery(...args),
-    [CLICKHOUSE]: async () => {
-      await requireClickhouseCommerceTables();
-      return clickhouseQuery(...args);
-    },
+    [CLICKHOUSE]: () => clickhouseQuery(...args),
   });
 
   return {

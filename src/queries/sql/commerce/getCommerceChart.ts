@@ -8,7 +8,6 @@ import {
   getRelationalCommerceQuery,
   toNumbers,
 } from './commerceQuery';
-import { requireClickhouseCommerceTables } from './commerceTables';
 
 const FUNCTION_NAME = 'getCommerceChart';
 
@@ -25,10 +24,7 @@ export async function getCommerceChart(
 ): Promise<{ chart: CommerceChartPoint[] }> {
   const rows: CommerceChartPoint[] = await runQuery({
     [PRISMA]: () => relationalQuery(...args),
-    [CLICKHOUSE]: async () => {
-      await requireClickhouseCommerceTables();
-      return clickhouseQuery(...args);
-    },
+    [CLICKHOUSE]: () => clickhouseQuery(...args),
   });
 
   return { chart: (rows || []).map(row => toNumbers(row, ['y', 'count'])) };

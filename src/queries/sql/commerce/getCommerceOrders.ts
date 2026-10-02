@@ -9,7 +9,6 @@ import {
   getSessionAttributesCte,
   toNumbers,
 } from './commerceQuery';
-import { requireClickhouseCommerceTables } from './commerceTables';
 
 const FUNCTION_NAME = 'getCommerceOrders';
 
@@ -48,10 +47,7 @@ export async function getCommerceOrders(
 ): Promise<PageResult<CommerceOrder[]>> {
   const result = await runQuery({
     [PRISMA]: () => relationalQuery(...args),
-    [CLICKHOUSE]: async () => {
-      await requireClickhouseCommerceTables();
-      return clickhouseQuery(...args);
-    },
+    [CLICKHOUSE]: () => clickhouseQuery(...args),
   });
 
   return { ...result, data: (result?.data || []).map(row => toNumbers(row, NUMBER_FIELDS)) };

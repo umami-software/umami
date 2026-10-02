@@ -164,10 +164,5 @@ Elsewhere:
   commerce operations; the embedded `/mcp` endpoint has them, and the standalone CLI gets
   them once `@umami/api-client` is published with them and `@umami/mcp` depends on it.
 
-ClickHouse migrations are applied by hand. Until 15_add_commerce.sql is applied the report
-shows its empty state, the overview omits revenue, and other commerce queries fail with a
-message naming the migration instead of querying missing tables (checked once, rechecked
-every minute while missing).
-
 Refunds, split payments, order edits, currency conversion and the external ClickHouse
 purge jobs remain future work and need their own contracts.

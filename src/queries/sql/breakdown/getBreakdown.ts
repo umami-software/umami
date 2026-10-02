@@ -3,7 +3,6 @@ import { EVENT_TYPE, FILTER_COLUMNS, SESSION_COLUMNS } from '@/lib/constants';
 import { CLICKHOUSE, PRISMA, runQuery } from '@/lib/db';
 import prisma from '@/lib/prisma';
 import type { QueryFilters } from '@/lib/types';
-import { requireClickhouseCommerceTables } from '../commerce/commerceTables';
 
 export interface BreakdownParameters {
   startDate: Date;
@@ -154,9 +153,6 @@ async function clickhouseQuery(
   const { parseFilters, rawQuery } = clickhouse;
   const { startDate, endDate, fields, currency } = parameters;
 
-  if (currency) {
-    await requireClickhouseCommerceTables();
-  }
   const { filterQuery, cohortQuery, excludeBounceQuery, queryParams } = parseFilters({
     ...filters,
     websiteId,

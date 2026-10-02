@@ -16,7 +16,6 @@ import {
   getRelationalCommerceQuery,
   toNumbers,
 } from './commerceQuery';
-import { requireClickhouseCommerceTables } from './commerceTables';
 
 const FUNCTION_NAME = 'getCommerceProducts';
 
@@ -53,10 +52,7 @@ export async function getCommerceProducts(
 ): Promise<PageResult<CommerceProduct[]>> {
   const result = await runQuery({
     [PRISMA]: () => relationalQuery(...args),
-    [CLICKHOUSE]: async () => {
-      await requireClickhouseCommerceTables();
-      return clickhouseQuery(...args);
-    },
+    [CLICKHOUSE]: () => clickhouseQuery(...args),
   });
 
   return {

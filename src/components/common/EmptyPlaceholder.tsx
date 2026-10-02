@@ -5,12 +5,26 @@ export interface EmptyPlaceholderProps {
   title?: string;
   description?: string;
   icon?: ReactNode;
+  minHeight?: string;
   children?: ReactNode;
 }
 
-export function EmptyPlaceholder({ title, description, icon, children }: EmptyPlaceholderProps) {
+export function EmptyPlaceholder({
+  title,
+  description,
+  icon,
+  minHeight,
+  children,
+}: EmptyPlaceholderProps) {
   return (
-    <Column alignItems="center" justifyContent="center" gap="5" height="100%" width="100%">
+    <Column
+      alignItems="center"
+      justifyContent="center"
+      gap="5"
+      height="100%"
+      width="100%"
+      minHeight={minHeight}
+    >
       {icon && (
         <Icon color="muted" size="xl">
           {icon}

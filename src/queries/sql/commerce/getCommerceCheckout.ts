@@ -12,7 +12,6 @@ import {
   toNumber,
   toNumbers,
 } from './commerceQuery';
-import { requireClickhouseCommerceTables } from './commerceTables';
 
 /*
  * Checkout stages are inferred from the identifiers each commerce event carries:
@@ -66,10 +65,7 @@ export async function getCommerceCheckout(
 ): Promise<CommerceCheckout> {
   const row = await runQuery({
     [PRISMA]: () => relationalQuery(...args),
-    [CLICKHOUSE]: async () => {
-      await requireClickhouseCommerceTables();
-      return clickhouseQuery(...args);
-    },
+    [CLICKHOUSE]: () => clickhouseQuery(...args),
   });
 
   return deriveCheckout(row || {});
@@ -236,10 +232,7 @@ export async function getCommerceAbandonedCheckouts(
 ): Promise<PageResult<CommerceAbandonedCheckout[]>> {
   const result = await runQuery({
     [PRISMA]: () => relationalAbandonedQuery(...args),
-    [CLICKHOUSE]: async () => {
-      await requireClickhouseCommerceTables();
-      return clickhouseAbandonedQuery(...args);
-    },
+    [CLICKHOUSE]: () => clickhouseAbandonedQuery(...args),
   });
 
   return {

@@ -11,7 +11,6 @@ import {
   getRelationalCommerceQuery,
   toNumbers,
 } from './commerceQuery';
-import { requireClickhouseCommerceTables } from './commerceTables';
 
 const FUNCTION_NAME = 'getCommerceStats';
 
@@ -50,10 +49,7 @@ export async function getCommerceStats(
 ): Promise<CommerceStats> {
   const row = await runQuery({
     [PRISMA]: () => relationalQuery(...args),
-    [CLICKHOUSE]: async () => {
-      await requireClickhouseCommerceTables();
-      return clickhouseQuery(...args);
-    },
+    [CLICKHOUSE]: () => clickhouseQuery(...args),
   });
 
   return deriveCommerceStats(row);
