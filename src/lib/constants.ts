@@ -3,6 +3,7 @@ export const AUTH_TOKEN = 'umami.auth';
 export const LOCALE_CONFIG = 'umami.locale';
 export const TIMEZONE_CONFIG = 'umami.timezone';
 export const DATE_RANGE_CONFIG = 'umami.date-range';
+export const TIME_FORMAT_CONFIG = 'umami.timeFormat';
 export const THEME_CONFIG = 'umami.theme';
 export const CURRENCY_CONFIG = 'umami.currency';
 export const DASHBOARD_CONFIG = 'umami.dashboard';
@@ -27,6 +28,8 @@ export const PIXELS_URL = `${globalThis?.location?.origin}/p`;
 
 export const DEFAULT_LOCALE = 'en-US';
 export const DEFAULT_THEME = 'light';
+export const DEFAULT_TIME_FORMAT = 'auto';
+export const TIME_FORMATS = { auto: 'auto', h12: '12h', h24: '24h' };
 export const DEFAULT_ANIMATION_DURATION = 300;
 export const DEFAULT_DATE_RANGE_VALUE = '24hour';
 export const DEFAULT_WEBSITE_LIMIT = 10;
