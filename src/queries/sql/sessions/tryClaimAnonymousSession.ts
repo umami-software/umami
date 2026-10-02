@@ -29,30 +29,40 @@ async function relationalQuery({
   distinctId,
   createdAt,
 }: TryClaimAnonymousSessionArgs): Promise<boolean> {
-  const { rawQuery } = prisma;
+  const { writeRawQuery } = prisma;
 
+  // This query atomically checks and claims in one statement:
+  //
+  // 1. The UPDATE clause attempts to claim the session row by setting its distinct_id,
+  //    but only if it is currently unclaimed (null) or already claimed by us.
+  //    Concurrent threads with different distinctIds will serialize on the row lock.
+  //
+  // 2. The INSERT clause writes the link, but only if the claim CTE succeeded.
+  //    ON CONFLICT handles idempotency if the link already exists.
+  //
+  // 3. We SELECT whether the claim succeeded. If it did, we own the session.
+  //    If it failed (another identity snuck in or row missing), we return false.
   const truncatedDistinctId = truncateString(distinctId, FIELD_LENGTH.distinctId);
 
-  const result = (await rawQuery(
+  const result = (await writeRawQuery(
     `
     with claim as (
-      insert into session_link (website_id, session_id, distinct_id, created_at)
-      select {{websiteId}}::uuid, {{sessionId}}::uuid, {{distinctId}}, {{createdAt}}
-      where not exists (
-        select 1
-        from session_link
-        where website_id = {{websiteId}}::uuid
-          and session_id = {{sessionId}}::uuid
-          and distinct_id <> {{distinctId}}
-      )
-      on conflict (website_id, distinct_id, session_id) do nothing
-    )
-    select not exists (
-      select 1
-      from session_link
+      update session
+      set distinct_id = {{distinctId}}
       where website_id = {{websiteId}}::uuid
         and session_id = {{sessionId}}::uuid
-        and distinct_id <> {{distinctId}}
+        and coalesce(distinct_id, {{distinctId}}) = {{distinctId}}
+      returning 1
+    ),
+    link as (
+      insert into session_link (website_id, session_id, distinct_id, created_at)
+      select {{websiteId}}::uuid, {{sessionId}}::uuid, {{distinctId}}, {{createdAt}}
+      from claim
+      on conflict (website_id, distinct_id, session_id) do nothing
+      returning 1
+    )
+    select exists (
+      select 1 from claim
     ) as "canReuse"
     `,
     {
