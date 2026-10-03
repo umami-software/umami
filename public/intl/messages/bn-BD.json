@@ -422,7 +422,18 @@
     "two-factor-reset": "পুনরায় সেট করুন 2FA",
     "two-factor-global-active-tooltip": "গ্লোবাল 2FA সক্রিয় করা হয়েছে",
     "two-factor-verify": "যাচাই করুন",
-    "two-factor-login": "দ্বি-ফ্যাক্টর প্রমাণীকরণ"
+    "two-factor-login": "দ্বি-ফ্যাক্টর প্রমাণীকরণ",
+    "add-note": "নোট যোগ করুন",
+    "note": "নোট",
+    "notes": "নোট",
+    "api-keys": "API কী",
+    "api-key": "API কী",
+    "create-api-key": "API কী তৈরি করুন",
+    "last-used": "সর্বশেষ ব্যবহৃত",
+    "never": "কখনো না",
+    "copy": "কপি",
+    "authorize": "অনুমোদন করুন",
+    "deny": "অস্বীকার করুন"
   },
   "message": {
     "action-confirmation": "নিশ্চিত করতে নিচের বক্সে {confirmation} টাইপ করুন।",
@@ -507,6 +518,9 @@
     "two-factor-error-no-pending-setup": "কোনো মুলতুবি দুই-ফ্যাক্টর প্রমাণীকরণ সেটআপ পাওয়া যায়নি।",
     "two-factor-locked-message": "অনেক ব্যর্থ প্রচেষ্টা. {time} এ আবার চেষ্টা করুন।",
     "two-factor-active-description": "আপনার অ্যাকাউন্ট টু-ফ্যাক্টর প্রমাণীকরণের মাধ্যমে সুরক্ষিত। প্রতিটি লগইনের জন্য আপনার প্রমাণীকরণকারী অ্যাপ থেকে একটি কোড প্রয়োজন।",
-    "two-factor-error-not-configured": "সার্ভারে বৈধ TWO_FACTOR_ENCRYPTION_KEY না থাকায় দুই-ধাপ যাচাইকরণ উপলভ্য নয়। সহায়তার জন্য আপনার প্রশাসকের সাথে যোগাযোগ করুন।"
+    "two-factor-error-not-configured": "সার্ভারে বৈধ TWO_FACTOR_ENCRYPTION_KEY না থাকায় দুই-ধাপ যাচাইকরণ উপলভ্য নয়। সহায়তার জন্য আপনার প্রশাসকের সাথে যোগাযোগ করুন।",
+    "max-length": "সর্বোচ্চ দৈর্ঘ্য {n} অক্ষর",
+    "api-key-created": "আপনার API কী এখনই কপি করুন। আপনি আর এটি দেখতে পারবেন না।",
+    "no-api-keys": "আপনি কোনো API কী তৈরি করেননি।"
   }
 }

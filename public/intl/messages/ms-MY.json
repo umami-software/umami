@@ -422,7 +422,18 @@
     "two-factor-reset": "Tetapkan semula 2FA",
     "two-factor-global-active-tooltip": "Global 2FA didayakan",
     "two-factor-verify": "Sahkan",
-    "two-factor-login": "Pengesahan dua faktor"
+    "two-factor-login": "Pengesahan dua faktor",
+    "add-note": "Tambah nota",
+    "note": "Nota",
+    "notes": "Nota",
+    "api-keys": "Kunci API",
+    "api-key": "Kunci API",
+    "create-api-key": "Buat kunci API",
+    "last-used": "Kali terakhir digunakan",
+    "never": "Tidak pernah",
+    "copy": "Salin",
+    "authorize": "Benarkan",
+    "deny": "Tolak"
   },
   "message": {
     "action-confirmation": "Taip {confirmation} dalam kotak di bawah untuk mengesahkan.",
@@ -507,6 +518,9 @@
     "two-factor-error-no-pending-setup": "Tiada persediaan pengesahan dua faktor yang belum selesai ditemui.",
     "two-factor-locked-message": "Terlalu banyak percubaan yang gagal. Cuba lagi di {time}.",
     "two-factor-active-description": "Akaun anda dilindungi dengan pengesahan dua faktor. Setiap log masuk memerlukan kod daripada apl pengesah anda.",
-    "two-factor-error-not-configured": "Pengesahan dua faktor tidak tersedia kerana pelayan tiada TWO_FACTOR_ENCRYPTION_KEY yang sah. Hubungi pentadbir anda untuk mendapatkan bantuan."
+    "two-factor-error-not-configured": "Pengesahan dua faktor tidak tersedia kerana pelayan tiada TWO_FACTOR_ENCRYPTION_KEY yang sah. Hubungi pentadbir anda untuk mendapatkan bantuan.",
+    "max-length": "Panjang maksimum {n} aksara",
+    "api-key-created": "Salin kunci API anda sekarang. Anda tidak akan dapat melihatnya lagi.",
+    "no-api-keys": "Anda belum mencipta sebarang kunci API."
   }
 }

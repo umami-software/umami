@@ -422,7 +422,18 @@
     "two-factor-reset": "Ponastavi 2FA",
     "two-factor-global-active-tooltip": "Globalni 2FA je omogočen",
     "two-factor-verify": "Preveri",
-    "two-factor-login": "Dvostopenjska avtentikacija"
+    "two-factor-login": "Dvostopenjska avtentikacija",
+    "add-note": "Dodaj opombo",
+    "note": "Opomba",
+    "notes": "Opombe",
+    "api-keys": "API ključi",
+    "api-key": "API ključ",
+    "create-api-key": "Ustvari API ključ",
+    "last-used": "Nazadnje uporabljeno",
+    "never": "Nikoli",
+    "copy": "Kopiraj",
+    "authorize": "Pooblasti",
+    "deny": "Zavrni"
   },
   "message": {
     "action-confirmation": "Za potrditev v spodnje polje vnesite {confirmation}.",
@@ -507,6 +518,9 @@
     "two-factor-error-no-pending-setup": "Najdena ni bila čakajoča nastavitev dvostopenjske avtentikacije.",
     "two-factor-locked-message": "Preveč neuspelih poskusov. Poskusite znova na {time}.",
     "two-factor-active-description": "Vaš račun je zaščiten z dvostopenjsko avtentikacijo. Vsaka prijava zahteva kodo iz vaše aplikacije za preverjanje pristnosti.",
-    "two-factor-error-not-configured": "Dvofaktorska avtentikacija ni na voljo, ker strežniku manjka veljaven TWO_FACTOR_ENCRYPTION_KEY. Za pomoč se obrnite na skrbnika."
+    "two-factor-error-not-configured": "Dvofaktorska avtentikacija ni na voljo, ker strežniku manjka veljaven TWO_FACTOR_ENCRYPTION_KEY. Za pomoč se obrnite na skrbnika.",
+    "max-length": "Največja dolžina {n} znakov",
+    "api-key-created": "Zdaj kopirajte svoj API ključ. Tega ne boste mogli več videti.",
+    "no-api-keys": "Niste ustvarili nobenega API ključa."
   }
 }

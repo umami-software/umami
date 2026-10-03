@@ -422,7 +422,18 @@
     "two-factor-reset": "Reset 2FA",
     "two-factor-global-active-tooltip": "A globális 2FA engedélyezve van",
     "two-factor-verify": "Ellenőrizze",
-    "two-factor-login": "Kéttényezős hitelesítés"
+    "two-factor-login": "Kéttényezős hitelesítés",
+    "add-note": "Jegyzet hozzáadása",
+    "note": "Jegyzet",
+    "notes": "Jegyzetek",
+    "api-keys": "API-kulcsok",
+    "api-key": "API-kulcs",
+    "create-api-key": "API-kulcs létrehozása",
+    "last-used": "Utoljára használt",
+    "never": "Soha",
+    "copy": "Másolás",
+    "authorize": "Engedélyezés",
+    "deny": "Megtagadás"
   },
   "message": {
     "action-confirmation": "Írja be a(z) {confirmation} szót az alábbi mezőbe a megerősítéshez.",
@@ -507,6 +518,9 @@
     "two-factor-error-no-pending-setup": "Nem található függőben lévő kéttényezős hitelesítési beállítás.",
     "two-factor-locked-message": "Túl sok sikertelen próbálkozás. Próbálja újra a {time}-on.",
     "two-factor-active-description": "Fiókját kétlépcsős hitelesítés védi. Minden bejelentkezéshez kód szükséges a hitelesítő alkalmazástól.",
-    "two-factor-error-not-configured": "A kétfaktoros hitelesítés nem érhető el, mert a szerverről hiányzik egy érvényes TWO_FACTOR_ENCRYPTION_KEY. Kérj segítséget a rendszergazdától."
+    "two-factor-error-not-configured": "A kétfaktoros hitelesítés nem érhető el, mert a szerverről hiányzik egy érvényes TWO_FACTOR_ENCRYPTION_KEY. Kérj segítséget a rendszergazdától.",
+    "max-length": "Maximális hossz {n} karakter",
+    "api-key-created": "Most másolja le az API-kulcsát. Később már nem láthatja.",
+    "no-api-keys": "Nem hozott létre API-kulcsot."
   }
 }

@@ -422,7 +422,18 @@
     "two-factor-reset": "Iš naujo nustatyti 2FA",
     "two-factor-global-active-tooltip": "Pasaulinis 2FA įjungtas",
     "two-factor-verify": "Patvirtinti",
-    "two-factor-login": "Dviejų veiksnių autentifikavimas"
+    "two-factor-login": "Dviejų veiksnių autentifikavimas",
+    "add-note": "Pridėti pastabą",
+    "note": "Pastaba",
+    "notes": "Pastabos",
+    "api-keys": "API raktai",
+    "api-key": "API raktas",
+    "create-api-key": "Sukurti API raktą",
+    "last-used": "Paskutinį kartą naudota",
+    "never": "Niekada",
+    "copy": "Kopijuoti",
+    "authorize": "Leisti",
+    "deny": "Atmesti"
   },
   "message": {
     "action-confirmation": "Įrašykite {confirmation} žemiau, kad patvirtintumėte.",
@@ -507,6 +518,9 @@
     "two-factor-error-no-pending-setup": "Nerasta laukiančių dviejų veiksnių autentifikavimo sąrankos.",
     "two-factor-locked-message": "Per daug nesėkmingų bandymų. Bandykite dar kartą adresu {time}.",
     "two-factor-active-description": "Jūsų paskyra apsaugota dviejų veiksnių autentifikavimu. Kiekvienam prisijungimui reikalingas kodas iš autentifikavimo programos.",
-    "two-factor-error-not-configured": "Dviejų veiksnių autentifikavimas negalimas, nes serveryje nėra galiojančio TWO_FACTOR_ENCRYPTION_KEY. Kreipkitės pagalbos į administratorių."
+    "two-factor-error-not-configured": "Dviejų veiksnių autentifikavimas negalimas, nes serveryje nėra galiojančio TWO_FACTOR_ENCRYPTION_KEY. Kreipkitės pagalbos į administratorių.",
+    "max-length": "Didžiausias ilgis {n} ženklų",
+    "api-key-created": "Nukopijuokite savo API raktą dabar. Vėl jo nepamatysite.",
+    "no-api-keys": "Nesukūrėte jokių API raktų."
   }
 }

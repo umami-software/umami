@@ -422,7 +422,18 @@
     "two-factor-reset": "إعادة تعيين 2FA",
     "two-factor-global-active-tooltip": "تم تمكين 2FA العالمي",
     "two-factor-verify": "تحقق",
-    "two-factor-login": "المصادقة الثنائية"
+    "two-factor-login": "المصادقة الثنائية",
+    "add-note": "إضافة ملاحظة",
+    "note": "ملاحظة",
+    "notes": "ملاحظات",
+    "api-keys": "مفاتيح API",
+    "api-key": "مفتاح API",
+    "create-api-key": "إنشاء مفتاح API",
+    "last-used": "آخر استخدام",
+    "never": "أبداً",
+    "copy": "نسخ",
+    "authorize": "تخويل",
+    "deny": "رفض"
   },
   "message": {
     "action-confirmation": "اكتب {confirmation} في المربع أدناه للتأكيد.",
@@ -507,6 +518,9 @@
     "two-factor-error-no-pending-setup": "لم يتم العثور على إعداد المصادقة الثنائية المعلق.",
     "two-factor-locked-message": "عدد كبير جدًا من المحاولات الفاشلة. حاول مرة أخرى على {time}.",
     "two-factor-active-description": "حسابك محمي بالمصادقة الثنائية. تتطلب كل عملية تسجيل دخول رمزًا من تطبيق المصادقة الخاص بك.",
-    "two-factor-error-not-configured": "المصادقة الثنائية غير متاحة لأن الخادم يفتقد إلى TWO_FACTOR_ENCRYPTION_KEY صالح. يُرجى التواصل مع المسؤول للحصول على المساعدة."
+    "two-factor-error-not-configured": "المصادقة الثنائية غير متاحة لأن الخادم يفتقد إلى TWO_FACTOR_ENCRYPTION_KEY صالح. يُرجى التواصل مع المسؤول للحصول على المساعدة.",
+    "max-length": "الحد الأقصى للطول {n} حرفًا",
+    "api-key-created": "انسخ مفتاح API الآن. لن تتمكن من رؤيته مرة أخرى.",
+    "no-api-keys": "لم تقم بإنشاء أي مفاتيح API."
   }
 }

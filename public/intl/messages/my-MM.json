@@ -422,7 +422,18 @@
     "two-factor-reset": "ပြန်လည်သတ်မှတ်ပါ 2FA",
     "two-factor-global-active-tooltip": "Global 2FA ကို ဖွင့်ထားသည်။",
     "two-factor-verify": "စိစစ်ပါ။",
-    "two-factor-login": "two-factor authentication"
+    "two-factor-login": "two-factor authentication",
+    "add-note": "မှတ်ချက် ထည့်ရန်",
+    "note": "မှတ်ချက်",
+    "notes": "မှတ်ချက်များ",
+    "api-keys": "API ကီးများ",
+    "api-key": "API ကီး",
+    "create-api-key": "API ကီး ဖန်တီးရန်",
+    "last-used": "နောက်ဆုံးအသုံးပြုခြင်း",
+    "never": "မရှိသော",
+    "copy": "ကော်ပီ",
+    "authorize": "ခွင့်ပြုရန်",
+    "deny": "ငြင်းပယ်ရန်"
   },
   "message": {
     "action-confirmation": "အတည်ပြုရန် အောက်ပါအကွက်တွင် {confirmation} ကို ရိုက်ထည့်ပါ။",
@@ -507,6 +518,9 @@
     "two-factor-error-no-pending-setup": "ဆိုင်းငံ့ထားသော two-factor authentication setup ကို မတွေ့ပါ။",
     "two-factor-locked-message": "မအောင်မြင်သောကြိုးစားမှုများစွာ။ {time} တွင် ထပ်စမ်းကြည့်ပါ။",
     "two-factor-active-description": "သင့်အကောင့်ကို two-factor authentication ဖြင့် ကာကွယ်ထားသည်။ အကောင့်ဝင်ခြင်းတစ်ခုစီတိုင်းသည် သင်၏ authenticator အက်ပ်မှ ကုဒ်တစ်ခု လိုအပ်သည်။",
-    "two-factor-error-not-configured": "ဆာဗာတွင် မှန်ကန်သော TWO_FACTOR_ENCRYPTION_KEY မရှိသောကြောင့် နှစ်ဆင့်အတည်ပြုခြင်းကို မရနိုင်ပါ။ အကူအညီအတွက် သင့်စီမံခန့်ခွဲသူကို ဆက်သွယ်ပါ။"
+    "two-factor-error-not-configured": "ဆာဗာတွင် မှန်ကန်သော TWO_FACTOR_ENCRYPTION_KEY မရှိသောကြောင့် နှစ်ဆင့်အတည်ပြုခြင်းကို မရနိုင်ပါ။ အကူအညီအတွက် သင့်စီမံခန့်ခွဲသူကို ဆက်သွယ်ပါ။",
+    "max-length": "အမြင့်ဆုံးအရှည် {n} စာလုံး",
+    "api-key-created": "သင့် API ကီးကို ယခု ကော်ပီယူပါ။ ထပ်မံမြင်ရန် မဖြစ်နိုင်ပါ။",
+    "no-api-keys": "သင်သည် API ကီး မဖန်တီးထားပါ။"
   }
 }

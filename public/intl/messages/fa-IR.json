@@ -422,7 +422,18 @@
     "two-factor-verify": "تأیید کنید",
     "two-factor-login": "احراز هویت دو مرحله ای",
     "recorder-code": "کد پخش مجدد نشست",
-    "replay-enabled": "بازپخش فعال است"
+    "replay-enabled": "بازپخش فعال است",
+    "add-note": "افزودن یادداشت",
+    "note": "یادداشت",
+    "notes": "یادداشت‌ها",
+    "api-keys": "کلیدهای API",
+    "api-key": "کلید API",
+    "create-api-key": "ایجاد کلید API",
+    "last-used": "آخرین استفاده",
+    "never": "هرگز",
+    "copy": "کپی",
+    "authorize": "مجوز دادن",
+    "deny": "رد کردن"
   },
   "message": {
     "action-confirmation": "برای تأیید این عملیات، لطفاً {confirmation} را تایپ کنید.",
@@ -507,6 +518,9 @@
     "two-factor-error-no-pending-setup": "هیچ راه‌اندازی احراز هویت دو مرحله‌ای معلق پیدا نشد.",
     "two-factor-locked-message": "تلاش های ناموفق بسیار زیاد. دوباره در {time} امتحان کنید.",
     "two-factor-active-description": "حساب شما با احراز هویت دو مرحله ای محافظت می شود. هر ورود به یک کد از برنامه احراز هویت شما نیاز دارد.",
-    "two-factor-error-not-configured": "احراز هویت دومرحله‌ای در دسترس نیست زیرا سرور فاقد یک TWO_FACTOR_ENCRYPTION_KEY معتبر است. برای کمک با مدیر خود تماس بگیرید."
+    "two-factor-error-not-configured": "احراز هویت دومرحله‌ای در دسترس نیست زیرا سرور فاقد یک TWO_FACTOR_ENCRYPTION_KEY معتبر است. برای کمک با مدیر خود تماس بگیرید.",
+    "max-length": "حداکثر طول {n} کاراکتر",
+    "api-key-created": "کلید API خود را اکنون کپی کنید. دیگر نمی‌توانید آن را ببینید.",
+    "no-api-keys": "شما هیچ کلید API ایجاد نکرده‌اید."
   }
 }

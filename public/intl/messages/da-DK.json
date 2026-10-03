@@ -422,7 +422,18 @@
     "two-factor-reset": "Nulstil 2FA",
     "two-factor-global-active-tooltip": "Global 2FA er aktiveret",
     "two-factor-verify": "Bekræft",
-    "two-factor-login": "To-faktor autentificering"
+    "two-factor-login": "To-faktor autentificering",
+    "add-note": "Tilføj note",
+    "note": "Note",
+    "notes": "Noter",
+    "api-keys": "API-nøgler",
+    "api-key": "API-nøgle",
+    "create-api-key": "Opret API-nøgle",
+    "last-used": "Sidst brugt",
+    "never": "Aldrig",
+    "copy": "Kopiér",
+    "authorize": "Autorisér",
+    "deny": "Afvis"
   },
   "message": {
     "action-confirmation": "Skriv {confirmation} i feltet herunder for at bekræfte.",
@@ -507,6 +518,9 @@
     "two-factor-error-no-pending-setup": "Der blev ikke fundet nogen afventende opsætning af tofaktorgodkendelse.",
     "two-factor-locked-message": "For mange mislykkede forsøg. Prøv igen på {time}.",
     "two-factor-active-description": "Din konto er beskyttet med to-faktor-godkendelse. Hvert login kræver en kode fra din autentificeringsapp.",
-    "two-factor-error-not-configured": "Tofaktorgodkendelse er ikke tilgængelig, fordi serveren mangler en gyldig TWO_FACTOR_ENCRYPTION_KEY. Kontakt din administrator for at få hjælp."
+    "two-factor-error-not-configured": "Tofaktorgodkendelse er ikke tilgængelig, fordi serveren mangler en gyldig TWO_FACTOR_ENCRYPTION_KEY. Kontakt din administrator for at få hjælp.",
+    "max-length": "Maksimal længde {n} tegn",
+    "api-key-created": "Kopiér din API-nøgle nu. Du kan ikke se den igen.",
+    "no-api-keys": "Du har ikke oprettet nogen API-nøgler."
   }
 }

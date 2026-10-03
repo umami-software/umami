@@ -422,7 +422,18 @@
     "two-factor-reset": "重設 2FA",
     "two-factor-global-active-tooltip": "全域 2FA 已啟用",
     "two-factor-verify": "驗證",
-    "two-factor-login": "雙因素驗證"
+    "two-factor-login": "雙因素驗證",
+    "add-note": "新增備註",
+    "note": "備註",
+    "notes": "備註",
+    "api-keys": "API 金鑰",
+    "api-key": "API 金鑰",
+    "create-api-key": "建立 API 金鑰",
+    "last-used": "最後使用",
+    "never": "從不",
+    "copy": "複製",
+    "authorize": "授權",
+    "deny": "拒絕"
   },
   "message": {
     "action-confirmation": "請在下方欄位輸入 {confirmation} 以確認。",
@@ -507,6 +518,9 @@
     "two-factor-error-no-pending-setup": "找不到待完成的雙因素驗證設定。",
     "two-factor-locked-message": "失敗次數過多。請於 {time} 再試一次。",
     "two-factor-active-description": "您的帳號受到雙因素驗證保護。每次登入都需要輸入驗證器應用程式提供的驗證碼。",
-    "two-factor-error-not-configured": "由於伺服器缺少有效的 TWO_FACTOR_ENCRYPTION_KEY，雙重驗證無法使用。請聯絡管理員取得協助。"
+    "two-factor-error-not-configured": "由於伺服器缺少有效的 TWO_FACTOR_ENCRYPTION_KEY，雙重驗證無法使用。請聯絡管理員取得協助。",
+    "max-length": "最大長度為 {n} 個字元",
+    "api-key-created": "請立即複製您的 API 金鑰。之後將無法再次查看。",
+    "no-api-keys": "您尚未建立任何 API 金鑰。"
   }
 }
