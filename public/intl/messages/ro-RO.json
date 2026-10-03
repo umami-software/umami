@@ -422,7 +422,18 @@
     "two-factor-reset": "Resetați [[9001]]]",
     "two-factor-global-active-tooltip": "Global [[9001]]] este activat",
     "two-factor-verify": "Verificați",
-    "two-factor-login": "Autentificare cu doi factori"
+    "two-factor-login": "Autentificare cu doi factori",
+    "add-note": "Adaugă notă",
+    "note": "Notă",
+    "notes": "Note",
+    "api-keys": "Chei API",
+    "api-key": "Cheie API",
+    "create-api-key": "Creează cheie API",
+    "last-used": "Ultima utilizare",
+    "never": "Niciodată",
+    "copy": "Copiază",
+    "authorize": "Autorizează",
+    "deny": "Refuză"
   },
   "message": {
     "action-confirmation": "Scrie {confirmation} în câmpul de mai jos pentru a confirma.",
@@ -507,6 +518,9 @@
     "two-factor-error-no-pending-setup": "Nu a fost găsită nicio configurare de autentificare cu doi factori în așteptare.",
     "two-factor-locked-message": "Prea multe încercări eșuate. Încercați din nou la {time}.",
     "two-factor-active-description": "Contul dvs. este protejat cu autentificare cu doi factori. Fiecare autentificare necesită un cod din aplicația dvs. de autentificare.",
-    "two-factor-error-not-configured": "Autentificarea cu doi factori nu este disponibilă deoarece serverului îi lipsește un TWO_FACTOR_ENCRYPTION_KEY valid. Contactați administratorul pentru ajutor."
+    "two-factor-error-not-configured": "Autentificarea cu doi factori nu este disponibilă deoarece serverului îi lipsește un TWO_FACTOR_ENCRYPTION_KEY valid. Contactați administratorul pentru ajutor.",
+    "max-length": "Lungime maximă de {n} caractere",
+    "api-key-created": "Copiați cheia API acum. Nu o veți mai putea vedea.",
+    "no-api-keys": "Nu ați creat nicio cheie API."
   }
 }

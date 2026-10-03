@@ -422,7 +422,18 @@
     "two-factor-reset": "リセット 2FA",
     "two-factor-global-active-tooltip": "グローバル 2FA が有効です",
     "two-factor-verify": "検証する",
-    "two-factor-login": "二要素認証"
+    "two-factor-login": "二要素認証",
+    "add-note": "メモを追加",
+    "note": "メモ",
+    "notes": "メモ",
+    "api-keys": "APIキー",
+    "api-key": "APIキー",
+    "create-api-key": "APIキーを作成",
+    "last-used": "最終使用",
+    "never": "未使用",
+    "copy": "コピー",
+    "authorize": "承認",
+    "deny": "拒否"
   },
   "message": {
     "action-confirmation": "承認する場合は、下のフォームに「{confirmation}」と入力してください。",
@@ -507,6 +518,9 @@
     "two-factor-error-no-pending-setup": "保留中の 2 要素認証セットアップが見つかりません。",
     "two-factor-locked-message": "失敗した試行が多すぎます。 {time} でもう一度お試しください。",
     "two-factor-active-description": "あなたのアカウントは二要素認証で保護されています。各ログインには認証アプリからのコードが必要です。",
-    "two-factor-error-not-configured": "サーバーに有効な TWO_FACTOR_ENCRYPTION_KEY がないため、二要素認証は利用できません。管理者に連絡してサポートを受けてください。"
+    "two-factor-error-not-configured": "サーバーに有効な TWO_FACTOR_ENCRYPTION_KEY がないため、二要素認証は利用できません。管理者に連絡してサポートを受けてください。",
+    "max-length": "最大長は{n}文字です",
+    "api-key-created": "APIキーを今すぐコピーしてください。再度表示することはできません。",
+    "no-api-keys": "APIキーは作成されていません。"
   }
 }

@@ -422,7 +422,18 @@
     "two-factor-reset": "Resetovat 2FA",
     "two-factor-global-active-tooltip": "Globální 2FA je povoleno",
     "two-factor-verify": "Ověřte",
-    "two-factor-login": "Dvoufaktorová autentizace"
+    "two-factor-login": "Dvoufaktorová autentizace",
+    "add-note": "Přidat poznámku",
+    "note": "Poznámka",
+    "notes": "Poznámky",
+    "api-keys": "API klíče",
+    "api-key": "API klíč",
+    "create-api-key": "Vytvořit API klíč",
+    "last-used": "Naposledy použito",
+    "never": "Nikdy",
+    "copy": "Kopírovat",
+    "authorize": "Autorizovat",
+    "deny": "Zamítnout"
   },
   "message": {
     "action-confirmation": "Zadejte {confirmation} do pole níže pro potvrzení.",
@@ -507,6 +518,9 @@
     "two-factor-error-no-pending-setup": "Nebylo nalezeno žádné nevyřízené nastavení dvoufaktorového ověřování.",
     "two-factor-locked-message": "Příliš mnoho neúspěšných pokusů. Zkuste to znovu na {time}.",
     "two-factor-active-description": "Váš účet je chráněn dvoufaktorovou autentizací. Každé přihlášení vyžaduje kód z vaší ověřovací aplikace.",
-    "two-factor-error-not-configured": "Dvoufaktorové ověřování není k dispozici, protože serveru chybí platný TWO_FACTOR_ENCRYPTION_KEY. Požádejte o pomoc správce."
+    "two-factor-error-not-configured": "Dvoufaktorové ověřování není k dispozici, protože serveru chybí platný TWO_FACTOR_ENCRYPTION_KEY. Požádejte o pomoc správce.",
+    "max-length": "Maximální délka {n} znaků",
+    "api-key-created": "Zkopírujte si nyní svůj API klíč. Nebudete jej moci znovu vidět.",
+    "no-api-keys": "Nevytvořili jste žádné API klíče."
   }
 }

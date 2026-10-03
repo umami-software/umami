@@ -422,7 +422,18 @@
     "two-factor-reset": "Restableix [[9001]]]",
     "two-factor-global-active-tooltip": "El [[9001]]] global està habilitat",
     "two-factor-verify": "Verificar",
-    "two-factor-login": "Autenticació de dos factors"
+    "two-factor-login": "Autenticació de dos factors",
+    "add-note": "Afegeix una nota",
+    "note": "Nota",
+    "notes": "Notes",
+    "api-keys": "Claus API",
+    "api-key": "Clau API",
+    "create-api-key": "Crea clau API",
+    "last-used": "Últim ús",
+    "never": "Mai",
+    "copy": "Copia",
+    "authorize": "Autoritza",
+    "deny": "Denega"
   },
   "message": {
     "action-confirmation": "Escrigui {confirmation} al cuadre inferior per confirmar.",
@@ -507,6 +518,9 @@
     "two-factor-error-no-pending-setup": "No s'ha trobat cap configuració d'autenticació de dos factors pendent.",
     "two-factor-locked-message": "Massa intents fallits. Torna-ho a provar a {time}.",
     "two-factor-active-description": "El vostre compte està protegit amb una autenticació de dos factors. Cada inici de sessió requereix un codi de la vostra aplicació d'autenticació.",
-    "two-factor-error-not-configured": "L'autenticació de dos factors no està disponible perquè al servidor li falta una TWO_FACTOR_ENCRYPTION_KEY vàlida. Contacteu amb l'administrador per obtenir ajuda."
+    "two-factor-error-not-configured": "L'autenticació de dos factors no està disponible perquè al servidor li falta una TWO_FACTOR_ENCRYPTION_KEY vàlida. Contacteu amb l'administrador per obtenir ajuda.",
+    "max-length": "Longitud màxima de {n} caràcters",
+    "api-key-created": "Copieu la vostra clau API ara. No la podreu tornar a veure.",
+    "no-api-keys": "No heu creat cap clau API."
   }
 }

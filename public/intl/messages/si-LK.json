@@ -422,7 +422,18 @@
     "two-factor-reset": "යළි පිහිටුවන්න 2FA",
     "two-factor-global-active-tooltip": "ගෝලීය 2FA සබල කර ඇත",
     "two-factor-verify": "තහවුරු කරන්න",
-    "two-factor-login": "ද්වි-සාධක සත්‍යාපනය"
+    "two-factor-login": "ද්වි-සාධක සත්‍යාපනය",
+    "add-note": "සටහනක් එක් කරන්න",
+    "note": "සටහන",
+    "notes": "සටහන්",
+    "api-keys": "API යතුරු",
+    "api-key": "API යතුර",
+    "create-api-key": "API යතුර සාදන්න",
+    "last-used": "අවසන් වර භාවිත කළේ",
+    "never": "කවදාවත් නැත",
+    "copy": "පිටපත් කරන්න",
+    "authorize": "අවසර දෙන්න",
+    "deny": "ප්‍රතික්ෂේප කරන්න"
   },
   "message": {
     "action-confirmation": "තහවුරු කිරීමට පහත කොටුවේ {confirmation} ටයිප් කරන්න.",
@@ -507,6 +518,9 @@
     "two-factor-error-no-pending-setup": "පොරොත්තු ද්වි-සාධක සත්‍යාපන පිහිටුවීමක් හමු නොවීය.",
     "two-factor-locked-message": "බොහෝ අසාර්ථක උත්සාහයන්. {time} හිදී නැවත උත්සාහ කරන්න.",
     "two-factor-active-description": "ඔබගේ ගිණුම ද්වි-සාධක සත්‍යාපනයකින් ආරක්ෂා කර ඇත. සෑම පිවිසුමකටම ඔබගේ සත්‍යාපන යෙදුමෙන් කේතයක් අවශ්‍ය වේ.",
-    "two-factor-error-not-configured": "වලංගු TWO_FACTOR_ENCRYPTION_KEY එකක් සේවාදායකයට නොමැති නිසා ද්වි-සාධක සත්‍යාපනය ලබා ගත නොහැක. උදව් සඳහා ඔබගේ පරිපාලකයා අමතන්න."
+    "two-factor-error-not-configured": "වලංගු TWO_FACTOR_ENCRYPTION_KEY එකක් සේවාදායකයට නොමැති නිසා ද්වි-සාධක සත්‍යාපනය ලබා ගත නොහැක. උදව් සඳහා ඔබගේ පරිපාලකයා අමතන්න.",
+    "max-length": "උපරිම දිග {n} අකුරු",
+    "api-key-created": "ඔබේ API යතුර දැන් පිටපත් කරන්න. නැවත බැලිය හැකි නොවේ.",
+    "no-api-keys": "ඔබ කිසිදු API යතුරක් සාදා නැත."
   }
 }

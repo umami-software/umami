@@ -422,7 +422,18 @@
     "two-factor-reset": "Resetiraj 2FA",
     "two-factor-global-active-tooltip": "Globalno 2FA je omogućeno",
     "two-factor-verify": "Verify",
-    "two-factor-login": "Dvofaktorska autentifikacija"
+    "two-factor-login": "Dvofaktorska autentifikacija",
+    "add-note": "Dodaj bilješku",
+    "note": "Bilješka",
+    "notes": "Bilješke",
+    "api-keys": "API ključevi",
+    "api-key": "API ključ",
+    "create-api-key": "Kreiraj API ključ",
+    "last-used": "Zadnja upotreba",
+    "never": "Nikad",
+    "copy": "Kopiraj",
+    "authorize": "Ovlasti",
+    "deny": "Odbij"
   },
   "message": {
     "action-confirmation": "Unesite {confirmation} ispod da potvrdite.",
@@ -507,6 +518,9 @@
     "two-factor-error-no-pending-setup": "Nije pronađeno podešavanje dvofaktorske autentifikacije na čekanju.",
     "two-factor-locked-message": "Previše neuspjelih pokušaja. Pokušajte ponovo na {time}.",
     "two-factor-active-description": "Vaš nalog je zaštićen dvofaktorskom autentifikacijom. Za svaku prijavu potreban je kod iz vaše aplikacije za autentifikaciju.",
-    "two-factor-error-not-configured": "Dvofaktorska autentifikacija nije dostupna jer serveru nedostaje važeći TWO_FACTOR_ENCRYPTION_KEY. Obratite se administratoru za pomoć."
+    "two-factor-error-not-configured": "Dvofaktorska autentifikacija nije dostupna jer serveru nedostaje važeći TWO_FACTOR_ENCRYPTION_KEY. Obratite se administratoru za pomoć.",
+    "max-length": "Maksimalna dužina {n} znakova",
+    "api-key-created": "Kopirajte svoj API ključ sada. Nećete ga moći ponovo vidjeti.",
+    "no-api-keys": "Niste kreirali nijedan API ključ."
   }
 }

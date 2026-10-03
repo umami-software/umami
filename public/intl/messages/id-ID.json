@@ -422,7 +422,18 @@
     "two-factor-reset": "Setel ulang 2FA",
     "two-factor-global-active-tooltip": "Global 2FA diaktifkan",
     "two-factor-verify": "Verifikasi",
-    "two-factor-login": "Otentikasi dua faktor"
+    "two-factor-login": "Otentikasi dua faktor",
+    "add-note": "Tambah catatan",
+    "note": "Catatan",
+    "notes": "Catatan",
+    "api-keys": "Kunci API",
+    "api-key": "Kunci API",
+    "create-api-key": "Buat kunci API",
+    "last-used": "Terakhir digunakan",
+    "never": "Tidak pernah",
+    "copy": "Salin",
+    "authorize": "Otorisasi",
+    "deny": "Tolak"
   },
   "message": {
     "action-confirmation": "Ketik {confirmation} pada kotak di bawah untuk mengonfirmasi.",
@@ -507,6 +518,9 @@
     "two-factor-error-no-pending-setup": "Tidak ditemukan penyiapan autentikasi dua faktor yang tertunda.",
     "two-factor-locked-message": "Terlalu banyak upaya yang gagal. Coba lagi di {time}.",
     "two-factor-active-description": "Akun Anda dilindungi dengan otentikasi dua faktor. Setiap login memerlukan kode dari aplikasi autentikator Anda.",
-    "two-factor-error-not-configured": "Autentikasi dua faktor tidak tersedia karena server tidak memiliki TWO_FACTOR_ENCRYPTION_KEY yang valid. Hubungi administrator Anda untuk mendapatkan bantuan."
+    "two-factor-error-not-configured": "Autentikasi dua faktor tidak tersedia karena server tidak memiliki TWO_FACTOR_ENCRYPTION_KEY yang valid. Hubungi administrator Anda untuk mendapatkan bantuan.",
+    "max-length": "Panjang maksimum {n} karakter",
+    "api-key-created": "Salin kunci API Anda sekarang. Anda tidak akan dapat melihatnya lagi.",
+    "no-api-keys": "Anda belum membuat kunci API."
   }
 }

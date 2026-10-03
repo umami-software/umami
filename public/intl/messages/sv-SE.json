@@ -422,7 +422,18 @@
     "two-factor-reset": "Återställ 2FA",
     "two-factor-global-active-tooltip": "Global 2FA är aktiverad",
     "two-factor-verify": "Verifiera",
-    "two-factor-login": "Tvåfaktorsautentisering"
+    "two-factor-login": "Tvåfaktorsautentisering",
+    "add-note": "Lägg till anteckning",
+    "note": "Anteckning",
+    "notes": "Anteckningar",
+    "api-keys": "API-nycklar",
+    "api-key": "API-nyckel",
+    "create-api-key": "Skapa API-nyckel",
+    "last-used": "Senast använd",
+    "never": "Aldrig",
+    "copy": "Kopiera",
+    "authorize": "Auktorisera",
+    "deny": "Neka"
   },
   "message": {
     "action-confirmation": "Skriv {confirmation} i rutan nedan för att bekräfta.",
@@ -507,6 +518,9 @@
     "two-factor-error-no-pending-setup": "Ingen väntande tvåfaktorsautentiseringskonfiguration hittades.",
     "two-factor-locked-message": "För många misslyckade försök. Försök igen på {time}.",
     "two-factor-active-description": "Ditt konto är skyddat med tvåfaktorsautentisering. Varje inloggning kräver en kod från din autentiseringsapp.",
-    "two-factor-error-not-configured": "Tvåfaktorsautentisering är inte tillgänglig eftersom servern saknar en giltig TWO_FACTOR_ENCRYPTION_KEY. Kontakta administratören för hjälp."
+    "two-factor-error-not-configured": "Tvåfaktorsautentisering är inte tillgänglig eftersom servern saknar en giltig TWO_FACTOR_ENCRYPTION_KEY. Kontakta administratören för hjälp.",
+    "max-length": "Maximal längd {n} tecken",
+    "api-key-created": "Kopiera din API-nyckel nu. Du kommer inte att kunna se den igen.",
+    "no-api-keys": "Du har inte skapat någon API-nyckel."
   }
 }

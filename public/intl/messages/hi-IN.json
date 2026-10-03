@@ -422,7 +422,18 @@
     "two-factor-reset": "रीसेट करें 2FA",
     "two-factor-global-active-tooltip": "ग्लोबल 2FA सक्षम है",
     "two-factor-verify": "सत्यापित करें",
-    "two-factor-login": "दो-कारक प्रमाणीकरण"
+    "two-factor-login": "दो-कारक प्रमाणीकरण",
+    "add-note": "नोट जोड़ें",
+    "note": "नोट",
+    "notes": "नोट्स",
+    "api-keys": "API कुंजियाँ",
+    "api-key": "API कुंजी",
+    "create-api-key": "API कुंजी बनाएँ",
+    "last-used": "अंतिम उपयोग",
+    "never": "कभी नहीं",
+    "copy": "कॉपी करें",
+    "authorize": "अधिकृत करें",
+    "deny": "अस्वीकार करें"
   },
   "message": {
     "action-confirmation": "पुष्टि करने के लिए नीचे बॉक्स में {confirmation} टाइप करें।",
@@ -507,6 +518,9 @@
     "two-factor-error-no-pending-setup": "कोई लंबित दो-कारक प्रमाणीकरण सेटअप नहीं मिला।",
     "two-factor-locked-message": "कई विफल प्रयास। {time} पर पुनः प्रयास करें।",
     "two-factor-active-description": "आपका खाता दो-कारक प्रमाणीकरण से सुरक्षित है। प्रत्येक लॉगिन के लिए आपके प्रमाणक ऐप से एक कोड की आवश्यकता होती है।",
-    "two-factor-error-not-configured": "दो-स्तरीय प्रमाणीकरण उपलब्ध नहीं है क्योंकि सर्वर में मान्य TWO_FACTOR_ENCRYPTION_KEY नहीं है। सहायता के लिए अपने प्रशासक से संपर्क करें।"
+    "two-factor-error-not-configured": "दो-स्तरीय प्रमाणीकरण उपलब्ध नहीं है क्योंकि सर्वर में मान्य TWO_FACTOR_ENCRYPTION_KEY नहीं है। सहायता के लिए अपने प्रशासक से संपर्क करें।",
+    "max-length": "अधिकतम लंबाई {n} वर्ण",
+    "api-key-created": "अपनी API कुंजी अभी कॉपी करें। आप इसे दोबारा नहीं देख पाएंगे।",
+    "no-api-keys": "आपने कोई API कुंजी नहीं बनाई है।"
   }
 }

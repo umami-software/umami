@@ -422,7 +422,18 @@
     "two-factor-reset": "Ripristina 2FA",
     "two-factor-global-active-tooltip": "Il 2FA globale è abilitato",
     "two-factor-verify": "Verifica",
-    "two-factor-login": "Autenticazione a due fattori"
+    "two-factor-login": "Autenticazione a due fattori",
+    "add-note": "Aggiungi nota",
+    "note": "Nota",
+    "notes": "Note",
+    "api-keys": "Chiavi API",
+    "api-key": "Chiave API",
+    "create-api-key": "Crea chiave API",
+    "last-used": "Ultimo utilizzo",
+    "never": "Mai",
+    "copy": "Copia",
+    "authorize": "Autorizza",
+    "deny": "Nega"
   },
   "message": {
     "action-confirmation": "Digita {confirmation} nella casella sottostante per confermare.",
@@ -507,6 +518,9 @@
     "two-factor-error-no-pending-setup": "Nessuna configurazione di autenticazione a due fattori in sospeso trovata.",
     "two-factor-locked-message": "Troppi tentativi falliti. Riprova a {time}.",
     "two-factor-active-description": "Il tuo account è protetto con l'autenticazione a due fattori. Ogni accesso richiede un codice dalla tua app di autenticazione.",
-    "two-factor-error-not-configured": "L'autenticazione a due fattori non è disponibile perché al server manca una TWO_FACTOR_ENCRYPTION_KEY valida. Contatta l'amministratore per ricevere assistenza."
+    "two-factor-error-not-configured": "L'autenticazione a due fattori non è disponibile perché al server manca una TWO_FACTOR_ENCRYPTION_KEY valida. Contatta l'amministratore per ricevere assistenza.",
+    "max-length": "Lunghezza massima di {n} caratteri",
+    "api-key-created": "Copia la tua chiave API ora. Non potrai vederla di nuovo.",
+    "no-api-keys": "Non hai creato nessuna chiave API."
   }
 }

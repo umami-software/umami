@@ -422,7 +422,18 @@
     "two-factor-reset": "Resetovať 2FA",
     "two-factor-global-active-tooltip": "Globálne 2FA je povolené",
     "two-factor-verify": "Overiť",
-    "two-factor-login": "Dvojfaktorové overenie"
+    "two-factor-login": "Dvojfaktorové overenie",
+    "add-note": "Pridať poznámku",
+    "note": "Poznámka",
+    "notes": "Poznámky",
+    "api-keys": "API kľúče",
+    "api-key": "API kľúč",
+    "create-api-key": "Vytvoriť API kľúč",
+    "last-used": "Naposledy použité",
+    "never": "Nikdy",
+    "copy": "Kopírovať",
+    "authorize": "Autorizovať",
+    "deny": "Zamietnuť"
   },
   "message": {
     "action-confirmation": "Zadajte {confirmation} do poľa nižšie na potvrdenie.",
@@ -507,6 +518,9 @@
     "two-factor-error-no-pending-setup": "Nenašlo sa žiadne čakajúce nastavenie dvojfaktorovej autentifikácie.",
     "two-factor-locked-message": "Príliš veľa neúspešných pokusov. Skúste to znova na {time}.",
     "two-factor-active-description": "Váš účet je chránený dvojfaktorovou autentifikáciou. Každé prihlásenie vyžaduje kód z vašej autentifikačnej aplikácie.",
-    "two-factor-error-not-configured": "Dvojfaktorové overenie nie je k dispozícii, pretože serveru chýba platný TWO_FACTOR_ENCRYPTION_KEY. Požiadajte správcu o pomoc."
+    "two-factor-error-not-configured": "Dvojfaktorové overenie nie je k dispozícii, pretože serveru chýba platný TWO_FACTOR_ENCRYPTION_KEY. Požiadajte správcu o pomoc.",
+    "max-length": "Maximálna dĺžka {n} znakov",
+    "api-key-created": "Skopírujte si teraz svoj API kľúč. Nebudete ho môcť znovu vidieť.",
+    "no-api-keys": "Nevytvorili ste žiadne API kľúče."
   }
 }
