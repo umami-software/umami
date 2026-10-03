@@ -79,6 +79,14 @@ function seriesFor(website: OverviewWebsite, metric: string): Point[] {
 
 export function OverviewPage() {
   const { t, labels } = useMessages();
+  // The toggle shows only icons, so each one needs a name of its own for
+  // screen readers. `labels` comes from the hook, so the lookup lives here
+  // rather than beside CHART_TYPES at module scope.
+  const chartTypeLabels: Record<ChartType, string> = {
+    bar: labels.stackedBars,
+    line: labels.lines,
+    area: labels.stackedArea,
+  };
   const { user } = useLoginQuery();
   const { teamId, router, updateParams } = useNavigation();
   const { locale, dateLocale } = useLocale();
@@ -311,7 +319,7 @@ export function OverviewPage() {
               }}
             >
               {CHART_TYPES.map(({ id, icon }) => (
-                <ToggleGroupItem key={id} id={id} aria-label={id}>
+                <ToggleGroupItem key={id} id={id} aria-label={t(chartTypeLabels[id])}>
                   <Icon>{icon}</Icon>
                 </ToggleGroupItem>
               ))}
