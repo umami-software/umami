@@ -109,9 +109,6 @@ importers:
       is-docker:
         specifier: ^4.0.0
         version: 4.0.0
-      is-localhost-ip:
-        specifier: ^3.0.1
-        version: 3.0.1
       isbot:
         specifier: ^5.2.2
         version: 5.2.2
@@ -4081,10 +4078,6 @@ packages:
     resolution: {integrity: sha512-KIYLCCJghfHZxqjYBE7rEy0OBuTd5xCHS7tHVgvCLkx7StIoaxwNW3hCALgEUjFfeRk+MG/Qxmp/vtETEF3tRA==}
     engines: {node: '>=14.16'}
     hasBin: true
-
-  is-localhost-ip@3.0.1:
-    resolution: {integrity: sha512-OwNA8bw72L/gDVfCrhJ3GFb3AGp+I7t+cvJaQGkiLZgeBAZmAygIduAdhLq56JycuJ68NCICxA2yyIaAtbR9Kg==}
-    engines: {node: '>=18'}
 
   is-map@2.0.3:
     resolution: {integrity: sha512-1Qed0/Hr2m+YqxnM09CjA2d/i6YZNfF6R2oRAOj36eUdS6qIV/huPJNSEpKbupewFs+ZsJlxsjjPbc0/afW6Lw==}
@@ -9561,8 +9554,6 @@ snapshots:
   is-inside-container@1.0.0:
     dependencies:
       is-docker: 3.0.0
-
-  is-localhost-ip@3.0.1: {}
 
   is-map@2.0.3: {}
 

@@ -1,7 +1,6 @@
 import path from 'node:path';
 import { browserName, detectOS } from 'detect-browser';
 import ipaddr from 'ipaddr.js';
-import isLocalhost from 'is-localhost-ip';
 import maxmind from 'maxmind';
 import { UAParser } from 'ua-parser-js';
 import { getIpAddress, stripPort } from '@/lib/ip';
@@ -47,7 +46,7 @@ const PROVIDER_HEADERS = [
 ];
 
 export function getDevice(userAgent: string, screen: string = '') {
-  const { device } = UAParser(userAgent);
+  const device = new UAParser(userAgent).getDevice();
 
   const [width] = screen.split('x');
 
@@ -76,19 +75,17 @@ function decodeHeader(s: string | undefined | null): string | undefined | null {
   return Buffer.from(s, 'latin1').toString('utf-8');
 }
 
-async function isLocalIp(ip: string) {
-  try {
-    return await isLocalhost(ip);
-  } catch {
-    return false;
-  }
+const LOCAL_IP_RANGES = ['loopback', 'private', 'linkLocal', 'uniqueLocal', 'unspecified'];
+
+function isLocalIp(ip: string) {
+  return LOCAL_IP_RANGES.includes(ipaddr.process(ip).range());
 }
 
 export async function getLocation(ip: string = '', headers: Headers, skipHeaders: boolean) {
   const cleanIp = stripPort(ip);
 
   // Ignore local or invalid ips
-  if (!cleanIp || !ipaddr.isValid(cleanIp) || (await isLocalIp(cleanIp))) {
+  if (!cleanIp || !ipaddr.isValid(cleanIp) || isLocalIp(cleanIp)) {
     return null;
   }
 
