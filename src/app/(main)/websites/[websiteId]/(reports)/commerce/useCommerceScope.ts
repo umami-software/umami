@@ -47,7 +47,12 @@ export function useCommerceScope(websiteId: string) {
     navigate({ market: value || undefined });
   };
 
-  const scope: CommerceScope = useMemo(() => ({ currency, market }), [currency, market]);
+  const category = query.category || undefined;
+  const windowHours = query.windowHours ? Number(query.windowHours) : undefined;
+  const scope: CommerceScope = useMemo(
+    () => ({ currency, market, category, windowHours }),
+    [currency, market, category, windowHours],
+  );
 
   return {
     currency,

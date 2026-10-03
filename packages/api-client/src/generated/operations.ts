@@ -154,6 +154,14 @@ export const operations = {
     queryParams: [],
     hasBody: true,
   },
+  createWebsiteCommerceReport: {
+    operationId: 'createWebsiteCommerceReport',
+    method: 'post',
+    path: '/api/websites/{websiteId}/commerce/reports',
+    pathParams: ['websiteId'],
+    queryParams: [],
+    hasBody: true,
+  },
   createWebsiteFunnel: {
     operationId: 'createWebsiteFunnel',
     method: 'post',
@@ -263,6 +271,14 @@ export const operations = {
     method: 'delete',
     path: '/api/websites/{websiteId}/annotations/{annotationId}',
     pathParams: ['websiteId', 'annotationId'],
+    queryParams: [],
+    hasBody: false,
+  },
+  deleteWebsiteCommerceReport: {
+    operationId: 'deleteWebsiteCommerceReport',
+    method: 'delete',
+    path: '/api/websites/{websiteId}/commerce/reports/{reportId}',
+    pathParams: ['websiteId', 'reportId'],
     queryParams: [],
     hasBody: false,
   },
@@ -1691,6 +1707,7 @@ export const operations = {
       'market',
       'productId',
       'category',
+      'windowHours',
       'page',
       'pageSize',
       'maxResults',
@@ -1736,6 +1753,7 @@ export const operations = {
       'market',
       'productId',
       'category',
+      'windowHours',
       'model',
     ],
     hasBody: false,
@@ -1779,6 +1797,7 @@ export const operations = {
       'market',
       'productId',
       'category',
+      'windowHours',
     ],
     hasBody: false,
   },
@@ -1821,6 +1840,7 @@ export const operations = {
       'market',
       'productId',
       'category',
+      'windowHours',
       'page',
       'pageSize',
       'maxResults',
@@ -1867,6 +1887,7 @@ export const operations = {
       'market',
       'productId',
       'category',
+      'windowHours',
     ],
     hasBody: false,
   },
@@ -1909,6 +1930,7 @@ export const operations = {
       'market',
       'productId',
       'category',
+      'windowHours',
     ],
     hasBody: false,
   },
@@ -1989,6 +2011,50 @@ export const operations = {
       'market',
       'productId',
       'category',
+      'windowHours',
+    ],
+    hasBody: false,
+  },
+  getWebsiteCommerceMarkets: {
+    operationId: 'getWebsiteCommerceMarkets',
+    method: 'get',
+    path: '/api/websites/{websiteId}/commerce/markets',
+    pathParams: ['websiteId'],
+    queryParams: [
+      'path',
+      'referrer',
+      'title',
+      'query',
+      'os',
+      'browser',
+      'device',
+      'country',
+      'region',
+      'city',
+      'tag',
+      'hostname',
+      'distinctId',
+      'language',
+      'event',
+      'utmSource',
+      'utmMedium',
+      'utmCampaign',
+      'utmContent',
+      'utmTerm',
+      'segment',
+      'cohort',
+      'eventType',
+      'excludeBounce',
+      'match',
+      'startAt',
+      'endAt',
+      'timezone',
+      'unit',
+      'currency',
+      'market',
+      'productId',
+      'category',
+      'windowHours',
     ],
     hasBody: false,
   },
@@ -2031,6 +2097,7 @@ export const operations = {
       'market',
       'productId',
       'category',
+      'windowHours',
       'type',
       'limit',
     ],
@@ -2083,6 +2150,7 @@ export const operations = {
       'market',
       'productId',
       'category',
+      'windowHours',
       'page',
       'pageSize',
       'maxResults',
@@ -2129,13 +2197,48 @@ export const operations = {
       'market',
       'productId',
       'category',
+      'windowHours',
       'page',
       'pageSize',
       'maxResults',
       'search',
       'groupBy',
       'sort',
+      'minViews',
+      'maxCartRate',
     ],
+    hasBody: false,
+  },
+  getWebsiteCommerceReport: {
+    operationId: 'getWebsiteCommerceReport',
+    method: 'get',
+    path: '/api/websites/{websiteId}/commerce/reports/{reportId}',
+    pathParams: ['websiteId', 'reportId'],
+    queryParams: [],
+    hasBody: false,
+  },
+  getWebsiteCommerceReports: {
+    operationId: 'getWebsiteCommerceReports',
+    method: 'get',
+    path: '/api/websites/{websiteId}/commerce/reports',
+    pathParams: ['websiteId'],
+    queryParams: ['page', 'pageSize', 'maxResults', 'search'],
+    hasBody: false,
+  },
+  getWebsiteCommerceReportStats: {
+    operationId: 'getWebsiteCommerceReportStats',
+    method: 'get',
+    path: '/api/websites/{websiteId}/commerce/reports/{reportId}/stats',
+    pathParams: ['websiteId', 'reportId'],
+    queryParams: ['page', 'pageSize', 'startAt', 'endAt'],
+    hasBody: false,
+  },
+  getWebsiteCommerceSettings: {
+    operationId: 'getWebsiteCommerceSettings',
+    method: 'get',
+    path: '/api/websites/{websiteId}/commerce/settings',
+    pathParams: ['websiteId'],
+    queryParams: [],
     hasBody: false,
   },
   getWebsiteCommerceStats: {
@@ -2177,6 +2280,7 @@ export const operations = {
       'market',
       'productId',
       'category',
+      'windowHours',
       'compare',
     ],
     hasBody: false,
@@ -3756,6 +3860,22 @@ export const operations = {
     queryParams: [],
     hasBody: true,
   },
+  updateWebsiteCommerceReport: {
+    operationId: 'updateWebsiteCommerceReport',
+    method: 'post',
+    path: '/api/websites/{websiteId}/commerce/reports/{reportId}',
+    pathParams: ['websiteId', 'reportId'],
+    queryParams: [],
+    hasBody: true,
+  },
+  updateWebsiteCommerceSettings: {
+    operationId: 'updateWebsiteCommerceSettings',
+    method: 'post',
+    path: '/api/websites/{websiteId}/commerce/settings',
+    pathParams: ['websiteId'],
+    queryParams: [],
+    hasBody: true,
+  },
   updateWebsiteErrorIssue: {
     operationId: 'updateWebsiteErrorIssue',
     method: 'patch',
@@ -4059,6 +4179,17 @@ export abstract class GeneratedUmamiClient {
   }
 
   /**
+   * create Website Commerce Report
+   * `POST /api/websites/{websiteId}/commerce/reports`
+   */
+  createWebsiteCommerceReport(
+    input: OperationInput<'createWebsiteCommerceReport'>,
+    options?: RequestOptions,
+  ): Promise<OperationOutput<'createWebsiteCommerceReport'>> {
+    return this.execute('createWebsiteCommerceReport', input, options);
+  }
+
+  /**
    * Create website funnel
    * `POST /api/websites/{websiteId}/funnels`
    */
@@ -4222,6 +4353,17 @@ export abstract class GeneratedUmamiClient {
     options?: RequestOptions,
   ): Promise<OperationOutput<'deleteWebsiteAnnotation'>> {
     return this.execute('deleteWebsiteAnnotation', input, options);
+  }
+
+  /**
+   * delete Website Commerce Report
+   * `DELETE /api/websites/{websiteId}/commerce/reports/{reportId}`
+   */
+  deleteWebsiteCommerceReport(
+    input: OperationInput<'deleteWebsiteCommerceReport'>,
+    options?: RequestOptions,
+  ): Promise<OperationOutput<'deleteWebsiteCommerceReport'>> {
+    return this.execute('deleteWebsiteCommerceReport', input, options);
   }
 
   /**
@@ -5097,6 +5239,17 @@ export abstract class GeneratedUmamiClient {
   }
 
   /**
+   * get Website Commerce Markets
+   * `GET /api/websites/{websiteId}/commerce/markets`
+   */
+  getWebsiteCommerceMarkets(
+    input: OperationInput<'getWebsiteCommerceMarkets'>,
+    options?: RequestOptions,
+  ): Promise<OperationOutput<'getWebsiteCommerceMarkets'>> {
+    return this.execute('getWebsiteCommerceMarkets', input, options);
+  }
+
+  /**
    * Get website commerce revenue by dimension
    * Returns completed-order revenue, orders and buyers grouped by market, event, visitor attributes or the acquisition of the purchasing visit.
    * `GET /api/websites/{websiteId}/commerce/metrics`
@@ -5142,6 +5295,50 @@ export abstract class GeneratedUmamiClient {
     options?: RequestOptions,
   ): Promise<OperationOutput<'getWebsiteCommerceProducts'>> {
     return this.execute('getWebsiteCommerceProducts', input, options);
+  }
+
+  /**
+   * get Website Commerce Report
+   * `GET /api/websites/{websiteId}/commerce/reports/{reportId}`
+   */
+  getWebsiteCommerceReport(
+    input: OperationInput<'getWebsiteCommerceReport'>,
+    options?: RequestOptions,
+  ): Promise<OperationOutput<'getWebsiteCommerceReport'>> {
+    return this.execute('getWebsiteCommerceReport', input, options);
+  }
+
+  /**
+   * get Website Commerce Reports
+   * `GET /api/websites/{websiteId}/commerce/reports`
+   */
+  getWebsiteCommerceReports(
+    input: OperationInput<'getWebsiteCommerceReports'>,
+    options?: RequestOptions,
+  ): Promise<OperationOutput<'getWebsiteCommerceReports'>> {
+    return this.execute('getWebsiteCommerceReports', input, options);
+  }
+
+  /**
+   * get Website Commerce Report Stats
+   * `GET /api/websites/{websiteId}/commerce/reports/{reportId}/stats`
+   */
+  getWebsiteCommerceReportStats(
+    input: OperationInput<'getWebsiteCommerceReportStats'>,
+    options?: RequestOptions,
+  ): Promise<OperationOutput<'getWebsiteCommerceReportStats'>> {
+    return this.execute('getWebsiteCommerceReportStats', input, options);
+  }
+
+  /**
+   * get Website Commerce Settings
+   * `GET /api/websites/{websiteId}/commerce/settings`
+   */
+  getWebsiteCommerceSettings(
+    input: OperationInput<'getWebsiteCommerceSettings'>,
+    options?: RequestOptions,
+  ): Promise<OperationOutput<'getWebsiteCommerceSettings'>> {
+    return this.execute('getWebsiteCommerceSettings', input, options);
   }
 
   /**
@@ -6001,6 +6198,28 @@ export abstract class GeneratedUmamiClient {
     options?: RequestOptions,
   ): Promise<OperationOutput<'updateWebsiteAnnotation'>> {
     return this.execute('updateWebsiteAnnotation', input, options);
+  }
+
+  /**
+   * update Website Commerce Report
+   * `POST /api/websites/{websiteId}/commerce/reports/{reportId}`
+   */
+  updateWebsiteCommerceReport(
+    input: OperationInput<'updateWebsiteCommerceReport'>,
+    options?: RequestOptions,
+  ): Promise<OperationOutput<'updateWebsiteCommerceReport'>> {
+    return this.execute('updateWebsiteCommerceReport', input, options);
+  }
+
+  /**
+   * update Website Commerce Settings
+   * `POST /api/websites/{websiteId}/commerce/settings`
+   */
+  updateWebsiteCommerceSettings(
+    input: OperationInput<'updateWebsiteCommerceSettings'>,
+    options?: RequestOptions,
+  ): Promise<OperationOutput<'updateWebsiteCommerceSettings'>> {
+    return this.execute('updateWebsiteCommerceSettings', input, options);
   }
 
   /**

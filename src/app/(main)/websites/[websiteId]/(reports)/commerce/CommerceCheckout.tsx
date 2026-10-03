@@ -1,15 +1,4 @@
-import {
-  Box,
-  Column,
-  DataColumn,
-  DataTable,
-  Grid,
-  Heading,
-  Icon,
-  ProgressBar,
-  Row,
-  Text,
-} from '@umami/react-zen';
+import { Column, DataColumn, DataTable, Heading, Text, TextField } from '@umami/react-zen';
 import { Avatar } from '@/components/common/Avatar';
 import { DataGrid } from '@/components/common/DataGrid';
 import { DateDistance } from '@/components/common/DateDistance';
@@ -25,8 +14,6 @@ import {
   useMessages,
   useNavigation,
 } from '@/components/hooks';
-import { CreditCard, ShoppingBag, ShoppingCart, User } from '@/components/icons';
-import { ChangeLabel } from '@/components/metrics/ChangeLabel';
 import { MetricCard } from '@/components/metrics/MetricCard';
 import { MetricsBar } from '@/components/metrics/MetricsBar';
 import { formatLongNumber } from '@/lib/format';
@@ -36,12 +23,6 @@ import type {
 } from '@/queries/sql/commerce/getCommerceCheckout';
 import { currencyFormatter, formatDuration, formatPercent } from './commerceUtils';
 
-const STAGE_ICONS = {
-  cart: <ShoppingCart />,
-  checkout: <ShoppingBag />,
-  order: <CreditCard />,
-};
-
 export function CommerceCheckout({
   websiteId,
   scope,
@@ -50,10 +31,23 @@ export function CommerceCheckout({
   scope: CommerceScope;
 }) {
   const { t } = useMessages();
+  const { router, updateParams } = useNavigation();
   const { data, isLoading, isFetching, error } = useCommerceCheckoutQuery(websiteId, scope);
 
   return (
     <Column gap>
+      <TextField
+        label={t('commerce.windowHours')}
+        type="number"
+        min={1}
+        max={720}
+        value={String(scope.windowHours || data?.windowHours || 24)}
+        onChange={value =>
+          router.replace(updateParams({ windowHours: String(value), page: undefined }), {
+            scroll: false,
+          })
+        }
+      />
       <LoadingPanel data={data} isLoading={isLoading} isFetching={isFetching} error={error}>
         {data && (
           <Column gap>
@@ -118,74 +112,31 @@ export function CheckoutMetricsBar({
 
 export function CheckoutStages({ data }: { data: CommerceCheckoutData }) {
   const { t } = useMessages();
-  const stageLabels = {
-    cart: t('commerce.stageCart'),
-    checkout: t('commerce.stageCheckout'),
-    order: t('commerce.stageOrder'),
-  };
-
+  const metrics = [
+    ['observedCarts', data.stages[0]?.sessions || 0],
+    ['observedCheckouts', data.stages[1]?.sessions || 0],
+    ['completedCheckouts', data.completedCheckouts],
+    ['pendingCarts', data.pendingCarts],
+    ['pendingCheckouts', data.pendingCheckouts],
+    ['unlinkedEvents', data.unlinkedEvents],
+    ['unclassifiedEvents', data.unclassifiedEvents],
+  ] as const;
   return (
-    <Column gap="6" paddingTop="4">
-      {data.stages.map(({ stage, sessions, rate, stepRate }, index) => {
-        const previous = index > 0 ? data.stages[index - 1].sessions : sessions;
-        const dropped = previous - sessions;
-
-        return (
-          <Grid key={stage} columns="auto 1fr" gap="6">
-            <Column alignItems="center" position="relative">
-              <Row
-                borderRadius="full"
-                backgroundColor="surface-sunken"
-                width="40px"
-                height="40px"
-                justifyContent="center"
-                alignItems="center"
-                style={{ zIndex: 1 }}
-              >
-                <Icon>{STAGE_ICONS[stage]}</Icon>
-              </Row>
-              {index > 0 && (
-                <Box
-                  position="absolute"
-                  backgroundColor="surface-sunken"
-                  width="2px"
-                  height="120px"
-                  top="-100%"
-                />
-              )}
-            </Column>
-            <Column gap>
-              <Row alignItems="center" justifyContent="space-between" gap>
-                <Text weight="bold">{stageLabels[stage]}</Text>
-                <Row alignItems="center" gap>
-                  {index > 0 && dropped > 0 && (
-                    <ChangeLabel value={-dropped} title={formatPercent(1 - stepRate)}>
-                      {formatLongNumber(dropped)}
-                    </ChangeLabel>
-                  )}
-                  <Icon>
-                    <User />
-                  </Icon>
-                  <Text>{`${formatLongNumber(sessions)} ${t('commerce.reachedStage').toLowerCase()}`}</Text>
-                </Row>
-              </Row>
-              <Row alignItems="center" gap="6">
-                <ProgressBar
-                  value={sessions}
-                  min={0}
-                  max={previous || 1}
-                  style={{ width: '100%' }}
-                />
-                <Row minWidth="90px" justifyContent="end">
-                  <Text weight="bold" size="4xl">
-                    {formatPercent(rate)}
-                  </Text>
-                </Row>
-              </Row>
-            </Column>
-          </Grid>
-        );
-      })}
+    <Column gap>
+      <MetricsBar>
+        {metrics.map(([label, value]) => (
+          <MetricCard
+            key={label}
+            label={t(`commerce.${label}`)}
+            value={value}
+            formatValue={formatLongNumber}
+          />
+        ))}
+      </MetricsBar>
+      <Text>
+        {t('commerce.checkoutRate')}: {formatPercent(data.stages[2]?.rate || 0)}
+      </Text>
+      <Text color="muted">{t('commerce.attemptHint', { hours: data.windowHours })}</Text>
     </Column>
   );
 }

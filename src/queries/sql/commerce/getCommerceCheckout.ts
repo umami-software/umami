@@ -1,7 +1,9 @@
 import clickhouse from '@/lib/clickhouse';
+import { type CommerceSettings, commerceStageSQL } from '@/lib/commerce-settings';
 import { CLICKHOUSE, PRISMA, runQuery } from '@/lib/db';
 import prisma from '@/lib/prisma';
 import type { PageResult, QueryFilters } from '@/lib/types';
+import { getCommerceSettings } from '@/queries/prisma/commerce';
 import {
   type CommerceParameters,
   type CommerceStage,
@@ -13,42 +15,34 @@ import {
   toNumbers,
 } from './commerceQuery';
 
-/*
- * Checkout stages are inferred from the identifiers each commerce event carries:
- * an orderId is a completed payment, a checkoutId (without an order) is checkout,
- * anything else (a cart ID, or no ID) is cart. A session counts toward every stage
- * up to the furthest one it reached, so sites that only send checkout and payment
- * events still produce a monotonic funnel.
- */
-
-const FUNCTION_NAME = 'getCommerceCheckout';
-
 export interface CommerceCheckoutStage {
   stage: CommerceStage;
+  /** Legacy field name; counts identified attempts, not sessions. */
   sessions: number;
-  /** Share of sessions that reached the first stage. */
+  attempts: number;
   rate: number;
-  /** Share of the previous stage's sessions that reached this stage. */
   stepRate: number;
 }
-
 export interface CommerceCheckout {
   stages: CommerceCheckoutStage[];
   abandonedCarts: number;
   abandonedCartValue: number;
   abandonedCheckouts: number;
   abandonedCheckoutValue: number;
+  pendingCarts: number;
+  pendingCheckouts: number;
+  completedCheckouts: number;
+  unlinkedEvents: number;
+  unclassifiedEvents: number;
   orders: number;
   revenue: number;
-  /** Median seconds from a session's first commerce event to its first payment. */
   medianSecondsToOrder: number;
-  /** Median seconds from a session's first checkout to its first payment. */
   medianSecondsCheckoutToOrder: number;
+  windowHours: number;
 }
-
 export interface CommerceAbandonedCheckout {
   sessionId: string;
-  stage: Exclude<CommerceStage, 'order'>;
+  stage: 'cart' | 'checkout';
   lastAt: string;
   cartId: string;
   checkoutId: string;
@@ -60,267 +54,230 @@ export interface CommerceAbandonedCheckout {
   device: string;
 }
 
-export async function getCommerceCheckout(
-  ...args: [websiteId: string, parameters: CommerceParameters, filters: QueryFilters]
-): Promise<CommerceCheckout> {
-  const row = await runQuery({
-    [PRISMA]: () => relationalQuery(...args),
-    [CLICKHOUSE]: () => clickhouseQuery(...args),
-  });
-
-  return deriveCheckout(row || {});
-}
-
-export function deriveCheckout(row: Record<string, unknown>): CommerceCheckout {
-  const counts = {
-    cart: toNumber(row.cartSessions),
-    checkout: toNumber(row.checkoutSessions),
-    order: toNumber(row.orderSessions),
-  };
-  const order: CommerceStage[] = ['cart', 'checkout', 'order'];
-
+/** Cohort starts are filtered; their outcomes may occur in another visit/session after the range. */
+export function getCheckoutAttemptQuery(
+  dialect: 'prisma' | 'clickhouse',
+  websiteId: string,
+  parameters: CommerceParameters,
+  filters: QueryFilters,
+  settings: CommerceSettings,
+  now = new Date(),
+) {
+  const build = dialect === 'prisma' ? getRelationalCommerceQuery : getClickhouseCommerceQuery;
+  const windowHours = parameters.windowHours ?? settings.windowHours;
+  const windowMs = windowHours * 3600000;
+  const scope = build(websiteId, parameters, filters);
+  const context = build(
+    websiteId,
+    {
+      ...parameters,
+      startDate: new Date(+parameters.startDate - windowMs),
+      endDate: new Date(Math.min(+now, +parameters.endDate + windowMs)),
+    },
+    {},
+    { allStages: true, events: settings.events },
+  );
+  const p = (name: string) => (dialect === 'prisma' ? `{{${name}}}` : `{${name}:DateTime64}`);
+  const deadline =
+    dialect === 'prisma'
+      ? `a.first_at + interval '${windowHours} hours'`
+      : `addHours(a.first_at, ${windowHours})`;
+  const id = `case when stage = 'checkout' then coalesce(checkout_id, '') else coalesce(cart_id, '') end`;
+  const historyStage = commerceStageSQL(dialect, 'history', settings.events).sql;
+  // Give filter CTE separate bounds: outcomes intentionally use the expanded window.
+  const scopedCte = scope.filteredSessionsCte
+    .replaceAll('{{startDate}}', '{{cohortStart}}')
+    .replaceAll('{{endDate}}', '{{cohortEnd}}')
+    .replaceAll('{startDate:DateTime64}', '{cohortStart:DateTime64}')
+    .replaceAll('{endDate:DateTime64}', '{cohortEnd:DateTime64}');
   return {
-    stages: order.map((stage, index) => ({
-      stage,
-      sessions: counts[stage],
-      rate: divide(counts[stage], counts.cart),
-      stepRate: index === 0 ? 1 : divide(counts[stage], counts[order[index - 1]]),
-    })),
-    abandonedCarts: toNumber(row.abandonedCarts),
-    abandonedCartValue: toNumber(row.abandonedCartValue),
-    abandonedCheckouts: toNumber(row.abandonedCheckouts),
-    abandonedCheckoutValue: toNumber(row.abandonedCheckoutValue),
-    orders: toNumber(row.orders),
-    revenue: toNumber(row.revenue),
-    medianSecondsToOrder: toNumber(row.medianSecondsToOrder),
-    medianSecondsCheckoutToOrder: toNumber(row.medianSecondsCheckoutToOrder),
+    ctes: `${context.ctes}, ${scope.isSessionFiltered ? `${scopedCte},` : ''}
+    candidates as (
+      select activity_events.*, ${id} as attempt_id,
+        coalesce(market, '') as attempt_market
+      from orders as activity_events where stage in ('cart', 'checkout')
+    ),
+    historical_stages as (
+      select history.cart_id, history.checkout_id, coalesce(history.market, '') as attempt_market,
+        history.created_at, ${historyStage} as stage
+      from ${dialect === 'clickhouse' ? '(select * from commerce_event final)' : 'commerce_event'} as history
+      where history.website_id = ${dialect === 'prisma' ? '{{websiteId::uuid}}' : '{websiteId:UUID}'}
+        and history.currency = ${dialect === 'prisma' ? '{{commerceCurrency}}' : '{commerceCurrency:String}'}
+        and history.created_at <= ${p('cohortEnd')}
+        and (history.checkout_id in (select attempt_id from candidates where stage = 'checkout')
+          or history.cart_id in (select attempt_id from candidates where stage = 'cart'))
+    ),
+    historical_starts as (
+      select stage, ${id} as attempt_id, attempt_market, min(created_at) as first_at
+      from historical_stages
+      where (stage, ${id}, attempt_market) in (select stage, attempt_id, attempt_market from candidates where attempt_id != '')
+      group by stage, ${id}, attempt_market
+    ),
+    ranked_starts as (
+      select c.*, h.first_at,
+        first_value(c.session_id) over (partition by c.stage, c.attempt_id, c.attempt_market order by c.created_at, c.commerce_event_id) as start_session_id,
+        row_number() over (partition by c.stage, c.attempt_id, c.attempt_market order by c.created_at desc, c.commerce_event_id) as rn
+      from candidates c join historical_starts h
+        on h.stage = c.stage and h.attempt_id = c.attempt_id and h.attempt_market = c.attempt_market
+      where c.attempt_id != '' and c.created_at <= ${dialect === 'prisma' ? `h.first_at + interval '${windowHours} hours'` : `addHours(h.first_at, ${windowHours})`}
+    ),
+    attempts as (
+      select * from ranked_starts
+      where rn = 1 and first_at between ${p('cohortStart')} and ${p('cohortEnd')}
+      ${scope.isSessionFiltered ? 'and start_session_id in (select session_id from filtered_sessions)' : ''}
+    ),
+    outcomes as (
+      select a.stage, a.attempt_id, a.attempt_market,
+        ${dialect === 'prisma' ? "min(case when e.stage = 'order' then e.created_at end)" : "minOrNullIf(e.created_at, e.stage = 'order')"} as paid_at,
+        ${dialect === 'prisma' ? 'min(e.created_at)' : "minOrNullIf(e.created_at, e.stage in ('checkout', 'order'))"} as progressed_at
+      from attempts a left join orders e on
+        coalesce(e.market, '') = a.attempt_market
+        and ((a.stage = 'checkout' and e.checkout_id = a.attempt_id and e.stage = 'order')
+          or (a.stage = 'cart' and e.cart_id = a.attempt_id and e.stage in ('checkout', 'order')))
+        and e.created_at > a.first_at and e.created_at <= ${deadline}
+      group by a.stage, a.attempt_id, a.attempt_market
+    ),
+    attempt_results as (
+      select a.*, o.paid_at, o.progressed_at,
+        case when o.progressed_at is not null then 'completed'
+          when ${deadline} > ${p('observedAt')} then 'pending' else 'abandoned' end as status
+      from attempts a join outcomes o on a.stage = o.stage and a.attempt_id = o.attempt_id and a.attempt_market = o.attempt_market
+    )`,
+    params: {
+      ...context.queryParams,
+      ...Object.fromEntries(
+        Object.entries(scope.queryParams).filter(
+          ([key]) => !['startDate', 'endDate', 'lookbackDate'].includes(key),
+        ),
+      ),
+      cohortStart: parameters.startDate,
+      cohortEnd: parameters.endDate,
+      observedAt: now,
+    },
+    windowHours,
+    eventFilter: scope.isSessionFiltered
+      ? 'and session_id in (select session_id from filtered_sessions)'
+      : '',
   };
 }
 
-async function relationalQuery(
+export function deriveCheckout(row: Record<string, unknown>, windowHours = 24): CommerceCheckout {
+  const count = (name: string) => toNumber(row[name]);
+  const cart = count('cartAttempts'),
+    checkout = count('checkoutAttempts'),
+    completed = count('completedCheckouts');
+  return {
+    stages: [
+      { stage: 'cart', sessions: cart, attempts: cart, rate: 1, stepRate: 1 },
+      { stage: 'checkout', sessions: checkout, attempts: checkout, rate: 1, stepRate: 1 },
+      {
+        stage: 'order',
+        sessions: completed,
+        attempts: completed,
+        rate: divide(completed, checkout),
+        stepRate: divide(completed, checkout),
+      },
+    ],
+    abandonedCarts: count('abandonedCarts'),
+    abandonedCartValue: count('abandonedCartValue'),
+    abandonedCheckouts: count('abandonedCheckouts'),
+    abandonedCheckoutValue: count('abandonedCheckoutValue'),
+    pendingCarts: count('pendingCarts'),
+    pendingCheckouts: count('pendingCheckouts'),
+    completedCheckouts: completed,
+    unlinkedEvents: count('unlinkedEvents'),
+    unclassifiedEvents: count('unclassifiedEvents'),
+    orders: count('orders'),
+    revenue: count('revenue'),
+    medianSecondsToOrder: count('medianSecondsToOrder'),
+    medianSecondsCheckoutToOrder: count('medianSecondsCheckoutToOrder'),
+    windowHours,
+  };
+}
+
+export async function getCommerceCheckout(
   websiteId: string,
   parameters: CommerceParameters,
   filters: QueryFilters,
-) {
-  const { rawQuery } = prisma;
-  const { ctes, queryParams } = getRelationalCommerceQuery(websiteId, parameters, filters, {
-    allStages: true,
-  });
-
-  return rawQuery(
-    `
-    with ${ctes},
-    ${getRelationalSessionStagesCte()}
-    select
-      count(*) as "cartSessions",
-      sum(case when session_stages.reached in ('checkout', 'order') then 1 else 0 end) as "checkoutSessions",
-      sum(case when session_stages.reached = 'order' then 1 else 0 end) as "orderSessions",
-      sum(case when session_stages.reached = 'cart' then 1 else 0 end) as "abandonedCarts",
-      coalesce(sum(case when session_stages.reached = 'cart' then session_stages.last_value end), 0) as "abandonedCartValue",
-      sum(case when session_stages.reached = 'checkout' then 1 else 0 end) as "abandonedCheckouts",
-      coalesce(sum(case when session_stages.reached = 'checkout' then session_stages.last_value end), 0) as "abandonedCheckoutValue",
-      coalesce(sum(session_stages.orders), 0) as "orders",
-      coalesce(sum(session_stages.revenue), 0) as "revenue",
-      percentile_cont(0.5) within group (
-        order by extract(epoch from (session_stages.first_order_at - session_stages.first_at))
-      ) filter (where session_stages.first_order_at is not null) as "medianSecondsToOrder",
-      percentile_cont(0.5) within group (
-        order by extract(epoch from (session_stages.first_order_at - session_stages.first_checkout_at))
-      ) filter (where session_stages.first_order_at is not null and session_stages.first_checkout_at is not null) as "medianSecondsCheckoutToOrder"
-    from session_stages
-    `,
-    queryParams,
-    FUNCTION_NAME,
-  ).then(result => result?.[0]);
+): Promise<CommerceCheckout> {
+  const settings = await getCommerceSettings(websiteId);
+  const query = async (dialect: 'prisma' | 'clickhouse') => {
+    const { ctes, params, windowHours, eventFilter } = getCheckoutAttemptQuery(
+      dialect,
+      websiteId,
+      parameters,
+      filters,
+      settings,
+    );
+    const p = (name: string) => (dialect === 'prisma' ? `{{${name}}}` : `{${name}:DateTime64}`);
+    const count = (condition: string, alias: string) =>
+      `coalesce(sum(case when ${condition} then 1 else 0 end), 0) as "${alias}"`;
+    const value = (stage: string) =>
+      `coalesce(sum(case when stage = '${stage}' and status = 'abandoned' then value else 0 end), 0)`;
+    const median = (condition: string) =>
+      dialect === 'prisma'
+        ? `percentile_cont(0.5) within group (order by extract(epoch from (paid_at - first_at))) filter (where ${condition} and paid_at is not null)`
+        : `quantileExactInclusiveIf(0.5)(toFloat64(dateDiff('millisecond', first_at, paid_at)) / 1000, ${condition} and paid_at is not null)`;
+    const rows = await (dialect === 'prisma' ? prisma : clickhouse).rawQuery(
+      `with ${ctes}
+      select ${count("stage = 'cart'", 'cartAttempts')}, ${count("stage = 'checkout'", 'checkoutAttempts')},
+      ${count("stage = 'checkout' and status = 'completed'", 'completedCheckouts')},
+      ${count("stage = 'cart' and status = 'pending'", 'pendingCarts')},
+      ${count("stage = 'checkout' and status = 'pending'", 'pendingCheckouts')},
+      ${count("stage = 'cart' and status = 'abandoned'", 'abandonedCarts')},
+      ${count("stage = 'checkout' and status = 'abandoned'", 'abandonedCheckouts')},
+      ${value('cart')} as "abandonedCartValue", ${value('checkout')} as "abandonedCheckoutValue",
+      ${median("stage = 'cart'")} as "medianSecondsToOrder",
+      ${median("stage = 'checkout'")} as "medianSecondsCheckoutToOrder",
+      (select count(*) from orders where stage = 'unclassified' and created_at between ${p('cohortStart')} and ${p('cohortEnd')} ${eventFilter}) as "unclassifiedEvents",
+      (select count(*) from candidates where attempt_id = '' and created_at between ${p('cohortStart')} and ${p('cohortEnd')} ${eventFilter}) as "unlinkedEvents",
+      (select count(*) from orders where stage = 'order' and created_at between ${p('cohortStart')} and ${p('cohortEnd')} ${eventFilter}) as orders,
+      (select coalesce(sum(value), 0) from orders where stage = 'order' and created_at between ${p('cohortStart')} and ${p('cohortEnd')} ${eventFilter}) as revenue
+      from attempt_results`,
+      params,
+      'getCommerceCheckout',
+    );
+    return deriveCheckout(rows?.[0] || {}, windowHours);
+  };
+  return runQuery({ [PRISMA]: () => query('prisma'), [CLICKHOUSE]: () => query('clickhouse') });
 }
 
-function getRelationalSessionStagesCte() {
-  return `
-    last_events as (
-      select distinct on (orders.session_id)
-        orders.session_id,
-        orders.commerce_event_id,
-        orders.value
-      from orders
-      where orders.stage != 'order'
-      order by orders.session_id, orders.created_at desc, orders.commerce_event_id
-    ),
-    session_stages as (
-      select
-        orders.session_id,
-        case
-          when max(case when orders.stage = 'order' then 1 else 0 end) = 1 then 'order'
-          when max(case when orders.stage = 'checkout' then 1 else 0 end) = 1 then 'checkout'
-          else 'cart'
-        end as reached,
-        min(orders.created_at) as first_at,
-        min(case when orders.stage = 'checkout' then orders.created_at end) as first_checkout_at,
-        min(case when orders.stage = 'order' then orders.created_at end) as first_order_at,
-        max(orders.created_at) as last_at,
-        sum(case when orders.stage = 'order' then 1 else 0 end) as orders,
-        sum(case when orders.stage = 'order' then orders.value else 0 end) as revenue,
-        max(last_events.value) as last_value,
-        max(last_events.commerce_event_id::text) as last_event_id
-      from orders
-      left join last_events on last_events.session_id = orders.session_id
-      group by orders.session_id
-    )`;
-}
-
-async function clickhouseQuery(
-  websiteId: string,
-  parameters: CommerceParameters,
-  filters: QueryFilters,
-) {
-  const { rawQuery } = clickhouse;
-  const { ctes, queryParams } = getClickhouseCommerceQuery(websiteId, parameters, filters, {
-    allStages: true,
-  });
-
-  return rawQuery<Record<string, number>[]>(
-    `
-    with ${ctes},
-    ${getClickhouseSessionStagesCte()}
-    select
-      count() as cartSessions,
-      countIf(s.reached in ('checkout', 'order')) as checkoutSessions,
-      countIf(s.reached = 'order') as orderSessions,
-      countIf(s.reached = 'cart') as abandonedCarts,
-      sumIf(s.last_value, s.reached = 'cart') as abandonedCartValue,
-      countIf(s.reached = 'checkout') as abandonedCheckouts,
-      sumIf(s.last_value, s.reached = 'checkout') as abandonedCheckoutValue,
-      sum(s.order_count) as orders,
-      sum(s.order_revenue) as revenue,
-      quantileExactInclusiveIf(0.5)(
-        toFloat64(dateDiff('millisecond', s.first_at, s.first_order_at)) / 1000,
-        s.reached = 'order'
-      ) as medianSecondsToOrder,
-      quantileExactInclusiveIf(0.5)(
-        toFloat64(dateDiff('millisecond', s.first_checkout_at, s.first_order_at)) / 1000,
-        s.reached = 'order' and s.has_checkout = 1
-      ) as medianSecondsCheckoutToOrder
-    from session_stages as s
-    `,
-    queryParams,
-    FUNCTION_NAME,
-  ).then(result => result?.[0]);
-}
-
-function getClickhouseSessionStagesCte() {
-  return `
-    session_stages as (
-      select
-        session_id,
-        multiIf(countIf(stage = 'order') > 0, 'order', countIf(stage = 'checkout') > 0, 'checkout', 'cart') as reached,
-        min(created_at) as first_at,
-        minIf(created_at, stage = 'checkout') as first_checkout_at,
-        countIf(stage = 'checkout') > 0 as has_checkout,
-        minIf(created_at, stage = 'order') as first_order_at,
-        max(created_at) as last_at,
-        countIf(stage = 'order') as order_count,
-        sumIf(value, stage = 'order') as order_revenue,
-        argMaxIf(value, (created_at, commerce_event_id), stage != 'order') as last_value,
-        argMaxIf(commerce_event_id, (created_at, commerce_event_id), stage != 'order') as last_event_id
-      from orders
-      group by session_id
-    )`;
-}
-
-/** Sessions that reached cart or checkout but did not pay, most recent first. */
 export async function getCommerceAbandonedCheckouts(
-  ...args: [websiteId: string, parameters: CommerceParameters, filters: QueryFilters]
+  websiteId: string,
+  parameters: CommerceParameters,
+  filters: QueryFilters,
 ): Promise<PageResult<CommerceAbandonedCheckout[]>> {
+  const settings = await getCommerceSettings(websiteId);
+  const query = async (dialect: 'prisma' | 'clickhouse') => {
+    const { ctes, params } = getCheckoutAttemptQuery(
+      dialect,
+      websiteId,
+      parameters,
+      filters,
+      settings,
+    );
+    return (dialect === 'prisma' ? prisma : clickhouse).pagedRawQuery(
+      `with ${ctes}, ${getSessionAttributesCte(dialect)}
+      select a.start_session_id as "sessionId", a.stage, a.created_at as "lastAt", coalesce(a.cart_id, '') as "cartId",
+        coalesce(a.checkout_id, '') as "checkoutId", a.event_name as "eventName", a.lines, a.units, a.value,
+        coalesce(sa.country, '') as country, coalesce(sa.device, '') as device
+      from attempt_results a left join session_attributes sa on sa.session_id = a.start_session_id
+      where a.status = 'abandoned'
+      order by a.created_at desc, a.stage, a.attempt_id
+      `,
+      params,
+      { ...filters, orderBy: undefined, sortDescending: undefined },
+      'getCommerceCheckout:abandoned',
+    );
+  };
   const result = await runQuery({
-    [PRISMA]: () => relationalAbandonedQuery(...args),
-    [CLICKHOUSE]: () => clickhouseAbandonedQuery(...args),
+    [PRISMA]: () => query('prisma'),
+    [CLICKHOUSE]: () => query('clickhouse'),
   });
-
   return {
     ...result,
     data: (result?.data || []).map((row: CommerceAbandonedCheckout) =>
       toNumbers(row, ['lines', 'units', 'value']),
     ),
   };
-}
-
-function getPageFilters(filters: QueryFilters) {
-  return { ...filters, orderBy: undefined, sortDescending: undefined };
-}
-
-async function relationalAbandonedQuery(
-  websiteId: string,
-  parameters: CommerceParameters,
-  filters: QueryFilters,
-) {
-  const { pagedRawQuery } = prisma;
-  const { ctes, queryParams } = getRelationalCommerceQuery(websiteId, parameters, filters, {
-    allStages: true,
-  });
-
-  return pagedRawQuery(
-    `
-    with ${ctes},
-    ${getRelationalSessionStagesCte()},
-    ${getSessionAttributesCte('prisma')}
-    select
-      session_stages.session_id as "sessionId",
-      session_stages.reached as "stage",
-      session_stages.last_at as "lastAt",
-      coalesce(orders.cart_id, '') as "cartId",
-      coalesce(orders.checkout_id, '') as "checkoutId",
-      orders.event_name as "eventName",
-      orders.lines as "lines",
-      orders.units as "units",
-      orders.value as "value",
-      coalesce(sa.country, '') as "country",
-      coalesce(sa.device, '') as "device"
-    from session_stages
-    join orders on orders.commerce_event_id::text = session_stages.last_event_id
-    left join session_attributes sa on sa.session_id = session_stages.session_id
-    where session_stages.reached != 'order'
-    order by session_stages.last_at desc, session_stages.session_id
-    `,
-    queryParams,
-    getPageFilters(filters),
-    `${FUNCTION_NAME}:abandoned`,
-  );
-}
-
-async function clickhouseAbandonedQuery(
-  websiteId: string,
-  parameters: CommerceParameters,
-  filters: QueryFilters,
-) {
-  const { pagedRawQuery } = clickhouse;
-  const { ctes, queryParams } = getClickhouseCommerceQuery(websiteId, parameters, filters, {
-    allStages: true,
-  });
-
-  return pagedRawQuery(
-    `
-    with ${ctes},
-    ${getClickhouseSessionStagesCte()},
-    ${getSessionAttributesCte('clickhouse')}
-    select
-      session_stages.session_id as sessionId,
-      session_stages.reached as stage,
-      session_stages.last_at as lastAt,
-      orders.cart_id as cartId,
-      orders.checkout_id as checkoutId,
-      orders.event_name as eventName,
-      orders.lines as lines,
-      orders.units as units,
-      orders.value as value,
-      sa.country as country,
-      sa.device as device
-    from session_stages
-    inner join orders on orders.commerce_event_id = session_stages.last_event_id
-    left join session_attributes as sa on sa.session_id = session_stages.session_id
-    where session_stages.reached != 'order'
-    order by session_stages.last_at desc, session_stages.session_id
-    `,
-    queryParams,
-    getPageFilters(filters),
-    `${FUNCTION_NAME}:abandoned`,
-  );
 }

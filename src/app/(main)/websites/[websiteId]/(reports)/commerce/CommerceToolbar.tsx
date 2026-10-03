@@ -1,5 +1,5 @@
 import { ListItem, Row, Select } from '@umami/react-zen';
-import { useCommerceMetricsQuery, useMessages } from '@/components/hooks';
+import { useCommerceMarketsQuery, useMessages } from '@/components/hooks';
 import { CurrencySelect } from '@/components/input/CurrencySelect';
 import type { CommerceCurrency } from '@/queries/sql/commerce/getCommerceCurrencies';
 
@@ -23,12 +23,8 @@ export function CommerceToolbar({
   onMarketChange,
 }: CommerceToolbarProps) {
   const { t, labels } = useMessages();
-  // Markets with completed payments in the selected currency and period.
-  const { data: markets } = useCommerceMetricsQuery(websiteId, {
-    currency,
-    type: 'market',
-    limit: 200,
-  });
+  // Include markets with views or additions even when no orders have completed.
+  const { data: markets } = useCommerceMarketsQuery(websiteId, currency);
   const marketNames = (markets || []).map(({ name }) => name).filter(Boolean);
 
   return (

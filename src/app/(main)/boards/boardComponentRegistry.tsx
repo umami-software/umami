@@ -9,6 +9,7 @@ import {
   BoardCommerceMetricsTable,
   BoardCommerceProducts,
 } from '@/app/(main)/websites/[websiteId]/(reports)/commerce/BoardCommerce';
+import { SavedCommerceReport } from '@/app/(main)/websites/[websiteId]/(reports)/commerce/SavedCommerceReport';
 import { BoardFunnel } from '@/app/(main)/websites/[websiteId]/(reports)/funnels/BoardFunnel';
 import { BoardGoal } from '@/app/(main)/websites/[websiteId]/(reports)/goals/BoardGoal';
 import { BoardRevenueChart } from '@/app/(main)/websites/[websiteId]/(reports)/revenue/BoardRevenueChart';
@@ -100,16 +101,7 @@ const METRIC_TYPES = [
 ];
 
 const PIXEL_LINK_METRIC_TYPES = METRIC_TYPES.filter(({ value }) =>
-  [
-    'referrer',
-    'channel',
-    'browser',
-    'os',
-    'device',
-    'country',
-    'region',
-    'city',
-  ].includes(value),
+  ['referrer', 'channel', 'browser', 'os', 'device', 'country', 'region', 'city'].includes(value),
 );
 
 const LIMIT_OPTIONS = [
@@ -356,6 +348,29 @@ const componentDefinitions: ComponentDefinition[] = [
     ],
   },
 
+  {
+    type: 'CommerceReport',
+    name: 'Saved commerce report',
+    description: 'A saved product conversion or checkout report',
+    category: 'tables',
+    group: 'Commerce',
+    icon: Sheet,
+    component: SavedCommerceReport,
+    defaultProps: { dateMode: 'saved' },
+    configFields: [
+      { name: 'reportId', label: 'Report', type: 'report', reportType: 'commerce', required: true },
+      {
+        name: 'dateMode',
+        label: 'Date range',
+        type: 'select',
+        defaultValue: 'saved',
+        options: [
+          { label: 'Saved report dates', value: 'saved' },
+          { label: 'Board dates', value: 'board' },
+        ],
+      },
+    ],
+  },
   {
     type: 'CommerceMetricsBar',
     name: 'Commerce metrics bar',

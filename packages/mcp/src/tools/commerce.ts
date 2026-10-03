@@ -169,7 +169,7 @@ export const getCommerceProducts = defineTool({
   name: 'get_commerce_products',
   title: 'Get commerce products',
   description:
-    'Ranks products, variants or categories in completed orders by revenue, units or orders, for one currency and ' +
+    'Ranks products, variants or categories by purchase performance or same-product view-to-cart and view-to-purchase rates, for one currency and ' +
     'time range. With "productId" it instead returns that product: line revenue, units, orders and buyers with a ' +
     'comparison period, its revenue over time, the products bought with it, and its top channels and countries. ' +
     'Requires a websiteId from list_websites.',
@@ -185,9 +185,25 @@ export const getCommerceProducts = defineTool({
       .optional()
       .describe('Rank by product (default), variant or category.'),
     sort: z
-      .enum(['revenue', 'units', 'orders'])
+      .enum([
+        'revenue',
+        'units',
+        'orders',
+        'views',
+        'additions',
+        'addToCartRate',
+        'purchaseRate',
+        'cartToPurchaseRate',
+      ])
       .optional()
       .describe('Ranking metric (default revenue).'),
+    minViews: z.number().int().min(0).optional().describe('Minimum observed product views.'),
+    maxCartRate: z
+      .number()
+      .min(0)
+      .max(1)
+      .optional()
+      .describe('Maximum view-to-cart conversion rate (0–1).'),
     search: z
       .string()
       .min(1)
@@ -240,6 +256,8 @@ export const getCommerceProducts = defineTool({
       ...params,
       groupBy: input.groupBy,
       sort: input.sort,
+      minViews: input.minViews,
+      maxCartRate: input.maxCartRate,
       search: input.search,
       pageSize: input.limit ?? 20,
     });

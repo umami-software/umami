@@ -10,8 +10,10 @@ import { CommerceCustomers } from './CommerceCustomers';
 import { CommerceOrderModal } from './CommerceOrderModal';
 import { CommerceOverview } from './CommerceOverview';
 import { CommerceProducts } from './CommerceProducts';
+import { CommerceReportsToolbar } from './CommerceReportsToolbar';
 import { CommerceToolbar } from './CommerceToolbar';
 import { type CommerceTab, isCommerceTab } from './commerceUtils';
+import { SavedCommerceReport } from './SavedCommerceReport';
 import { useCommerceScope } from './useCommerceScope';
 
 export interface CommerceProps {
@@ -44,17 +46,36 @@ export function Commerce({ websiteId, startDate, endDate, unit }: CommerceProps)
     return <Loading placement="absolute" />;
   }
 
+  const reportControls = <CommerceReportsToolbar websiteId={websiteId} currency={currency} />;
+  if (query.savedReport) {
+    return (
+      <Column gap>
+        {reportControls}
+        <Panel>
+          <SavedCommerceReport
+            key={query.savedReport}
+            websiteId={websiteId}
+            reportId={query.savedReport}
+          />
+        </Panel>
+      </Column>
+    );
+  }
+
   // Nothing to report: show how to start instead of querying an empty (or missing) dataset.
   if (!hasData) {
     return (
-      <Panel>
-        <EmptyPlaceholder
-          icon={<ShoppingCart />}
-          title={t('commerce.noData')}
-          description={t('commerce.noOrdersDescription')}
-          minHeight="400px"
-        />
-      </Panel>
+      <Column gap>
+        {reportControls}
+        <Panel>
+          <EmptyPlaceholder
+            icon={<ShoppingCart />}
+            title={t('commerce.noData')}
+            description={t('commerce.noOrdersDescription')}
+            minHeight="400px"
+          />
+        </Panel>
+      </Column>
     );
   }
 
@@ -62,6 +83,7 @@ export function Commerce({ websiteId, startDate, endDate, unit }: CommerceProps)
 
   return (
     <Column gap>
+      {reportControls}
       <CommerceToolbar
         websiteId={websiteId}
         currency={currency}

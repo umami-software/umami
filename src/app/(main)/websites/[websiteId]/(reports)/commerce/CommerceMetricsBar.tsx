@@ -17,6 +17,7 @@ interface Metric {
   value: number;
   previous: number;
   formatValue: (n: number) => string;
+  available?: boolean;
 }
 
 export function CommerceMetricsBar({
@@ -39,7 +40,8 @@ export function CommerceMetricsBar({
     label,
     value: Number(data[key]) || 0,
     previous: Number(comparison?.[key]) || 0,
-    formatValue,
+    available: data[key] !== null,
+    formatValue: data[key] === null ? () => '—' : formatValue,
   });
 
   const metrics: Metric[] =
@@ -63,14 +65,15 @@ export function CommerceMetricsBar({
 
   return (
     <MetricsBar>
-      {metrics.map(({ key, label, value, previous, formatValue }) => (
+      {metrics.map(({ key, label, value, previous, formatValue, available }) => (
         <MetricCard
           key={key}
           label={label}
           value={value}
           change={value - previous}
           formatValue={formatValue}
-          showChange={!isAllTime && hasComparison && !!comparison}
+          tooltip={available === false ? t('commerce.unavailableMarketConversion') : undefined}
+          showChange={available !== false && !isAllTime && hasComparison && !!comparison}
         />
       ))}
     </MetricsBar>

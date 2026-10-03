@@ -27,8 +27,8 @@ export interface CommerceStats {
   convertedVisits: number;
   averageOrderValue: number;
   unitsPerOrder: number;
-  conversionRate: number;
-  revenuePerVisitor: number;
+  conversionRate: number | null;
+  revenuePerVisitor: number | null;
 }
 
 const NUMBER_FIELDS: (keyof CommerceStats)[] = [
@@ -52,7 +52,14 @@ export async function getCommerceStats(
     [CLICKHOUSE]: () => clickhouseQuery(...args),
   });
 
-  return deriveCommerceStats(row);
+  const stats = deriveCommerceStats(row);
+  // Commerce market/product context does not attribute all website traffic to that scope.
+  // Do not present a scoped numerator over an unscoped denominator as a conversion rate.
+  if (args[1].market || args[1].productId || args[1].category) {
+    stats.conversionRate = null;
+    stats.revenuePerVisitor = null;
+  }
+  return stats;
 }
 
 export function deriveCommerceStats(row: Record<string, unknown> = {}): CommerceStats {

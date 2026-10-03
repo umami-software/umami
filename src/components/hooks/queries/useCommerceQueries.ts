@@ -29,12 +29,13 @@ export interface CommerceScope {
   market?: string;
   productId?: string;
   category?: string;
+  windowHours?: number;
 }
 
 export type CommerceStatsData = CommerceStats & { comparison: CommerceStats };
 
-function scopeParams({ currency, market, productId, category }: CommerceScope) {
-  return { currency, market, productId, category };
+function scopeParams({ currency, market, productId, category, windowHours }: CommerceScope) {
+  return { currency, market, productId, category, windowHours };
 }
 
 function useCommerceQuery<T>(
@@ -189,12 +190,16 @@ export function useCommerceProductsQuery(
     groupBy?: CommerceProductGroup;
     sort?: CommerceProductSort;
     pageSize?: number;
+    minViews?: number;
+    maxCartRate?: number;
   },
 ) {
   return useCommercePagedQuery('products', websiteId, {
     ...scopeParams(scope),
     groupBy: scope.groupBy,
     sort: scope.sort,
+    minViews: scope.minViews,
+    maxCartRate: scope.maxCartRate,
     pageSize: scope.pageSize,
   });
 }
@@ -205,4 +210,8 @@ export function useCommerceAbandonedQuery(websiteId: string, scope: CommerceScop
 
 export function useCommerceBuyersQuery(websiteId: string, scope: CommerceScope, enabled = true) {
   return useCommercePagedQuery('buyers', websiteId, scopeParams(scope), enabled);
+}
+
+export function useCommerceMarketsQuery(websiteId: string, currency: string) {
+  return useCommerceQuery<Array<{ name: string }>>('markets', websiteId, { currency });
 }

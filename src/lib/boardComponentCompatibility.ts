@@ -2,6 +2,7 @@ import type { BoardEntityType } from './boards';
 
 export const BOARD_COMPONENT_COMPATIBILITY_MATRIX = {
   CommerceChart: ['website'],
+  CommerceReport: ['website'],
   CommerceCheckout: ['website'],
   CommerceMetricsBar: ['website'],
   CommerceMetricsTable: ['website'],

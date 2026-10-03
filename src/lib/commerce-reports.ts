@@ -32,7 +32,16 @@ export const COMMERCE_METRIC_TYPES = [
 ] as const;
 
 export const COMMERCE_PRODUCT_GROUPS = ['product', 'variant', 'category'] as const;
-export const COMMERCE_PRODUCT_SORTS = ['revenue', 'units', 'orders'] as const;
+export const COMMERCE_PRODUCT_SORTS = [
+  'revenue',
+  'units',
+  'orders',
+  'views',
+  'additions',
+  'addToCartRate',
+  'purchaseRate',
+  'cartToPurchaseRate',
+] as const;
 
 export const COMMERCE_ATTRIBUTION_MODELS = ['first-click', 'last-click'] as const;
 export const COMMERCE_ATTRIBUTION_DIMENSIONS = [
@@ -78,8 +87,11 @@ export const commerceStatsSchema = z.object({
   convertedVisits: count,
   averageOrderValue: money,
   unitsPerOrder: z.number(),
-  conversionRate: z.number().describe('Converted visits divided by visits (0–1).'),
-  revenuePerVisitor: money,
+  conversionRate: z
+    .number()
+    .nullable()
+    .describe('Converted visits divided by visits; unavailable for commerce-scoped traffic.'),
+  revenuePerVisitor: money.nullable(),
 });
 
 export const commerceStatsResponseSchema = commerceStatsSchema.extend({
@@ -175,6 +187,16 @@ export const commerceProductSchema = z.object({
   revenue: money,
   orders: count,
   averagePrice: money,
+  views: count,
+  additions: count,
+  viewingVisits: count,
+  addingVisits: count,
+  convertedCartVisits: count,
+  convertedPurchaseVisits: count,
+  addToCartRate: z.number(),
+  purchaseRate: z.number(),
+  cartToPurchaseRate: z.number(),
+  convertedOrderVisits: count,
 });
 
 export const commerceProductsResponseSchema = z.object({
@@ -199,11 +221,18 @@ export const commerceCheckoutResponseSchema = z.object({
   stages: z.array(
     z.object({
       stage: z.enum(COMMERCE_STAGES),
-      sessions: count,
+      sessions: count.describe('Compatibility alias for attempts.'),
+      attempts: count.describe('Observed identified attempts; no implied earlier stages.'),
       rate: z.number(),
       stepRate: z.number(),
     }),
   ),
+  pendingCarts: count,
+  pendingCheckouts: count,
+  completedCheckouts: count,
+  unlinkedEvents: count,
+  unclassifiedEvents: count,
+  windowHours: count,
   abandonedCarts: count,
   abandonedCartValue: money,
   abandonedCheckouts: count,
@@ -294,6 +323,7 @@ export interface CommerceRequestParameters {
   market?: string;
   productId?: string;
   category?: string;
+  windowHours?: number;
 }
 
 /**
@@ -301,7 +331,13 @@ export interface CommerceRequestParameters {
  * filters, so website reset dates and account history limits apply.
  */
 export function getCommerceRequestParameters(
-  query: { currency?: string; market?: string; productId?: string; category?: string },
+  query: {
+    currency?: string;
+    market?: string;
+    productId?: string;
+    category?: string;
+    windowHours?: number;
+  },
   filters: { startDate?: Date; endDate?: Date; unit?: string; timezone?: string },
 ): CommerceRequestParameters {
   return {
@@ -313,5 +349,6 @@ export function getCommerceRequestParameters(
     market: query.market || undefined,
     productId: query.productId || undefined,
     category: query.category || undefined,
+    windowHours: query.windowHours,
   };
 }

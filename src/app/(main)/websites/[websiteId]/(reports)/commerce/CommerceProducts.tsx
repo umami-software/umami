@@ -1,4 +1,5 @@
 import {
+  Button,
   Column,
   DataColumn,
   DataTable,
@@ -7,6 +8,7 @@ import {
   Row,
   Select,
   Text,
+  TextField,
 } from '@umami/react-zen';
 import { DataGrid } from '@/components/common/DataGrid';
 import { Empty } from '@/components/common/Empty';
@@ -24,10 +26,11 @@ import {
   type CommerceProductGroup,
   type CommerceProductSort,
 } from '@/lib/commerce-reports';
+import { COMMERCE_COLUMNS } from '@/lib/commerce-saved-reports';
 import type { CommerceProduct } from '@/queries/sql/commerce/getCommerceProducts';
 import { CommerceBaskets } from './CommerceBaskets';
 import { CommerceProductDetail } from './CommerceProductDetail';
-import { currencyFormatter } from './commerceUtils';
+import { currencyFormatter, formatPercent } from './commerceUtils';
 
 export interface CommerceProductsProps {
   websiteId: string;
@@ -36,133 +39,186 @@ export interface CommerceProductsProps {
   endDate: Date;
   unit: string;
 }
-
 export function CommerceProducts(props: CommerceProductsProps) {
   const {
     query: { product },
   } = useNavigation();
+  return product ? (
+    <CommerceProductDetail {...props} productId={product} />
+  ) : (
+    <CommerceProductList {...props} />
+  );
+}
 
-  if (product) {
-    return <CommerceProductDetail {...props} productId={product} />;
-  }
-
-  return <CommerceProductList {...props} />;
+export function ProductPerformanceTable({
+  data,
+  currency,
+  groupBy = 'product',
+  columns = [...COMMERCE_COLUMNS],
+  linkToProduct,
+}: {
+  data: CommerceProduct[];
+  currency: string;
+  groupBy?: CommerceProductGroup;
+  columns?: readonly string[];
+  linkToProduct?: (productId: string) => string;
+}) {
+  const { t } = useMessages();
+  const money = currencyFormatter(currency);
+  return (
+    <DataTable data={data}>
+      <DataColumn id="name" label={t(`commerce.${groupBy}`)} width="minmax(180px, 2fr)">
+        {(row: CommerceProduct) => {
+          const label =
+            groupBy === 'category'
+              ? row.category || '—'
+              : [row.name || row.productId, groupBy === 'variant' && row.variant]
+                  .filter(Boolean)
+                  .join(' · ');
+          return linkToProduct && groupBy !== 'category' ? (
+            <Link href={linkToProduct(row.productId)}>{label}</Link>
+          ) : (
+            <Text>{label}</Text>
+          );
+        }}
+      </DataColumn>
+      {COMMERCE_COLUMNS.filter(key => columns.includes(key)).map(key => (
+        <DataColumn key={key} id={key} label={t(`commerce.${key}`)} align="end" width="120px">
+          {(row: CommerceProduct) =>
+            key.endsWith('Rate')
+              ? formatPercent(row[key])
+              : ['averagePrice', 'revenue'].includes(key)
+                ? money(row[key])
+                : row[key].toLocaleString()
+          }
+        </DataColumn>
+      ))}
+    </DataTable>
+  );
 }
 
 function CommerceProductList({ websiteId, scope }: CommerceProductsProps) {
   const { t } = useMessages();
   const { router, updateParams, query } = useNavigation();
-  const groupBy: CommerceProductGroup = (COMMERCE_PRODUCT_GROUPS as readonly string[]).includes(
-    query.group,
+  const groupBy: CommerceProductGroup = COMMERCE_PRODUCT_GROUPS.includes(
+    query.group as CommerceProductGroup,
   )
     ? (query.group as CommerceProductGroup)
     : 'product';
-  const sort: CommerceProductSort = (COMMERCE_PRODUCT_SORTS as readonly string[]).includes(
-    query.sort,
+  const sort: CommerceProductSort = COMMERCE_PRODUCT_SORTS.includes(
+    query.sort as CommerceProductSort,
   )
     ? (query.sort as CommerceProductSort)
     : 'revenue';
-  const productsQuery = useCommerceProductsQuery(websiteId, { ...scope, groupBy, sort });
-  const money = currencyFormatter(scope.currency);
-
-  const setParam = (key: string, value: string) =>
-    router.replace(updateParams({ [key]: value, page: undefined }), { scroll: false });
-
-  const groupLabels: Record<CommerceProductGroup, string> = {
-    product: t('commerce.product'),
-    variant: t('commerce.variant'),
-    category: t('commerce.category'),
-  };
-  const sortLabels: Record<CommerceProductSort, string> = {
-    revenue: t('commerce.revenue'),
-    units: t('commerce.units'),
-    orders: t('commerce.orders'),
-  };
-
+  const minViews = Math.max(0, Number(query.minViews) || 0);
+  const maxCartRate = query.maxCartRate ? Math.max(0, Math.min(1, Number(query.maxCartRate))) : 1;
+  const columns = query.columns
+    ? query.columns.split(',').filter(key => COMMERCE_COLUMNS.includes(key as any))
+    : [...COMMERCE_COLUMNS];
+  const productsQuery = useCommerceProductsQuery(websiteId, {
+    ...scope,
+    groupBy,
+    sort,
+    minViews,
+    maxCartRate,
+  });
+  const setParams = (params: Record<string, string | undefined>) =>
+    router.replace(updateParams({ ...params, page: undefined }), { scroll: false });
   return (
     <Column gap>
       <Panel>
-        <Row justifyContent="space-between" alignItems="center" wrap="wrap" gap>
-          <Heading size="2xl">{t('commerce.products')}</Heading>
-          <Row gap>
-            <Select
-              label={t('commerce.groupBy')}
-              value={groupBy}
-              onChange={value => setParam('group', String(value))}
-              buttonProps={{ style: { width: 160 } }}
+        <Heading size="2xl">{t('commerce.products')}</Heading>
+        <Text color="muted">{t('commerce.productConversionHint')}</Text>
+        <Row gap wrap="wrap">
+          <Button
+            onPress={() =>
+              setParams({ sort: 'addToCartRate', minViews: '100', maxCartRate: undefined })
+            }
+          >
+            {t('commerce.topCartRate')}
+          </Button>
+          <Button
+            onPress={() => setParams({ sort: 'views', minViews: '100', maxCartRate: '0.05' })}
+          >
+            {t('commerce.lowCartRate')}
+          </Button>
+        </Row>
+        <Row gap wrap="wrap">
+          <Select
+            label={t('commerce.groupBy')}
+            value={groupBy}
+            onChange={value => setParams({ group: String(value) })}
+          >
+            {COMMERCE_PRODUCT_GROUPS.map(id => (
+              <ListItem key={id} id={id}>
+                {t(`commerce.${id}`)}
+              </ListItem>
+            ))}
+          </Select>
+          <Select
+            label={t('commerce.sortBy')}
+            value={sort}
+            onChange={value => setParams({ sort: String(value) })}
+          >
+            {COMMERCE_PRODUCT_SORTS.map(id => (
+              <ListItem key={id} id={id}>
+                {t(`commerce.${id}`)}
+              </ListItem>
+            ))}
+          </Select>
+          <TextField
+            label={t('commerce.minimumViews')}
+            type="number"
+            min={0}
+            value={String(minViews)}
+            onChange={value => setParams({ minViews: String(value) })}
+          />
+          <TextField
+            label={t('commerce.maximumCartRate')}
+            type="number"
+            min={0}
+            max={100}
+            value={String(maxCartRate * 100)}
+            onChange={value => setParams({ maxCartRate: String(Number(value) / 100) })}
+          />
+          <TextField
+            label={t('commerce.category')}
+            value={scope.category || ''}
+            onChange={value => setParams({ category: String(value) || undefined })}
+          />
+        </Row>
+        <Row gap wrap="wrap">
+          {COMMERCE_COLUMNS.map(key => (
+            <Button
+              key={key}
+              variant={columns.includes(key) ? 'primary' : 'outline'}
+              onPress={() => {
+                const next = columns.includes(key)
+                  ? columns.filter(column => column !== key)
+                  : [...columns, key];
+                if (next.length) setParams({ columns: next.join(',') });
+              }}
             >
-              {COMMERCE_PRODUCT_GROUPS.map(id => (
-                <ListItem key={id} id={id}>
-                  {groupLabels[id]}
-                </ListItem>
-              ))}
-            </Select>
-            <Select
-              label={t('commerce.sortBy')}
-              value={sort}
-              onChange={value => setParam('sort', String(value))}
-              buttonProps={{ style: { width: 160 } }}
-            >
-              {COMMERCE_PRODUCT_SORTS.map(id => (
-                <ListItem key={id} id={id}>
-                  {sortLabels[id]}
-                </ListItem>
-              ))}
-            </Select>
-          </Row>
+              {t(`commerce.${key}`)}
+            </Button>
+          ))}
         </Row>
         <DataGrid
           query={productsQuery}
           allowSearch
           allowPaging
-          renderEmpty={() => <Empty message={t('commerce.noOrders')} />}
+          renderEmpty={() => <Empty message={t('commerce.noMatchingActivity')} />}
         >
           {({ data }) => (
-            <DataTable data={data}>
-              <DataColumn id="name" label={groupLabels[groupBy]} width="minmax(200px, 2fr)">
-                {(row: CommerceProduct) =>
-                  groupBy === 'category' ? (
-                    <Text weight="bold">{row.category || '—'}</Text>
-                  ) : (
-                    <Column minWidth="0">
-                      <Link
-                        href={updateParams({
-                          product: row.productId,
-                          page: undefined,
-                          search: undefined,
-                        })}
-                      >
-                        <Text weight="bold" truncate title={row.name || row.productId}>
-                          {row.name || row.productId}
-                        </Text>
-                      </Link>
-                      <Text color="muted" size="sm" truncate>
-                        {[row.productId, groupBy === 'variant' && row.variant, row.category]
-                          .filter(Boolean)
-                          .join(' · ')}
-                      </Text>
-                    </Column>
-                  )
-                }
-              </DataColumn>
-              <DataColumn id="units" label={t('commerce.units')} align="end" width="100px">
-                {(row: CommerceProduct) => row.units.toLocaleString()}
-              </DataColumn>
-              <DataColumn id="orders" label={t('commerce.orders')} align="end" width="100px">
-                {(row: CommerceProduct) => row.orders.toLocaleString()}
-              </DataColumn>
-              <DataColumn
-                id="averagePrice"
-                label={t('commerce.averagePrice')}
-                align="end"
-                width="120px"
-              >
-                {(row: CommerceProduct) => money(row.averagePrice)}
-              </DataColumn>
-              <DataColumn id="revenue" label={t('commerce.revenue')} align="end" width="130px">
-                {(row: CommerceProduct) => <Text weight="bold">{money(row.revenue)}</Text>}
-              </DataColumn>
-            </DataTable>
+            <ProductPerformanceTable
+              data={data}
+              currency={scope.currency}
+              groupBy={groupBy}
+              columns={columns}
+              linkToProduct={productId =>
+                updateParams({ product: productId, page: undefined, search: undefined })
+              }
+            />
           )}
         </DataGrid>
       </Panel>

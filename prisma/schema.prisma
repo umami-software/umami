@@ -58,6 +58,7 @@ model CommerceEvent {
   @@index([websiteId, createdAt, currency])
   @@index([websiteId, orderId])
   @@index([websiteId, checkoutId])
+  @@index([websiteId, cartId])
   @@map("commerce_event")
 }
 
@@ -149,6 +150,7 @@ model Website {
   updatedAt DateTime? @updatedAt @map("updated_at") @db.Timestamptz(6)
   deletedAt DateTime? @map("deleted_at") @db.Timestamptz(6)
 
+  commerceConfig     Json?   @map("commerce_config")
   recorderEnabled    Boolean @default(false) @map("recorder_enabled")
   replayConfig       Json?   @map("replay_config")
   errorsEnabled      Boolean @default(false) @map("errors_enabled")

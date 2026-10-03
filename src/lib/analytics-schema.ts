@@ -120,6 +120,7 @@ const commerceScopeParams = {
   market: commerceIdentifierParam.optional(),
   productId: commerceIdentifierParam.optional(),
   category: commerceIdentifierParam.optional(),
+  windowHours: z.coerce.number().int().min(1).max(720).optional(),
 };
 const commercePagingParams = {
   ...pagingParams,
@@ -146,6 +147,8 @@ export const commerceProductsQuerySchema = analyticsSchema({
   ...commercePagingParams,
   groupBy: z.enum(COMMERCE_PRODUCT_GROUPS).optional(),
   sort: z.enum(COMMERCE_PRODUCT_SORTS).optional(),
+  minViews: z.coerce.number().int().min(0).optional(),
+  maxCartRate: z.coerce.number().min(0).max(1).optional(),
 });
 export const commerceBasketsQuerySchema = analyticsSchema(commerceScopeParams);
 export const commerceCheckoutQuerySchema = analyticsSchema(commerceScopeParams);

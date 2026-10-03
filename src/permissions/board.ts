@@ -10,6 +10,7 @@ import { canViewWebsite } from './website';
 const BOARD_COMPONENT_REPORT_TYPES = {
   Funnel: 'funnel',
   Goal: 'goal',
+  CommerceReport: 'commerce',
 } as const;
 
 function getExpectedBoardReportType(componentType?: string) {

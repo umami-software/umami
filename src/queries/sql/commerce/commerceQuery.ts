@@ -1,5 +1,6 @@
 import clickhouse from '@/lib/clickhouse';
 import { COMMERCE_LOOKBACK_DAYS } from '@/lib/commerce-reports';
+import { type CommerceSettings, commerceStageSQL } from '@/lib/commerce-settings';
 import {
   EMAIL_DOMAINS,
   EVENT_TYPE,
@@ -39,6 +40,7 @@ export interface CommerceParameters {
   productId?: string;
   category?: string;
   compare?: string;
+  windowHours?: number;
 }
 
 export type CommerceStage = 'cart' | 'checkout' | 'order';
@@ -46,6 +48,7 @@ export type CommerceStage = 'cart' | 'checkout' | 'order';
 export interface CommerceQueryOptions {
   /** Include cart and checkout events, not only completed payments. */
   allStages?: boolean;
+  events?: CommerceSettings['events'];
 }
 
 export function getLookbackDate(startDate: Date) {
@@ -104,6 +107,7 @@ export function getRelationalCommerceQuery(
   options: CommerceQueryOptions = {},
 ) {
   const { parseFilters } = prisma;
+  const stage = commerceStageSQL('prisma', 'commerce_event', options.events);
   const { startDate, endDate, market, productId, category } = parameters;
   const { queryParams, filterQuery, cohortQuery, joinSessionQuery, dateQuery } = parseFilters({
     ...filters,
@@ -148,11 +152,7 @@ export function getRelationalCommerceQuery(
         commerce_event.tax,
         commerce_event.total,
         commerce_event.created_at,
-        case
-          when commerce_event.order_id is not null then 'order'
-          when commerce_event.checkout_id is not null then 'checkout'
-          else 'cart'
-        end as stage,
+        ${stage.sql} as stage,
         coalesce(order_items.units, 0) as units,
         coalesce(order_items.lines, 0) as lines,
         ${isScoped ? 'order_items.value' : 'commerce_event.total'} as value
@@ -190,6 +190,7 @@ export function getRelationalCommerceQuery(
       endDate,
       lookbackDate: getLookbackDate(startDate),
       ...getScopeParams(parameters),
+      ...stage.params,
     },
     filterQuery,
     cohortQuery,
@@ -212,6 +213,7 @@ export function getClickhouseCommerceQuery(
   options: CommerceQueryOptions = {},
 ) {
   const { parseFilters } = clickhouse;
+  const stage = commerceStageSQL('clickhouse', 'ce', options.events);
   const { startDate, endDate, market, productId, category } = parameters;
   const { queryParams, filterQuery, cohortQuery, dateQuery } = parseFilters({
     ...filters,
@@ -259,7 +261,7 @@ export function getClickhouseCommerceQuery(
         ce.tax as tax,
         ce.total as total,
         ce.created_at as created_at,
-        multiIf(ce.order_id != '', 'order', ce.checkout_id != '', 'checkout', 'cart') as stage,
+        ${stage.sql} as stage,
         order_items.units as units,
         order_items.lines as lines,
         ${isScoped ? 'order_items.value' : 'ce.total'} as value
@@ -298,6 +300,7 @@ export function getClickhouseCommerceQuery(
       endDate,
       lookbackDate: getLookbackDate(startDate),
       ...getScopeParams(parameters),
+      ...stage.params,
     },
     filterQuery,
     cohortQuery,
