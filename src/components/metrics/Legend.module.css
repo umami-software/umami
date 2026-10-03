@@ -1,0 +1,11 @@
+.statusLight .hiddenMark {
+    position: absolute;
+    color: var(--zen-fg);
+    /* font-weight: bold; */
+    padding: 1px;
+
+}
+
+:global([data-theme="dark"]) .statusLight .hiddenMark {
+    color: white;
+}
