@@ -29,52 +29,57 @@ async function relationalQuery({
   distinctId,
   createdAt,
 }: TryClaimAnonymousSessionArgs): Promise<boolean> {
-  const { writeRawQuery } = prisma;
-
-  // This query atomically checks and claims in one statement:
-  //
-  // 1. The UPDATE clause attempts to claim the session row by setting its distinct_id,
-  //    but only if it is currently unclaimed (null) or already claimed by us.
-  //    Concurrent threads with different distinctIds will serialize on the row lock.
-  //
-  // 2. The INSERT clause writes the link, but only if the claim CTE succeeded.
-  //    ON CONFLICT handles idempotency if the link already exists.
-  //
-  // 3. We SELECT whether the claim succeeded. If it did, we own the session.
-  //    If it failed (another identity snuck in or row missing), we return false.
+  const { transaction } = prisma;
   const truncatedDistinctId = truncateString(distinctId, FIELD_LENGTH.distinctId);
 
-  const result = (await writeRawQuery(
-    `
-    with claim as (
-      update session
-      set distinct_id = {{distinctId}}
-      where website_id = {{websiteId}}::uuid
-        and session_id = {{sessionId}}::uuid
-        and coalesce(distinct_id, {{distinctId}}) = {{distinctId}}
-      returning 1
-    ),
-    link as (
-      insert into session_link (website_id, session_id, distinct_id, created_at)
-      select {{websiteId}}::uuid, {{sessionId}}::uuid, {{distinctId}}, {{createdAt}}
-      from claim
-      on conflict (website_id, distinct_id, session_id) do nothing
-      returning 1
-    )
-    select exists (
-      select 1 from claim
-    ) as "canReuse"
-    `,
-    {
+  // We use an interactive transaction to achieve true atomicity on PostgreSQL.
+  // The transaction allows us to lock the session logic using a session-specific
+  // advisory lock, check the link table, and conditionally insert without TOCTOU races.
+  return transaction(async (tx: any) => {
+    // 1. Acquire a transaction-level advisory lock based on the session ID.
+    // This serializes all concurrent claims for this specific session, guaranteeing
+    // that the read-then-write logic below is 100% free of TOCTOU race conditions.
+    // We convert the UUID into a 64-bit integer by taking the first 16 hex characters.
+    await tx.$executeRawUnsafe(
+      `select pg_advisory_xact_lock(('x' || substr(replace($1, '-', ''), 1, 16))::bit(64)::bigint)`,
+      sessionId,
+    );
+
+    // 2. Now holding the lock, check session_link (the single source of truth)
+    // to see if the session is unclaimed or already claimed by this exact identity.
+    // We do NOT rely on session.distinct_id because it can be out of sync if
+    // a previous best-effort updateSession failed.
+    const existing: any[] = await tx.$queryRawUnsafe(
+      `
+      select distinct_id as "distinctId"
+      from session_link
+      where website_id = $1::uuid
+        and session_id = $2::uuid
+      `,
       websiteId,
       sessionId,
-      distinctId: truncatedDistinctId,
-      createdAt,
-    },
-    FUNCTION_NAME,
-  )) as { canReuse: boolean }[];
+    );
 
-  return result[0]?.canReuse ?? false;
+    const existingIds = existing.map(r => r.distinctId);
+    const canReuse = existingIds.length === 0 || existingIds.every(id => id === truncatedDistinctId);
+
+    // 3. If it's safe to reuse, claim it by inserting the link.
+    if (canReuse) {
+      await tx.$executeRawUnsafe(
+        `
+        insert into session_link (website_id, session_id, distinct_id, created_at)
+        values ($1::uuid, $2::uuid, $3, $4)
+        on conflict (website_id, distinct_id, session_id) do nothing
+        `,
+        websiteId,
+        sessionId,
+        truncatedDistinctId,
+        createdAt,
+      );
+    }
+
+    return canReuse;
+  }) as unknown as Promise<boolean>;
 }
 
 async function clickhouseQuery({
