@@ -1,17 +1,18 @@
+import type { DialogRenderProps } from '@umami/react-zen';
+import type { ReactNode } from 'react';
 import { beforeEach, expect, test, vi } from 'vitest';
-import type { useNavigation } from '@/components/hooks';
 import { render, screen } from '@/test/render';
 import { MobileNav } from './MobileNav';
 
 const mockUseNavigation = vi.fn();
 
 vi.mock('@/components/hooks', async importOriginal => {
-  const actual = await importOriginal<typeof useNavigation>();
+  const actual = await importOriginal<typeof import('@/components/hooks')>();
   return { ...actual, useNavigation: () => mockUseNavigation() };
 });
 
 vi.mock('@/components/input/MobileMenuButton', () => ({
-  MobileMenuButton: ({ children }: { children: (props: { close: () => void }) => unknown }) => (
+  MobileMenuButton: ({ children }: { children: (props: DialogRenderProps) => ReactNode }) => (
     <div>{children({ close: () => null })}</div>
   ),
 }));
