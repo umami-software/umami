@@ -166,7 +166,7 @@ async function clickhouseQuery({
   }
 }
 
-export default function tryClaimAnonymousSession(
+export function tryClaimAnonymousSession(
   args: TryClaimAnonymousSessionArgs,
 ): Promise<boolean> {
   return runQuery({
