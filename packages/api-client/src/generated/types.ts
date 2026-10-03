@@ -1424,6 +1424,355 @@ export interface paths {
     patch?: never;
     trace?: never;
   };
+  '/api/websites/{websiteId}/commerce/abandoned': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /**
+     * List abandoned carts and checkouts
+     * @description Returns a paginated list of sessions that reached cart or checkout without a completed payment, with the value of their latest cart or checkout.
+     */
+    get: operations['getWebsiteCommerceAbandoned'];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/websites/{websiteId}/commerce/attribution': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /**
+     * Get website commerce revenue attribution
+     * @description Returns completed-order revenue attributed to channels, referrers, ad platforms, landing pages and UTM parameters with a first-click or last non-direct click model.
+     */
+    get: operations['getWebsiteCommerceAttribution'];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/websites/{websiteId}/commerce/baskets': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /**
+     * Get website commerce basket analysis
+     * @description Returns the distribution of units per order and the products most often bought in the same order, or the companions of one product.
+     */
+    get: operations['getWebsiteCommerceBaskets'];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/websites/{websiteId}/commerce/buyers': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /**
+     * List website commerce buyers
+     * @description Returns a paginated list of buyers with their orders and revenue. Buyers are identified visitors, or sessions without a distinct ID.
+     */
+    get: operations['getWebsiteCommerceBuyers'];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/websites/{websiteId}/commerce/chart': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /**
+     * Get website commerce revenue over time
+     * @description Returns completed-order revenue and order counts per time bucket and event name for one currency.
+     */
+    get: operations['getWebsiteCommerceChart'];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/websites/{websiteId}/commerce/checkout': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /**
+     * Get website checkout funnel
+     * @description Returns sessions reaching cart, checkout and payment, inferred from the cart, checkout and order IDs of commerce events, with abandonment and time to purchase.
+     */
+    get: operations['getWebsiteCommerceCheckout'];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/websites/{websiteId}/commerce/currencies': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /**
+     * List website commerce currencies
+     * @description Returns the currencies with completed orders in the date range, with order counts and revenue, most orders first.
+     */
+    get: operations['getWebsiteCommerceCurrencies'];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/websites/{websiteId}/commerce/customers': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /**
+     * Get website commerce customer totals
+     * @description Returns buyers, new and returning buyers, repeat purchase rate, revenue per buyer and median time to first purchase.
+     */
+    get: operations['getWebsiteCommerceCustomers'];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/websites/{websiteId}/commerce/markets': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /** get Website Commerce Markets */
+    get: operations['getWebsiteCommerceMarkets'];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/websites/{websiteId}/commerce/metrics': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /**
+     * Get website commerce revenue by dimension
+     * @description Returns completed-order revenue, orders and buyers grouped by market, event, visitor attributes or the acquisition of the purchasing visit.
+     */
+    get: operations['getWebsiteCommerceMetrics'];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/websites/{websiteId}/commerce/orders': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /**
+     * List website commerce orders
+     * @description Returns a paginated list of completed orders in one currency, newest first, searchable by order ID.
+     */
+    get: operations['getWebsiteCommerceOrders'];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/websites/{websiteId}/commerce/orders/{commerceEventId}': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /**
+     * Get a website commerce order
+     * @description Returns one commerce record with its current items.
+     */
+    get: operations['getWebsiteCommerceOrder'];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/websites/{websiteId}/commerce/products': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /**
+     * List website commerce products
+     * @description Returns a paginated list of products, variants or categories in completed orders with units, orders and revenue.
+     */
+    get: operations['getWebsiteCommerceProducts'];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/websites/{websiteId}/commerce/reports': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /** get Website Commerce Reports */
+    get: operations['getWebsiteCommerceReports'];
+    put?: never;
+    /** create Website Commerce Report */
+    post: operations['createWebsiteCommerceReport'];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/websites/{websiteId}/commerce/reports/{reportId}': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /** get Website Commerce Report */
+    get: operations['getWebsiteCommerceReport'];
+    put?: never;
+    /** update Website Commerce Report */
+    post: operations['updateWebsiteCommerceReport'];
+    /** delete Website Commerce Report */
+    delete: operations['deleteWebsiteCommerceReport'];
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/websites/{websiteId}/commerce/reports/{reportId}/stats': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /** get Website Commerce Report Stats */
+    get: operations['getWebsiteCommerceReportStats'];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/websites/{websiteId}/commerce/settings': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /** get Website Commerce Settings */
+    get: operations['getWebsiteCommerceSettings'];
+    put?: never;
+    /** update Website Commerce Settings */
+    post: operations['updateWebsiteCommerceSettings'];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/websites/{websiteId}/commerce/stats': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /**
+     * Get website commerce totals
+     * @description Returns revenue, orders, average order value, buyers, conversion rate and revenue per visitor for one currency, with the comparison period.
+     */
+    get: operations['getWebsiteCommerceStats'];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
   '/api/websites/{websiteId}/daterange': {
     parameters: {
       query?: never;
@@ -9179,14 +9528,18 @@ export interface operations {
                     /** @description Currency code used for revenue values. */
                     currency: string;
                     items: {
+                      /** @description Product category sent with the commerce item. */
                       category?: string;
                       /** @description Display name of the resource. */
                       name?: string;
                       price: number;
+                      /** @description Product identifier sent with the commerce item. */
                       productId: string;
                       quantity: number;
+                      /** @description Product variant sent with the commerce item. */
                       variant?: string;
                     }[];
+                    /** @description Market the order was placed in, as sent with the commerce payload. */
                     market?: string;
                     orderId?: string;
                     /** @default 0 */
@@ -13252,6 +13605,8 @@ export interface operations {
         cohort?: string;
         /** @description Country code of the visitor. */
         country?: string;
+        /** @description Currency code used for revenue values. */
+        currency?: string;
         /** @description Device category used by the visitor. */
         device?: string;
         /** @description Custom identifier assigned to the visitor. */
@@ -13322,6 +13677,10 @@ export interface operations {
           'application/json': ({
             /** @description Number of visits with only one pageview. */
             bounces: number;
+            /** @description Completed orders in the requested currency. Present when currency is set. */
+            orders?: number;
+            /** @description Revenue in the requested currency. Present when currency is set. */
+            revenue?: number;
             /** @description Total visit duration in seconds. */
             totaltime: number;
             /** @description Pageview counts for the selected period. */
@@ -13333,6 +13692,4135 @@ export interface operations {
           } & {
             [key: string]: string | number;
           })[];
+        };
+      };
+      /** @description Bad request. */
+      400: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          /**
+           * @example {
+           *       "error": {
+           *         "code": "bad-request",
+           *         "message": "Bad request.",
+           *         "status": 400
+           *       }
+           *     }
+           */
+          'application/json': components['schemas']['ApiError'];
+        };
+      };
+      /** @description Unauthorized. */
+      401: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          /**
+           * @example {
+           *       "error": {
+           *         "code": "unauthorized",
+           *         "message": "Unauthorized.",
+           *         "status": 401
+           *       }
+           *     }
+           */
+          'application/json': components['schemas']['ApiError'];
+        };
+      };
+      /** @description Not found. */
+      404: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          /**
+           * @example {
+           *       "error": {
+           *         "code": "not-found",
+           *         "message": "Not found.",
+           *         "status": 404
+           *       }
+           *     }
+           */
+          'application/json': components['schemas']['ApiError'];
+        };
+      };
+    };
+  };
+  getWebsiteCommerceAbandoned: {
+    parameters: {
+      query: {
+        /** @description Browser used by the visitor. */
+        browser?: string;
+        /** @description Only orders containing this category. Amounts become the category's net line totals. */
+        category?: string;
+        /** @description City of the visitor. */
+        city?: string;
+        /** @description ID of a saved cohort used to filter visitors. */
+        cohort?: string;
+        /** @description Country code of the visitor. */
+        country?: string;
+        /** @description Currency code used for revenue values. */
+        currency: string;
+        /** @description Device category used by the visitor. */
+        device?: string;
+        /** @description Custom identifier assigned to the visitor. */
+        distinctId?: string;
+        /** @description End of the date range as a Unix timestamp in milliseconds. */
+        endAt: number;
+        /** @description Filter by custom event name. */
+        event?: string;
+        /** @description Event type: 1 for a pageview or 2 for a custom event. */
+        eventType?: number;
+        /** @description Set a non-empty value to exclude visits with only one pageview. */
+        excludeBounce?: string;
+        /** @description Hostname on which the activity occurred. */
+        hostname?: string;
+        /** @description Preferred language reported by the visitor browser. */
+        language?: string;
+        /** @description Market the order was placed in, as sent with the commerce payload. */
+        market?: string;
+        /** @description Whether records must match all filters or any filter. */
+        match?: 'all' | 'any';
+        /** @description Maximum number of results to include. */
+        maxResults?: number;
+        /** @description Operating system used by the visitor. */
+        os?: string;
+        /** @description Page number, starting at 1. */
+        page?: number;
+        /** @description Number of results per page. */
+        pageSize?: number;
+        /** @description Filter by page URL path. */
+        path?: string;
+        /** @description Only orders containing this product. Amounts become the product's net line totals. */
+        productId?: string;
+        /** @description Filter by page URL query string. */
+        query?: string;
+        /** @description Filter by referring URL. */
+        referrer?: string;
+        /** @description Region or subdivision of the visitor. */
+        region?: string;
+        /** @description ID of a saved segment used to filter results. */
+        segment?: string;
+        /** @description Start of the date range as a Unix timestamp in milliseconds. */
+        startAt: number;
+        /** @description Tag attached to the tracked activity. */
+        tag?: string;
+        /** @description IANA time zone used to interpret dates and group results, for example America/New_York. */
+        timezone?: string;
+        /** @description Filter by page title. */
+        title?: string;
+        /** @description Time interval used to group results: minute, hour, day, month, or year. */
+        unit?: string;
+        /** @description UTM campaign name. */
+        utmCampaign?: string;
+        /** @description UTM campaign content. */
+        utmContent?: string;
+        /** @description UTM campaign medium. */
+        utmMedium?: string;
+        /** @description UTM campaign source. */
+        utmSource?: string;
+        /** @description UTM campaign search term. */
+        utmTerm?: string;
+        windowHours?: number;
+      };
+      header?: never;
+      path: {
+        /** @description ID of the website. */
+        websiteId: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Analytics results. */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': {
+            /** @description Number of matching records. */
+            count: number;
+            /** @description Data returned by the operation. */
+            data: {
+              cartId: string;
+              checkoutId: string;
+              /** @description Country code of the visitor. */
+              country: string;
+              /** @description Device category used by the visitor. */
+              device: string;
+              /** @description Name of the custom event. */
+              eventName: string;
+              /** @description Date and time of the most recent recorded activity. */
+              lastAt: string;
+              lines: number;
+              /** @description ID of the visitor session. */
+              sessionId: string;
+              /** @enum {string} */
+              stage: 'cart' | 'checkout';
+              /** @description Number of item units. */
+              units: number;
+              /** @description Amount in the requested currency. */
+              value: number;
+            }[];
+            /** @description Page number, starting at 1. */
+            page: number;
+            /** @description Number of results per page. */
+            pageSize: number;
+          };
+        };
+      };
+      /** @description Bad request. */
+      400: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          /**
+           * @example {
+           *       "error": {
+           *         "code": "bad-request",
+           *         "message": "Bad request.",
+           *         "status": 400
+           *       }
+           *     }
+           */
+          'application/json': components['schemas']['ApiError'];
+        };
+      };
+      /** @description Unauthorized. */
+      401: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          /**
+           * @example {
+           *       "error": {
+           *         "code": "unauthorized",
+           *         "message": "Unauthorized.",
+           *         "status": 401
+           *       }
+           *     }
+           */
+          'application/json': components['schemas']['ApiError'];
+        };
+      };
+      /** @description Not found. */
+      404: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          /**
+           * @example {
+           *       "error": {
+           *         "code": "not-found",
+           *         "message": "Not found.",
+           *         "status": 404
+           *       }
+           *     }
+           */
+          'application/json': components['schemas']['ApiError'];
+        };
+      };
+    };
+  };
+  getWebsiteCommerceAttribution: {
+    parameters: {
+      query: {
+        /** @description Browser used by the visitor. */
+        browser?: string;
+        /** @description Only orders containing this category. Amounts become the category's net line totals. */
+        category?: string;
+        /** @description City of the visitor. */
+        city?: string;
+        /** @description ID of a saved cohort used to filter visitors. */
+        cohort?: string;
+        /** @description Country code of the visitor. */
+        country?: string;
+        /** @description Currency code used for revenue values. */
+        currency: string;
+        /** @description Device category used by the visitor. */
+        device?: string;
+        /** @description Custom identifier assigned to the visitor. */
+        distinctId?: string;
+        /** @description End of the date range as a Unix timestamp in milliseconds. */
+        endAt: number;
+        /** @description Filter by custom event name. */
+        event?: string;
+        /** @description Event type: 1 for a pageview or 2 for a custom event. */
+        eventType?: number;
+        /** @description Set a non-empty value to exclude visits with only one pageview. */
+        excludeBounce?: string;
+        /** @description Hostname on which the activity occurred. */
+        hostname?: string;
+        /** @description Preferred language reported by the visitor browser. */
+        language?: string;
+        /** @description Market the order was placed in, as sent with the commerce payload. */
+        market?: string;
+        /** @description Whether records must match all filters or any filter. */
+        match?: 'all' | 'any';
+        model?: 'first-click' | 'last-click';
+        /** @description Operating system used by the visitor. */
+        os?: string;
+        /** @description Filter by page URL path. */
+        path?: string;
+        /** @description Only orders containing this product. Amounts become the product's net line totals. */
+        productId?: string;
+        /** @description Filter by page URL query string. */
+        query?: string;
+        /** @description Filter by referring URL. */
+        referrer?: string;
+        /** @description Region or subdivision of the visitor. */
+        region?: string;
+        /** @description ID of a saved segment used to filter results. */
+        segment?: string;
+        /** @description Start of the date range as a Unix timestamp in milliseconds. */
+        startAt: number;
+        /** @description Tag attached to the tracked activity. */
+        tag?: string;
+        /** @description IANA time zone used to interpret dates and group results, for example America/New_York. */
+        timezone?: string;
+        /** @description Filter by page title. */
+        title?: string;
+        /** @description Time interval used to group results: minute, hour, day, month, or year. */
+        unit?: string;
+        /** @description UTM campaign name. */
+        utmCampaign?: string;
+        /** @description UTM campaign content. */
+        utmContent?: string;
+        /** @description UTM campaign medium. */
+        utmMedium?: string;
+        /** @description UTM campaign source. */
+        utmSource?: string;
+        /** @description UTM campaign search term. */
+        utmTerm?: string;
+        windowHours?: number;
+      };
+      header?: never;
+      path: {
+        /** @description ID of the website. */
+        websiteId: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Analytics results. */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': {
+            channel: {
+              /** @description Display name of the resource. */
+              name: string;
+              /** @description Number of completed orders (commerce payments with an order ID). */
+              orders: number;
+              /** @description Amount in the requested currency. */
+              revenue: number;
+            }[];
+            entry: {
+              /** @description Display name of the resource. */
+              name: string;
+              /** @description Number of completed orders (commerce payments with an order ID). */
+              orders: number;
+              /** @description Amount in the requested currency. */
+              revenue: number;
+            }[];
+            lookbackDays: number;
+            /** @enum {string} */
+            model: 'first-click' | 'last-click';
+            paidAds: {
+              /** @description Display name of the resource. */
+              name: string;
+              /** @description Number of completed orders (commerce payments with an order ID). */
+              orders: number;
+              /** @description Amount in the requested currency. */
+              revenue: number;
+            }[];
+            /** @description URL of the referring page. */
+            referrer: {
+              /** @description Display name of the resource. */
+              name: string;
+              /** @description Number of completed orders (commerce payments with an order ID). */
+              orders: number;
+              /** @description Amount in the requested currency. */
+              revenue: number;
+            }[];
+            total: {
+              /** @description Number of completed orders (commerce payments with an order ID). */
+              orders: number;
+              /** @description Amount in the requested currency. */
+              revenue: number;
+            };
+            /** @description UTM campaign name. */
+            utmCampaign: {
+              /** @description Display name of the resource. */
+              name: string;
+              /** @description Number of completed orders (commerce payments with an order ID). */
+              orders: number;
+              /** @description Amount in the requested currency. */
+              revenue: number;
+            }[];
+            /** @description UTM campaign content. */
+            utmContent: {
+              /** @description Display name of the resource. */
+              name: string;
+              /** @description Number of completed orders (commerce payments with an order ID). */
+              orders: number;
+              /** @description Amount in the requested currency. */
+              revenue: number;
+            }[];
+            /** @description UTM campaign medium. */
+            utmMedium: {
+              /** @description Display name of the resource. */
+              name: string;
+              /** @description Number of completed orders (commerce payments with an order ID). */
+              orders: number;
+              /** @description Amount in the requested currency. */
+              revenue: number;
+            }[];
+            /** @description UTM campaign source. */
+            utmSource: {
+              /** @description Display name of the resource. */
+              name: string;
+              /** @description Number of completed orders (commerce payments with an order ID). */
+              orders: number;
+              /** @description Amount in the requested currency. */
+              revenue: number;
+            }[];
+            /** @description UTM campaign search term. */
+            utmTerm: {
+              /** @description Display name of the resource. */
+              name: string;
+              /** @description Number of completed orders (commerce payments with an order ID). */
+              orders: number;
+              /** @description Amount in the requested currency. */
+              revenue: number;
+            }[];
+          };
+        };
+      };
+      /** @description Bad request. */
+      400: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          /**
+           * @example {
+           *       "error": {
+           *         "code": "bad-request",
+           *         "message": "Bad request.",
+           *         "status": 400
+           *       }
+           *     }
+           */
+          'application/json': components['schemas']['ApiError'];
+        };
+      };
+      /** @description Unauthorized. */
+      401: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          /**
+           * @example {
+           *       "error": {
+           *         "code": "unauthorized",
+           *         "message": "Unauthorized.",
+           *         "status": 401
+           *       }
+           *     }
+           */
+          'application/json': components['schemas']['ApiError'];
+        };
+      };
+      /** @description Not found. */
+      404: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          /**
+           * @example {
+           *       "error": {
+           *         "code": "not-found",
+           *         "message": "Not found.",
+           *         "status": 404
+           *       }
+           *     }
+           */
+          'application/json': components['schemas']['ApiError'];
+        };
+      };
+    };
+  };
+  getWebsiteCommerceBaskets: {
+    parameters: {
+      query: {
+        /** @description Browser used by the visitor. */
+        browser?: string;
+        /** @description Only orders containing this category. Amounts become the category's net line totals. */
+        category?: string;
+        /** @description City of the visitor. */
+        city?: string;
+        /** @description ID of a saved cohort used to filter visitors. */
+        cohort?: string;
+        /** @description Country code of the visitor. */
+        country?: string;
+        /** @description Currency code used for revenue values. */
+        currency: string;
+        /** @description Device category used by the visitor. */
+        device?: string;
+        /** @description Custom identifier assigned to the visitor. */
+        distinctId?: string;
+        /** @description End of the date range as a Unix timestamp in milliseconds. */
+        endAt: number;
+        /** @description Filter by custom event name. */
+        event?: string;
+        /** @description Event type: 1 for a pageview or 2 for a custom event. */
+        eventType?: number;
+        /** @description Set a non-empty value to exclude visits with only one pageview. */
+        excludeBounce?: string;
+        /** @description Hostname on which the activity occurred. */
+        hostname?: string;
+        /** @description Preferred language reported by the visitor browser. */
+        language?: string;
+        /** @description Market the order was placed in, as sent with the commerce payload. */
+        market?: string;
+        /** @description Whether records must match all filters or any filter. */
+        match?: 'all' | 'any';
+        /** @description Operating system used by the visitor. */
+        os?: string;
+        /** @description Filter by page URL path. */
+        path?: string;
+        /** @description Only orders containing this product. Amounts become the product's net line totals. */
+        productId?: string;
+        /** @description Filter by page URL query string. */
+        query?: string;
+        /** @description Filter by referring URL. */
+        referrer?: string;
+        /** @description Region or subdivision of the visitor. */
+        region?: string;
+        /** @description ID of a saved segment used to filter results. */
+        segment?: string;
+        /** @description Start of the date range as a Unix timestamp in milliseconds. */
+        startAt: number;
+        /** @description Tag attached to the tracked activity. */
+        tag?: string;
+        /** @description IANA time zone used to interpret dates and group results, for example America/New_York. */
+        timezone?: string;
+        /** @description Filter by page title. */
+        title?: string;
+        /** @description Time interval used to group results: minute, hour, day, month, or year. */
+        unit?: string;
+        /** @description UTM campaign name. */
+        utmCampaign?: string;
+        /** @description UTM campaign content. */
+        utmContent?: string;
+        /** @description UTM campaign medium. */
+        utmMedium?: string;
+        /** @description UTM campaign source. */
+        utmSource?: string;
+        /** @description UTM campaign search term. */
+        utmTerm?: string;
+        windowHours?: number;
+      };
+      header?: never;
+      path: {
+        /** @description ID of the website. */
+        websiteId: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Analytics results. */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': {
+            pairs: {
+              /** @description Display name of the resource. */
+              name: string;
+              /** @description Number of completed orders (commerce payments with an order ID). */
+              orders: number;
+              pairedName: string;
+              pairedProductId: string;
+              /** @description Product identifier sent with the commerce item. */
+              productId: string;
+            }[];
+            sizes: {
+              /** @description Number of completed orders (commerce payments with an order ID). */
+              orders: number;
+              /** @description Amount in the requested currency. */
+              revenue: number;
+              size: string;
+            }[];
+          };
+        };
+      };
+      /** @description Bad request. */
+      400: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          /**
+           * @example {
+           *       "error": {
+           *         "code": "bad-request",
+           *         "message": "Bad request.",
+           *         "status": 400
+           *       }
+           *     }
+           */
+          'application/json': components['schemas']['ApiError'];
+        };
+      };
+      /** @description Unauthorized. */
+      401: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          /**
+           * @example {
+           *       "error": {
+           *         "code": "unauthorized",
+           *         "message": "Unauthorized.",
+           *         "status": 401
+           *       }
+           *     }
+           */
+          'application/json': components['schemas']['ApiError'];
+        };
+      };
+      /** @description Not found. */
+      404: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          /**
+           * @example {
+           *       "error": {
+           *         "code": "not-found",
+           *         "message": "Not found.",
+           *         "status": 404
+           *       }
+           *     }
+           */
+          'application/json': components['schemas']['ApiError'];
+        };
+      };
+    };
+  };
+  getWebsiteCommerceBuyers: {
+    parameters: {
+      query: {
+        /** @description Browser used by the visitor. */
+        browser?: string;
+        /** @description Only orders containing this category. Amounts become the category's net line totals. */
+        category?: string;
+        /** @description City of the visitor. */
+        city?: string;
+        /** @description ID of a saved cohort used to filter visitors. */
+        cohort?: string;
+        /** @description Country code of the visitor. */
+        country?: string;
+        /** @description Currency code used for revenue values. */
+        currency: string;
+        /** @description Device category used by the visitor. */
+        device?: string;
+        /** @description Custom identifier assigned to the visitor. */
+        distinctId?: string;
+        /** @description End of the date range as a Unix timestamp in milliseconds. */
+        endAt: number;
+        /** @description Filter by custom event name. */
+        event?: string;
+        /** @description Event type: 1 for a pageview or 2 for a custom event. */
+        eventType?: number;
+        /** @description Set a non-empty value to exclude visits with only one pageview. */
+        excludeBounce?: string;
+        /** @description Hostname on which the activity occurred. */
+        hostname?: string;
+        /** @description Preferred language reported by the visitor browser. */
+        language?: string;
+        /** @description Market the order was placed in, as sent with the commerce payload. */
+        market?: string;
+        /** @description Whether records must match all filters or any filter. */
+        match?: 'all' | 'any';
+        /** @description Maximum number of results to include. */
+        maxResults?: number;
+        /** @description Operating system used by the visitor. */
+        os?: string;
+        /** @description Page number, starting at 1. */
+        page?: number;
+        /** @description Number of results per page. */
+        pageSize?: number;
+        /** @description Filter by page URL path. */
+        path?: string;
+        /** @description Only orders containing this product. Amounts become the product's net line totals. */
+        productId?: string;
+        /** @description Filter by page URL query string. */
+        query?: string;
+        /** @description Filter by referring URL. */
+        referrer?: string;
+        /** @description Region or subdivision of the visitor. */
+        region?: string;
+        /** @description Search text used to filter results. */
+        search?: string;
+        /** @description ID of a saved segment used to filter results. */
+        segment?: string;
+        /** @description Start of the date range as a Unix timestamp in milliseconds. */
+        startAt: number;
+        /** @description Tag attached to the tracked activity. */
+        tag?: string;
+        /** @description IANA time zone used to interpret dates and group results, for example America/New_York. */
+        timezone?: string;
+        /** @description Filter by page title. */
+        title?: string;
+        /** @description Time interval used to group results: minute, hour, day, month, or year. */
+        unit?: string;
+        /** @description UTM campaign name. */
+        utmCampaign?: string;
+        /** @description UTM campaign content. */
+        utmContent?: string;
+        /** @description UTM campaign medium. */
+        utmMedium?: string;
+        /** @description UTM campaign source. */
+        utmSource?: string;
+        /** @description UTM campaign search term. */
+        utmTerm?: string;
+        windowHours?: number;
+      };
+      header?: never;
+      path: {
+        /** @description ID of the website. */
+        websiteId: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Analytics results. */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': {
+            /** @description Number of matching records. */
+            count: number;
+            /** @description Data returned by the operation. */
+            data: {
+              buyerId: string;
+              /** @description Custom identifier assigned to the visitor. */
+              distinctId: string;
+              firstOrderAt: string;
+              isNew: boolean;
+              lastOrderAt: string;
+              /** @description Number of completed orders (commerce payments with an order ID). */
+              orders: number;
+              /** @description Amount in the requested currency. */
+              revenue: number;
+              /** @description ID of the visitor session. */
+              sessionId: string;
+              sessions: number;
+            }[];
+            /** @description Page number, starting at 1. */
+            page: number;
+            /** @description Number of results per page. */
+            pageSize: number;
+          };
+        };
+      };
+      /** @description Bad request. */
+      400: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          /**
+           * @example {
+           *       "error": {
+           *         "code": "bad-request",
+           *         "message": "Bad request.",
+           *         "status": 400
+           *       }
+           *     }
+           */
+          'application/json': components['schemas']['ApiError'];
+        };
+      };
+      /** @description Unauthorized. */
+      401: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          /**
+           * @example {
+           *       "error": {
+           *         "code": "unauthorized",
+           *         "message": "Unauthorized.",
+           *         "status": 401
+           *       }
+           *     }
+           */
+          'application/json': components['schemas']['ApiError'];
+        };
+      };
+      /** @description Not found. */
+      404: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          /**
+           * @example {
+           *       "error": {
+           *         "code": "not-found",
+           *         "message": "Not found.",
+           *         "status": 404
+           *       }
+           *     }
+           */
+          'application/json': components['schemas']['ApiError'];
+        };
+      };
+    };
+  };
+  getWebsiteCommerceChart: {
+    parameters: {
+      query: {
+        /** @description Browser used by the visitor. */
+        browser?: string;
+        /** @description Only orders containing this category. Amounts become the category's net line totals. */
+        category?: string;
+        /** @description City of the visitor. */
+        city?: string;
+        /** @description ID of a saved cohort used to filter visitors. */
+        cohort?: string;
+        /** @description Country code of the visitor. */
+        country?: string;
+        /** @description Currency code used for revenue values. */
+        currency: string;
+        /** @description Device category used by the visitor. */
+        device?: string;
+        /** @description Custom identifier assigned to the visitor. */
+        distinctId?: string;
+        /** @description End of the date range as a Unix timestamp in milliseconds. */
+        endAt: number;
+        /** @description Filter by custom event name. */
+        event?: string;
+        /** @description Event type: 1 for a pageview or 2 for a custom event. */
+        eventType?: number;
+        /** @description Set a non-empty value to exclude visits with only one pageview. */
+        excludeBounce?: string;
+        /** @description Hostname on which the activity occurred. */
+        hostname?: string;
+        /** @description Preferred language reported by the visitor browser. */
+        language?: string;
+        /** @description Market the order was placed in, as sent with the commerce payload. */
+        market?: string;
+        /** @description Whether records must match all filters or any filter. */
+        match?: 'all' | 'any';
+        /** @description Operating system used by the visitor. */
+        os?: string;
+        /** @description Filter by page URL path. */
+        path?: string;
+        /** @description Only orders containing this product. Amounts become the product's net line totals. */
+        productId?: string;
+        /** @description Filter by page URL query string. */
+        query?: string;
+        /** @description Filter by referring URL. */
+        referrer?: string;
+        /** @description Region or subdivision of the visitor. */
+        region?: string;
+        /** @description ID of a saved segment used to filter results. */
+        segment?: string;
+        /** @description Start of the date range as a Unix timestamp in milliseconds. */
+        startAt: number;
+        /** @description Tag attached to the tracked activity. */
+        tag?: string;
+        /** @description IANA time zone used to interpret dates and group results, for example America/New_York. */
+        timezone?: string;
+        /** @description Filter by page title. */
+        title?: string;
+        /** @description Time interval used to group results: minute, hour, day, month, or year. */
+        unit?: string;
+        /** @description UTM campaign name. */
+        utmCampaign?: string;
+        /** @description UTM campaign content. */
+        utmContent?: string;
+        /** @description UTM campaign medium. */
+        utmMedium?: string;
+        /** @description UTM campaign source. */
+        utmSource?: string;
+        /** @description UTM campaign search term. */
+        utmTerm?: string;
+        windowHours?: number;
+      };
+      header?: never;
+      path: {
+        /** @description ID of the website. */
+        websiteId: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Analytics results. */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': {
+            chart: {
+              /** @description Orders. */
+              count: number;
+              /** @description Time bucket. */
+              t: string;
+              /** @description Event name. */
+              x: string;
+              /** @description Revenue. */
+              y: number;
+            }[];
+          };
+        };
+      };
+      /** @description Bad request. */
+      400: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          /**
+           * @example {
+           *       "error": {
+           *         "code": "bad-request",
+           *         "message": "Bad request.",
+           *         "status": 400
+           *       }
+           *     }
+           */
+          'application/json': components['schemas']['ApiError'];
+        };
+      };
+      /** @description Unauthorized. */
+      401: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          /**
+           * @example {
+           *       "error": {
+           *         "code": "unauthorized",
+           *         "message": "Unauthorized.",
+           *         "status": 401
+           *       }
+           *     }
+           */
+          'application/json': components['schemas']['ApiError'];
+        };
+      };
+      /** @description Not found. */
+      404: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          /**
+           * @example {
+           *       "error": {
+           *         "code": "not-found",
+           *         "message": "Not found.",
+           *         "status": 404
+           *       }
+           *     }
+           */
+          'application/json': components['schemas']['ApiError'];
+        };
+      };
+    };
+  };
+  getWebsiteCommerceCheckout: {
+    parameters: {
+      query: {
+        /** @description Browser used by the visitor. */
+        browser?: string;
+        /** @description Only orders containing this category. Amounts become the category's net line totals. */
+        category?: string;
+        /** @description City of the visitor. */
+        city?: string;
+        /** @description ID of a saved cohort used to filter visitors. */
+        cohort?: string;
+        /** @description Country code of the visitor. */
+        country?: string;
+        /** @description Currency code used for revenue values. */
+        currency: string;
+        /** @description Device category used by the visitor. */
+        device?: string;
+        /** @description Custom identifier assigned to the visitor. */
+        distinctId?: string;
+        /** @description End of the date range as a Unix timestamp in milliseconds. */
+        endAt: number;
+        /** @description Filter by custom event name. */
+        event?: string;
+        /** @description Event type: 1 for a pageview or 2 for a custom event. */
+        eventType?: number;
+        /** @description Set a non-empty value to exclude visits with only one pageview. */
+        excludeBounce?: string;
+        /** @description Hostname on which the activity occurred. */
+        hostname?: string;
+        /** @description Preferred language reported by the visitor browser. */
+        language?: string;
+        /** @description Market the order was placed in, as sent with the commerce payload. */
+        market?: string;
+        /** @description Whether records must match all filters or any filter. */
+        match?: 'all' | 'any';
+        /** @description Operating system used by the visitor. */
+        os?: string;
+        /** @description Filter by page URL path. */
+        path?: string;
+        /** @description Only orders containing this product. Amounts become the product's net line totals. */
+        productId?: string;
+        /** @description Filter by page URL query string. */
+        query?: string;
+        /** @description Filter by referring URL. */
+        referrer?: string;
+        /** @description Region or subdivision of the visitor. */
+        region?: string;
+        /** @description ID of a saved segment used to filter results. */
+        segment?: string;
+        /** @description Start of the date range as a Unix timestamp in milliseconds. */
+        startAt: number;
+        /** @description Tag attached to the tracked activity. */
+        tag?: string;
+        /** @description IANA time zone used to interpret dates and group results, for example America/New_York. */
+        timezone?: string;
+        /** @description Filter by page title. */
+        title?: string;
+        /** @description Time interval used to group results: minute, hour, day, month, or year. */
+        unit?: string;
+        /** @description UTM campaign name. */
+        utmCampaign?: string;
+        /** @description UTM campaign content. */
+        utmContent?: string;
+        /** @description UTM campaign medium. */
+        utmMedium?: string;
+        /** @description UTM campaign source. */
+        utmSource?: string;
+        /** @description UTM campaign search term. */
+        utmTerm?: string;
+        windowHours?: number;
+      };
+      header?: never;
+      path: {
+        /** @description ID of the website. */
+        websiteId: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Analytics results. */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': {
+            abandonedCarts: number;
+            /** @description Amount in the requested currency. */
+            abandonedCartValue: number;
+            abandonedCheckouts: number;
+            /** @description Amount in the requested currency. */
+            abandonedCheckoutValue: number;
+            completedCheckouts: number;
+            medianSecondsCheckoutToOrder: number;
+            medianSecondsToOrder: number;
+            /** @description Number of completed orders (commerce payments with an order ID). */
+            orders: number;
+            pendingCarts: number;
+            pendingCheckouts: number;
+            /** @description Amount in the requested currency. */
+            revenue: number;
+            stages: {
+              /** @description Observed identified attempts; no implied earlier stages. */
+              attempts: number;
+              rate: number;
+              /** @description Compatibility alias for attempts. */
+              sessions: number;
+              /** @enum {string} */
+              stage: 'cart' | 'checkout' | 'order';
+              stepRate: number;
+            }[];
+            unclassifiedEvents: number;
+            unlinkedEvents: number;
+            windowHours: number;
+          };
+        };
+      };
+      /** @description Bad request. */
+      400: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          /**
+           * @example {
+           *       "error": {
+           *         "code": "bad-request",
+           *         "message": "Bad request.",
+           *         "status": 400
+           *       }
+           *     }
+           */
+          'application/json': components['schemas']['ApiError'];
+        };
+      };
+      /** @description Unauthorized. */
+      401: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          /**
+           * @example {
+           *       "error": {
+           *         "code": "unauthorized",
+           *         "message": "Unauthorized.",
+           *         "status": 401
+           *       }
+           *     }
+           */
+          'application/json': components['schemas']['ApiError'];
+        };
+      };
+      /** @description Not found. */
+      404: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          /**
+           * @example {
+           *       "error": {
+           *         "code": "not-found",
+           *         "message": "Not found.",
+           *         "status": 404
+           *       }
+           *     }
+           */
+          'application/json': components['schemas']['ApiError'];
+        };
+      };
+    };
+  };
+  getWebsiteCommerceCurrencies: {
+    parameters: {
+      query: {
+        /** @description Browser used by the visitor. */
+        browser?: string;
+        /** @description City of the visitor. */
+        city?: string;
+        /** @description ID of a saved cohort used to filter visitors. */
+        cohort?: string;
+        /** @description Country code of the visitor. */
+        country?: string;
+        /** @description Device category used by the visitor. */
+        device?: string;
+        /** @description Custom identifier assigned to the visitor. */
+        distinctId?: string;
+        /** @description End of the date range as a Unix timestamp in milliseconds. */
+        endAt: number;
+        /** @description Filter by custom event name. */
+        event?: string;
+        /** @description Event type: 1 for a pageview or 2 for a custom event. */
+        eventType?: number;
+        /** @description Set a non-empty value to exclude visits with only one pageview. */
+        excludeBounce?: string;
+        /** @description Hostname on which the activity occurred. */
+        hostname?: string;
+        /** @description Preferred language reported by the visitor browser. */
+        language?: string;
+        /** @description Whether records must match all filters or any filter. */
+        match?: 'all' | 'any';
+        /** @description Operating system used by the visitor. */
+        os?: string;
+        /** @description Filter by page URL path. */
+        path?: string;
+        /** @description Filter by page URL query string. */
+        query?: string;
+        /** @description Filter by referring URL. */
+        referrer?: string;
+        /** @description Region or subdivision of the visitor. */
+        region?: string;
+        /** @description ID of a saved segment used to filter results. */
+        segment?: string;
+        /** @description Start of the date range as a Unix timestamp in milliseconds. */
+        startAt: number;
+        /** @description Tag attached to the tracked activity. */
+        tag?: string;
+        /** @description IANA time zone used to interpret dates and group results, for example America/New_York. */
+        timezone?: string;
+        /** @description Filter by page title. */
+        title?: string;
+        /** @description Time interval used to group results: minute, hour, day, month, or year. */
+        unit?: string;
+        /** @description UTM campaign name. */
+        utmCampaign?: string;
+        /** @description UTM campaign content. */
+        utmContent?: string;
+        /** @description UTM campaign medium. */
+        utmMedium?: string;
+        /** @description UTM campaign source. */
+        utmSource?: string;
+        /** @description UTM campaign search term. */
+        utmTerm?: string;
+      };
+      header?: never;
+      path: {
+        /** @description ID of the website. */
+        websiteId: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Analytics results. */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': {
+            /** @description Currency code used for revenue values. */
+            currency: string;
+            /** @description All commerce events, including carts and checkouts. */
+            events: number;
+            /** @description Completed orders. */
+            orders: number;
+            /** @description Amount in the requested currency. */
+            revenue: number;
+          }[];
+        };
+      };
+      /** @description Bad request. */
+      400: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          /**
+           * @example {
+           *       "error": {
+           *         "code": "bad-request",
+           *         "message": "Bad request.",
+           *         "status": 400
+           *       }
+           *     }
+           */
+          'application/json': components['schemas']['ApiError'];
+        };
+      };
+      /** @description Unauthorized. */
+      401: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          /**
+           * @example {
+           *       "error": {
+           *         "code": "unauthorized",
+           *         "message": "Unauthorized.",
+           *         "status": 401
+           *       }
+           *     }
+           */
+          'application/json': components['schemas']['ApiError'];
+        };
+      };
+      /** @description Not found. */
+      404: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          /**
+           * @example {
+           *       "error": {
+           *         "code": "not-found",
+           *         "message": "Not found.",
+           *         "status": 404
+           *       }
+           *     }
+           */
+          'application/json': components['schemas']['ApiError'];
+        };
+      };
+    };
+  };
+  getWebsiteCommerceCustomers: {
+    parameters: {
+      query: {
+        /** @description Browser used by the visitor. */
+        browser?: string;
+        /** @description Only orders containing this category. Amounts become the category's net line totals. */
+        category?: string;
+        /** @description City of the visitor. */
+        city?: string;
+        /** @description ID of a saved cohort used to filter visitors. */
+        cohort?: string;
+        /** @description Country code of the visitor. */
+        country?: string;
+        /** @description Currency code used for revenue values. */
+        currency: string;
+        /** @description Device category used by the visitor. */
+        device?: string;
+        /** @description Custom identifier assigned to the visitor. */
+        distinctId?: string;
+        /** @description End of the date range as a Unix timestamp in milliseconds. */
+        endAt: number;
+        /** @description Filter by custom event name. */
+        event?: string;
+        /** @description Event type: 1 for a pageview or 2 for a custom event. */
+        eventType?: number;
+        /** @description Set a non-empty value to exclude visits with only one pageview. */
+        excludeBounce?: string;
+        /** @description Hostname on which the activity occurred. */
+        hostname?: string;
+        /** @description Preferred language reported by the visitor browser. */
+        language?: string;
+        /** @description Market the order was placed in, as sent with the commerce payload. */
+        market?: string;
+        /** @description Whether records must match all filters or any filter. */
+        match?: 'all' | 'any';
+        /** @description Operating system used by the visitor. */
+        os?: string;
+        /** @description Filter by page URL path. */
+        path?: string;
+        /** @description Only orders containing this product. Amounts become the product's net line totals. */
+        productId?: string;
+        /** @description Filter by page URL query string. */
+        query?: string;
+        /** @description Filter by referring URL. */
+        referrer?: string;
+        /** @description Region or subdivision of the visitor. */
+        region?: string;
+        /** @description ID of a saved segment used to filter results. */
+        segment?: string;
+        /** @description Start of the date range as a Unix timestamp in milliseconds. */
+        startAt: number;
+        /** @description Tag attached to the tracked activity. */
+        tag?: string;
+        /** @description IANA time zone used to interpret dates and group results, for example America/New_York. */
+        timezone?: string;
+        /** @description Filter by page title. */
+        title?: string;
+        /** @description Time interval used to group results: minute, hour, day, month, or year. */
+        unit?: string;
+        /** @description UTM campaign name. */
+        utmCampaign?: string;
+        /** @description UTM campaign content. */
+        utmContent?: string;
+        /** @description UTM campaign medium. */
+        utmMedium?: string;
+        /** @description UTM campaign source. */
+        utmSource?: string;
+        /** @description UTM campaign search term. */
+        utmTerm?: string;
+        windowHours?: number;
+      };
+      header?: never;
+      path: {
+        /** @description ID of the website. */
+        websiteId: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Analytics results. */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': {
+            /** @description Number of distinct buyers: identified visitors, or sessions without a distinct ID. */
+            buyers: number;
+            medianSecondsToFirstOrder: number;
+            medianVisitsToFirstOrder: number;
+            newBuyers: number;
+            /** @description Amount in the requested currency. */
+            newRevenue: number;
+            /** @description Number of completed orders (commerce payments with an order ID). */
+            orders: number;
+            ordersPerBuyer: number;
+            repeatBuyers: number;
+            repeatRate: number;
+            returningBuyers: number;
+            /** @description Amount in the requested currency. */
+            returningRevenue: number;
+            /** @description Amount in the requested currency. */
+            revenue: number;
+            /** @description Amount in the requested currency. */
+            revenuePerBuyer: number;
+          };
+        };
+      };
+      /** @description Bad request. */
+      400: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          /**
+           * @example {
+           *       "error": {
+           *         "code": "bad-request",
+           *         "message": "Bad request.",
+           *         "status": 400
+           *       }
+           *     }
+           */
+          'application/json': components['schemas']['ApiError'];
+        };
+      };
+      /** @description Unauthorized. */
+      401: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          /**
+           * @example {
+           *       "error": {
+           *         "code": "unauthorized",
+           *         "message": "Unauthorized.",
+           *         "status": 401
+           *       }
+           *     }
+           */
+          'application/json': components['schemas']['ApiError'];
+        };
+      };
+      /** @description Not found. */
+      404: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          /**
+           * @example {
+           *       "error": {
+           *         "code": "not-found",
+           *         "message": "Not found.",
+           *         "status": 404
+           *       }
+           *     }
+           */
+          'application/json': components['schemas']['ApiError'];
+        };
+      };
+    };
+  };
+  getWebsiteCommerceMarkets: {
+    parameters: {
+      query: {
+        /** @description Browser used by the visitor. */
+        browser?: string;
+        /** @description Only orders containing this category. Amounts become the category's net line totals. */
+        category?: string;
+        /** @description City of the visitor. */
+        city?: string;
+        /** @description ID of a saved cohort used to filter visitors. */
+        cohort?: string;
+        /** @description Country code of the visitor. */
+        country?: string;
+        /** @description Currency code used for revenue values. */
+        currency: string;
+        /** @description Device category used by the visitor. */
+        device?: string;
+        /** @description Custom identifier assigned to the visitor. */
+        distinctId?: string;
+        /** @description End of the date range as a Unix timestamp in milliseconds. */
+        endAt: number;
+        /** @description Filter by custom event name. */
+        event?: string;
+        /** @description Event type: 1 for a pageview or 2 for a custom event. */
+        eventType?: number;
+        /** @description Set a non-empty value to exclude visits with only one pageview. */
+        excludeBounce?: string;
+        /** @description Hostname on which the activity occurred. */
+        hostname?: string;
+        /** @description Preferred language reported by the visitor browser. */
+        language?: string;
+        /** @description Market the order was placed in, as sent with the commerce payload. */
+        market?: string;
+        /** @description Whether records must match all filters or any filter. */
+        match?: 'all' | 'any';
+        /** @description Operating system used by the visitor. */
+        os?: string;
+        /** @description Filter by page URL path. */
+        path?: string;
+        /** @description Only orders containing this product. Amounts become the product's net line totals. */
+        productId?: string;
+        /** @description Filter by page URL query string. */
+        query?: string;
+        /** @description Filter by referring URL. */
+        referrer?: string;
+        /** @description Region or subdivision of the visitor. */
+        region?: string;
+        /** @description ID of a saved segment used to filter results. */
+        segment?: string;
+        /** @description Start of the date range as a Unix timestamp in milliseconds. */
+        startAt: number;
+        /** @description Tag attached to the tracked activity. */
+        tag?: string;
+        /** @description IANA time zone used to interpret dates and group results, for example America/New_York. */
+        timezone?: string;
+        /** @description Filter by page title. */
+        title?: string;
+        /** @description Time interval used to group results: minute, hour, day, month, or year. */
+        unit?: string;
+        /** @description UTM campaign name. */
+        utmCampaign?: string;
+        /** @description UTM campaign content. */
+        utmContent?: string;
+        /** @description UTM campaign medium. */
+        utmMedium?: string;
+        /** @description UTM campaign source. */
+        utmSource?: string;
+        /** @description UTM campaign search term. */
+        utmTerm?: string;
+        windowHours?: number;
+      };
+      header?: never;
+      path: {
+        /** @description ID of the website. */
+        websiteId: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Commerce result. */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': {
+            /** @description Display name of the resource. */
+            name: string;
+          }[];
+        };
+      };
+      /** @description Bad request. */
+      400: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          /**
+           * @example {
+           *       "error": {
+           *         "code": "bad-request",
+           *         "message": "Bad request.",
+           *         "status": 400
+           *       }
+           *     }
+           */
+          'application/json': components['schemas']['ApiError'];
+        };
+      };
+      /** @description Unauthorized. */
+      401: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          /**
+           * @example {
+           *       "error": {
+           *         "code": "unauthorized",
+           *         "message": "Unauthorized.",
+           *         "status": 401
+           *       }
+           *     }
+           */
+          'application/json': components['schemas']['ApiError'];
+        };
+      };
+      /** @description Not found. */
+      404: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          /**
+           * @example {
+           *       "error": {
+           *         "code": "not-found",
+           *         "message": "Not found.",
+           *         "status": 404
+           *       }
+           *     }
+           */
+          'application/json': components['schemas']['ApiError'];
+        };
+      };
+    };
+  };
+  getWebsiteCommerceMetrics: {
+    parameters: {
+      query: {
+        /** @description Browser used by the visitor. */
+        browser?: string;
+        /** @description Only orders containing this category. Amounts become the category's net line totals. */
+        category?: string;
+        /** @description City of the visitor. */
+        city?: string;
+        /** @description ID of a saved cohort used to filter visitors. */
+        cohort?: string;
+        /** @description Country code of the visitor. */
+        country?: string;
+        /** @description Currency code used for revenue values. */
+        currency: string;
+        /** @description Device category used by the visitor. */
+        device?: string;
+        /** @description Custom identifier assigned to the visitor. */
+        distinctId?: string;
+        /** @description End of the date range as a Unix timestamp in milliseconds. */
+        endAt: number;
+        /** @description Filter by custom event name. */
+        event?: string;
+        /** @description Event type: 1 for a pageview or 2 for a custom event. */
+        eventType?: number;
+        /** @description Set a non-empty value to exclude visits with only one pageview. */
+        excludeBounce?: string;
+        /** @description Hostname on which the activity occurred. */
+        hostname?: string;
+        /** @description Preferred language reported by the visitor browser. */
+        language?: string;
+        /** @description Maximum number of rows to return. */
+        limit?: number;
+        /** @description Market the order was placed in, as sent with the commerce payload. */
+        market?: string;
+        /** @description Whether records must match all filters or any filter. */
+        match?: 'all' | 'any';
+        /** @description Operating system used by the visitor. */
+        os?: string;
+        /** @description Filter by page URL path. */
+        path?: string;
+        /** @description Only orders containing this product. Amounts become the product's net line totals. */
+        productId?: string;
+        /** @description Filter by page URL query string. */
+        query?: string;
+        /** @description Filter by referring URL. */
+        referrer?: string;
+        /** @description Region or subdivision of the visitor. */
+        region?: string;
+        /** @description ID of a saved segment used to filter results. */
+        segment?: string;
+        /** @description Start of the date range as a Unix timestamp in milliseconds. */
+        startAt: number;
+        /** @description Tag attached to the tracked activity. */
+        tag?: string;
+        /** @description IANA time zone used to interpret dates and group results, for example America/New_York. */
+        timezone?: string;
+        /** @description Filter by page title. */
+        title?: string;
+        /** @description Type of resource or analytics dimension to return. */
+        type:
+          | 'market'
+          | 'event'
+          | 'country'
+          | 'region'
+          | 'city'
+          | 'device'
+          | 'browser'
+          | 'os'
+          | 'language'
+          | 'referrer'
+          | 'channel'
+          | 'entry'
+          | 'utmSource'
+          | 'utmMedium'
+          | 'utmCampaign'
+          | 'utmContent'
+          | 'utmTerm';
+        /** @description Time interval used to group results: minute, hour, day, month, or year. */
+        unit?: string;
+        /** @description UTM campaign name. */
+        utmCampaign?: string;
+        /** @description UTM campaign content. */
+        utmContent?: string;
+        /** @description UTM campaign medium. */
+        utmMedium?: string;
+        /** @description UTM campaign source. */
+        utmSource?: string;
+        /** @description UTM campaign search term. */
+        utmTerm?: string;
+        windowHours?: number;
+      };
+      header?: never;
+      path: {
+        /** @description ID of the website. */
+        websiteId: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Analytics results. */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': {
+            /** @description Number of distinct buyers: identified visitors, or sessions without a distinct ID. */
+            buyers: number;
+            /** @description Country code of the visitor. */
+            country?: string;
+            /** @description Display name of the resource. */
+            name: string;
+            /** @description Number of completed orders (commerce payments with an order ID). */
+            orders: number;
+            /** @description Amount in the requested currency. */
+            revenue: number;
+          }[];
+        };
+      };
+      /** @description Bad request. */
+      400: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          /**
+           * @example {
+           *       "error": {
+           *         "code": "bad-request",
+           *         "message": "Bad request.",
+           *         "status": 400
+           *       }
+           *     }
+           */
+          'application/json': components['schemas']['ApiError'];
+        };
+      };
+      /** @description Unauthorized. */
+      401: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          /**
+           * @example {
+           *       "error": {
+           *         "code": "unauthorized",
+           *         "message": "Unauthorized.",
+           *         "status": 401
+           *       }
+           *     }
+           */
+          'application/json': components['schemas']['ApiError'];
+        };
+      };
+      /** @description Not found. */
+      404: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          /**
+           * @example {
+           *       "error": {
+           *         "code": "not-found",
+           *         "message": "Not found.",
+           *         "status": 404
+           *       }
+           *     }
+           */
+          'application/json': components['schemas']['ApiError'];
+        };
+      };
+    };
+  };
+  getWebsiteCommerceOrders: {
+    parameters: {
+      query: {
+        /** @description Browser used by the visitor. */
+        browser?: string;
+        /** @description Only orders containing this category. Amounts become the category's net line totals. */
+        category?: string;
+        /** @description City of the visitor. */
+        city?: string;
+        /** @description ID of a saved cohort used to filter visitors. */
+        cohort?: string;
+        /** @description Country code of the visitor. */
+        country?: string;
+        /** @description Currency code used for revenue values. */
+        currency: string;
+        /** @description Device category used by the visitor. */
+        device?: string;
+        /** @description Custom identifier assigned to the visitor. */
+        distinctId?: string;
+        /** @description End of the date range as a Unix timestamp in milliseconds. */
+        endAt: number;
+        /** @description Filter by custom event name. */
+        event?: string;
+        /** @description Event type: 1 for a pageview or 2 for a custom event. */
+        eventType?: number;
+        /** @description Set a non-empty value to exclude visits with only one pageview. */
+        excludeBounce?: string;
+        /** @description Hostname on which the activity occurred. */
+        hostname?: string;
+        /** @description Preferred language reported by the visitor browser. */
+        language?: string;
+        /** @description Market the order was placed in, as sent with the commerce payload. */
+        market?: string;
+        /** @description Whether records must match all filters or any filter. */
+        match?: 'all' | 'any';
+        /** @description Maximum number of results to include. */
+        maxResults?: number;
+        /** @description Operating system used by the visitor. */
+        os?: string;
+        /** @description Page number, starting at 1. */
+        page?: number;
+        /** @description Number of results per page. */
+        pageSize?: number;
+        /** @description Filter by page URL path. */
+        path?: string;
+        /** @description Only orders containing this product. Amounts become the product's net line totals. */
+        productId?: string;
+        /** @description Filter by page URL query string. */
+        query?: string;
+        /** @description Filter by referring URL. */
+        referrer?: string;
+        /** @description Region or subdivision of the visitor. */
+        region?: string;
+        /** @description Search text used to filter results. */
+        search?: string;
+        /** @description ID of a saved segment used to filter results. */
+        segment?: string;
+        /** @description Start of the date range as a Unix timestamp in milliseconds. */
+        startAt: number;
+        /** @description Tag attached to the tracked activity. */
+        tag?: string;
+        /** @description IANA time zone used to interpret dates and group results, for example America/New_York. */
+        timezone?: string;
+        /** @description Filter by page title. */
+        title?: string;
+        /** @description Time interval used to group results: minute, hour, day, month, or year. */
+        unit?: string;
+        /** @description UTM campaign name. */
+        utmCampaign?: string;
+        /** @description UTM campaign content. */
+        utmContent?: string;
+        /** @description UTM campaign medium. */
+        utmMedium?: string;
+        /** @description UTM campaign source. */
+        utmSource?: string;
+        /** @description UTM campaign search term. */
+        utmTerm?: string;
+        windowHours?: number;
+      };
+      header?: never;
+      path: {
+        /** @description ID of the website. */
+        websiteId: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Analytics results. */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': {
+            /** @description Number of matching records. */
+            count: number;
+            /** @description Data returned by the operation. */
+            data: {
+              /** @description Browser used by the visitor. */
+              browser: string;
+              /** @description Country code of the visitor. */
+              country: string;
+              /** @description Date and time the record was created. */
+              createdAt: string;
+              /** @description Currency code used for revenue values. */
+              currency: string;
+              /** @description Device category used by the visitor. */
+              device: string;
+              /** @description Name of the custom event. */
+              eventName: string;
+              /** @description Unique identifier of the resource. */
+              id: string;
+              lines: number;
+              /** @description Market the order was placed in, as sent with the commerce payload. */
+              market: string;
+              orderId: string;
+              /** @description Operating system used by the visitor. */
+              os: string;
+              /** @description ID of the visitor session. */
+              sessionId: string;
+              /** @description Amount in the requested currency. */
+              shipping: number;
+              /** @description Amount in the requested currency. */
+              subtotal: number;
+              /** @description Amount in the requested currency. */
+              tax: number;
+              /** @description Amount in the requested currency. */
+              total: number;
+              /** @description Number of item units. */
+              units: number;
+              /** @description ID of the visit. */
+              visitId: string;
+            }[];
+            /** @description Page number, starting at 1. */
+            page: number;
+            /** @description Number of results per page. */
+            pageSize: number;
+          };
+        };
+      };
+      /** @description Bad request. */
+      400: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          /**
+           * @example {
+           *       "error": {
+           *         "code": "bad-request",
+           *         "message": "Bad request.",
+           *         "status": 400
+           *       }
+           *     }
+           */
+          'application/json': components['schemas']['ApiError'];
+        };
+      };
+      /** @description Unauthorized. */
+      401: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          /**
+           * @example {
+           *       "error": {
+           *         "code": "unauthorized",
+           *         "message": "Unauthorized.",
+           *         "status": 401
+           *       }
+           *     }
+           */
+          'application/json': components['schemas']['ApiError'];
+        };
+      };
+      /** @description Not found. */
+      404: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          /**
+           * @example {
+           *       "error": {
+           *         "code": "not-found",
+           *         "message": "Not found.",
+           *         "status": 404
+           *       }
+           *     }
+           */
+          'application/json': components['schemas']['ApiError'];
+        };
+      };
+    };
+  };
+  getWebsiteCommerceOrder: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        commerceEventId: string;
+        /** @description ID of the website. */
+        websiteId: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description The order with its items. */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': {
+            cartId: string;
+            checkoutId: string;
+            /** @description Date and time the record was created. */
+            createdAt: string;
+            /** @description Currency code used for revenue values. */
+            currency: string;
+            /** @description Name of the custom event. */
+            eventName: string;
+            /** @description Unique identifier of the resource. */
+            id: string;
+            items: {
+              /** @description Product category sent with the commerce item. */
+              category: string;
+              index: number;
+              /** @description Display name of the resource. */
+              name: string;
+              /** @description Amount in the requested currency. */
+              price: number;
+              /** @description Product identifier sent with the commerce item. */
+              productId: string;
+              quantity: number;
+              /** @description Amount in the requested currency. */
+              total: number;
+              /** @description Product variant sent with the commerce item. */
+              variant: string;
+            }[];
+            /** @description Market the order was placed in, as sent with the commerce payload. */
+            market: string;
+            orderId: string;
+            /** @description ID of the visitor session. */
+            sessionId: string;
+            /** @description Amount in the requested currency. */
+            shipping: number;
+            /** @description Amount in the requested currency. */
+            subtotal: number;
+            /** @description Amount in the requested currency. */
+            tax: number;
+            /** @description Amount in the requested currency. */
+            total: number;
+            /** @description ID of the visit. */
+            visitId: string;
+          };
+        };
+      };
+      /** @description Bad request. */
+      400: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          /**
+           * @example {
+           *       "error": {
+           *         "code": "bad-request",
+           *         "message": "Bad request.",
+           *         "status": 400
+           *       }
+           *     }
+           */
+          'application/json': components['schemas']['ApiError'];
+        };
+      };
+      /** @description Unauthorized. */
+      401: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          /**
+           * @example {
+           *       "error": {
+           *         "code": "unauthorized",
+           *         "message": "Unauthorized.",
+           *         "status": 401
+           *       }
+           *     }
+           */
+          'application/json': components['schemas']['ApiError'];
+        };
+      };
+      /** @description Not found. */
+      404: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          /**
+           * @example {
+           *       "error": {
+           *         "code": "not-found",
+           *         "message": "Not found.",
+           *         "status": 404
+           *       }
+           *     }
+           */
+          'application/json': components['schemas']['ApiError'];
+        };
+      };
+    };
+  };
+  getWebsiteCommerceProducts: {
+    parameters: {
+      query: {
+        /** @description Browser used by the visitor. */
+        browser?: string;
+        /** @description Only orders containing this category. Amounts become the category's net line totals. */
+        category?: string;
+        /** @description City of the visitor. */
+        city?: string;
+        /** @description ID of a saved cohort used to filter visitors. */
+        cohort?: string;
+        /** @description Country code of the visitor. */
+        country?: string;
+        /** @description Currency code used for revenue values. */
+        currency: string;
+        /** @description Device category used by the visitor. */
+        device?: string;
+        /** @description Custom identifier assigned to the visitor. */
+        distinctId?: string;
+        /** @description End of the date range as a Unix timestamp in milliseconds. */
+        endAt: number;
+        /** @description Filter by custom event name. */
+        event?: string;
+        /** @description Event type: 1 for a pageview or 2 for a custom event. */
+        eventType?: number;
+        /** @description Set a non-empty value to exclude visits with only one pageview. */
+        excludeBounce?: string;
+        /** @description Group products by product, variant or category. */
+        groupBy?: 'product' | 'variant' | 'category';
+        /** @description Hostname on which the activity occurred. */
+        hostname?: string;
+        /** @description Preferred language reported by the visitor browser. */
+        language?: string;
+        /** @description Market the order was placed in, as sent with the commerce payload. */
+        market?: string;
+        /** @description Whether records must match all filters or any filter. */
+        match?: 'all' | 'any';
+        maxCartRate?: number;
+        /** @description Maximum number of results to include. */
+        maxResults?: number;
+        minViews?: number;
+        /** @description Operating system used by the visitor. */
+        os?: string;
+        /** @description Page number, starting at 1. */
+        page?: number;
+        /** @description Number of results per page. */
+        pageSize?: number;
+        /** @description Filter by page URL path. */
+        path?: string;
+        /** @description Only orders containing this product. Amounts become the product's net line totals. */
+        productId?: string;
+        /** @description Filter by page URL query string. */
+        query?: string;
+        /** @description Filter by referring URL. */
+        referrer?: string;
+        /** @description Region or subdivision of the visitor. */
+        region?: string;
+        /** @description Search text used to filter results. */
+        search?: string;
+        /** @description ID of a saved segment used to filter results. */
+        segment?: string;
+        /** @description Order products by revenue, units or orders. */
+        sort?:
+          | 'revenue'
+          | 'units'
+          | 'orders'
+          | 'views'
+          | 'additions'
+          | 'addToCartRate'
+          | 'purchaseRate'
+          | 'cartToPurchaseRate';
+        /** @description Start of the date range as a Unix timestamp in milliseconds. */
+        startAt: number;
+        /** @description Tag attached to the tracked activity. */
+        tag?: string;
+        /** @description IANA time zone used to interpret dates and group results, for example America/New_York. */
+        timezone?: string;
+        /** @description Filter by page title. */
+        title?: string;
+        /** @description Time interval used to group results: minute, hour, day, month, or year. */
+        unit?: string;
+        /** @description UTM campaign name. */
+        utmCampaign?: string;
+        /** @description UTM campaign content. */
+        utmContent?: string;
+        /** @description UTM campaign medium. */
+        utmMedium?: string;
+        /** @description UTM campaign source. */
+        utmSource?: string;
+        /** @description UTM campaign search term. */
+        utmTerm?: string;
+        windowHours?: number;
+      };
+      header?: never;
+      path: {
+        /** @description ID of the website. */
+        websiteId: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Analytics results. */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': {
+            /** @description Number of matching records. */
+            count: number;
+            /** @description Data returned by the operation. */
+            data: {
+              addingVisits: number;
+              additions: number;
+              addToCartRate: number;
+              /** @description Amount in the requested currency. */
+              averagePrice: number;
+              cartToPurchaseRate: number;
+              /** @description Product category sent with the commerce item. */
+              category: string;
+              convertedCartVisits: number;
+              convertedOrderVisits: number;
+              convertedPurchaseVisits: number;
+              /** @description Display name of the resource. */
+              name: string;
+              /** @description Number of completed orders (commerce payments with an order ID). */
+              orders: number;
+              /** @description Product identifier sent with the commerce item. */
+              productId: string;
+              purchaseRate: number;
+              /** @description Amount in the requested currency. */
+              revenue: number;
+              /** @description Number of item units. */
+              units: number;
+              /** @description Product variant sent with the commerce item. */
+              variant: string;
+              viewingVisits: number;
+              /** @description Pageview counts for the selected period. */
+              views: number;
+            }[];
+            /** @description Page number, starting at 1. */
+            page: number;
+            /** @description Number of results per page. */
+            pageSize: number;
+          };
+        };
+      };
+      /** @description Bad request. */
+      400: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          /**
+           * @example {
+           *       "error": {
+           *         "code": "bad-request",
+           *         "message": "Bad request.",
+           *         "status": 400
+           *       }
+           *     }
+           */
+          'application/json': components['schemas']['ApiError'];
+        };
+      };
+      /** @description Unauthorized. */
+      401: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          /**
+           * @example {
+           *       "error": {
+           *         "code": "unauthorized",
+           *         "message": "Unauthorized.",
+           *         "status": 401
+           *       }
+           *     }
+           */
+          'application/json': components['schemas']['ApiError'];
+        };
+      };
+      /** @description Not found. */
+      404: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          /**
+           * @example {
+           *       "error": {
+           *         "code": "not-found",
+           *         "message": "Not found.",
+           *         "status": 404
+           *       }
+           *     }
+           */
+          'application/json': components['schemas']['ApiError'];
+        };
+      };
+    };
+  };
+  getWebsiteCommerceReports: {
+    parameters: {
+      query?: {
+        /** @description Maximum number of results to include. */
+        maxResults?: number;
+        /** @description Page number, starting at 1. */
+        page?: number;
+        /** @description Number of results per page. */
+        pageSize?: number;
+        /** @description Search text used to filter results. */
+        search?: string;
+      };
+      header?: never;
+      path: {
+        /** @description ID of the website. */
+        websiteId: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Commerce result. */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': {
+            /** @description Number of matching records. */
+            count: number;
+            /** @description Data returned by the operation. */
+            data: {
+              /** @description Date and time the record was created. */
+              createdAt: string | null;
+              /**
+               * @description Description of the resource.
+               * @default
+               */
+              description: string;
+              /**
+               * Format: uuid
+               * @description Unique identifier of the resource.
+               */
+              id: string;
+              /** @description Display name of the resource. */
+              name: string;
+              /** @description Configuration parameters for the resource. */
+              parameters: {
+                /** @description Product category sent with the commerce item. */
+                category?: string;
+                /**
+                 * @default [
+                 *       "views",
+                 *       "additions",
+                 *       "addToCartRate",
+                 *       "purchaseRate",
+                 *       "cartToPurchaseRate",
+                 *       "units",
+                 *       "orders",
+                 *       "averagePrice",
+                 *       "revenue"
+                 *     ]
+                 */
+                columns: (
+                  | 'views'
+                  | 'additions'
+                  | 'addToCartRate'
+                  | 'purchaseRate'
+                  | 'cartToPurchaseRate'
+                  | 'units'
+                  | 'orders'
+                  | 'averagePrice'
+                  | 'revenue'
+                )[];
+                /** @description Currency code used for revenue values. */
+                currency: string;
+                /**
+                 * @default {
+                 *       "days": 30,
+                 *       "mode": "rolling"
+                 *     }
+                 */
+                date:
+                  | {
+                      days: number;
+                      /** @constant */
+                      mode: 'rolling';
+                    }
+                  | {
+                      /** @description End of the date range as a Unix timestamp in milliseconds. */
+                      endAt: number;
+                      /** @constant */
+                      mode: 'fixed';
+                      /** @description Start of the date range as a Unix timestamp in milliseconds. */
+                      startAt: number;
+                    };
+                /**
+                 * @description Filters applied to the analytics data.
+                 * @default {}
+                 */
+                filters: {
+                  [key: string]: string;
+                };
+                /**
+                 * @default product
+                 * @enum {string}
+                 */
+                groupBy: 'product' | 'variant' | 'category';
+                /** @description Market the order was placed in, as sent with the commerce payload. */
+                market?: string;
+                /** @default 1 */
+                maxCartRate: number;
+                /** @default 0 */
+                minViews: number;
+                /** @description Product identifier sent with the commerce item. */
+                productId?: string;
+                /**
+                 * @description Search text used to filter results.
+                 * @default
+                 */
+                search: string;
+                /**
+                 * @default revenue
+                 * @enum {string}
+                 */
+                sort:
+                  | 'revenue'
+                  | 'units'
+                  | 'orders'
+                  | 'views'
+                  | 'additions'
+                  | 'addToCartRate'
+                  | 'purchaseRate'
+                  | 'cartToPurchaseRate';
+                /** @description IANA time zone used to interpret dates and group results, for example America/New_York. */
+                timezone: string;
+                /** @enum {string} */
+                type: 'products' | 'checkout';
+                /** @constant */
+                version: 1;
+                /** @default 24 */
+                windowHours: number;
+              };
+              /** @constant */
+              type: 'commerce';
+              /** @description Date and time the record was last updated. */
+              updatedAt: string | null;
+              /**
+               * Format: uuid
+               * @description ID of the associated user.
+               */
+              userId: string;
+              /**
+               * Format: uuid
+               * @description ID of the website.
+               */
+              websiteId: string;
+            }[];
+            /** @description Page number, starting at 1. */
+            page: number;
+            /** @description Number of results per page. */
+            pageSize: number;
+          };
+        };
+      };
+      /** @description Bad request. */
+      400: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          /**
+           * @example {
+           *       "error": {
+           *         "code": "bad-request",
+           *         "message": "Bad request.",
+           *         "status": 400
+           *       }
+           *     }
+           */
+          'application/json': components['schemas']['ApiError'];
+        };
+      };
+      /** @description Unauthorized. */
+      401: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          /**
+           * @example {
+           *       "error": {
+           *         "code": "unauthorized",
+           *         "message": "Unauthorized.",
+           *         "status": 401
+           *       }
+           *     }
+           */
+          'application/json': components['schemas']['ApiError'];
+        };
+      };
+      /** @description Not found. */
+      404: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          /**
+           * @example {
+           *       "error": {
+           *         "code": "not-found",
+           *         "message": "Not found.",
+           *         "status": 404
+           *       }
+           *     }
+           */
+          'application/json': components['schemas']['ApiError'];
+        };
+      };
+    };
+  };
+  createWebsiteCommerceReport: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        /** @description ID of the website. */
+        websiteId: string;
+      };
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        'application/json': {
+          /**
+           * @description Description of the resource.
+           * @default
+           */
+          description?: string;
+          /** @description Display name of the resource. */
+          name: string;
+          /** @description Configuration parameters for the resource. */
+          parameters: {
+            /** @description Product category sent with the commerce item. */
+            category?: string;
+            /**
+             * @default [
+             *       "views",
+             *       "additions",
+             *       "addToCartRate",
+             *       "purchaseRate",
+             *       "cartToPurchaseRate",
+             *       "units",
+             *       "orders",
+             *       "averagePrice",
+             *       "revenue"
+             *     ]
+             */
+            columns?: (
+              | 'views'
+              | 'additions'
+              | 'addToCartRate'
+              | 'purchaseRate'
+              | 'cartToPurchaseRate'
+              | 'units'
+              | 'orders'
+              | 'averagePrice'
+              | 'revenue'
+            )[];
+            /** @description Currency code used for revenue values. */
+            currency: string;
+            /**
+             * @default {
+             *       "days": 30,
+             *       "mode": "rolling"
+             *     }
+             */
+            date?:
+              | {
+                  days: number;
+                  /** @constant */
+                  mode: 'rolling';
+                }
+              | {
+                  /** @description End of the date range as a Unix timestamp in milliseconds. */
+                  endAt: number;
+                  /** @constant */
+                  mode: 'fixed';
+                  /** @description Start of the date range as a Unix timestamp in milliseconds. */
+                  startAt: number;
+                };
+            /**
+             * @description Filters applied to the analytics data.
+             * @default {}
+             */
+            filters?: {
+              [key: string]: string;
+            };
+            /**
+             * @default product
+             * @enum {string}
+             */
+            groupBy?: 'product' | 'variant' | 'category';
+            /** @description Market the order was placed in, as sent with the commerce payload. */
+            market?: string;
+            /** @default 1 */
+            maxCartRate?: number;
+            /** @default 0 */
+            minViews?: number;
+            /** @description Product identifier sent with the commerce item. */
+            productId?: string;
+            /**
+             * @description Search text used to filter results.
+             * @default
+             */
+            search?: string;
+            /**
+             * @default revenue
+             * @enum {string}
+             */
+            sort?:
+              | 'revenue'
+              | 'units'
+              | 'orders'
+              | 'views'
+              | 'additions'
+              | 'addToCartRate'
+              | 'purchaseRate'
+              | 'cartToPurchaseRate';
+            /** @description IANA time zone used to interpret dates and group results, for example America/New_York. */
+            timezone?: string;
+            /** @enum {string} */
+            type: 'products' | 'checkout';
+            /** @constant */
+            version: 1;
+            /** @default 24 */
+            windowHours?: number;
+          };
+        };
+      };
+    };
+    responses: {
+      /** @description Commerce result. */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': {
+            /** @description Date and time the record was created. */
+            createdAt: string | null;
+            /**
+             * @description Description of the resource.
+             * @default
+             */
+            description: string;
+            /**
+             * Format: uuid
+             * @description Unique identifier of the resource.
+             */
+            id: string;
+            /** @description Display name of the resource. */
+            name: string;
+            /** @description Configuration parameters for the resource. */
+            parameters: {
+              /** @description Product category sent with the commerce item. */
+              category?: string;
+              /**
+               * @default [
+               *       "views",
+               *       "additions",
+               *       "addToCartRate",
+               *       "purchaseRate",
+               *       "cartToPurchaseRate",
+               *       "units",
+               *       "orders",
+               *       "averagePrice",
+               *       "revenue"
+               *     ]
+               */
+              columns: (
+                | 'views'
+                | 'additions'
+                | 'addToCartRate'
+                | 'purchaseRate'
+                | 'cartToPurchaseRate'
+                | 'units'
+                | 'orders'
+                | 'averagePrice'
+                | 'revenue'
+              )[];
+              /** @description Currency code used for revenue values. */
+              currency: string;
+              /**
+               * @default {
+               *       "days": 30,
+               *       "mode": "rolling"
+               *     }
+               */
+              date:
+                | {
+                    days: number;
+                    /** @constant */
+                    mode: 'rolling';
+                  }
+                | {
+                    /** @description End of the date range as a Unix timestamp in milliseconds. */
+                    endAt: number;
+                    /** @constant */
+                    mode: 'fixed';
+                    /** @description Start of the date range as a Unix timestamp in milliseconds. */
+                    startAt: number;
+                  };
+              /**
+               * @description Filters applied to the analytics data.
+               * @default {}
+               */
+              filters: {
+                [key: string]: string;
+              };
+              /**
+               * @default product
+               * @enum {string}
+               */
+              groupBy: 'product' | 'variant' | 'category';
+              /** @description Market the order was placed in, as sent with the commerce payload. */
+              market?: string;
+              /** @default 1 */
+              maxCartRate: number;
+              /** @default 0 */
+              minViews: number;
+              /** @description Product identifier sent with the commerce item. */
+              productId?: string;
+              /**
+               * @description Search text used to filter results.
+               * @default
+               */
+              search: string;
+              /**
+               * @default revenue
+               * @enum {string}
+               */
+              sort:
+                | 'revenue'
+                | 'units'
+                | 'orders'
+                | 'views'
+                | 'additions'
+                | 'addToCartRate'
+                | 'purchaseRate'
+                | 'cartToPurchaseRate';
+              /** @description IANA time zone used to interpret dates and group results, for example America/New_York. */
+              timezone: string;
+              /** @enum {string} */
+              type: 'products' | 'checkout';
+              /** @constant */
+              version: 1;
+              /** @default 24 */
+              windowHours: number;
+            };
+            /** @constant */
+            type: 'commerce';
+            /** @description Date and time the record was last updated. */
+            updatedAt: string | null;
+            /**
+             * Format: uuid
+             * @description ID of the associated user.
+             */
+            userId: string;
+            /**
+             * Format: uuid
+             * @description ID of the website.
+             */
+            websiteId: string;
+          };
+        };
+      };
+      /** @description Bad request. */
+      400: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          /**
+           * @example {
+           *       "error": {
+           *         "code": "bad-request",
+           *         "message": "Bad request.",
+           *         "status": 400
+           *       }
+           *     }
+           */
+          'application/json': components['schemas']['ApiError'];
+        };
+      };
+      /** @description Unauthorized. */
+      401: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          /**
+           * @example {
+           *       "error": {
+           *         "code": "unauthorized",
+           *         "message": "Unauthorized.",
+           *         "status": 401
+           *       }
+           *     }
+           */
+          'application/json': components['schemas']['ApiError'];
+        };
+      };
+      /** @description Not found. */
+      404: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          /**
+           * @example {
+           *       "error": {
+           *         "code": "not-found",
+           *         "message": "Not found.",
+           *         "status": 404
+           *       }
+           *     }
+           */
+          'application/json': components['schemas']['ApiError'];
+        };
+      };
+    };
+  };
+  getWebsiteCommerceReport: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        /** @description ID of the saved report. */
+        reportId: string;
+        /** @description ID of the website. */
+        websiteId: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Commerce result. */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': {
+            /** @description Date and time the record was created. */
+            createdAt: string | null;
+            /**
+             * @description Description of the resource.
+             * @default
+             */
+            description: string;
+            /**
+             * Format: uuid
+             * @description Unique identifier of the resource.
+             */
+            id: string;
+            /** @description Display name of the resource. */
+            name: string;
+            /** @description Configuration parameters for the resource. */
+            parameters: {
+              /** @description Product category sent with the commerce item. */
+              category?: string;
+              /**
+               * @default [
+               *       "views",
+               *       "additions",
+               *       "addToCartRate",
+               *       "purchaseRate",
+               *       "cartToPurchaseRate",
+               *       "units",
+               *       "orders",
+               *       "averagePrice",
+               *       "revenue"
+               *     ]
+               */
+              columns: (
+                | 'views'
+                | 'additions'
+                | 'addToCartRate'
+                | 'purchaseRate'
+                | 'cartToPurchaseRate'
+                | 'units'
+                | 'orders'
+                | 'averagePrice'
+                | 'revenue'
+              )[];
+              /** @description Currency code used for revenue values. */
+              currency: string;
+              /**
+               * @default {
+               *       "days": 30,
+               *       "mode": "rolling"
+               *     }
+               */
+              date:
+                | {
+                    days: number;
+                    /** @constant */
+                    mode: 'rolling';
+                  }
+                | {
+                    /** @description End of the date range as a Unix timestamp in milliseconds. */
+                    endAt: number;
+                    /** @constant */
+                    mode: 'fixed';
+                    /** @description Start of the date range as a Unix timestamp in milliseconds. */
+                    startAt: number;
+                  };
+              /**
+               * @description Filters applied to the analytics data.
+               * @default {}
+               */
+              filters: {
+                [key: string]: string;
+              };
+              /**
+               * @default product
+               * @enum {string}
+               */
+              groupBy: 'product' | 'variant' | 'category';
+              /** @description Market the order was placed in, as sent with the commerce payload. */
+              market?: string;
+              /** @default 1 */
+              maxCartRate: number;
+              /** @default 0 */
+              minViews: number;
+              /** @description Product identifier sent with the commerce item. */
+              productId?: string;
+              /**
+               * @description Search text used to filter results.
+               * @default
+               */
+              search: string;
+              /**
+               * @default revenue
+               * @enum {string}
+               */
+              sort:
+                | 'revenue'
+                | 'units'
+                | 'orders'
+                | 'views'
+                | 'additions'
+                | 'addToCartRate'
+                | 'purchaseRate'
+                | 'cartToPurchaseRate';
+              /** @description IANA time zone used to interpret dates and group results, for example America/New_York. */
+              timezone: string;
+              /** @enum {string} */
+              type: 'products' | 'checkout';
+              /** @constant */
+              version: 1;
+              /** @default 24 */
+              windowHours: number;
+            };
+            /** @constant */
+            type: 'commerce';
+            /** @description Date and time the record was last updated. */
+            updatedAt: string | null;
+            /**
+             * Format: uuid
+             * @description ID of the associated user.
+             */
+            userId: string;
+            /**
+             * Format: uuid
+             * @description ID of the website.
+             */
+            websiteId: string;
+          };
+        };
+      };
+      /** @description Bad request. */
+      400: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          /**
+           * @example {
+           *       "error": {
+           *         "code": "bad-request",
+           *         "message": "Bad request.",
+           *         "status": 400
+           *       }
+           *     }
+           */
+          'application/json': components['schemas']['ApiError'];
+        };
+      };
+      /** @description Unauthorized. */
+      401: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          /**
+           * @example {
+           *       "error": {
+           *         "code": "unauthorized",
+           *         "message": "Unauthorized.",
+           *         "status": 401
+           *       }
+           *     }
+           */
+          'application/json': components['schemas']['ApiError'];
+        };
+      };
+      /** @description Not found. */
+      404: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          /**
+           * @example {
+           *       "error": {
+           *         "code": "not-found",
+           *         "message": "Not found.",
+           *         "status": 404
+           *       }
+           *     }
+           */
+          'application/json': components['schemas']['ApiError'];
+        };
+      };
+    };
+  };
+  updateWebsiteCommerceReport: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        /** @description ID of the saved report. */
+        reportId: string;
+        /** @description ID of the website. */
+        websiteId: string;
+      };
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        'application/json': {
+          /**
+           * @description Description of the resource.
+           * @default
+           */
+          description?: string;
+          /** @description Display name of the resource. */
+          name: string;
+          /** @description Configuration parameters for the resource. */
+          parameters: {
+            /** @description Product category sent with the commerce item. */
+            category?: string;
+            /**
+             * @default [
+             *       "views",
+             *       "additions",
+             *       "addToCartRate",
+             *       "purchaseRate",
+             *       "cartToPurchaseRate",
+             *       "units",
+             *       "orders",
+             *       "averagePrice",
+             *       "revenue"
+             *     ]
+             */
+            columns?: (
+              | 'views'
+              | 'additions'
+              | 'addToCartRate'
+              | 'purchaseRate'
+              | 'cartToPurchaseRate'
+              | 'units'
+              | 'orders'
+              | 'averagePrice'
+              | 'revenue'
+            )[];
+            /** @description Currency code used for revenue values. */
+            currency: string;
+            /**
+             * @default {
+             *       "days": 30,
+             *       "mode": "rolling"
+             *     }
+             */
+            date?:
+              | {
+                  days: number;
+                  /** @constant */
+                  mode: 'rolling';
+                }
+              | {
+                  /** @description End of the date range as a Unix timestamp in milliseconds. */
+                  endAt: number;
+                  /** @constant */
+                  mode: 'fixed';
+                  /** @description Start of the date range as a Unix timestamp in milliseconds. */
+                  startAt: number;
+                };
+            /**
+             * @description Filters applied to the analytics data.
+             * @default {}
+             */
+            filters?: {
+              [key: string]: string;
+            };
+            /**
+             * @default product
+             * @enum {string}
+             */
+            groupBy?: 'product' | 'variant' | 'category';
+            /** @description Market the order was placed in, as sent with the commerce payload. */
+            market?: string;
+            /** @default 1 */
+            maxCartRate?: number;
+            /** @default 0 */
+            minViews?: number;
+            /** @description Product identifier sent with the commerce item. */
+            productId?: string;
+            /**
+             * @description Search text used to filter results.
+             * @default
+             */
+            search?: string;
+            /**
+             * @default revenue
+             * @enum {string}
+             */
+            sort?:
+              | 'revenue'
+              | 'units'
+              | 'orders'
+              | 'views'
+              | 'additions'
+              | 'addToCartRate'
+              | 'purchaseRate'
+              | 'cartToPurchaseRate';
+            /** @description IANA time zone used to interpret dates and group results, for example America/New_York. */
+            timezone?: string;
+            /** @enum {string} */
+            type: 'products' | 'checkout';
+            /** @constant */
+            version: 1;
+            /** @default 24 */
+            windowHours?: number;
+          };
+        };
+      };
+    };
+    responses: {
+      /** @description Commerce result. */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': {
+            /** @description Date and time the record was created. */
+            createdAt: string | null;
+            /**
+             * @description Description of the resource.
+             * @default
+             */
+            description: string;
+            /**
+             * Format: uuid
+             * @description Unique identifier of the resource.
+             */
+            id: string;
+            /** @description Display name of the resource. */
+            name: string;
+            /** @description Configuration parameters for the resource. */
+            parameters: {
+              /** @description Product category sent with the commerce item. */
+              category?: string;
+              /**
+               * @default [
+               *       "views",
+               *       "additions",
+               *       "addToCartRate",
+               *       "purchaseRate",
+               *       "cartToPurchaseRate",
+               *       "units",
+               *       "orders",
+               *       "averagePrice",
+               *       "revenue"
+               *     ]
+               */
+              columns: (
+                | 'views'
+                | 'additions'
+                | 'addToCartRate'
+                | 'purchaseRate'
+                | 'cartToPurchaseRate'
+                | 'units'
+                | 'orders'
+                | 'averagePrice'
+                | 'revenue'
+              )[];
+              /** @description Currency code used for revenue values. */
+              currency: string;
+              /**
+               * @default {
+               *       "days": 30,
+               *       "mode": "rolling"
+               *     }
+               */
+              date:
+                | {
+                    days: number;
+                    /** @constant */
+                    mode: 'rolling';
+                  }
+                | {
+                    /** @description End of the date range as a Unix timestamp in milliseconds. */
+                    endAt: number;
+                    /** @constant */
+                    mode: 'fixed';
+                    /** @description Start of the date range as a Unix timestamp in milliseconds. */
+                    startAt: number;
+                  };
+              /**
+               * @description Filters applied to the analytics data.
+               * @default {}
+               */
+              filters: {
+                [key: string]: string;
+              };
+              /**
+               * @default product
+               * @enum {string}
+               */
+              groupBy: 'product' | 'variant' | 'category';
+              /** @description Market the order was placed in, as sent with the commerce payload. */
+              market?: string;
+              /** @default 1 */
+              maxCartRate: number;
+              /** @default 0 */
+              minViews: number;
+              /** @description Product identifier sent with the commerce item. */
+              productId?: string;
+              /**
+               * @description Search text used to filter results.
+               * @default
+               */
+              search: string;
+              /**
+               * @default revenue
+               * @enum {string}
+               */
+              sort:
+                | 'revenue'
+                | 'units'
+                | 'orders'
+                | 'views'
+                | 'additions'
+                | 'addToCartRate'
+                | 'purchaseRate'
+                | 'cartToPurchaseRate';
+              /** @description IANA time zone used to interpret dates and group results, for example America/New_York. */
+              timezone: string;
+              /** @enum {string} */
+              type: 'products' | 'checkout';
+              /** @constant */
+              version: 1;
+              /** @default 24 */
+              windowHours: number;
+            };
+            /** @constant */
+            type: 'commerce';
+            /** @description Date and time the record was last updated. */
+            updatedAt: string | null;
+            /**
+             * Format: uuid
+             * @description ID of the associated user.
+             */
+            userId: string;
+            /**
+             * Format: uuid
+             * @description ID of the website.
+             */
+            websiteId: string;
+          };
+        };
+      };
+      /** @description Bad request. */
+      400: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          /**
+           * @example {
+           *       "error": {
+           *         "code": "bad-request",
+           *         "message": "Bad request.",
+           *         "status": 400
+           *       }
+           *     }
+           */
+          'application/json': components['schemas']['ApiError'];
+        };
+      };
+      /** @description Unauthorized. */
+      401: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          /**
+           * @example {
+           *       "error": {
+           *         "code": "unauthorized",
+           *         "message": "Unauthorized.",
+           *         "status": 401
+           *       }
+           *     }
+           */
+          'application/json': components['schemas']['ApiError'];
+        };
+      };
+      /** @description Not found. */
+      404: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          /**
+           * @example {
+           *       "error": {
+           *         "code": "not-found",
+           *         "message": "Not found.",
+           *         "status": 404
+           *       }
+           *     }
+           */
+          'application/json': components['schemas']['ApiError'];
+        };
+      };
+    };
+  };
+  deleteWebsiteCommerceReport: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        /** @description ID of the saved report. */
+        reportId: string;
+        /** @description ID of the website. */
+        websiteId: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Commerce result. */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': {
+            /**
+             * @description Whether the operation succeeded.
+             * @constant
+             */
+            ok: true;
+          };
+        };
+      };
+      /** @description Bad request. */
+      400: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          /**
+           * @example {
+           *       "error": {
+           *         "code": "bad-request",
+           *         "message": "Bad request.",
+           *         "status": 400
+           *       }
+           *     }
+           */
+          'application/json': components['schemas']['ApiError'];
+        };
+      };
+      /** @description Unauthorized. */
+      401: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          /**
+           * @example {
+           *       "error": {
+           *         "code": "unauthorized",
+           *         "message": "Unauthorized.",
+           *         "status": 401
+           *       }
+           *     }
+           */
+          'application/json': components['schemas']['ApiError'];
+        };
+      };
+      /** @description Not found. */
+      404: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          /**
+           * @example {
+           *       "error": {
+           *         "code": "not-found",
+           *         "message": "Not found.",
+           *         "status": 404
+           *       }
+           *     }
+           */
+          'application/json': components['schemas']['ApiError'];
+        };
+      };
+    };
+  };
+  getWebsiteCommerceReportStats: {
+    parameters: {
+      query?: {
+        /** @description End of the date range as a Unix timestamp in milliseconds. */
+        endAt?: number;
+        /** @description Page number, starting at 1. */
+        page?: number;
+        /** @description Number of results per page. */
+        pageSize?: number;
+        /** @description Start of the date range as a Unix timestamp in milliseconds. */
+        startAt?: number;
+      };
+      header?: never;
+      path: {
+        /** @description ID of the saved report. */
+        reportId: string;
+        /** @description ID of the website. */
+        websiteId: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Commerce result. */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': {
+            /** @description Data returned by the operation. */
+            data:
+              | {
+                  /** @description Number of matching records. */
+                  count: number;
+                  /** @description Data returned by the operation. */
+                  data: {
+                    addingVisits: number;
+                    additions: number;
+                    addToCartRate: number;
+                    /** @description Amount in the requested currency. */
+                    averagePrice: number;
+                    cartToPurchaseRate: number;
+                    /** @description Product category sent with the commerce item. */
+                    category: string;
+                    convertedCartVisits: number;
+                    convertedOrderVisits: number;
+                    convertedPurchaseVisits: number;
+                    /** @description Display name of the resource. */
+                    name: string;
+                    /** @description Number of completed orders (commerce payments with an order ID). */
+                    orders: number;
+                    /** @description Product identifier sent with the commerce item. */
+                    productId: string;
+                    purchaseRate: number;
+                    /** @description Amount in the requested currency. */
+                    revenue: number;
+                    /** @description Number of item units. */
+                    units: number;
+                    /** @description Product variant sent with the commerce item. */
+                    variant: string;
+                    viewingVisits: number;
+                    /** @description Pageview counts for the selected period. */
+                    views: number;
+                  }[];
+                  /** @description Page number, starting at 1. */
+                  page: number;
+                  /** @description Number of results per page. */
+                  pageSize: number;
+                }
+              | {
+                  abandonedCarts: number;
+                  /** @description Amount in the requested currency. */
+                  abandonedCartValue: number;
+                  abandonedCheckouts: number;
+                  /** @description Amount in the requested currency. */
+                  abandonedCheckoutValue: number;
+                  completedCheckouts: number;
+                  medianSecondsCheckoutToOrder: number;
+                  medianSecondsToOrder: number;
+                  /** @description Number of completed orders (commerce payments with an order ID). */
+                  orders: number;
+                  pendingCarts: number;
+                  pendingCheckouts: number;
+                  /** @description Amount in the requested currency. */
+                  revenue: number;
+                  stages: {
+                    /** @description Observed identified attempts; no implied earlier stages. */
+                    attempts: number;
+                    rate: number;
+                    /** @description Compatibility alias for attempts. */
+                    sessions: number;
+                    /** @enum {string} */
+                    stage: 'cart' | 'checkout' | 'order';
+                    stepRate: number;
+                  }[];
+                  unclassifiedEvents: number;
+                  unlinkedEvents: number;
+                  windowHours: number;
+                };
+            report: {
+              /** @description Date and time the record was created. */
+              createdAt: string | null;
+              /**
+               * @description Description of the resource.
+               * @default
+               */
+              description: string;
+              /**
+               * Format: uuid
+               * @description Unique identifier of the resource.
+               */
+              id: string;
+              /** @description Display name of the resource. */
+              name: string;
+              /** @description Configuration parameters for the resource. */
+              parameters: {
+                /** @description Product category sent with the commerce item. */
+                category?: string;
+                /**
+                 * @default [
+                 *       "views",
+                 *       "additions",
+                 *       "addToCartRate",
+                 *       "purchaseRate",
+                 *       "cartToPurchaseRate",
+                 *       "units",
+                 *       "orders",
+                 *       "averagePrice",
+                 *       "revenue"
+                 *     ]
+                 */
+                columns: (
+                  | 'views'
+                  | 'additions'
+                  | 'addToCartRate'
+                  | 'purchaseRate'
+                  | 'cartToPurchaseRate'
+                  | 'units'
+                  | 'orders'
+                  | 'averagePrice'
+                  | 'revenue'
+                )[];
+                /** @description Currency code used for revenue values. */
+                currency: string;
+                /**
+                 * @default {
+                 *       "days": 30,
+                 *       "mode": "rolling"
+                 *     }
+                 */
+                date:
+                  | {
+                      days: number;
+                      /** @constant */
+                      mode: 'rolling';
+                    }
+                  | {
+                      /** @description End of the date range as a Unix timestamp in milliseconds. */
+                      endAt: number;
+                      /** @constant */
+                      mode: 'fixed';
+                      /** @description Start of the date range as a Unix timestamp in milliseconds. */
+                      startAt: number;
+                    };
+                /**
+                 * @description Filters applied to the analytics data.
+                 * @default {}
+                 */
+                filters: {
+                  [key: string]: string;
+                };
+                /**
+                 * @default product
+                 * @enum {string}
+                 */
+                groupBy: 'product' | 'variant' | 'category';
+                /** @description Market the order was placed in, as sent with the commerce payload. */
+                market?: string;
+                /** @default 1 */
+                maxCartRate: number;
+                /** @default 0 */
+                minViews: number;
+                /** @description Product identifier sent with the commerce item. */
+                productId?: string;
+                /**
+                 * @description Search text used to filter results.
+                 * @default
+                 */
+                search: string;
+                /**
+                 * @default revenue
+                 * @enum {string}
+                 */
+                sort:
+                  | 'revenue'
+                  | 'units'
+                  | 'orders'
+                  | 'views'
+                  | 'additions'
+                  | 'addToCartRate'
+                  | 'purchaseRate'
+                  | 'cartToPurchaseRate';
+                /** @description IANA time zone used to interpret dates and group results, for example America/New_York. */
+                timezone: string;
+                /** @enum {string} */
+                type: 'products' | 'checkout';
+                /** @constant */
+                version: 1;
+                /** @default 24 */
+                windowHours: number;
+              };
+              /** @constant */
+              type: 'commerce';
+              /** @description Date and time the record was last updated. */
+              updatedAt: string | null;
+              /**
+               * Format: uuid
+               * @description ID of the associated user.
+               */
+              userId: string;
+              /**
+               * Format: uuid
+               * @description ID of the website.
+               */
+              websiteId: string;
+            };
+          };
+        };
+      };
+      /** @description Bad request. */
+      400: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          /**
+           * @example {
+           *       "error": {
+           *         "code": "bad-request",
+           *         "message": "Bad request.",
+           *         "status": 400
+           *       }
+           *     }
+           */
+          'application/json': components['schemas']['ApiError'];
+        };
+      };
+      /** @description Unauthorized. */
+      401: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          /**
+           * @example {
+           *       "error": {
+           *         "code": "unauthorized",
+           *         "message": "Unauthorized.",
+           *         "status": 401
+           *       }
+           *     }
+           */
+          'application/json': components['schemas']['ApiError'];
+        };
+      };
+      /** @description Not found. */
+      404: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          /**
+           * @example {
+           *       "error": {
+           *         "code": "not-found",
+           *         "message": "Not found.",
+           *         "status": 404
+           *       }
+           *     }
+           */
+          'application/json': components['schemas']['ApiError'];
+        };
+      };
+    };
+  };
+  getWebsiteCommerceSettings: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        /** @description ID of the website. */
+        websiteId: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Commerce result. */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': {
+            /**
+             * @default {
+             *       "cart": [
+             *         "add_to_cart"
+             *       ],
+             *       "checkout": [
+             *         "begin_checkout"
+             *       ],
+             *       "view": [
+             *         "view_item"
+             *       ]
+             *     }
+             */
+            events: {
+              /**
+               * @default [
+               *       "add_to_cart"
+               *     ]
+               */
+              cart: string[];
+              /**
+               * @default [
+               *       "begin_checkout"
+               *     ]
+               */
+              checkout: string[];
+              /**
+               * @default [
+               *       "view_item"
+               *     ]
+               */
+              view: string[];
+            };
+            /** @default 24 */
+            windowHours: number;
+          };
+        };
+      };
+      /** @description Bad request. */
+      400: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          /**
+           * @example {
+           *       "error": {
+           *         "code": "bad-request",
+           *         "message": "Bad request.",
+           *         "status": 400
+           *       }
+           *     }
+           */
+          'application/json': components['schemas']['ApiError'];
+        };
+      };
+      /** @description Unauthorized. */
+      401: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          /**
+           * @example {
+           *       "error": {
+           *         "code": "unauthorized",
+           *         "message": "Unauthorized.",
+           *         "status": 401
+           *       }
+           *     }
+           */
+          'application/json': components['schemas']['ApiError'];
+        };
+      };
+      /** @description Not found. */
+      404: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          /**
+           * @example {
+           *       "error": {
+           *         "code": "not-found",
+           *         "message": "Not found.",
+           *         "status": 404
+           *       }
+           *     }
+           */
+          'application/json': components['schemas']['ApiError'];
+        };
+      };
+    };
+  };
+  updateWebsiteCommerceSettings: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        /** @description ID of the website. */
+        websiteId: string;
+      };
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        'application/json': {
+          /**
+           * @default {
+           *       "cart": [
+           *         "add_to_cart"
+           *       ],
+           *       "checkout": [
+           *         "begin_checkout"
+           *       ],
+           *       "view": [
+           *         "view_item"
+           *       ]
+           *     }
+           */
+          events?: {
+            /**
+             * @default [
+             *       "add_to_cart"
+             *     ]
+             */
+            cart?: string[];
+            /**
+             * @default [
+             *       "begin_checkout"
+             *     ]
+             */
+            checkout?: string[];
+            /**
+             * @default [
+             *       "view_item"
+             *     ]
+             */
+            view?: string[];
+          };
+          /** @default 24 */
+          windowHours?: number;
+        };
+      };
+    };
+    responses: {
+      /** @description Commerce result. */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': {
+            /**
+             * @default {
+             *       "cart": [
+             *         "add_to_cart"
+             *       ],
+             *       "checkout": [
+             *         "begin_checkout"
+             *       ],
+             *       "view": [
+             *         "view_item"
+             *       ]
+             *     }
+             */
+            events: {
+              /**
+               * @default [
+               *       "add_to_cart"
+               *     ]
+               */
+              cart: string[];
+              /**
+               * @default [
+               *       "begin_checkout"
+               *     ]
+               */
+              checkout: string[];
+              /**
+               * @default [
+               *       "view_item"
+               *     ]
+               */
+              view: string[];
+            };
+            /** @default 24 */
+            windowHours: number;
+          };
+        };
+      };
+      /** @description Bad request. */
+      400: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          /**
+           * @example {
+           *       "error": {
+           *         "code": "bad-request",
+           *         "message": "Bad request.",
+           *         "status": 400
+           *       }
+           *     }
+           */
+          'application/json': components['schemas']['ApiError'];
+        };
+      };
+      /** @description Unauthorized. */
+      401: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          /**
+           * @example {
+           *       "error": {
+           *         "code": "unauthorized",
+           *         "message": "Unauthorized.",
+           *         "status": 401
+           *       }
+           *     }
+           */
+          'application/json': components['schemas']['ApiError'];
+        };
+      };
+      /** @description Not found. */
+      404: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          /**
+           * @example {
+           *       "error": {
+           *         "code": "not-found",
+           *         "message": "Not found.",
+           *         "status": 404
+           *       }
+           *     }
+           */
+          'application/json': components['schemas']['ApiError'];
+        };
+      };
+    };
+  };
+  getWebsiteCommerceStats: {
+    parameters: {
+      query: {
+        /** @description Browser used by the visitor. */
+        browser?: string;
+        /** @description Only orders containing this category. Amounts become the category's net line totals. */
+        category?: string;
+        /** @description City of the visitor. */
+        city?: string;
+        /** @description ID of a saved cohort used to filter visitors. */
+        cohort?: string;
+        /** @description Comparison period: prev for the previous period or yoy for the same period last year. */
+        compare?: 'prev' | 'yoy';
+        /** @description Country code of the visitor. */
+        country?: string;
+        /** @description Currency code used for revenue values. */
+        currency: string;
+        /** @description Device category used by the visitor. */
+        device?: string;
+        /** @description Custom identifier assigned to the visitor. */
+        distinctId?: string;
+        /** @description End of the date range as a Unix timestamp in milliseconds. */
+        endAt: number;
+        /** @description Filter by custom event name. */
+        event?: string;
+        /** @description Event type: 1 for a pageview or 2 for a custom event. */
+        eventType?: number;
+        /** @description Set a non-empty value to exclude visits with only one pageview. */
+        excludeBounce?: string;
+        /** @description Hostname on which the activity occurred. */
+        hostname?: string;
+        /** @description Preferred language reported by the visitor browser. */
+        language?: string;
+        /** @description Market the order was placed in, as sent with the commerce payload. */
+        market?: string;
+        /** @description Whether records must match all filters or any filter. */
+        match?: 'all' | 'any';
+        /** @description Operating system used by the visitor. */
+        os?: string;
+        /** @description Filter by page URL path. */
+        path?: string;
+        /** @description Only orders containing this product. Amounts become the product's net line totals. */
+        productId?: string;
+        /** @description Filter by page URL query string. */
+        query?: string;
+        /** @description Filter by referring URL. */
+        referrer?: string;
+        /** @description Region or subdivision of the visitor. */
+        region?: string;
+        /** @description ID of a saved segment used to filter results. */
+        segment?: string;
+        /** @description Start of the date range as a Unix timestamp in milliseconds. */
+        startAt: number;
+        /** @description Tag attached to the tracked activity. */
+        tag?: string;
+        /** @description IANA time zone used to interpret dates and group results, for example America/New_York. */
+        timezone?: string;
+        /** @description Filter by page title. */
+        title?: string;
+        /** @description Time interval used to group results: minute, hour, day, month, or year. */
+        unit?: string;
+        /** @description UTM campaign name. */
+        utmCampaign?: string;
+        /** @description UTM campaign content. */
+        utmContent?: string;
+        /** @description UTM campaign medium. */
+        utmMedium?: string;
+        /** @description UTM campaign source. */
+        utmSource?: string;
+        /** @description UTM campaign search term. */
+        utmTerm?: string;
+        windowHours?: number;
+      };
+      header?: never;
+      path: {
+        /** @description ID of the website. */
+        websiteId: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Analytics results. */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': {
+            /** @description Amount in the requested currency. */
+            averageOrderValue: number;
+            /** @description Number of distinct buyers: identified visitors, or sessions without a distinct ID. */
+            buyers: number;
+            /** @description Analytics for the comparison period. */
+            comparison: {
+              /** @description Amount in the requested currency. */
+              averageOrderValue: number;
+              /** @description Number of distinct buyers: identified visitors, or sessions without a distinct ID. */
+              buyers: number;
+              /** @description Converted visits divided by visits; unavailable for commerce-scoped traffic. */
+              conversionRate: number | null;
+              convertedVisits: number;
+              /** @description Number of completed orders (commerce payments with an order ID). */
+              orders: number;
+              /** @description Amount in the requested currency. */
+              revenue: number;
+              revenuePerVisitor: number | null;
+              /** @description Amount in the requested currency. */
+              shipping: number;
+              /** @description Amount in the requested currency. */
+              subtotal: number;
+              /** @description Amount in the requested currency. */
+              tax: number;
+              /** @description Number of item units. */
+              units: number;
+              unitsPerOrder: number;
+              /** @description Unique visitor counts for the selected period. */
+              visitors: number;
+              /** @description Visit counts for the selected period. */
+              visits: number;
+            };
+            /** @description Converted visits divided by visits; unavailable for commerce-scoped traffic. */
+            conversionRate: number | null;
+            convertedVisits: number;
+            /** @description Number of completed orders (commerce payments with an order ID). */
+            orders: number;
+            /** @description Amount in the requested currency. */
+            revenue: number;
+            revenuePerVisitor: number | null;
+            /** @description Amount in the requested currency. */
+            shipping: number;
+            /** @description Amount in the requested currency. */
+            subtotal: number;
+            /** @description Amount in the requested currency. */
+            tax: number;
+            /** @description Number of item units. */
+            units: number;
+            unitsPerOrder: number;
+            /** @description Unique visitor counts for the selected period. */
+            visitors: number;
+            /** @description Visit counts for the selected period. */
+            visits: number;
+          };
         };
       };
       /** @description Bad request. */

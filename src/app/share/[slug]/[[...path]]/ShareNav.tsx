@@ -11,7 +11,16 @@ import {
 import { IconLabel } from '@/components/common/IconLabel';
 import Link from '@/components/common/Link';
 import { useMessages, useNavigation, useShare } from '@/components/hooks';
-import { AlignEndHorizontal, Clock, Eye, PanelLeft, Sheet, Tag, User } from '@/components/icons';
+import {
+  AlignEndHorizontal,
+  Clock,
+  Eye,
+  PanelLeft,
+  Sheet,
+  ShoppingCart,
+  Tag,
+  User,
+} from '@/components/icons';
 import { LanguageButton } from '@/components/input/LanguageButton';
 import { PreferencesButton } from '@/components/input/PreferencesButton';
 import { Funnel, Gauge, Lightning, Magnet, Money, Network, Path, Target } from '@/components/svg';
@@ -115,6 +124,12 @@ export function ShareNav({
       items: [
         { id: 'utm', label: t(labels.utm), icon: <Tag />, path: renderPath('/utm') },
         { id: 'revenue', label: t(labels.revenue), icon: <Money />, path: renderPath('/revenue') },
+        {
+          id: 'commerce',
+          label: t(labels.commerce),
+          icon: <ShoppingCart />,
+          path: renderPath('/commerce'),
+        },
         {
           id: 'attribution',
           label: t(labels.attribution),

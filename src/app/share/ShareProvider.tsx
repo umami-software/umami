@@ -39,6 +39,7 @@ const ALL_SECTION_IDS = [
   'retention',
   'utm',
   'revenue',
+  'commerce',
   'attribution',
 ];
 

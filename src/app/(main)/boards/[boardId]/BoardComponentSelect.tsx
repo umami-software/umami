@@ -28,6 +28,7 @@ const COMPONENT_GROUP_ORDER: string[] = [
   'Realtime',
   'Growth',
   'Revenue',
+  'Commerce',
   'Content',
 ];
 
@@ -175,9 +176,12 @@ export function BoardComponentSelect({
 
       const entries = await Promise.all(
         types.map(async type => {
-          const response = await get(`/websites/${resolvedEntityId}/${type}s`, {
-            pageSize: 1000,
-          });
+          const response = await get(
+            `/websites/${resolvedEntityId}/${type === 'commerce' ? 'commerce/reports' : `${type}s`}`,
+            {
+              pageSize: 1000,
+            },
+          );
 
           return [type, response.data] as const;
         }),

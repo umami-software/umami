@@ -113,6 +113,13 @@ const fieldDescriptions: Record<string, string> = {
   min: 'Minimum numeric property value.',
   max: 'Maximum numeric property value.',
   currency: 'Currency code used for revenue values.',
+  market: 'Market the order was placed in, as sent with the commerce payload.',
+  orders: 'Number of completed orders (commerce payments with an order ID).',
+  units: 'Number of item units.',
+  buyers: 'Number of distinct buyers: identified visitors, or sessions without a distinct ID.',
+  productId: 'Product identifier sent with the commerce item.',
+  variant: 'Product variant sent with the commerce item.',
+  category: 'Product category sent with the commerce item.',
   propertyName: 'Name of the custom event or session property.',
   propertyValue: 'Value of the custom property.',
   propertyKeys: 'Names of the custom properties.',
@@ -182,6 +189,10 @@ const queryDescriptions: Record<string, string> = {
   title: 'Filter by page title.',
   query: 'Filter by page URL query string.',
   event: 'Filter by custom event name.',
+  productId: "Only orders containing this product. Amounts become the product's net line totals.",
+  category: "Only orders containing this category. Amounts become the category's net line totals.",
+  groupBy: 'Group products by product, variant or category.',
+  sort: 'Order products by revenue, units or orders.',
 };
 
 const dashboardDescriptions: Record<string, string> = {

@@ -263,7 +263,7 @@ async function format(files: string[]) {
     process.platform === 'win32' ? 'biome.cmd' : 'biome',
   );
 
-  await execFileAsync(biome, ['format', '--write', ...files], {
+  await execFileAsync(biome, ['format', '--write', '--files-max-size=5000000', ...files], {
     cwd: projectRoot,
     shell: process.platform === 'win32',
   });

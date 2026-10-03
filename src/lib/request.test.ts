@@ -154,3 +154,37 @@ test('applies a saved cohort that has no filters array', async () => {
   expect(filters).toMatchObject({ cohort_path: 'eq./signup' });
   expect(filters).toHaveProperty('cohort_startDate');
 });
+
+test('a purchase cohort converts on completed orders instead of an event filter', async () => {
+  getWebsiteSegmentMock.mockResolvedValue({
+    parameters: {
+      dateRange: '30day',
+      filters: [{ name: 'country', operator: 'eq', value: 'DE' }],
+      action: { type: 'order', value: 'shirt' },
+      match: 'any',
+    },
+  } as any);
+
+  const filters: Record<string, any> = await getQueryFilters(
+    { startAt: 1000, endAt: 2000, cohort: 'cohort-1' },
+    'website-1',
+  );
+
+  expect(filters.cohort_order).toBe('shirt');
+  expect(filters).not.toHaveProperty('cohort_actionName');
+  expect(Object.keys(filters).some(key => key === 'cohort_order0')).toBe(false);
+  expect(filters.cohort_country).toBeDefined();
+});
+
+test('a purchase cohort without a product matches any order', async () => {
+  getWebsiteSegmentMock.mockResolvedValue({
+    parameters: { dateRange: '30day', filters: [], action: { type: 'order', value: '' } },
+  } as any);
+
+  const filters: Record<string, any> = await getQueryFilters(
+    { startAt: 1000, endAt: 2000, cohort: 'cohort-1' },
+    'website-1',
+  );
+
+  expect(filters.cohort_order).toBe('*');
+});

@@ -168,19 +168,26 @@ export async function getQueryFilters(
         name: `cohort_${name}`,
       }));
 
-      cohortFilters.push({
-        name: `cohort_${cohortParams.action.type}`,
-        operator: OPERATORS.equals,
-        value: cohortParams.action.value,
-      });
+      // A purchase cohort converts on a completed commerce payment, optionally containing
+      // one product, instead of on a page view or event.
+      const isOrderAction = cohortParams.action.type === 'order';
+
+      if (!isOrderAction) {
+        cohortFilters.push({
+          name: `cohort_${cohortParams.action.type}`,
+          operator: OPERATORS.equals,
+          value: cohortParams.action.value,
+        });
+      }
 
       Object.assign(filters, {
         ...filtersArrayToObject(cohortFilters),
         cohort_startDate: startDate,
         cohort_endDate: endDate,
+        ...(isOrderAction && { cohort_order: cohortParams.action.value?.trim() || '*' }),
         ...(cohortParams.match && {
           cohort_match: cohortParams.match,
-          cohort_actionName: `cohort_${cohortParams.action.type}`,
+          ...(!isOrderAction && { cohort_actionName: `cohort_${cohortParams.action.type}` }),
         }),
       });
     }

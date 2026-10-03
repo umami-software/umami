@@ -228,9 +228,37 @@ function getCohortQuery(filters: QueryFilters = {}) {
     where website_event.website_id = {{websiteId}}
       and website_event.created_at between {{cohort_startDate}} and {{cohort_endDate}}
       ${filterQuery}
+      ${getCohortOrderQuery(filters)}
     ) cohort
     on cohort.session_id = website_event.session_id
     `;
+}
+
+// Purchase cohorts: sessions with a completed payment, optionally containing one product.
+function getCohortOrderQuery(filters: Record<string, any>) {
+  const product = (filters as any).cohort_order;
+
+  if (!product) {
+    return '';
+  }
+
+  return `and website_event.session_id in (
+        select commerce_event.session_id
+        from commerce_event
+        where commerce_event.website_id = {{websiteId::uuid}}
+          and commerce_event.created_at between {{cohort_startDate}} and {{cohort_endDate}}
+          and commerce_event.order_id is not null
+          ${
+            product === '*'
+              ? ''
+              : `and exists (
+            select 1
+            from commerce_item
+            where commerce_item.commerce_event_id = commerce_event.commerce_event_id
+              and commerce_item.product_id = {{cohort_order}}
+          )`
+          }
+      )`;
 }
 
 function getExcludeBounceQuery(filters: Record<string, any>) {

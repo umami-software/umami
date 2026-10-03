@@ -24,8 +24,14 @@ export function useLocale() {
 
     messages[locale] = {
       ...data,
-      label: { monitoring: enUS.label.monitoring, ...data.label },
+      label: {
+        monitoring: enUS.label.monitoring,
+        commerce: enUS.label.commerce,
+        'commerce-description': enUS.label['commerce-description'],
+        ...data.label,
+      },
       errorTracking: { ...enUS.errorTracking, ...data.errorTracking },
+      commerce: { ...enUS.commerce, ...data.commerce },
     };
   }
 

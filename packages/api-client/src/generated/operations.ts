@@ -154,6 +154,14 @@ export const operations = {
     queryParams: [],
     hasBody: true,
   },
+  createWebsiteCommerceReport: {
+    operationId: 'createWebsiteCommerceReport',
+    method: 'post',
+    path: '/api/websites/{websiteId}/commerce/reports',
+    pathParams: ['websiteId'],
+    queryParams: [],
+    hasBody: true,
+  },
   createWebsiteFunnel: {
     operationId: 'createWebsiteFunnel',
     method: 'post',
@@ -263,6 +271,14 @@ export const operations = {
     method: 'delete',
     path: '/api/websites/{websiteId}/annotations/{annotationId}',
     pathParams: ['websiteId', 'annotationId'],
+    queryParams: [],
+    hasBody: false,
+  },
+  deleteWebsiteCommerceReport: {
+    operationId: 'deleteWebsiteCommerceReport',
+    method: 'delete',
+    path: '/api/websites/{websiteId}/commerce/reports/{reportId}',
+    pathParams: ['websiteId', 'reportId'],
     queryParams: [],
     hasBody: false,
   },
@@ -1648,6 +1664,624 @@ export const operations = {
       'timezone',
       'unit',
       'fields',
+      'currency',
+    ],
+    hasBody: false,
+  },
+  getWebsiteCommerceAbandoned: {
+    operationId: 'getWebsiteCommerceAbandoned',
+    method: 'get',
+    path: '/api/websites/{websiteId}/commerce/abandoned',
+    pathParams: ['websiteId'],
+    queryParams: [
+      'path',
+      'referrer',
+      'title',
+      'query',
+      'os',
+      'browser',
+      'device',
+      'country',
+      'region',
+      'city',
+      'tag',
+      'hostname',
+      'distinctId',
+      'language',
+      'event',
+      'utmSource',
+      'utmMedium',
+      'utmCampaign',
+      'utmContent',
+      'utmTerm',
+      'segment',
+      'cohort',
+      'eventType',
+      'excludeBounce',
+      'match',
+      'startAt',
+      'endAt',
+      'timezone',
+      'unit',
+      'currency',
+      'market',
+      'productId',
+      'category',
+      'windowHours',
+      'page',
+      'pageSize',
+      'maxResults',
+    ],
+    hasBody: false,
+  },
+  getWebsiteCommerceAttribution: {
+    operationId: 'getWebsiteCommerceAttribution',
+    method: 'get',
+    path: '/api/websites/{websiteId}/commerce/attribution',
+    pathParams: ['websiteId'],
+    queryParams: [
+      'path',
+      'referrer',
+      'title',
+      'query',
+      'os',
+      'browser',
+      'device',
+      'country',
+      'region',
+      'city',
+      'tag',
+      'hostname',
+      'distinctId',
+      'language',
+      'event',
+      'utmSource',
+      'utmMedium',
+      'utmCampaign',
+      'utmContent',
+      'utmTerm',
+      'segment',
+      'cohort',
+      'eventType',
+      'excludeBounce',
+      'match',
+      'startAt',
+      'endAt',
+      'timezone',
+      'unit',
+      'currency',
+      'market',
+      'productId',
+      'category',
+      'windowHours',
+      'model',
+    ],
+    hasBody: false,
+  },
+  getWebsiteCommerceBaskets: {
+    operationId: 'getWebsiteCommerceBaskets',
+    method: 'get',
+    path: '/api/websites/{websiteId}/commerce/baskets',
+    pathParams: ['websiteId'],
+    queryParams: [
+      'path',
+      'referrer',
+      'title',
+      'query',
+      'os',
+      'browser',
+      'device',
+      'country',
+      'region',
+      'city',
+      'tag',
+      'hostname',
+      'distinctId',
+      'language',
+      'event',
+      'utmSource',
+      'utmMedium',
+      'utmCampaign',
+      'utmContent',
+      'utmTerm',
+      'segment',
+      'cohort',
+      'eventType',
+      'excludeBounce',
+      'match',
+      'startAt',
+      'endAt',
+      'timezone',
+      'unit',
+      'currency',
+      'market',
+      'productId',
+      'category',
+      'windowHours',
+    ],
+    hasBody: false,
+  },
+  getWebsiteCommerceBuyers: {
+    operationId: 'getWebsiteCommerceBuyers',
+    method: 'get',
+    path: '/api/websites/{websiteId}/commerce/buyers',
+    pathParams: ['websiteId'],
+    queryParams: [
+      'path',
+      'referrer',
+      'title',
+      'query',
+      'os',
+      'browser',
+      'device',
+      'country',
+      'region',
+      'city',
+      'tag',
+      'hostname',
+      'distinctId',
+      'language',
+      'event',
+      'utmSource',
+      'utmMedium',
+      'utmCampaign',
+      'utmContent',
+      'utmTerm',
+      'segment',
+      'cohort',
+      'eventType',
+      'excludeBounce',
+      'match',
+      'startAt',
+      'endAt',
+      'timezone',
+      'unit',
+      'currency',
+      'market',
+      'productId',
+      'category',
+      'windowHours',
+      'page',
+      'pageSize',
+      'maxResults',
+      'search',
+    ],
+    hasBody: false,
+  },
+  getWebsiteCommerceChart: {
+    operationId: 'getWebsiteCommerceChart',
+    method: 'get',
+    path: '/api/websites/{websiteId}/commerce/chart',
+    pathParams: ['websiteId'],
+    queryParams: [
+      'path',
+      'referrer',
+      'title',
+      'query',
+      'os',
+      'browser',
+      'device',
+      'country',
+      'region',
+      'city',
+      'tag',
+      'hostname',
+      'distinctId',
+      'language',
+      'event',
+      'utmSource',
+      'utmMedium',
+      'utmCampaign',
+      'utmContent',
+      'utmTerm',
+      'segment',
+      'cohort',
+      'eventType',
+      'excludeBounce',
+      'match',
+      'startAt',
+      'endAt',
+      'timezone',
+      'unit',
+      'currency',
+      'market',
+      'productId',
+      'category',
+      'windowHours',
+    ],
+    hasBody: false,
+  },
+  getWebsiteCommerceCheckout: {
+    operationId: 'getWebsiteCommerceCheckout',
+    method: 'get',
+    path: '/api/websites/{websiteId}/commerce/checkout',
+    pathParams: ['websiteId'],
+    queryParams: [
+      'path',
+      'referrer',
+      'title',
+      'query',
+      'os',
+      'browser',
+      'device',
+      'country',
+      'region',
+      'city',
+      'tag',
+      'hostname',
+      'distinctId',
+      'language',
+      'event',
+      'utmSource',
+      'utmMedium',
+      'utmCampaign',
+      'utmContent',
+      'utmTerm',
+      'segment',
+      'cohort',
+      'eventType',
+      'excludeBounce',
+      'match',
+      'startAt',
+      'endAt',
+      'timezone',
+      'unit',
+      'currency',
+      'market',
+      'productId',
+      'category',
+      'windowHours',
+    ],
+    hasBody: false,
+  },
+  getWebsiteCommerceCurrencies: {
+    operationId: 'getWebsiteCommerceCurrencies',
+    method: 'get',
+    path: '/api/websites/{websiteId}/commerce/currencies',
+    pathParams: ['websiteId'],
+    queryParams: [
+      'path',
+      'referrer',
+      'title',
+      'query',
+      'os',
+      'browser',
+      'device',
+      'country',
+      'region',
+      'city',
+      'tag',
+      'hostname',
+      'distinctId',
+      'language',
+      'event',
+      'utmSource',
+      'utmMedium',
+      'utmCampaign',
+      'utmContent',
+      'utmTerm',
+      'segment',
+      'cohort',
+      'eventType',
+      'excludeBounce',
+      'match',
+      'startAt',
+      'endAt',
+      'timezone',
+      'unit',
+    ],
+    hasBody: false,
+  },
+  getWebsiteCommerceCustomers: {
+    operationId: 'getWebsiteCommerceCustomers',
+    method: 'get',
+    path: '/api/websites/{websiteId}/commerce/customers',
+    pathParams: ['websiteId'],
+    queryParams: [
+      'path',
+      'referrer',
+      'title',
+      'query',
+      'os',
+      'browser',
+      'device',
+      'country',
+      'region',
+      'city',
+      'tag',
+      'hostname',
+      'distinctId',
+      'language',
+      'event',
+      'utmSource',
+      'utmMedium',
+      'utmCampaign',
+      'utmContent',
+      'utmTerm',
+      'segment',
+      'cohort',
+      'eventType',
+      'excludeBounce',
+      'match',
+      'startAt',
+      'endAt',
+      'timezone',
+      'unit',
+      'currency',
+      'market',
+      'productId',
+      'category',
+      'windowHours',
+    ],
+    hasBody: false,
+  },
+  getWebsiteCommerceMarkets: {
+    operationId: 'getWebsiteCommerceMarkets',
+    method: 'get',
+    path: '/api/websites/{websiteId}/commerce/markets',
+    pathParams: ['websiteId'],
+    queryParams: [
+      'path',
+      'referrer',
+      'title',
+      'query',
+      'os',
+      'browser',
+      'device',
+      'country',
+      'region',
+      'city',
+      'tag',
+      'hostname',
+      'distinctId',
+      'language',
+      'event',
+      'utmSource',
+      'utmMedium',
+      'utmCampaign',
+      'utmContent',
+      'utmTerm',
+      'segment',
+      'cohort',
+      'eventType',
+      'excludeBounce',
+      'match',
+      'startAt',
+      'endAt',
+      'timezone',
+      'unit',
+      'currency',
+      'market',
+      'productId',
+      'category',
+      'windowHours',
+    ],
+    hasBody: false,
+  },
+  getWebsiteCommerceMetrics: {
+    operationId: 'getWebsiteCommerceMetrics',
+    method: 'get',
+    path: '/api/websites/{websiteId}/commerce/metrics',
+    pathParams: ['websiteId'],
+    queryParams: [
+      'path',
+      'referrer',
+      'title',
+      'query',
+      'os',
+      'browser',
+      'device',
+      'country',
+      'region',
+      'city',
+      'tag',
+      'hostname',
+      'distinctId',
+      'language',
+      'event',
+      'utmSource',
+      'utmMedium',
+      'utmCampaign',
+      'utmContent',
+      'utmTerm',
+      'segment',
+      'cohort',
+      'eventType',
+      'excludeBounce',
+      'match',
+      'startAt',
+      'endAt',
+      'timezone',
+      'unit',
+      'currency',
+      'market',
+      'productId',
+      'category',
+      'windowHours',
+      'type',
+      'limit',
+    ],
+    hasBody: false,
+  },
+  getWebsiteCommerceOrder: {
+    operationId: 'getWebsiteCommerceOrder',
+    method: 'get',
+    path: '/api/websites/{websiteId}/commerce/orders/{commerceEventId}',
+    pathParams: ['websiteId', 'commerceEventId'],
+    queryParams: [],
+    hasBody: false,
+  },
+  getWebsiteCommerceOrders: {
+    operationId: 'getWebsiteCommerceOrders',
+    method: 'get',
+    path: '/api/websites/{websiteId}/commerce/orders',
+    pathParams: ['websiteId'],
+    queryParams: [
+      'path',
+      'referrer',
+      'title',
+      'query',
+      'os',
+      'browser',
+      'device',
+      'country',
+      'region',
+      'city',
+      'tag',
+      'hostname',
+      'distinctId',
+      'language',
+      'event',
+      'utmSource',
+      'utmMedium',
+      'utmCampaign',
+      'utmContent',
+      'utmTerm',
+      'segment',
+      'cohort',
+      'eventType',
+      'excludeBounce',
+      'match',
+      'startAt',
+      'endAt',
+      'timezone',
+      'unit',
+      'currency',
+      'market',
+      'productId',
+      'category',
+      'windowHours',
+      'page',
+      'pageSize',
+      'maxResults',
+      'search',
+    ],
+    hasBody: false,
+  },
+  getWebsiteCommerceProducts: {
+    operationId: 'getWebsiteCommerceProducts',
+    method: 'get',
+    path: '/api/websites/{websiteId}/commerce/products',
+    pathParams: ['websiteId'],
+    queryParams: [
+      'path',
+      'referrer',
+      'title',
+      'query',
+      'os',
+      'browser',
+      'device',
+      'country',
+      'region',
+      'city',
+      'tag',
+      'hostname',
+      'distinctId',
+      'language',
+      'event',
+      'utmSource',
+      'utmMedium',
+      'utmCampaign',
+      'utmContent',
+      'utmTerm',
+      'segment',
+      'cohort',
+      'eventType',
+      'excludeBounce',
+      'match',
+      'startAt',
+      'endAt',
+      'timezone',
+      'unit',
+      'currency',
+      'market',
+      'productId',
+      'category',
+      'windowHours',
+      'page',
+      'pageSize',
+      'maxResults',
+      'search',
+      'groupBy',
+      'sort',
+      'minViews',
+      'maxCartRate',
+    ],
+    hasBody: false,
+  },
+  getWebsiteCommerceReport: {
+    operationId: 'getWebsiteCommerceReport',
+    method: 'get',
+    path: '/api/websites/{websiteId}/commerce/reports/{reportId}',
+    pathParams: ['websiteId', 'reportId'],
+    queryParams: [],
+    hasBody: false,
+  },
+  getWebsiteCommerceReports: {
+    operationId: 'getWebsiteCommerceReports',
+    method: 'get',
+    path: '/api/websites/{websiteId}/commerce/reports',
+    pathParams: ['websiteId'],
+    queryParams: ['page', 'pageSize', 'maxResults', 'search'],
+    hasBody: false,
+  },
+  getWebsiteCommerceReportStats: {
+    operationId: 'getWebsiteCommerceReportStats',
+    method: 'get',
+    path: '/api/websites/{websiteId}/commerce/reports/{reportId}/stats',
+    pathParams: ['websiteId', 'reportId'],
+    queryParams: ['page', 'pageSize', 'startAt', 'endAt'],
+    hasBody: false,
+  },
+  getWebsiteCommerceSettings: {
+    operationId: 'getWebsiteCommerceSettings',
+    method: 'get',
+    path: '/api/websites/{websiteId}/commerce/settings',
+    pathParams: ['websiteId'],
+    queryParams: [],
+    hasBody: false,
+  },
+  getWebsiteCommerceStats: {
+    operationId: 'getWebsiteCommerceStats',
+    method: 'get',
+    path: '/api/websites/{websiteId}/commerce/stats',
+    pathParams: ['websiteId'],
+    queryParams: [
+      'path',
+      'referrer',
+      'title',
+      'query',
+      'os',
+      'browser',
+      'device',
+      'country',
+      'region',
+      'city',
+      'tag',
+      'hostname',
+      'distinctId',
+      'language',
+      'event',
+      'utmSource',
+      'utmMedium',
+      'utmCampaign',
+      'utmContent',
+      'utmTerm',
+      'segment',
+      'cohort',
+      'eventType',
+      'excludeBounce',
+      'match',
+      'startAt',
+      'endAt',
+      'timezone',
+      'unit',
+      'currency',
+      'market',
+      'productId',
+      'category',
+      'windowHours',
+      'compare',
     ],
     hasBody: false,
   },
@@ -3226,6 +3860,22 @@ export const operations = {
     queryParams: [],
     hasBody: true,
   },
+  updateWebsiteCommerceReport: {
+    operationId: 'updateWebsiteCommerceReport',
+    method: 'post',
+    path: '/api/websites/{websiteId}/commerce/reports/{reportId}',
+    pathParams: ['websiteId', 'reportId'],
+    queryParams: [],
+    hasBody: true,
+  },
+  updateWebsiteCommerceSettings: {
+    operationId: 'updateWebsiteCommerceSettings',
+    method: 'post',
+    path: '/api/websites/{websiteId}/commerce/settings',
+    pathParams: ['websiteId'],
+    queryParams: [],
+    hasBody: true,
+  },
   updateWebsiteErrorIssue: {
     operationId: 'updateWebsiteErrorIssue',
     method: 'patch',
@@ -3529,6 +4179,17 @@ export abstract class GeneratedUmamiClient {
   }
 
   /**
+   * create Website Commerce Report
+   * `POST /api/websites/{websiteId}/commerce/reports`
+   */
+  createWebsiteCommerceReport(
+    input: OperationInput<'createWebsiteCommerceReport'>,
+    options?: RequestOptions,
+  ): Promise<OperationOutput<'createWebsiteCommerceReport'>> {
+    return this.execute('createWebsiteCommerceReport', input, options);
+  }
+
+  /**
    * Create website funnel
    * `POST /api/websites/{websiteId}/funnels`
    */
@@ -3692,6 +4353,17 @@ export abstract class GeneratedUmamiClient {
     options?: RequestOptions,
   ): Promise<OperationOutput<'deleteWebsiteAnnotation'>> {
     return this.execute('deleteWebsiteAnnotation', input, options);
+  }
+
+  /**
+   * delete Website Commerce Report
+   * `DELETE /api/websites/{websiteId}/commerce/reports/{reportId}`
+   */
+  deleteWebsiteCommerceReport(
+    input: OperationInput<'deleteWebsiteCommerceReport'>,
+    options?: RequestOptions,
+  ): Promise<OperationOutput<'deleteWebsiteCommerceReport'>> {
+    return this.execute('deleteWebsiteCommerceReport', input, options);
   }
 
   /**
@@ -4468,6 +5140,217 @@ export abstract class GeneratedUmamiClient {
     options?: RequestOptions,
   ): Promise<OperationOutput<'getWebsiteBreakdown'>> {
     return this.execute('getWebsiteBreakdown', input, options);
+  }
+
+  /**
+   * List abandoned carts and checkouts
+   * Returns a paginated list of sessions that reached cart or checkout without a completed payment, with the value of their latest cart or checkout.
+   * `GET /api/websites/{websiteId}/commerce/abandoned`
+   */
+  getWebsiteCommerceAbandoned(
+    input: OperationInput<'getWebsiteCommerceAbandoned'>,
+    options?: RequestOptions,
+  ): Promise<OperationOutput<'getWebsiteCommerceAbandoned'>> {
+    return this.execute('getWebsiteCommerceAbandoned', input, options);
+  }
+
+  /**
+   * Get website commerce revenue attribution
+   * Returns completed-order revenue attributed to channels, referrers, ad platforms, landing pages and UTM parameters with a first-click or last non-direct click model.
+   * `GET /api/websites/{websiteId}/commerce/attribution`
+   */
+  getWebsiteCommerceAttribution(
+    input: OperationInput<'getWebsiteCommerceAttribution'>,
+    options?: RequestOptions,
+  ): Promise<OperationOutput<'getWebsiteCommerceAttribution'>> {
+    return this.execute('getWebsiteCommerceAttribution', input, options);
+  }
+
+  /**
+   * Get website commerce basket analysis
+   * Returns the distribution of units per order and the products most often bought in the same order, or the companions of one product.
+   * `GET /api/websites/{websiteId}/commerce/baskets`
+   */
+  getWebsiteCommerceBaskets(
+    input: OperationInput<'getWebsiteCommerceBaskets'>,
+    options?: RequestOptions,
+  ): Promise<OperationOutput<'getWebsiteCommerceBaskets'>> {
+    return this.execute('getWebsiteCommerceBaskets', input, options);
+  }
+
+  /**
+   * List website commerce buyers
+   * Returns a paginated list of buyers with their orders and revenue. Buyers are identified visitors, or sessions without a distinct ID.
+   * `GET /api/websites/{websiteId}/commerce/buyers`
+   */
+  getWebsiteCommerceBuyers(
+    input: OperationInput<'getWebsiteCommerceBuyers'>,
+    options?: RequestOptions,
+  ): Promise<OperationOutput<'getWebsiteCommerceBuyers'>> {
+    return this.execute('getWebsiteCommerceBuyers', input, options);
+  }
+
+  /**
+   * Get website commerce revenue over time
+   * Returns completed-order revenue and order counts per time bucket and event name for one currency.
+   * `GET /api/websites/{websiteId}/commerce/chart`
+   */
+  getWebsiteCommerceChart(
+    input: OperationInput<'getWebsiteCommerceChart'>,
+    options?: RequestOptions,
+  ): Promise<OperationOutput<'getWebsiteCommerceChart'>> {
+    return this.execute('getWebsiteCommerceChart', input, options);
+  }
+
+  /**
+   * Get website checkout funnel
+   * Returns sessions reaching cart, checkout and payment, inferred from the cart, checkout and order IDs of commerce events, with abandonment and time to purchase.
+   * `GET /api/websites/{websiteId}/commerce/checkout`
+   */
+  getWebsiteCommerceCheckout(
+    input: OperationInput<'getWebsiteCommerceCheckout'>,
+    options?: RequestOptions,
+  ): Promise<OperationOutput<'getWebsiteCommerceCheckout'>> {
+    return this.execute('getWebsiteCommerceCheckout', input, options);
+  }
+
+  /**
+   * List website commerce currencies
+   * Returns the currencies with completed orders in the date range, with order counts and revenue, most orders first.
+   * `GET /api/websites/{websiteId}/commerce/currencies`
+   */
+  getWebsiteCommerceCurrencies(
+    input: OperationInput<'getWebsiteCommerceCurrencies'>,
+    options?: RequestOptions,
+  ): Promise<OperationOutput<'getWebsiteCommerceCurrencies'>> {
+    return this.execute('getWebsiteCommerceCurrencies', input, options);
+  }
+
+  /**
+   * Get website commerce customer totals
+   * Returns buyers, new and returning buyers, repeat purchase rate, revenue per buyer and median time to first purchase.
+   * `GET /api/websites/{websiteId}/commerce/customers`
+   */
+  getWebsiteCommerceCustomers(
+    input: OperationInput<'getWebsiteCommerceCustomers'>,
+    options?: RequestOptions,
+  ): Promise<OperationOutput<'getWebsiteCommerceCustomers'>> {
+    return this.execute('getWebsiteCommerceCustomers', input, options);
+  }
+
+  /**
+   * get Website Commerce Markets
+   * `GET /api/websites/{websiteId}/commerce/markets`
+   */
+  getWebsiteCommerceMarkets(
+    input: OperationInput<'getWebsiteCommerceMarkets'>,
+    options?: RequestOptions,
+  ): Promise<OperationOutput<'getWebsiteCommerceMarkets'>> {
+    return this.execute('getWebsiteCommerceMarkets', input, options);
+  }
+
+  /**
+   * Get website commerce revenue by dimension
+   * Returns completed-order revenue, orders and buyers grouped by market, event, visitor attributes or the acquisition of the purchasing visit.
+   * `GET /api/websites/{websiteId}/commerce/metrics`
+   */
+  getWebsiteCommerceMetrics(
+    input: OperationInput<'getWebsiteCommerceMetrics'>,
+    options?: RequestOptions,
+  ): Promise<OperationOutput<'getWebsiteCommerceMetrics'>> {
+    return this.execute('getWebsiteCommerceMetrics', input, options);
+  }
+
+  /**
+   * Get a website commerce order
+   * Returns one commerce record with its current items.
+   * `GET /api/websites/{websiteId}/commerce/orders/{commerceEventId}`
+   */
+  getWebsiteCommerceOrder(
+    input: OperationInput<'getWebsiteCommerceOrder'>,
+    options?: RequestOptions,
+  ): Promise<OperationOutput<'getWebsiteCommerceOrder'>> {
+    return this.execute('getWebsiteCommerceOrder', input, options);
+  }
+
+  /**
+   * List website commerce orders
+   * Returns a paginated list of completed orders in one currency, newest first, searchable by order ID.
+   * `GET /api/websites/{websiteId}/commerce/orders`
+   */
+  getWebsiteCommerceOrders(
+    input: OperationInput<'getWebsiteCommerceOrders'>,
+    options?: RequestOptions,
+  ): Promise<OperationOutput<'getWebsiteCommerceOrders'>> {
+    return this.execute('getWebsiteCommerceOrders', input, options);
+  }
+
+  /**
+   * List website commerce products
+   * Returns a paginated list of products, variants or categories in completed orders with units, orders and revenue.
+   * `GET /api/websites/{websiteId}/commerce/products`
+   */
+  getWebsiteCommerceProducts(
+    input: OperationInput<'getWebsiteCommerceProducts'>,
+    options?: RequestOptions,
+  ): Promise<OperationOutput<'getWebsiteCommerceProducts'>> {
+    return this.execute('getWebsiteCommerceProducts', input, options);
+  }
+
+  /**
+   * get Website Commerce Report
+   * `GET /api/websites/{websiteId}/commerce/reports/{reportId}`
+   */
+  getWebsiteCommerceReport(
+    input: OperationInput<'getWebsiteCommerceReport'>,
+    options?: RequestOptions,
+  ): Promise<OperationOutput<'getWebsiteCommerceReport'>> {
+    return this.execute('getWebsiteCommerceReport', input, options);
+  }
+
+  /**
+   * get Website Commerce Reports
+   * `GET /api/websites/{websiteId}/commerce/reports`
+   */
+  getWebsiteCommerceReports(
+    input: OperationInput<'getWebsiteCommerceReports'>,
+    options?: RequestOptions,
+  ): Promise<OperationOutput<'getWebsiteCommerceReports'>> {
+    return this.execute('getWebsiteCommerceReports', input, options);
+  }
+
+  /**
+   * get Website Commerce Report Stats
+   * `GET /api/websites/{websiteId}/commerce/reports/{reportId}/stats`
+   */
+  getWebsiteCommerceReportStats(
+    input: OperationInput<'getWebsiteCommerceReportStats'>,
+    options?: RequestOptions,
+  ): Promise<OperationOutput<'getWebsiteCommerceReportStats'>> {
+    return this.execute('getWebsiteCommerceReportStats', input, options);
+  }
+
+  /**
+   * get Website Commerce Settings
+   * `GET /api/websites/{websiteId}/commerce/settings`
+   */
+  getWebsiteCommerceSettings(
+    input: OperationInput<'getWebsiteCommerceSettings'>,
+    options?: RequestOptions,
+  ): Promise<OperationOutput<'getWebsiteCommerceSettings'>> {
+    return this.execute('getWebsiteCommerceSettings', input, options);
+  }
+
+  /**
+   * Get website commerce totals
+   * Returns revenue, orders, average order value, buyers, conversion rate and revenue per visitor for one currency, with the comparison period.
+   * `GET /api/websites/{websiteId}/commerce/stats`
+   */
+  getWebsiteCommerceStats(
+    input: OperationInput<'getWebsiteCommerceStats'>,
+    options?: RequestOptions,
+  ): Promise<OperationOutput<'getWebsiteCommerceStats'>> {
+    return this.execute('getWebsiteCommerceStats', input, options);
   }
 
   /**
@@ -5315,6 +6198,28 @@ export abstract class GeneratedUmamiClient {
     options?: RequestOptions,
   ): Promise<OperationOutput<'updateWebsiteAnnotation'>> {
     return this.execute('updateWebsiteAnnotation', input, options);
+  }
+
+  /**
+   * update Website Commerce Report
+   * `POST /api/websites/{websiteId}/commerce/reports/{reportId}`
+   */
+  updateWebsiteCommerceReport(
+    input: OperationInput<'updateWebsiteCommerceReport'>,
+    options?: RequestOptions,
+  ): Promise<OperationOutput<'updateWebsiteCommerceReport'>> {
+    return this.execute('updateWebsiteCommerceReport', input, options);
+  }
+
+  /**
+   * update Website Commerce Settings
+   * `POST /api/websites/{websiteId}/commerce/settings`
+   */
+  updateWebsiteCommerceSettings(
+    input: OperationInput<'updateWebsiteCommerceSettings'>,
+    options?: RequestOptions,
+  ): Promise<OperationOutput<'updateWebsiteCommerceSettings'>> {
+    return this.execute('updateWebsiteCommerceSettings', input, options);
   }
 
   /**
