@@ -1,9 +1,10 @@
-import { Grid, Row, Text, Tooltip, TooltipTrigger } from '@umami/react-zen';
+import { Box, Grid, Row, Text, Tooltip, TooltipTrigger } from '@umami/react-zen';
 import { addHours, format, startOfDay } from 'date-fns';
 import { Fragment } from 'react';
 import { LoadingPanel } from '@/components/common/LoadingPanel';
 import { useLocale, useMessages, useWeeklyTrafficQuery } from '@/components/hooks';
 import { getDayOfWeekAsDate } from '@/lib/date';
+import { formatLongNumber } from '@/lib/format';
 
 export function WeeklyTraffic({ websiteId }: { websiteId: string }) {
   const { data, isLoading, error } = useWeeklyTrafficQuery(websiteId);
@@ -105,11 +106,16 @@ export function WeeklyTraffic({ websiteId }: { websiteId: string }) {
                     return (
                       <TooltipTrigger key={j} delay={0}>
                         {cell}
-                        <Tooltip
-                          placement="right"
-                          style={{ backgroundColor: 'rgba(0,0,0,0.8)', color: 'white' }}
-                        >
-                          <Text size="base">{`${t(labels.visitors)}: ${count}`}</Text>
+                        <Tooltip placement="right" className="bg-transparent p-0">
+                          <Box
+                            padding
+                            borderRadius="md"
+                            style={{ backgroundColor: 'rgba(0,0,0,0.8)', color: 'white' }}
+                          >
+                            <Text size="sm">
+                              {`${t(labels.visitors)}: ${formatLongNumber(count)}`}
+                            </Text>
+                          </Box>
                         </Tooltip>
                       </TooltipTrigger>
                     );

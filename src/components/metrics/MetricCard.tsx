@@ -2,6 +2,7 @@ import { Button, Column, Icon, Row, Text, Tooltip, TooltipTrigger } from '@umami
 import { useSpring, useTransform } from 'motion/react';
 import { type ReactNode, useEffect } from 'react';
 import { AnimatedDiv } from '@/components/common/AnimatedDiv';
+import { useReducedMotion } from '@/components/hooks/useReducedMotion';
 import { Info } from '@/components/icons';
 import { ChangeLabel } from '@/components/metrics/ChangeLabel';
 import { formatNumber } from '@/lib/format';
@@ -28,6 +29,7 @@ export const MetricCard = ({
   showLabel = true,
   showChange = false,
 }: MetricCardProps) => {
+  const reducedMotion = useReducedMotion();
   const diff = value - change;
   const pct = diff !== 0 ? ((value - diff) / diff) * 100 : value !== 0 ? 100 : 0;
   const x = Number(value) || 0;
@@ -38,12 +40,14 @@ export const MetricCard = ({
   const pctText = useTransform(pctSpring, n => `${Math.abs(~~n)}%`);
 
   useEffect(() => {
-    xSpring.set(x);
-  }, [x, xSpring]);
+    if (reducedMotion) xSpring.jump(x);
+    else xSpring.set(x);
+  }, [x, xSpring, reducedMotion]);
 
   useEffect(() => {
-    pctSpring.set(p);
-  }, [p, pctSpring]);
+    if (reducedMotion) pctSpring.jump(p);
+    else pctSpring.set(p);
+  }, [p, pctSpring, reducedMotion]);
 
   return (
     <Column
@@ -73,11 +77,13 @@ export const MetricCard = ({
         </Row>
       )}
       <Text size="4xl" weight="bold" wrap="nowrap">
-        <AnimatedDiv title={value?.toString()}>{valueText}</AnimatedDiv>
+        <AnimatedDiv title={value?.toString()}>
+          {reducedMotion ? formatValue(x) : valueText}
+        </AnimatedDiv>
       </Text>
       {showChange && (
         <ChangeLabel value={change} title={formatValue(change)} reverseColors={reverseColors}>
-          <AnimatedDiv>{pctText}</AnimatedDiv>
+          <AnimatedDiv>{reducedMotion ? `${Math.abs(~~p)}%` : pctText}</AnimatedDiv>
         </ChangeLabel>
       )}
     </Column>

@@ -34,6 +34,7 @@ type DisplayMode = 'table' | 'cards';
 export interface DataGridProps {
   query: UseQueryResult<PageResult<any>, any>;
   searchDelay?: number;
+  searchWidth?: number;
   allowSearch?: boolean;
   allowPaging?: boolean;
   autoFocus?: boolean;
@@ -45,6 +46,7 @@ export interface DataGridProps {
 export function DataGrid({
   query,
   searchDelay = 600,
+  searchWidth,
   allowSearch,
   allowPaging = true,
   autoFocus,
@@ -121,19 +123,23 @@ export function DataGrid({
     <Column gap="4" minHeight="300px">
       <Row alignItems="center" wrap="wrap" gap>
         {allowSearch && (
-          <SearchField
-            value={search}
-            onSearch={handleSearch}
-            delay={0}
-            autoFocus={autoFocus}
-            placeholder={t(labels.search)}
-            className="w-full max-w-md"
-          />
+          <div className="w-full max-w-md" style={{ maxWidth: searchWidth }}>
+            <SearchField
+              value={search}
+              onSearch={handleSearch}
+              delay={0}
+              autoFocus={autoFocus}
+              placeholder={t(labels.search)}
+              className="w-full"
+            />
+          </div>
         )}
         <Row
           alignItems="center"
           gap
-          style={isMobile ? { width: '100%', justifyContent: 'flex-start' } : { marginLeft: 'auto' }}
+          style={
+            isMobile ? { width: '100%', justifyContent: 'flex-start' } : { marginLeft: 'auto' }
+          }
         >
           {renderActions?.()}
           {!isMobile && viewToggleButton}

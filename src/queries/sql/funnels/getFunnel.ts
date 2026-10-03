@@ -154,6 +154,7 @@ async function relationalQuery(
                   `${window} minute`,
                 )}
                 and we.${column} ${operator} {{${i}}}
+                and we.created_at >= {{startDate}}
                 and we.created_at <= {{endDate}}
                 ${existsClause}
           )`;

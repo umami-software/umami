@@ -99,7 +99,7 @@ function makeComputedSessionId(
   distinctId?: string,
 ) {
   const createdAt = new Date(timestamp * 1000);
-  const sessionSalt = getSalt(process.env.SALT_ROTATION || 'month', createdAt);
+  const sessionSalt = getSalt(process.env.SALT_ROTATION, createdAt);
 
   return uuid(sourceId, defaultClientInfo.ip, defaultClientInfo.userAgent, sessionSalt, distinctId ?? '');
 }

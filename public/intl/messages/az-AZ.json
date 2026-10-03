@@ -521,15 +521,6 @@
     "two-factor-locked-message": "Çox sayda uğursuz cəhd. {time} vaxtında yenidən cəhd edin.",
     "two-factor-active-description": "Hesabınız ikifaktorlu doğrulama ilə qorunur. Hər daxilolma doğrulayıcı tətbiqinizdən bir kod tələb edir.",
     "api-key-created": "API açarınızı indi kopyalayın. Onu bir daha görə bilməyəcəksiniz.",
-    "no-api-keys": "Siz heç bir API açarı yaratmamısınız.",
-    "oauth-login-prompt": "Davam etmək üçün daxil olun.",
-    "oauth-consent": "{name} Umami hesabınıza giriş əldə etmək istəyir.",
-    "oauth-permissions": "Bu, tətbiqə aşağıdakılara icazə verəcək:",
-    "oauth-scope-websites-read": "Girişiniz olan veb saytları görmək",
-    "oauth-scope-analytics-read": "Bu veb saytların analitika məlumatlarını oxumaq",
-    "oauth-redirect-notice": "Təsdiqlədikdən sonra {url} ünvanına yönləndiriləcəksiniz.",
-    "oauth-signed-in-as": "{username} kimi daxil olunub",
-    "oauth-invalid-request": "Bu icazə sorğusu etibarsızdır.",
-    "oauth-redirecting": "Yönləndirilir…"
+    "no-api-keys": "Siz heç bir API açarı yaratmamısınız."
   }
 }

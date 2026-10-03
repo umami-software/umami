@@ -51,7 +51,11 @@ export async function POST(request: Request) {
     }
   }
 
-  if ((teamId && !(await canCreateTeamWebsite(auth, teamId))) || !(await canCreateWebsite(auth))) {
+  const canCreate = teamId
+    ? await canCreateTeamWebsite(auth, teamId)
+    : await canCreateWebsite(auth);
+
+  if (!canCreate) {
     return unauthorized();
   }
 

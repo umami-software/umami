@@ -22,7 +22,11 @@ export function useLocale() {
   async function loadMessages(locale: string) {
     const { data } = await httpGet(`${process.env.basePath || ''}/intl/messages/${locale}.json`);
 
-    messages[locale] = data;
+    messages[locale] = {
+      ...data,
+      label: { monitoring: enUS.label.monitoring, ...data.label },
+      errorTracking: { ...enUS.errorTracking, ...data.errorTracking },
+    };
   }
 
   async function saveLocale(value: string) {

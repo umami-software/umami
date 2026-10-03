@@ -18,9 +18,7 @@ export async function GET(
   const { websiteId, sessionId } = await params;
   const canDelete = isRelationalOnly() && (await canDeleteWebsite(auth, websiteId));
 
-  if (
-    !(await canViewWebsiteSection(auth, websiteId, ['sessions', 'events', 'realtime', 'revenue']))
-  ) {
+  if (!(await canViewWebsiteSection(auth, websiteId, 'sessions'))) {
     return unauthorized();
   }
 

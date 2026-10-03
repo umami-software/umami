@@ -27,7 +27,7 @@
     "build:components": "node scripts/bump-components.js && tsup",
     "build:tracker": "npm-run-all check:tracker build:tracker:script build:tracker:types",
     "build:tracker:script": "rollup -c rollup.tracker.config.js",
-    "build:tracker:types": "tsc -p tsconfig.tracker.types.json && biome format --write src/tracker/index.d.ts",
+    "build:tracker:types": "tsc -p tsconfig.tracker.types.json && biome format --write src/tracker/index.d.ts src/tracker/errors.d.ts src/tracker/error-utils.d.ts",
     "check:tracker": "tsc -p tsconfig.tracker.json --noEmit",
     "build:recorder": "rollup -c rollup.recorder.config.js",
     "build:prisma:client": "node scripts/build-prisma-client.js",
@@ -64,8 +64,10 @@
     "test:api:up": "tsx scripts/test-api.ts --up-only",
     "test:api:down": "tsx scripts/test-api.ts --down",
     "test:api:coverage": "tsx scripts/test-api.ts --coverage-report",
+    "errors:cleanup": "tsx scripts/cleanup-errors.ts",
     "db:seed": "tsx scripts/seed-data.ts",
     "lint": "biome lint .",
+    "lint:i18n": "eloqnt lint",
     "format": "biome format --write .",
     "check": "biome check --write"
   },
@@ -137,6 +139,7 @@
   },
   "devDependencies": {
     "@biomejs/biome": "^2.5.13",
+    "@eloqnt/cli": "^0.6.18",
     "@netlify/plugin-nextjs": "^5.15.13",
     "@rollup/plugin-commonjs": "^29.0.3",
     "@rollup/plugin-node-resolve": "^16.0.3",

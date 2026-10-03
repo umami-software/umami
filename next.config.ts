@@ -73,7 +73,7 @@ const apiHeaders = [
   },
   {
     key: 'Access-Control-Allow-Methods',
-    value: 'GET, DELETE, POST, PUT',
+    value: 'GET, DELETE, POST, PUT, PATCH, OPTIONS',
   },
   {
     key: 'Access-Control-Max-Age',

@@ -46,6 +46,16 @@ function getDocumentTags(paths: ZodOpenApiPathsObject) {
   return [...names].sort().map(name => ({ name }));
 }
 
+const UNPUBLISHED_PATHS = new Set(['/api/config']);
+
+export function getPublishedDocument(document: OpenApiBuildResult['document']) {
+  const paths = Object.fromEntries(
+    Object.entries(document.paths ?? {}).filter(([route]) => !UNPUBLISHED_PATHS.has(route)),
+  ) as ZodOpenApiPathsObject;
+
+  return { ...document, tags: getDocumentTags(paths), paths };
+}
+
 export async function buildOpenApiDocument(
   audience: DocumentAudience = 'public',
   projectRoot = process.cwd(),

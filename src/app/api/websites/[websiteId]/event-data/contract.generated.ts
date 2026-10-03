@@ -11,6 +11,8 @@ const operation1 = defineOperation({
   operation: {
     operationId: 'getEventData',
     summary: 'Get websites website id event data',
+    description:
+      "Returns a page of events in the selected date range, grouping each event's custom property records together.",
     tags: ['Websites'],
     parameters: [
       {
@@ -20,22 +22,25 @@ const operation1 = defineOperation({
         schema: {
           type: 'string',
         },
+        description: 'ID of the website.',
       },
       {
         name: 'startAt',
         in: 'query',
-        required: true,
+        required: false,
         schema: {
           type: 'integer',
         },
+        description: 'Start of the date range as a Unix timestamp in milliseconds.',
       },
       {
         name: 'endAt',
         in: 'query',
-        required: true,
+        required: false,
         schema: {
           type: 'integer',
         },
+        description: 'End of the date range as a Unix timestamp in milliseconds.',
       },
       {
         name: 'path',
@@ -44,6 +49,7 @@ const operation1 = defineOperation({
         schema: {
           type: 'string',
         },
+        description: 'Filter by page URL path.',
       },
       {
         name: 'referrer',
@@ -52,6 +58,7 @@ const operation1 = defineOperation({
         schema: {
           type: 'string',
         },
+        description: 'Filter by referring URL.',
       },
       {
         name: 'title',
@@ -60,6 +67,7 @@ const operation1 = defineOperation({
         schema: {
           type: 'string',
         },
+        description: 'Filter by page title.',
       },
       {
         name: 'query',
@@ -68,6 +76,7 @@ const operation1 = defineOperation({
         schema: {
           type: 'string',
         },
+        description: 'Filter by page URL query string.',
       },
       {
         name: 'os',
@@ -76,6 +85,7 @@ const operation1 = defineOperation({
         schema: {
           type: 'string',
         },
+        description: 'Operating system used by the visitor.',
       },
       {
         name: 'browser',
@@ -84,6 +94,7 @@ const operation1 = defineOperation({
         schema: {
           type: 'string',
         },
+        description: 'Browser used by the visitor.',
       },
       {
         name: 'device',
@@ -92,6 +103,7 @@ const operation1 = defineOperation({
         schema: {
           type: 'string',
         },
+        description: 'Device category used by the visitor.',
       },
       {
         name: 'country',
@@ -100,6 +112,7 @@ const operation1 = defineOperation({
         schema: {
           type: 'string',
         },
+        description: 'Country code of the visitor.',
       },
       {
         name: 'region',
@@ -108,6 +121,7 @@ const operation1 = defineOperation({
         schema: {
           type: 'string',
         },
+        description: 'Region or subdivision of the visitor.',
       },
       {
         name: 'city',
@@ -116,6 +130,7 @@ const operation1 = defineOperation({
         schema: {
           type: 'string',
         },
+        description: 'City of the visitor.',
       },
       {
         name: 'tag',
@@ -124,6 +139,7 @@ const operation1 = defineOperation({
         schema: {
           type: 'string',
         },
+        description: 'Tag attached to the tracked activity.',
       },
       {
         name: 'hostname',
@@ -132,6 +148,7 @@ const operation1 = defineOperation({
         schema: {
           type: 'string',
         },
+        description: 'Hostname on which the activity occurred.',
       },
       {
         name: 'distinctId',
@@ -140,6 +157,7 @@ const operation1 = defineOperation({
         schema: {
           type: 'string',
         },
+        description: 'Custom identifier assigned to the visitor.',
       },
       {
         name: 'language',
@@ -148,6 +166,7 @@ const operation1 = defineOperation({
         schema: {
           type: 'string',
         },
+        description: 'Preferred language reported by the visitor browser.',
       },
       {
         name: 'event',
@@ -156,6 +175,7 @@ const operation1 = defineOperation({
         schema: {
           type: 'string',
         },
+        description: 'Filter by custom event name.',
       },
       {
         name: 'utmSource',
@@ -164,6 +184,7 @@ const operation1 = defineOperation({
         schema: {
           type: 'string',
         },
+        description: 'UTM campaign source.',
       },
       {
         name: 'utmMedium',
@@ -172,6 +193,7 @@ const operation1 = defineOperation({
         schema: {
           type: 'string',
         },
+        description: 'UTM campaign medium.',
       },
       {
         name: 'utmCampaign',
@@ -180,6 +202,7 @@ const operation1 = defineOperation({
         schema: {
           type: 'string',
         },
+        description: 'UTM campaign name.',
       },
       {
         name: 'utmContent',
@@ -188,6 +211,7 @@ const operation1 = defineOperation({
         schema: {
           type: 'string',
         },
+        description: 'UTM campaign content.',
       },
       {
         name: 'utmTerm',
@@ -196,6 +220,7 @@ const operation1 = defineOperation({
         schema: {
           type: 'string',
         },
+        description: 'UTM campaign search term.',
       },
       {
         name: 'excludeBounce',
@@ -204,6 +229,7 @@ const operation1 = defineOperation({
         schema: {
           type: 'string',
         },
+        description: 'Set a non-empty value to exclude visits with only one pageview.',
       },
       {
         name: 'segment',
@@ -213,6 +239,7 @@ const operation1 = defineOperation({
           type: 'string',
           format: 'uuid',
         },
+        description: 'ID of a saved segment used to filter results.',
       },
       {
         name: 'cohort',
@@ -222,6 +249,7 @@ const operation1 = defineOperation({
           type: 'string',
           format: 'uuid',
         },
+        description: 'ID of a saved cohort used to filter visitors.',
       },
       {
         name: 'eventType',
@@ -231,6 +259,7 @@ const operation1 = defineOperation({
           type: 'integer',
           minimum: 1,
         },
+        description: 'Event type: 1 for a pageview or 2 for a custom event.',
       },
       {
         name: 'match',
@@ -240,6 +269,7 @@ const operation1 = defineOperation({
           type: 'string',
           enum: ['all', 'any'],
         },
+        description: 'Whether records must match all filters or any filter.',
       },
       {
         name: 'page',
@@ -249,6 +279,7 @@ const operation1 = defineOperation({
           type: 'integer',
           minimum: 1,
         },
+        description: 'Page number, starting at 1.',
       },
       {
         name: 'pageSize',
@@ -258,6 +289,7 @@ const operation1 = defineOperation({
           type: 'integer',
           minimum: 1,
         },
+        description: 'Number of results per page.',
       },
       {
         name: 'maxResults',
@@ -267,6 +299,33 @@ const operation1 = defineOperation({
           type: 'integer',
           minimum: 1,
         },
+        description: 'Maximum number of results to include.',
+      },
+      {
+        name: 'period',
+        in: 'query',
+        required: false,
+        schema: {
+          type: 'string',
+          enum: [
+            'today',
+            '24h',
+            '7d',
+            '30d',
+            '0day',
+            '24hour',
+            '0week',
+            '7day',
+            '0month',
+            '30day',
+            '90day',
+            '0year',
+            '6month',
+            '12month',
+          ],
+        },
+        description:
+          'Relative date range, for example 7d or 30day, used instead of an explicit startAt/endAt range.',
       },
     ],
     responses: {
@@ -284,12 +343,15 @@ const operation1 = defineOperation({
                     properties: {
                       websiteId: {
                         type: 'string',
+                        description: 'ID of the website.',
                       },
                       eventId: {
                         type: 'string',
+                        description: 'ID of the event.',
                       },
                       eventName: {
                         type: 'string',
+                        description: 'Name of the custom event.',
                       },
                       eventProperties: {
                         type: 'array',
@@ -306,15 +368,19 @@ const operation1 = defineOperation({
                                   format: 'date-time',
                                 },
                               ],
+                              description: 'Date and time the record was created.',
                             },
                             dataKey: {
                               type: 'string',
+                              description: 'Name of the custom property.',
                             },
                             stringValue: {
                               type: 'string',
+                              description: 'Custom property value stored as a string.',
                             },
                             numberValue: {
                               type: 'number',
+                              description: 'Custom property value stored as a number.',
                             },
                             dateValue: {
                               anyOf: [
@@ -326,9 +392,11 @@ const operation1 = defineOperation({
                                   format: 'date-time',
                                 },
                               ],
+                              description: 'Custom property value stored as a date-time.',
                             },
                             dataType: {
                               type: 'number',
+                              description: 'Data type of the custom property.',
                             },
                           },
                           required: [
@@ -340,19 +408,24 @@ const operation1 = defineOperation({
                             'dataType',
                           ],
                         },
+                        description: 'Custom properties recorded with the event.',
                       },
                     },
                     required: ['websiteId', 'eventId', 'eventName', 'eventProperties'],
                   },
+                  description: 'Data returned by the operation.',
                 },
                 count: {
                   type: 'number',
+                  description: 'Number of matching records.',
                 },
                 page: {
                   type: 'number',
+                  description: 'Page number, starting at 1.',
                 },
                 pageSize: {
                   type: 'number',
+                  description: 'Number of results per page.',
                 },
               },
               required: ['data', 'count', 'page', 'pageSize'],

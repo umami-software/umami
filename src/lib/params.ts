@@ -100,9 +100,9 @@ export function filtersObjectToArray(filters: QueryFilters, options: QueryOption
   }, []);
 }
 
-export function filtersArrayToObject(filters: Filter[]) {
+export function filtersArrayToObject(filters: Filter[] | null | undefined) {
   const nameCounts: Record<string, number> = {};
-  return filters.reduce((obj, filter: Filter) => {
+  return (filters ?? []).reduce((obj, filter: Filter) => {
     const { name, operator, value } = filter;
     const count = nameCounts[name] ?? 0;
     const key = count === 0 ? name : `${name}${count}`;

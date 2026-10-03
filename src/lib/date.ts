@@ -38,7 +38,7 @@ import {
   subWeeks,
   subYears,
 } from 'date-fns';
-import { toZonedTime } from 'date-fns-tz';
+import { fromZonedTime, toZonedTime } from 'date-fns-tz';
 import { getDateLocale } from '@/lib/lang';
 import type { DateRange } from '@/lib/types';
 
@@ -50,6 +50,25 @@ export const TIME_UNIT = {
   month: 'month',
   year: 'year',
 };
+
+export const DATE_PERIODS = [
+  'today',
+  '24h',
+  '7d',
+  '30d',
+  '0day',
+  '24hour',
+  '0week',
+  '7day',
+  '0month',
+  '30day',
+  '90day',
+  '0year',
+  '6month',
+  '12month',
+] as const;
+
+export type DatePeriod = (typeof DATE_PERIODS)[number];
 
 export const DATE_FUNCTIONS = {
   minute: {
@@ -141,11 +160,39 @@ export function parseDateValue(value: string) {
   return { num: +num, unit };
 }
 
+export function getPeriodDateRange(period: DatePeriod, timezone = 'UTC', now = new Date()) {
+  switch (period) {
+    case '24h':
+      return { startDate: subHours(now, 24), endDate: now };
+    case '7d':
+      return { startDate: subDays(now, 7), endDate: now };
+    case '30d':
+      return { startDate: subDays(now, 30), endDate: now };
+    case 'today': {
+      const zonedNow = toZonedTime(now, timezone);
+
+      return {
+        startDate: fromZonedTime(startOfDay(zonedNow), timezone),
+        endDate: fromZonedTime(endOfDay(zonedNow), timezone),
+      };
+    }
+    default: {
+      const dateRange = parseDateRange(period, undefined, 'en-US', timezone, now);
+
+      return {
+        startDate: fromZonedTime(dateRange.startDate, timezone),
+        endDate: fromZonedTime(dateRange.endDate, timezone),
+      };
+    }
+  }
+}
+
 export function parseDateRange(
   value: string,
   unitValue?: string,
   locale = 'en-US',
   timezone?: string,
+  nowValue = new Date(),
 ): DateRange {
   if (typeof value !== 'string') {
     return null;
@@ -167,7 +214,7 @@ export function parseDateRange(
     };
   }
 
-  const date = new Date();
+  const date = nowValue;
   const now = timezone ? toZonedTime(date, timezone) : date;
   const dateLocale = getDateLocale(locale);
   const { num = 1, unit } = parseDateValue(value);
@@ -313,15 +360,34 @@ export function minDate(...args: any[]) {
   return min(args.filter(n => isDate(n)));
 }
 
-export function getCompareDate(compare: string, startDate: Date, endDate: Date) {
+const HOUR_MS = 60 * 60 * 1000;
+
+export function getCompareDate(compare: string, startDate: Date, endDate: Date, now?: Date) {
+  // Ranges include both ends, so a period is one millisecond longer than endDate - startDate.
+  const length = +endDate - +startDate + 1;
+  // With `now`, compare only the elapsed part, in whole hours so that ClickHouse's hourly
+  // rollups and relational raw events cover exactly the same window.
+  const compared =
+    now && now < endDate
+      ? Math.max(0, Math.floor((+now - +startDate) / HOUR_MS) * HOUR_MS)
+      : length;
+
   if (compare === 'yoy') {
-    return { compare, startDate: subYears(startDate, 1), endDate: subYears(endDate, 1) };
+    return {
+      compare,
+      startDate: subYears(startDate, 1),
+      endDate: subYears(new Date(+startDate + compared - 1), 1),
+    };
   }
 
   if (compare === 'prev') {
-    const diff = differenceInMinutes(endDate, startDate);
+    const compareStartDate = new Date(+startDate - length);
 
-    return { compare, startDate: subMinutes(startDate, diff), endDate: subMinutes(endDate, diff) };
+    return {
+      compare,
+      startDate: compareStartDate,
+      endDate: new Date(+compareStartDate + compared - 1),
+    };
   }
 
   return {};
@@ -389,6 +455,34 @@ export function generateTimeSeries(
 
     return { x: t, d: d ?? x, y: y ?? null };
   });
+}
+
+const BUCKET_FORMAT = "yyyy-MM-dd'T'HH:mm:ss";
+
+// Places each comparison bucket at the same position in the current period (hour N of
+// yesterday under hour N of today), so an empty bucket in either period cannot shift the
+// series. Buckets are zero-filled through endDate and omitted after it, so the comparison
+// stops where the current period does. All dates are wall-clock dates in the display timezone.
+export function alignCompareSeries(
+  data: { x: string; y: number }[],
+  compareStartDate: Date,
+  startDate: Date,
+  endDate: Date,
+  unit: string,
+) {
+  const { add, diff, start } = DATE_FUNCTIONS[unit];
+  const compareStart = start(compareStartDate);
+  const currentStart = start(startDate);
+  const values = new Map(
+    data.map(({ x, y }) => [diff(start(parseBackendDate(x)), compareStart), { x, y }]),
+  );
+  const count = diff(start(endDate), currentStart) + 1;
+
+  return Array.from({ length: Math.max(0, count) }, (_, i) => ({
+    x: formatDate(add(currentStart, i), BUCKET_FORMAT),
+    y: values.get(i)?.y ?? 0,
+    d: values.get(i)?.x ?? formatDate(add(compareStart, i), BUCKET_FORMAT),
+  }));
 }
 
 export function getDateRangeValue(startDate: Date, endDate: Date) {

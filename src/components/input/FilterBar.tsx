@@ -167,16 +167,11 @@ export function FilterBar({ websiteId }: { websiteId?: string }) {
       <Row alignItems="center">
         <DialogTrigger>
           {canSaveSegment && (
-            <TooltipTrigger delay={0}>
-              <Button variant="zero">
-                <Icon>
-                  <Bookmark />
-                </Icon>
-              </Button>
-              <Tooltip>
-                <Text>{t(labels.saveSegment)}</Text>
-              </Tooltip>
-            </TooltipTrigger>
+            <Button variant="zero" aria-label={t(labels.saveSegment)}>
+              <Icon>
+                <Bookmark />
+              </Icon>
+            </Button>
           )}
           <Modal placement={isMobile ? 'fullscreen' : 'center'}>
             <Dialog

@@ -1,8 +1,8 @@
 import { z } from 'zod';
-import { fetchAccount, fetchTeam } from '@/lib/load';
+import { fetchAccount, fetchTeam, getBillingAccess, getTeamBillingScope } from '@/lib/load';
 import { parseRequest } from '@/lib/request';
 import { normalizeSubscription } from '@/lib/subscription';
-import { canViewTeam } from '@/permissions';
+import { canViewTeamSubscription } from '@/permissions';
 
 const headers = {
   'Cache-Control': 'private, no-store, max-age=0',
@@ -23,7 +23,7 @@ export async function GET(request: Request) {
 
   const { teamId } = query;
 
-  if (teamId && !(await canViewTeam(auth, teamId))) {
+  if (teamId && !(await canViewTeamSubscription(auth, teamId))) {
     return Response.json(
       {
         error: {
@@ -39,6 +39,16 @@ export async function GET(request: Request) {
   const account = teamId
     ? ((await fetchTeam(teamId)) ?? (await fetchAccount(auth.user.id)))
     : await fetchAccount(auth.user.id);
+  const subscription = normalizeSubscription(account);
 
-  return Response.json(normalizeSubscription(account), { headers });
+  if (!process.env.CLOUD_MODE) {
+    const { billingStatus, isOwner, ...response } = subscription;
+
+    return Response.json(response, { headers });
+  }
+
+  const scope = teamId ? await getTeamBillingScope(teamId) : { accountId: auth.user.id };
+  const { isOwner } = await getBillingAccess(scope, auth.user.id);
+
+  return Response.json({ ...subscription, isOwner }, { headers });
 }

@@ -11,6 +11,8 @@ const operation1 = defineOperation({
   operation: {
     operationId: 'getWebsiteAnnotations',
     summary: 'Get websites website id annotations',
+    description:
+      'Returns a paginated list of dated notes for the website, optionally filtered by date range or search text.',
     tags: ['Websites'],
     parameters: [
       {
@@ -20,22 +22,25 @@ const operation1 = defineOperation({
         schema: {
           type: 'string',
         },
+        description: 'ID of the website.',
       },
       {
         name: 'startAt',
         in: 'query',
         required: false,
         schema: {
-          type: 'number',
+          type: 'integer',
         },
+        description: 'Start of the date range as a Unix timestamp in milliseconds.',
       },
       {
         name: 'endAt',
         in: 'query',
         required: false,
         schema: {
-          type: 'number',
+          type: 'integer',
         },
+        description: 'End of the date range as a Unix timestamp in milliseconds.',
       },
       {
         name: 'search',
@@ -44,6 +49,7 @@ const operation1 = defineOperation({
         schema: {
           type: 'string',
         },
+        description: 'Search text used to filter results.',
       },
       {
         name: 'page',
@@ -53,6 +59,7 @@ const operation1 = defineOperation({
           type: 'integer',
           minimum: 1,
         },
+        description: 'Page number, starting at 1.',
       },
       {
         name: 'pageSize',
@@ -62,6 +69,7 @@ const operation1 = defineOperation({
           type: 'integer',
           minimum: 1,
         },
+        description: 'Number of results per page.',
       },
       {
         name: 'maxResults',
@@ -71,6 +79,33 @@ const operation1 = defineOperation({
           type: 'integer',
           minimum: 1,
         },
+        description: 'Maximum number of results to include.',
+      },
+      {
+        name: 'period',
+        in: 'query',
+        required: false,
+        schema: {
+          type: 'string',
+          enum: [
+            'today',
+            '24h',
+            '7d',
+            '30d',
+            '0day',
+            '24hour',
+            '0week',
+            '7day',
+            '0month',
+            '30day',
+            '90day',
+            '0year',
+            '6month',
+            '12month',
+          ],
+        },
+        description:
+          'Relative date range, for example 7d or 30day, used instead of an explicit startAt/endAt range.',
       },
     ],
     responses: {
@@ -88,20 +123,25 @@ const operation1 = defineOperation({
                     properties: {
                       id: {
                         type: 'string',
+                        description: 'Unique identifier of the resource.',
                       },
                       userId: {
                         type: 'string',
+                        description: 'ID of the associated user.',
                       },
                       createdAt: {
                         type: 'string',
                         format: 'date-time',
+                        description: 'Date and time the record was created.',
                       },
                       updatedAt: {
                         type: 'string',
                         format: 'date-time',
+                        description: 'Date and time the record was last updated.',
                       },
                       websiteId: {
                         type: 'string',
+                        description: 'ID of the website.',
                       },
                       date: {
                         type: 'string',
@@ -109,9 +149,11 @@ const operation1 = defineOperation({
                       },
                       allDay: {
                         type: 'boolean',
+                        description: 'Whether the annotation applies to the entire day.',
                       },
                       note: {
                         type: 'string',
+                        description: 'Text of the annotation.',
                       },
                     },
                     required: [
@@ -125,27 +167,35 @@ const operation1 = defineOperation({
                       'note',
                     ],
                   },
+                  description: 'Data returned by the operation.',
                 },
                 count: {
                   type: 'number',
+                  description: 'Number of matching records.',
                 },
                 page: {
                   type: 'number',
+                  description: 'Page number, starting at 1.',
                 },
                 pageSize: {
                   type: 'number',
+                  description: 'Number of results per page.',
                 },
                 orderBy: {
                   type: 'string',
+                  description: 'Field to sort the results by.',
                 },
                 sortDescending: {
                   type: 'boolean',
+                  description: 'Whether to sort results in descending order.',
                 },
                 search: {
                   type: 'string',
+                  description: 'Search text used to filter results.',
                 },
                 isCapped: {
                   type: 'boolean',
+                  description: 'Whether the results were truncated by the maximum result limit.',
                 },
               },
               required: ['data', 'count', 'page', 'pageSize'],
@@ -199,6 +249,8 @@ const operation2 = defineOperation({
   operation: {
     operationId: 'createWebsiteAnnotation',
     summary: 'Create or update websites website id annotations',
+    description:
+      'Adds a dated note to the website, optionally marking it as an all-day annotation.',
     tags: ['Websites'],
     parameters: [
       {
@@ -208,6 +260,7 @@ const operation2 = defineOperation({
         schema: {
           type: 'string',
         },
+        description: 'ID of the website.',
       },
     ],
     requestBody: {
@@ -223,11 +276,13 @@ const operation2 = defineOperation({
               },
               allDay: {
                 type: 'boolean',
+                description: 'Whether the annotation applies to the entire day.',
               },
               note: {
                 type: 'string',
                 minLength: 1,
                 maxLength: 500,
+                description: 'Text of the annotation.',
               },
             },
             required: ['date', 'note'],
@@ -245,20 +300,25 @@ const operation2 = defineOperation({
               properties: {
                 id: {
                   type: 'string',
+                  description: 'Unique identifier of the resource.',
                 },
                 userId: {
                   type: 'string',
+                  description: 'ID of the associated user.',
                 },
                 createdAt: {
                   type: 'string',
                   format: 'date-time',
+                  description: 'Date and time the record was created.',
                 },
                 updatedAt: {
                   type: 'string',
                   format: 'date-time',
+                  description: 'Date and time the record was last updated.',
                 },
                 websiteId: {
                   type: 'string',
+                  description: 'ID of the website.',
                 },
                 date: {
                   type: 'string',
@@ -266,9 +326,11 @@ const operation2 = defineOperation({
                 },
                 allDay: {
                   type: 'boolean',
+                  description: 'Whether the annotation applies to the entire day.',
                 },
                 note: {
                   type: 'string',
+                  description: 'Text of the annotation.',
                 },
               },
               required: [

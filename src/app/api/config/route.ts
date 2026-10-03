@@ -1,4 +1,4 @@
-import { isRelationalOnly } from '@/lib/db';
+import { getConfig } from '@/lib/config';
 import { parseRequest } from '@/lib/request';
 import { json } from '@/lib/response';
 
@@ -11,15 +11,5 @@ export async function GET(request: Request) {
     return error();
   }
 
-  return json({
-    cloudMode: !!process.env.CLOUD_MODE,
-    faviconUrl: process.env.FAVICON_URL,
-    linksUrl: process.env.LINKS_URL,
-    pixelsUrl: process.env.PIXELS_URL,
-    privateMode: !!process.env.PRIVATE_MODE,
-    sessionDeletionEnabled: isRelationalOnly(),
-    telemetryDisabled: !!process.env.DISABLE_TELEMETRY,
-    trackerScriptName: process.env.TRACKER_SCRIPT_NAME,
-    updatesDisabled: !!process.env.DISABLE_UPDATES,
-  });
+  return json(getConfig());
 }

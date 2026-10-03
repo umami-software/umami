@@ -7,6 +7,7 @@ import {
   isApiKeyEnabled,
 } from '@/lib/api-key';
 import {
+  AUTH_SESSION_TTL,
   PARTIAL_AUTH_TOKEN_TYPE,
   ROLE_PERMISSIONS,
   ROLES,
@@ -19,6 +20,7 @@ import { createSecureToken, parseSecureToken, parseToken } from '@/lib/jwt';
 import redis from '@/lib/redis';
 import { ensureArray } from '@/lib/utils';
 import { getApiKeyByHash, updateApiKeyLastUsed } from '@/queries/prisma/apiKey';
+import { getShare } from '@/queries/prisma/share';
 import { getUser } from '@/queries/prisma/user';
 
 const log = debug('umami:auth');
@@ -108,6 +110,14 @@ export async function checkAuth(request: Request) {
       if (user && key.pwd && hash(user.password) !== key.pwd) {
         user = null;
       }
+
+      // Keep an in-use session alive rather than expiring it a fixed time after
+      // login, reusing the window it was created with. Sessions stored before
+      // this was recorded are left alone: their intended lifetime is unknown,
+      // and defaulting would extend the shorter ones past it.
+      if (user && key.ttl) {
+        await redis.client.expire(authKey, key.ttl).catch(e => log(e));
+      }
     }
   }
 
@@ -146,15 +156,14 @@ export async function checkAuth(request: Request) {
   };
 }
 
-export async function saveAuth(data: any, expire = 0) {
+export async function saveAuth(data: any, expire = AUTH_SESSION_TTL) {
   const authKey = `auth:${createAuthKey()}`;
 
   if (redis.enabled) {
-    await redis.client.set(authKey, data);
-
-    if (expire) {
-      await redis.client.expire(authKey, expire);
-    }
+    // The TTL must be passed to set(): the client falls back to its own short
+    // DEFAULT_TTL when called without one, which would expire the session.
+    // It is stored alongside the session so refreshes can reuse the same window.
+    await redis.client.set(authKey, { ...data, ttl: expire }, expire);
   }
 
   return createSecureToken({ authKey }, secret());
@@ -164,7 +173,7 @@ export async function hasPermission(role: string, permission: string | string[])
   return ensureArray(permission).some(e => ROLE_PERMISSIONS[role]?.includes(e));
 }
 
-export function parseShareToken(request: Request) {
+export async function parseShareToken(request: Request) {
   try {
     const token: any = parseToken(request.headers.get(SHARE_TOKEN_HEADER), secret());
 
@@ -175,7 +184,23 @@ export function parseShareToken(request: Request) {
       return null;
     }
 
-    return token;
+    // Share tokens are stateless and never expire, so the share they were minted
+    // from is re-checked on every request. Deleting a share revokes its tokens.
+    if (!token.shareId) {
+      return null;
+    }
+
+    const share = await getShare(token.shareId);
+    const entityId = token.boardId ?? token.websiteId;
+
+    if (!share || share.shareType !== token.shareType || share.entityId !== entityId) {
+      log('Share token rejected: share not found');
+      return null;
+    }
+
+    // Use the current parameters rather than the ones captured at mint time, so
+    // turning a section off takes effect for tokens that are already issued.
+    return { ...token, parameters: share.parameters };
   } catch (e) {
     log(e);
     return null;

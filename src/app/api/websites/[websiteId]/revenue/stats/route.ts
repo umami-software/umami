@@ -32,7 +32,12 @@ export async function GET(
   const filters = await getQueryFilters(query, websiteId);
   const parameters = { ...filters, currency } as RevenuParameters;
   const { compare = 'prev' } = parameters;
-  const { startDate, endDate } = getCompareDate(compare, parameters.startDate, parameters.endDate);
+  const { startDate, endDate } = getCompareDate(
+    compare,
+    parameters.startDate,
+    parameters.endDate,
+    new Date(),
+  );
   const comparisonParameters = { ...parameters, startDate, endDate };
 
   const [stats, comparison] = await Promise.all([

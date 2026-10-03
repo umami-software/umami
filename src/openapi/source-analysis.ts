@@ -1,5 +1,5 @@
-import ts from 'typescript';
 import type { ApiAuth, ApiHttpMethod } from '@/openapi/operation';
+import ts from 'typescript';
 
 export interface InferredOpenApiSchema {
   type?: string;
@@ -508,6 +508,49 @@ function inferCallExpression(
         schema,
         inferExpression(expression.arguments[0], source, declarations, seen).schema,
       );
+    }
+
+    return required(schema);
+  }
+
+  if (method === 'withPeriodDateRange') {
+    const schema = expression.arguments[0]
+      ? inferExpression(expression.arguments[0], source, declarations, seen).schema
+      : objectSchema({}, []);
+    if (!schema.properties) {
+      schema.properties = {};
+    }
+    const properties = schema.properties;
+    const requiredProperties = new Set(
+      (schema.required ?? []).filter(name => name !== 'startAt' && name !== 'endAt'),
+    );
+
+    properties.startAt = { type: 'integer' };
+    properties.endAt = { type: 'integer' };
+    properties.period = {
+      type: 'string',
+      enum: [
+        'today',
+        '24h',
+        '7d',
+        '30d',
+        '0day',
+        '24hour',
+        '0week',
+        '7day',
+        '0month',
+        '30day',
+        '90day',
+        '0year',
+        '6month',
+        '12month',
+      ],
+    };
+
+    if (requiredProperties.size) {
+      schema.required = [...requiredProperties];
+    } else {
+      delete schema.required;
     }
 
     return required(schema);

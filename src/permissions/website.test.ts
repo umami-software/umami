@@ -1,5 +1,6 @@
 import { beforeEach, describe, expect, test, vi } from 'vitest';
 import { getEntity } from '@/lib/entity';
+import { getBillingAccess, getTeamBillingScope, getWebsiteBillingScope } from '@/lib/load';
 import { getTeamUser, getWebsite } from '@/queries/prisma';
 import {
   canCreateWebsite,
@@ -19,6 +20,12 @@ const { websiteFindManyMock, teamUserFindManyMock } = vi.hoisted(() => ({
 
 vi.mock('@/lib/entity', () => ({
   getEntity: vi.fn(),
+}));
+
+vi.mock('@/lib/load', () => ({
+  getBillingAccess: vi.fn(),
+  getTeamBillingScope: vi.fn(),
+  getWebsiteBillingScope: vi.fn(),
 }));
 
 vi.mock('@/queries/prisma', () => ({
@@ -58,6 +65,9 @@ beforeEach(() => {
   vi.mocked(getEntity).mockReset();
   vi.mocked(getWebsite).mockReset();
   vi.mocked(getTeamUser).mockReset();
+  vi.mocked(getBillingAccess).mockResolvedValue({ isPastDue: false, isOwner: false });
+  vi.mocked(getTeamBillingScope).mockResolvedValue({ accountId: 'owner-1', teamId: 'team-1' });
+  vi.mocked(getWebsiteBillingScope).mockResolvedValue({ accountId: 'owner-1' });
   websiteFindManyMock.mockReset();
   teamUserFindManyMock.mockReset();
 });
@@ -115,6 +125,14 @@ describe('canViewWebsite', () => {
   test('denies a non-member of the owning team', async () => {
     vi.mocked(getEntity).mockResolvedValue({ teamId: 'team-1' } as any);
     vi.mocked(getTeamUser).mockResolvedValue(null as any);
+    await expect(canViewWebsite({ user: normalUser }, 'website-1')).resolves.toBe(false);
+  });
+
+  test('denies a team member while the owning team is past due', async () => {
+    vi.mocked(getEntity).mockResolvedValue({ teamId: 'team-1' } as any);
+    vi.mocked(getTeamUser).mockResolvedValue({ role: 'team-member' } as any);
+    vi.mocked(getBillingAccess).mockResolvedValue({ isPastDue: true, isOwner: false });
+
     await expect(canViewWebsite({ user: normalUser }, 'website-1')).resolves.toBe(false);
   });
 

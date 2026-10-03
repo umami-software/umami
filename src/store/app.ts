@@ -19,7 +19,6 @@ const initialState = {
   share: null,
   shareToken: null,
   user: null,
-  config: null,
 };
 
 const store = create(() => ({ ...initialState }));
@@ -38,10 +37,6 @@ export function setShareData(share: object | null, shareToken: { token?: string 
 
 export function setUser(user: object) {
   store.setState({ user });
-}
-
-export function setConfig(config: object) {
-  store.setState({ config });
 }
 
 export function setDateRangeValue(dateRangeValue: string) {
