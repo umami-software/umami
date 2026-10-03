@@ -17,6 +17,7 @@ import {
   saveEvent,
   saveSessionData,
   saveSessionLink,
+  tryClaimAnonymousSession,
   updateSession,
 } from '@/queries/sql';
 import { POST } from './route';
@@ -41,6 +42,7 @@ vi.mock('@/queries/sql', () => ({
   saveEvent: vi.fn(),
   saveSessionData: vi.fn(),
   saveSessionLink: vi.fn(),
+  tryClaimAnonymousSession: vi.fn(),
   updateSession: vi.fn(),
 }));
 
@@ -54,6 +56,7 @@ const hasBlockedIpMock = vi.mocked(hasBlockedIp);
 const fetchWebsiteMock = vi.mocked(fetchWebsite);
 const isbotMock = vi.mocked(isbot);
 const createSessionMock = vi.mocked(createSession);
+const tryClaimAnonymousSessionMock = vi.mocked(tryClaimAnonymousSession);
 const saveEventMock = vi.mocked(saveEvent);
 const saveSessionDataMock = vi.mocked(saveSessionData);
 const saveSessionLinkMock = vi.mocked(saveSessionLink);
@@ -116,6 +119,7 @@ beforeEach(() => {
   fetchWebsiteMock.mockResolvedValue({ id: WEBSITE_ID } as any);
   getClientInfoMock.mockResolvedValue({ ...defaultClientInfo } as any);
   createSessionMock.mockResolvedValue(undefined as any);
+  tryClaimAnonymousSessionMock.mockResolvedValue(true);
   saveEventMock.mockResolvedValue(undefined as any);
   saveSessionDataMock.mockResolvedValue(undefined as any);
   saveSessionLinkMock.mockResolvedValue(undefined as any);
@@ -585,27 +589,44 @@ describe('cache token handling', () => {
     expect(body.visitId).toBe(savedEvent.visitId);
   });
 
-  test('a valid cache token creates the computed session before identify writes when the cached session differs', async () => {
-    const token = makeCacheToken({ sessionId: 'cached-session' });
+  test('a valid cache token reuses the anonymous session when the visitor identifies', async () => {
+    const anonSessionId = makeComputedSessionId(WEBSITE_ID);
+    const token = makeCacheToken({ sessionId: anonSessionId });
 
     const response = await callPOST(
       { type: 'identify', payload: { website: WEBSITE_ID, id: 'user-42', data: { plan: 'pro' } } },
       { headers: { 'x-umami-cache': token } },
     );
 
-    expect(createSessionMock).toHaveBeenCalledTimes(1);
-    const createdSession = createSessionMock.mock.calls[0][0] as Record<string, any>;
+    expect(createSessionMock).not.toHaveBeenCalled();
     const savedLink = saveSessionLinkMock.mock.calls[0][0] as Record<string, any>;
     const updatedSession = updateSessionMock.mock.calls[0][0] as Record<string, any>;
     const savedSessionData = saveSessionDataMock.mock.calls[0][0] as Record<string, any>;
     const body = (await response.json()) as Record<string, any>;
 
-    expect(createdSession.id).not.toBe('cached-session');
-    expect(savedLink.sessionId).toBe(createdSession.id);
-    expect(updatedSession.sessionId).toBe(createdSession.id);
-    expect(savedSessionData.sessionId).toBe(createdSession.id);
-    expect(body.sessionId).toBe(createdSession.id);
-    expect(body.visitId).not.toBe('cached-visit');
+    expect(savedLink.sessionId).toBe(anonSessionId);
+    expect(updatedSession.sessionId).toBe(anonSessionId);
+    expect(savedSessionData.sessionId).toBe(anonSessionId);
+    expect(body.sessionId).toBe(anonSessionId);
+  });
+
+  test('does not reuse an anonymous session already claimed by a different identity', async () => {
+    const anonSessionId = makeComputedSessionId(WEBSITE_ID);
+    const token = makeCacheToken({ sessionId: anonSessionId });
+
+    // Another identity already claimed this session — tryClaimAnonymousSession returns false.
+    tryClaimAnonymousSessionMock.mockResolvedValue(false);
+
+    const response = await callPOST(
+      { type: 'identify', payload: { website: WEBSITE_ID, id: 'user-99', data: { plan: 'free' } } },
+      { headers: { 'x-umami-cache': token } },
+    );
+
+    const body = (await response.json()) as Record<string, any>;
+
+    // A new session is created rather than reusing the claimed one.
+    expect(body.sessionId).not.toBe(anonSessionId);
+    expect(createSessionMock).toHaveBeenCalledTimes(1);
   });
 
   test('a drifted cache token resets the visit in clickhouse mode without creating a session row', async () => {
