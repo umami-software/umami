@@ -3,7 +3,7 @@
 Commerce uses the existing custom-event flow:
 
 ```js
-await umami.track('bought-online', {
+await umami.track('purchase', {
   source: 'email',
   commerce: {
     orderId: '10001',
@@ -22,10 +22,51 @@ await umami.track('bought-online', {
 
 The server computes a subtotal of 65 and total of 82 using decimal arithmetic.
 The wire envelope is `{ type: 'event', payload: { website, name, url, data } }`.
-The event name is `bought-online`, and `data` contains `source` and `commerce`.
-There is no commerce collection type, extra tracker method, or predefined action.
+The event name is `purchase`, and `data` contains `source` and `commerce`.
+There is no commerce collection type or extra tracker method.
 The parent supplies the event name, timestamp, website, session and visit.
 Direct callers may use the existing `payload.timestamp` in Unix seconds.
+
+## Predefined events
+
+Commerce works without any website setup or event-name mapping. Use these exact,
+case-sensitive names with a `commerce` payload:
+
+| Event name | When to send | Items |
+| --- | --- | --- |
+| `view_item` | A product is viewed | Products viewed |
+| `add_to_cart` | Products are added to a cart | Only the items added |
+| `begin_checkout` | Checkout starts | Full basket |
+| `purchase` | Payment completes | Purchased items; include `orderId` |
+
+```js
+const items = [{ productId: 'shirt', price: 25, quantity: 1 }];
+
+await umami.track('view_item', {
+  commerce: { currency: 'EUR', items },
+});
+await umami.track('add_to_cart', {
+  commerce: { currency: 'EUR', cartId: 'cart-10001', items },
+});
+await umami.track('begin_checkout', {
+  commerce: { currency: 'EUR', cartId: 'cart-10001', checkoutId: 'checkout-10001', items },
+});
+await umami.track('purchase', {
+  commerce: {
+    currency: 'EUR', cartId: 'cart-10001', checkoutId: 'checkout-10001',
+    orderId: '10001', items,
+  },
+});
+```
+
+Send each event when its action occurs. Keep `cartId` and `checkoutId` stable across
+related events so reports can link attempts to purchases. The names alone do not
+create commerce data: include the currency and item details in `commerce`.
+
+`orderId` remains authoritative for completed payments, so existing purchase events
+with other names still count. Other pre-purchase event names remain unclassified;
+custom mappings are no longer supported. The Checkout report defaults to a 24-hour
+conversion window, which can be changed in the report and preserved in a saved report.
 
 ## Validation and storage
 
@@ -129,16 +170,16 @@ the storage rules above in one place:
 | --- | --- |
 | Overview | Revenue, orders, AOV, buyers, conversion (converted visits / visits), revenue per visitor, units per order with comparison; revenue chart; revenue by channel, referrer, UTM, country, region, city, market, device, browser, OS, entry page and event; orders with item detail |
 | Products | Products, variants and categories including zero-sale products; observed views/additions, same-product conversion rates, revenue, units and orders; volume/rate filters and presets; configurable columns |
-| Checkout | Observed identified cart and checkout attempts, linked completions, pending and expired attempts, abandoned value, missing identifiers and unmapped events |
+| Checkout | Observed identified cart and checkout attempts, linked completions, pending and expired attempts, abandoned value, missing identifiers and unrecognized events |
 | Customers | Buyers, new vs returning, repeat purchase rate, revenue per buyer, median time and visits to first purchase, buyer list |
 | Attribution | Revenue by channel, referrer, ad platform, landing page and UTM, first click or last non-direct click |
 
 Definitions:
 
-- **Actions** are mapped from existing event names in Commerce setup. Defaults are
-  `view_item`, `add_to_cart` and `begin_checkout`. An order ID always means purchase.
-  Mapping changes apply to historical reports. Unmapped nonpayment events are unclassified;
-  they never imply cart activity. Each event name can map to only one action.
+- **Actions** use the predefined names `view_item`, `add_to_cart` and `begin_checkout`
+  for every website, including historical reports. An order ID always means purchase.
+  Other nonpayment events are unclassified and never imply cart activity. Previously
+  saved event mappings and website conversion-window settings are no longer read.
 - **Product conversion** counts visits that view and later add/buy the same product in the
   same market. Repeated actions count once per product/visit. Variant grouping also matches
   variant identity; category grouping deduplicates visits after matching a same-product
@@ -151,7 +192,7 @@ Definitions:
   Purchases never fabricate missing earlier steps. A cart progresses on a linked checkout
   or purchase; a checkout completes on a linked purchase. Open attempts remain pending
   until their window expires. Completion rate is completed / all observed checkouts,
-  including pending attempts. Missing IDs and unmapped events are reported separately.
+  including pending attempts. Missing IDs and unrecognized events are reported separately.
   `stages[].attempts` is the count; `sessions` remains a compatibility alias for that count.
 - **Market scope** uses explicit commerce market values, including markets without purchases.
   The overview's traffic conversion and revenue-per-visitor are `null` for market/product/
@@ -203,8 +244,6 @@ unavailable widget until it is removed or reconfigured.
 
 New APIs:
 
-- GET/POST `/commerce/settings`: website event-name mappings and default checkout window.
-  Settings reside in the metadata PostgreSQL database in both analytics storage modes.
 - GET `/commerce/markets`: markets with any commerce activity, including zero-order markets.
 - GET/POST `/commerce/reports`: list/create definitions.
 - GET/POST/DELETE `/commerce/reports/{reportId}`: read/update/delete a definition.

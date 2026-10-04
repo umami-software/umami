@@ -9,7 +9,6 @@ import {
   commerceReportParametersSchema,
   savedCommerceStatsQuerySchema,
 } from '@/lib/commerce-saved-reports';
-import { commerceSettingsSchema } from '@/lib/commerce-settings';
 import { defineOperation } from './operation';
 import {
   badRequestResponse,
@@ -62,17 +61,6 @@ function operation(
     },
   });
 }
-export const settingsOperations = [
-  operation('get', 'settings', 'getWebsiteCommerceSettings', commerceSettingsSchema),
-  operation(
-    'post',
-    'settings',
-    'updateWebsiteCommerceSettings',
-    commerceSettingsSchema,
-    undefined,
-    commerceSettingsSchema,
-  ),
-];
 export const reportListOperations = [
   operation(
     'get',

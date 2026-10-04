@@ -11,7 +11,6 @@ vi.hoisted(() => {
   else delete process.env.CLICKHOUSE_URL;
 });
 
-import { DEFAULT_COMMERCE_SETTINGS } from '@/lib/commerce-settings';
 import prisma from '@/lib/prisma';
 import { saveEvent } from '../events/saveEvent';
 import { getCommerceAbandonedCheckouts, getCommerceCheckout } from './getCommerceCheckout';
@@ -73,7 +72,6 @@ describe.skipIf(!process.env.COMMERCE_TEST_DATABASE_URL)('commerce database acce
       data: {
         id: websiteId,
         name: 'Commerce acceptance',
-        commerceConfig: DEFAULT_COMMERCE_SETTINGS,
       },
     });
     await prisma.client.session.create({ data: { id: sessionId, websiteId, country: 'DE' } });
@@ -97,9 +95,9 @@ describe.skipIf(!process.env.COMMERCE_TEST_DATABASE_URL)('commerce database acce
       tax: 3,
       shipping: 2,
     };
-    await event('bought-online', 8, [item('a', 10, 2), item('b', 20), item('c', 30)], order);
-    await event('bought-online', 8, [item('a', 10, 2), item('b', 20), item('c', 30)], order);
-    await event('legacy-unmapped', 9);
+    await event('purchase', 8, [item('a', 10, 2), item('b', 20), item('c', 30)], order);
+    await event('purchase', 8, [item('a', 10, 2), item('b', 20), item('c', 30)], order);
+    await event('custom-action', 9);
     await event('begin_checkout', 10); // missing ID must not invent an attempt
     // Same product ID but different variant: no variant conversion.
     await event('view_item', 11, [item('variant', 5, 1, 'clothing', 'red')]);
@@ -173,7 +171,7 @@ describe.skipIf(!process.env.COMMERCE_TEST_DATABASE_URL)('commerce database acce
     expect(scoped.conversionRate).toBeNull();
     expect(scoped.revenuePerVisitor).toBeNull();
   });
-  test('counts separate checkout attempts and exposes unmapped/missing identifiers', async () => {
+  test('counts separate checkout attempts and exposes unrecognized events and missing identifiers', async () => {
     const checkout = await getCommerceCheckout(websiteId, parameters, filters);
     expect(checkout).toMatchObject({
       completedCheckouts: 1,

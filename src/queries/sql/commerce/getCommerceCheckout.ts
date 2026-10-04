@@ -1,9 +1,8 @@
 import clickhouse from '@/lib/clickhouse';
-import { type CommerceSettings, commerceStageSQL } from '@/lib/commerce-settings';
+import { commerceStageSQL } from '@/lib/commerce-events';
 import { CLICKHOUSE, PRISMA, runQuery } from '@/lib/db';
 import prisma from '@/lib/prisma';
 import type { PageResult, QueryFilters } from '@/lib/types';
-import { getCommerceSettings } from '@/queries/prisma/commerce';
 import {
   type CommerceParameters,
   type CommerceStage,
@@ -60,11 +59,10 @@ export function getCheckoutAttemptQuery(
   websiteId: string,
   parameters: CommerceParameters,
   filters: QueryFilters,
-  settings: CommerceSettings,
   now = new Date(),
 ) {
   const build = dialect === 'prisma' ? getRelationalCommerceQuery : getClickhouseCommerceQuery;
-  const windowHours = parameters.windowHours ?? settings.windowHours;
+  const windowHours = parameters.windowHours ?? 24;
   const windowMs = windowHours * 3600000;
   const scope = build(websiteId, parameters, filters);
   const context = build(
@@ -75,7 +73,7 @@ export function getCheckoutAttemptQuery(
       endDate: new Date(Math.min(+now, +parameters.endDate + windowMs)),
     },
     {},
-    { allStages: true, events: settings.events },
+    { allStages: true },
   );
   const p = (name: string) => (dialect === 'prisma' ? `{{${name}}}` : `{${name}:DateTime64}`);
   const deadline =
@@ -83,7 +81,7 @@ export function getCheckoutAttemptQuery(
       ? `a.first_at + interval '${windowHours} hours'`
       : `addHours(a.first_at, ${windowHours})`;
   const id = `case when stage = 'checkout' then coalesce(checkout_id, '') else coalesce(cart_id, '') end`;
-  const historyStage = commerceStageSQL(dialect, 'history', settings.events).sql;
+  const historyStage = commerceStageSQL(dialect, 'history').sql;
   // Give filter CTE separate bounds: outcomes intentionally use the expanded window.
   const scopedCte = scope.filteredSessionsCte
     .replaceAll('{{startDate}}', '{{cohortStart}}')
@@ -200,14 +198,12 @@ export async function getCommerceCheckout(
   parameters: CommerceParameters,
   filters: QueryFilters,
 ): Promise<CommerceCheckout> {
-  const settings = await getCommerceSettings(websiteId);
   const query = async (dialect: 'prisma' | 'clickhouse') => {
     const { ctes, params, windowHours, eventFilter } = getCheckoutAttemptQuery(
       dialect,
       websiteId,
       parameters,
       filters,
-      settings,
     );
     const p = (name: string) => (dialect === 'prisma' ? `{{${name}}}` : `{${name}:DateTime64}`);
     const count = (condition: string, alias: string) =>
@@ -247,15 +243,8 @@ export async function getCommerceAbandonedCheckouts(
   parameters: CommerceParameters,
   filters: QueryFilters,
 ): Promise<PageResult<CommerceAbandonedCheckout[]>> {
-  const settings = await getCommerceSettings(websiteId);
   const query = async (dialect: 'prisma' | 'clickhouse') => {
-    const { ctes, params } = getCheckoutAttemptQuery(
-      dialect,
-      websiteId,
-      parameters,
-      filters,
-      settings,
-    );
+    const { ctes, params } = getCheckoutAttemptQuery(dialect, websiteId, parameters, filters);
     return (dialect === 'prisma' ? prisma : clickhouse).pagedRawQuery(
       `with ${ctes}, ${getSessionAttributesCte(dialect)}
       select a.start_session_id as "sessionId", a.stage, a.created_at as "lastAt", coalesce(a.cart_id, '') as "cartId",

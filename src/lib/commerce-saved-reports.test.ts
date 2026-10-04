@@ -4,7 +4,6 @@ import {
   commerceReportParametersSchema,
   resolveCommerceReportDates,
 } from './commerce-saved-reports';
-import { commerceSettingsSchema, commerceStageSQL } from './commerce-settings';
 
 const report = { version: 1, type: 'products', currency: 'EUR' };
 describe('commerce definitions', () => {
@@ -45,20 +44,5 @@ describe('commerce definitions', () => {
       date: { mode: 'fixed', startAt: 1000, endAt: 2000 },
     });
     expect(resolveCommerceReportDates(definition)).toEqual({ startAt: 1000, endAt: 2000 });
-  });
-  test('mapping names cannot be ambiguous and SQL uses bound values', () => {
-    expect(
-      commerceSettingsSchema.safeParse({ events: { view: ['same'], cart: ['same'], checkout: [] } })
-        .success,
-    ).toBe(false);
-    const settings = commerceSettingsSchema.parse({
-      events: { view: ["view' OR 1=1"], cart: [], checkout: [] },
-    });
-    for (const dialect of ['prisma', 'clickhouse'] as const) {
-      const { sql, params } = commerceStageSQL(dialect, 'ce', settings.events);
-      expect(sql).not.toContain("view' OR");
-      expect(params.commerceAction_view_0).toBe("view' OR 1=1");
-      expect(sql).toContain("else 'unclassified'");
-    }
   });
 });

@@ -14,6 +14,8 @@ import {
   toNumber,
   toNumbers,
 } from './commerceQuery';
+import { getCheckoutAttemptQuery } from './getCommerceCheckout';
+import { getProductConversionQuery } from './getCommerceProducts';
 
 const parameters = {
   startDate: new Date('2026-09-01T00:00:00.000Z'),
@@ -22,6 +24,56 @@ const parameters = {
 };
 
 const squash = (sql: string) => sql.replace(/\s+/g, ' ');
+
+describe.each(['prisma', 'clickhouse'] as const)('predefined commerce events (%s)', dialect => {
+  const expectedActions = {
+    commerceAction_view: 'view_item',
+    commerceAction_cart: 'add_to_cart',
+    commerceAction_checkout: 'begin_checkout',
+  };
+
+  test('classifies product activity without website configuration', () => {
+    const { sql, params } = getProductConversionQuery(dialect, 'website', parameters, {}, {});
+    expect(params).toMatchObject(expectedActions);
+    const alias = dialect === 'prisma' ? 'commerce_event' : 'ce';
+    const orderCondition = dialect === 'prisma' ? 'is not null' : "!= ''";
+    expect(sql).toContain(`case when ${alias}.order_id ${orderCondition} then 'order'`);
+    for (const action of ['view', 'cart', 'checkout']) {
+      const parameter =
+        dialect === 'prisma' ? `{{commerceAction_${action}}}` : `{commerceAction_${action}:String}`;
+      expect(sql).toContain(`when ${alias}.event_name = ${parameter} then '${action}'`);
+    }
+    expect(sql).toContain("else 'unclassified'");
+  });
+
+  test('uses the same fixed events for checkout history and defaults to 24 hours', () => {
+    const { ctes, params, windowHours } = getCheckoutAttemptQuery(
+      dialect,
+      'website',
+      parameters,
+      {},
+      new Date('2026-10-02T00:00:00Z'),
+    );
+    expect(params).toMatchObject(expectedActions);
+    expect(windowHours).toBe(24);
+    expect(params.endDate).toEqual(new Date(+parameters.endDate + 24 * 3600000));
+    const checkoutParameter =
+      dialect === 'prisma' ? '{{commerceAction_checkout}}' : '{commerceAction_checkout:String}';
+    expect(ctes).toContain(`history.event_name = ${checkoutParameter} then 'checkout'`);
+  });
+
+  test('honors the conversion window selected in a report', () => {
+    const { params, windowHours } = getCheckoutAttemptQuery(
+      dialect,
+      'website',
+      { ...parameters, windowHours: 48 },
+      {},
+      new Date('2026-10-03T00:00:00Z'),
+    );
+    expect(windowHours).toBe(48);
+    expect(params.endDate).toEqual(new Date(+parameters.endDate + 48 * 3600000));
+  });
+});
 
 describe('getRelationalCommerceQuery', () => {
   test('counts completed payments in one currency', () => {

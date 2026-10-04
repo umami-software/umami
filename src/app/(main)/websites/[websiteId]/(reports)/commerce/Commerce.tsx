@@ -1,4 +1,4 @@
-import { Column, Loading, Tab, TabList, TabPanel, Tabs } from '@umami/react-zen';
+import { Column, Loading, Row, Tab, TabList, TabPanel, Tabs } from '@umami/react-zen';
 import { EmptyPlaceholder } from '@/components/common/EmptyPlaceholder';
 import { Panel } from '@/components/common/Panel';
 import { useMessages, useNavigation } from '@/components/hooks';
@@ -83,15 +83,17 @@ export function Commerce({ websiteId, startDate, endDate, unit }: CommerceProps)
 
   return (
     <Column gap>
-      {reportControls}
-      <CommerceToolbar
-        websiteId={websiteId}
-        currency={currency}
-        market={market}
-        currencies={currencies}
-        onCurrencyChange={setCurrency}
-        onMarketChange={setMarket}
-      />
+      <Row gap wrap="wrap" alignItems="flex-end">
+        {reportControls}
+        <CommerceToolbar
+          websiteId={websiteId}
+          currency={currency}
+          market={market}
+          currencies={currencies}
+          onCurrencyChange={setCurrency}
+          onMarketChange={setMarket}
+        />
+      </Row>
       <Tabs selectedKey={tab} onSelectionChange={key => handleTabChange(key as CommerceTab)}>
         <TabList>
           <Tab id="overview">{t(labels.overview)}</Tab>

@@ -29,42 +29,36 @@ export function CommerceToolbar({
 
   return (
     <Row gap wrap="wrap" alignItems="flex-end">
-      <Row width="280px">
-        {currencies?.length ? (
-          <Select
-            label={t(labels.currency)}
-            value={currency}
-            onChange={value => onCurrencyChange(String(value))}
-            buttonProps={{ style: { width: '100%' } }}
-          >
-            {(currencies.some(c => c.currency === currency)
-              ? currencies
-              : [{ currency, orders: 0, revenue: 0 }, ...currencies]
-            ).map(({ currency: id, orders }) => (
-              <ListItem key={id} id={id}>
-                {`${id} (${orders.toLocaleString()} ${t('commerce.orders').toLowerCase()})`}
-              </ListItem>
-            ))}
-          </Select>
-        ) : (
-          <CurrencySelect value={currency} onChange={onCurrencyChange} />
-        )}
-      </Row>
+      {currencies?.length ? (
+        <Select
+          label={t(labels.currency)}
+          value={currency}
+          onChange={value => onCurrencyChange(String(value))}
+        >
+          {(currencies.some(c => c.currency === currency)
+            ? currencies
+            : [{ currency, orders: 0, revenue: 0 }, ...currencies]
+          ).map(({ currency: id, orders }) => (
+            <ListItem key={id} id={id}>
+              {`${id} (${orders.toLocaleString()} ${t('commerce.orders').toLowerCase()})`}
+            </ListItem>
+          ))}
+        </Select>
+      ) : (
+        <CurrencySelect value={currency} onChange={onCurrencyChange} />
+      )}
       {(marketNames.length > 1 || market) && (
-        <Row width="220px">
-          <Select
-            label={t('commerce.market')}
-            value={market || ALL_MARKETS}
-            onChange={value => onMarketChange(value === ALL_MARKETS ? undefined : String(value))}
-            buttonProps={{ style: { width: '100%' } }}
-          >
-            {[ALL_MARKETS, ...new Set([...(market ? [market] : []), ...marketNames])].map(id => (
-              <ListItem key={id} id={id}>
-                {id === ALL_MARKETS ? t('commerce.allMarkets') : id}
-              </ListItem>
-            ))}
-          </Select>
-        </Row>
+        <Select
+          label={t('commerce.market')}
+          value={market || ALL_MARKETS}
+          onChange={value => onMarketChange(value === ALL_MARKETS ? undefined : String(value))}
+        >
+          {[ALL_MARKETS, ...new Set([...(market ? [market] : []), ...marketNames])].map(id => (
+            <ListItem key={id} id={id}>
+              {id === ALL_MARKETS ? t('commerce.allMarkets') : id}
+            </ListItem>
+          ))}
+        </Select>
       )}
     </Row>
   );

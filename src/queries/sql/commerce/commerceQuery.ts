@@ -1,6 +1,6 @@
 import clickhouse from '@/lib/clickhouse';
+import { commerceStageSQL } from '@/lib/commerce-events';
 import { COMMERCE_LOOKBACK_DAYS } from '@/lib/commerce-reports';
-import { type CommerceSettings, commerceStageSQL } from '@/lib/commerce-settings';
 import {
   EMAIL_DOMAINS,
   EVENT_TYPE,
@@ -48,7 +48,6 @@ export type CommerceStage = 'cart' | 'checkout' | 'order';
 export interface CommerceQueryOptions {
   /** Include cart and checkout events, not only completed payments. */
   allStages?: boolean;
-  events?: CommerceSettings['events'];
 }
 
 export function getLookbackDate(startDate: Date) {
@@ -107,7 +106,7 @@ export function getRelationalCommerceQuery(
   options: CommerceQueryOptions = {},
 ) {
   const { parseFilters } = prisma;
-  const stage = commerceStageSQL('prisma', 'commerce_event', options.events);
+  const stage = commerceStageSQL('prisma', 'commerce_event');
   const { startDate, endDate, market, productId, category } = parameters;
   const { queryParams, filterQuery, cohortQuery, joinSessionQuery, dateQuery } = parseFilters({
     ...filters,
@@ -213,7 +212,7 @@ export function getClickhouseCommerceQuery(
   options: CommerceQueryOptions = {},
 ) {
   const { parseFilters } = clickhouse;
-  const stage = commerceStageSQL('clickhouse', 'ce', options.events);
+  const stage = commerceStageSQL('clickhouse', 'ce');
   const { startDate, endDate, market, productId, category } = parameters;
   const { queryParams, filterQuery, cohortQuery, dateQuery } = parseFilters({
     ...filters,

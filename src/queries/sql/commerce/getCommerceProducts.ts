@@ -4,11 +4,9 @@ import {
   type CommerceProductGroup,
   type CommerceProductSort,
 } from '@/lib/commerce-reports';
-import type { CommerceSettings } from '@/lib/commerce-settings';
 import { CLICKHOUSE, PRISMA, runQuery } from '@/lib/db';
 import prisma from '@/lib/prisma';
 import type { PageResult, QueryFilters } from '@/lib/types';
-import { getCommerceSettings } from '@/queries/prisma/commerce';
 import {
   type CommerceParameters,
   divide,
@@ -58,13 +56,12 @@ export function getProductConversionQuery(
   parameters: CommerceParameters,
   filters: QueryFilters,
   options: CommerceProductOptions,
-  settings: CommerceSettings,
 ) {
   const context = (dialect === 'prisma' ? getRelationalCommerceQuery : getClickhouseCommerceQuery)(
     websiteId,
     parameters,
     filters,
-    { allStages: true, events: settings.events },
+    { allStages: true },
   );
   const { ctes, itemScopeQuery, queryParams } = context;
   const group = options.groupBy || 'product';
@@ -162,7 +159,6 @@ export async function getCommerceProducts(
   filters: QueryFilters,
   options: CommerceProductOptions = {},
 ): Promise<PageResult<CommerceProduct[]>> {
-  const settings = await getCommerceSettings(websiteId);
   const query = async (dialect: 'prisma' | 'clickhouse') => {
     const { sql, params } = getProductConversionQuery(
       dialect,
@@ -170,7 +166,6 @@ export async function getCommerceProducts(
       parameters,
       filters,
       options,
-      settings,
     );
     return (dialect === 'prisma' ? prisma : clickhouse).pagedRawQuery(
       sql,

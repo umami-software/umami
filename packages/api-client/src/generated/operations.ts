@@ -2233,14 +2233,6 @@ export const operations = {
     queryParams: ['page', 'pageSize', 'startAt', 'endAt'],
     hasBody: false,
   },
-  getWebsiteCommerceSettings: {
-    operationId: 'getWebsiteCommerceSettings',
-    method: 'get',
-    path: '/api/websites/{websiteId}/commerce/settings',
-    pathParams: ['websiteId'],
-    queryParams: [],
-    hasBody: false,
-  },
   getWebsiteCommerceStats: {
     operationId: 'getWebsiteCommerceStats',
     method: 'get',
@@ -3868,14 +3860,6 @@ export const operations = {
     queryParams: [],
     hasBody: true,
   },
-  updateWebsiteCommerceSettings: {
-    operationId: 'updateWebsiteCommerceSettings',
-    method: 'post',
-    path: '/api/websites/{websiteId}/commerce/settings',
-    pathParams: ['websiteId'],
-    queryParams: [],
-    hasBody: true,
-  },
   updateWebsiteErrorIssue: {
     operationId: 'updateWebsiteErrorIssue',
     method: 'patch',
@@ -5331,17 +5315,6 @@ export abstract class GeneratedUmamiClient {
   }
 
   /**
-   * get Website Commerce Settings
-   * `GET /api/websites/{websiteId}/commerce/settings`
-   */
-  getWebsiteCommerceSettings(
-    input: OperationInput<'getWebsiteCommerceSettings'>,
-    options?: RequestOptions,
-  ): Promise<OperationOutput<'getWebsiteCommerceSettings'>> {
-    return this.execute('getWebsiteCommerceSettings', input, options);
-  }
-
-  /**
    * Get website commerce totals
    * Returns revenue, orders, average order value, buyers, conversion rate and revenue per visitor for one currency, with the comparison period.
    * `GET /api/websites/{websiteId}/commerce/stats`
@@ -6209,17 +6182,6 @@ export abstract class GeneratedUmamiClient {
     options?: RequestOptions,
   ): Promise<OperationOutput<'updateWebsiteCommerceReport'>> {
     return this.execute('updateWebsiteCommerceReport', input, options);
-  }
-
-  /**
-   * update Website Commerce Settings
-   * `POST /api/websites/{websiteId}/commerce/settings`
-   */
-  updateWebsiteCommerceSettings(
-    input: OperationInput<'updateWebsiteCommerceSettings'>,
-    options?: RequestOptions,
-  ): Promise<OperationOutput<'updateWebsiteCommerceSettings'>> {
-    return this.execute('updateWebsiteCommerceSettings', input, options);
   }
 
   /**

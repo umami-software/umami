@@ -81,6 +81,7 @@ test('saves market, filters, columns and a relative date range through the form'
     route:
       '/websites/website/commerce?tab=products&market=DE&minViews=100&maxCartRate=0.05&columns=views,addToCartRate&date=30day&country=DE',
   });
+  expect(screen.queryByRole('button', { name: 'Commerce setup' })).not.toBeInTheDocument();
   await user.click(screen.getByRole('button', { name: /^Save$/ }));
   const dialog = await screen.findByRole('dialog');
   await user.type(within(dialog).getByLabelText('Name'), 'Weekly opportunity report');
@@ -93,6 +94,7 @@ test('saves market, filters, columns and a relative date range through the form'
         parameters: expect.objectContaining({
           market: 'DE',
           currency: 'EUR',
+          windowHours: 24,
           minViews: 100,
           maxCartRate: 0.05,
           columns: ['views', 'addToCartRate'],
@@ -105,6 +107,7 @@ test('saves market, filters, columns and a relative date range through the form'
   expect(getTestRouter().replace).toHaveBeenCalledWith(
     expect.stringContaining('savedReport=saved-report'),
   );
+  expect(api.get.mock.calls.some(([url]) => url.endsWith('/settings'))).toBe(false);
 });
 test('the saved view and board renderer display only saved columns and honor the date override', async () => {
   const { rerender } = render(<SavedCommerceReport websiteId="website" reportId="saved-report" />);

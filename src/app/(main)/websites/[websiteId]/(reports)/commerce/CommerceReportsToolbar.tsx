@@ -29,7 +29,6 @@ import {
   commerceReportParametersSchema,
   type SavedCommerceReport,
 } from '@/lib/commerce-saved-reports';
-import { CommerceSettingsForm } from './CommerceSettingsForm';
 
 export function CommerceReportsToolbar({
   websiteId,
@@ -45,10 +44,6 @@ export function CommerceReportsToolbar({
   const dates = useDateParameters();
   const { dateRange } = useDateRange();
   const { fromUtc } = useTimezone();
-  const settings = useQuery<{ windowHours: number }>({
-    queryKey: ['commerce-settings', websiteId],
-    queryFn: () => get(`/websites/${websiteId}/commerce/settings`),
-  });
   const filters = useFilterParameters({ includePagination: false });
   const [error, setError] = useState('');
   const [busy, setBusy] = useState(false);
@@ -99,7 +94,7 @@ export function CommerceReportsToolbar({
             sort: query.sort || 'revenue',
             minViews: Number(query.minViews) || 0,
             maxCartRate: query.maxCartRate === undefined ? 1 : Number(query.maxCartRate),
-            windowHours: Number(query.windowHours) || settings.data?.windowHours || 24,
+            windowHours: Number(query.windowHours) || 24,
             columns: query.columns?.split(',') || [...COMMERCE_COLUMNS],
             search: query.search || '',
             filters: Object.fromEntries(
@@ -142,7 +137,7 @@ export function CommerceReportsToolbar({
   );
   return (
     <Column gap>
-      <Row gap wrap="wrap">
+      <Row gap wrap="wrap" alignItems="flex-end">
         <Select
           label={t('commerce.savedReports')}
           value={query.savedReport || 'current'}
@@ -281,11 +276,6 @@ export function CommerceReportsToolbar({
                 {error && <Text>{error}</Text>}
               </Column>
             )}
-          </DialogButton>
-        )}
-        {!readonly && (
-          <DialogButton label={t('commerce.setup')} width="600px">
-            {({ close }) => <CommerceSettingsForm websiteId={websiteId} onClose={close} />}
           </DialogButton>
         )}
       </Row>
