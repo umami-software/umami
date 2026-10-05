@@ -3,7 +3,6 @@ declare module '*.svg';
 declare module '*.json';
 declare module 'bcryptjs';
 declare module 'chartjs-adapter-date-fns';
-declare module 'cors';
 declare module 'date-fns-tz';
 declare module 'debug';
 declare module 'jsonwebtoken';

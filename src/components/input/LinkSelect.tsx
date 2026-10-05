@@ -64,7 +64,7 @@ export function LinkSelect({
       allowSearch={true}
       searchValue={search}
       onSearch={setSearch}
-      onChange={handleChange}
+      onChange={value => handleChange(value as string)}
       onOpenChange={handleOpenChange}
       renderValue={renderValue}
       buttonProps={{

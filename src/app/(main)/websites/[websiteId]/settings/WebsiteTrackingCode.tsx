@@ -6,9 +6,11 @@ const SCRIPT_NAME = 'script.js';
 export function WebsiteTrackingCode({
   websiteId,
   hostUrl,
+  showHeader = true,
 }: {
   websiteId: string;
   hostUrl?: string;
+  showHeader?: boolean;
 }) {
   const { t, messages, labels } = useMessages();
   const config = useConfig();
@@ -32,7 +34,7 @@ export function WebsiteTrackingCode({
 
   return (
     <Column gap>
-      <Label>{t(labels.trackingCode)}</Label>
+      {showHeader && <Label>{t(labels.trackingCode)}</Label>}
       <Text color="muted">{t(messages.trackingCode)}</Text>
       <TextField
         value={code}

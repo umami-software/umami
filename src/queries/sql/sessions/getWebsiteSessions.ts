@@ -2,14 +2,16 @@ import clickhouse from '@/lib/clickhouse';
 import { EVENT_COLUMNS, EVENT_TYPE, FILTER_COLUMNS } from '@/lib/constants';
 import { CLICKHOUSE, PRISMA, runQuery } from '@/lib/db';
 import prisma from '@/lib/prisma';
-import type { QueryFilters } from '@/lib/types';
+import type { PageResult, QueryFilters, WebsiteSession } from '@/lib/types';
 
 const FUNCTION_NAME = 'getWebsiteSessions';
 const QUALIFIED_FILTER_COLUMNS = Object.fromEntries(
   Object.entries(FILTER_COLUMNS).map(([key, value]) => [key, `website_event.${value}`]),
 );
 
-export async function getWebsiteSessions(...args: [websiteId: string, filters: QueryFilters]) {
+export async function getWebsiteSessions(
+  ...args: [websiteId: string, filters: QueryFilters]
+): Promise<PageResult<WebsiteSession[]>> {
   return runQuery({
     [PRISMA]: () => relationalQuery(...args),
     [CLICKHOUSE]: () => clickhouseQuery(...args),
@@ -50,8 +52,8 @@ async function relationalQuery(websiteId: string, filters: QueryFilters) {
       min(website_event.created_at) as "firstAt",
       max(website_event.created_at) as "lastAt",
       count(distinct website_event.visit_id) as "visits",
-      sum(case when website_event.event_type = 1 then 1 else 0 end) as "views",
-      sum(case when website_event.event_type = 2 then 1 else 0 end) as "events",
+      sum(case when website_event.event_type = ${EVENT_TYPE.pageView} then 1 else 0 end) as "views",
+      sum(case when website_event.event_type = ${EVENT_TYPE.customEvent} then 1 else 0 end) as "events",
       max(website_event.created_at) as "createdAt"
     from website_event 
     ${cohortQuery}
@@ -73,11 +75,11 @@ async function relationalQuery(websiteId: string, filters: QueryFilters) {
       session.country, 
       session.region, 
       session.city
-    order by max(website_event.created_at) desc
     `,
     queryParams,
     filters,
     FUNCTION_NAME,
+    'max(website_event.created_at) desc, session.session_id',
   );
 }
 
@@ -125,8 +127,8 @@ async function clickhouseQuery(websiteId: string, filters: QueryFilters) {
       ${getDateStringSQL('min(created_at)')} as firstAt,
       ${getDateStringSQL('max(created_at)')} as lastAt,
       uniq(visit_id) as visits,
-      sumIf(1, event_type = 1) as views,
-      sumIf(1, event_type = 2) as events,
+      sumIf(1, event_type = ${EVENT_TYPE.pageView}) as views,
+      sumIf(1, event_type = ${EVENT_TYPE.customEvent}) as events,
       max(created_at) as createdAt
     from website_event
     ${cohortQuery}
@@ -136,7 +138,7 @@ async function clickhouseQuery(websiteId: string, filters: QueryFilters) {
     ${normalizedFilterQuery}
     ${searchQuery}
     group by session_id
-    order by lastAt desc
+    order by lastAt desc, id
     `;
   } else {
     sql = `
@@ -155,7 +157,7 @@ async function clickhouseQuery(websiteId: string, filters: QueryFilters) {
       ${getDateStringSQL('min(min_time)')} as firstAt,
       ${getDateStringSQL('max(max_time)')} as lastAt,
       uniq(visit_id) as visits,
-      sumIf(views, event_type = 1) as views,
+      sumIf(views, event_type = ${EVENT_TYPE.pageView}) as views,
       sum(length(event_name)) as events,
       max(max_time) as createdAt
     from website_event_stats_hourly as website_event
@@ -166,7 +168,7 @@ async function clickhouseQuery(websiteId: string, filters: QueryFilters) {
     ${normalizedFilterQuery}
     ${searchQuery}
     group by session_id
-    order by lastAt desc
+    order by lastAt desc, id
     `;
   }
 

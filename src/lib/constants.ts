@@ -12,6 +12,7 @@ export const SHARE_TOKEN_HEADER = 'x-umami-share-token';
 export const SHARE_CONTEXT_HEADER = 'x-umami-share-context';
 export const SHARE_TOKEN_TYPE = 'share';
 export const CACHE_TOKEN_TYPE = 'cache';
+export const PARTIAL_AUTH_TOKEN_TYPE = 'partial-auth';
 export const HOMEPAGE_URL = 'https://umami.is';
 export const DOCS_URL = 'https://umami.is/docs';
 export const REPO_URL = 'https://github.com/umami-software/umami';
@@ -397,7 +398,6 @@ export const PAID_AD_PARAMS = [
   'aid=',
   'dclid=',
   'epik=',
-  'fbclid=',
   'gclid=',
   'li_fat_id=',
   'msclkid=',
@@ -698,6 +698,7 @@ export const CURRENCIES = [
   { id: 'PLN', name: 'Polish Złoty' },
   { id: 'NOK', name: 'Norwegian Krone' },
   { id: 'DKK', name: 'Danish Krone' },
+  { id: 'ISK', name: 'Icelandic Króna' },
   { id: 'NZD', name: 'New Zealand Dollar' },
   { id: 'ZAR', name: 'South African Rand' },
   { id: 'MXN', name: 'Mexican Peso' },
@@ -706,6 +707,7 @@ export const CURRENCIES = [
   { id: 'MYR', name: 'Malaysian Ringgit' },
   { id: 'INR', name: 'Indian Rupee' },
   { id: 'KRW', name: 'South Korean Won' },
+  { id: 'TWD', name: 'New Taiwan Dollar' },
   { id: 'BRL', name: 'Brazilian Real' },
   { id: 'TRY', name: 'Turkish Lira' },
   { id: 'CZK', name: 'Czech Koruna' },
@@ -734,6 +736,7 @@ export const CURRENCIES = [
   { id: 'TND', name: 'Tunisian Dinar' },
   { id: 'OMR', name: 'Omani Rial' },
   { id: 'GHS', name: 'Ghanaian Cedi' },
+  { id: 'IRR', name: 'Iranian Rial' },
 ];
 
 export const TIMEZONE_LEGACY: Record<string, string> = {

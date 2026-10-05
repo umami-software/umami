@@ -35,5 +35,5 @@ export function LinkButton({
     </Link>
   );
 
-  return <Button {...props} variant={variant} render={linkElement} />;
+  return <Button {...props} variant={variant} nativeButton={false} render={linkElement} />;
 }

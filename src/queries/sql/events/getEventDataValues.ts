@@ -14,7 +14,7 @@ interface WebsiteEventData {
 export async function getEventDataValues(
   ...args: [
     websiteId: string,
-    eventName: string,
+    eventName: string | undefined,
     filters: QueryFilters & { propertyName?: string; dataType?: number },
   ]
 ): Promise<WebsiteEventData[]> {
@@ -26,7 +26,7 @@ export async function getEventDataValues(
 
 async function relationalQuery(
   websiteId: string,
-  eventName: string,
+  eventName: string | undefined,
   filters: QueryFilters & { propertyName?: string; dataType?: number },
 ) {
   const { rawQuery, parseFilters, getDateSQL } = prisma;
@@ -35,6 +35,7 @@ async function relationalQuery(
     ...filters,
     websiteId,
   });
+  const eventNameFilter = eventName ? 'and website_event.event_name = {{eventName}}' : '';
 
   if (dataType === DATA_TYPE.array) {
     return rawQuery(
@@ -47,7 +48,7 @@ async function relationalQuery(
         and website_event.website_id = {{websiteId::uuid}}
         and website_event.created_at between {{startDate}} and {{endDate}}
         and website_event.event_type = 2
-        and website_event.event_name = {{eventName}}
+        ${eventNameFilter}
       cross join lateral jsonb_array_elements_text(coalesce(event_data.string_value, '[]')::jsonb) as array_item(value)
       ${cohortQuery}
       ${joinSessionQuery}
@@ -79,7 +80,7 @@ async function relationalQuery(
       and website_event.website_id = {{websiteId::uuid}}
       and website_event.created_at between {{startDate}} and {{endDate}}
       and website_event.event_type = 2
-      and website_event.event_name = {{eventName}}
+      ${eventNameFilter}
     ${cohortQuery}
     ${joinSessionQuery}
     where event_data.website_id = {{websiteId::uuid}}
@@ -98,12 +99,14 @@ async function relationalQuery(
 
 async function clickhouseQuery(
   websiteId: string,
-  eventName: string,
+  eventName: string | undefined,
   filters: QueryFilters & { propertyName?: string; dataType?: number },
 ): Promise<{ value: string; total: number }[]> {
   const { rawQuery, parseFilters } = clickhouse;
   const { dataType } = filters;
   const { filterQuery, cohortQuery, queryParams } = parseFilters({ ...filters, websiteId });
+  const eventNameFilter = eventName ? 'and event_name = {eventName:String}' : '';
+  const eventDataNameFilter = eventName ? 'and event_data.event_name = {eventName:String}' : '';
 
   if (dataType === DATA_TYPE.array) {
     return rawQuery(
@@ -118,14 +121,14 @@ async function clickhouseQuery(
             where website_id = {websiteId:UUID}
               and created_at between {startDate:DateTime64} and {endDate:DateTime64}
               and event_type = 2
-              and event_name = {eventName:String}) website_event
+              ${eventNameFilter}) website_event
       on website_event.event_id = event_data.event_id
         and website_event.session_id = event_data.session_id
         and website_event.website_id = event_data.website_id
       ${cohortQuery}
       where event_data.website_id = {websiteId:UUID}
         and event_data.created_at between {startDate:DateTime64} and {endDate:DateTime64}
-        and event_data.event_name = {eventName:String}
+        ${eventDataNameFilter}
         and event_data.data_key = {propertyName:String}
         and event_data.data_type = ${DATA_TYPE.array}
       ${filterQuery}
@@ -152,14 +155,14 @@ async function clickhouseQuery(
           where website_id = {websiteId:UUID}
             and created_at between {startDate:DateTime64} and {endDate:DateTime64}
             and event_type = 2
-            and event_name = {eventName:String}) website_event
+            ${eventNameFilter}) website_event
     on website_event.event_id = event_data.event_id
       and website_event.session_id = event_data.session_id
       and website_event.website_id = event_data.website_id
     ${cohortQuery}
     where event_data.website_id = {websiteId:UUID}
       and event_data.created_at between {startDate:DateTime64} and {endDate:DateTime64}
-      and event_data.event_name = {eventName:String}
+      ${eventDataNameFilter}
       and event_data.data_key = {propertyName:String}
       ${dataType ? `and event_data.data_type = ${dataType}` : ''}
     ${filterQuery}

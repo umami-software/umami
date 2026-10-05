@@ -45,7 +45,7 @@ function TestProviders({
 }) {
   return (
     <ZenProvider>
-      <RouterProvider navigate={url => window.history.pushState({}, '', url)}>
+      <RouterProvider>
         <NextIntlClientProvider locale={locale} messages={messages} onError={() => null}>
           <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
         </NextIntlClientProvider>

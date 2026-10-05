@@ -1,4 +1,5 @@
 import { FILTER_COLUMNS, OPERATORS } from '@/lib/constants';
+import { parseSessionPropertyFilters, parseUniversalEventPropertyFilters } from '@/lib/params';
 import { safeDecodeURIComponent } from '@/lib/url';
 import { useShare } from './context/useShare';
 import { useFields } from './useFields';
@@ -8,7 +9,7 @@ import { useOperatorLabels } from './useOperatorLabels';
 
 export function useFilters() {
   const { t, labels } = useMessages();
-  const { query } = useNavigation();
+  const { pathname, query } = useNavigation();
   const { fields } = useFields();
   const operatorLabels = useOperatorLabels();
   const share = useShare();
@@ -85,6 +86,9 @@ export function useFilters() {
         return arr;
       }, [])
     : [];
+  const eventPropertyFilters =
+    allowFilter && pathname.endsWith('/events') ? parseUniversalEventPropertyFilters(query) : [];
+  const sessionPropertyFilters = allowFilter ? parseSessionPropertyFilters(query) : [];
 
   const getFilters = (type: string) => {
     return (
@@ -96,5 +100,14 @@ export function useFilters() {
     );
   };
 
-  return { fields, operators, filters, operatorLabels, typeFilters, getFilters };
+  return {
+    fields,
+    operators,
+    filters,
+    eventPropertyFilters,
+    sessionPropertyFilters,
+    operatorLabels,
+    typeFilters,
+    getFilters,
+  };
 }

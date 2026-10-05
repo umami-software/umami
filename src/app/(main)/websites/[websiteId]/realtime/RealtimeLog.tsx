@@ -181,15 +181,25 @@ export function RealtimeLog({ data }: { data: any }) {
       {isPhone ? (
         <>
           <Row marginBottom="1">
-            <SearchField value={search} onSearch={setSearch} />
+            <SearchField
+              value={search}
+              onSearch={setSearch}
+              placeholder={t(labels.search)}
+              className="w-full max-w-md"
+            />
           </Row>
           <Row>
             <FilterButtons items={buttons} value={filter} onChange={setFilter} />
           </Row>
         </>
       ) : (
-        <Row alignItems="center" justifyContent="space-between">
-          <SearchField value={search} onSearch={setSearch} />
+        <Row alignItems="center" justifyContent="space-between" gap="4">
+          <SearchField
+            value={search}
+            onSearch={setSearch}
+            placeholder={t(labels.search)}
+            className="w-full max-w-md"
+          />
           <FilterButtons items={buttons} value={filter} onChange={setFilter} />
         </Row>
       )}

@@ -47,7 +47,7 @@ function getClient() {
     username && password
       ? {
           ssl: {
-            rejectUnauthorized: false,
+            rejectUnauthorized: process.env.KAFKA_SSL_ALLOW_UNAUTHORIZED !== 'true',
           },
           sasl: {
             mechanism,

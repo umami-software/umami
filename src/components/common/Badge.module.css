@@ -2,6 +2,7 @@
   display: inline-flex;
   align-items: center;
   align-self: flex-start;
+  flex-shrink: 0;
   gap: 6px;
   padding: 2px 8px;
   border-radius: 6px;
@@ -46,12 +47,12 @@
 }
 
 .gray {
-  color: var(--text-muted);
-  background: var(--surface-sunken);
+  color: var(--zen-fg-muted);
+  background: var(--zen-surface-sunken);
 }
 
 .gray .dot {
-  background: var(--text-muted);
+  background: var(--zen-fg-muted);
 }
 
 :global([data-theme="dark"]) .good {

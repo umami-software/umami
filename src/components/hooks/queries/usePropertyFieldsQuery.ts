@@ -26,15 +26,15 @@ export function usePropertyFieldsQuery(
           ? `/websites/${websiteId}/event-data/fields`
           : `/websites/${websiteId}/session-data/properties`,
         {
-          ...(source === 'event' ? { event: eventName } : {}),
+          ...params,
+          ...(source === 'event' && eventName ? { eventName } : {}),
           startAt,
           endAt,
           unit,
           timezone,
-          ...params,
         },
       ),
-    enabled: !!(websiteId && (source === 'session' || eventName)),
+    enabled: !!websiteId,
     ...options,
   });
 }

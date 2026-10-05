@@ -12,6 +12,7 @@ export async function GET(
   const schema = z.object({
     startAt: z.coerce.number().int(),
     endAt: z.coerce.number().int(),
+    eventName: z.string().optional(),
     ...filterParams,
   });
 
@@ -27,9 +28,10 @@ export async function GET(
     return unauthorized();
   }
 
+  const { eventName } = query;
   const filters = await getQueryFilters(query, websiteId);
 
-  const data = await getEventDataFields(websiteId, filters);
+  const data = await getEventDataFields(websiteId, eventName, filters);
 
   return json(data);
 }

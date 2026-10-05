@@ -52,18 +52,18 @@ export function NavMenu({
   };
 
   return (
-    <Column gap overflowY="auto" justifyContent="space-between" position="sticky">
+    <Column gap justifyContent="space-between" position="sticky">
       {title && (
         <Row padding>
           <Heading size="lg">{title}</Heading>
         </Row>
       )}
-      <Column gap="6" {...props}>
+      <Column gap="3" {...props}>
         {items?.map(({ label, items }, index) => {
           if (label) {
             return (
-              <Column key={`${label}${index}`} gap="2" marginBottom="3" minHeight="40px">
-                <Row padding>
+              <Column key={`${label}${index}`} gap="1" minHeight="40px">
+                <Row paddingX="3" marginTop="2">
                   <Text weight="bold">{label}</Text>
                 </Row>
                 {renderItems(items)}

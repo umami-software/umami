@@ -6,21 +6,24 @@ export function WebsiteAddForm({
   teamId,
   onSave,
   onClose,
+  closeOnSave = true,
 }: {
   teamId?: string;
-  onSave?: () => void;
+  onSave?: (website: any) => void | Promise<void>;
   onClose?: () => void;
+  closeOnSave?: boolean;
 }) {
   const { t, labels, messages } = useMessages();
   const { mutateAsync, error, isPending } = useUpdateQuery('/websites', { teamId });
 
   const handleSubmit = async (data: any) => {
-    await mutateAsync(data, {
-      onSuccess: async () => {
-        onSave?.();
-        onClose?.();
-      },
-    });
+    const website = await mutateAsync(data);
+
+    await onSave?.(website);
+
+    if (closeOnSave) {
+      onClose?.();
+    }
   };
 
   return (

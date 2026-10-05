@@ -1,6 +1,6 @@
 import { z } from 'zod';
 import { isValidTimezone, normalizeTimezone } from '@/lib/date';
-import { UNIT_TYPES } from './constants';
+import { DATA_TYPE, FIELD_LENGTH, UNIT_TYPES } from './constants';
 
 export const timezoneParam = z
   .string()
@@ -77,6 +77,12 @@ export const searchParams = {
 export const replayParams = {
   minDuration: z.coerce.number().int().nonnegative().optional(),
 };
+
+export const annotationSchema = z.object({
+  date: z.coerce.date(),
+  allDay: z.boolean().optional().default(true),
+  note: z.string().min(1).max(500),
+});
 
 export const pagingParams = {
   page: z.coerce.number().int().positive().optional(),
@@ -326,6 +332,19 @@ export const reportResultSchema = z.intersection(
 
 export const segmentTypeParam = z.enum(['segment', 'cohort']);
 
+const propertyFilterParamSchema = z.object({
+  propertyName: z.string().min(1).max(FIELD_LENGTH.dataKey),
+  dataType: z.union([
+    z.literal(DATA_TYPE.string),
+    z.literal(DATA_TYPE.number),
+    z.literal(DATA_TYPE.boolean),
+    z.literal(DATA_TYPE.date),
+    z.literal(DATA_TYPE.array),
+  ]),
+  operator: operatorParam,
+  value: z.string(),
+});
+
 export const segmentParamSchema = z.object({
   filters: z
     .array(
@@ -336,6 +355,7 @@ export const segmentParamSchema = z.object({
       }),
     )
     .optional(),
+  sessionPropertyFilters: z.array(propertyFilterParamSchema).optional(),
   match: z.enum(['all', 'any']).optional(),
   dateRange: z.string().optional(),
   action: z

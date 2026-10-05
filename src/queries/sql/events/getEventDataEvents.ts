@@ -70,6 +70,8 @@ async function relationalQuery(websiteId: string, filters: QueryFilters) {
     where event_data.website_id = {{websiteId::uuid}}
       and event_data.created_at between {{startDate}} and {{endDate}}
     ${filterQuery}
+    group by website_event.event_name, event_data.data_key, event_data.data_type
+    order by 1 asc, 2 asc
     limit 500
     `,
     queryParams,

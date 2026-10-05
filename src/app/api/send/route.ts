@@ -2,22 +2,24 @@ import { startOfHour } from 'date-fns';
 import { isbot } from 'isbot';
 import { z } from 'zod';
 import clickhouse from '@/lib/clickhouse';
-import { CACHE_TOKEN_TYPE, COLLECTION_TYPE, EVENT_TYPE } from '@/lib/constants';
+import { CACHE_TOKEN_TYPE, COLLECTION_TYPE, EVENT_TYPE, FIELD_LENGTH } from '@/lib/constants';
 import { getSalt, hash, secret, uuid } from '@/lib/crypto';
 import { getClientInfo, hasBlockedIp } from '@/lib/detect';
+import { truncateString } from '@/lib/format';
 import { createToken, parseToken } from '@/lib/jwt';
 import { fetchWebsite } from '@/lib/load';
 import { parseRequest } from '@/lib/request';
 import { badRequest, forbidden, json, serverError } from '@/lib/response';
 import { anyObjectParam, urlOrPathParam } from '@/lib/schema';
 import { safeDecodeURI, safeDecodeURIComponent } from '@/lib/url';
-import { createSession, saveEvent, saveSessionData } from '@/queries/sql';
+import { createSession, saveEvent, saveSessionData, saveSessionLink, updateSession } from '@/queries/sql';
 
 interface Cache {
   websiteId: string;
   sessionId: string;
   visitId: string;
   iat: number;
+  sessionLinkId?: string;
 }
 
 // Reject strings whose first character is a spreadsheet formula trigger to
@@ -128,6 +130,9 @@ export async function POST(request: Request) {
       }
     }
 
+    // Carried forward in the cache token so repeat identify calls skip identity writes
+    let sessionLinkId = cache?.sessionLinkId;
+
     // Client info
     const { ip, userAgent, device, browser, os, country, region, city } = await getClientInfo(
       request,
@@ -146,15 +151,20 @@ export async function POST(request: Request) {
 
     const createdAt = timestamp ? new Date(timestamp * 1000) : new Date();
     const now = Math.floor(Date.now() / 1000);
+    const distinctId = truncateString(id, FIELD_LENGTH.distinctId);
 
     const saltRotation = process.env.SALT_ROTATION || 'month';
     const sessionSalt = getSalt(saltRotation, createdAt);
     const visitSalt = hash(startOfHour(createdAt).toUTCString());
 
-    const sessionId = id ? uuid(sourceId, id) : uuid(sourceId, ip, userAgent, sessionSalt);
+    // Identified users need a separate deterministic session from anonymous users
+    // who happen to share the same IP address and user agent.
+    const sessionId = uuid(sourceId, ip, userAgent, sessionSalt, distinctId ?? '');
+    const sessionDrift = !!websiteId && !!cache?.sessionId && cache.sessionId !== sessionId;
+    const shouldEnsureSession = !clickhouse.enabled && sessionDrift;
 
     // Create a session if not found
-    if (!clickhouse.enabled && !cache?.sessionId) {
+    if ((!clickhouse.enabled && !cache?.sessionId) || shouldEnsureSession) {
       await createSession({
         id: sessionId,
         websiteId: sourceId,
@@ -166,7 +176,7 @@ export async function POST(request: Request) {
         country,
         region,
         city,
-        distinctId: id,
+        distinctId,
         createdAt,
       });
     }
@@ -174,6 +184,12 @@ export async function POST(request: Request) {
     // Visit info
     let visitId = cache?.visitId || uuid(sessionId, visitSalt);
     let iat = cache?.iat || now;
+
+    // A drifted cache session should start a fresh visit on the recomputed session.
+    if (sessionDrift) {
+      visitId = uuid(sessionId, visitSalt);
+      iat = now;
+    }
 
     // Expire visit after 30 minutes
     if (!timestamp && now - iat > 1800) {
@@ -188,7 +204,7 @@ export async function POST(request: Request) {
       let urlPath =
         currentUrl.pathname === '/undefined' ? '' : currentUrl.pathname + currentUrl.hash;
       const urlQuery = currentUrl.search.substring(1);
-      const urlDomain = currentUrl.hostname.replace(/^www./, '');
+      const urlDomain = currentUrl.hostname.replace(/^www\./, '');
 
       let referrerPath: string;
       let referrerQuery: string;
@@ -210,15 +226,32 @@ export async function POST(request: Request) {
       const twclid = currentUrl.searchParams.get('twclid');
 
       if (process.env.REMOVE_TRAILING_SLASH) {
-        urlPath = urlPath.replace(/\/(?=(#.*)?$)/, '');
+        // Never strip the root slash, otherwise the home page is saved with an empty path
+        urlPath = urlPath.replace(/(?!^)\/(?=(#.*)?$)/, '');
       }
 
       if (referrer) {
-        const referrerUrl = new URL(referrer, base);
+        // Canonicalize the event domain (lowercase, punycode, no port) so it
+        // compares correctly against the parsed referrer hostname
+        let eventDomain = urlDomain;
+        if (hostname) {
+          try {
+            eventDomain = new URL(`https://${hostname}`).hostname.replace(/^www\./, '');
+          } catch {
+            eventDomain = hostname.replace(/^www\./, '');
+          }
+        }
+        // Resolve path-only referrers against the event's domain, not the localhost fallback
+        const referrerUrl = new URL(referrer, eventDomain ? `https://${eventDomain}` : base);
 
         referrerPath = referrerUrl.pathname;
         referrerQuery = referrerUrl.search.substring(1);
         referrerDomain = referrerUrl.hostname.replace(/^www\./, '');
+
+        // Never save the referrer domain for self-referrals
+        if (referrerDomain === eventDomain) {
+          referrerDomain = undefined;
+        }
       }
 
       const eventType = linkId
@@ -246,7 +279,7 @@ export async function POST(request: Request) {
         referrerDomain,
 
         // Session
-        distinctId: id,
+        distinctId,
         browser,
         os,
         device,
@@ -277,12 +310,39 @@ export async function POST(request: Request) {
         twclid,
       });
     } else if (type === COLLECTION_TYPE.identify) {
+      if (websiteId && distinctId) {
+        const newLinkId = hash(sessionId, distinctId);
+
+        if (sessionLinkId !== newLinkId) {
+          // Best-effort: identity link failures must not block the session data write below.
+          try {
+            await Promise.all([
+              saveSessionLink({
+                websiteId,
+                sessionId,
+                distinctId,
+                createdAt,
+              }),
+              updateSession({
+                websiteId,
+                sessionId,
+                distinctId,
+              }),
+            ]);
+            sessionLinkId = newLinkId;
+          } catch (e) {
+            // eslint-disable-next-line no-console
+            console.error('Failed to save session link:', e);
+          }
+        }
+      }
+
       if (data) {
         await saveSessionData({
           websiteId,
           sessionId,
           sessionData: data,
-          distinctId: id,
+          distinctId,
           createdAt,
         });
       }
@@ -316,7 +376,7 @@ export async function POST(request: Request) {
     }
 
     const token = createToken(
-      { websiteId, sessionId, visitId, iat, type: CACHE_TOKEN_TYPE },
+      { websiteId, sessionId, visitId, iat, sessionLinkId, type: CACHE_TOKEN_TYPE },
       secret(),
     );
 

@@ -1,5 +1,6 @@
 import { Column, Grid, Row } from '@umami/react-zen';
 import { WebsiteExpandedMenu } from '@/app/(main)/websites/[websiteId]/WebsiteExpandedMenu';
+import { OverlayScrollArea } from '@/components/common/OverlayScrollArea';
 import { useMessages, useNavigation } from '@/components/hooks';
 import { MobileMenuButton } from '@/components/input/MobileMenuButton';
 import { MetricsExpandedTable } from '@/components/metrics/MetricsExpandedTable';
@@ -40,9 +41,12 @@ export function WebsiteExpandedView({
           gap="6"
           border="right"
           paddingRight="3"
-          overflow="auto"
+          minHeight="0"
+          overflow="hidden"
         >
-          <WebsiteExpandedMenu excludedIds={excludedIds} />
+          <OverlayScrollArea style={{ height: '100%' }}>
+            <WebsiteExpandedMenu excludedIds={excludedIds} />
+          </OverlayScrollArea>
         </Column>
         <Column id="metrics-expanded-table" overflow="hidden">
           <MetricsExpandedTable title={title} type={view} websiteId={websiteId} onClose={onClose} />

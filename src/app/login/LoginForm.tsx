@@ -13,6 +13,7 @@ import { useRouter } from 'next/navigation';
 import { useMessages, useUpdateQuery } from '@/components/hooks';
 import { Logo } from '@/components/svg';
 import { setClientAuthToken } from '@/lib/client';
+import { consumeReturnUrl } from '@/lib/return-url';
 import { setUser } from '@/store/app';
 
 export function LoginForm() {
@@ -22,10 +23,15 @@ export function LoginForm() {
 
   const handleSubmit = async (data: any) => {
     await mutateAsync(data, {
-      onSuccess: async ({ token, user }) => {
-        setClientAuthToken(token);
-        setUser(user);
-        router.push('/');
+      onSuccess: async (response: any) => {
+        if (response.requiresTwoFactor) {
+          sessionStorage.setItem('umami.partial-token', response.partialToken);
+          router.push('/login/two-factor');
+          return;
+        }
+        setClientAuthToken(response.token);
+        setUser(response.user);
+        router.push(consumeReturnUrl() ?? '/');
       },
     });
   };
@@ -36,7 +42,12 @@ export function LoginForm() {
         <Logo />
       </Icon>
       <Heading>umami</Heading>
-      <Form onSubmit={handleSubmit} error={getErrorMessage(error)} style={{ minWidth: 300 }}>
+      <Form
+        onSubmit={handleSubmit}
+        error={getErrorMessage(error)}
+        defaultValues={{ username: '', password: '' }}
+        style={{ minWidth: 300 }}
+      >
         <FormField
           label={t(labels.username)}
           data-test="input-username"

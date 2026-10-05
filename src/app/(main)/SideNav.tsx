@@ -2,7 +2,6 @@ import {
   Button,
   type ButtonProps,
   Column,
-  Focusable,
   Icon,
   Row,
   Text,
@@ -14,6 +13,8 @@ import { SettingsNav } from '@/app/(main)/settings/SettingsNav';
 import { WebsiteNav } from '@/app/(main)/websites/[websiteId]/WebsiteNav';
 import { IconLabel } from '@/components/common/IconLabel';
 import Link from '@/components/common/Link';
+import { OverlayScrollArea } from '@/components/common/OverlayScrollArea';
+import styles from '@/components/common/OverlayScrollArea.module.css';
 import { useGlobalState, useMessages, useNavigation } from '@/components/hooks';
 import {
   Globe,
@@ -71,7 +72,7 @@ export function SideNav(props: any) {
   return (
     <Column
       {...props}
-      backgroundColor="surface-base"
+      backgroundColor="surface"
       border
       borderRadius
       padding="2"
@@ -87,10 +88,15 @@ export function SideNav(props: any) {
       <Row
         alignItems="center"
         justifyContent="space-between"
-        minHeight="40px"
+        minHeight="9"
         style={{ flexShrink: 0 }}
       >
-        <Row padding="3" alignItems="center" justifyContent="space-between" flexGrow="1">
+        <Row
+          padding="3"
+          alignItems="center"
+          justifyContent={isCollapsed ? 'center' : 'space-between'}
+          flexGrow="1"
+        >
           {!isCollapsed && (
             <IconLabel icon={<Logo />}>
               <Text weight="bold">umami</Text>
@@ -99,7 +105,10 @@ export function SideNav(props: any) {
           <PanelButton />
         </Row>
       </Row>
-      <Column flexGrow="1" minHeight="0" style={{ overflowY: 'auto', overflowX: 'hidden' }}>
+      <OverlayScrollArea
+        className={isCollapsed ? styles.collapsed : undefined}
+        style={{ flexGrow: 1, minHeight: 0 }}
+      >
         {websiteId ? (
           <WebsiteNav websiteId={websiteId} isCollapsed={isCollapsed} />
         ) : pathname.includes('/settings') ? (
@@ -110,34 +119,46 @@ export function SideNav(props: any) {
           <Column gap="2">
             {links.map(({ id, path, label, icon }) => {
               const isSelected = pathname.startsWith(renderUrl(path, false));
+              const content = (
+                <Row
+                  tabIndex={0}
+                  alignItems="center"
+                  justifyContent={isCollapsed ? 'center' : undefined}
+                  hover={{ backgroundColor: 'surface-sunken' }}
+                  backgroundColor={isSelected ? 'surface-sunken' : undefined}
+                  borderRadius
+                  minHeight="9"
+                >
+                  <IconLabel
+                    icon={icon}
+                    label={isCollapsed ? '' : label}
+                    weight={isSelected ? 'bold' : undefined}
+                    padding
+                  />
+                </Row>
+              );
               return (
                 <Link key={id} href={renderUrl(path, false)} role="button">
-                  <TooltipTrigger isDisabled={!isCollapsed} delay={0}>
-                    <Focusable>
-                      <Row
-                        alignItems="center"
-                        hover={{ backgroundColor: 'surface-sunken' }}
-                        backgroundColor={isSelected ? 'surface-sunken' : undefined}
-                        borderRadius
-                        minHeight="40px"
-                      >
-                        <IconLabel
-                          icon={icon}
-                          label={isCollapsed ? '' : label}
-                          weight={isSelected ? 'bold' : undefined}
-                          padding
-                        />
-                      </Row>
-                    </Focusable>
-                    <Tooltip placement="right">{label}</Tooltip>
-                  </TooltipTrigger>
+                  {isCollapsed ? (
+                    <TooltipTrigger delay={0}>
+                      {content}
+                      <Tooltip placement="right">{label}</Tooltip>
+                    </TooltipTrigger>
+                  ) : (
+                    content
+                  )}
                 </Link>
               );
             })}
           </Column>
         )}
-      </Column>
-      <Row paddingTop="2">
+      </OverlayScrollArea>
+      <Row
+        paddingTop="2"
+        width="100%"
+        justifyContent={isCollapsed ? 'center' : undefined}
+        style={{ flexShrink: 0 }}
+      >
         <UserButton showText={!isCollapsed} />
       </Row>
     </Column>

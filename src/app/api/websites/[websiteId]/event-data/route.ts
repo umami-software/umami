@@ -2,8 +2,23 @@ import { z } from 'zod';
 import { getQueryFilters, parseRequest } from '@/lib/request';
 import { json, unauthorized } from '@/lib/response';
 import { filterParams, pagingParams } from '@/lib/schema';
+import type { PageResult } from '@/lib/types';
 import { canViewWebsiteSection } from '@/permissions';
 import { getEventData } from '@/queries/sql/events/getEventData';
+
+interface EventDataRow {
+  websiteId: string;
+  eventId: string;
+  eventName: string;
+  dataKey: string;
+  stringValue: string | null;
+  numberValue: number | null;
+  dateValue: Date | string | null;
+  dataType: number;
+  createdAt: Date | string;
+}
+
+type EventProperty = Omit<EventDataRow, 'websiteId' | 'eventId' | 'eventName'>;
 
 export async function GET(
   request: Request,
@@ -30,11 +45,16 @@ export async function GET(
 
   const filters = await getQueryFilters(query, websiteId);
 
-  const { data: rows, count, page, pageSize } = await getEventData(websiteId, filters);
+  const {
+    data: rows,
+    count,
+    page,
+    pageSize,
+  } = (await getEventData(websiteId, filters)) as PageResult<EventDataRow[]>;
 
   const eventMap = new Map<
     string,
-    { websiteId: string; eventId: string; eventName: string; eventProperties: object[] }
+    { websiteId: string; eventId: string; eventName: string; eventProperties: EventProperty[] }
   >();
 
   for (const { websiteId, eventId, eventName, ...props } of rows) {

@@ -1,15 +1,19 @@
 import { DataColumn, DataTable, Dialog, Icon, MenuItem, Modal, Row, Text } from '@umami/react-zen';
+import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { WebsiteDeleteForm } from '@/app/(main)/websites/[websiteId]/settings/WebsiteDeleteForm';
+import { ControlledDialog } from '@/components/common/ControlledDialog';
 import { DateDistance } from '@/components/common/DateDistance';
 import Link from '@/components/common/Link';
 import { SortableLabel } from '@/components/common/SortableLabel';
 import { useMessages } from '@/components/hooks';
 import { Edit, Trash, Users } from '@/components/icons';
 import { MenuButton } from '@/components/input/MenuButton';
+import { decodePunycodeDomain } from '@/lib/format';
 
 export function AdminWebsitesTable({ data = [], ...props }: { data: any[] }) {
   const { t, labels } = useMessages();
+  const router = useRouter();
   const [deleteWebsite, setDeleteWebsite] = useState(null);
 
   return (
@@ -23,7 +27,7 @@ export function AdminWebsitesTable({ data = [], ...props }: { data: any[] }) {
           )}
         </DataColumn>
         <DataColumn id="domain" label={<SortableLabel label={t(labels.domain)} sortKey="domain" />}>
-          {(row: any) => <Text truncate>{row.domain}</Text>}
+          {(row: any) => <Text truncate>{decodePunycodeDomain(row.domain)}</Text>}
         </DataColumn>
         <DataColumn id="owner" label={t(labels.owner)}>
           {(row: any) => {
@@ -61,7 +65,10 @@ export function AdminWebsitesTable({ data = [], ...props }: { data: any[] }) {
 
             return (
               <MenuButton>
-                <MenuItem href={`/admin/websites/${id}`} data-test="link-button-edit">
+                <MenuItem
+                  onAction={() => router.push(`/admin/websites/${id}`)}
+                  data-test="link-button-edit"
+                >
                   <Row alignItems="center" gap>
                     <Icon>
                       <Edit />
@@ -86,11 +93,13 @@ export function AdminWebsitesTable({ data = [], ...props }: { data: any[] }) {
           }}
         </DataColumn>
       </DataTable>
-      <Modal isOpen={!!deleteWebsite}>
-        <Dialog style={{ width: 400 }}>
-          <WebsiteDeleteForm websiteId={deleteWebsite} onClose={() => setDeleteWebsite(null)} />
-        </Dialog>
-      </Modal>
+      <ControlledDialog>
+        <Modal isOpen={!!deleteWebsite}>
+          <Dialog style={{ width: 400 }}>
+            <WebsiteDeleteForm websiteId={deleteWebsite} onClose={() => setDeleteWebsite(null)} />
+          </Dialog>
+        </Modal>
+      </ControlledDialog>
     </>
   );
 }

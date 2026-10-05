@@ -1,7 +1,6 @@
 'use client';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { RouterProvider, ZenProvider } from '@umami/react-zen';
-import { useRouter } from 'next/navigation';
 import { NextIntlClientProvider } from 'next-intl';
 import { useEffect } from 'react';
 import { ErrorBoundary } from '@/components/common/ErrorBoundary';
@@ -34,23 +33,9 @@ function MessagesProvider({ children }) {
 }
 
 export function Providers({ children }) {
-  const router = useRouter();
-
-  function navigate(url: string) {
-    if (shouldUseNativeLink(url)) {
-      window.location.href = url;
-    } else {
-      router.push(url);
-    }
-  }
-
-  function shouldUseNativeLink(url: string) {
-    return url.startsWith('http');
-  }
-
   return (
     <ZenProvider>
-      <RouterProvider navigate={navigate}>
+      <RouterProvider>
         <MessagesProvider>
           <QueryClientProvider client={client}>
             <ErrorBoundary>{children}</ErrorBoundary>

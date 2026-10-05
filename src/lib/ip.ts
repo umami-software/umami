@@ -58,11 +58,25 @@ function resolveIp(ip?: string | null) {
   }
 }
 
+function parseHeaderValue(header: string, value: string) {
+  if (header === 'x-forwarded-for') {
+    return resolveIp(value?.split(',')?.[0]?.trim());
+  }
+
+  if (header === 'forwarded') {
+    const match = value.match(/for=(\[?[0-9a-fA-F:.]+]?)/);
+
+    return match ? resolveIp(match[1]) : undefined;
+  }
+
+  return resolveIp(value);
+}
+
 export function getIpAddress(headers: Headers) {
   const customHeader = process.env.CLIENT_IP_HEADER;
 
   if (customHeader && headers.get(customHeader)) {
-    return resolveIp(headers.get(customHeader));
+    return parseHeaderValue(customHeader.toLowerCase(), headers.get(customHeader));
   }
 
   const header = IP_ADDRESS_HEADERS.find(name => headers.get(name));
@@ -70,19 +84,7 @@ export function getIpAddress(headers: Headers) {
     return undefined;
   }
 
-  const ip = headers.get(header);
-
-  if (header === 'x-forwarded-for') {
-    return resolveIp(ip?.split(',')?.[0]?.trim());
-  }
-
-  if (header === 'forwarded') {
-    const match = ip.match(/for=(\[?[0-9a-fA-F:.]+]?)/);
-
-    return match ? resolveIp(match[1]) : undefined;
-  }
-
-  return resolveIp(ip);
+  return parseHeaderValue(header, headers.get(header));
 }
 
 export function stripPort(ip?: string | null) {

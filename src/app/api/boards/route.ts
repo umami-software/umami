@@ -4,7 +4,12 @@ import { uuid } from '@/lib/crypto';
 import { getQueryFilters, parseRequest } from '@/lib/request';
 import { badRequest, json, unauthorized } from '@/lib/response';
 import { pagingParams, searchParams, sortingParams } from '@/lib/schema';
-import { canCreateTeamWebsite, canCreateWebsite, canViewBoardEntities } from '@/permissions';
+import {
+  canCreateTeamWebsite,
+  canCreateWebsite,
+  canViewBoardEntities,
+  hasValidBoardReports,
+} from '@/permissions';
 import { createBoard, getUserBoards } from '@/queries/prisma';
 
 export async function GET(request: Request) {
@@ -62,10 +67,17 @@ export async function POST(request: Request) {
     return badRequest({ message: 'Board contains inaccessible entities.' });
   }
 
+  if (!(await hasValidBoardReports(body.type, body.parameters))) {
+    return badRequest({ message: 'Board contains invalid saved reports.' });
+  }
+
   const data = {
     ...body,
     type: normalizeBoardType(body.type),
     id: uuid(),
+    // The column is NOT NULL with no default, so an omitted description —
+    // which the request schema allows — reaches Prisma as undefined and throws.
+    description: body.description ?? '',
     parameters: body.parameters ?? {},
     userId: !teamId ? auth.user.id : undefined,
   };

@@ -1,6 +1,7 @@
-import { ComboBox, type ComboBoxProps, ListItem, Loading, useDebounce } from '@umami/react-zen';
+import { type ComboBoxProps, ListItem, Loading, useDebounce } from '@umami/react-zen';
 import { endOfDay, subMonths } from 'date-fns';
 import { type SetStateAction, useMemo, useState } from 'react';
+import { ComboBox } from '@/components/common/ComboBox';
 import { Empty } from '@/components/common/Empty';
 import { useMessages, useWebsiteValuesQuery } from '@/components/hooks';
 
@@ -8,6 +9,7 @@ export interface LookupFieldProps extends Omit<ComboBoxProps, 'onChange'> {
   websiteId: string;
   type: string;
   value: string;
+  allowCustomValue?: boolean;
   onChange: (value: string) => void;
   onValueChange?: (value: string) => void;
 }
@@ -16,6 +18,7 @@ export function LookupField({
   websiteId,
   type,
   value,
+  allowCustomValue,
   onChange,
   onValueChange,
   ...props
@@ -38,6 +41,14 @@ export function LookupField({
     return data?.map(({ value }) => value) || [];
   }, [data]);
 
+  const options = useMemo(() => {
+    if (allowCustomValue && value && !items.includes(value)) {
+      return [value, ...items];
+    }
+
+    return items;
+  }, [allowCustomValue, items, value]);
+
   const handleSearch = (value: SetStateAction<string>) => {
     setSearch(value);
   };
@@ -46,16 +57,13 @@ export function LookupField({
     <ComboBox
       aria-label="LookupField"
       {...props}
-      items={items}
+      items={options}
       inputValue={value}
-      onInputChange={value => {
+      onInputValueChange={value => {
         handleSearch(value);
         onChange?.(value);
         onValueChange?.(value);
       }}
-      formValue="text"
-      allowsEmptyCollection
-      allowsCustomValue
       renderEmptyState={() =>
         isLoading ? (
           <Loading placement="center" icon="dots" />
@@ -63,8 +71,8 @@ export function LookupField({
           <Empty message={t(messages.noResultsFound)} />
         )
       }
-    >
-      {items.map(item => (
+      >
+      {options.map(item => (
         <ListItem key={item} id={item}>
           {item}
         </ListItem>

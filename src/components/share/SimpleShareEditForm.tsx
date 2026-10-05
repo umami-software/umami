@@ -92,7 +92,7 @@ export function SimpleShareEditForm({
     >
       {({ watch, setValue }) => (
         <Column gap="6">
-          <Column>
+          <Column gap="1">
             <Label>{t(labels.shareUrl)}</Label>
             <TextField value={getUrl(share?.slug || '')} isReadOnly allowCopy />
           </Column>

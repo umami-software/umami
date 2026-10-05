@@ -17,7 +17,6 @@ export function SegmentSaveButton({ websiteId }: { websiteId: string }) {
       </Button>
       <Modal placement={isMobile ? 'fullscreen' : 'center'}>
         <Dialog
-          variant={isMobile ? 'sheet' : undefined}
           title={t(labels.segment)}
           style={{
             width: isMobile ? '100%' : '800px',

@@ -4,7 +4,11 @@ import { useFilters, useMessages, useNavigation } from '@/components/hooks';
 import { ListFilter } from '@/components/icons';
 import { DialogButton } from '@/components/input/DialogButton';
 import { FilterEditForm } from '@/components/input/FilterEditForm';
-import { filtersArrayToObject } from '@/lib/params';
+import {
+  filtersArrayToObject,
+  serializeSessionPropertyFilters,
+  serializeUniversalEventPropertyFilters,
+} from '@/lib/params';
 
 export function WebsiteFilterButton({
   websiteId,
@@ -18,17 +22,43 @@ export function WebsiteFilterButton({
   const { t, labels } = useMessages();
   const { updateParams, pathname, router, query } = useNavigation();
   const { filters: currentFilters } = useFilters();
+  const isEventsPath = pathname.endsWith('/events');
   const [excludeBounce, setExcludeBounce] = useState(!!query.excludeBounce);
   const isOverview =
     /^\/teams\/[^/]+\/websites\/[^/]+$/.test(pathname) || /^\/share\/[^/]+$/.test(pathname);
 
-  const handleChange = ({ filters, segment, cohort, match }: any) => {
+  const handleChange = ({
+    filters,
+    eventPropertyFilters = [],
+    sessionPropertyFilters = [],
+    segment,
+    cohort,
+    match,
+  }: any) => {
     const params = filtersArrayToObject(filters);
     const cleared = Object.fromEntries(currentFilters.map(f => [f.name, undefined]));
+    const clearedEventPropertyFilters = Object.fromEntries(
+      Object.keys(query)
+        .filter(key => /^epf\d+$/.test(key))
+        .map(key => [key, undefined]),
+    );
+    const clearedSessionPropertyFilters = Object.fromEntries(
+      Object.keys(query)
+        .filter(key => /^spf\d+$/.test(key))
+        .map(key => [key, undefined]),
+    );
+    const eventPropertyParams = isEventsPath
+      ? serializeUniversalEventPropertyFilters(eventPropertyFilters)
+      : {};
+    const sessionPropertyParams = serializeSessionPropertyFilters(sessionPropertyFilters);
 
     const url = updateParams({
       ...cleared,
+      ...clearedEventPropertyFilters,
+      ...clearedSessionPropertyFilters,
       ...params,
+      ...eventPropertyParams,
+      ...sessionPropertyParams,
       segment,
       cohort,
       match,

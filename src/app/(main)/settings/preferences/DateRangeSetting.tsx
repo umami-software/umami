@@ -24,8 +24,7 @@ export function DateRangeSetting() {
       <DateFilter
         value={date}
         onChange={handleChange}
-        placement="bottom start"
-        style={{ minWidth: '250px' }}
+        buttonProps={{ style: { minWidth: '250px' } }}
       />
       <Button onPress={handleReset}>{t(labels.reset)}</Button>
     </Row>
