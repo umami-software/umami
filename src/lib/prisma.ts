@@ -160,7 +160,7 @@ function mapFilter(
     case OPERATORS.regex:
       return `${table}.${column} ~* ${value}`;
     case OPERATORS.notRegex:
-      return `${table}.${column} !~* ${value}`;
+      return `(${table}.${column} is null or ${table}.${column} !~* ${value})`;
     default:
       return '';
   }

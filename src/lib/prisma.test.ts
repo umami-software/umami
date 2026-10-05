@@ -115,6 +115,14 @@ describe('getDateStringSQL timezone formatting', () => {
   });
 });
 
+describe('getFilterQuery null handling', () => {
+  test('includes null values in negative regex filters', () => {
+    expect(prisma.getFilterQuery({ distinctId: 'nre..+' })).toContain(
+      'and (session.distinct_id is null or session.distinct_id !~* {{distinctId}})',
+    );
+  });
+});
+
 describe('getDateWeeklySQL timezone formatting', () => {
   test('falls back to UTC instead of producing invalid SQL when no timezone is given', () => {
     // Regression test: this used to interpolate `undefined` straight into `at time zone`.
