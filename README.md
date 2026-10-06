@@ -44,6 +44,7 @@ Create an `.env` file with the following:
 
 ```bash
 DATABASE_URL=connection-url
+APP_SECRET=random-string  # generate with: openssl rand -hex 32
 ```
 
 Optional: set `API_URL` to change the base URL used by internal UI API calls.
