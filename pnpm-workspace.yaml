@@ -35,3 +35,9 @@ overrides:
   'shell-quote@<1.9.0': 1.9.0
   'svgo@>=3.0.0 <3.3.5': 3.3.5
   'vite@>=8.0.0 <8.0.16': 8.0.16
+  # react-simple-maps 5 uses d3-selection 3. Keep d3-zoom's selection/transition/drag on v3 too,
+  # otherwise selection.interrupt is patched onto a different d3-selection copy and zooming throws.
+  'd3-zoom>d3-dispatch': ^3.0.1
+  'd3-zoom>d3-drag': ^3.0.0
+  'd3-zoom>d3-selection': ^3.0.0
+  'd3-zoom>d3-transition': ^3.0.1
