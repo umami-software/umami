@@ -5,7 +5,7 @@
 <h1 align="center">Umami</h1>
 
 <p align="center">
-  <i>Umami is a privacy-first analytics platform. Traffic, campaigns, behavior, conversions, and revenue in one place — no cookies, no surveillance, self-hosted or in the cloud.</i>
+  <i>Umami is an open-source web and product analytics platform. Understand acquisition, behavior, conversion, and retention with privacy-first analytics — no cookies, self-hosted or in the cloud.</i>
 </p>
 
 <p align="center">

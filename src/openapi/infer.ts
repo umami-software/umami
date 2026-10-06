@@ -106,7 +106,7 @@ function getAudience(path: string): ApiAudience {
   }
 
   if (
-    ['/api/admin', '/api/config', '/api/dashboard', '/api/heartbeat', '/api/scripts'].some(
+    ['/api/admin', '/api/dashboard', '/api/heartbeat', '/api/scripts'].some(
       prefix => path === prefix || path.startsWith(`${prefix}/`),
     )
   ) {

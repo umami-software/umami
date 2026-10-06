@@ -1,7 +1,7 @@
 {
   "name": "umami",
   "version": "3.4.0",
-  "description": "A modern, privacy-focused alternative to Google Analytics.",
+  "description": "An open-source web and product analytics platform.",
   "author": "Umami Software, Inc. <hello@umami.is>",
   "license": "MIT",
   "homepage": "https://umami.is",
