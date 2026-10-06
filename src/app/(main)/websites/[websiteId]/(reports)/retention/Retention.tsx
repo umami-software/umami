@@ -3,7 +3,7 @@ import { differenceInCalendarDays } from 'date-fns';
 import type { ReactNode } from 'react';
 import { LoadingPanel } from '@/components/common/LoadingPanel';
 import { Panel } from '@/components/common/Panel';
-import { useLocale, useMessages, useResultQuery } from '@/components/hooks';
+import { useLocale, useMessages, useRetentionQuery } from '@/components/hooks';
 import { Users } from '@/components/icons';
 import { formatDate } from '@/lib/date';
 import { formatLongNumber } from '@/lib/format';
@@ -20,7 +20,7 @@ export interface RetentionProps {
 export function Retention({ websiteId, days = DAYS, startDate, endDate }: RetentionProps) {
   const { t, labels } = useMessages();
   const { locale } = useLocale();
-  const { data, error, isLoading } = useResultQuery('retention', {
+  const { data, error, isLoading } = useRetentionQuery({
     websiteId,
     startDate,
     endDate,

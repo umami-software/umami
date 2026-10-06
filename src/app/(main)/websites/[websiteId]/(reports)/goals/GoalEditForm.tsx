@@ -10,9 +10,10 @@ import {
   Loading,
   TextField,
 } from '@umami/react-zen';
-import { useMessages, useMobile, useReportQuery, useUpdateQuery } from '@/components/hooks';
+import { useGoalDefinitionQuery, useMessages, useMobile, useUpdateQuery } from '@/components/hooks';
 import { ActionSelect } from '@/components/input/ActionSelect';
 import { LookupField } from '@/components/input/LookupField';
+import { ProductLookupField } from '@/components/input/ProductLookupField';
 
 export function GoalEditForm({
   id,
@@ -27,16 +28,17 @@ export function GoalEditForm({
 }) {
   const { t, labels } = useMessages();
   const { isMobile } = useMobile();
-  const { data } = useReportQuery(id);
-  const { mutateAsync, error, isPending, touch } = useUpdateQuery(`/reports${id ? `/${id}` : ''}`);
+  const { data } = useGoalDefinitionQuery(websiteId, id);
+  const { mutateAsync, error, isPending, touch } = useUpdateQuery(
+    `/websites/${websiteId}/goals${id ? `/${id}` : ''}`,
+  );
 
   const handleSubmit = async (formData: Record<string, any>) => {
     await mutateAsync(
-      { ...formData, type: 'goal', websiteId },
+      { name: formData.name, description: formData.description, parameters: formData.parameters },
       {
         onSuccess: async () => {
-          if (id) touch(`report:${id}`);
-          touch('reports:goal');
+          touch('websites:goals');
           onSave?.();
           onClose?.();
         },
@@ -63,31 +65,49 @@ export function GoalEditForm({
             <FormField name="name" label={t(labels.name)} rules={{ required: t(labels.required) }}>
               <TextField autoFocus />
             </FormField>
-            <Column>
+            <Column gap="1">
               <Label>{t(labels.action)}</Label>
               {isMobile ? (
                 <Column gap style={{ minWidth: 0 }}>
                   <FormField name="parameters.type" rules={{ required: t(labels.required) }}>
-                    <ActionSelect />
+                    <ActionSelect allowOrder />
                   </FormField>
                   <FormField name="parameters.value" rules={{ required: t(labels.required) }}>
-                    {({ field }) => {
-                      return <LookupField websiteId={websiteId} type={type} {...field} />;
-                    }}
+                    {({ field }) =>
+                      type === 'order' ? (
+                        <ProductLookupField websiteId={websiteId} {...field} />
+                      ) : (
+                        <LookupField
+                          websiteId={websiteId}
+                          type={type}
+                          allowCustomValue
+                          {...field}
+                        />
+                      )
+                    }
                   </FormField>
                 </Column>
               ) : (
                 <Grid columns="260px 1fr" gap>
                   <Column style={{ minWidth: 0 }}>
                     <FormField name="parameters.type" rules={{ required: t(labels.required) }}>
-                      <ActionSelect />
+                      <ActionSelect allowOrder />
                     </FormField>
                   </Column>
                   <Column style={{ minWidth: 0 }}>
                     <FormField name="parameters.value" rules={{ required: t(labels.required) }}>
-                      {({ field }) => {
-                        return <LookupField websiteId={websiteId} type={type} {...field} />;
-                      }}
+                      {({ field }) =>
+                        type === 'order' ? (
+                          <ProductLookupField websiteId={websiteId} {...field} />
+                        ) : (
+                          <LookupField
+                            websiteId={websiteId}
+                            type={type}
+                            allowCustomValue
+                            {...field}
+                          />
+                        )
+                      }
                     </FormField>
                   </Column>
                 </Grid>

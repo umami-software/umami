@@ -1,5 +1,6 @@
 import { Button, Column, DialogTrigger, Icon, Label, Popover } from '@umami/react-zen';
 import { DateRangeSetting } from '@/app/(main)/settings/preferences/DateRangeSetting';
+import { TimeFormatSetting } from '@/app/(main)/settings/preferences/TimeFormatSetting';
 import { TimezoneSetting } from '@/app/(main)/settings/preferences/TimezoneSetting';
 import { Panel } from '@/components/common/Panel';
 import { useMessages } from '@/components/hooks';
@@ -17,11 +18,15 @@ export function PreferencesButton() {
       </Button>
       <Popover side="bottom" align="end">
         <Panel gap="3">
-          <Column>
+          <Column gap="1">
             <Label>{t(labels.timezone)}</Label>
             <TimezoneSetting />
           </Column>
-          <Column>
+          <Column gap="1">
+            <Label>{t(labels.timeFormat)}</Label>
+            <TimeFormatSetting />
+          </Column>
+          <Column gap="1">
             <Label>{t(labels.defaultDateRange)}</Label>
             <DateRangeSetting />
           </Column>

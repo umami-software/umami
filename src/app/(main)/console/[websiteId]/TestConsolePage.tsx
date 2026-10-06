@@ -9,6 +9,44 @@ import { Panel } from '@/components/common/Panel';
 import { useWebsiteQuery } from '@/components/hooks';
 import { EventsChart } from '@/components/metrics/EventsChart';
 
+const COMMERCE_PRODUCTS = [
+  {
+    productId: 'tee-classic',
+    name: 'Classic Tee',
+    category: 'apparel',
+    variants: ['black-m', 'white-l'],
+    price: 25,
+  },
+  {
+    productId: 'hoodie-zip',
+    name: 'Zip Hoodie',
+    category: 'apparel',
+    variants: ['grey-m', 'navy-xl'],
+    price: 64,
+  },
+  { productId: 'cap-logo', name: 'Logo Cap', category: 'accessories', variants: [], price: 18 },
+  { productId: 'mug-enamel', name: 'Enamel Mug', category: 'home', variants: [], price: 14.5 },
+  {
+    productId: 'sticker-pack',
+    name: 'Sticker Pack',
+    category: 'accessories',
+    variants: [],
+    price: 6,
+  },
+];
+
+const COMMERCE_MARKETS = [
+  { market: 'US', currency: 'USD', taxRate: 0.08 },
+  { market: 'CA', currency: 'USD', taxRate: 0.13 },
+  { market: 'DE', currency: 'EUR', taxRate: 0.19 },
+  { market: 'FR', currency: 'EUR', taxRate: 0.2 },
+];
+
+const COMMERCE_JOURNEYS = 5;
+
+const pick = <T,>(list: T[]) => list[Math.floor(Math.random() * list.length)];
+const round = (n: number) => Math.round(n * 100) / 100;
+
 export function TestConsolePage({ websiteId }: { websiteId: string }) {
   const { data } = useWebsiteQuery(websiteId);
 
@@ -77,6 +115,64 @@ export function TestConsolePage({ websiteId }: { websiteId: string }) {
         currency: 'JPY',
       },
     });
+  }
+
+  // One shopping journey: add to cart, begin checkout, and pay when `pay` is set. Each step
+  // is a named event carrying a commerce payload; cart, checkout and order IDs are fresh.
+  async function runCommerceJourney(pay: boolean) {
+    const id = `${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 7)}`;
+    const { market, currency, taxRate } = pick(COMMERCE_MARKETS);
+    const cartId = `cart-${id}`;
+    const checkoutId = `checkout-${id}`;
+    const items = [...COMMERCE_PRODUCTS]
+      .sort(() => Math.random() - 0.5)
+      .slice(0, 1 + Math.floor(Math.random() * 3))
+      .map(({ productId, name, category, variants, price }) => ({
+        productId,
+        name,
+        category,
+        ...(variants.length ? { variant: pick(variants) } : {}),
+        price,
+        quantity: 1 + Math.floor(Math.random() * 3),
+      }));
+    const subtotal = items.reduce((sum, { price, quantity }) => sum + price * quantity, 0);
+    const shipping = subtotal >= 100 ? 0 : 7.5;
+
+    await window.umami.track('add-to-cart', { commerce: { currency, market, cartId, items } });
+    await window.umami.track('begin-checkout', {
+      commerce: { currency, market, cartId, checkoutId, items },
+    });
+
+    if (pay) {
+      await window.umami.track('purchase', {
+        payment: pick(['card', 'paypal', 'apple-pay']),
+        commerce: {
+          currency,
+          market,
+          cartId,
+          checkoutId,
+          orderId: `order-${id}`,
+          shipping,
+          tax: round(subtotal * taxRate),
+          items,
+        },
+      });
+    }
+  }
+
+  // Several journeys per run so every commerce tab has data: the first always pays,
+  // the rest pay about seven times in ten, leaving some abandoned checkouts.
+  async function handleRunCommerce() {
+    try {
+      window.umami.track(props => ({ ...props, url: '/cart', referrer: 'https://www.google.com' }));
+
+      for (let index = 0; index < COMMERCE_JOURNEYS; index++) {
+        await runCommerceJourney(index === 0 || Math.random() < 0.7);
+      }
+    } catch (error) {
+      // Commerce events reject on delivery failure so callers can retry.
+      console.error('Commerce event failed', error);
+    }
   }
 
   function handleRunIdentify() {
@@ -197,6 +293,9 @@ export function TestConsolePage({ websiteId }: { websiteId: string }) {
               </Button>
               <Button id="manual-button" variant="primary" onClick={handleRunRevenue}>
                 Revenue script
+              </Button>
+              <Button id="commerce-button" variant="primary" onClick={handleRunCommerce}>
+                Commerce script
               </Button>
             </Column>
           </Grid>

@@ -63,15 +63,9 @@ export function getRawQueryClient(
   return client;
 }
 
+// Always Z-suffixed so JS parses the already-shifted local value as an unambiguous
+// instant instead of re-interpreting it in the runtime's own timezone.
 const DATE_FORMATS = {
-  minute: 'YYYY-MM-DD HH24:MI:00',
-  hour: 'YYYY-MM-DD HH24:00:00',
-  day: 'YYYY-MM-DD HH24:00:00',
-  month: 'YYYY-MM-01 HH24:00:00',
-  year: 'YYYY-01-01 HH24:00:00',
-};
-
-const DATE_FORMATS_UTC = {
   minute: 'YYYY-MM-DD"T"HH24:MI:00"Z"',
   hour: 'YYYY-MM-DD"T"HH24:00:00"Z"',
   day: 'YYYY-MM-DD"T"HH24:00:00"Z"',
@@ -81,7 +75,7 @@ const DATE_FORMATS_UTC = {
 
 const DATE_STRING_FORMATS = {
   utc: 'YYYY-MM-DD"T"HH24:MI:SS"Z"',
-  second: 'YYYY-MM-DD"T"HH24:MI:SS',
+  second: 'YYYY-MM-DD"T"HH24:MI:SS"Z"',
 };
 
 function isUtcTimezone(timezone?: string) {
@@ -101,11 +95,11 @@ function getCastColumnQuery(field: string, type: string): string {
 }
 
 function getDateSQL(field: string, unit: string, timezone?: string): string {
-  if (timezone && !isUtcTimezone(timezone)) {
-    return `to_char(date_trunc('${unit}', ${field} at time zone '${timezone}'), '${DATE_FORMATS[unit]}')`;
-  }
+  // Explicit `at time zone` even for UTC — `date_trunc` without one falls back to the
+  // DB session's ambient TimeZone setting, which this app never pins.
+  const tz = timezone && !isUtcTimezone(timezone) ? timezone : 'UTC';
 
-  return `to_char(date_trunc('${unit}', ${field}), '${DATE_FORMATS_UTC[unit]}')`;
+  return `to_char(date_trunc('${unit}', ${field} at time zone '${tz}'), '${DATE_FORMATS[unit]}')`;
 }
 
 function getDateStringSQL(
@@ -113,15 +107,17 @@ function getDateStringSQL(
   unit: keyof typeof DATE_STRING_FORMATS = 'utc',
   timezone?: string,
 ): string {
-  if (timezone && !isUtcTimezone(timezone)) {
-    return `to_char(${field} at time zone '${timezone}', '${DATE_STRING_FORMATS[unit]}')`;
-  }
+  const isUtc = !timezone || isUtcTimezone(timezone);
+  const tz = isUtc ? 'UTC' : timezone;
+  const format = isUtc ? DATE_STRING_FORMATS.utc : DATE_STRING_FORMATS[unit];
 
-  return `to_char(${field}, '${DATE_STRING_FORMATS.utc}')`;
+  return `to_char(${field} at time zone '${tz}', '${format}')`;
 }
 
 function getDateWeeklySQL(field: string, timezone?: string) {
-  return `concat(extract(dow from (${field} at time zone '${timezone}')), ':', to_char((${field} at time zone '${timezone}'), 'HH24'))`;
+  const tz = timezone && !isUtcTimezone(timezone) ? timezone : 'UTC';
+
+  return `concat(extract(dow from (${field} at time zone '${tz}')), ':', to_char((${field} at time zone '${tz}'), 'HH24'))`;
 }
 
 export function getTimestampSQL(field: string) {
@@ -232,9 +228,37 @@ function getCohortQuery(filters: QueryFilters = {}) {
     where website_event.website_id = {{websiteId}}
       and website_event.created_at between {{cohort_startDate}} and {{cohort_endDate}}
       ${filterQuery}
+      ${getCohortOrderQuery(filters)}
     ) cohort
     on cohort.session_id = website_event.session_id
     `;
+}
+
+// Purchase cohorts: sessions with a completed payment, optionally containing one product.
+function getCohortOrderQuery(filters: Record<string, any>) {
+  const product = (filters as any).cohort_order;
+
+  if (!product) {
+    return '';
+  }
+
+  return `and website_event.session_id in (
+        select commerce_event.session_id
+        from commerce_event
+        where commerce_event.website_id = {{websiteId::uuid}}
+          and commerce_event.created_at between {{cohort_startDate}} and {{cohort_endDate}}
+          and commerce_event.order_id is not null
+          ${
+            product === '*'
+              ? ''
+              : `and exists (
+            select 1
+            from commerce_item
+            where commerce_item.commerce_event_id = commerce_event.commerce_event_id
+              and commerce_item.product_id = {{cohort_order}}
+          )`
+          }
+      )`;
 }
 
 function getExcludeBounceQuery(filters: Record<string, any>) {
@@ -786,6 +810,7 @@ async function pagedRawQuery(
   queryParams: Record<string, any>,
   filters: QueryFilters,
   name?: string,
+  defaultOrderBy?: string,
 ) {
   const { page = 1, pageSize, orderBy, sortDescending = false } = filters;
   const size = +pageSize || DEFAULT_PAGE_SIZE;
@@ -793,7 +818,7 @@ async function pagedRawQuery(
   const direction = sortDescending ? 'desc' : 'asc';
 
   const statements = [
-    orderBy && `order by ${orderBy} ${direction}`,
+    orderBy ? `order by ${orderBy} ${direction}` : defaultOrderBy && `order by ${defaultOrderBy}`,
     +size > 0 && `limit ${+size} offset ${offset}`,
   ]
     .filter(n => n)

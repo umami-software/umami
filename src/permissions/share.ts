@@ -16,6 +16,7 @@ export type ShareSection =
   | 'retention'
   | 'utm'
   | 'revenue'
+  | 'commerce'
   | 'attribution';
 
 const SHARE_SECTIONS: ShareSection[] = [
@@ -32,6 +33,7 @@ const SHARE_SECTIONS: ShareSection[] = [
   'retention',
   'utm',
   'revenue',
+  'commerce',
   'attribution',
 ];
 

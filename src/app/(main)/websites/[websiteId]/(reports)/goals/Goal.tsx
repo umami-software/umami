@@ -1,8 +1,8 @@
 import { Column, Grid, Icon, ProgressBar, Row, Text } from '@umami/react-zen';
 import { LoadingPanel } from '@/components/common/LoadingPanel';
-import { useMessages, useNavigation, useResultQuery } from '@/components/hooks';
-import { File, User } from '@/components/icons';
-import { ReportEditButton } from '@/components/input/ReportEditButton';
+import { useGoalQuery, useMessages, useNavigation } from '@/components/hooks';
+import { File, ShoppingCart, User } from '@/components/icons';
+import { SavedDefinitionEditButton } from '@/components/input/SavedDefinitionEditButton';
 import { Lightning } from '@/components/svg';
 import { formatLongNumber } from '@/lib/format';
 import { GoalEditForm } from './GoalEditForm';
@@ -37,13 +37,15 @@ export function Goal({
   const { t, labels } = useMessages();
   const { pathname } = useNavigation();
   const isSharePage = pathname.includes('/share/');
-  const { data, error, isLoading, isFetching } = useResultQuery<GoalData>(type, {
+  const { data, error, isLoading, isFetching } = useGoalQuery({
     websiteId,
+    id,
     startDate,
     endDate,
     ...parameters,
   });
   const isPage = parameters?.type === 'path';
+  const isOrder = parameters?.type === 'order';
 
   return (
     <Grid gap>
@@ -57,7 +59,8 @@ export function Goal({
         </Column>
         {allowEdit && !isSharePage && (
           <Column>
-            <ReportEditButton
+            <SavedDefinitionEditButton
+              websiteId={websiteId}
               id={id}
               name={name}
               type={type}
@@ -66,19 +69,25 @@ export function Goal({
               minHeight="300px"
             >
               {({ close }) => <GoalEditForm id={id} websiteId={websiteId} onClose={close} />}
-            </ReportEditButton>
+            </SavedDefinitionEditButton>
           </Column>
         )}
       </Grid>
       <LoadingPanel data={data} isLoading={isLoading} isFetching={isFetching} error={error}>
         <Row alignItems="center" justifyContent="space-between" gap>
-          <Text color="muted">{t(isPage ? labels.viewedPage : labels.triggeredEvent)}</Text>
+          <Text color="muted">
+            {isOrder
+              ? t('commerce.completedOrder')
+              : t(isPage ? labels.viewedPage : labels.triggeredEvent)}
+          </Text>
           <Text color="muted">{t(labels.conversionRate)}</Text>
         </Row>
         <Row alignItems="center" justifyContent="space-between" gap>
           <Row alignItems="center" gap>
-            <Icon>{parameters.type === 'path' ? <File /> : <Lightning />}</Icon>
-            <Text>{parameters.value}</Text>
+            <Icon>{isOrder ? <ShoppingCart /> : isPage ? <File /> : <Lightning />}</Icon>
+            <Text>
+              {isOrder && parameters.value === '*' ? t('commerce.anyProduct') : parameters.value}
+            </Text>
           </Row>
           <Row alignItems="center" gap>
             <Icon>

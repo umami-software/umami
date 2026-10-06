@@ -1,4 +1,5 @@
 import { beforeEach, describe, expect, test, vi } from 'vitest';
+import { getBillingAccess, getTeamBillingScope } from '@/lib/load';
 import { getTeamUser } from '@/queries/prisma';
 import {
   canCreateTeam,
@@ -9,10 +10,16 @@ import {
   canUpdateTeam,
   canViewAllTeams,
   canViewTeam,
+  canViewTeamSubscription,
 } from './team';
 
 vi.mock('@/queries/prisma', () => ({
   getTeamUser: vi.fn(),
+}));
+
+vi.mock('@/lib/load', () => ({
+  getBillingAccess: vi.fn(),
+  getTeamBillingScope: vi.fn(),
 }));
 
 vi.mock('@/lib/auth', async () => {
@@ -32,6 +39,8 @@ const viewOnlyUser = { id: 'user-2', username: 'viewer', role: 'view-only', isAd
 
 beforeEach(() => {
   vi.mocked(getTeamUser).mockReset();
+  vi.mocked(getBillingAccess).mockResolvedValue({ isPastDue: false, isOwner: false });
+  vi.mocked(getTeamBillingScope).mockResolvedValue({ accountId: 'owner-1', teamId: 'team-1' });
 });
 
 describe('canViewTeam', () => {
@@ -44,15 +53,28 @@ describe('canViewTeam', () => {
     expect(getTeamUser).not.toHaveBeenCalled();
   });
 
-  test('returns the team membership for a member', async () => {
+  test('allows a team member when the team is current', async () => {
     const membership = { role: 'team-member' };
     vi.mocked(getTeamUser).mockResolvedValue(membership as any);
-    await expect(canViewTeam({ user: normalUser }, 'team-1')).resolves.toBe(membership);
+    await expect(canViewTeam({ user: normalUser }, 'team-1')).resolves.toBe(true);
   });
 
-  test('returns falsy for a non-member', async () => {
+  test('denies a non-member', async () => {
     vi.mocked(getTeamUser).mockResolvedValue(null as any);
-    await expect(canViewTeam({ user: normalUser }, 'team-1')).resolves.toBeNull();
+    await expect(canViewTeam({ user: normalUser }, 'team-1')).resolves.toBe(false);
+  });
+
+  test('denies team members while the team is past due', async () => {
+    vi.mocked(getTeamUser).mockResolvedValue({ role: 'team-member' } as any);
+    vi.mocked(getBillingAccess).mockResolvedValue({ isPastDue: true, isOwner: false });
+
+    await expect(canViewTeam({ user: normalUser }, 'team-1')).resolves.toBe(false);
+  });
+
+  test('allows the subscription lookup for a past-due team', async () => {
+    vi.mocked(getTeamUser).mockResolvedValue({ role: 'team-member' } as any);
+
+    await expect(canViewTeamSubscription({ user: normalUser }, 'team-1')).resolves.toBe(true);
   });
 });
 

@@ -3,7 +3,7 @@ import { Column, Grid, ListItem, Row, Select } from '@umami/react-zen';
 import { useState } from 'react';
 import { WebsiteControls } from '@/app/(main)/websites/[websiteId]/WebsiteControls';
 import { Panel } from '@/components/common/Panel';
-import { useDateRange, useMessages } from '@/components/hooks';
+import { useDateRange, useMessages, useTimezone } from '@/components/hooks';
 import { FilterButtons } from '@/components/input/FilterButtons';
 import { WebsiteValueComboBox } from '@/components/input/WebsiteValueComboBox';
 import { Journey } from './Journey';
@@ -13,9 +13,10 @@ const DEFAULT_STEP = 3;
 
 export function JourneysPage({ websiteId }: { websiteId: string }) {
   const { t, labels } = useMessages();
+  const { timezone } = useTimezone();
   const {
     dateRange: { startDate, endDate },
-  } = useDateRange();
+  } = useDateRange({ timezone });
   const [view, setView] = useState('all');
   const [steps, setSteps] = useState(DEFAULT_STEP);
   const [startStep, setStartStep] = useState('');

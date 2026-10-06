@@ -2,9 +2,10 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { RouterProvider, ZenProvider } from '@umami/react-zen';
 import { NextIntlClientProvider } from 'next-intl';
-import { useEffect } from 'react';
+import { type ReactNode, useEffect } from 'react';
 import { ErrorBoundary } from '@/components/common/ErrorBoundary';
 import { useLocale } from '@/components/hooks';
+import { type Config, ConfigContext } from '@/components/hooks/useConfig';
 import 'chartjs-adapter-date-fns';
 
 const client = new QueryClient({
@@ -32,16 +33,18 @@ function MessagesProvider({ children }) {
   );
 }
 
-export function Providers({ children }) {
+export function Providers({ config, children }: { config: Config; children: ReactNode }) {
   return (
-    <ZenProvider>
-      <RouterProvider>
-        <MessagesProvider>
-          <QueryClientProvider client={client}>
-            <ErrorBoundary>{children}</ErrorBoundary>
-          </QueryClientProvider>
-        </MessagesProvider>
-      </RouterProvider>
-    </ZenProvider>
+    <ConfigContext.Provider value={config}>
+      <ZenProvider>
+        <RouterProvider>
+          <MessagesProvider>
+            <QueryClientProvider client={client}>
+              <ErrorBoundary>{children}</ErrorBoundary>
+            </QueryClientProvider>
+          </MessagesProvider>
+        </RouterProvider>
+      </ZenProvider>
+    </ConfigContext.Provider>
   );
 }

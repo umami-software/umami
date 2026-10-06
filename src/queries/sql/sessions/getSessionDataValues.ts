@@ -2,13 +2,13 @@ import clickhouse from '@/lib/clickhouse';
 import { DATA_TYPE, EVENT_TYPE } from '@/lib/constants';
 import { CLICKHOUSE, PRISMA, runQuery } from '@/lib/db';
 import prisma from '@/lib/prisma';
-import type { QueryFilters } from '@/lib/types';
+import type { PropertyValue, QueryFilters } from '@/lib/types';
 
 const FUNCTION_NAME = 'getSessionDataValues';
 
 export async function getSessionDataValues(
   ...args: [websiteId: string, filters: QueryFilters & { propertyName?: string; dataType?: number }]
-) {
+): Promise<PropertyValue[]> {
   return runQuery({
     [PRISMA]: () => relationalQuery(...args),
     [CLICKHOUSE]: () => clickhouseQuery(...args),
@@ -87,7 +87,7 @@ async function relationalQuery(
 async function clickhouseQuery(
   websiteId: string,
   filters: QueryFilters & { propertyName?: string; dataType?: number },
-): Promise<{ propertyName: string; dataType: number; propertyValue: string; total: number }[]> {
+): Promise<PropertyValue[]> {
   const { rawQuery, parseFilters } = clickhouse;
   const { dataType } = filters;
   const { filterQuery, cohortQuery, queryParams } = parseFilters({ ...filters, websiteId });

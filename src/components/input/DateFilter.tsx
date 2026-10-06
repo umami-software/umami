@@ -115,7 +115,19 @@ export function DateFilter({
         popoverProps={{
           side: side as any,
           align: (align === 'top' ? 'start' : align === 'bottom' ? 'end' : align) as any,
-          style: { minWidth: 200 },
+          style: isMobile
+            ? {
+                // Base UI's positioned wrapper contains React Zen's fullscreen popup.
+                position: 'fixed',
+                top: 0,
+                right: 0,
+                bottom: 0,
+                left: 0,
+                width: '100vw',
+                height: '100dvh',
+                transform: 'none',
+              }
+            : { minWidth: 200 },
         }}
         isFullscreen={isMobile}
       >

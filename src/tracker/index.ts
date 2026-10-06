@@ -1,3 +1,7 @@
+import { createErrorCollector, type ErrorCaptureOptions } from './errors';
+
+export type { ErrorCaptureOptions } from './errors';
+
 /** Public types for the browser tracker. */
 export type TrackedProperties = {
   /**
@@ -64,7 +68,14 @@ export type TrackedProperties = {
 
 export type WithRequired<T, K extends keyof T> = T & { [P in K]-?: T[P] };
 
-export type EventDataValue = boolean | number | string | null | EventData | EventDataValue[];
+export type EventDataValue =
+  | boolean
+  | number
+  | string
+  | null
+  | EventData
+  | CommerceData
+  | EventDataValue[];
 
 /**
  *
@@ -75,7 +86,31 @@ export type EventDataValue = boolean | number | string | null | EventData | Even
  * - Objects have a max of 50 properties. Arrays are considered 1 property.
  */
 export interface EventData {
-  [key: string]: EventDataValue;
+  /** Reserved structured commerce data for named website events. */
+  commerce?: CommerceData;
+  [key: string]: EventDataValue | undefined;
+}
+
+export interface CommerceItem {
+  productId: string;
+  name?: string;
+  variant?: string;
+  category?: string;
+  /** Net unit price after discounts, excluding tax and shipping. */
+  price: number;
+  quantity: number;
+}
+
+export interface CommerceData {
+  currency: string;
+  market?: string;
+  cartId?: string;
+  checkoutId?: string;
+  /** Identifies a completed payment; unique within this website. Omit before payment. */
+  orderId?: string;
+  shipping?: number;
+  tax?: number;
+  items: CommerceItem[];
 }
 
 export type EventProperties = {
@@ -91,6 +126,8 @@ export type CustomEventFunction = (
 ) => EventProperties | PageViewProperties;
 
 export type UmamiTracker = {
+  /** Capture an exception when data-errors is enabled. Never throws. */
+  captureException: (error: unknown, options?: ErrorCaptureOptions) => Promise<void>;
   track: {
     /**
      * Track a page view
@@ -241,6 +278,7 @@ type MetricEntry = PerformanceEntry & {
   const website = config('website-id');
   const hostUrl = config('host-url');
   const beforeSend = config('before-send');
+  const distinctId = config('distinct-id') || undefined;
   const tag = config('tag') || undefined;
   const autoTrack = config('auto-track') !== _false;
   const dnt = config('do-not-track') === _true;
@@ -346,7 +384,8 @@ type MetricEntry = PerformanceEntry & {
       }
     };
     const onClick = (e: MouseEvent) => {
-      const el = e.target as Element;
+      const el = e.target as Element | null;
+      if (!el || typeof el.closest !== 'function') return;
       const eventEl = el.closest(`[${eventNameAttribute}]`);
       if (!eventEl) return;
 
@@ -393,9 +432,12 @@ type MetricEntry = PerformanceEntry & {
 
     if (!payload) return;
 
+    const isCommerce = type === 'event' && !!(payload.data as EventData)?.commerce;
+
     try {
       const res = await fetch(endpoint, {
-        keepalive: true,
+        // Commerce baskets can exceed the browser's 64 KiB keepalive budget.
+        keepalive: !isCommerce,
         method: 'POST',
         body: JSON.stringify({ type, payload }),
         headers: {
@@ -407,14 +449,17 @@ type MetricEntry = PerformanceEntry & {
         credentials,
       });
 
+      if (isCommerce && !res.ok) {
+        throw new Error(`Commerce collection failed (${res.status}).`);
+      }
+
       const data = (await res.json()) as { cache?: string; disabled?: boolean } | null;
       if (data) {
         disabled = !!data.disabled;
         cache = data.cache;
       }
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    } catch (_e) {
-      /* no-op */
+    } catch (error) {
+      if (isCommerce) throw error;
     }
   };
 
@@ -627,22 +672,45 @@ type MetricEntry = PerformanceEntry & {
 
   /* Start */
 
-  if (!window.umami) {
-    window.umami = {
-      track,
-      identify,
-      getSession: () => ({ cache, website }),
-    } as UmamiTracker;
-  }
-
   let currentUrl = normalize(href);
   let currentRef = normalize(referrer);
 
   let initialized = false;
   let disabled = false;
   let cache: string | undefined;
-  let identity: string | undefined;
+  let identity = distinctId;
   let flushPerformance: (() => void) | undefined;
+
+  if (!window.umami) {
+    const errors = createErrorCollector({
+      endpoint,
+      enabled: config('errors') === _true,
+      disabled: () => !!trackingDisabled(),
+      context: getPayload,
+      cache: () => cache,
+      updateCache: token => {
+        cache = token;
+      },
+      release: config('release') || '',
+      environment: config('environment') || 'production',
+      beforeSend: async payload => {
+        const callback = (window as unknown as Record<string, unknown>)[beforeSend as string] as
+          | BeforeSend
+          | undefined;
+        return typeof callback === 'function' ? callback('error', payload) : payload;
+      },
+    });
+    window.umami = {
+      track,
+      identify,
+      getSession: () => ({ cache, website }),
+      ...errors,
+    } as UmamiTracker;
+  }
+
+  if (distinctId) {
+    void identify(distinctId);
+  }
 
   if (autoTrack && !trackingDisabled()) {
     if (document.readyState === 'complete') {

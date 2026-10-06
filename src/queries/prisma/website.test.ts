@@ -1,15 +1,20 @@
 import { beforeEach, describe, expect, test, vi } from 'vitest';
-import { deleteWebsite, resetWebsite } from './website';
+import { deleteWebsite, getAllUserWebsitesIncludingTeamAccess, resetWebsite } from './website';
 
-const { transactionMock, redisDelMock, redisSetMock } = vi.hoisted(() => ({
-  transactionMock: vi.fn(),
-  redisDelMock: vi.fn(),
-  redisSetMock: vi.fn(),
-}));
+const { transactionMock, redisDelMock, redisSetMock, getSearchParametersMock, pagedQueryMock } =
+  vi.hoisted(() => ({
+    transactionMock: vi.fn(),
+    redisDelMock: vi.fn(),
+    redisSetMock: vi.fn(),
+    getSearchParametersMock: vi.fn(),
+    pagedQueryMock: vi.fn(),
+  }));
 
 vi.mock('@/lib/prisma', () => ({
   default: {
     transaction: transactionMock,
+    getSearchParameters: getSearchParametersMock,
+    pagedQuery: pagedQueryMock,
   },
   getSchema: () => new URL(process.env.DATABASE_URL || '').searchParams.get('schema'),
 }));
@@ -23,8 +28,52 @@ vi.mock('@/lib/redis', () => ({
   },
 }));
 
+describe('team website access', () => {
+  beforeEach(() => {
+    getSearchParametersMock.mockReset();
+    getSearchParametersMock.mockReturnValue({});
+    pagedQueryMock.mockReset();
+    pagedQueryMock.mockResolvedValue({ data: [] });
+  });
+
+  test('includes websites for a team member because membership grants view access', async () => {
+    await getAllUserWebsitesIncludingTeamAccess('team-user');
+
+    expect(pagedQueryMock).toHaveBeenCalledWith(
+      'website',
+      expect.objectContaining({
+        where: {
+          OR: [
+            { userId: 'team-user' },
+            {
+              team: {
+                deletedAt: null,
+                members: {
+                  some: { userId: 'team-user' },
+                },
+              },
+            },
+          ],
+          deletedAt: null,
+        },
+      }),
+      expect.any(Object),
+    );
+  });
+});
+
 function createDeleteTx(calls: string[]) {
   return {
+    commerceItem: {
+      deleteMany: vi.fn(async () => {
+        calls.push('commerceItem');
+      }),
+    },
+    commerceEvent: {
+      deleteMany: vi.fn(async () => {
+        calls.push('commerceEvent');
+      }),
+    },
     sessionReplaySaved: {
       deleteMany: vi.fn(async () => {
         calls.push('sessionReplaySaved');
@@ -83,6 +132,11 @@ function createDeleteTx(calls: string[]) {
         calls.push('segment');
       }),
     },
+    annotation: {
+      deleteMany: vi.fn(async () => {
+        calls.push('annotation');
+      }),
+    },
     share: {
       deleteMany: vi.fn(async () => {
         calls.push('share');
@@ -118,6 +172,8 @@ describe('website delete dependencies', () => {
 
     await deleteWebsite('website-1');
 
+    expect(tx.commerceItem.deleteMany).toHaveBeenCalledWith({ where: { websiteId: 'website-1' } });
+    expect(tx.commerceEvent.deleteMany).toHaveBeenCalledWith({ where: { websiteId: 'website-1' } });
     expect(tx.eventData.deleteMany).toHaveBeenCalledWith({
       where: { websiteId: 'website-1' },
     });
@@ -136,6 +192,8 @@ describe('website delete dependencies', () => {
       'website-1',
     );
     expect(calls).toEqual([
+      'commerceItem',
+      'commerceEvent',
       'sessionReplaySaved',
       'sessionReplay',
       'heatmapEvent',
@@ -149,6 +207,7 @@ describe('website delete dependencies', () => {
       'session',
       'report',
       'segment',
+      'annotation',
       'share',
       'websiteDelete',
     ]);
@@ -162,6 +221,8 @@ describe('website delete dependencies', () => {
 
     await resetWebsite('website-1');
 
+    expect(tx.commerceItem.deleteMany).toHaveBeenCalledWith({ where: { websiteId: 'website-1' } });
+    expect(tx.commerceEvent.deleteMany).toHaveBeenCalledWith({ where: { websiteId: 'website-1' } });
     expect(tx.eventData.deleteMany).toHaveBeenCalledWith({
       where: { websiteId: 'website-1' },
     });
@@ -175,6 +236,8 @@ describe('website delete dependencies', () => {
       'website-1',
     );
     expect(calls).toEqual([
+      'commerceItem',
+      'commerceEvent',
       'sessionReplaySaved',
       'sessionReplay',
       'heatmapEvent',

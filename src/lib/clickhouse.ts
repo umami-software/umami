@@ -18,6 +18,17 @@ export const CLICKHOUSE_DATE_FORMATS = {
   year: '%Y-01-01',
 };
 
+// Always Z-suffixed so JS parses the already-shifted local value as an unambiguous
+// instant instead of re-interpreting it in the runtime's own timezone. Matches
+// Postgres's getDateSQL convention - see prisma.ts's DATE_FORMATS.
+const CLICKHOUSE_BUCKET_FORMATS = {
+  minute: '%Y-%m-%dT%R:00Z',
+  hour: '%Y-%m-%dT%H:00:00Z',
+  day: '%Y-%m-%dT00:00:00Z',
+  month: '%Y-%m-01T00:00:00Z',
+  year: '%Y-01-01T00:00:00Z',
+};
+
 const log = debug('umami:clickhouse');
 
 const EQUALITY_OPERATORS: Operator[] = [OPERATORS.equals, OPERATORS.notEquals];
@@ -62,19 +73,39 @@ function getUTCString(date?: Date | string | number) {
   return formatInTimeZone(date || new Date(), 'UTC', 'yyyy-MM-dd HH:mm:ss');
 }
 
+// ClickHouse time zone names are case-sensitive: several callers default to the
+// lowercase "utc" that Postgres accepts but ClickHouse rejects. Intl accepts any
+// casing and returns the canonical IANA name.
+function normalizeTimezone(timezone?: string) {
+  if (!timezone) {
+    return timezone;
+  }
+
+  try {
+    return Intl.DateTimeFormat(undefined, { timeZone: timezone }).resolvedOptions().timeZone;
+  } catch {
+    return timezone;
+  }
+}
+
 function getDateStringSQL(data: any, unit: string = 'utc', timezone?: string) {
-  if (timezone) {
-    return `formatDateTime(${data}, '${CLICKHOUSE_DATE_FORMATS[unit]}', '${timezone}')`;
+  const tz = normalizeTimezone(timezone);
+
+  if (tz) {
+    return `formatDateTime(${data}, '${CLICKHOUSE_DATE_FORMATS[unit]}', '${tz}')`;
   }
 
   return `formatDateTime(${data}, '${CLICKHOUSE_DATE_FORMATS[unit]}')`;
 }
 
 function getDateSQL(field: string, unit: string, timezone?: string) {
-  if (timezone) {
-    return `toDateTime(date_trunc('${unit}', ${field}, '${timezone}'), '${timezone}')`;
+  const tz = normalizeTimezone(timezone);
+  const format = CLICKHOUSE_BUCKET_FORMATS[unit];
+
+  if (tz) {
+    return `formatDateTime(date_trunc('${unit}', ${field}, '${tz}'), '${format}', '${tz}')`;
   }
-  return `toDateTime(date_trunc('${unit}', ${field}))`;
+  return `formatDateTime(date_trunc('${unit}', ${field}), '${format}')`;
 }
 
 function getSearchSQL(column: string, param: string = 'search'): string {
@@ -166,9 +197,45 @@ function getCohortQuery(filters: Record<string, any>) {
       where website_id = {websiteId:UUID}
       and created_at between {cohort_startDate:DateTime64} and {cohort_endDate:DateTime64}
       ${filterQuery}
+      ${getCohortOrderQuery(filters)}
     ) as cohort
       on cohort.cohort_session_id = website_event.session_id
     `;
+}
+
+// Purchase cohorts: sessions with a completed payment, optionally containing one product.
+// Payments are read with FINAL and matched to their current item snapshot.
+function getCohortOrderQuery(filters: Record<string, any>) {
+  const product = filters.cohort_order;
+
+  if (!product) {
+    return '';
+  }
+
+  return `and session_id in (
+        select ce.session_id
+        from (
+          select session_id, commerce_event_id, snapshot_id
+          from commerce_event final
+          where website_id = {websiteId:UUID}
+            and created_at between {cohort_startDate:DateTime64} and {cohort_endDate:DateTime64}
+            and order_id != ''
+        ) as ce
+        ${
+          product === '*'
+            ? ''
+            : `inner join (
+          select commerce_event_id, snapshot_id
+          from commerce_item final
+          where website_id = {websiteId:UUID}
+            and created_at between {cohort_startDate:DateTime64} and {cohort_endDate:DateTime64}
+            and product_id = {cohort_order:String}
+          group by commerce_event_id, snapshot_id
+        ) as ci
+          on ci.commerce_event_id = ce.commerce_event_id
+         and ci.snapshot_id = ce.snapshot_id`
+        }
+      )`;
 }
 
 function getExcludeBounceQuery(filters: Record<string, any>) {
@@ -236,21 +303,27 @@ function getQueryParams(filters: Record<string, any>) {
   };
 }
 
-function parseFilters(filters: Record<string, any>, options?: QueryOptions) {
+function parseFilters(rawFilters: Record<string, any>, options?: QueryOptions) {
+  const filters = rawFilters.timezone
+    ? { ...rawFilters, timezone: normalizeTimezone(rawFilters.timezone) }
+    : rawFilters;
   const cohortFilters = Object.fromEntries(
     Object.entries(filters).filter(([key]) => key.startsWith('cohort_')),
   );
-  const {
-    sql: eventPropertyFilterQuery,
-    params: eventPropertyFilterParams,
-  } = getEventPropertyFilterQuery((filters as QueryFilters).eventPropertyFilters, filters.timezone);
-  const {
-    sql: sessionPropertyFilterQuery,
-    params: sessionPropertyFilterParams,
-  } = getSessionPropertyFilterQuery((filters as QueryFilters).sessionPropertyFilters, filters.timezone);
+  const { sql: eventPropertyFilterQuery, params: eventPropertyFilterParams } =
+    getEventPropertyFilterQuery((filters as QueryFilters).eventPropertyFilters, filters.timezone);
+  const { sql: sessionPropertyFilterQuery, params: sessionPropertyFilterParams } =
+    getSessionPropertyFilterQuery(
+      (filters as QueryFilters).sessionPropertyFilters,
+      filters.timezone,
+    );
 
   return {
-    filterQuery: [getFilterQuery(filters, options), eventPropertyFilterQuery, sessionPropertyFilterQuery]
+    filterQuery: [
+      getFilterQuery(filters, options),
+      eventPropertyFilterQuery,
+      sessionPropertyFilterQuery,
+    ]
       .filter(Boolean)
       .join('\n'),
     dateQuery: getDateQuery(filters),

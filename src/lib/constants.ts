@@ -3,6 +3,7 @@ export const AUTH_TOKEN = 'umami.auth';
 export const LOCALE_CONFIG = 'umami.locale';
 export const TIMEZONE_CONFIG = 'umami.timezone';
 export const DATE_RANGE_CONFIG = 'umami.date-range';
+export const TIME_FORMAT_CONFIG = 'umami.timeFormat';
 export const THEME_CONFIG = 'umami.theme';
 export const CURRENCY_CONFIG = 'umami.currency';
 export const DASHBOARD_CONFIG = 'umami.dashboard';
@@ -12,6 +13,10 @@ export const SHARE_TOKEN_HEADER = 'x-umami-share-token';
 export const SHARE_CONTEXT_HEADER = 'x-umami-share-context';
 export const SHARE_TOKEN_TYPE = 'share';
 export const CACHE_TOKEN_TYPE = 'cache';
+export const PARTIAL_AUTH_TOKEN_TYPE = 'partial-auth';
+// Lifetime of a Redis-backed auth session, refreshed on every authenticated
+// request so an active user is never signed out.
+export const AUTH_SESSION_TTL = 60 * 60 * 24 * 30;
 export const HOMEPAGE_URL = 'https://umami.is';
 export const DOCS_URL = 'https://umami.is/docs';
 export const REPO_URL = 'https://github.com/umami-software/umami';
@@ -23,6 +28,8 @@ export const PIXELS_URL = `${globalThis?.location?.origin}/p`;
 
 export const DEFAULT_LOCALE = 'en-US';
 export const DEFAULT_THEME = 'light';
+export const DEFAULT_TIME_FORMAT = 'auto';
+export const TIME_FORMATS = { auto: 'auto', h12: '12h', h24: '24h' };
 export const DEFAULT_ANIMATION_DURATION = 300;
 export const DEFAULT_DATE_RANGE_VALUE = '24hour';
 export const DEFAULT_WEBSITE_LIMIT = 10;
@@ -697,6 +704,7 @@ export const CURRENCIES = [
   { id: 'PLN', name: 'Polish Złoty' },
   { id: 'NOK', name: 'Norwegian Krone' },
   { id: 'DKK', name: 'Danish Krone' },
+  { id: 'ISK', name: 'Icelandic Króna' },
   { id: 'NZD', name: 'New Zealand Dollar' },
   { id: 'ZAR', name: 'South African Rand' },
   { id: 'MXN', name: 'Mexican Peso' },
@@ -705,6 +713,7 @@ export const CURRENCIES = [
   { id: 'MYR', name: 'Malaysian Ringgit' },
   { id: 'INR', name: 'Indian Rupee' },
   { id: 'KRW', name: 'South Korean Won' },
+  { id: 'TWD', name: 'New Taiwan Dollar' },
   { id: 'BRL', name: 'Brazilian Real' },
   { id: 'TRY', name: 'Turkish Lira' },
   { id: 'CZK', name: 'Czech Koruna' },

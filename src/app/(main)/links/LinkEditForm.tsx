@@ -125,7 +125,7 @@ export function LinkEditForm({
               </Grid>
             )}
 
-            <Column>
+            <Column gap="1">
               <Label>{t(labels.link)}</Label>
               <Row alignItems="center" gap>
                 <TextField

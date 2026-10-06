@@ -1,10 +1,12 @@
 import { Button, DataColumn, DataTable, type DataTableProps, Icon } from '@umami/react-zen';
+import { useEffect } from 'react';
 import { Play } from 'lucide-react';
 import { Avatar } from '@/components/common/Avatar';
 import { DateDistance } from '@/components/common/DateDistance';
 import Link from '@/components/common/Link';
 import { TypeIcon } from '@/components/common/TypeIcon';
 import { useFormat, useMessages, useNavigation } from '@/components/hooks';
+import { clearReplays, setReplays } from '@/store/replays';
 
 function formatDuration(ms: number) {
   const seconds = Math.floor(ms / 1000);
@@ -13,10 +15,16 @@ function formatDuration(ms: number) {
   return `${minutes}:${secs.toString().padStart(2, '0')}`;
 }
 
-export function ReplaysTable({ ...props }: DataTableProps) {
+export function ReplaysTable({ websiteId, ...props }: DataTableProps & { websiteId: string }) {
   const { t, labels } = useMessages();
   const { formatValue } = useFormat();
   const { router, updateParams } = useNavigation();
+
+  useEffect(() => {
+    setReplays(websiteId, 'replays', props.data || []);
+
+    return () => clearReplays(websiteId, 'replays');
+  }, [websiteId, props.data]);
 
   return (
     <DataTable {...props}>

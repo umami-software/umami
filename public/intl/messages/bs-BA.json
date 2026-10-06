@@ -467,7 +467,7 @@
     "team-already-member": "Već ste član tima.",
     "team-not-found": "Tim nije pronađen.",
     "team-websites-info": "Web stranice može vidjeti bilo ko iz tima.",
-    "tracking-code": "Da pratite statistike ove web stranice, stavite sljedeći kod u <head>...</head> sekciju vašeg HTMLa.",
+    "tracking-code": "Da pratite statistike ove web stranice, stavite sljedeći kod u '<head>...</head>' sekciju vašeg HTMLa.",
     "transfer-team-website-to-user": "Prebacite ovu web stranicu na vaš račun?",
     "transfer-user-website-to-team": "Odaberite tim u koji želite prebaciti ovu web stranicu.",
     "transfer-website": "Prebacite vlasništvo web stranice na vaš račun ili drugi tim.",

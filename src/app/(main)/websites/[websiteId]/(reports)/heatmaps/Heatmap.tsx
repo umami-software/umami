@@ -18,7 +18,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { ControlledDialog } from '@/components/common/ControlledDialog';
 import { IconLabel } from '@/components/common/IconLabel';
 import { LoadingPanel } from '@/components/common/LoadingPanel';
-import { useMobile, useResultQuery } from '@/components/hooks';
+import { useHeatmapQuery, useMobile } from '@/components/hooks';
 import { ListCheck } from '@/components/icons';
 import { formatLongNumber } from '@/lib/format';
 import type { HeatmapMode, HeatmapPoint, HeatmapResult, HeatmapSnapshot } from '@/queries/sql';
@@ -65,7 +65,7 @@ export function Heatmap({ websiteId, urlPath, onUrlPathChange, mode, search }: H
     data: pagesData,
     error,
     isLoading,
-  } = useResultQuery<HeatmapResult>('heatmap', {
+  } = useHeatmapQuery({
     websiteId,
     mode,
   });
@@ -74,8 +74,7 @@ export function Heatmap({ websiteId, urlPath, onUrlPathChange, mode, search }: H
     data: detailData,
     isLoading: isDetailLoading,
     isFetching: isDetailFetching,
-  } = useResultQuery<HeatmapResult>(
-    'heatmap',
+  } = useHeatmapQuery(
     {
       websiteId,
       urlPath: urlPath || undefined,
@@ -134,7 +133,12 @@ export function Heatmap({ websiteId, urlPath, onUrlPathChange, mode, search }: H
       {isPhone ? (
         <Column gap="4" minHeight="900px">
           <Column gap="2" className={styles.mobilePageSection}>
-            <Row alignItems="center" justifyContent="space-between" gap className={styles.mobilePageHeader}>
+            <Row
+              alignItems="center"
+              justifyContent="space-between"
+              gap
+              className={styles.mobilePageHeader}
+            >
               <Text color="muted" className={styles.mobileSectionLabel}>
                 Selected page
               </Text>
@@ -1005,13 +1009,7 @@ function SnapshotPreview({
   return <IframeSnapshot snapshot={snapshot} onReady={onReady} />;
 }
 
-function IframeSnapshot({
-  snapshot,
-  onReady,
-}: {
-  snapshot: HeatmapSnapshot;
-  onReady: () => void;
-}) {
+function IframeSnapshot({ snapshot, onReady }: { snapshot: HeatmapSnapshot; onReady: () => void }) {
   const [available, setAvailable] = useState(true);
   const iframeUrl = snapshot.url;
   const frameHeight = getSnapshotFrameHeight(snapshot);

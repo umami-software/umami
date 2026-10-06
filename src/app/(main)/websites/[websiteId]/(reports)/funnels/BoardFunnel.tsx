@@ -1,8 +1,8 @@
 import { Text } from '@umami/react-zen';
 import { EmptyPlaceholder } from '@/components/common/EmptyPlaceholder';
 import { LoadingPanel } from '@/components/common/LoadingPanel';
+import { useFunnelDefinitionQuery } from '@/components/hooks/queries/useSavedDefinitionsQuery';
 import { Link2Off } from '@/components/icons';
-import { useReportQuery } from '@/components/hooks/queries/useReportQuery';
 import { Funnel } from './Funnel';
 
 export function BoardFunnel({
@@ -14,7 +14,10 @@ export function BoardFunnel({
   reportId?: string;
   isPreview?: boolean;
 }) {
-  const { data, isLoading, error, isFetching } = useReportQuery(reportId || '');
+  const { data, isLoading, error, isFetching } = useFunnelDefinitionQuery(
+    websiteId,
+    reportId || '',
+  );
 
   if (!reportId) {
     return (

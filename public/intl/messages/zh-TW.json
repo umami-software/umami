@@ -467,7 +467,7 @@
     "team-already-member": "您已是該團隊的成員。",
     "team-not-found": "找不到團隊。",
     "team-websites-info": "團隊中的所有成員都可以檢視網站。",
-    "tracking-code": "要追蹤此網站的統計資料，請將以下程式碼放在您 HTML 的 <head>...</head> 區段中。",
+    "tracking-code": "要追蹤此網站的統計資料，請將以下程式碼放在您 HTML 的 '<head>...</head>' 區段中。",
     "transfer-team-website-to-user": "要將此網站轉移至您的帳號嗎？",
     "transfer-user-website-to-team": "請選擇要轉移此網站的團隊。",
     "transfer-website": "將網站所有權轉移至您的帳號或其他團隊。",

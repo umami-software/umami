@@ -12,7 +12,7 @@ const STYLES = {
     background: `var(--zen-status-error-bg)`,
   },
   neutral: {
-    color: `var(--zen-text-muted)`,
+    color: `var(--zen-fg-muted)`,
     background: `var(--zen-surface-raised)`,
   },
 };

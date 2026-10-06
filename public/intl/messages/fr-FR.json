@@ -133,6 +133,7 @@
     "filters-enabled": "Filtres activés",
     "property-filter": "Filtre de propriété",
     "activity-by-property": "Activité par propriété",
+    "add-note": "Ajouter une note",
     "first-click": "Premier clic",
     "first-seen": "Vu pour la première fois",
     "funnel": "Entonnoir",
@@ -361,6 +362,8 @@
     "arpu": "ARPU",
     "uniqueCustomers": "Clients uniques",
     "customers": "Clients",
+    "note": "Note",
+    "notes": "Notes",
     "orders": "Commandes",
     "saved": "Enregistré",
     "unknown": "Inconnu",
@@ -422,7 +425,15 @@
     "two-factor-reset": "Reinitialiser la 2FA",
     "two-factor-global-active-tooltip": "L’authentification à deux facteurs est obligatoire pour tous les utilisateurs",
     "two-factor-verify": "Vérifier",
-    "two-factor-login": "Authentification à deux facteurs"
+    "two-factor-login": "Authentification à deux facteurs",
+    "api-keys": "Clés API",
+    "api-key": "Clé API",
+    "create-api-key": "Créer une clé API",
+    "last-used": "Dernière utilisation",
+    "never": "Jamais",
+    "copy": "Copier",
+    "authorize": "Autoriser",
+    "deny": "Refuser"
   },
   "message": {
     "action-confirmation": "Taper {confirmation} ci-dessous pour confirmer.",
@@ -443,6 +454,7 @@
     "incorrect-username-password": "Nom d'utilisateur/Mot de passe incorrect.",
     "invalid-domain": "Domaine invalide",
     "invalid-value": "Valeur invalide",
+    "max-length": "Taille maximale de {n} caractères",
     "min-password-length": "Taille minimale de {n} caractères",
     "new-version-available": "Une nouvelle version d'Umami {version} est disponible !",
     "no-data-available": "Aucune donnée disponible.",
@@ -507,6 +519,8 @@
     "two-factor-error-no-pending-setup": "Aucune configuration d’authentification à deux facteurs en attente n’a été trouvée.",
     "two-factor-locked-message": "Trop de tentatives infructueuses. Réessayez à {time}.",
     "two-factor-active-description": "Votre compte est protégé par l’authentification à deux facteurs. Chaque connexion nécessite un code provenant de votre application d’authentification.",
+    "api-key-created": "Copiez votre clé API maintenant. Vous ne pourrez plus la consulter ensuite.",
+    "no-api-keys": "Vous n'avez pas créé de clé API.",
     "two-factor-error-not-configured": "L'authentification à deux facteurs n'est pas disponible car il manque une TWO_FACTOR_ENCRYPTION_KEY valide sur le serveur. Contactez votre administrateur pour obtenir de l'aide."
   }
 }

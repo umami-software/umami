@@ -1,6 +1,7 @@
 import { Button, Column, ListItem, Row, Select, Text, TextField } from '@umami/react-zen';
 import { useEffect, useMemo, useState } from 'react';
 import { useApi, useMessages } from '@/components/hooks';
+import { useModified } from '@/components/hooks/useModified';
 import { LinkSelect } from '@/components/input/LinkSelect';
 import { PixelSelect } from '@/components/input/PixelSelect';
 import { WebsiteSelect } from '@/components/input/WebsiteSelect';
@@ -27,6 +28,7 @@ const COMPONENT_GROUP_ORDER: string[] = [
   'Realtime',
   'Growth',
   'Revenue',
+  'Commerce',
   'Content',
 ];
 
@@ -157,9 +159,13 @@ export function BoardComponentSelect({
   const reportFields = selectedDef?.configFields?.filter(
     field => field.type === 'report' && field.reportType,
   );
+  const { modified: funnelsModified } = useModified('websites:funnels');
+  const { modified: goalsModified } = useModified('websites:goals');
   const { data: reportOptionsData, isLoading: isLoadingReportOptions } = useQuery({
     queryKey: [
       'board-component-report-options',
+      funnelsModified,
+      goalsModified,
       {
         websiteId: resolvedEntityId,
         reportTypes: reportFields?.map(field => field.reportType).join(','),
@@ -170,11 +176,12 @@ export function BoardComponentSelect({
 
       const entries = await Promise.all(
         types.map(async type => {
-          const response = await get('/reports', {
-            websiteId: resolvedEntityId,
-            type,
-            pageSize: 1000,
-          });
+          const response = await get(
+            `/websites/${resolvedEntityId}/${type === 'commerce' ? 'commerce/reports' : `${type}s`}`,
+            {
+              pageSize: 1000,
+            },
+          );
 
           return [type, response.data] as const;
         }),

@@ -2,14 +2,16 @@ import clickhouse from '@/lib/clickhouse';
 import { EVENT_COLUMNS, EVENT_TYPE, FILTER_COLUMNS } from '@/lib/constants';
 import { CLICKHOUSE, PRISMA, runQuery } from '@/lib/db';
 import prisma from '@/lib/prisma';
-import type { QueryFilters } from '@/lib/types';
+import type { PageResult, QueryFilters, WebsiteSession } from '@/lib/types';
 
 const FUNCTION_NAME = 'getWebsiteSessions';
 const QUALIFIED_FILTER_COLUMNS = Object.fromEntries(
   Object.entries(FILTER_COLUMNS).map(([key, value]) => [key, `website_event.${value}`]),
 );
 
-export async function getWebsiteSessions(...args: [websiteId: string, filters: QueryFilters]) {
+export async function getWebsiteSessions(
+  ...args: [websiteId: string, filters: QueryFilters]
+): Promise<PageResult<WebsiteSession[]>> {
   return runQuery({
     [PRISMA]: () => relationalQuery(...args),
     [CLICKHOUSE]: () => clickhouseQuery(...args),
@@ -73,11 +75,11 @@ async function relationalQuery(websiteId: string, filters: QueryFilters) {
       session.country, 
       session.region, 
       session.city
-    order by max(website_event.created_at) desc
     `,
     queryParams,
     filters,
     FUNCTION_NAME,
+    'max(website_event.created_at) desc, session.session_id',
   );
 }
 
@@ -136,7 +138,7 @@ async function clickhouseQuery(websiteId: string, filters: QueryFilters) {
     ${normalizedFilterQuery}
     ${searchQuery}
     group by session_id
-    order by lastAt desc
+    order by lastAt desc, id
     `;
   } else {
     sql = `
@@ -166,7 +168,7 @@ async function clickhouseQuery(websiteId: string, filters: QueryFilters) {
     ${normalizedFilterQuery}
     ${searchQuery}
     group by session_id
-    order by lastAt desc
+    order by lastAt desc, id
     `;
   }
 

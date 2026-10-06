@@ -25,6 +25,7 @@ export const SHARE_NAV_ITEMS = [
     items: [
       { id: 'utm', label: 'utm' },
       { id: 'revenue', label: 'revenue' },
+      { id: 'commerce', label: 'commerce' },
       { id: 'attribution', label: 'attribution' },
     ],
   },

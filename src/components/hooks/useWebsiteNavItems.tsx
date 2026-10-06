@@ -1,10 +1,12 @@
 import {
   AlignEndHorizontal,
+  Bug,
   ChartPie,
   Clock,
   Eye,
   Flame,
   Sheet,
+  ShoppingCart,
   Tag,
   User,
   UserPlus,
@@ -30,6 +32,14 @@ export function useWebsiteNavItems(websiteId: string) {
       view: undefined,
       unit: undefined,
       excludeBounce: undefined,
+      // Commerce report state
+      tab: undefined,
+      market: undefined,
+      product: undefined,
+      order: undefined,
+      group: undefined,
+      sort: undefined,
+      model: undefined,
     });
 
   const items = [
@@ -59,12 +69,6 @@ export function useWebsiteNavItems(websiteId: string) {
           label: t(labels.realtime),
           icon: <Clock />,
           path: renderPath('/realtime'),
-        },
-        {
-          id: 'performance',
-          label: t(labels.performance),
-          icon: <Gauge />,
-          path: renderPath('/performance'),
         },
         {
           id: 'compare',
@@ -154,6 +158,12 @@ export function useWebsiteNavItems(websiteId: string) {
           path: renderPath('/revenue'),
         },
         {
+          id: 'commerce',
+          label: t(labels.commerce),
+          icon: <ShoppingCart />,
+          path: renderPath('/commerce'),
+        },
+        {
           id: 'attribution',
           label: t(labels.attribution),
           icon: <Network />,
@@ -161,11 +171,33 @@ export function useWebsiteNavItems(websiteId: string) {
         },
       ],
     },
+    {
+      label: t(labels.monitoring),
+      items: [
+        {
+          id: 'performance',
+          label: t(labels.performance),
+          icon: <Gauge />,
+          path: renderPath('/performance'),
+        },
+        {
+          id: 'errors',
+          label: t('errorTracking.title'),
+          icon: <Bug />,
+          path: renderPath('/errors'),
+        },
+      ],
+    },
   ];
 
   const selectedKey = items
     .flatMap(e => e.items)
-    .find(({ path }) => path && pathname.endsWith(path.split('?')[0]))?.id;
+    .find(
+      ({ path }) =>
+        path &&
+        (pathname.endsWith(path.split('?')[0]) ||
+          (path.split('?')[0].endsWith('/errors') && pathname.includes('/errors/'))),
+    )?.id;
 
   return { items, selectedKey, renderPath };
 }

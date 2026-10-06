@@ -20,6 +20,7 @@ const mocks = vi.hoisted(() => ({
   markOtpUsed: vi.fn(),
   verifyTotp: vi.fn(),
   secret: vi.fn(),
+  hash: vi.fn(),
 }));
 
 vi.mock('@/lib/auth', () => ({
@@ -29,6 +30,7 @@ vi.mock('@/lib/auth', () => ({
 
 vi.mock('@/lib/crypto', () => ({
   secret: mocks.secret,
+  hash: mocks.hash,
 }));
 
 vi.mock('@/lib/jwt', () => ({
@@ -111,18 +113,25 @@ beforeEach(() => {
   mocks.markOtpUsed.mockReset();
   mocks.verifyTotp.mockReset();
   mocks.secret.mockReset();
+  mocks.hash.mockReset();
 
   mocks.getBearerToken.mockReturnValue('partial-token');
   mocks.secret.mockReturnValue('app-secret');
+  mocks.hash.mockReturnValue('pwd-fingerprint');
   mocks.parseSecureToken.mockReturnValue({ type: 'partial-auth', userId: 'user-1' });
   mocks.getUser.mockResolvedValue({
     id: 'user-1',
     username: 'alice',
     role: 'admin',
     createdAt: new Date('2026-07-23T00:00:00.000Z'),
+    password: '$2b$10$hashedpassword',
   });
   mocks.getAllUserTeams.mockResolvedValue([]);
-  mocks.findTwoFactorAuth.mockResolvedValue({ userId: 'user-1', isEnabled: true, secret: 'encrypted' });
+  mocks.findTwoFactorAuth.mockResolvedValue({
+    userId: 'user-1',
+    isEnabled: true,
+    secret: 'encrypted',
+  });
   mocks.createSecureToken.mockReturnValue('full-auth-token');
   mocks.decryptSecret.mockReturnValue('plain-secret');
   mocks.isTwoFactorConfigured.mockReturnValue(true);
@@ -152,13 +161,21 @@ test('POST accepts a token-only payload and completes 2FA verification', async (
   expect(mocks.verifyTotp).toHaveBeenCalledWith('123456', 'plain-secret');
   expect(mocks.markOtpUsed).toHaveBeenCalledWith('user-1', '123456');
   expect(mocks.resetRateLimit).toHaveBeenCalledWith('user-1');
-  await expect(response.json()).resolves.toMatchObject({
+  // Full session must not carry the partial-auth type and must be bound to the password.
+  expect(mocks.hash).toHaveBeenCalledWith('$2b$10$hashedpassword');
+  expect(mocks.createSecureToken).toHaveBeenCalledWith(
+    { userId: 'user-1', role: 'admin', pwd: 'pwd-fingerprint' },
+    'app-secret',
+  );
+  const data = await response.json();
+  expect(data).toMatchObject({
     token: 'full-auth-token',
     user: {
       id: 'user-1',
       username: 'alice',
     },
   });
+  expect(data.user).not.toHaveProperty('password');
   expect(response.status).toBe(200);
 });
 

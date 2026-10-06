@@ -2,8 +2,8 @@ import { startOfMonth, subMonths } from 'date-fns';
 import { z } from 'zod';
 import { checkAuth } from '@/lib/auth';
 import { DEFAULT_PAGE_SIZE, FILTER_COLUMNS, OPERATORS } from '@/lib/constants';
-import { getAllowedUnits, getMinimumUnit, maxDate, parseDateRange } from '@/lib/date';
-import { fetchAccount, fetchWebsite } from '@/lib/load';
+import { getAllowedUnits, getMinimumUnit, getPeriodDateRange, maxDate, parseDateRange } from '@/lib/date';
+import { fetchWebsite } from '@/lib/load';
 import {
   filtersArrayToObject,
   parseSessionPropertyFilters,
@@ -83,6 +83,21 @@ export function getRequestDateRange(query: Record<string, string>) {
   };
 }
 
+export function resolvePeriodDateRange(params: Record<string, any>, now = new Date()) {
+  if (!params.period) {
+    return params;
+  }
+
+  const { startDate, endDate } = getPeriodDateRange(params.period, params.timezone || 'UTC', now);
+
+  return {
+    ...params,
+    startAt: +startDate,
+    endAt: +endDate,
+    timezone: params.timezone || 'UTC',
+  };
+}
+
 export function getRequestFilters(query: Record<string, any>) {
   const result: Record<string, any> = {};
 
@@ -119,56 +134,65 @@ export async function getQueryFilters(
   params: Record<string, any>,
   websiteId?: string,
 ): Promise<QueryFilters> {
-  const dateRange = getRequestDateRange(params);
-  const filters = getRequestFilters(params);
-  const eventPropertyFilters = parseUniversalEventPropertyFilters(params);
-  const sessionPropertyFilters = parseSessionPropertyFilters(params);
+  const resolvedParams = resolvePeriodDateRange(params);
+  const dateRange = getRequestDateRange(resolvedParams);
+  const filters = getRequestFilters(resolvedParams);
+  const eventPropertyFilters = parseUniversalEventPropertyFilters(resolvedParams);
+  const sessionPropertyFilters = parseSessionPropertyFilters(resolvedParams);
 
-  let match = params?.match;
+  let match = resolvedParams?.match;
 
   if (websiteId) {
     await setWebsiteDate(websiteId, dateRange);
 
-    if (params.segment) {
-      const segmentParams = (await getWebsiteSegment(websiteId, params.segment))
+    if (resolvedParams.segment) {
+      const segmentParams = (await getWebsiteSegment(websiteId, resolvedParams.segment))
         ?.parameters as Record<string, any>;
 
       Object.assign(filters, filtersArrayToObject(segmentParams.filters));
+      sessionPropertyFilters.push(...(segmentParams.sessionPropertyFilters ?? []));
 
       if (segmentParams.match) {
         match = segmentParams.match;
       }
     }
 
-    if (params.cohort) {
-      const cohortParams = (await getWebsiteSegment(websiteId, params.cohort))
+    if (resolvedParams.cohort) {
+      const cohortParams = (await getWebsiteSegment(websiteId, resolvedParams.cohort))
         ?.parameters as Record<string, any>;
 
       const { startDate, endDate } = parseDateRange(cohortParams.dateRange);
 
-      const cohortFilters = cohortParams.filters.map(({ name, ...props }) => ({
+      const cohortFilters = (cohortParams.filters ?? []).map(({ name, ...props }) => ({
         ...props,
         name: `cohort_${name}`,
       }));
 
-      cohortFilters.push({
-        name: `cohort_${cohortParams.action.type}`,
-        operator: OPERATORS.equals,
-        value: cohortParams.action.value,
-      });
+      // A purchase cohort converts on a completed commerce payment, optionally containing
+      // one product, instead of on a page view or event.
+      const isOrderAction = cohortParams.action.type === 'order';
+
+      if (!isOrderAction) {
+        cohortFilters.push({
+          name: `cohort_${cohortParams.action.type}`,
+          operator: OPERATORS.equals,
+          value: cohortParams.action.value,
+        });
+      }
 
       Object.assign(filters, {
         ...filtersArrayToObject(cohortFilters),
         cohort_startDate: startDate,
         cohort_endDate: endDate,
+        ...(isOrderAction && { cohort_order: cohortParams.action.value?.trim() || '*' }),
         ...(cohortParams.match && {
           cohort_match: cohortParams.match,
-          cohort_actionName: `cohort_${cohortParams.action.type}`,
+          ...(!isOrderAction && { cohort_actionName: `cohort_${cohortParams.action.type}` }),
         }),
       });
     }
 
-    if (params.excludeBounce) {
+    if (resolvedParams.excludeBounce) {
       Object.assign(filters, { excludeBounce: true });
     }
   }
@@ -177,15 +201,15 @@ export async function getQueryFilters(
     ...dateRange,
     ...filters,
     match,
-    minDuration: params?.minDuration,
+    minDuration: resolvedParams?.minDuration,
     eventPropertyFilters,
     sessionPropertyFilters,
-    page: params?.page,
-    pageSize: params?.pageSize ? params?.pageSize || DEFAULT_PAGE_SIZE : undefined,
-    orderBy: params?.orderBy,
-    sortDescending: params?.sortDescending,
-    search: params?.search,
-    compare: params?.compare,
-    maxResults: params?.maxResults,
+    page: resolvedParams?.page,
+    pageSize: resolvedParams?.pageSize ? resolvedParams?.pageSize || DEFAULT_PAGE_SIZE : undefined,
+    orderBy: resolvedParams?.orderBy,
+    sortDescending: resolvedParams?.sortDescending,
+    search: resolvedParams?.search,
+    compare: resolvedParams?.compare,
+    maxResults: resolvedParams?.maxResults,
   };
 }

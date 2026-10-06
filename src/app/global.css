@@ -1,17 +1,32 @@
 :root {
   --zen-font-family: var(--font-inter), sans-serif;
+}
+
+/* Preserve the brand accent when Zen applies its light or dark theme tokens. */
+:root,
+[data-theme="light"],
+[data-theme="dark"],
+.dark {
   --zen-primary: oklch(62.3% 0.214 259.815);
-  --zen-primary-foreground: oklch(98.5% 0 0);
+  --zen-primary-fg: oklch(98.5% 0 0);
+}
+
+/* Zen's rem-based typography and spacing assume the browser's default root size. */
+html {
+  font-size: 100%;
 }
 
 html,
 body {
   font-family: var(--zen-font-family), sans-serif;
-  font-size: 14px;
-  color: var(--zen-text-primary);
+  color: var(--zen-fg);
   background-color: var(--zen-surface-raised);
   width: 100%;
   min-height: 100vh;
+}
+
+body {
+  font-size: 0.875rem;
 }
 
 html[style*="padding-right"] {
@@ -29,11 +44,11 @@ textarea:is(:-webkit-autofill, :autofill):focus,
 select:is(:-webkit-autofill, :autofill),
 select:is(:-webkit-autofill, :autofill):hover,
 select:is(:-webkit-autofill, :autofill):focus {
-  color: var(--zen-text-primary) !important;
-  caret-color: var(--zen-text-primary);
-  box-shadow: 0 0 0 1000px var(--zen-surface-base) inset !important;
-  -webkit-box-shadow: 0 0 0 1000px var(--zen-surface-base) inset !important;
-  -webkit-text-fill-color: var(--zen-text-primary) !important;
+  color: var(--zen-fg) !important;
+  caret-color: var(--zen-fg);
+  box-shadow: 0 0 0 1000px var(--zen-surface) inset !important;
+  -webkit-box-shadow: 0 0 0 1000px var(--zen-surface) inset !important;
+  -webkit-text-fill-color: var(--zen-fg) !important;
   transition:
     background-color 5000s ease-in-out 0s,
     color 5000s ease-in-out 0s;

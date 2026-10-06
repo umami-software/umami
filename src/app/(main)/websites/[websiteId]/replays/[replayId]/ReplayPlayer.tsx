@@ -29,8 +29,8 @@ export function ReplayPlayer({ events }: { events: any[] }) {
   const playerRef = useRef<any>(null);
   const [playerError, setPlayerError] = useState(false);
   const [availableWidth, setAvailableWidth] = useState(0);
-  const [viewportHeight, setViewportHeight] = useState(
-    () => (typeof window !== 'undefined' ? window.innerHeight : 0),
+  const [viewportHeight, setViewportHeight] = useState(() =>
+    typeof window !== 'undefined' ? window.innerHeight : 0,
   );
   const { isMobile, isPhone } = useMobile();
   const replayEvents = useMemo(() => getReplayPlayerEvents(events), [events]);
@@ -42,9 +42,7 @@ export function ReplayPlayer({ events }: { events: any[] }) {
   const replayAspectRatio = replayViewport
     ? replayViewport.height / replayViewport.width
     : DEFAULT_REPLAY_ASPECT_RATIO;
-  const isPortraitReplay = replayViewport
-    ? replayViewport.height > replayViewport.width
-    : false;
+  const isPortraitReplay = replayViewport ? replayViewport.height > replayViewport.width : false;
   const fittedAspectRatio = isPortraitReplay
     ? Math.min(Math.max(replayAspectRatio, DEFAULT_REPLAY_ASPECT_RATIO), 2.25)
     : Math.min(Math.max(replayAspectRatio, DEFAULT_REPLAY_ASPECT_RATIO), 1.5);
@@ -161,7 +159,10 @@ export function ReplayPlayer({ events }: { events: any[] }) {
 
   return (
     <Column alignItems="center" width="100%">
-      <div ref={playerWrapperRef} style={{ width: '100%', display: 'flex', justifyContent: 'center' }}>
+      <div
+        ref={playerWrapperRef}
+        style={{ width: '100%', display: 'flex', justifyContent: 'center' }}
+      >
         <div
           style={{
             width: playerWidth,
@@ -169,7 +170,7 @@ export function ReplayPlayer({ events }: { events: any[] }) {
             height: showUnavailable ? playerHeight : playerOuterHeight,
             overflow: 'hidden',
             borderRadius: '8px',
-            border: '1px solid var(--zen-border-default)',
+            border: '1px solid var(--zen-border)',
             background: 'var(--zen-surface-sunken)',
           }}
         >

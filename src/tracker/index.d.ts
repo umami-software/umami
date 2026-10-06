@@ -1,3 +1,5 @@
+import { type ErrorCaptureOptions } from './errors';
+export type { ErrorCaptureOptions } from './errors';
 /** Public types for the browser tracker. */
 export type TrackedProperties = {
   /**
@@ -56,7 +58,14 @@ export type TrackedProperties = {
 export type WithRequired<T, K extends keyof T> = T & {
   [P in K]-?: T[P];
 };
-export type EventDataValue = boolean | number | string | null | EventData | EventDataValue[];
+export type EventDataValue =
+  | boolean
+  | number
+  | string
+  | null
+  | EventData
+  | CommerceData
+  | EventDataValue[];
 /**
  *
  * Event Data can work with any JSON data. There are a few rules in place to maintain performance.
@@ -66,7 +75,29 @@ export type EventDataValue = boolean | number | string | null | EventData | Even
  * - Objects have a max of 50 properties. Arrays are considered 1 property.
  */
 export interface EventData {
-  [key: string]: EventDataValue;
+  /** Reserved structured commerce data for named website events. */
+  commerce?: CommerceData;
+  [key: string]: EventDataValue | undefined;
+}
+export interface CommerceItem {
+  productId: string;
+  name?: string;
+  variant?: string;
+  category?: string;
+  /** Net unit price after discounts, excluding tax and shipping. */
+  price: number;
+  quantity: number;
+}
+export interface CommerceData {
+  currency: string;
+  market?: string;
+  cartId?: string;
+  checkoutId?: string;
+  /** Identifies a completed payment; unique within this website. Omit before payment. */
+  orderId?: string;
+  shipping?: number;
+  tax?: number;
+  items: CommerceItem[];
 }
 export type EventProperties = {
   /**
@@ -80,6 +111,8 @@ export type CustomEventFunction = (
   props: PageViewProperties,
 ) => EventProperties | PageViewProperties;
 export type UmamiTracker = {
+  /** Capture an exception when data-errors is enabled. Never throws. */
+  captureException: (error: unknown, options?: ErrorCaptureOptions) => Promise<void>;
   track: {
     /**
      * Track a page view

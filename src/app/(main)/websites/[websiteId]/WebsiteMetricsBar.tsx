@@ -1,9 +1,24 @@
 import { LoadingPanel } from '@/components/common/LoadingPanel';
-import { useDateRange, useMessages } from '@/components/hooks';
+import {
+  useCommerceCurrenciesQuery,
+  useCommerceStatsQuery,
+  useDateRange,
+  useMessages,
+  useTimezone,
+} from '@/components/hooks';
 import { useWebsiteStatsQuery } from '@/components/hooks/queries/useWebsiteStatsQuery';
 import { MetricCard } from '@/components/metrics/MetricCard';
 import { MetricsBar } from '@/components/metrics/MetricsBar';
-import { formatLongNumber, formatShortTime } from '@/lib/format';
+import { formatLongCurrency, formatLongNumber, formatShortTime } from '@/lib/format';
+
+interface WebsiteMetric {
+  label: string;
+  value: number;
+  prev?: number;
+  change: number;
+  formatValue: (n: number) => string;
+  reverseColors?: boolean;
+}
 
 export function WebsiteMetricsBar({
   websiteId,
@@ -13,7 +28,8 @@ export function WebsiteMetricsBar({
   showChange?: boolean;
   compareMode?: boolean;
 }) {
-  const { isAllTime, dateCompare } = useDateRange();
+  const { timezone } = useTimezone();
+  const { isAllTime, dateCompare, hasComparison } = useDateRange({ timezone });
   const { t, labels, getErrorMessage } = useMessages();
   const { data, isLoading, isFetching, error } = useWebsiteStatsQuery({
     websiteId,
@@ -21,8 +37,9 @@ export function WebsiteMetricsBar({
   });
 
   const { pageviews, visitors, visits, bounces, totaltime, comparison } = data || {};
+  const revenue = useRevenueMetric(websiteId, compareMode ? dateCompare?.compare : undefined);
 
-  const metrics = data
+  const metrics: WebsiteMetric[] | null = data
     ? [
         {
           value: visitors,
@@ -60,6 +77,7 @@ export function WebsiteMetricsBar({
           formatValue: n =>
             `${+n < 0 ? '-' : ''}${formatShortTime(Math.abs(~~n), ['m', 's'], ' ')}`,
         },
+        ...(revenue ? [revenue] : []),
       ]
     : null;
 
@@ -82,11 +100,40 @@ export function WebsiteMetricsBar({
               change={change}
               formatValue={formatValue}
               reverseColors={reverseColors}
-              showChange={!isAllTime}
+              showChange={!isAllTime && hasComparison}
             />
           );
         })}
       </MetricsBar>
     </LoadingPanel>
   );
+}
+
+/**
+ * Revenue from completed orders, in the currency with the most orders, when the website
+ * records commerce data in the period. Shares without the Commerce section never see it.
+ */
+function useRevenueMetric(websiteId: string, compare?: string): WebsiteMetric | null {
+  const { t } = useMessages();
+  const { data: currencies } = useCommerceCurrenciesQuery(websiteId, { retry: false });
+  // Only when the period has completed orders; carts alone do not earn a revenue card.
+  const currency = currencies?.[0]?.orders > 0 ? currencies[0].currency : undefined;
+  const { data } = useCommerceStatsQuery(
+    websiteId,
+    { currency, compare },
+    { retry: false, enabled: !!currency },
+  );
+
+  if (!currency || !data) {
+    return null;
+  }
+
+  return {
+    label: t('commerce.revenue'),
+    value: data.revenue,
+    prev: data.comparison?.revenue,
+    change: data.revenue - (data.comparison?.revenue ?? 0),
+    formatValue: (n: number) => formatLongCurrency(n, currency),
+    reverseColors: false,
+  };
 }

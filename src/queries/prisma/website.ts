@@ -1,14 +1,25 @@
+import { z } from 'zod';
 import type { Prisma, Website } from '@/generated/prisma/client';
-import { ROLES } from '@/lib/constants';
 import prisma, { getSchema } from '@/lib/prisma';
 import redis from '@/lib/redis';
 import { sanitizeSortFilters } from '@/lib/sort';
-import type { QueryFilters } from '@/lib/types';
-import { z } from 'zod';
+import type { PageResult, QueryFilters } from '@/lib/types';
+import { deleteClickHouseErrors } from '@/queries/sql/errors/store';
 
 const WEBSITE_SORT_FIELDS = ['name', 'domain', 'createdAt'] as const;
 
+export type WebsiteListItem = Website & {
+  shareId: string | null;
+  user?: { id: string; username: string } | null;
+  createUser?: { id: string; username: string } | null;
+  team?: {
+    members: { userId: string; role: string }[];
+  } | null;
+};
+
 async function deleteWebsiteDependentData(tx: any, websiteId: string) {
+  await tx.commerceItem.deleteMany({ where: { websiteId } });
+  await tx.commerceEvent.deleteMany({ where: { websiteId } });
   await tx.sessionReplaySaved.deleteMany({
     where: { websiteId },
   });
@@ -39,6 +50,13 @@ async function deleteWebsiteDependentData(tx: any, websiteId: string) {
 
   await tx.$executeRawUnsafe(
     `
+      with deleted_error_events as (
+        delete from error_event where website_id = $1
+      ), deleted_error_issues as (
+        delete from error_issue where website_id = $1
+      ), deleted_error_limits as (
+        delete from error_rate_limit where website_id = $1
+      )
       delete from event_data
       using website_event
       where event_data.website_event_id = website_event.event_id
@@ -86,7 +104,10 @@ export async function getWebsite(websiteId: string) {
   return attachShareIdToWebsite(website);
 }
 
-export async function getWebsites(criteria: Prisma.WebsiteFindManyArgs, filters: QueryFilters) {
+export async function getWebsites(
+  criteria: Prisma.WebsiteFindManyArgs,
+  filters: QueryFilters,
+): Promise<PageResult<WebsiteListItem[]>> {
   const sortFilters = sanitizeSortFilters(filters, WEBSITE_SORT_FIELDS);
   const { search } = sortFilters;
   const { getSearchParameters, pagedQuery } = prisma;
@@ -121,7 +142,6 @@ export async function getAllUserWebsitesIncludingTeamAccess(
               deletedAt: null,
               members: {
                 some: {
-                  role: { in: [ROLES.teamOwner, ROLES.teamManager] },
                   userId,
                 },
               },
@@ -193,6 +213,7 @@ export async function updateWebsite(
 }
 
 export async function resetWebsite(websiteId: string) {
+  await deleteClickHouseErrors(websiteId);
   const { transaction } = prisma;
   const cloudMode = !!process.env.CLOUD_MODE;
 
@@ -222,6 +243,7 @@ export async function resetWebsite(websiteId: string) {
 }
 
 export async function deleteWebsite(websiteId: string) {
+  await deleteClickHouseErrors(websiteId);
   const { transaction } = prisma;
   const cloudMode = !!process.env.CLOUD_MODE;
 
@@ -234,6 +256,10 @@ export async function deleteWebsite(websiteId: string) {
       });
 
       await tx.segment.deleteMany({
+        where: { websiteId },
+      });
+
+      await tx.annotation.deleteMany({
         where: { websiteId },
       });
 
@@ -303,14 +329,9 @@ export async function attachShareIdToWebsite(website: Website) {
   };
 }
 
-export async function attachShareIdToWebsites(websites: {
-  data: any;
-  count: any;
-  page: number;
-  pageSize: number;
-  orderBy: string;
-  search: string;
-}) {
+export async function attachShareIdToWebsites(
+  websites: PageResult<(Website & Partial<WebsiteListItem>)[]>,
+): Promise<PageResult<WebsiteListItem[]>> {
   const websiteIds = websites.data.map(website => website.id);
 
   if (websiteIds.length === 0) {
