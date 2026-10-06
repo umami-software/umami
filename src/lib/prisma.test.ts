@@ -115,6 +115,24 @@ describe('getDateStringSQL timezone formatting', () => {
   });
 });
 
+describe('getFilterQuery null handling', () => {
+  // ClickHouse stores a missing value as '', so negative filters must keep those rows on
+  // PostgreSQL too, e.g. "does not match .+" finds sessions without a distinct ID (#4596).
+  test.each([
+    ['not equals', 'neq.user-1', "coalesce(session.distinct_id, '') != ALL({{distinctId}})"],
+    ['does not contain', 'dnc.user', "coalesce(session.distinct_id, '') not ilike {{distinctId}}"],
+    ['does not match regex', 'nre..+', "coalesce(session.distinct_id, '') !~* {{distinctId}}"],
+  ])('treats a missing value as an empty string for %s', (_label, value, clause) => {
+    expect(prisma.getFilterQuery({ distinctId: value })).toContain(`and ${clause}`);
+  });
+
+  test('keeps positive filters on the bare column so they can use indexes', () => {
+    expect(prisma.getFilterQuery({ country: 'US' })).toContain(
+      'and session.country = ANY({{country}})',
+    );
+  });
+});
+
 describe('getDateWeeklySQL timezone formatting', () => {
   test('falls back to UTC instead of producing invalid SQL when no timezone is given', () => {
     // Regression test: this used to interpolate `undefined` straight into `at time zone`.
