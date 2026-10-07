@@ -39,9 +39,16 @@ async function relationalQuery(websiteId: string, filters: QueryFilters) {
     group by website_event.event_id
   `;
 
-  const count = await rawQuery(`select count(*) as num from (${eventQuery}) t`, queryParams).then(
-    (res: any) => res[0].num,
-  );
+  // Honor maxResults like pagedRawQuery does: cap the count scan so the
+  // pagination total costs bounded work instead of aggregating every matching
+  // event in the date range.
+  const { maxResults } = filters;
+  const countQuery = maxResults
+    ? `select count(*) as num from (select 1 from (${eventQuery}) t limit ${+maxResults}) t2`
+    : `select count(*) as num from (${eventQuery}) t`;
+
+  const count = await rawQuery(countQuery, queryParams).then((res: any) => res[0].num);
+  const isCapped = !!maxResults && +count >= +maxResults;
 
   const data = await rawQuery(
     `
@@ -73,7 +80,7 @@ async function relationalQuery(websiteId: string, filters: QueryFilters) {
     FUNCTION_NAME,
   );
 
-  return { data, count, page: +page, pageSize: size };
+  return { data, count, isCapped, page: +page, pageSize: size };
 }
 
 async function clickhouseQuery(websiteId: string, filters: QueryFilters) {
