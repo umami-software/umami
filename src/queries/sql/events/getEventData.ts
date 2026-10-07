@@ -48,6 +48,7 @@ async function relationalQuery(websiteId: string, filters: QueryFilters) {
     : `select count(*) as num from (${eventQuery}) t`;
 
   const count = await rawQuery(countQuery, queryParams).then((res: any) => res[0].num);
+  const isCapped = !!maxResults && +count >= +maxResults;
 
   const data = await rawQuery(
     `
@@ -79,7 +80,7 @@ async function relationalQuery(websiteId: string, filters: QueryFilters) {
     FUNCTION_NAME,
   );
 
-  return { data, count, page: +page, pageSize: size };
+  return { data, count, isCapped, page: +page, pageSize: size };
 }
 
 async function clickhouseQuery(websiteId: string, filters: QueryFilters) {
