@@ -42,7 +42,7 @@ export function useSubscription(teamId?: string | null) {
     ...subscription,
     cloudMode,
     hasFeature,
-    isLoading: isLoading || isFetching,
+    isLoading,
     isFetching,
     error,
   };
