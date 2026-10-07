@@ -37,7 +37,7 @@ async function relationalQuery(websiteId: string, currency: string, filters: Que
     select
       session.session_id as "id",
       session.website_id as "websiteId",
-      website_event.hostname,
+      max(website_event.hostname) as hostname,
       session.browser,
       session.os,
       session.device,
@@ -72,7 +72,6 @@ async function relationalQuery(websiteId: string, currency: string, filters: Que
     group by
       session.session_id,
       session.website_id,
-      website_event.hostname,
       session.browser,
       session.os,
       session.device,
@@ -110,15 +109,15 @@ async function clickhouseQuery(websiteId: string, currency: string, filters: Que
     select
       session_id as id,
       website_id as websiteId,
-      hostname,
-      browser,
-      os,
-      device,
-      screen,
-      language,
-      country,
-      region,
-      city,
+      argMax(hostname, created_at) as hostname,
+      argMax(browser, created_at) as browser,
+      argMax(os, created_at) as os,
+      argMax(device, created_at) as device,
+      argMax(screen, created_at) as screen,
+      argMax(language, created_at) as language,
+      argMax(country, created_at) as country,
+      argMax(region, created_at) as region,
+      argMax(city, created_at) as city,
       ${getDateStringSQL('min(created_at)')} as firstAt,
       ${getDateStringSQL('max(created_at)')} as lastAt,
       uniq(visit_id) as visits,
@@ -139,7 +138,8 @@ async function clickhouseQuery(websiteId: string, currency: string, filters: Que
         ${dateQuery}
           and upper(currency) = {currency:String}
       )
-    group by session_id, website_id, hostname, browser, os, device, screen, language, country, region, city
+    -- One row per session: imported payments (hostname = provider) share the session.
+    group by session_id, website_id
     order by max(created_at) desc
     `,
     queryParams,

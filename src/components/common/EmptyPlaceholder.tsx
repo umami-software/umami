@@ -1,4 +1,4 @@
-import { Column, Icon, Text } from '@umami/react-zen';
+import { Box, Column, Icon, Text } from '@umami/react-zen';
 import type { ReactNode } from 'react';
 
 export interface EmptyPlaceholderProps {
@@ -35,7 +35,13 @@ export function EmptyPlaceholder({
           {title}
         </Text>
       )}
-      {description && <Text color="muted">{description}</Text>}
+      {description && (
+        <Box maxWidth="560px">
+          <Text as="div" color="muted" align="center">
+            {description}
+          </Text>
+        </Box>
+      )}
       {children}
     </Column>
   );
