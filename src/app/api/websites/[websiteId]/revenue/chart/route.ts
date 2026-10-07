@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { fetchQuery } from '@/lib/queryCache';
 import { getQueryFilters, parseRequest } from '@/lib/request';
 import { json, unauthorized } from '@/lib/response';
 import { filterParams, withDateRange } from '@/lib/schema';
@@ -30,5 +31,5 @@ export async function GET(
   const filters = await getQueryFilters(query, websiteId);
   const parameters = { ...filters, currency } as RevenuParameters;
 
-  return json(await getRevenueChart(websiteId, parameters, filters));
+  return json(await fetchQuery(websiteId, 'revenue-chart', query, filters.endDate, () => getRevenueChart(websiteId, parameters, filters)));
 }
