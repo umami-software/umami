@@ -74,16 +74,39 @@ export async function fetchQuery<T>(
     return query();
   }
 
+  // Cache errors are isolated from query errors: a Redis failure on the read
+  // side falls back to one direct query, a query error propagates without a
+  // retry, and a failed cache write still returns the computed result.
+  let key: string | null = null;
+
   try {
     const epoch = (await redis.client.get(getEpochKey(websiteId))) ?? 0;
-    const key = getCacheKey(websiteId, epoch, name, params);
 
-    return await redis.client.fetch(key, query, getTTL(endDate));
+    key = getCacheKey(websiteId, epoch, name, params);
+
+    const cached = await redis.client.get(key);
+
+    if (cached !== null && cached !== undefined) {
+      return cached;
+    }
   } catch (e) {
     log(e);
 
     return query();
   }
+
+  const result = await query();
+
+  try {
+    if (result !== null && result !== undefined) {
+      await redis.client.set(key, result);
+      await redis.client.expire(key, getTTL(endDate));
+    }
+  } catch (e) {
+    log(e);
+  }
+
+  return result;
 }
 
 /**
@@ -95,9 +118,8 @@ export async function expireQueryCache(websiteId: string) {
     return;
   }
 
-  try {
-    await redis.client.incr(getEpochKey(websiteId));
-  } catch (e) {
-    log(e);
-  }
+  // Invalidation failures propagate: callers (reset, delete, segment edits)
+  // must not report success while stale cached analytics remain servable.
+  // The operations are idempotent, so a failed request can simply be retried.
+  await redis.client.incr(getEpochKey(websiteId));
 }
