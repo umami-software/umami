@@ -13,6 +13,10 @@
 --
 -- If a CONCURRENTLY build is interrupted it leaves an INVALID index behind;
 -- drop it and re-run (check with: \d website_event).
+--
+-- ON_ERROR_STOP aborts on the first failure so a failed build can never
+-- reach the DROP statements below.
+\set ON_ERROR_STOP on
 
 CREATE INDEX CONCURRENTLY IF NOT EXISTS "website_event_website_created_type_session_visit_idx"
     ON "website_event"("website_id", "created_at", "event_type", "session_id", "visit_id");
@@ -21,13 +25,34 @@ CREATE INDEX CONCURRENTLY IF NOT EXISTS "website_event_website_created_path_type
     ON "website_event"("website_id", "created_at", "url_path", "event_type", "session_id");
 
 CREATE INDEX CONCURRENTLY IF NOT EXISTS "website_event_website_created_referrer_type_session_idx"
-    ON "website_event"("website_id", "created_at", "referrer_domain", "event_type", "session_id");
+    ON "website_event"("website_id", "created_at", "referrer_domain", "event_type", "session_id", "hostname");
 
 CREATE INDEX CONCURRENTLY IF NOT EXISTS "website_event_website_created_title_type_session_idx"
     ON "website_event"("website_id", "created_at", "page_title", "event_type", "session_id");
 
 CREATE INDEX CONCURRENTLY IF NOT EXISTS "website_event_website_created_event_type_session_idx"
     ON "website_event"("website_id", "created_at", "event_name", "event_type", "session_id");
+
+-- Refuse to drop the old indexes unless every replacement exists and is
+-- valid; an interrupted CONCURRENTLY build leaves an INVALID index behind.
+DO $$
+DECLARE missing int;
+BEGIN
+  SELECT count(*) INTO missing FROM (VALUES
+    ('website_event_website_created_type_session_visit_idx'),
+    ('website_event_website_created_path_type_session_idx'),
+    ('website_event_website_created_referrer_type_session_idx'),
+    ('website_event_website_created_title_type_session_idx'),
+    ('website_event_website_created_event_type_session_idx')
+  ) AS expected(name)
+  WHERE NOT EXISTS (
+    SELECT 1 FROM pg_index i JOIN pg_class c ON c.oid = i.indexrelid
+    WHERE c.relname = expected.name AND i.indisvalid
+  );
+  IF missing > 0 THEN
+    RAISE EXCEPTION 'replacement indexes missing or invalid (%), not dropping old indexes', missing;
+  END IF;
+END $$;
 
 DROP INDEX CONCURRENTLY IF EXISTS "website_event_website_id_created_at_url_path_idx";
 DROP INDEX CONCURRENTLY IF EXISTS "website_event_website_id_created_at_referrer_domain_idx";

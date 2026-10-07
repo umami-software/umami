@@ -174,7 +174,7 @@ model WebsiteEvent {
   @@index([websiteId, createdAt, eventType, sessionId, visitId], map: "website_event_website_created_type_session_visit_idx")
   @@index([websiteId, createdAt, urlPath, eventType, sessionId], map: "website_event_website_created_path_type_session_idx")
   @@index([websiteId, createdAt, urlQuery])
-  @@index([websiteId, createdAt, referrerDomain, eventType, sessionId], map: "website_event_website_created_referrer_type_session_idx")
+  @@index([websiteId, createdAt, referrerDomain, eventType, sessionId, hostname], map: "website_event_website_created_referrer_type_session_idx")
   @@index([websiteId, createdAt, pageTitle, eventType, sessionId], map: "website_event_website_created_title_type_session_idx")
   @@index([websiteId, createdAt, eventName, eventType, sessionId], map: "website_event_website_created_event_type_session_idx")
   @@index([websiteId, eventName, createdAt], map: "website_event_website_event_name_created_idx")

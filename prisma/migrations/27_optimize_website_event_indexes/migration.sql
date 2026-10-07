@@ -29,7 +29,7 @@ CREATE INDEX IF NOT EXISTS "website_event_website_created_path_type_session_idx"
 
 -- CreateIndex (supersedes website_event_website_id_created_at_referrer_domain_idx)
 CREATE INDEX IF NOT EXISTS "website_event_website_created_referrer_type_session_idx"
-    ON "website_event"("website_id", "created_at", "referrer_domain", "event_type", "session_id");
+    ON "website_event"("website_id", "created_at", "referrer_domain", "event_type", "session_id", "hostname");
 
 -- CreateIndex (supersedes website_event_website_id_created_at_page_title_idx)
 CREATE INDEX IF NOT EXISTS "website_event_website_created_title_type_session_idx"
