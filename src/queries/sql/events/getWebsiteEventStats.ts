@@ -1,7 +1,7 @@
 import clickhouse from '@/lib/clickhouse';
 import { CLICKHOUSE, PRISMA, runQuery } from '@/lib/db';
 import prisma from '@/lib/prisma';
-import { getRollupRange, getRollupWatermark } from '@/lib/rollups';
+import { getRollupRange, getRollupWatermark, logRollupError } from '@/lib/rollups';
 import type { QueryFilters } from '@/lib/types';
 
 const FUNCTION_NAME = 'getWebsiteEventStats';
@@ -40,54 +40,60 @@ async function relationalQuery(
     const range = watermark && getRollupRange(filters.startDate, filters.endDate, watermark);
 
     if (range) {
-      return rawQuery(
-        `
-        select e."events", v."visitors", v."visits", e."uniqueEvents"
-        from (
-          select
-            cast(coalesce(sum(g.events), 0) as bigint) as "events",
-            count(distinct g.event_name) as "uniqueEvents"
+      // Watermark freshness does not guarantee the rollup tables are intact
+      // (e.g. dropped or being rebuilt); fall back to the raw path on error.
+      try {
+        return await rawQuery(
+          `
+          select e."events", v."visitors", v."visits", e."uniqueEvents"
           from (
-            select nullif(event_name, '') as event_name, events
-            from website_event_rollup_hourly
-            where website_id = {{websiteId::uuid}}
-              and bucket >= {{hstart}}
-              and bucket < {{hend}}
-              and event_type = 2
-            union all
-            select event_name, count(*)
-            from website_event
-            where website_id = {{websiteId::uuid}}
-              and ((created_at >= {{startDate}} and created_at < {{hstart}})
-                or (created_at >= {{hend}} and created_at <= {{endDate}}))
-              and event_type = 2
-            group by 1
-          ) g
-        ) e
-        cross join (
-          select
-            count(distinct g.session_id) as "visitors",
-            count(distinct g.visit_id) as "visits"
-          from (
-            select session_id, visit_id
-            from website_visit_rollup_hourly
-            where website_id = {{websiteId::uuid}}
-              and bucket >= {{hstart}}
-              and bucket < {{hend}}
-              and event_views > 0
-            union all
-            select distinct session_id, visit_id
-            from website_event
-            where website_id = {{websiteId::uuid}}
-              and ((created_at >= {{startDate}} and created_at < {{hstart}})
-                or (created_at >= {{hend}} and created_at <= {{endDate}}))
-              and event_type = 2
-          ) g
-        ) v
-        `,
-        { ...queryParams, hstart: range.hstart, hend: range.hend },
-        FUNCTION_NAME,
-      ).then(result => result?.[0]);
+            select
+              cast(coalesce(sum(g.events), 0) as bigint) as "events",
+              count(distinct g.event_name) as "uniqueEvents"
+            from (
+              select nullif(event_name, '') as event_name, events
+              from website_event_rollup_hourly
+              where website_id = {{websiteId::uuid}}
+                and bucket >= {{hstart}}
+                and bucket < {{hend}}
+                and event_type = 2
+              union all
+              select event_name, count(*)
+              from website_event
+              where website_id = {{websiteId::uuid}}
+                and ((created_at >= {{startDate}} and created_at < {{hstart}})
+                  or (created_at >= {{hend}} and created_at <= {{endDate}}))
+                and event_type = 2
+              group by 1
+            ) g
+          ) e
+          cross join (
+            select
+              count(distinct g.session_id) as "visitors",
+              count(distinct g.visit_id) as "visits"
+            from (
+              select session_id, visit_id
+              from website_visit_rollup_hourly
+              where website_id = {{websiteId::uuid}}
+                and bucket >= {{hstart}}
+                and bucket < {{hend}}
+                and event_views > 0
+              union all
+              select distinct session_id, visit_id
+              from website_event
+              where website_id = {{websiteId::uuid}}
+                and ((created_at >= {{startDate}} and created_at < {{hstart}})
+                  or (created_at >= {{hend}} and created_at <= {{endDate}}))
+                and event_type = 2
+            ) g
+          ) v
+          `,
+          { ...queryParams, hstart: range.hstart, hend: range.hend },
+          FUNCTION_NAME,
+        ).then(result => result?.[0]);
+      } catch (e) {
+        logRollupError(e);
+      }
     }
   }
 

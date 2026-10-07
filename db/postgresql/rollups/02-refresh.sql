@@ -6,7 +6,14 @@
 -- =========================================================================
 CREATE OR REPLACE FUNCTION refresh_website_rollups(
     grace     INTERVAL DEFAULT '10 minutes',
-    max_hours INTEGER  DEFAULT 6
+    max_hours INTEGER  DEFAULT 30,
+    -- Hours inside this window are re-aggregated on every run even though the
+    -- watermark has passed them, so events submitted with backdated timestamps
+    -- (the /api/send payload accepts one) are picked up. Events backdated
+    -- further than the lookback are NOT reflected in rollups until the
+    -- watermark is manually rewound. max_hours defaults above the lookback so
+    -- a steady-state run always reaches the present.
+    lookback  INTERVAL DEFAULT '24 hours'
 ) RETURNS TABLE (from_hour TIMESTAMPTZ, to_hour TIMESTAMPTZ, event_rows BIGINT, visit_rows BIGINT)
 LANGUAGE plpgsql AS $$
 DECLARE
@@ -15,6 +22,11 @@ DECLARE
     v_event_rows BIGINT := 0;
     v_visit_rows BIGINT := 0;
 BEGIN
+    -- All bucket and boundary arithmetic is in UTC regardless of the
+    -- connection's ambient TimeZone setting (date_trunc on timestamptz
+    -- truncates in the session timezone). Transaction-local.
+    PERFORM set_config('TimeZone', 'UTC', true);
+
     -- Replica guard: skip silently on hot standbys (streaming replicas) and
     -- in read-only sessions/nodes, so the same schedule can exist everywhere
     -- without erroring. On failover, the promoted primary passes this check
@@ -47,6 +59,11 @@ BEGIN
         INSERT INTO rollup_watermark VALUES ('website_rollups', v_from)
         ON CONFLICT (name) DO NOTHING;
     END IF;
+
+    -- Start from the older of the watermark and the lookback horizon, so the
+    -- trailing window is re-aggregated on every run (the delete+insert below
+    -- is idempotent per hour) and late-arriving backdated events are absorbed.
+    v_from := LEAST(v_from, date_trunc('hour', now() - lookback));
 
     v_to := LEAST(
         v_from + make_interval(hours => max_hours),
@@ -102,7 +119,9 @@ BEGIN
     GROUP BY 1, 2, 3, 4, 5;
     GET DIAGNOSTICS v_visit_rows = ROW_COUNT;
 
-    UPDATE rollup_watermark SET processed_until = v_to WHERE name = 'website_rollups';
+    UPDATE rollup_watermark
+    SET processed_until = GREATEST(processed_until, v_to)
+    WHERE name = 'website_rollups';
 
     RETURN QUERY SELECT v_from, v_to, v_event_rows, v_visit_rows;
 END $$;

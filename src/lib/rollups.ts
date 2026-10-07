@@ -72,6 +72,47 @@ export async function getRollupWatermark(): Promise<Date | null> {
   return value;
 }
 
+/**
+ * Hourly rollup buckets can only be re-grouped into coarser units for
+ * timezones on whole-hour offsets. Non-whole-hour zones (e.g. Asia/Kolkata,
+ * UTC+05:30) would split stored buckets, so bucketed series queries must use
+ * the raw path there. Unknown or unparsable timezones return false (raw path).
+ */
+export function hasWholeHourOffset(timezone?: string): boolean {
+  if (!timezone) {
+    return true;
+  }
+
+  try {
+    const part = new Intl.DateTimeFormat('en-US', {
+      timeZone: timezone,
+      timeZoneName: 'longOffset',
+    })
+      .formatToParts(new Date())
+      .find(p => p.type === 'timeZoneName')?.value;
+
+    if (part === 'GMT') {
+      return true;
+    }
+
+    const m = part?.match(/^GMT[+-]\d{1,2}(?::(\d{2}))?$/);
+
+    return !!m && (!m[1] || m[1] === '00');
+  } catch (e) {
+    log(e);
+
+    return false;
+  }
+}
+
+/**
+ * Logged when a rollup-path query fails at runtime (e.g. tables dropped while
+ * the watermark remains); callers fall through to the raw path.
+ */
+export function logRollupError(e: unknown) {
+  log(e);
+}
+
 export interface RollupRange {
   hstart: Date; // first whole-hour bucket inside the query range
   hend: Date; // exclusive bucket bound (min of range end, watermark)
@@ -93,4 +134,56 @@ export function getRollupRange(startDate: Date, endDate: Date, watermark: Date):
   }
 
   return { hstart, hend };
+}
+
+/**
+ * Remove a deleted session's contribution from the rollup tables. Called
+ * BEFORE the raw events are deleted (the tier-1 decrement reads them).
+ * Failures are logged, not fatal: deletions within the refresh lookback
+ * window self-heal on the next refresh pass.
+ */
+export async function deleteSessionRollups(websiteId: string, sessionId: string) {
+  if (!ENABLED) {
+    return;
+  }
+
+  try {
+    await prisma.rawQuery(
+      `
+      with gone as (
+        select date_trunc('hour', created_at at time zone 'UTC') at time zone 'UTC' as bucket,
+          event_type,
+          coalesce(event_name, '') as event_name,
+          count(*) as n
+        from website_event
+        where website_id = {{websiteId::uuid}}
+          and session_id = {{sessionId::uuid}}
+          and event_type in (1, 2)
+        group by 1, 2, 3
+      )
+      update website_event_rollup_hourly r
+      set events = r.events - gone.n
+      from gone
+      where r.website_id = {{websiteId::uuid}}
+        and r.bucket = gone.bucket
+        and r.event_type = gone.event_type
+        and r.event_name = gone.event_name
+      `,
+      { websiteId, sessionId },
+      'deleteSessionRollups',
+    );
+    await prisma.rawQuery(
+      `delete from website_event_rollup_hourly where website_id = {{websiteId::uuid}} and events <= 0`,
+      { websiteId },
+      'deleteSessionRollups',
+    );
+    await prisma.rawQuery(
+      `delete from website_visit_rollup_hourly
+       where website_id = {{websiteId::uuid}} and session_id = {{sessionId::uuid}}`,
+      { websiteId, sessionId },
+      'deleteSessionRollups',
+    );
+  } catch (e) {
+    log(e);
+  }
 }

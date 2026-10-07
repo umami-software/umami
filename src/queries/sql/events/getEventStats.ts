@@ -1,7 +1,7 @@
 import clickhouse from '@/lib/clickhouse';
 import { CLICKHOUSE, PRISMA, runQuery } from '@/lib/db';
 import prisma from '@/lib/prisma';
-import { getRollupRange, getRollupWatermark } from '@/lib/rollups';
+import { getRollupRange, getRollupWatermark, hasWholeHourOffset, logRollupError } from '@/lib/rollups';
 import type { QueryFilters } from '@/lib/types';
 
 const FUNCTION_NAME = 'getEventStats';
@@ -41,47 +41,59 @@ async function relationalQuery(
   // Opt-in rollup path (ROLLUPS_ENABLED): sum hourly buckets from the
   // event-name tier and merge the raw tail past the watermark. Minute
   // granularity is finer than the rollup grain and always takes the raw path.
-  if (!filterQuery && !cohortQuery && !joinSessionQuery && unit !== 'minute') {
+  if (
+    !filterQuery &&
+    !cohortQuery &&
+    !joinSessionQuery &&
+    unit !== 'minute' &&
+    hasWholeHourOffset(timezone)
+  ) {
     const watermark = await getRollupWatermark();
     const range = watermark && getRollupRange(filters.startDate, filters.endDate, watermark);
 
     if (range) {
-      return rawQuery(
-        `
-        with g as (
-          select nullif(event_name, '') as event_name, bucket as ts, events
-          from website_event_rollup_hourly
-          where website_id = {{websiteId::uuid}}
-            and bucket >= {{hstart}}
-            and bucket < {{hend}}
-            and event_type = 2
-          union all
-          select event_name, date_trunc('hour', created_at), count(*)
-          from website_event
-          where website_id = {{websiteId::uuid}}
-            and ((created_at >= {{startDate}} and created_at < {{hstart}})
-              or (created_at >= {{hend}} and created_at <= {{endDate}}))
-            and event_type = 2
-          group by 1, 2
-        )
-        select t.x, ${getDateFormatSQL('t.t', unit, timezone)} t, t.y
-        from (
-          select g.event_name x, ${getDateTruncSQL('g.ts', unit, timezone)} t, sum(g.events) y
-          from g
-          ${
-            limit
-              ? `where g.event_name in (
-                  select event_name from g group by 1 order by sum(events) desc limit ${limit}
-                )`
-              : ''
-          }
-          group by 1, 2
-        ) t
-        order by 2
-        `,
-        { ...queryParams, hstart: range.hstart, hend: range.hend },
-        FUNCTION_NAME,
-      );
+      // Watermark freshness does not guarantee the rollup tables are intact
+      // (e.g. dropped or being rebuilt); fall back to the raw path on error.
+      try {
+        return await rawQuery(
+          `
+          with g as (
+            select nullif(event_name, '') as event_name, bucket as ts, events
+            from website_event_rollup_hourly
+            where website_id = {{websiteId::uuid}}
+              and bucket >= {{hstart}}
+              and bucket < {{hend}}
+              and event_type = 2
+            union all
+            select event_name, created_at, count(*)
+            from website_event
+            where website_id = {{websiteId::uuid}}
+              and ((created_at >= {{startDate}} and created_at < {{hstart}})
+                or (created_at >= {{hend}} and created_at <= {{endDate}}))
+              and event_type = 2
+            group by 1, 2
+          )
+          select t.x, ${getDateFormatSQL('t.t', unit)} t, t.y
+          from (
+            select g.event_name x, ${getDateTruncSQL('g.ts', unit, timezone)} t, sum(g.events) y
+            from g
+            ${
+              limit
+                ? `where g.event_name in (
+                    select event_name from g group by 1 order by sum(events) desc limit ${limit}
+                  )`
+                : ''
+            }
+            group by 1, 2
+          ) t
+          order by 2
+          `,
+          { ...queryParams, hstart: range.hstart, hend: range.hend },
+          FUNCTION_NAME,
+        );
+      } catch (e) {
+        logRollupError(e);
+      }
     }
   }
 
@@ -104,7 +116,7 @@ async function relationalQuery(
     `
     select
       t.x,
-      ${getDateFormatSQL('t.t', unit, timezone)} t,
+      ${getDateFormatSQL('t.t', unit)} t,
       t.y
     from (
       select
