@@ -7,7 +7,7 @@ process.env.APP_SECRET = 'route-send-test-secret';
 import { isbot } from 'isbot';
 import clickhouse from '@/lib/clickhouse';
 import { CACHE_TOKEN_TYPE, EVENT_TYPE } from '@/lib/constants';
-import { getSalt, secret, uuid } from '@/lib/crypto';
+import { getSalt, hash, secret, uuid } from '@/lib/crypto';
 import { getClientInfo, hasBlockedIp } from '@/lib/detect';
 import { createToken, parseToken } from '@/lib/jwt';
 import { fetchWebsite } from '@/lib/load';
@@ -627,6 +627,68 @@ describe('cache token handling', () => {
     // A new session is created rather than reusing the claimed one.
     expect(body.sessionId).not.toBe(anonSessionId);
     expect(createSessionMock).toHaveBeenCalledTimes(1);
+  });
+
+  test('reusing the anonymous session on identify keeps the current visit', async () => {
+    const anonSessionId = makeComputedSessionId(WEBSITE_ID);
+    const iat = Math.floor(Date.now() / 1000) - 100;
+    const token = makeCacheToken({ sessionId: anonSessionId, iat });
+
+    const response = await callPOST(
+      { type: 'identify', payload: { website: WEBSITE_ID, id: 'user-42' } },
+      { headers: { 'x-umami-cache': token } },
+    );
+
+    const body = (await response.json()) as Record<string, any>;
+    const nextToken = (await parseToken(body.cache, secret())) as Record<string, any>;
+
+    expect(body.sessionId).toBe(anonSessionId);
+    expect(body.visitId).toBe('cached-visit');
+    expect(nextToken.iat).toBe(iat);
+  });
+
+  test('events after identify stay in the same session and visit', async () => {
+    const anonSessionId = makeComputedSessionId(WEBSITE_ID);
+    const iat = Math.floor(Date.now() / 1000) - 100;
+    const token = makeCacheToken({
+      sessionId: anonSessionId,
+      iat,
+      sessionLinkId: hash(anonSessionId, 'user-42'),
+    });
+
+    const response = await callPOST(
+      { type: 'event', payload: { website: WEBSITE_ID, url: '/next', id: 'user-42' } },
+      { headers: { 'x-umami-cache': token } },
+    );
+
+    const savedEvent = saveEventMock.mock.calls[0][0] as Record<string, any>;
+    const body = (await response.json()) as Record<string, any>;
+    const nextToken = (await parseToken(body.cache, secret())) as Record<string, any>;
+
+    expect(createSessionMock).not.toHaveBeenCalled();
+    expect(tryClaimAnonymousSessionMock).not.toHaveBeenCalled();
+    expect(savedEvent.sessionId).toBe(anonSessionId);
+    expect(savedEvent.visitId).toBe('cached-visit');
+    expect(nextToken.iat).toBe(iat);
+  });
+
+  test('events after identify still start a new visit after 30 minutes of inactivity', async () => {
+    const anonSessionId = makeComputedSessionId(WEBSITE_ID);
+    const token = makeCacheToken({
+      sessionId: anonSessionId,
+      iat: Math.floor(Date.now() / 1000) - 2000,
+      sessionLinkId: hash(anonSessionId, 'user-42'),
+    });
+
+    await callPOST(
+      { type: 'event', payload: { website: WEBSITE_ID, url: '/next', id: 'user-42' } },
+      { headers: { 'x-umami-cache': token } },
+    );
+
+    const savedEvent = saveEventMock.mock.calls[0][0] as Record<string, any>;
+
+    expect(savedEvent.sessionId).toBe(anonSessionId);
+    expect(savedEvent.visitId).not.toBe('cached-visit');
   });
 
   test('a drifted cache token resets the visit in clickhouse mode without creating a session row', async () => {

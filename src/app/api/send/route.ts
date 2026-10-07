@@ -118,15 +118,15 @@ export async function POST(request: Request) {
     // Reuse the anonymous session when the same visitor identifies, but only if:
     //  - the client fingerprint (IP/UA) has not genuinely changed
     //  - the session is not already claimed by a different identity
-    // We never override visitId/iat so the 30-minute visit expiry from
-    // resolveCollectionSession is always respected.
-    //
     // sessionDrift is true whenever cache.sessionId !== computed sessionId.
     // That includes the normal identify transition (distinctId changes the hash).
     // To tell apart "same client, new identity" from "different client", we
     // recompute the session ID without distinctId and compare to the cached one.
     if (distinctId && cache?.sessionId && sessionDrift) {
-      const { sessionId: fingerprintSessionId } = resolveCollectionSession({
+      // Resolved without distinctId, so its visit state has not been reset by
+      // the identity drift: it keeps the cached visit and applies the normal
+      // 30-minute expiry.
+      const fingerprint = resolveCollectionSession({
         sourceId,
         ip,
         userAgent,
@@ -136,7 +136,7 @@ export async function POST(request: Request) {
       });
       // If the fingerprint-only ID still doesn't match the cache, the client
       // itself changed (IP or UA rotation) — do not reuse.
-      const clientChanged = fingerprintSessionId !== cache.sessionId;
+      const clientChanged = fingerprint.sessionId !== cache.sessionId;
 
       if (!clientChanged) {
         let canReuse = false;
@@ -145,10 +145,8 @@ export async function POST(request: Request) {
           // Fast path: the cache token already proves this user owns the session
           canReuse = true;
         } else {
-          // Slow path: atomically check-and-claim the session in the DB.
-          // tryClaimAnonymousSession inserts a link in a single statement
-          // guarded by a NOT EXISTS subquery, preventing concurrent identities
-          // from both claiming the same anonymous session (TOCTOU race).
+          // Slow path: atomically check-and-claim the session in the DB so
+          // concurrent identities cannot both claim the same anonymous session.
           try {
             canReuse = await tryClaimAnonymousSession({
               websiteId,
@@ -163,8 +161,7 @@ export async function POST(request: Request) {
         }
 
         if (canReuse) {
-          sessionId = cache.sessionId;
-          sessionDrift = false;
+          ({ sessionId, visitId, iat, sessionDrift } = fingerprint);
         }
       }
     }
