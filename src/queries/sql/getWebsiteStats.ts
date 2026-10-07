@@ -2,6 +2,7 @@ import clickhouse from '@/lib/clickhouse';
 import { EVENT_COLUMNS, EVENT_TYPE } from '@/lib/constants';
 import { CLICKHOUSE, PRISMA, runQuery } from '@/lib/db';
 import prisma from '@/lib/prisma';
+import { getRollupRange, getRollupWatermark } from '@/lib/rollups';
 import type { QueryFilters } from '@/lib/types';
 
 const FUNCTION_NAME = 'getWebsiteStats';
@@ -38,6 +39,62 @@ async function relationalQuery(
   const hasEventFilters =
     EVENT_COLUMNS.some(item => Object.keys(filters).includes(item)) ||
     !!filters.eventPropertyFilters?.length;
+
+  // Opt-in rollup path (ROLLUPS_ENABLED): filterless queries read hour
+  // buckets from website_visit_rollup_hourly and merge the raw tail past the
+  // watermark. Mirrors the 3.3.0 semantics: visits with only custom events
+  // are excluded (having), and a single-pageview visit that fired a custom
+  // event does not count as a bounce.
+  if (!filterQuery && !cohortQuery && !excludeBounceQuery && !joinSessionQuery && !excludeBounce) {
+    const watermark = await getRollupWatermark();
+    const range = watermark && getRollupRange(filters.startDate, filters.endDate, watermark);
+
+    if (range) {
+      return rawQuery(
+        `
+        select
+          cast(coalesce(sum(t.c), 0) as bigint) as "pageviews",
+          count(distinct t.session_id) as "visitors",
+          count(distinct t.visit_id) as "visits",
+          coalesce(sum(case when t.c = 1 and t.has_custom_event = 0 then 1 else 0 end), 0) as "bounces",
+          cast(coalesce(sum(${getTimestampDiffSQL('t.min_time', 't.max_time')}), 0) as bigint) as "totaltime"
+        from (
+          select
+            g.session_id,
+            g.visit_id,
+            sum(g.views) as "c",
+            min(g.min_time) as "min_time",
+            max(g.max_time) as "max_time",
+            max(g.has_custom_event) as "has_custom_event"
+          from (
+            select session_id, visit_id, views + other_views as views, min_time, max_time,
+              case when event_views > 0 then 1 else 0 end as has_custom_event
+            from website_visit_rollup_hourly
+            where website_id = {{websiteId::uuid}}
+              and bucket >= {{hstart}}
+              and bucket < {{hend}}
+            union all
+            select session_id, visit_id,
+              count(*) filter (where event_type NOT IN (2, 5)),
+              min(created_at) filter (where event_type NOT IN (2, 5)),
+              max(created_at) filter (where event_type NOT IN (2, 5)),
+              max(case when event_type = ${EVENT_TYPE.customEvent} then 1 else 0 end)
+            from website_event
+            where website_id = {{websiteId::uuid}}
+              and ((created_at >= {{startDate}} and created_at < {{hstart}})
+                or (created_at >= {{hend}} and created_at <= {{endDate}}))
+              and event_type != ${EVENT_TYPE.performance}
+            group by 1, 2
+          ) g
+          group by 1, 2
+          having sum(g.views) > 0
+        ) as t
+        `,
+        { ...queryParams, hstart: range.hstart, hend: range.hend },
+        FUNCTION_NAME,
+      ).then(result => result?.[0]);
+    }
+  }
 
   if (!hasEventFilters) {
     return rawQuery(
@@ -95,6 +152,9 @@ async function relationalQuery(
     select
       cast(coalesce(sum(t.c), 0) as bigint) as "pageviews",
       count(distinct t.session_id) as "visitors",
+      -- Note: count(*) is NOT equivalent here. A visit_id can appear under
+      -- multiple session_ids (identify()/distinct_id re-keying), so rows of t
+      -- are not guaranteed unique per visit; distinct is required.
       count(distinct t.visit_id) as "visits",
       ${bounceQuery} as "bounces",
       cast(coalesce(sum(${getTimestampDiffSQL('t.min_time', 't.max_time')}), 0) as bigint) as "totaltime"

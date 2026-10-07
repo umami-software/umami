@@ -2,6 +2,7 @@ import clickhouse from '@/lib/clickhouse';
 import { EVENT_COLUMNS, EVENT_TYPE, FILTER_COLUMNS } from '@/lib/constants';
 import { CLICKHOUSE, PRISMA, runQuery } from '@/lib/db';
 import prisma from '@/lib/prisma';
+import { getRollupRange, getRollupWatermark } from '@/lib/rollups';
 import type { PageResult, QueryFilters, WebsiteSession } from '@/lib/types';
 
 const FUNCTION_NAME = 'getWebsiteSessions';
@@ -34,6 +35,77 @@ async function relationalQuery(websiteId: string, filters: QueryFilters) {
            or os ilike {{search}}
            or device ilike {{search}})`
     : '';
+
+  // Opt-in rollup path (ROLLUPS_ENABLED): per-session aggregates from the
+  // visit-grain tier plus the raw tail past the watermark, joined to the
+  // session table only for the final rows. Identical numbers to the raw
+  // path, with one documented nuance: null and '' hostnames merge.
+  if (!filterQuery && !cohortQuery && !search) {
+    const watermark = await getRollupWatermark();
+    const range = watermark && getRollupRange(filters.startDate, filters.endDate, watermark);
+
+    if (range) {
+      return pagedRawQuery(
+        `
+        with g as (
+          select session_id, visit_id, hostname, views, event_views, all_min_time, all_max_time
+          from website_visit_rollup_hourly
+          where website_id = {{websiteId::uuid}}
+            and bucket >= {{hstart}}
+            and bucket < {{hend}}
+          union all
+          select session_id, visit_id, coalesce(hostname, ''),
+            count(*) filter (where event_type = 1),
+            count(*) filter (where event_type = 2),
+            min(created_at),
+            max(created_at)
+          from website_event
+          where website_id = {{websiteId::uuid}}
+            and ((created_at >= {{startDate}} and created_at < {{hstart}})
+              or (created_at >= {{hend}} and created_at <= {{endDate}}))
+            and event_type != ${EVENT_TYPE.performance}
+          group by 1, 2, 3
+        )
+        select
+          session.session_id as "id",
+          session.website_id as "websiteId",
+          nullif(s.hostname, '') as hostname,
+          session.browser,
+          session.os,
+          session.device,
+          session.screen,
+          session.language,
+          session.country,
+          session.region,
+          session.city,
+          s.first_at as "firstAt",
+          s.last_at as "lastAt",
+          s.visits,
+          s.views,
+          s.events,
+          s.last_at as "createdAt"
+        from (
+          select
+            session_id,
+            hostname,
+            min(all_min_time) as first_at,
+            max(all_max_time) as last_at,
+            count(distinct visit_id) as visits,
+            cast(sum(views) as bigint) as views,
+            cast(sum(event_views) as bigint) as events
+          from g
+          group by 1, 2
+        ) s
+        join session on session.session_id = s.session_id
+          and session.website_id = {{websiteId::uuid}}
+        `,
+        { ...queryParams, hstart: range.hstart, hend: range.hend },
+        filters,
+        FUNCTION_NAME,
+        's.last_at desc, session.session_id',
+      );
+    }
+  }
 
   return pagedRawQuery(
     `
