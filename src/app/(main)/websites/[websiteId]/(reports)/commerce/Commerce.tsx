@@ -71,7 +71,6 @@ export function Commerce({ websiteId, startDate, endDate, unit }: CommerceProps)
           <EmptyPlaceholder
             icon={<ShoppingCart />}
             title={t('commerce.noData')}
-            description={t('commerce.noOrdersDescription')}
             minHeight="400px"
           />
         </Panel>
