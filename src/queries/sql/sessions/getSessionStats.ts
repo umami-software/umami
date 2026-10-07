@@ -22,19 +22,26 @@ async function relationalQuery(websiteId: string, filters: QueryFilters) {
       websiteId,
     });
 
+  // Two-level aggregation: dedup (bucket, session_id) pairs first, then count
+  // per bucket. Identical results to count(distinct session_id) per bucket,
+  // much cheaper on large ranges (no per-group distinct sort).
   return rawQuery(
     `
-    select
-      ${getDateSQL('website_event.created_at', unit, timezone)} x,
-      count(distinct website_event.session_id) y
-    from website_event
-    ${cohortQuery}
-    ${excludeBounceQuery}
-    ${joinSessionQuery}
-    where website_event.website_id = {{websiteId::uuid}}
-      and website_event.created_at between {{startDate}} and {{endDate}}
-      and website_event.event_type NOT IN (2, 5)
-      ${filterQuery}
+    select t.x, count(*) y
+    from (
+      select
+        ${getDateSQL('website_event.created_at', unit, timezone)} x,
+        website_event.session_id
+      from website_event
+      ${cohortQuery}
+      ${excludeBounceQuery}
+      ${joinSessionQuery}
+      where website_event.website_id = {{websiteId::uuid}}
+        and website_event.created_at between {{startDate}} and {{endDate}}
+        and website_event.event_type NOT IN (2, 5)
+        ${filterQuery}
+      group by 1, 2
+    ) t
     group by 1
     order by 1
     `,

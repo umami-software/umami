@@ -41,7 +41,13 @@ async function relationalQuery(websiteId: string, sessionIds: string[], filters:
       and session_id = any({{sessionIds}}::uuid[])
       and event_type != ${EVENT_TYPE.performance}
       and created_at between {{startDate}} and {{endDate}}
-    order by created_at desc
+    -- The secondary sort key prevents the planner from satisfying the ORDER BY
+    -- with a backwards walk of a created_at-ordered index while *filtering* on
+    -- session_id: for sessions with few events in the range, that plan scans
+    -- the entire date range before giving up. Making the sort unsatisfiable by
+    -- any index forces the selective (website_id, session_id, created_at)
+    -- index plus a cheap top-N sort of this session's rows.
+    order by created_at desc, event_id
     limit 500
     `,
     { websiteId, sessionIds, startDate, endDate },
