@@ -1,6 +1,6 @@
 import { Button, Column, ListItem, Row, Select, Text, TextField } from '@umami/react-zen';
 import { useEffect, useMemo, useState } from 'react';
-import { useApi, useMessages } from '@/components/hooks';
+import { useApi, useFlag, useMessages } from '@/components/hooks';
 import { useModified } from '@/components/hooks/useModified';
 import { LinkSelect } from '@/components/input/LinkSelect';
 import { PixelSelect } from '@/components/input/PixelSelect';
@@ -18,6 +18,7 @@ import {
   type ComponentDefinition,
   type ConfigField,
   getComponentDefinitions,
+  isCommerceComponent,
 } from '../boardComponentRegistry';
 import { BoardComponentRenderer } from './BoardComponentRenderer';
 
@@ -51,6 +52,7 @@ export function BoardComponentSelect({
 }) {
   const { t, labels, messages } = useMessages();
   const { get, useQuery } = useApi();
+  const commerceEnabled = useFlag('commerce');
   const initialEntity = getComponentEntity(initialConfig);
   const [selectedDef, setSelectedDef] = useState<ComponentDefinition | null>(null);
   const [configValues, setConfigValues] = useState<Record<string, any>>({});
@@ -265,9 +267,11 @@ export function BoardComponentSelect({
     () =>
       allDefinitions.filter(
         def =>
-          isBoardComponentSupported(def.type, activeEntityType) || def.type === selectedDef?.type,
+          def.type === selectedDef?.type ||
+          (isBoardComponentSupported(def.type, activeEntityType) &&
+            (commerceEnabled || !isCommerceComponent(def.type))),
       ),
-    [activeEntityType, allDefinitions, selectedDef?.type],
+    [activeEntityType, allDefinitions, selectedDef?.type, commerceEnabled],
   );
   const groupedDefinitions = useMemo(() => {
     const order = new Map(COMPONENT_GROUP_ORDER.map((group, index) => [group, index]));

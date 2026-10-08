@@ -8,6 +8,7 @@ import {
   useBreakdownQuery,
   useCommerceCurrenciesQuery,
   useDateRange,
+  useFlag,
   useMessages,
   useNavigation,
   useTimezone,
@@ -26,8 +27,11 @@ export function BreakdownPage({ websiteId }: { websiteId: string }) {
   const {
     router,
     updateParams,
-    query: { currency },
+    query: { currency: currencyParam },
   } = useNavigation();
+  const commerceEnabled = useFlag('commerce');
+  // Revenue columns are commerce UI; ignore a currency in the URL while the flag is off.
+  const currency = commerceEnabled ? currencyParam : undefined;
   const { data } = useBreakdownQuery(
     { websiteId, startDate, endDate, fields, currency },
     { enabled: !!fields.length },
@@ -37,11 +41,13 @@ export function BreakdownPage({ websiteId }: { websiteId: string }) {
       <WebsiteControls websiteId={websiteId} />
       <Row alignItems="center" justifyContent="flex-start" gap>
         <FieldsButton value={fields} onChange={setFields} />
-        <RevenueCurrencySelect
-          websiteId={websiteId}
-          value={currency}
-          onChange={value => router.replace(updateParams({ currency: value }), { scroll: false })}
-        />
+        {commerceEnabled && (
+          <RevenueCurrencySelect
+            websiteId={websiteId}
+            value={currency}
+            onChange={value => router.replace(updateParams({ currency: value }), { scroll: false })}
+          />
+        )}
       </Row>
       <Panel
         height="900px"

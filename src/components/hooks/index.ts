@@ -108,6 +108,7 @@ export * from './useEscapeKey';
 export * from './useFields';
 export * from './useFilterParameters';
 export * from './useFilters';
+export * from './useFlag';
 export * from './useForceUpdate';
 export * from './useFormat';
 export * from './useGlobalState';

@@ -1,7 +1,8 @@
 import { Column, Text } from '@umami/react-zen';
 import { memo } from 'react';
+import { useFlag } from '@/components/hooks';
 import type { BoardComponentConfig } from '@/lib/types';
-import { getComponentDefinition } from '../boardComponentRegistry';
+import { getComponentDefinition, isCommerceComponent } from '../boardComponentRegistry';
 
 function BoardComponentRendererComponent({
   config,
@@ -15,8 +16,9 @@ function BoardComponentRendererComponent({
   isPreview?: boolean;
 }) {
   const definition = getComponentDefinition(config.type);
+  const commerceEnabled = useFlag('commerce');
 
-  if (!definition) {
+  if (!definition || (!commerceEnabled && isCommerceComponent(config.type))) {
     return (
       <Column alignItems="center" justifyContent="center" width="100%" height="100%">
         <Text color="muted">Unknown component: {config.type}</Text>

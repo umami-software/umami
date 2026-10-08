@@ -98,6 +98,7 @@
     "detect-browser": "^5.2.0",
     "dotenv": "^18.0.5",
     "esbuild": "^0.28.2",
+    "flags": "^4.3.1",
     "immer": "^11.1.21",
     "ipaddr.js": "^2.5.0",
     "is-ci": "^4.1.0",

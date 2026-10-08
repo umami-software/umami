@@ -14,6 +14,7 @@ const mockShare = vi.hoisted(() => ({
   token: 'share-token',
   parameters: {
     events: true,
+    commerce: true,
   },
 }));
 
@@ -62,6 +63,10 @@ vi.mock('@/app/(main)/websites/[websiteId]/(reports)/attribution/AttributionPage
 
 vi.mock('@/app/(main)/websites/[websiteId]/(reports)/breakdown/BreakdownPage', () => ({
   BreakdownPage: () => <div>breakdown page</div>,
+}));
+
+vi.mock('@/app/(main)/websites/[websiteId]/(reports)/commerce/CommercePage', () => ({
+  CommercePage: () => <div>commerce page</div>,
 }));
 
 vi.mock('@/app/(main)/websites/[websiteId]/(reports)/funnels/FunnelsPage', () => ({
@@ -157,5 +162,27 @@ describe('SharePage', () => {
     expect(screen.getByText('website header')).toBeInTheDocument();
     expect(screen.getByText('events page')).toBeInTheDocument();
     expect(initTheme).toHaveBeenCalled();
+  });
+
+  test('renders the commerce section when the commerce flag is on', () => {
+    render(
+      <ShareProvider slug="slug">
+        <SharePage />
+      </ShareProvider>,
+      { route: '/share/slug/commerce', flags: { commerce: true } },
+    );
+
+    expect(screen.getByText('commerce page')).toBeInTheDocument();
+  });
+
+  test('hides the commerce section when the commerce flag is off', () => {
+    render(
+      <ShareProvider slug="slug">
+        <SharePage />
+      </ShareProvider>,
+      { route: '/share/slug/commerce', flags: { commerce: false } },
+    );
+
+    expect(screen.queryByText('commerce page')).not.toBeInTheDocument();
   });
 });

@@ -3,6 +3,7 @@ import {
   useCommerceCurrenciesQuery,
   useCommerceStatsQuery,
   useDateRange,
+  useFlag,
   useMessages,
   useTimezone,
 } from '@/components/hooks';
@@ -111,11 +112,16 @@ export function WebsiteMetricsBar({
 
 /**
  * Revenue from completed orders, in the currency with the most orders, when the website
- * records commerce data in the period. Shares without the Commerce section never see it.
+ * records commerce data in the period. Shares without the Commerce section never see it,
+ * and nobody sees it while the commerce feature flag is off.
  */
 function useRevenueMetric(websiteId: string, compare?: string): WebsiteMetric | null {
   const { t } = useMessages();
-  const { data: currencies } = useCommerceCurrenciesQuery(websiteId, { retry: false });
+  const commerceEnabled = useFlag('commerce');
+  const { data: currencies } = useCommerceCurrenciesQuery(websiteId, {
+    retry: false,
+    enabled: commerceEnabled,
+  });
   // Only when the period has completed orders; carts alone do not earn a revenue card.
   const currency = currencies?.[0]?.orders > 0 ? currencies[0].currency : undefined;
   const { data } = useCommerceStatsQuery(
@@ -124,7 +130,7 @@ function useRevenueMetric(websiteId: string, compare?: string): WebsiteMetric | 
     { retry: false, enabled: !!currency },
   );
 
-  if (!currency || !data) {
+  if (!commerceEnabled || !currency || !data) {
     return null;
   }
 

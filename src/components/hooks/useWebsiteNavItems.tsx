@@ -13,12 +13,14 @@ import {
   Video,
 } from '@/components/icons';
 import { Funnel, Gauge, Lightning, Magnet, Money, Network, Path, Target } from '@/components/svg';
+import { useFlag } from './useFlag';
 import { useMessages } from './useMessages';
 import { useNavigation } from './useNavigation';
 
 export function useWebsiteNavItems(websiteId: string) {
   const { t, labels } = useMessages();
   const { pathname, renderUrl } = useNavigation();
+  const commerceEnabled = useFlag('commerce');
   const resetParams = {
     search: undefined,
     page: undefined,
@@ -157,12 +159,16 @@ export function useWebsiteNavItems(websiteId: string) {
           icon: <Money />,
           path: renderPath('/revenue'),
         },
-        {
-          id: 'commerce',
-          label: t(labels.commerce),
-          icon: <ShoppingCart />,
-          path: renderPath('/commerce'),
-        },
+        ...(commerceEnabled
+          ? [
+              {
+                id: 'commerce',
+                label: t(labels.commerce),
+                icon: <ShoppingCart />,
+                path: renderPath('/commerce'),
+              },
+            ]
+          : []),
         {
           id: 'attribution',
           label: t(labels.attribution),

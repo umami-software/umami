@@ -15,7 +15,7 @@ import {
   TextField,
 } from '@umami/react-zen';
 import { useEffect, useState } from 'react';
-import { useApi, useConfig, useMessages, useModified } from '@/components/hooks';
+import { useApi, useConfig, useFlag, useMessages, useModified } from '@/components/hooks';
 import { ThemeModeSelector } from '@/components/input/ThemeModeSelector';
 import { SHARE_NAV_ITEMS } from './constants';
 
@@ -32,6 +32,7 @@ export function ShareEditForm({
 }) {
   const { t, labels, getErrorMessage } = useMessages();
   const { cloudMode } = useConfig();
+  const commerceEnabled = useFlag('commerce');
   const { get, post } = useApi();
   const { touch } = useModified();
   const { modified } = useModified('shares');
@@ -159,11 +160,14 @@ export function ShareEditForm({
                 <Column key={section.section} gap="3">
                   <Text weight="bold">{t((labels as any)[section.section])}</Text>
                   <Column gap="1">
-                    {section.items.map(item => (
-                      <FormField key={item.id} name={item.id}>
-                        <Checkbox>{t((labels as any)[item.label])}</Checkbox>
-                      </FormField>
-                    ))}
+                    {section.items
+                      // Hidden, not cleared: saving keeps the share's existing commerce value.
+                      .filter(item => commerceEnabled || item.id !== 'commerce')
+                      .map(item => (
+                        <FormField key={item.id} name={item.id}>
+                          <Checkbox>{t((labels as any)[item.label])}</Checkbox>
+                        </FormField>
+                      ))}
                   </Column>
                 </Column>
               ))}

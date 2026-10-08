@@ -545,6 +545,11 @@ export function getComponentDefinition(type: string): ComponentDefinition | unde
   return definitionMap.get(type);
 }
 
+/** Commerce components are hidden in the UI while the commerce feature flag is off. */
+export function isCommerceComponent(type: string): boolean {
+  return definitionMap.get(type)?.group === 'Commerce';
+}
+
 export function getComponentsByCategory(category: string): ComponentDefinition[] {
   return componentDefinitions.filter(def => def.category === category);
 }

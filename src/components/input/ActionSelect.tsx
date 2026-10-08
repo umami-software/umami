@@ -1,5 +1,5 @@
 import { ListItem, Select } from '@umami/react-zen';
-import { useMessages } from '@/components/hooks';
+import { useFlag, useMessages } from '@/components/hooks';
 
 export interface ActionSelectProps {
   value?: string;
@@ -10,12 +10,15 @@ export interface ActionSelectProps {
 
 export function ActionSelect({ value = 'path', onChange, allowOrder }: ActionSelectProps) {
   const { t, labels } = useMessages();
+  const commerceEnabled = useFlag('commerce');
+  // Keep an already saved order action selectable while the commerce flag is off.
+  const showOrder = allowOrder && (commerceEnabled || value === 'order');
 
   return (
     <Select value={value} onChange={val => onChange?.(val as string)}>
       <ListItem id="path">{t(labels.viewedPage)}</ListItem>
       <ListItem id="event">{t(labels.triggeredEvent)}</ListItem>
-      {allowOrder && <ListItem id="order">{t('commerce.completedOrder')}</ListItem>}
+      {showOrder && <ListItem id="order">{t('commerce.completedOrder')}</ListItem>}
     </Select>
   );
 }
