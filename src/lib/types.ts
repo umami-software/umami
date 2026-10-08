@@ -279,7 +279,6 @@ export interface SessionReplaySummary {
   id: string;
   sessionId: string;
   websiteId: string;
-  distinctIds: string[];
   browser: string;
   os: string;
   device: string;
