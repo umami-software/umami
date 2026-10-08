@@ -2600,6 +2600,26 @@ export interface paths {
     patch?: never;
     trace?: never;
   };
+  '/api/websites/{websiteId}/replays/{replayId}/view': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    /**
+     * Mark a session replay as viewed
+     * @description Records that the current user started playback of the specified replay.
+     */
+    post: operations['viewWebsiteReplay'];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
   '/api/websites/{websiteId}/replays/saved': {
     parameters: {
       query?: never;
@@ -23905,6 +23925,52 @@ export interface operations {
              * @description Date and time the recording started.
              */
             startedAt: string;
+          };
+        };
+      };
+      /** @description Unauthorized. */
+      401: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          /**
+           * @example {
+           *       "error": {
+           *         "code": "unauthorized",
+           *         "message": "Unauthorized.",
+           *         "status": 401
+           *       }
+           *     }
+           */
+          'application/json': components['schemas']['ApiError'];
+        };
+      };
+    };
+  };
+  viewWebsiteReplay: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        /** @description ID of the session replay. */
+        replayId: string;
+        /** @description ID of the website. */
+        websiteId: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description The operation completed successfully. */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': {
+            /** @description Whether the operation succeeded. */
+            ok: boolean;
           };
         };
       };

@@ -77,6 +77,15 @@ export async function deleteSession(
           },
         },
       });
+
+      await tx.sessionReplayView.deleteMany({
+        where: {
+          websiteId,
+          visitId: {
+            in: visitIds,
+          },
+        },
+      });
     }
 
     await tx.sessionReplay.deleteMany({

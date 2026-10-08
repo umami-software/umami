@@ -23,7 +23,9 @@ function destroyReplayPlayer(player: { $destroy?: () => void } | null) {
   }
 }
 
-export function ReplayPlayer({ events }: { events: any[] }) {
+export function ReplayPlayer({ events, onPlay }: { events: any[]; onPlay?: () => void }) {
+  const onPlayRef = useRef(onPlay);
+  onPlayRef.current = onPlay;
   const playerWrapperRef = useRef<HTMLDivElement>(null);
   const playerRootRef = useRef<HTMLDivElement>(null);
   const playerRef = useRef<any>(null);
@@ -131,6 +133,15 @@ export function ReplayPlayer({ events }: { events: any[] }) {
           }
 
           playerRef.current = player;
+
+          let hasPlayed = false;
+
+          player.addEventListener('ui-update-player-state', (event: { payload: string }) => {
+            if (event.payload === 'playing' && !hasPlayed) {
+              hasPlayed = true;
+              onPlayRef.current?.();
+            }
+          });
         } catch {
           playerRoot.replaceChildren();
 

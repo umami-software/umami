@@ -129,6 +129,7 @@ export const labels: Record<string, string> = {
   filterCombined: 'label.filter-combined',
   filterRaw: 'label.filter-raw',
   views: 'label.views',
+  viewed: 'label.viewed',
   none: 'label.none',
   clearAll: 'label.clear-all',
   property: 'label.property',

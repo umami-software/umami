@@ -45,6 +45,7 @@ export function ReplayPlayback({
   const { router, updateParams } = useNavigation();
   const [savedState, setSavedState] = useState<{ replayId: string; isSaved: boolean } | null>(null);
   const { mutate } = useUpdateQuery(`/websites/${websiteId}/replays/saved/${replayId}`);
+  const { mutate: markViewed } = useUpdateQuery(`/websites/${websiteId}/replays/${replayId}/view`);
   const replays = useReplays(state => state.replays);
   const replayWebsiteId = useReplays(state => state.websiteId);
   const storedReplaySource = useReplays(state => state.source);
@@ -104,6 +105,10 @@ export function ReplayPlayback({
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [prevReplay, nextReplay, router, updateParams]);
+
+  const handlePlay = () => {
+    markViewed({}, { onSuccess: () => touch('replays') });
+  };
 
   const handleUnsave = () => {
     setSavedState({ replayId, isSaved: false });
@@ -197,7 +202,7 @@ export function ReplayPlayback({
               </Row>
             </Row>
           )}
-          <ReplayPlayer events={replay.events} />
+          <ReplayPlayer events={replay.events} onPlay={handlePlay} />
           {showSessionInfo && session && <SessionInfo data={session} />}
         </Column>
       )}
