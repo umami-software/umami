@@ -773,7 +773,9 @@ async function pagedQuery<T>(model: string, criteria: T, filters?: QueryFilters)
   const { page = 1, pageSize, orderBy, sortDescending = false, search } = filters || {};
   const size = +pageSize || DEFAULT_PAGE_SIZE;
 
-  const data = await client[model].findMany({
+  // Independent queries; run concurrently (mirrors pagedRawQuery).
+  const [data, count] = await Promise.all([
+    client[model].findMany({
     ...criteria,
     ...{
       ...(size > 0 && { take: +size, skip: +size * (+page - 1) }),
@@ -785,9 +787,9 @@ async function pagedQuery<T>(model: string, criteria: T, filters?: QueryFilters)
         ],
       }),
     },
-  });
-
-  const count = await client[model].count({ where: (criteria as any).where });
+  }),
+    client[model].count({ where: (criteria as any).where }),
+  ]);
 
   return { data, count, page: +page, pageSize: size, orderBy, search };
 }
@@ -816,8 +818,12 @@ async function pagedRawQuery(
     ? `select count(*) as num from (select 1 from (${query}) t limit ${+maxResults}) t2`
     : `select count(*) as num from (${query}) t`;
 
-  const count = await rawQuery(countQuery, queryParams).then(res => Number(res[0].num));
-  const data = await rawQuery(`${query}${statements}`, queryParams, name);
+  // The count and page queries are independent; on large tables each can be
+  // an expensive aggregation, so running them concurrently halves wall time.
+  const [count, data] = await Promise.all([
+    rawQuery(countQuery, queryParams).then(res => Number(res[0].num)),
+    rawQuery(`${query}${statements}`, queryParams, name),
+  ]);
 
   return {
     data,

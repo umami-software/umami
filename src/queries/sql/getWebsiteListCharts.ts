@@ -1,4 +1,4 @@
-import { addHours } from 'date-fns';
+import { addDays, format, parseISO } from 'date-fns';
 import { formatInTimeZone } from 'date-fns-tz';
 import clickhouse from '@/lib/clickhouse';
 import { EVENT_TYPE } from '@/lib/constants';
@@ -118,10 +118,13 @@ async function clickhouseQuery(
       ? `and event_type = ${eventType}`
       : `and event_type NOT IN (${EVENT_TYPE.customEvent}, ${EVENT_TYPE.performance})`;
   const localTime = `toTimeZone(website_event.created_at, '${timezone}')`;
+  // Build the label from the local date and hour rather than adding hours to midnight, which
+  // lands on 11:00 or 13:00 on a DST change day
   const bucketSql = `
-    formatDateTime(
-      toStartOfDay(${localTime}) + toIntervalHour(intDiv(toHour(${localTime}), ${BUCKET_HOURS}) * ${BUCKET_HOURS}),
-      '%Y-%m-%d %H:00:00'
+    concat(
+      formatDateTime(${localTime}, '%Y-%m-%d '),
+      leftPad(toString(intDiv(toHour(${localTime}), ${BUCKET_HOURS}) * ${BUCKET_HOURS}), 2, '0'),
+      ':00:00'
     )
   `;
 
@@ -158,15 +161,7 @@ function formatResults(
     timezone: string;
   },
 ) {
-  const buckets: string[] = [];
-
-  for (
-    let current = new Date(startDate);
-    current <= endDate;
-    current = addHours(current, BUCKET_HOURS)
-  ) {
-    buckets.push(formatInTimeZone(current, timezone, 'yyyy-MM-dd HH:00:00'));
-  }
+  const buckets = getBucketKeys(startDate, endDate, timezone);
 
   const bucketIndex = new Map(buckets.map((bucket, index) => [bucket, index]));
   const charts = websiteIds.reduce<Record<string, WebsiteListChartData>>((result, websiteId) => {
@@ -197,4 +192,36 @@ function formatResults(
   });
 
   return charts;
+}
+
+// Walk local calendar days instead of adding absolute hours, so the keys stay on the same
+// wall-clock boundaries as the SQL buckets when a DST change falls inside the range
+function getBucketKeys(startDate: Date, endDate: Date, timezone: string) {
+  const startBucket = getBucketKey(startDate, timezone);
+  const endBucket = getBucketKey(endDate, timezone);
+  const endDay = endBucket.slice(0, 10);
+  const buckets: string[] = [];
+
+  for (
+    let day = parseISO(startBucket.slice(0, 10));
+    format(day, 'yyyy-MM-dd') <= endDay;
+    day = addDays(day, 1)
+  ) {
+    for (let hour = 0; hour < 24; hour += BUCKET_HOURS) {
+      const bucket = `${format(day, 'yyyy-MM-dd')} ${String(hour).padStart(2, '0')}:00:00`;
+
+      if (bucket >= startBucket && bucket <= endBucket) {
+        buckets.push(bucket);
+      }
+    }
+  }
+
+  return buckets;
+}
+
+function getBucketKey(date: Date, timezone: string) {
+  const hour = Number(formatInTimeZone(date, timezone, 'H'));
+  const bucketHour = Math.floor(hour / BUCKET_HOURS) * BUCKET_HOURS;
+
+  return `${formatInTimeZone(date, timezone, 'yyyy-MM-dd')} ${String(bucketHour).padStart(2, '0')}:00:00`;
 }

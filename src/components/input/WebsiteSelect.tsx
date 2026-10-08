@@ -31,7 +31,7 @@ export function WebsiteSelect({
   const { user } = useLoginQuery();
   const { data, isLoading } = useUserWebsitesQuery(
     { userId: user?.id, teamId },
-    { search, pageSize: 100, includeTeams },
+    { search, pageSize: 100, includeTeams: includeTeams || undefined },
   );
   const listItems: { id: string; name: string }[] = data?.data || [];
 
