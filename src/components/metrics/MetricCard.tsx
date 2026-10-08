@@ -5,6 +5,7 @@ import { AnimatedDiv } from '@/components/common/AnimatedDiv';
 import { useReducedMotion } from '@/components/hooks/useReducedMotion';
 import { Info } from '@/components/icons';
 import { ChangeLabel } from '@/components/metrics/ChangeLabel';
+import { useMetricsBarJoined } from '@/components/metrics/MetricsBar';
 import { formatNumber } from '@/lib/format';
 
 export interface MetricCardProps {
@@ -17,6 +18,8 @@ export interface MetricCardProps {
   formatValue?: (n: any) => string;
   showLabel?: boolean;
   showChange?: boolean;
+  /** Draw the card's own border and background. Defaults to off inside a joined `MetricsBar`, which provides them. */
+  bordered?: boolean;
 }
 
 export const MetricCard = ({
@@ -28,7 +31,10 @@ export const MetricCard = ({
   formatValue = formatNumber,
   showLabel = true,
   showChange = false,
+  bordered: borderedProp,
 }: MetricCardProps) => {
+  const joined = useMetricsBarJoined();
+  const bordered = borderedProp ?? !joined;
   const reducedMotion = useReducedMotion();
   const diff = value - change;
   const pct = diff !== 0 ? ((value - diff) / diff) * 100 : value !== 0 ? 100 : 0;
@@ -54,10 +60,10 @@ export const MetricCard = ({
       justifyContent="center"
       paddingX="6"
       paddingY="4"
-      borderRadius
-      backgroundColor="surface"
-      border
-      gap="4"
+      borderRadius={bordered ? true : undefined}
+      backgroundColor={bordered ? 'surface' : undefined}
+      border={bordered ? true : undefined}
+      gap="2"
     >
       {showLabel && (
         <Row justifyContent="space-between" alignItems="flex-start">

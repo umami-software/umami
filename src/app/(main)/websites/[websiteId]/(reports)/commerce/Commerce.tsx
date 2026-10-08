@@ -1,4 +1,5 @@
 import { Column, Loading, Row, Tab, TabList, TabPanel, Tabs } from '@umami/react-zen';
+import type { ReactNode } from 'react';
 import { EmptyPlaceholder } from '@/components/common/EmptyPlaceholder';
 import { Panel } from '@/components/common/Panel';
 import { useMessages, useNavigation } from '@/components/hooks';
@@ -50,7 +51,7 @@ export function Commerce({ websiteId, startDate, endDate, unit }: CommerceProps)
   if (query.savedReport) {
     return (
       <Column gap>
-        {reportControls}
+        <CommerceControls>{reportControls}</CommerceControls>
         <Panel>
           <SavedCommerceReport
             key={query.savedReport}
@@ -66,7 +67,7 @@ export function Commerce({ websiteId, startDate, endDate, unit }: CommerceProps)
   if (!hasData) {
     return (
       <Column gap>
-        {reportControls}
+        <CommerceControls>{reportControls}</CommerceControls>
         <Panel>
           <EmptyPlaceholder
             icon={<ShoppingCart />}
@@ -82,7 +83,7 @@ export function Commerce({ websiteId, startDate, endDate, unit }: CommerceProps)
 
   return (
     <Column gap>
-      <Row gap wrap="wrap" alignItems="flex-end">
+      <CommerceControls>
         {reportControls}
         <CommerceToolbar
           websiteId={websiteId}
@@ -92,7 +93,7 @@ export function Commerce({ websiteId, startDate, endDate, unit }: CommerceProps)
           onCurrencyChange={setCurrency}
           onMarketChange={setMarket}
         />
-      </Row>
+      </CommerceControls>
       <Tabs selectedKey={tab} onSelectionChange={key => handleTabChange(key as CommerceTab)}>
         <TabList>
           <Tab id="overview">{t(labels.overview)}</Tab>
@@ -120,5 +121,22 @@ export function Commerce({ websiteId, startDate, endDate, unit }: CommerceProps)
       <SessionModal websiteId={websiteId} />
       <CommerceOrderModal websiteId={websiteId} />
     </Column>
+  );
+}
+
+/** Report controls on a sunken, padded panel, set apart from the filter row and tabs. */
+function CommerceControls({ children }: { children: ReactNode }) {
+  return (
+    <Row
+      gap
+      wrap="wrap"
+      alignItems="flex-end"
+      padding="4"
+      marginY="2"
+      borderRadius
+      backgroundColor="surface-sunken"
+    >
+      {children}
+    </Row>
   );
 }

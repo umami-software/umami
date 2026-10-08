@@ -31,7 +31,7 @@ export function EmptyPlaceholder({
         </Icon>
       )}
       {title && (
-        <Text weight="bold" size="lg">
+        <Text weight="bold" size="base">
           {title}
         </Text>
       )}
