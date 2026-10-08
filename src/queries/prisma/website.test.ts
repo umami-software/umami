@@ -79,6 +79,11 @@ function createDeleteTx(calls: string[]) {
         calls.push('sessionReplaySaved');
       }),
     },
+    sessionReplayView: {
+      deleteMany: vi.fn(async () => {
+        calls.push('sessionReplayView');
+      }),
+    },
     sessionReplay: {
       deleteMany: vi.fn(async () => {
         calls.push('sessionReplay');
@@ -195,6 +200,7 @@ describe('website delete dependencies', () => {
       'commerceItem',
       'commerceEvent',
       'sessionReplaySaved',
+      'sessionReplayView',
       'sessionReplay',
       'heatmapEvent',
       'revenue',
@@ -239,6 +245,7 @@ describe('website delete dependencies', () => {
       'commerceItem',
       'commerceEvent',
       'sessionReplaySaved',
+      'sessionReplayView',
       'sessionReplay',
       'heatmapEvent',
       'revenue',

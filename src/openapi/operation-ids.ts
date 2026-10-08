@@ -161,6 +161,7 @@ export const OPERATION_ID_OVERRIDES: Record<string, string> = {
   // Replays
   'GET /api/websites/{websiteId}/replays': 'getWebsiteReplays',
   'GET /api/websites/{websiteId}/replays/{replayId}': 'getWebsiteReplay',
+  'POST /api/websites/{websiteId}/replays/{replayId}/view': 'viewWebsiteReplay',
   'GET /api/websites/{websiteId}/replays/saved': 'getWebsiteSavedReplays',
   'GET /api/websites/{websiteId}/replays/saved/{replayId}': 'getWebsiteReplaySaved',
   'POST /api/websites/{websiteId}/replays/saved/{replayId}': 'saveWebsiteReplay',

@@ -499,6 +499,17 @@ model SessionReplaySaved {
   @@map("session_replay_saved")
 }
 
+model SessionReplayView {
+  userId    String    @map("user_id") @db.Uuid
+  websiteId String    @map("website_id") @db.Uuid
+  visitId   String    @map("visit_id") @db.Uuid
+  createdAt DateTime? @default(now()) @map("created_at") @db.Timestamptz(6)
+
+  @@id([userId, websiteId, visitId])
+  @@index([websiteId])
+  @@map("session_replay_view")
+}
+
 model HeatmapEvent {
   id        String   @id() @map("heatmap_event_id") @db.Uuid
   websiteId String   @map("website_id") @db.Uuid

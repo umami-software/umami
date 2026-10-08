@@ -8,6 +8,7 @@ import {
   withDateRange,
 } from '@/lib/schema';
 import { canViewAuthenticatedWebsite } from '@/permissions';
+import { getViewedReplayIds } from '@/queries/prisma/sessionReplay';
 import { getSessionReplays } from '@/queries/sql';
 
 export async function GET(
@@ -36,6 +37,14 @@ export async function GET(
   const filters = await getQueryFilters(query, websiteId);
 
   const data = await getSessionReplays(websiteId, filters);
+  const viewed = await getViewedReplayIds(
+    auth.user.id,
+    websiteId,
+    data.data.map(({ id }) => id),
+  );
 
-  return json(data);
+  return json({
+    ...data,
+    data: data.data.map(row => ({ ...row, isViewed: viewed.has(row.id) })),
+  });
 }

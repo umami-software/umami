@@ -1,5 +1,5 @@
 import { Button, DataColumn, DataTable, type DataTableProps, Icon } from '@umami/react-zen';
-import { Play } from 'lucide-react';
+import { Check, Play } from 'lucide-react';
 import { DateDistance } from '@/components/common/DateDistance';
 import { useMessages } from '@/components/hooks';
 
@@ -30,6 +30,15 @@ export function SessionReplaysTable({
             </Icon>
           </Button>
         )}
+      </DataColumn>
+      <DataColumn id="isViewed" label={t(labels.viewed)} width="80px">
+        {(row: any) =>
+          row.isViewed && (
+            <Icon>
+              <Check />
+            </Icon>
+          )
+        }
       </DataColumn>
       <DataColumn id="id" label={t(labels.replayId)} />
       <DataColumn id="duration" label={t(labels.duration)} width="100px">

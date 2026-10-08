@@ -1,6 +1,6 @@
 import { Button, DataColumn, DataTable, type DataTableProps, Icon } from '@umami/react-zen';
 import { useEffect } from 'react';
-import { Play } from 'lucide-react';
+import { Check, Play } from 'lucide-react';
 import { Avatar } from '@/components/common/Avatar';
 import { DateDistance } from '@/components/common/DateDistance';
 import Link from '@/components/common/Link';
@@ -36,6 +36,15 @@ export function ReplaysTable({ websiteId, ...props }: DataTableProps & { website
             </Icon>
           </Button>
         )}
+      </DataColumn>
+      <DataColumn id="isViewed" label={t(labels.viewed)} width="80px">
+        {(row: any) =>
+          row.isViewed && (
+            <Icon>
+              <Check />
+            </Icon>
+          )
+        }
       </DataColumn>
       <DataColumn id="id" label={t(labels.session)} width="100px">
         {(row: any) => (

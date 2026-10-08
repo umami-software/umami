@@ -3916,6 +3916,14 @@ export const operations = {
     queryParams: [],
     hasBody: true,
   },
+  viewWebsiteReplay: {
+    operationId: 'viewWebsiteReplay',
+    method: 'post',
+    path: '/api/websites/{websiteId}/replays/{replayId}/view',
+    pathParams: ['websiteId', 'replayId'],
+    queryParams: [],
+    hasBody: false,
+  },
 } as const satisfies Record<string, OperationDefinition>;
 
 export type OperationId = keyof typeof operations;
@@ -6262,5 +6270,17 @@ export abstract class GeneratedUmamiClient {
     options?: RequestOptions,
   ): Promise<OperationOutput<'verifyTwoFactor'>> {
     return this.execute('verifyTwoFactor', input, options);
+  }
+
+  /**
+   * Mark a session replay as viewed
+   * Records that the current user started playback of the specified replay.
+   * `POST /api/websites/{websiteId}/replays/{replayId}/view`
+   */
+  viewWebsiteReplay(
+    input: OperationInput<'viewWebsiteReplay'>,
+    options?: RequestOptions,
+  ): Promise<OperationOutput<'viewWebsiteReplay'>> {
+    return this.execute('viewWebsiteReplay', input, options);
   }
 }

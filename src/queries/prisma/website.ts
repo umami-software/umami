@@ -24,6 +24,10 @@ async function deleteWebsiteDependentData(tx: any, websiteId: string) {
     where: { websiteId },
   });
 
+  await tx.sessionReplayView.deleteMany({
+    where: { websiteId },
+  });
+
   await tx.sessionReplay.deleteMany({
     where: { websiteId },
   });

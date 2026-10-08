@@ -73,6 +73,31 @@ export async function getReplaySaved(websiteId: string, visitId: string): Promis
   return record !== null;
 }
 
+export async function createReplayView(userId: string, websiteId: string, visitId: string) {
+  return prisma.client.sessionReplayView.upsert({
+    where: { userId_websiteId_visitId: { userId, websiteId, visitId } },
+    create: { userId, websiteId, visitId },
+    update: {},
+  });
+}
+
+export async function getViewedReplayIds(
+  userId: string,
+  websiteId: string,
+  visitIds: string[],
+): Promise<Set<string>> {
+  if (!visitIds.length) {
+    return new Set();
+  }
+
+  const views = await prisma.client.sessionReplayView.findMany({
+    where: { userId, websiteId, visitId: { in: visitIds } },
+    select: { visitId: true },
+  });
+
+  return new Set(views.map(({ visitId }) => visitId));
+}
+
 export async function createReplaySaved(websiteId: string, visitId: string, name: string) {
   return prisma.client.sessionReplaySaved.create({
     data: { id: uuid(), websiteId, visitId, name },

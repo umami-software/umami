@@ -571,6 +571,10 @@ export const operationDescriptions: Record<string, OperationDescription> = {
     description:
       'Returns the merged recording events, session details, and event and chunk counts for a replay, with optional stopping points by timestamp, chunk, or event index.',
   },
+  'POST /api/websites/{websiteId}/replays/{replayId}/view': {
+    summary: 'Mark a session replay as viewed',
+    description: 'Records that the current user started playback of the specified replay.',
+  },
   'GET /api/websites/{websiteId}/replays/saved': {
     summary: 'List saved session replays',
     description: 'Returns a paginated, searchable list of replays saved for the website.',

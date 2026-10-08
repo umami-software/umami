@@ -2600,6 +2600,26 @@ export interface paths {
     patch?: never;
     trace?: never;
   };
+  '/api/websites/{websiteId}/replays/{replayId}/view': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    /**
+     * Mark a session replay as viewed
+     * @description Records that the current user started playback of the specified replay.
+     */
+    post: operations['viewWebsiteReplay'];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
   '/api/websites/{websiteId}/replays/saved': {
     parameters: {
       query?: never;
@@ -23805,6 +23825,7 @@ export interface operations {
               eventCount: number;
               /** @description Unique identifier of the resource. */
               id: string;
+              isViewed: boolean;
               /** @description Operating system used by the visitor. */
               os: string;
               /** @description ID of the visitor session. */
@@ -23928,6 +23949,52 @@ export interface operations {
       };
     };
   };
+  viewWebsiteReplay: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        /** @description ID of the session replay. */
+        replayId: string;
+        /** @description ID of the website. */
+        websiteId: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description The operation completed successfully. */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': {
+            /** @description Whether the operation succeeded. */
+            ok: boolean;
+          };
+        };
+      };
+      /** @description Unauthorized. */
+      401: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          /**
+           * @example {
+           *       "error": {
+           *         "code": "unauthorized",
+           *         "message": "Unauthorized.",
+           *         "status": 401
+           *       }
+           *     }
+           */
+          'application/json': components['schemas']['ApiError'];
+        };
+      };
+    };
+  };
   getWebsiteSavedReplays: {
     parameters: {
       query?: {
@@ -23967,6 +24034,7 @@ export interface operations {
               createdAt: string;
               /** @description Unique identifier of the resource. */
               id: string;
+              isViewed: boolean;
               /** @description Display name of the resource. */
               name: string;
               /**
@@ -27346,6 +27414,7 @@ export interface operations {
               eventCount: number;
               /** @description Unique identifier of the resource. */
               id: string;
+              isViewed: boolean;
               /** @description Operating system used by the visitor. */
               os: string;
               /** @description ID of the visitor session. */

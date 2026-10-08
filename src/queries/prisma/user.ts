@@ -219,6 +219,11 @@ export async function deleteUser(userId: string) {
     client.session.deleteMany({
       where: { websiteId: { in: websiteIds } },
     }),
+    client.sessionReplayView.deleteMany({
+      where: {
+        OR: [{ userId }, { websiteId: { in: websiteIds } }],
+      },
+    }),
     client.teamUser.deleteMany({
       where: {
         OR: [

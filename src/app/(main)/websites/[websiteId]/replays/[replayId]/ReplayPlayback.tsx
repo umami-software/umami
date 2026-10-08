@@ -1,7 +1,7 @@
 'use client';
 import { Button, Column, Dialog, DialogTrigger, Icon, Popover, Row, Text } from '@umami/react-zen';
 import { Bookmark, ChevronLeft, ChevronRight, X } from 'lucide-react';
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { SessionInfo } from '@/app/(main)/websites/[websiteId]/sessions/SessionInfo';
 import { Avatar } from '@/components/common/Avatar';
 import { LoadingPanel } from '@/components/common/LoadingPanel';
@@ -45,6 +45,8 @@ export function ReplayPlayback({
   const { router, updateParams } = useNavigation();
   const [savedState, setSavedState] = useState<{ replayId: string; isSaved: boolean } | null>(null);
   const { mutate } = useUpdateQuery(`/websites/${websiteId}/replays/saved/${replayId}`);
+  const { mutate: markViewed } = useUpdateQuery(`/websites/${websiteId}/replays/${replayId}/view`);
+  const viewedReplayId = useRef<string | null>(null);
   const replays = useReplays(state => state.replays);
   const replayWebsiteId = useReplays(state => state.websiteId);
   const storedReplaySource = useReplays(state => state.source);
@@ -104,6 +106,24 @@ export function ReplayPlayback({
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [prevReplay, nextReplay, router, updateParams]);
+
+  const handlePlay = () => {
+    // Playback can start several times; save once per replay, retrying on a later play if it fails.
+    if (viewedReplayId.current === replayId) {
+      return;
+    }
+
+    viewedReplayId.current = replayId;
+    markViewed(
+      {},
+      {
+        onSuccess: () => touch('replays'),
+        onError: () => {
+          viewedReplayId.current = null;
+        },
+      },
+    );
+  };
 
   const handleUnsave = () => {
     setSavedState({ replayId, isSaved: false });
@@ -197,7 +217,7 @@ export function ReplayPlayback({
               </Row>
             </Row>
           )}
-          <ReplayPlayer events={replay.events} />
+          <ReplayPlayer events={replay.events} onPlay={handlePlay} />
           {showSessionInfo && session && <SessionInfo data={session} />}
         </Column>
       )}
