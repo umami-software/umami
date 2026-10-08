@@ -31,6 +31,11 @@ export function SavedReplaysTable({ websiteId, ...props }: DataTableProps & { we
         )}
       </DataColumn>
       <DataColumn id="name" label={t(labels.name)} />
+      <DataColumn id="distinctIds" label={t(labels.distinctId)} width="200px">
+        {(row: any) => (
+          <span style={{ overflowWrap: 'anywhere' }}>{row.distinctIds?.join(', ')}</span>
+        )}
+      </DataColumn>
       <DataColumn id="visitId" label={t(labels.replayId)} />
       <DataColumn id="createdAt" label={t(labels.created)} width="160px">
         {(row: any) => <DateDistance date={new Date(row.createdAt)} />}
