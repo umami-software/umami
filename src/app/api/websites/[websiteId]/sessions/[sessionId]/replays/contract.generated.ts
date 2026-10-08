@@ -137,6 +137,9 @@ const operation1 = defineOperation({
                   items: {
                     type: 'object',
                     properties: {
+                      isViewed: {
+                        type: 'boolean',
+                      },
                       id: {
                         type: 'string',
                       },
@@ -205,6 +208,7 @@ const operation1 = defineOperation({
                       },
                     },
                     required: [
+                      'isViewed',
                       'id',
                       'sessionId',
                       'websiteId',

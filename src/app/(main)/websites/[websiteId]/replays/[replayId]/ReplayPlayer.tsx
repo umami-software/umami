@@ -134,11 +134,8 @@ export function ReplayPlayer({ events, onPlay }: { events: any[]; onPlay?: () =>
 
           playerRef.current = player;
 
-          let hasPlayed = false;
-
           player.addEventListener('ui-update-player-state', (event: { payload: string }) => {
-            if (event.payload === 'playing' && !hasPlayed) {
-              hasPlayed = true;
+            if (event.payload === 'playing') {
               onPlayRef.current?.();
             }
           });

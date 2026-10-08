@@ -42,7 +42,7 @@ beforeEach(() => {
   listeners.length = 0;
 });
 
-test('calls onPlay once when playback starts', async () => {
+test('calls onPlay each time playback starts', async () => {
   const onPlay = vi.fn();
 
   render(<ReplayPlayer events={events} onPlay={onPlay} />);
@@ -54,5 +54,5 @@ test('calls onPlay once when playback starts', async () => {
   emit('playing');
   emit('paused');
   emit('playing');
-  expect(onPlay).toHaveBeenCalledOnce();
+  expect(onPlay).toHaveBeenCalledTimes(2);
 });

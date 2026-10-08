@@ -23825,6 +23825,7 @@ export interface operations {
               eventCount: number;
               /** @description Unique identifier of the resource. */
               id: string;
+              isViewed: boolean;
               /** @description Operating system used by the visitor. */
               os: string;
               /** @description ID of the visitor session. */
@@ -24033,6 +24034,7 @@ export interface operations {
               createdAt: string;
               /** @description Unique identifier of the resource. */
               id: string;
+              isViewed: boolean;
               /** @description Display name of the resource. */
               name: string;
               /**
@@ -27412,6 +27414,7 @@ export interface operations {
               eventCount: number;
               /** @description Unique identifier of the resource. */
               id: string;
+              isViewed: boolean;
               /** @description Operating system used by the visitor. */
               os: string;
               /** @description ID of the visitor session. */

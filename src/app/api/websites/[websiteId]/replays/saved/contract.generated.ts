@@ -70,6 +70,9 @@ const operation1 = defineOperation({
                   items: {
                     type: 'object',
                     properties: {
+                      isViewed: {
+                        type: 'boolean',
+                      },
                       id: {
                         type: 'string',
                       },
@@ -91,7 +94,15 @@ const operation1 = defineOperation({
                         type: 'string',
                       },
                     },
-                    required: ['id', 'createdAt', 'updatedAt', 'name', 'websiteId', 'visitId'],
+                    required: [
+                      'isViewed',
+                      'id',
+                      'createdAt',
+                      'updatedAt',
+                      'name',
+                      'websiteId',
+                      'visitId',
+                    ],
                   },
                 },
                 count: {
