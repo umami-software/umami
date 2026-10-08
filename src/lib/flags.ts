@@ -1,10 +1,23 @@
 import { evaluate, flag } from 'flags/next';
 
 /**
+ * Whether a flag key is listed in FEATURE_FLAGS, a comma-separated list of enabled flags,
+ * e.g. `FEATURE_FLAGS=commerce,other`. Whitespace and case are ignored.
+ */
+export function isFeatureEnabled(key: string): boolean {
+  return (process.env.FEATURE_FLAGS ?? '')
+    .split(',')
+    .map(value => value.trim().toLowerCase())
+    .filter(Boolean)
+    .includes(key.toLowerCase());
+}
+
+/**
  * Feature flags, declared with the Flags SDK (https://flags-sdk.dev).
  *
  * Server-side only. The object key is the flag key, so it matches the name shown in
- * the Vercel Flags Explorer and the key read on the client with `useFlag`.
+ * the Vercel Flags Explorer, the key read on the client with `useFlag`, and the value
+ * listed in FEATURE_FLAGS.
  *
  * Every flag must have a `defaultValue` so the app keeps working if a flag cannot be evaluated.
  */
@@ -12,9 +25,9 @@ export const flags = {
   // Commerce UI only. Collection through /api/send and the commerce APIs are not gated.
   commerce: flag<boolean>({
     key: 'commerce',
-    description: 'Show the Commerce report and commerce features in the UI. Set ENABLE_COMMERCE.',
+    description: 'Show the Commerce report and commerce features in the UI.',
     defaultValue: false,
-    decide: () => !!process.env.ENABLE_COMMERCE,
+    decide: () => isFeatureEnabled('commerce'),
   }),
 };
 
