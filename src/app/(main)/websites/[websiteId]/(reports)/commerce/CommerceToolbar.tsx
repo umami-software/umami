@@ -23,7 +23,6 @@ export function CommerceToolbar({
   onMarketChange,
 }: CommerceToolbarProps) {
   const { t, labels } = useMessages();
-  // Include markets with views or additions even when no orders have completed.
   const { data: markets } = useCommerceMarketsQuery(websiteId, currency);
   const marketNames = (markets || []).map(({ name }) => name).filter(Boolean);
 

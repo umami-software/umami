@@ -2,13 +2,11 @@ import { type CommerceStatsData, useDateRange, useMessages, useTimezone } from '
 import { MetricCard } from '@/components/metrics/MetricCard';
 import { MetricsBar } from '@/components/metrics/MetricsBar';
 import { formatLongNumber } from '@/lib/format';
-import { currencyFormatter, formatDecimal, formatPercent } from './commerceUtils';
+import { currencyFormatter, formatPercent } from './commerceUtils';
 
 export interface CommerceMetricsBarProps {
   data: CommerceStatsData;
   currency: string;
-  /** `product` shows line revenue and units of the selected product instead of order totals. */
-  variant?: 'overview' | 'product';
 }
 
 interface Metric {
@@ -20,11 +18,7 @@ interface Metric {
   available?: boolean;
 }
 
-export function CommerceMetricsBar({
-  data,
-  currency,
-  variant = 'overview',
-}: CommerceMetricsBarProps) {
+export function CommerceMetricsBar({ data, currency }: CommerceMetricsBarProps) {
   const { t } = useMessages();
   const { timezone } = useTimezone();
   const { isAllTime, hasComparison } = useDateRange({ timezone });
@@ -44,24 +38,16 @@ export function CommerceMetricsBar({
     formatValue: data[key] === null ? () => '—' : formatValue,
   });
 
-  const metrics: Metric[] =
-    variant === 'product'
-      ? [
-          metric('revenue', t('commerce.revenue'), money),
-          metric('units', t('commerce.units'), formatLongNumber),
-          metric('orders', t('commerce.orders'), formatLongNumber),
-          metric('buyers', t('commerce.buyers'), formatLongNumber),
-          metric('averageOrderValue', t('commerce.averageOrderValue'), money),
-        ]
-      : [
-          metric('revenue', t('commerce.revenue'), money),
-          metric('orders', t('commerce.orders'), formatLongNumber),
-          metric('averageOrderValue', t('commerce.averageOrderValue'), money),
-          metric('buyers', t('commerce.buyers'), formatLongNumber),
-          metric('conversionRate', t('commerce.conversionRate'), formatPercent),
-          metric('revenuePerVisitor', t('commerce.revenuePerVisitor'), money),
-          metric('unitsPerOrder', t('commerce.unitsPerOrder'), formatDecimal),
-        ];
+  const metrics: Metric[] = [
+    metric('revenue', t('commerce.revenue'), money),
+    metric('refundAmount', t('commerce.refundAmount'), money),
+    metric('netRevenue', t('commerce.netRevenue'), money),
+    metric('orders', t('commerce.orders'), formatLongNumber),
+    metric('averageOrderValue', t('commerce.averageOrderValue'), money),
+    metric('buyers', t('commerce.buyers'), formatLongNumber),
+    metric('conversionRate', t('commerce.conversionRate'), formatPercent),
+    metric('revenuePerVisitor', t('commerce.revenuePerVisitor'), money),
+  ];
 
   return (
     <MetricsBar>
@@ -73,7 +59,9 @@ export function CommerceMetricsBar({
           change={value - previous}
           formatValue={formatValue}
           tooltip={available === false ? t('commerce.unavailableMarketConversion') : undefined}
-          showChange={available !== false && !isAllTime && hasComparison && !!comparison}
+          showChange={
+            available !== false && !isAllTime && hasComparison && comparison?.[key] != null
+          }
         />
       ))}
     </MetricsBar>

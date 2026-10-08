@@ -16,7 +16,7 @@ export async function getCommerceMarkets(
   const query = (dialect: 'prisma' | 'clickhouse') => {
     const { ctes, queryParams } = (
       dialect === 'prisma' ? getRelationalCommerceQuery : getClickhouseCommerceQuery
-    )(websiteId, { ...parameters, market: undefined }, filters, { allStages: true });
+    )(websiteId, { ...parameters, market: undefined }, filters);
     return (dialect === 'prisma' ? prisma : clickhouse).rawQuery(
       `with ${ctes} select market as name from orders where market is not null and market != '' group by market order by market`,
       queryParams,

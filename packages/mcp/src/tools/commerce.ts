@@ -20,9 +20,6 @@ interface CommerceClient {
   getWebsiteCommerceStats: Call;
   getWebsiteCommerceChart: Call;
   getWebsiteCommerceMetrics: Call;
-  getWebsiteCommerceProducts: Call;
-  getWebsiteCommerceBaskets: Call;
-  getWebsiteCommerceCheckout: Call;
   getWebsiteCommerceCustomers: Call;
   getWebsiteCommerceAttribution: Call;
 }
@@ -84,9 +81,9 @@ export const getCommerce = defineTool({
   description:
     'Returns e-commerce results from completed orders (commerce events with an orderId) for a time range and one ' +
     'currency: revenue, orders, average order value, buyers, conversion rate and revenue per visitor with a ' +
-    'comparison to the previous period; a revenue time series; revenue by channel, country and market; top ' +
-    'products; the cart → checkout → payment funnel with abandonment; new vs returning buyers; and last-click ' +
-    'revenue attribution. Use get_commerce_products for product detail. Requires a websiteId from list_websites.',
+    'comparison to the previous period; a revenue time series; revenue by channel, country and market; ' +
+    'refunds and net revenue; new vs returning buyers; and last-click ' +
+    'revenue attribution. Requires a websiteId from list_websites.',
   inputSchema: z.object({
     ...commerceInput,
     unit: timeUnit.optional(),
@@ -115,27 +112,17 @@ export const getCommerce = defineTool({
     }
 
     const params = { ...base, currency, market: input.market };
-    const [
-      stats,
-      chart,
-      byChannel,
-      byCountry,
-      byMarket,
-      products,
-      checkout,
-      customers,
-      attribution,
-    ] = await Promise.all([
-      api.getWebsiteCommerceStats(params),
-      api.getWebsiteCommerceChart(params),
-      api.getWebsiteCommerceMetrics({ ...params, type: 'channel', limit: 20 }),
-      api.getWebsiteCommerceMetrics({ ...params, type: 'country', limit: 20 }),
-      api.getWebsiteCommerceMetrics({ ...params, type: 'market', limit: 20 }),
-      api.getWebsiteCommerceProducts({ ...params, pageSize: 10 }),
-      api.getWebsiteCommerceCheckout(params),
-      api.getWebsiteCommerceCustomers(params),
-      api.getWebsiteCommerceAttribution({ ...params, model: 'last-click' }),
-    ]);
+    const [stats, chart, byChannel, byCountry, byMarket, customers, attribution] =
+      await Promise.all([
+        api.getWebsiteCommerceStats(params),
+        api.getWebsiteCommerceChart(params),
+        api.getWebsiteCommerceMetrics({ ...params, type: 'channel', limit: 20 }),
+        api.getWebsiteCommerceMetrics({ ...params, type: 'country', limit: 20 }),
+        api.getWebsiteCommerceMetrics({ ...params, type: 'market', limit: 20 }),
+
+        api.getWebsiteCommerceCustomers(params),
+        api.getWebsiteCommerceAttribution({ ...params, model: 'last-click' }),
+      ]);
 
     return {
       websiteId: input.websiteId,
@@ -148,8 +135,6 @@ export const getCommerce = defineTool({
       byChannel: byChannel ?? [],
       byCountry: byCountry ?? [],
       byMarket: byMarket ?? [],
-      topProducts: products?.data ?? [],
-      checkout: checkout ?? null,
       customers: customers ?? null,
       attribution: attribution
         ? {
@@ -161,115 +146,6 @@ export const getCommerce = defineTool({
             utmCampaign: attribution.utmCampaign,
           }
         : null,
-    };
-  },
-});
-
-export const getCommerceProducts = defineTool({
-  name: 'get_commerce_products',
-  title: 'Get commerce products',
-  description:
-    'Ranks products, variants or categories by purchase performance or same-product view-to-cart and view-to-purchase rates, for one currency and ' +
-    'time range. With "productId" it instead returns that product: line revenue, units, orders and buyers with a ' +
-    'comparison period, its revenue over time, the products bought with it, and its top channels and countries. ' +
-    'Requires a websiteId from list_websites.',
-  inputSchema: z.object({
-    ...commerceInput,
-    productId: z
-      .string()
-      .min(1)
-      .optional()
-      .describe('Product ID to describe in detail instead of ranking products.'),
-    groupBy: z
-      .enum(['product', 'variant', 'category'])
-      .optional()
-      .describe('Rank by product (default), variant or category.'),
-    sort: z
-      .enum([
-        'revenue',
-        'units',
-        'orders',
-        'views',
-        'additions',
-        'addToCartRate',
-        'purchaseRate',
-        'cartToPurchaseRate',
-      ])
-      .optional()
-      .describe('Ranking metric (default revenue).'),
-    minViews: z.number().int().min(0).optional().describe('Minimum observed product views.'),
-    maxCartRate: z
-      .number()
-      .min(0)
-      .max(1)
-      .optional()
-      .describe('Maximum view-to-cart conversion rate (0–1).'),
-    search: z
-      .string()
-      .min(1)
-      .optional()
-      .describe('Only products whose ID, name, variant or category contains this text.'),
-    limit: z.number().int().positive().max(100).optional().describe('Maximum rows (default 20).'),
-  }),
-  async handler(input, { client }) {
-    const api = commerce(client);
-    const range = parseDateRange(input);
-    const base = { websiteId: input.websiteId, ...range, ...toFilterParams(input.filters) };
-    const { currency } = await resolveCurrency(api, base, input.currency);
-
-    if (!currency) {
-      return {
-        websiteId: input.websiteId,
-        range: isoRange(range),
-        currency: null,
-        products: [],
-        message: 'No completed orders were recorded in this range.',
-      };
-    }
-
-    const params = { ...base, currency, market: input.market };
-
-    if (input.productId) {
-      const scoped = { ...params, productId: input.productId };
-      const [stats, chart, baskets, byChannel, byCountry] = await Promise.all([
-        api.getWebsiteCommerceStats(scoped),
-        api.getWebsiteCommerceChart(scoped),
-        api.getWebsiteCommerceBaskets(scoped),
-        api.getWebsiteCommerceMetrics({ ...scoped, type: 'channel', limit: 10 }),
-        api.getWebsiteCommerceMetrics({ ...scoped, type: 'country', limit: 10 }),
-      ]);
-
-      return {
-        websiteId: input.websiteId,
-        range: isoRange(range),
-        currency,
-        productId: input.productId,
-        total: stats ?? null,
-        chart: chart?.chart ?? [],
-        boughtWith: baskets?.pairs ?? [],
-        byChannel: byChannel ?? [],
-        byCountry: byCountry ?? [],
-      };
-    }
-
-    const result = await api.getWebsiteCommerceProducts({
-      ...params,
-      groupBy: input.groupBy,
-      sort: input.sort,
-      minViews: input.minViews,
-      maxCartRate: input.maxCartRate,
-      search: input.search,
-      pageSize: input.limit ?? 20,
-    });
-
-    return {
-      websiteId: input.websiteId,
-      range: isoRange(range),
-      currency,
-      groupBy: input.groupBy ?? 'product',
-      sort: input.sort ?? 'revenue',
-      products: result?.data ?? [],
-      count: result?.count ?? 0,
     };
   },
 });

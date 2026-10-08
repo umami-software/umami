@@ -1,18 +1,18 @@
 import clickhouse from '@/lib/clickhouse';
 import { CLICKHOUSE, PRISMA, runQuery } from '@/lib/db';
 import prisma from '@/lib/prisma';
-import { toNumbers } from './commerceQuery';
+import { toNullableNumbers } from './commerceQuery';
 
 const FUNCTION_NAME = 'getCommerceOrder';
 
 export interface CommerceOrderItem {
   index: number;
+  lineId: string;
   productId: string;
   name: string;
   variant: string;
   category: string;
   price: number;
-  quantity: number;
   total: number;
 }
 
@@ -21,8 +21,8 @@ export interface CommerceOrderDetail {
   eventName: string;
   currency: string;
   market: string;
-  cartId: string;
-  checkoutId: string;
+  source: string;
+  customerId: string;
   orderId: string;
   sessionId: string;
   visitId: string;
@@ -31,10 +31,11 @@ export interface CommerceOrderDetail {
   shipping: number;
   tax: number;
   total: number;
+  refunds: { refundId: string; total: number; createdAt: string }[];
   items: CommerceOrderItem[];
 }
 
-/** One commerce record (payment, checkout or cart) with its current item snapshot. */
+/** One order with its optional source line details. */
 export async function getCommerceOrder(
   ...args: [websiteId: string, commerceEventId: string]
 ): Promise<CommerceOrderDetail | null> {
@@ -47,10 +48,33 @@ export async function getCommerceOrder(
     return null;
   }
 
+  const refundQuery = async (dialect: 'prisma' | 'clickhouse') => {
+    const param = (key: string, type = 'String') =>
+      dialect === 'prisma' ? `{{${key}${type === 'UUID' ? '::uuid' : ''}}}` : `{${key}:${type}}`;
+    const rows = await (dialect === 'prisma' ? prisma : clickhouse).rawQuery(
+      `select reference_id as "refundId", total, created_at as "createdAt" from commerce_event ${dialect === 'clickhouse' ? 'final' : ''}
+       where website_id = ${param('websiteId', 'UUID')} and kind = 'refund'
+         and order_id = ${param('orderId')} and coalesce(source, '') = ${param('source')}
+         and currency = ${param('currency')} order by created_at`,
+      {
+        websiteId: args[0],
+        orderId: result.order.orderId,
+        source: result.order.source,
+        currency: result.order.currency,
+      },
+      'getCommerceOrder:refunds',
+    );
+    return rows.map(row => ({ ...row, total: Number(row.total) }));
+  };
+  const refunds = await runQuery({
+    [PRISMA]: () => refundQuery('prisma'),
+    [CLICKHOUSE]: () => refundQuery('clickhouse'),
+  });
   return {
-    ...toNumbers(result.order, ['subtotal', 'shipping', 'tax', 'total']),
+    refunds,
+    ...toNullableNumbers(result.order, ['subtotal', 'shipping', 'tax', 'total']),
     items: result.items.map((item: CommerceOrderItem) =>
-      toNumbers(item, ['index', 'price', 'quantity', 'total']),
+      toNullableNumbers(item, ['index', 'price', 'total']),
     ),
   };
 }
@@ -65,8 +89,8 @@ async function relationalQuery(websiteId: string, commerceEventId: string) {
       event_name as "eventName",
       currency as "currency",
       coalesce(market, '') as "market",
-      coalesce(cart_id, '') as "cartId",
-      coalesce(checkout_id, '') as "checkoutId",
+      coalesce(source, '') as "source",
+      coalesce(customer_id, '') as "customerId",
       coalesce(order_id, '') as "orderId",
       session_id as "sessionId",
       visit_id as "visitId",
@@ -78,6 +102,7 @@ async function relationalQuery(websiteId: string, commerceEventId: string) {
     from commerce_event
     where website_id = {{websiteId::uuid}}
       and commerce_event_id = {{commerceEventId::uuid}}
+      and kind = 'order'
     `,
     params,
     FUNCTION_NAME,
@@ -91,12 +116,12 @@ async function relationalQuery(websiteId: string, commerceEventId: string) {
     `
     select
       item_index as "index",
+      coalesce(line_id, '') as "lineId",
       product_id as "productId",
       coalesce(name, '') as "name",
       coalesce(variant, '') as "variant",
       coalesce(category, '') as "category",
       price as "price",
-      quantity as "quantity",
       total as "total"
     from commerce_item
     where website_id = {{websiteId::uuid}}
@@ -121,8 +146,8 @@ async function clickhouseQuery(websiteId: string, commerceEventId: string) {
       event_name as eventName,
       currency,
       market,
-      cart_id as cartId,
-      checkout_id as checkoutId,
+      source,
+      customer_id as customerId,
       order_id as orderId,
       session_id as sessionId,
       visit_id as visitId,
@@ -134,6 +159,7 @@ async function clickhouseQuery(websiteId: string, commerceEventId: string) {
     from commerce_event final
     where website_id = {websiteId:UUID}
       and commerce_event_id = {commerceEventId:UUID}
+      and kind = 'order'
     `,
     params,
     FUNCTION_NAME,
@@ -148,12 +174,12 @@ async function clickhouseQuery(websiteId: string, commerceEventId: string) {
     `
     select
       item_index as index,
+      line_id as lineId,
       product_id as productId,
       name,
       variant,
       category,
       price,
-      quantity,
       total
     from commerce_item final
     where website_id = {websiteId:UUID}

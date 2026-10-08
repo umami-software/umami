@@ -59,9 +59,6 @@ export function CommerceOrdersTable({
           <DataColumn id="market" label={t('commerce.market')} width="100px">
             {(row: CommerceOrder) => row.market || '—'}
           </DataColumn>
-          <DataColumn id="units" label={t('commerce.units')} align="end" width="80px">
-            {(row: CommerceOrder) => row.units.toLocaleString()}
-          </DataColumn>
           <DataColumn id="total" label={t(labels.total)} align="end" width="120px">
             {(row: CommerceOrder) => <Text weight="bold">{money(row.total)}</Text>}
           </DataColumn>
@@ -82,9 +79,11 @@ export function CommerceOrdersTable({
           <DataColumn id="session" label={t(labels.session)} width="80px">
             {(row: CommerceOrder) => (
               <Column>
-                <Link href={updateParams({ session: row.sessionId })} scroll={false}>
-                  <Avatar seed={row.sessionId} size={28} />
-                </Link>
+                {row.sessionId && (
+                  <Link href={updateParams({ session: row.sessionId })} scroll={false}>
+                    <Avatar seed={row.sessionId} size={28} />
+                  </Link>
+                )}
               </Column>
             )}
           </DataColumn>

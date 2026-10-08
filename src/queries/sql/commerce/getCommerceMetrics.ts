@@ -11,7 +11,7 @@ import {
   getRelationalCommerceQuery,
   getSessionAttributesCte,
   getVisitEntriesCte,
-  toNumbers,
+  toNullableNumbers,
 } from './commerceQuery';
 
 const FUNCTION_NAME = 'getCommerceMetrics';
@@ -81,7 +81,7 @@ export async function getCommerceMetrics(
     [CLICKHOUSE]: () => clickhouseQuery(...args),
   });
 
-  return (rows || []).map(row => toNumbers(row, ['revenue', 'orders', 'buyers']));
+  return (rows || []).map(row => toNullableNumbers(row, ['revenue', 'orders', 'buyers']));
 }
 
 function getDimension(dialect: 'prisma' | 'clickhouse', type: CommerceMetricType) {
@@ -127,9 +127,9 @@ async function relationalQuery(
     `
     with ${ctes}, ${extraCtes}
     select
-      ${dimension.name} as "name",
+      ${isVisitDimension(type) ? `case when orders.visit_id is null then 'Unattributed' else ${dimension.name} end` : dimension.name} as "name",
       ${dimension.country ? `${dimension.country} as "country",` : ''}
-      sum(orders.value) as "revenue",
+      case when count(orders.value) = count(*) then sum(orders.value) else NULL end as "revenue",
       count(*) as "orders",
       count(distinct order_buyers.buyer_id) as "buyers"
     from orders
@@ -167,9 +167,9 @@ async function clickhouseQuery(
     `
     with ${ctes}, ${extraCtes}
     select
-      ${dimension.name} as name,
+      ${isVisitDimension(type) ? `if(isNull(orders.visit_id), 'Unattributed', ${dimension.name})` : dimension.name} as name,
       ${dimension.country ? `${dimension.country} as country,` : ''}
-      sum(orders.value) as revenue,
+      case when count(orders.value) = count(*) then sum(orders.value) else NULL end as revenue,
       count() as orders,
       uniqExact(order_buyers.buyer_id) as buyers
     from orders

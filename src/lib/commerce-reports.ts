@@ -8,8 +8,6 @@ import { z } from 'zod';
 /** How far before the selected range acquisition touches and visit entries are searched. */
 export const COMMERCE_LOOKBACK_DAYS = 30;
 
-export const COMMERCE_STAGES = ['cart', 'checkout', 'order'] as const;
-
 /** Order attributes, visitor attributes of the purchasing session, and visit acquisition. */
 export const COMMERCE_METRIC_TYPES = [
   'market',
@@ -31,18 +29,6 @@ export const COMMERCE_METRIC_TYPES = [
   'utmTerm',
 ] as const;
 
-export const COMMERCE_PRODUCT_GROUPS = ['product', 'variant', 'category'] as const;
-export const COMMERCE_PRODUCT_SORTS = [
-  'revenue',
-  'units',
-  'orders',
-  'views',
-  'additions',
-  'addToCartRate',
-  'purchaseRate',
-  'cartToPurchaseRate',
-] as const;
-
 export const COMMERCE_ATTRIBUTION_MODELS = ['first-click', 'last-click'] as const;
 export const COMMERCE_ATTRIBUTION_DIMENSIONS = [
   'channel',
@@ -57,8 +43,6 @@ export const COMMERCE_ATTRIBUTION_DIMENSIONS = [
 ] as const;
 
 export type CommerceMetricType = (typeof COMMERCE_METRIC_TYPES)[number];
-export type CommerceProductGroup = (typeof COMMERCE_PRODUCT_GROUPS)[number];
-export type CommerceProductSort = (typeof COMMERCE_PRODUCT_SORTS)[number];
 export type CommerceAttributionModel = (typeof COMMERCE_ATTRIBUTION_MODELS)[number];
 export type CommerceAttributionDimension = (typeof COMMERCE_ATTRIBUTION_DIMENSIONS)[number];
 
@@ -71,22 +55,22 @@ export const commerceCurrencySchema = z.object({
   currency: z.string(),
   orders: count.describe('Completed orders.'),
   revenue: money,
-  events: count.describe('All commerce events, including carts and checkouts.'),
+  events: count.describe('Recorded orders and refunds.'),
 });
 
 export const commerceStatsSchema = z.object({
-  revenue: money,
-  subtotal: money,
-  tax: money,
-  shipping: money,
+  revenue: money.nullable(),
+  refundAmount: money.nullable(),
+  netRevenue: money.nullable(),
+  subtotal: money.nullable(),
+  tax: money.nullable(),
+  shipping: money.nullable(),
   orders: count,
-  units: count,
   buyers: count,
   visitors: count,
   visits: count,
   convertedVisits: count,
-  averageOrderValue: money,
-  unitsPerOrder: z.number(),
+  averageOrderValue: money.nullable(),
   conversionRate: z
     .number()
     .nullable()
@@ -103,7 +87,7 @@ export const commerceChartResponseSchema = z.object({
     z.object({
       x: z.string().describe('Event name.'),
       t: z.string().describe('Time bucket.'),
-      y: money.describe('Revenue.'),
+      y: money.nullable().describe('Revenue.'),
       count: count.describe('Orders.'),
     }),
   ),
@@ -111,7 +95,7 @@ export const commerceChartResponseSchema = z.object({
 
 export const commerceMetricSchema = z.object({
   name: z.string(),
-  revenue: money,
+  revenue: money.nullable(),
   orders: count,
   buyers: count,
   country: z.string().optional(),
@@ -129,15 +113,13 @@ export const commerceOrderSchema = z.object({
   eventName: z.string(),
   market: z.string(),
   currency: z.string(),
-  sessionId: z.string(),
-  visitId: z.string(),
+  sessionId: z.string().nullable(),
+  visitId: z.string().nullable(),
   createdAt: z.string(),
-  subtotal: money,
-  shipping: money,
-  tax: money,
+  subtotal: money.nullable(),
+  shipping: money.nullable(),
+  tax: money.nullable(),
   total: money,
-  lines: count,
-  units: count,
   country: z.string(),
   device: z.string(),
   browser: z.string(),
@@ -154,110 +136,27 @@ export const commerceOrderDetailSchema = z.object({
   eventName: z.string(),
   currency: z.string(),
   market: z.string(),
-  cartId: z.string(),
-  checkoutId: z.string(),
+  source: z.string(),
+  customerId: z.string(),
   orderId: z.string(),
-  sessionId: z.string(),
-  visitId: z.string(),
+  sessionId: z.string().nullable(),
+  visitId: z.string().nullable(),
   createdAt: z.string(),
-  subtotal: money,
-  shipping: money,
-  tax: money,
+  subtotal: money.nullable(),
+  shipping: money.nullable(),
+  tax: money.nullable(),
   total: money,
+  refunds: z.array(z.object({ refundId: z.string(), total: money, createdAt: z.string() })),
   items: z.array(
     z.object({
       index: z.number(),
+      lineId: z.string(),
       productId: z.string(),
       name: z.string(),
       variant: z.string(),
       category: z.string(),
-      price: money,
-      quantity: count,
-      total: money,
-    }),
-  ),
-});
-
-export const commerceProductSchema = z.object({
-  productId: z.string(),
-  variant: z.string(),
-  category: z.string(),
-  name: z.string(),
-  units: count,
-  revenue: money,
-  orders: count,
-  averagePrice: money,
-  views: count,
-  additions: count,
-  viewingVisits: count,
-  addingVisits: count,
-  convertedCartVisits: count,
-  convertedPurchaseVisits: count,
-  addToCartRate: z.number(),
-  purchaseRate: z.number(),
-  cartToPurchaseRate: z.number(),
-  convertedOrderVisits: count,
-});
-
-export const commerceProductsResponseSchema = z.object({
-  ...pageShape,
-  data: z.array(commerceProductSchema),
-});
-
-export const commerceBasketsResponseSchema = z.object({
-  sizes: z.array(z.object({ size: z.string(), orders: count, revenue: money })),
-  pairs: z.array(
-    z.object({
-      productId: z.string(),
-      name: z.string(),
-      pairedProductId: z.string(),
-      pairedName: z.string(),
-      orders: count,
-    }),
-  ),
-});
-
-export const commerceCheckoutResponseSchema = z.object({
-  stages: z.array(
-    z.object({
-      stage: z.enum(COMMERCE_STAGES),
-      sessions: count.describe('Compatibility alias for attempts.'),
-      attempts: count.describe('Observed identified attempts; no implied earlier stages.'),
-      rate: z.number(),
-      stepRate: z.number(),
-    }),
-  ),
-  pendingCarts: count,
-  pendingCheckouts: count,
-  completedCheckouts: count,
-  unlinkedEvents: count,
-  unclassifiedEvents: count,
-  windowHours: count,
-  abandonedCarts: count,
-  abandonedCartValue: money,
-  abandonedCheckouts: count,
-  abandonedCheckoutValue: money,
-  orders: count,
-  revenue: money,
-  medianSecondsToOrder: z.number(),
-  medianSecondsCheckoutToOrder: z.number(),
-});
-
-export const commerceAbandonedResponseSchema = z.object({
-  ...pageShape,
-  data: z.array(
-    z.object({
-      sessionId: z.string(),
-      stage: z.enum(['cart', 'checkout']),
-      lastAt: z.string(),
-      cartId: z.string(),
-      checkoutId: z.string(),
-      eventName: z.string(),
-      lines: count,
-      units: count,
-      value: money,
-      country: z.string(),
-      device: z.string(),
+      price: money.nullable(),
+      total: money.nullable(),
     }),
   ),
 });
@@ -269,13 +168,13 @@ export const commerceCustomersResponseSchema = z.object({
   repeatBuyers: count,
   repeatRate: z.number(),
   orders: count,
-  revenue: money,
-  revenuePerBuyer: money,
+  revenue: money.nullable(),
+  revenuePerBuyer: money.nullable(),
   ordersPerBuyer: z.number(),
-  newRevenue: money,
-  returningRevenue: money,
-  medianSecondsToFirstOrder: z.number(),
-  medianVisitsToFirstOrder: z.number(),
+  newRevenue: money.nullable(),
+  returningRevenue: money.nullable(),
+  medianSecondsToFirstOrder: z.number().nullable(),
+  medianVisitsToFirstOrder: z.number().nullable(),
 });
 
 export const commerceBuyersResponseSchema = z.object({
@@ -284,10 +183,10 @@ export const commerceBuyersResponseSchema = z.object({
     z.object({
       buyerId: z.string(),
       distinctId: z.string(),
-      sessionId: z.string(),
+      sessionId: z.string().nullable(),
       sessions: count,
       orders: count,
-      revenue: money,
+      revenue: money.nullable(),
       firstOrderAt: z.string(),
       lastOrderAt: z.string(),
       isNew: z.boolean(),
@@ -295,12 +194,14 @@ export const commerceBuyersResponseSchema = z.object({
   ),
 });
 
-const attributionRows = z.array(z.object({ name: z.string(), revenue: money, orders: count }));
+const attributionRows = z.array(
+  z.object({ name: z.string(), revenue: money.nullable(), orders: count }),
+);
 
 export const commerceAttributionResponseSchema = z.object({
   model: z.enum(COMMERCE_ATTRIBUTION_MODELS),
   lookbackDays: z.number(),
-  total: z.object({ revenue: money, orders: count }),
+  total: z.object({ revenue: money.nullable(), orders: count }),
   channel: attributionRows,
   referrer: attributionRows,
   paidAds: attributionRows,
@@ -321,9 +222,6 @@ export interface CommerceRequestParameters {
   timezone?: string;
   currency: string;
   market?: string;
-  productId?: string;
-  category?: string;
-  windowHours?: number;
 }
 
 /**
@@ -334,9 +232,6 @@ export function getCommerceRequestParameters(
   query: {
     currency?: string;
     market?: string;
-    productId?: string;
-    category?: string;
-    windowHours?: number;
   },
   filters: { startDate?: Date; endDate?: Date; unit?: string; timezone?: string },
 ): CommerceRequestParameters {
@@ -347,8 +242,5 @@ export function getCommerceRequestParameters(
     timezone: filters.timezone,
     currency: query.currency?.toUpperCase(),
     market: query.market || undefined,
-    productId: query.productId || undefined,
-    category: query.category || undefined,
-    windowHours: query.windowHours,
   };
 }

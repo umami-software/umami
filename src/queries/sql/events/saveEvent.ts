@@ -1,7 +1,6 @@
-import { v5 } from 'uuid';
 import type { Prisma } from '@/generated/prisma/client';
 import clickhouse from '@/lib/clickhouse';
-import { commerceSchema } from '@/lib/commerce';
+import { commerceSchema, getCommerceEventId } from '@/lib/commerce';
 import { EVENT_TYPE, FIELD_LENGTH } from '@/lib/constants';
 import { uuid } from '@/lib/crypto';
 import { CLICKHOUSE, PRISMA, runQuery } from '@/lib/db';
@@ -76,9 +75,7 @@ export async function saveEvent(args: SaveEventArgs) {
   }
   const { commerce: rawCommerce, ...properties } = args.eventData;
   const commerce = commerceSchema.parse(rawCommerce);
-  const eventId = commerce.orderId
-    ? v5(JSON.stringify(['umami:payment', args.websiteId, commerce.orderId]), v5.URL)
-    : uuid();
+  const eventId = getCommerceEventId(args.websiteId, commerce);
   const eventArgs = {
     ...args,
     createdAt: args.createdAt ?? new Date(),
@@ -97,9 +94,8 @@ export async function saveEvent(args: SaveEventArgs) {
   return runQuery({
     [PRISMA]: () =>
       prisma.transaction(async (tx: Prisma.TransactionClient) => {
-        if (await relationalQuery(eventArgs, tx, eventId)) {
-          await saveCommerceEvent(context, tx);
-        }
+        await relationalQuery(eventArgs, tx, eventId);
+        await saveCommerceEvent(context, tx);
       }),
     [CLICKHOUSE]: async () => {
       // Skip completed payment retries. MergeTree cannot guarantee exactly-once
@@ -109,7 +105,10 @@ export async function saveEvent(args: SaveEventArgs) {
           'select commerce_event_id from commerce_event final where website_id = {websiteId:UUID} and commerce_event_id = {eventId:UUID} limit 1',
           { websiteId: args.websiteId, eventId },
         );
-        if (existing.length) return;
+        if (existing.length) {
+          await saveCommerceEvent(context);
+          return;
+        }
       }
       // Commerce-associated events go directly to ClickHouse so failures are surfaced.
       await clickhouseQuery(eventArgs, eventId);

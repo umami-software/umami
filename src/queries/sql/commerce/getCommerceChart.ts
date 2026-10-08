@@ -6,7 +6,7 @@ import {
   type CommerceParameters,
   getClickhouseCommerceQuery,
   getRelationalCommerceQuery,
-  toNumbers,
+  toNullableNumbers,
 } from './commerceQuery';
 
 const FUNCTION_NAME = 'getCommerceChart';
@@ -27,7 +27,7 @@ export async function getCommerceChart(
     [CLICKHOUSE]: () => clickhouseQuery(...args),
   });
 
-  return { chart: (rows || []).map(row => toNumbers(row, ['y', 'count'])) };
+  return { chart: (rows || []).map(row => toNullableNumbers(row, ['y', 'count'])) };
 }
 
 async function relationalQuery(
@@ -45,7 +45,7 @@ async function relationalQuery(
     select
       orders.event_name as "x",
       ${getDateSQL('orders.created_at', unit, timezone)} as "t",
-      sum(orders.value) as "y",
+      case when count(orders.value) = count(*) then sum(orders.value) else NULL end as "y",
       count(*) as "count"
     from orders
     group by 1, 2
@@ -71,7 +71,7 @@ async function clickhouseQuery(
     select
       orders.event_name as x,
       ${getDateSQL('orders.created_at', unit, timezone)} as t,
-      sum(orders.value) as y,
+      case when count(orders.value) = count(*) then sum(orders.value) else NULL end as y,
       count() as count
     from orders
     group by x, t

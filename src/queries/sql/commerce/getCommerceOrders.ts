@@ -7,7 +7,7 @@ import {
   getClickhouseCommerceQuery,
   getRelationalCommerceQuery,
   getSessionAttributesCte,
-  toNumbers,
+  toNullableNumbers,
 } from './commerceQuery';
 
 const FUNCTION_NAME = 'getCommerceOrders';
@@ -25,22 +25,13 @@ export interface CommerceOrder {
   shipping: number;
   tax: number;
   total: number;
-  lines: number;
-  units: number;
   country: string;
   device: string;
   browser: string;
   os: string;
 }
 
-const NUMBER_FIELDS: (keyof CommerceOrder)[] = [
-  'subtotal',
-  'shipping',
-  'tax',
-  'total',
-  'lines',
-  'units',
-];
+const NUMBER_FIELDS: (keyof CommerceOrder)[] = ['subtotal', 'shipping', 'tax', 'total'];
 
 export async function getCommerceOrders(
   ...args: [websiteId: string, parameters: CommerceParameters, filters: QueryFilters]
@@ -50,7 +41,10 @@ export async function getCommerceOrders(
     [CLICKHOUSE]: () => clickhouseQuery(...args),
   });
 
-  return { ...result, data: (result?.data || []).map(row => toNumbers(row, NUMBER_FIELDS)) };
+  return {
+    ...result,
+    data: (result?.data || []).map(row => toNullableNumbers(row, NUMBER_FIELDS)),
+  };
 }
 
 function getPageFilters(filters: QueryFilters) {
@@ -83,8 +77,6 @@ async function relationalQuery(
       orders.shipping as "shipping",
       orders.tax as "tax",
       orders.total as "total",
-      orders.lines as "lines",
-      orders.units as "units",
       coalesce(sa.country, '') as "country",
       coalesce(sa.device, '') as "device",
       coalesce(sa.browser, '') as "browser",
@@ -125,8 +117,6 @@ async function clickhouseQuery(
       orders.shipping as shipping,
       orders.tax as tax,
       orders.total as total,
-      orders.lines as lines,
-      orders.units as units,
       sa.country as country,
       sa.device as device,
       sa.browser as browser,

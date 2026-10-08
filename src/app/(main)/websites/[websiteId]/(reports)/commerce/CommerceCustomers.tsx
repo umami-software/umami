@@ -150,7 +150,12 @@ export function CustomersMetricsBar({
   return (
     <MetricsBar>
       {metrics.map(({ label, value, format }) => (
-        <MetricCard key={label} label={label} value={value} formatValue={format} />
+        <MetricCard
+          key={label}
+          label={label}
+          value={value}
+          formatValue={value == null ? () => '—' : format}
+        />
       ))}
     </MetricsBar>
   );
@@ -167,16 +172,22 @@ function BuyersTable({ websiteId, scope }: { websiteId: string; scope: CommerceS
       {({ data }) => (
         <DataTable data={data}>
           <DataColumn id="buyer" label={t('commerce.buyer')} width="minmax(200px, 2fr)">
-            {(row: CommerceBuyer) => (
-              <Link href={updateParams({ session: row.sessionId })} scroll={false}>
-                <Row alignItems="center" gap="2" minWidth="0">
-                  <Avatar seed={row.sessionId} size={24} />
-                  <Text truncate title={row.buyerId}>
-                    {row.distinctId || t(labels.session)}
-                  </Text>
-                </Row>
-              </Link>
-            )}
+            {(row: CommerceBuyer) =>
+              row.sessionId ? (
+                <Link href={updateParams({ session: row.sessionId })} scroll={false}>
+                  <Row alignItems="center" gap="2" minWidth="0">
+                    <Avatar seed={row.sessionId} size={24} />
+                    <Text truncate title={row.buyerId}>
+                      {row.distinctId || t(labels.session)}
+                    </Text>
+                  </Row>
+                </Link>
+              ) : (
+                <Text truncate title={row.buyerId}>
+                  {row.buyerId}
+                </Text>
+              )
+            }
           </DataColumn>
           <DataColumn id="isNew" label={t(labels.type)} width="120px">
             {(row: CommerceBuyer) => (

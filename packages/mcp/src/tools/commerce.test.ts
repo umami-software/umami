@@ -25,17 +25,6 @@ function route(url: URL): unknown {
       return { chart: [{ x: 'bought-online', t: '2026-09-10', y: 82, count: 1 }] };
     case 'metrics':
       return [{ name: url.searchParams.get('type'), revenue: 82, orders: 1, buyers: 1 }];
-    case 'products':
-      return {
-        data: [{ productId: 'shirt', name: 'Shirt', revenue: 75, units: 3, orders: 2 }],
-        count: 1,
-        page: 1,
-        pageSize: 10,
-      };
-    case 'baskets':
-      return { sizes: [], pairs: [{ productId: 'shirt', pairedProductId: 'hat', orders: 1 }] };
-    case 'checkout':
-      return { stages: [], abandonedCarts: 1 };
     case 'customers':
       return { buyers: 2, newBuyers: 1 };
     case 'attribution':
@@ -87,8 +76,6 @@ describe('commerce tools', () => {
       chart: [{ y: 82 }],
       byChannel: [{ name: 'channel' }],
       byMarket: [{ name: 'market' }],
-      topProducts: [{ productId: 'shirt' }],
-      checkout: { abandonedCarts: 1 },
       customers: { newBuyers: 1 },
       attribution: { model: 'last-click' },
     });
@@ -99,47 +86,6 @@ describe('commerce tools', () => {
       expect(url.searchParams.get('currency')).toBe('EUR');
       expect(url.searchParams.get('startAt')).toBe(String(Date.parse('2026-09-01')));
     }
-  });
-
-  test('get_commerce_products describes one product', async () => {
-    const { client, calls } = await connect(WorkspaceClient);
-    const result = await client.callTool({
-      name: 'get_commerce_products',
-      arguments: {
-        websiteId: WEBSITE_ID,
-        startAt: '2026-09-01',
-        currency: 'usd',
-        productId: 'shirt',
-      },
-    });
-
-    expect(result.isError).toBeFalsy();
-    expect(result.structuredContent).toMatchObject({
-      currency: 'USD',
-      productId: 'shirt',
-      boughtWith: [{ pairedProductId: 'hat' }],
-    });
-    expect(
-      calls
-        .filter(url => !url.pathname.endsWith('/currencies'))
-        .every(url => url.searchParams.get('productId') === 'shirt'),
-    ).toBe(true);
-  });
-
-  test('get_commerce_products ranks products', async () => {
-    const { client, calls } = await connect(WorkspaceClient);
-    const result = await client.callTool({
-      name: 'get_commerce_products',
-      arguments: { websiteId: WEBSITE_ID, startAt: '2026-09-01', groupBy: 'category', limit: 5 },
-    });
-
-    expect(result.structuredContent).toMatchObject({
-      groupBy: 'category',
-      products: [{ productId: 'shirt' }],
-    });
-    const products = calls.find(url => url.pathname.endsWith('/products'));
-    expect(products?.searchParams.get('groupBy')).toBe('category');
-    expect(products?.searchParams.get('pageSize')).toBe('5');
   });
 
   test('explains when the API client predates commerce reports', async () => {

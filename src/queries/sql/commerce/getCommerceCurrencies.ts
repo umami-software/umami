@@ -12,7 +12,7 @@ export interface CommerceCurrency {
   orders: number;
   /** Revenue from completed payments. */
   revenue: number;
-  /** All commerce events, including carts and checkouts. */
+  /** Recorded orders and refunds. */
   events: number;
 }
 
@@ -38,12 +38,13 @@ async function relationalQuery(websiteId: string, filters: QueryFilters) {
     `
     select
       commerce_event.currency as "currency",
-      count(*) filter (where commerce_event.order_id is not null) as "orders",
-      coalesce(sum(commerce_event.total) filter (where commerce_event.order_id is not null), 0) as "revenue",
+      count(*) filter (where commerce_event.order_id is not null and commerce_event.kind = 'order') as "orders",
+      coalesce(sum(commerce_event.total) filter (where commerce_event.order_id is not null and commerce_event.kind = 'order'), 0) as "revenue",
       count(*) as "events"
     from commerce_event
     where commerce_event.website_id = {{websiteId::uuid}}
       and commerce_event.created_at between {{startDate}} and {{endDate}}
+      and commerce_event.kind in ('order', 'refund')
     group by 1
     order by 2 desc, 4 desc, 1
     `,
@@ -59,12 +60,13 @@ async function clickhouseQuery(websiteId: string, filters: QueryFilters) {
     `
     select
       currency,
-      countIf(order_id != '') as orders,
-      sumIf(total, order_id != '') as revenue,
+      countIf(order_id != '' and kind = 'order') as orders,
+      sumIf(total, order_id != '' and kind = 'order') as revenue,
       count() as events
     from commerce_event final
     where website_id = {websiteId:UUID}
       and created_at between {startDate:DateTime64} and {endDate:DateTime64}
+      and kind in ('order', 'refund')
     group by currency
     order by orders desc, events desc, currency
     `,

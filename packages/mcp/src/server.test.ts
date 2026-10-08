@@ -453,7 +453,6 @@ describe('createUmamiMcpServer', () => {
         'run_attribution',
         'get_revenue',
         'get_commerce',
-        'get_commerce_products',
       ].sort(),
     );
 

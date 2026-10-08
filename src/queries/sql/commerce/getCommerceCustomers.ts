@@ -8,13 +8,14 @@ import {
   getClickhouseCommerceQuery,
   getOrderBuyersCte,
   getRelationalCommerceQuery,
+  toNullableNumbers,
   toNumber,
   toNumbers,
 } from './commerceQuery';
 
 /*
- * A buyer is the visitor's distinct ID when it has been identified, otherwise the session.
- * A buyer is new when their first-ever completed payment (any currency, unfiltered)
+ * A buyer is the source customer, then an identified browser visitor or session.
+ * A buyer is new when their first-ever completed order (any currency, unfiltered)
  * falls inside the selected range; otherwise they are returning.
  * Time to purchase is measured within the session of the buyer's first order in range.
  */
@@ -28,22 +29,22 @@ export interface CommerceCustomers {
   repeatBuyers: number;
   repeatRate: number;
   orders: number;
-  revenue: number;
-  revenuePerBuyer: number;
+  revenue: number | null;
+  revenuePerBuyer: number | null;
   ordersPerBuyer: number;
-  newRevenue: number;
-  returningRevenue: number;
-  medianSecondsToFirstOrder: number;
-  medianVisitsToFirstOrder: number;
+  newRevenue: number | null;
+  returningRevenue: number | null;
+  medianSecondsToFirstOrder: number | null;
+  medianVisitsToFirstOrder: number | null;
 }
 
 export interface CommerceBuyer {
   buyerId: string;
   distinctId: string;
-  sessionId: string;
+  sessionId: string | null;
   sessions: number;
   orders: number;
-  revenue: number;
+  revenue: number | null;
   firstOrderAt: string;
   lastOrderAt: string;
   isNew: boolean;
@@ -64,8 +65,8 @@ export function deriveCustomers(row: Record<string, unknown>): CommerceCustomers
   const buyers = toNumber(row.buyers);
   const newBuyers = toNumber(row.newBuyers);
   const orders = toNumber(row.orders);
-  const revenue = toNumber(row.revenue);
-  const newRevenue = toNumber(row.newRevenue);
+  const revenue = row.revenue === null ? null : toNumber(row.revenue);
+  const newRevenue = row.newRevenue === null ? null : toNumber(row.newRevenue);
   const repeatBuyers = toNumber(row.repeatBuyers);
 
   return {
@@ -76,12 +77,14 @@ export function deriveCustomers(row: Record<string, unknown>): CommerceCustomers
     repeatRate: divide(repeatBuyers, buyers),
     orders,
     revenue,
-    revenuePerBuyer: divide(revenue, buyers),
+    revenuePerBuyer: revenue == null ? null : divide(revenue, buyers),
     ordersPerBuyer: divide(orders, buyers),
     newRevenue,
-    returningRevenue: revenue - newRevenue,
-    medianSecondsToFirstOrder: toNumber(row.medianSecondsToFirstOrder),
-    medianVisitsToFirstOrder: toNumber(row.medianVisitsToFirstOrder),
+    returningRevenue: revenue == null || newRevenue == null ? null : revenue - newRevenue,
+    medianSecondsToFirstOrder:
+      row.medianSecondsToFirstOrder == null ? null : toNumber(row.medianSecondsToFirstOrder),
+    medianVisitsToFirstOrder:
+      row.medianVisitsToFirstOrder == null ? null : toNumber(row.medianVisitsToFirstOrder),
   };
 }
 
@@ -90,7 +93,7 @@ function getRelationalBuyerCtes() {
     ${getOrderBuyersCte('prisma')},
     buyer_history as (
       select
-        coalesce(history_links.distinct_id, history.session_id::text) as buyer_id,
+        case when history.customer_id is not null then concat('commerce:', length(coalesce(history.source, '')), ':', coalesce(history.source, ''), ':', history.customer_id) else coalesce(history_links.distinct_id, history.session_id::text) end as buyer_id,
         min(history.created_at) as first_order_at
       from commerce_event history
       left join (
@@ -101,14 +104,14 @@ function getRelationalBuyerCtes() {
             select commerce_event.session_id
             from commerce_event
             where commerce_event.website_id = {{websiteId::uuid}}
-              and commerce_event.order_id is not null
+              and commerce_event.order_id is not null and commerce_event.kind = 'order'
               and commerce_event.created_at <= {{endDate}}
           )
         group by session_link.session_id
       ) history_links
         on history_links.session_id = history.session_id
       where history.website_id = {{websiteId::uuid}}
-        and history.order_id is not null
+        and history.order_id is not null and history.kind = 'order'
         and history.created_at <= {{endDate}}
       group by 1
     ),
@@ -117,7 +120,7 @@ function getRelationalBuyerCtes() {
         order_buyers.buyer_id,
         max(order_buyers.distinct_id) as distinct_id,
         count(*) as orders,
-        sum(orders.value) as revenue,
+        case when count(orders.value) = count(*) then sum(orders.value) end as revenue,
         count(distinct orders.session_id) as sessions,
         min(orders.created_at) as first_at,
         max(orders.created_at) as last_at,
@@ -125,6 +128,7 @@ function getRelationalBuyerCtes() {
         (array_agg(orders.session_id::text order by orders.created_at))[1] as first_session_id
       from orders
       join order_buyers on order_buyers.commerce_event_id = orders.commerce_event_id
+      where order_buyers.buyer_id is not null
       group by order_buyers.buyer_id
     ),
     buyers as (
@@ -166,8 +170,8 @@ async function relationalQuery(
       coalesce(sum(buyers.is_new), 0) as "newBuyers",
       coalesce(sum(case when buyers.orders > 1 then 1 else 0 end), 0) as "repeatBuyers",
       coalesce(sum(buyers.orders), 0) as "orders",
-      coalesce(sum(buyers.revenue), 0) as "revenue",
-      coalesce(sum(case when buyers.is_new = 1 then buyers.revenue else 0 end), 0) as "newRevenue",
+      case when count(buyers.revenue) = count(*) then coalesce(sum(buyers.revenue), 0) end as "revenue",
+      case when count(case when buyers.is_new = 1 and buyers.revenue is null then 1 end) = 0 then coalesce(sum(case when buyers.is_new = 1 then buyers.revenue else 0 end), 0) end as "newRevenue",
       (select percentile_cont(0.5) within group (order by seconds) from first_purchase) as "medianSecondsToFirstOrder",
       (select percentile_cont(0.5) within group (order by visits) from first_purchase) as "medianVisitsToFirstOrder"
     from buyers
@@ -182,13 +186,13 @@ function getClickhouseBuyerCtes() {
     ${getOrderBuyersCte('clickhouse')},
     buyer_history as (
       select
-        if(history_links.distinct_id = '', toString(history.session_id), history_links.distinct_id) as buyer_id,
+        if(history.customer_id != '', concat('commerce:', toString(length(history.source)), ':', history.source, ':', history.customer_id), if(history_links.distinct_id = '', toString(history.session_id), history_links.distinct_id)) as buyer_id,
         min(history.created_at) as first_order_at
       from (
-        select session_id, created_at
+        select session_id, created_at, source, customer_id
         from commerce_event final
         where website_id = {websiteId:UUID}
-          and order_id != ''
+          and order_id != '' and kind = 'order'
           and created_at <= {endDate:DateTime64}
       ) as history
       left join (
@@ -199,7 +203,7 @@ function getClickhouseBuyerCtes() {
             select session_id
             from commerce_event final
             where website_id = {websiteId:UUID}
-              and order_id != ''
+              and order_id != '' and kind = 'order'
               and created_at <= {endDate:DateTime64}
           )
         group by session_id
@@ -212,7 +216,7 @@ function getClickhouseBuyerCtes() {
         order_buyers.buyer_id as buyer_id,
         max(order_buyers.distinct_id) as distinct_id,
         count() as order_count,
-        sum(orders.value) as buyer_revenue,
+        if(count(orders.value) = count(), sum(orders.value), NULL) as buyer_revenue,
         uniqExact(orders.session_id) as sessions,
         min(orders.created_at) as first_at,
         max(orders.created_at) as last_at,
@@ -220,6 +224,7 @@ function getClickhouseBuyerCtes() {
         argMin(orders.session_id, orders.created_at) as first_session_id
       from orders
       inner join order_buyers on order_buyers.commerce_event_id = orders.commerce_event_id
+      where order_buyers.buyer_id is not null
       group by order_buyers.buyer_id
     ),
     buyers as (
@@ -265,15 +270,15 @@ async function clickhouseQuery(
       sum(b.is_new) as newBuyers,
       countIf(b.order_count > 1) as repeatBuyers,
       sum(b.order_count) as orders,
-      sum(b.buyer_revenue) as revenue,
-      sumIf(b.buyer_revenue, b.is_new = 1) as newRevenue,
+      if(count(b.buyer_revenue) = count(), sum(b.buyer_revenue), NULL) as revenue,
+      if(countIf(b.is_new = 1 and isNull(b.buyer_revenue)) = 0, sumIf(b.buyer_revenue, b.is_new = 1), NULL) as newRevenue,
       any(fp.median_seconds) as medianSecondsToFirstOrder,
       any(fp.median_visits) as medianVisitsToFirstOrder
     from buyers as b
     cross join (
       select
-        quantileExactInclusive(0.5)(first_purchase.seconds) as median_seconds,
-        quantileExactInclusive(0.5)(first_purchase.visits) as median_visits
+        if(count() > 0, quantileExactInclusive(0.5)(first_purchase.seconds), NULL) as median_seconds,
+        if(count() > 0, quantileExactInclusive(0.5)(first_purchase.visits), NULL) as median_visits
       from first_purchase
     ) as fp
     `,
@@ -294,7 +299,7 @@ export async function getCommerceBuyers(
   return {
     ...result,
     data: (result?.data || []).map((row: any) => ({
-      ...toNumbers(row, ['sessions', 'orders', 'revenue']),
+      ...toNullableNumbers(toNumbers(row, ['sessions', 'orders']), ['revenue']),
       distinctId: row.distinctId ?? '',
       isNew: toNumber(row.isNew) === 1,
     })),

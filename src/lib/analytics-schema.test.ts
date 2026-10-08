@@ -43,31 +43,16 @@ describe('commerce GET schemas', () => {
     expect(commerceStatsQuerySchema.safeParse({ ...range, currency: 'EURO' }).success).toBe(false);
   });
 
-  test('restricts dimensions, groupings and models to known values', async () => {
-    const {
-      commerceAttributionQuerySchema,
-      commerceMetricsQuerySchema,
-      commerceProductsQuerySchema,
-    } = await import('./analytics-schema');
+  test('restricts dimensions and models to known values', async () => {
+    const { commerceAttributionQuerySchema, commerceMetricsQuerySchema } = await import(
+      './analytics-schema'
+    );
     const base = { ...range, currency: 'USD' };
 
     expect(commerceMetricsQuerySchema.safeParse({ ...base, type: 'channel' }).success).toBe(true);
     expect(commerceMetricsQuerySchema.safeParse({ ...base, type: 'url_path' }).success).toBe(false);
-    expect(commerceProductsQuerySchema.safeParse({ ...base, sort: 'name; drop' }).success).toBe(
-      false,
-    );
-    expect(
-      commerceProductsQuerySchema.parse({ ...base, groupBy: 'category', page: '2' }),
-    ).toMatchObject({ groupBy: 'category', page: 2 });
     expect(commerceAttributionQuerySchema.safeParse({ ...base, model: 'linear' }).success).toBe(
       false,
     );
-  });
-
-  test('breakdown accepts an optional revenue currency', async () => {
-    const parsed = breakdownQuerySchema.parse({ ...range, fields: '["path"]', currency: 'gbp' });
-
-    expect(parsed.currency).toBe('GBP');
-    expect(breakdownQuerySchema.parse({ ...range, fields: '["path"]' }).currency).toBeUndefined();
   });
 });

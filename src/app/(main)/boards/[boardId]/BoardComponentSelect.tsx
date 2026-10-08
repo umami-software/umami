@@ -1,6 +1,6 @@
 import { Button, Column, ListItem, Row, Select, Text, TextField } from '@umami/react-zen';
 import { useEffect, useMemo, useState } from 'react';
-import { useApi, useFlag, useMessages } from '@/components/hooks';
+import { useApi, useMessages } from '@/components/hooks';
 import { useModified } from '@/components/hooks/useModified';
 import { LinkSelect } from '@/components/input/LinkSelect';
 import { PixelSelect } from '@/components/input/PixelSelect';
@@ -18,7 +18,6 @@ import {
   type ComponentDefinition,
   type ConfigField,
   getComponentDefinitions,
-  isCommerceComponent,
 } from '../boardComponentRegistry';
 import { BoardComponentRenderer } from './BoardComponentRenderer';
 
@@ -29,7 +28,6 @@ const COMPONENT_GROUP_ORDER: string[] = [
   'Realtime',
   'Growth',
   'Revenue',
-  'Commerce',
   'Content',
 ];
 
@@ -52,7 +50,6 @@ export function BoardComponentSelect({
 }) {
   const { t, labels, messages } = useMessages();
   const { get, useQuery } = useApi();
-  const commerceEnabled = useFlag('commerce');
   const initialEntity = getComponentEntity(initialConfig);
   const [selectedDef, setSelectedDef] = useState<ComponentDefinition | null>(null);
   const [configValues, setConfigValues] = useState<Record<string, any>>({});
@@ -178,12 +175,9 @@ export function BoardComponentSelect({
 
       const entries = await Promise.all(
         types.map(async type => {
-          const response = await get(
-            `/websites/${resolvedEntityId}/${type === 'commerce' ? 'commerce/reports' : `${type}s`}`,
-            {
-              pageSize: 1000,
-            },
-          );
+          const response = await get(`/websites/${resolvedEntityId}/${type}s`, {
+            pageSize: 1000,
+          });
 
           return [type, response.data] as const;
         }),
@@ -267,11 +261,9 @@ export function BoardComponentSelect({
     () =>
       allDefinitions.filter(
         def =>
-          def.type === selectedDef?.type ||
-          (isBoardComponentSupported(def.type, activeEntityType) &&
-            (commerceEnabled || !isCommerceComponent(def.type))),
+          def.type === selectedDef?.type || isBoardComponentSupported(def.type, activeEntityType),
       ),
-    [activeEntityType, allDefinitions, selectedDef?.type, commerceEnabled],
+    [allDefinitions, selectedDef?.type, activeEntityType],
   );
   const groupedDefinitions = useMemo(() => {
     const order = new Map(COMPONENT_GROUP_ORDER.map((group, index) => [group, index]));

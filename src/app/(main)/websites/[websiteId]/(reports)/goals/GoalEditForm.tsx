@@ -13,7 +13,6 @@ import {
 import { useGoalDefinitionQuery, useMessages, useMobile, useUpdateQuery } from '@/components/hooks';
 import { ActionSelect } from '@/components/input/ActionSelect';
 import { LookupField } from '@/components/input/LookupField';
-import { ProductLookupField } from '@/components/input/ProductLookupField';
 
 export function GoalEditForm({
   id,
@@ -70,44 +69,40 @@ export function GoalEditForm({
               {isMobile ? (
                 <Column gap style={{ minWidth: 0 }}>
                   <FormField name="parameters.type" rules={{ required: t(labels.required) }}>
-                    <ActionSelect allowOrder />
+                    <ActionSelect />
                   </FormField>
                   <FormField name="parameters.value" rules={{ required: t(labels.required) }}>
-                    {({ field }) =>
-                      type === 'order' ? (
-                        <ProductLookupField websiteId={websiteId} {...field} />
-                      ) : (
+                    {({ field }) => {
+                      return (
                         <LookupField
                           websiteId={websiteId}
                           type={type}
                           allowCustomValue
                           {...field}
                         />
-                      )
-                    }
+                      );
+                    }}
                   </FormField>
                 </Column>
               ) : (
                 <Grid columns="260px 1fr" gap>
                   <Column style={{ minWidth: 0 }}>
                     <FormField name="parameters.type" rules={{ required: t(labels.required) }}>
-                      <ActionSelect allowOrder />
+                      <ActionSelect />
                     </FormField>
                   </Column>
                   <Column style={{ minWidth: 0 }}>
                     <FormField name="parameters.value" rules={{ required: t(labels.required) }}>
-                      {({ field }) =>
-                        type === 'order' ? (
-                          <ProductLookupField websiteId={websiteId} {...field} />
-                        ) : (
+                      {({ field }) => {
+                        return (
                           <LookupField
                             websiteId={websiteId}
                             type={type}
                             allowCustomValue
                             {...field}
                           />
-                        )
-                      }
+                        );
+                      }}
                     </FormField>
                   </Column>
                 </Grid>

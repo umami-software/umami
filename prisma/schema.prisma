@@ -38,27 +38,27 @@ model User {
 }
 
 model CommerceEvent {
-  id         String   @id @map("commerce_event_id") @db.Uuid
-  websiteId  String   @map("website_id") @db.Uuid
-  sessionId  String   @map("session_id") @db.Uuid
-  visitId    String   @map("visit_id") @db.Uuid
-  eventName  String   @map("event_name") @db.VarChar(50)
-  currency   String   @db.Char(3)
-  market     String?  @db.VarChar(200)
-  cartId     String?  @map("cart_id") @db.VarChar(200)
-  checkoutId String?  @map("checkout_id") @db.VarChar(200)
-  orderId    String?  @map("order_id") @db.VarChar(200)
-  subtotal   Decimal  @db.Decimal(19, 4)
-  shipping   Decimal  @db.Decimal(19, 4)
-  tax        Decimal  @db.Decimal(19, 4)
-  total      Decimal  @db.Decimal(19, 4)
-  createdAt  DateTime @map("created_at") @db.Timestamptz(6)
-  updatedAt  DateTime @map("updated_at") @db.Timestamptz(6)
+  id          String   @id @map("commerce_event_id") @db.Uuid
+  websiteId   String   @map("website_id") @db.Uuid
+  sessionId   String?  @map("session_id") @db.Uuid
+  visitId     String?  @map("visit_id") @db.Uuid
+  eventName   String   @map("event_name") @db.VarChar(50)
+  currency    String   @db.Char(3)
+  market      String?  @db.VarChar(200)
+  orderId     String?  @map("order_id") @db.VarChar(200)
+  kind        String   @default("order") @db.VarChar(20)
+  source      String?  @db.VarChar(200)
+  referenceId String?  @map("reference_id") @db.VarChar(200)
+  customerId  String?  @map("customer_id") @db.VarChar(200)
+  subtotal    Decimal? @db.Decimal(19, 4)
+  shipping    Decimal? @db.Decimal(19, 4)
+  tax         Decimal? @db.Decimal(19, 4)
+  total       Decimal  @db.Decimal(19, 4)
+  createdAt   DateTime @map("created_at") @db.Timestamptz(6)
+  updatedAt   DateTime @map("updated_at") @db.Timestamptz(6)
 
   @@index([websiteId, createdAt, currency])
   @@index([websiteId, orderId])
-  @@index([websiteId, checkoutId])
-  @@index([websiteId, cartId])
   @@map("commerce_event")
 }
 
@@ -66,13 +66,13 @@ model CommerceItem {
   commerceEventId String   @map("commerce_event_id") @db.Uuid
   itemIndex       Int      @map("item_index")
   websiteId       String   @map("website_id") @db.Uuid
+  lineId          String?  @map("line_id") @db.VarChar(200)
   productId       String   @map("product_id") @db.VarChar(200)
   name            String?  @db.VarChar(200)
   variant         String?  @db.VarChar(200)
   category        String?  @db.VarChar(200)
-  price           Decimal  @db.Decimal(19, 4)
-  quantity        Int
-  total           Decimal  @db.Decimal(19, 4)
+  price           Decimal? @db.Decimal(19, 4)
+  total           Decimal? @db.Decimal(19, 4)
   createdAt       DateTime @map("created_at") @db.Timestamptz(6)
 
   @@id([commerceEventId, itemIndex])

@@ -215,21 +215,6 @@ export const MCP_DISPATCH_ROUTES: readonly DispatchRoute[] = [
   },
   {
     method: 'GET',
-    path: '/api/websites/{websiteId}/commerce/products',
-    load: () => import('@/app/api/websites/[websiteId]/commerce/products/route'),
-  },
-  {
-    method: 'GET',
-    path: '/api/websites/{websiteId}/commerce/baskets',
-    load: () => import('@/app/api/websites/[websiteId]/commerce/baskets/route'),
-  },
-  {
-    method: 'GET',
-    path: '/api/websites/{websiteId}/commerce/checkout',
-    load: () => import('@/app/api/websites/[websiteId]/commerce/checkout/route'),
-  },
-  {
-    method: 'GET',
     path: '/api/websites/{websiteId}/commerce/customers',
     load: () => import('@/app/api/websites/[websiteId]/commerce/customers/route'),
   },

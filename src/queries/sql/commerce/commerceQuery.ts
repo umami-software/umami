@@ -1,5 +1,4 @@
 import clickhouse from '@/lib/clickhouse';
-import { commerceStageSQL } from '@/lib/commerce-events';
 import { COMMERCE_LOOKBACK_DAYS } from '@/lib/commerce-reports';
 import {
   EMAIL_DOMAINS,
@@ -20,11 +19,10 @@ import type { QueryFilters } from '@/lib/types';
  * Every commerce query builds on the CTEs defined here so the storage rules in
  * docs/commerce.md are applied in exactly one place:
  *
- * - Only completed payments (an order ID) count as orders and revenue.
+ * - Only order facts count as orders and sales; refunds are queried independently.
  * - One currency is reported at a time; amounts are never summed across currencies.
- * - ClickHouse parents and items are read with FINAL and joined on
- *   website_id, commerce_event_id and snapshot_id, so superseded or orphaned
- *   item snapshots are never aggregated.
+ * - ClickHouse orders are read with FINAL so retries and revisions count once.
+ * - Order analytics use source totals and never aggregate optional item details.
  * - Website filters, segments and cohorts select sessions, as in the revenue report.
  */
 
@@ -37,17 +35,11 @@ export interface CommerceParameters {
   timezone?: string;
   currency: string;
   market?: string;
-  productId?: string;
-  category?: string;
   compare?: string;
-  windowHours?: number;
 }
 
-export type CommerceStage = 'cart' | 'checkout' | 'order';
-
 export interface CommerceQueryOptions {
-  /** Include cart and checkout events, not only completed payments. */
-  allStages?: boolean;
+  kind?: 'order' | 'refund';
 }
 
 export function getLookbackDate(startDate: Date) {
@@ -62,6 +54,16 @@ export function toNumber(value: unknown): number {
   const number = Number(typeof value === 'object' ? String(value) : value);
 
   return Number.isFinite(number) ? number : 0;
+}
+
+/** Optional detail is unknown when absent, rather than zero. */
+export function toNullableNumbers<T extends Record<string, any>>(row: T, keys: (keyof T)[]): T {
+  return Object.fromEntries(
+    Object.entries(row).map(([key, value]) => [
+      key,
+      keys.includes(key) ? (value == null ? null : toNumber(value)) : value,
+    ]),
+  ) as T;
 }
 
 /** Converts bigint, Decimal and numeric-string columns returned by either database to numbers. */
@@ -88,13 +90,11 @@ function hasSql(value?: string) {
 }
 
 function getScopeParams(parameters: CommerceParameters) {
-  const { currency, market, productId, category } = parameters;
+  const { currency, market } = parameters;
 
   return {
     commerceCurrency: currency?.toUpperCase(),
     commerceMarket: market,
-    commerceProductId: productId,
-    commerceCategory: category,
   };
 }
 
@@ -106,22 +106,14 @@ export function getRelationalCommerceQuery(
   options: CommerceQueryOptions = {},
 ) {
   const { parseFilters } = prisma;
-  const stage = commerceStageSQL('prisma', 'commerce_event');
-  const { startDate, endDate, market, productId, category } = parameters;
+  const { startDate, endDate, market } = parameters;
   const { queryParams, filterQuery, cohortQuery, joinSessionQuery, dateQuery } = parseFilters({
     ...filters,
     websiteId,
     startDate,
     endDate,
   });
-  const isScoped = !!(productId || category);
   const isSessionFiltered = hasSql(filterQuery) || hasSql(cohortQuery);
-  const itemScopeQuery = [
-    productId && 'and commerce_item.product_id = {{commerceProductId}}',
-    category && 'and commerce_item.category = {{commerceCategory}}',
-  ]
-    .filter(Boolean)
-    .join('\n');
 
   const filteredSessionsCte = `
     filtered_sessions as (
@@ -143,32 +135,16 @@ export function getRelationalCommerceQuery(
         commerce_event.visit_id,
         commerce_event.event_name,
         commerce_event.market,
-        commerce_event.cart_id,
-        commerce_event.checkout_id,
+        commerce_event.source,
+        commerce_event.customer_id,
         commerce_event.order_id,
         commerce_event.subtotal,
         commerce_event.shipping,
         commerce_event.tax,
         commerce_event.total,
         commerce_event.created_at,
-        ${stage.sql} as stage,
-        coalesce(order_items.units, 0) as units,
-        coalesce(order_items.lines, 0) as lines,
-        ${isScoped ? 'order_items.value' : 'commerce_event.total'} as value
+        commerce_event.total as value
       from commerce_event
-      ${isScoped ? 'join' : 'left join'} (
-        select
-          commerce_item.commerce_event_id,
-          sum(commerce_item.quantity) as units,
-          count(*) as lines,
-          sum(commerce_item.total) as value
-        from commerce_item
-        where commerce_item.website_id = {{websiteId::uuid}}
-          and commerce_item.created_at between {{startDate}} and {{endDate}}
-          ${itemScopeQuery}
-        group by commerce_item.commerce_event_id
-      ) order_items
-        on order_items.commerce_event_id = commerce_event.commerce_event_id
       ${
         isSessionFiltered
           ? 'join filtered_sessions on filtered_sessions.session_id = commerce_event.session_id'
@@ -177,7 +153,8 @@ export function getRelationalCommerceQuery(
       where commerce_event.website_id = {{websiteId::uuid}}
         and commerce_event.created_at between {{startDate}} and {{endDate}}
         and commerce_event.currency = {{commerceCurrency}}
-        ${options.allStages ? '' : 'and commerce_event.order_id is not null'}
+        and commerce_event.kind = {{commerceKind}}
+        and commerce_event.order_id is not null
         ${market ? 'and commerce_event.market = {{commerceMarket}}' : ''}
     )`;
 
@@ -189,15 +166,13 @@ export function getRelationalCommerceQuery(
       endDate,
       lookbackDate: getLookbackDate(startDate),
       ...getScopeParams(parameters),
-      ...stage.params,
+      commerceKind: options.kind ?? 'order',
     },
     filterQuery,
     cohortQuery,
     joinSessionQuery,
     dateQuery,
-    isScoped,
     isSessionFiltered,
-    itemScopeQuery,
     /** `filtered_sessions` (when filters apply) followed by `orders`. */
     ctes: [isSessionFiltered && filteredSessionsCte, ordersCte].filter(Boolean).join(','),
     filteredSessionsCte,
@@ -212,22 +187,14 @@ export function getClickhouseCommerceQuery(
   options: CommerceQueryOptions = {},
 ) {
   const { parseFilters } = clickhouse;
-  const stage = commerceStageSQL('clickhouse', 'ce');
-  const { startDate, endDate, market, productId, category } = parameters;
+  const { startDate, endDate, market } = parameters;
   const { queryParams, filterQuery, cohortQuery, dateQuery } = parseFilters({
     ...filters,
     websiteId,
     startDate,
     endDate,
   });
-  const isScoped = !!(productId || category);
   const isSessionFiltered = hasSql(filterQuery) || hasSql(cohortQuery);
-  const itemScopeQuery = [
-    productId && 'and product_id = {commerceProductId:String}',
-    category && 'and category = {commerceCategory:String}',
-  ]
-    .filter(Boolean)
-    .join('\n');
 
   const filteredSessionsCte = `
     filtered_sessions as (
@@ -241,8 +208,6 @@ export function getClickhouseCommerceQuery(
       group by session_id
     )`;
 
-  // Items are aggregated per (parent, snapshot) and joined to the current parent snapshot,
-  // so superseded or orphaned snapshots never contribute.
   const ordersCte = `
     orders as (
       select
@@ -252,43 +217,27 @@ export function getClickhouseCommerceQuery(
         ce.visit_id as visit_id,
         ce.event_name as event_name,
         ce.market as market,
-        ce.cart_id as cart_id,
-        ce.checkout_id as checkout_id,
+        ce.source as source,
+        ce.customer_id as customer_id,
         ce.order_id as order_id,
         ce.subtotal as subtotal,
         ce.shipping as shipping,
         ce.tax as tax,
         ce.total as total,
         ce.created_at as created_at,
-        ${stage.sql} as stage,
-        order_items.units as units,
-        order_items.lines as lines,
-        ${isScoped ? 'order_items.value' : 'ce.total'} as value
+        ce.total as value
       from (
         select *
         from commerce_event final
         where website_id = {websiteId:UUID}
           and created_at between {startDate:DateTime64} and {endDate:DateTime64}
           and currency = {commerceCurrency:String}
-          ${options.allStages ? '' : "and order_id != ''"}
+          and kind = {commerceKind:String}
+          and order_id != ''
           ${market ? 'and market = {commerceMarket:String}' : ''}
           ${isSessionFiltered ? 'and session_id in (select session_id from filtered_sessions)' : ''}
       ) as ce
-      ${isScoped ? 'inner join' : 'left join'} (
-        select
-          commerce_event_id,
-          snapshot_id,
-          sum(quantity) as units,
-          count() as lines,
-          sum(total) as value
-        from commerce_item final
-        where website_id = {websiteId:UUID}
-          and created_at between {startDate:DateTime64} and {endDate:DateTime64}
-          ${itemScopeQuery}
-        group by commerce_event_id, snapshot_id
-      ) as order_items
-        on order_items.commerce_event_id = ce.commerce_event_id
-       and order_items.snapshot_id = ce.snapshot_id
+
     )`;
 
   return {
@@ -299,69 +248,15 @@ export function getClickhouseCommerceQuery(
       endDate,
       lookbackDate: getLookbackDate(startDate),
       ...getScopeParams(parameters),
-      ...stage.params,
+      commerceKind: options.kind ?? 'order',
     },
     filterQuery,
     cohortQuery,
     dateQuery,
-    isScoped,
     isSessionFiltered,
-    itemScopeQuery,
     ctes: [isSessionFiltered && filteredSessionsCte, ordersCte].filter(Boolean).join(','),
     filteredSessionsCte,
   };
-}
-
-/** Current, non-superseded item rows of the selected orders (`order_lines`). Requires `orders`. */
-export function getOrderLinesCte(dialect: 'prisma' | 'clickhouse', itemScopeQuery = '') {
-  if (dialect === 'prisma') {
-    return `
-    order_lines as (
-      select
-        commerce_item.commerce_event_id,
-        commerce_item.item_index,
-        commerce_item.product_id,
-        commerce_item.name,
-        commerce_item.variant,
-        commerce_item.category,
-        commerce_item.price,
-        commerce_item.quantity,
-        commerce_item.total,
-        orders.session_id,
-        orders.created_at
-      from commerce_item
-      join orders on orders.commerce_event_id = commerce_item.commerce_event_id
-      where commerce_item.website_id = {{websiteId::uuid}}
-        and commerce_item.created_at between {{startDate}} and {{endDate}}
-        ${itemScopeQuery}
-    )`;
-  }
-
-  return `
-    order_lines as (
-      select
-        ci.commerce_event_id as commerce_event_id,
-        ci.item_index as item_index,
-        ci.product_id as product_id,
-        ci.name as name,
-        ci.variant as variant,
-        ci.category as category,
-        ci.price as price,
-        ci.quantity as quantity,
-        ci.total as total,
-        orders.session_id as session_id,
-        orders.created_at as created_at
-      from (
-        select *
-        from commerce_item final
-        where website_id = {websiteId:UUID}
-          and created_at between {startDate:DateTime64} and {endDate:DateTime64}
-          ${itemScopeQuery}
-      ) as ci
-      inner join orders
-        on orders.commerce_event_id = ci.commerce_event_id
-       and orders.snapshot_id = ci.snapshot_id
-    )`;
 }
 
 /**
@@ -376,7 +271,7 @@ export function getOrderBuyersCte(dialect: 'prisma' | 'clickhouse') {
         orders.commerce_event_id,
         orders.session_id,
         session_links.distinct_id,
-        coalesce(session_links.distinct_id, orders.session_id::text) as buyer_id
+        case when orders.customer_id is not null then concat('commerce:', length(coalesce(orders.source, '')), ':', coalesce(orders.source, ''), ':', orders.customer_id) else coalesce(session_links.distinct_id, orders.session_id::text) end as buyer_id
       from orders
       left join (
         select session_link.session_id, min(session_link.distinct_id) as distinct_id
@@ -395,7 +290,7 @@ export function getOrderBuyersCte(dialect: 'prisma' | 'clickhouse') {
         orders.commerce_event_id as commerce_event_id,
         orders.session_id as session_id,
         session_links.distinct_id as distinct_id,
-        if(session_links.distinct_id = '', toString(orders.session_id), session_links.distinct_id) as buyer_id
+        if(orders.customer_id != '', concat('commerce:', toString(length(orders.source)), ':', orders.source, ':', orders.customer_id), if(session_links.distinct_id = '', toString(orders.session_id), session_links.distinct_id)) as buyer_id
       from orders
       left join (
         select session_id, min(distinct_id) as distinct_id

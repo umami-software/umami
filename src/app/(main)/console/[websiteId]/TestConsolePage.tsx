@@ -1,6 +1,7 @@
 'use client';
-import { Button, Column, Grid, Heading } from '@umami/react-zen';
+import { Button, Column, Grid, Heading, Text } from '@umami/react-zen';
 import Script from 'next/script';
+import { useState } from 'react';
 import { WebsiteChart } from '@/app/(main)/websites/[websiteId]/WebsiteChart';
 import Link from '@/components/common/Link';
 import { PageBody } from '@/components/common/PageBody';
@@ -42,13 +43,15 @@ const COMMERCE_MARKETS = [
   { market: 'FR', currency: 'EUR', taxRate: 0.2 },
 ];
 
-const COMMERCE_JOURNEYS = 5;
+const COMMERCE_ORDERS = 5;
 
 const pick = <T,>(list: T[]) => list[Math.floor(Math.random() * list.length)];
 const round = (n: number) => Math.round(n * 100) / 100;
 
 export function TestConsolePage({ websiteId }: { websiteId: string }) {
   const { data } = useWebsiteQuery(websiteId);
+  const [commerceRunning, setCommerceRunning] = useState(false);
+  const [commerceStatus, setCommerceStatus] = useState('');
 
   function handleRunScript() {
     window.umami.track(props => ({
@@ -117,61 +120,47 @@ export function TestConsolePage({ websiteId }: { websiteId: string }) {
     });
   }
 
-  // One shopping journey: add to cart, begin checkout, and pay when `pay` is set. Each step
-  // is a named event carrying a commerce payload; cart, checkout and order IDs are fresh.
-  async function runCommerceJourney(pay: boolean) {
-    const id = `${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 7)}`;
+  async function recordCommerceOrder() {
+    const id = crypto.randomUUID();
     const { market, currency, taxRate } = pick(COMMERCE_MARKETS);
-    const cartId = `cart-${id}`;
-    const checkoutId = `checkout-${id}`;
-    const items = [...COMMERCE_PRODUCTS]
-      .sort(() => Math.random() - 0.5)
-      .slice(0, 1 + Math.floor(Math.random() * 3))
-      .map(({ productId, name, category, variants, price }) => ({
-        productId,
-        name,
-        category,
-        ...(variants.length ? { variant: pick(variants) } : {}),
-        price,
-        quantity: 1 + Math.floor(Math.random() * 3),
-      }));
-    const subtotal = items.reduce((sum, { price, quantity }) => sum + price * quantity, 0);
-    const shipping = subtotal >= 100 ? 0 : 7.5;
-
-    await window.umami.track('add-to-cart', { commerce: { currency, market, cartId, items } });
-    await window.umami.track('begin-checkout', {
-      commerce: { currency, market, cartId, checkoutId, items },
+    const items = COMMERCE_PRODUCTS.slice(0, 2).map(({ productId, name, category, price }) => ({
+      productId,
+      name,
+      category,
+      price,
+      total: price,
+    }));
+    const subtotal = items.reduce((sum, item) => sum + item.total, 0);
+    const tax = round(subtotal * taxRate);
+    await window.umami.track('purchase', {
+      commerce: {
+        orderId: id,
+        currency,
+        market,
+        total: round(subtotal + tax),
+        subtotal,
+        tax,
+        items,
+      },
     });
-
-    if (pay) {
-      await window.umami.track('purchase', {
-        payment: pick(['card', 'paypal', 'apple-pay']),
-        commerce: {
-          currency,
-          market,
-          cartId,
-          checkoutId,
-          orderId: `order-${id}`,
-          shipping,
-          tax: round(subtotal * taxRate),
-          items,
-        },
-      });
-    }
   }
 
-  // Several journeys per run so every commerce tab has data: the first always pays,
-  // the rest pay about seven times in ten, leaving some abandoned checkouts.
   async function handleRunCommerce() {
+    if (commerceRunning) return;
+    setCommerceRunning(true);
+    setCommerceStatus('Sending orders…');
+    let sent = 0;
     try {
-      window.umami.track(props => ({ ...props, url: '/cart', referrer: 'https://www.google.com' }));
-
-      for (let index = 0; index < COMMERCE_JOURNEYS; index++) {
-        await runCommerceJourney(index === 0 || Math.random() < 0.7);
-      }
+      if (!window.umami?.track) throw new Error('The tracker is not ready. Try again in a moment.');
+      for (; sent < COMMERCE_ORDERS; sent++) await recordCommerceOrder();
+      setCommerceStatus(`Sent ${sent} commerce orders.`);
     } catch (error) {
-      // Commerce events reject on delivery failure so callers can retry.
-      console.error('Commerce event failed', error);
+      console.error('Commerce order failed', error);
+      setCommerceStatus(
+        `Sent ${sent} of ${COMMERCE_ORDERS} orders. ${error instanceof Error ? error.message : 'Commerce collection failed.'}`,
+      );
+    } finally {
+      setCommerceRunning(false);
     }
   }
 
@@ -294,9 +283,17 @@ export function TestConsolePage({ websiteId }: { websiteId: string }) {
               <Button id="manual-button" variant="primary" onClick={handleRunRevenue}>
                 Revenue script
               </Button>
-              <Button id="commerce-button" variant="primary" onClick={handleRunCommerce}>
+              <Button
+                id="commerce-button"
+                variant="primary"
+                onPress={handleRunCommerce}
+                isDisabled={commerceRunning}
+              >
                 Commerce script
               </Button>
+              <Text role="status" aria-live="polite">
+                {commerceStatus}
+              </Text>
             </Column>
           </Grid>
         </Panel>

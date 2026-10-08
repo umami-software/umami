@@ -9,24 +9,25 @@ import {
   getClickhouseCommerceQuery,
   getOrderBuyersCte,
   getRelationalCommerceQuery,
+  toNumber,
   toNumbers,
 } from './commerceQuery';
 
 const FUNCTION_NAME = 'getCommerceStats';
 
 export interface CommerceStats {
-  revenue: number;
-  subtotal: number;
-  tax: number;
-  shipping: number;
+  revenue: number | null;
+  refundAmount: number | null;
+  netRevenue: number | null;
+  subtotal: number | null;
+  tax: number | null;
+  shipping: number | null;
   orders: number;
-  units: number;
   buyers: number;
   visitors: number;
   visits: number;
   convertedVisits: number;
-  averageOrderValue: number;
-  unitsPerOrder: number;
+  averageOrderValue: number | null;
   conversionRate: number | null;
   revenuePerVisitor: number | null;
 }
@@ -37,7 +38,6 @@ const NUMBER_FIELDS: (keyof CommerceStats)[] = [
   'tax',
   'shipping',
   'orders',
-  'units',
   'buyers',
   'visitors',
   'visits',
@@ -47,15 +47,21 @@ const NUMBER_FIELDS: (keyof CommerceStats)[] = [
 export async function getCommerceStats(
   ...args: [websiteId: string, parameters: CommerceParameters, filters: QueryFilters]
 ): Promise<CommerceStats> {
-  const row = await runQuery({
-    [PRISMA]: () => relationalQuery(...args),
-    [CLICKHOUSE]: () => clickhouseQuery(...args),
-  });
+  const [row, refundAmount] = await Promise.all([
+    runQuery({
+      [PRISMA]: () => relationalQuery(...args),
+      [CLICKHOUSE]: () => clickhouseQuery(...args),
+    }),
+    getRefundAmount(...args),
+  ]);
 
   const stats = deriveCommerceStats(row);
-  // Commerce market/product context does not attribute all website traffic to that scope.
+  stats.refundAmount = refundAmount;
+  stats.netRevenue =
+    refundAmount == null || stats.revenue == null ? null : stats.revenue - refundAmount;
+  // Commerce market context does not attribute all website traffic to that scope.
   // Do not present a scoped numerator over an unscoped denominator as a conversion rate.
-  if (args[1].market || args[1].productId || args[1].category) {
+  if (args[1].market || toNumber(row?.linkedOrders) < stats.orders) {
     stats.conversionRate = null;
     stats.revenuePerVisitor = null;
   }
@@ -64,30 +70,26 @@ export async function getCommerceStats(
 
 export function deriveCommerceStats(row: Record<string, unknown> = {}): CommerceStats {
   const stats = toNumbers(row as Record<string, number>, NUMBER_FIELDS as string[]);
-  const {
-    revenue = 0,
-    orders = 0,
-    units = 0,
-    visits = 0,
-    visitors = 0,
-    convertedVisits = 0,
-  } = stats;
+  for (const key of ['revenue', 'subtotal', 'tax', 'shipping']) {
+    if (row[key] === null) stats[key] = null;
+  }
+  const { revenue = 0, orders = 0, visits = 0, visitors = 0, convertedVisits = 0 } = stats;
 
   return {
     revenue,
-    subtotal: stats.subtotal ?? 0,
-    tax: stats.tax ?? 0,
-    shipping: stats.shipping ?? 0,
+    refundAmount: null,
+    netRevenue: null,
+    subtotal: stats.subtotal,
+    tax: stats.tax,
+    shipping: stats.shipping,
     orders,
-    units,
     buyers: stats.buyers ?? 0,
     visitors,
     visits,
     convertedVisits,
-    averageOrderValue: divide(revenue, orders),
-    unitsPerOrder: divide(units, orders),
+    averageOrderValue: revenue == null ? null : divide(revenue, orders),
     conversionRate: divide(convertedVisits, visits),
-    revenuePerVisitor: divide(revenue, visitors),
+    revenuePerVisitor: revenue == null ? null : divide(revenue, visitors),
   };
 }
 
@@ -97,7 +99,7 @@ async function relationalQuery(
   filters: QueryFilters,
 ) {
   const { rawQuery } = prisma;
-  const { ctes, queryParams, cohortQuery, joinSessionQuery, dateQuery, filterQuery } =
+  const { ctes, queryParams, cohortQuery, joinSessionQuery, dateQuery, isSessionFiltered } =
     getRelationalCommerceQuery(websiteId, parameters, filters);
 
   return rawQuery(
@@ -114,15 +116,15 @@ async function relationalQuery(
       where website_event.website_id = {{websiteId::uuid}}
         and website_event.event_type != ${EVENT_TYPE.performance}
         ${dateQuery}
-        ${filterQuery}
+        ${isSessionFiltered ? 'and website_event.session_id in (select session_id from filtered_sessions)' : ''}
     )
     select
-      coalesce(sum(orders.value), 0) as "revenue",
-      coalesce(sum(orders.subtotal), 0) as "subtotal",
-      coalesce(sum(orders.tax), 0) as "tax",
-      coalesce(sum(orders.shipping), 0) as "shipping",
+      case when count(orders.value) = count(*) then coalesce(sum(orders.value), 0) else NULL end as "revenue",
+      case when count(orders.subtotal) = count(*) then coalesce(sum(orders.subtotal), 0) else NULL end as "subtotal",
+      case when count(orders.tax) = count(*) then coalesce(sum(orders.tax), 0) else NULL end as "tax",
+      case when count(orders.shipping) = count(*) then coalesce(sum(orders.shipping), 0) else NULL end as "shipping",
       count(orders.commerce_event_id) as "orders",
-      coalesce(sum(orders.units), 0) as "units",
+      count(orders.visit_id) as "linkedOrders",
       count(distinct orders.visit_id) as "convertedVisits",
       (select count(distinct buyer_id) from order_buyers) as "buyers",
       (select visitors from traffic) as "visitors",
@@ -140,11 +142,8 @@ async function clickhouseQuery(
   filters: QueryFilters,
 ) {
   const { rawQuery } = clickhouse;
-  const { ctes, queryParams, cohortQuery, dateQuery, filterQuery } = getClickhouseCommerceQuery(
-    websiteId,
-    parameters,
-    filters,
-  );
+  const { ctes, queryParams, cohortQuery, dateQuery, isSessionFiltered } =
+    getClickhouseCommerceQuery(websiteId, parameters, filters);
 
   return rawQuery<Record<string, number>[]>(
     `
@@ -159,15 +158,15 @@ async function clickhouseQuery(
       where website_id = {websiteId:UUID}
         and event_type != ${EVENT_TYPE.performance}
         ${dateQuery}
-        ${filterQuery}
+        ${isSessionFiltered ? 'and session_id in (select session_id from filtered_sessions)' : ''}
     )
     select
-      sum(orders.value) as revenue,
-      sum(orders.subtotal) as subtotal,
-      sum(orders.tax) as tax,
-      sum(orders.shipping) as shipping,
+      if(count(orders.value) = count(), sum(orders.value), NULL) as revenue,
+      if(count(orders.subtotal) = count(), sum(orders.subtotal), NULL) as subtotal,
+      if(count(orders.tax) = count(), sum(orders.tax), NULL) as tax,
+      if(count(orders.shipping) = count(), sum(orders.shipping), NULL) as shipping,
       count() as orders,
-      sum(orders.units) as units,
+      count(orders.visit_id) as linkedOrders,
       uniqExact(orders.visit_id) as convertedVisits,
       (select uniqExact(buyer_id) from order_buyers) as buyers,
       (select visitors from traffic) as visitors,
@@ -177,4 +176,24 @@ async function clickhouseQuery(
     queryParams,
     FUNCTION_NAME,
   ).then(result => result?.[0]);
+}
+
+/** Refunds belong to their own occurrence period, even when the sale was earlier. */
+async function getRefundAmount(
+  websiteId: string,
+  parameters: CommerceParameters,
+  filters: QueryFilters,
+): Promise<number> {
+  const query = async (dialect: 'prisma' | 'clickhouse') => {
+    const { ctes, queryParams } = (
+      dialect === 'prisma' ? getRelationalCommerceQuery : getClickhouseCommerceQuery
+    )(websiteId, parameters, filters, { kind: 'refund' });
+    const [row] = await (dialect === 'prisma' ? prisma : clickhouse).rawQuery(
+      `with ${ctes} select coalesce(sum(value), 0) as amount from orders`,
+      queryParams,
+      'getCommerceRefundAmount',
+    );
+    return toNumber(row?.amount);
+  };
+  return runQuery({ [PRISMA]: () => query('prisma'), [CLICKHOUSE]: () => query('clickhouse') });
 }

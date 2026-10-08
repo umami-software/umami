@@ -1,24 +1,16 @@
 import { Column, DataColumn, DataTable, Text } from '@umami/react-zen';
 import { LoadingPanel } from '@/components/common/LoadingPanel';
 import { useBreakdownQuery, useFields, useFormat, useMessages } from '@/components/hooks';
-import { formatLongCurrency, formatShortTime } from '@/lib/format';
+import { formatShortTime } from '@/lib/format';
 
 export interface BreakdownProps {
   websiteId: string;
   startDate: Date;
   endDate: Date;
   selectedFields: string[];
-  /** Adds orders and revenue of completed payments in this currency. */
-  currency?: string;
 }
 
-export function Breakdown({
-  websiteId,
-  selectedFields = [],
-  startDate,
-  endDate,
-  currency,
-}: BreakdownProps) {
+export function Breakdown({ websiteId, selectedFields = [], startDate, endDate }: BreakdownProps) {
   const { t, labels } = useMessages();
   const { formatValue } = useFormat();
   const { fields } = useFields();
@@ -28,7 +20,6 @@ export function Breakdown({
       startDate,
       endDate,
       fields: selectedFields,
-      currency,
     },
     { enabled: !!selectedFields.length },
   );
@@ -71,16 +62,6 @@ export function Breakdown({
               return `${Math.round(+n)}%`;
             }}
           </DataColumn>
-          {currency && (
-            <DataColumn id="orders" label={t('commerce.orders')} align="end" width="100px">
-              {row => Number(row?.orders || 0).toLocaleString()}
-            </DataColumn>
-          )}
-          {currency && (
-            <DataColumn id="revenue" label={t('commerce.revenue')} align="end" width="130px">
-              {row => formatLongCurrency(Number(row?.revenue || 0), currency)}
-            </DataColumn>
-          )}
           <DataColumn id="visitDuration" label={t(labels.visitDuration)} align="end" width="120px">
             {row => {
               const n = row?.totaltime / row?.visits;

@@ -92,25 +92,31 @@ export interface EventData {
 }
 
 export interface CommerceItem {
+  lineId?: string;
   productId: string;
   name?: string;
   variant?: string;
   category?: string;
-  /** Net unit price after discounts, excluding tax and shipping. */
-  price: number;
-  quantity: number;
+  price?: number | string;
+  /** Authoritative line amount; never reconstructed from other item fields. */
+  total?: number | string;
 }
 
 export interface CommerceData {
+  type?: 'order' | 'refund';
+  source?: string;
+  orderId: string;
+  refundId?: string;
   currency: string;
+  /** Authoritative order/refund amount, independent of optional items. */
+  total: number | string;
   market?: string;
-  cartId?: string;
-  checkoutId?: string;
-  /** Identifies a completed payment; unique within this website. Omit before payment. */
-  orderId?: string;
-  shipping?: number;
-  tax?: number;
-  items: CommerceItem[];
+  customerId?: string;
+  updatedAt?: string;
+  subtotal?: number | string;
+  shipping?: number | string;
+  tax?: number | string;
+  items?: CommerceItem[];
 }
 
 export type EventProperties = {
@@ -315,7 +321,7 @@ type MetricEntry = PerformanceEntry & {
   // Strip the origin from same-origin referrers so the referrer domain
   // is never saved when it matches the current hostname
   const stripOrigin = (url: string): string =>
-    url === origin || url?.startsWith(origin + '/') ? url.slice(origin.length) : url;
+    url === origin || url?.startsWith(`${origin}/`) ? url.slice(origin.length) : url;
 
   const getPayload = () => ({
     website,

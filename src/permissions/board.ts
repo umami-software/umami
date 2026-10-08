@@ -15,7 +15,6 @@ async function hasBoardBillingAccess(board: Awaited<ReturnType<typeof getBoard>>
 const BOARD_COMPONENT_REPORT_TYPES = {
   Funnel: 'funnel',
   Goal: 'goal',
-  CommerceReport: 'commerce',
 } as const;
 
 function getExpectedBoardReportType(componentType?: string) {

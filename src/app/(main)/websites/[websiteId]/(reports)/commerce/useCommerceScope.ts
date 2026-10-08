@@ -40,19 +40,14 @@ export function useCommerceScope(websiteId: string) {
 
   const setCurrency = (value: string) => {
     setItem(CURRENCY_CONFIG, value);
-    navigate({ currency: value, market: undefined, product: undefined });
+    navigate({ currency: value, market: undefined });
   };
 
   const setMarket = (value?: string) => {
     navigate({ market: value || undefined });
   };
 
-  const category = query.category || undefined;
-  const windowHours = query.windowHours ? Number(query.windowHours) : undefined;
-  const scope: CommerceScope = useMemo(
-    () => ({ currency, market, category, windowHours }),
-    [currency, market, category, windowHours],
-  );
+  const scope: CommerceScope = useMemo(() => ({ currency, market }), [currency, market]);
 
   return {
     currency,

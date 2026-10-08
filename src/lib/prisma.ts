@@ -2,7 +2,13 @@ import { PrismaPg } from '@prisma/adapter-pg';
 import { readReplicas } from '@prisma/extension-read-replicas';
 import debug from 'debug';
 import { PrismaClient } from '@/generated/prisma/client';
-import { DATA_TYPE, DEFAULT_PAGE_SIZE, FILTER_COLUMNS, OPERATORS, SESSION_COLUMNS } from './constants';
+import {
+  DATA_TYPE,
+  DEFAULT_PAGE_SIZE,
+  FILTER_COLUMNS,
+  OPERATORS,
+  SESSION_COLUMNS,
+} from './constants';
 import { filtersObjectToArray } from './params';
 import type { Operator, PropertyFilter, QueryFilters, QueryOptions } from './types';
 
@@ -34,7 +40,12 @@ export interface RawQueryClient extends RawQueryExecutor {
 }
 
 function isRawQueryExecutor(value: unknown): value is RawQueryExecutor {
-  return !!value && typeof value === 'object' && '$executeRawUnsafe' in value && '$queryRawUnsafe' in value;
+  return (
+    !!value &&
+    typeof value === 'object' &&
+    '$executeRawUnsafe' in value &&
+    '$queryRawUnsafe' in value
+  );
 }
 
 export function getRawQueryClient(
@@ -229,37 +240,9 @@ function getCohortQuery(filters: QueryFilters = {}) {
     where website_event.website_id = {{websiteId}}
       and website_event.created_at between {{cohort_startDate}} and {{cohort_endDate}}
       ${filterQuery}
-      ${getCohortOrderQuery(filters)}
     ) cohort
     on cohort.session_id = website_event.session_id
     `;
-}
-
-// Purchase cohorts: sessions with a completed payment, optionally containing one product.
-function getCohortOrderQuery(filters: Record<string, any>) {
-  const product = (filters as any).cohort_order;
-
-  if (!product) {
-    return '';
-  }
-
-  return `and website_event.session_id in (
-        select commerce_event.session_id
-        from commerce_event
-        where commerce_event.website_id = {{websiteId::uuid}}
-          and commerce_event.created_at between {{cohort_startDate}} and {{cohort_endDate}}
-          and commerce_event.order_id is not null
-          ${
-            product === '*'
-              ? ''
-              : `and exists (
-            select 1
-            from commerce_item
-            where commerce_item.commerce_event_id = commerce_event.commerce_event_id
-              and commerce_item.product_id = {{cohort_order}}
-          )`
-          }
-      )`;
 }
 
 function getExcludeBounceQuery(filters: Record<string, any>) {
@@ -332,14 +315,13 @@ function parseFilters(filters: Record<string, any>, options?: QueryOptions) {
   const cohortFilters = Object.fromEntries(
     Object.entries(filters).filter(([key]) => key.startsWith('cohort_')),
   );
-  const {
-    sql: eventPropertyFilterQuery,
-    params: eventPropertyFilterParams,
-  } = getEventPropertyFilterQuery((filters as QueryFilters).eventPropertyFilters, filters.timezone);
-  const {
-    sql: sessionPropertyFilterQuery,
-    params: sessionPropertyFilterParams,
-  } = getSessionPropertyFilterQuery((filters as QueryFilters).sessionPropertyFilters, filters.timezone);
+  const { sql: eventPropertyFilterQuery, params: eventPropertyFilterParams } =
+    getEventPropertyFilterQuery((filters as QueryFilters).eventPropertyFilters, filters.timezone);
+  const { sql: sessionPropertyFilterQuery, params: sessionPropertyFilterParams } =
+    getSessionPropertyFilterQuery(
+      (filters as QueryFilters).sessionPropertyFilters,
+      filters.timezone,
+    );
 
   return {
     joinSessionQuery:
@@ -347,7 +329,11 @@ function parseFilters(filters: Record<string, any>, options?: QueryOptions) {
         ? `inner join session on website_event.session_id = session.session_id and website_event.website_id = session.website_id`
         : '',
     dateQuery: getDateQuery(filters),
-    filterQuery: [getFilterQuery(filters, options), eventPropertyFilterQuery, sessionPropertyFilterQuery]
+    filterQuery: [
+      getFilterQuery(filters, options),
+      eventPropertyFilterQuery,
+      sessionPropertyFilterQuery,
+    ]
       .filter(Boolean)
       .join('\n'),
     queryParams: {

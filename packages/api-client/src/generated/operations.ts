@@ -154,14 +154,6 @@ export const operations = {
     queryParams: [],
     hasBody: true,
   },
-  createWebsiteCommerceReport: {
-    operationId: 'createWebsiteCommerceReport',
-    method: 'post',
-    path: '/api/websites/{websiteId}/commerce/reports',
-    pathParams: ['websiteId'],
-    queryParams: [],
-    hasBody: true,
-  },
   createWebsiteFunnel: {
     operationId: 'createWebsiteFunnel',
     method: 'post',
@@ -271,14 +263,6 @@ export const operations = {
     method: 'delete',
     path: '/api/websites/{websiteId}/annotations/{annotationId}',
     pathParams: ['websiteId', 'annotationId'],
-    queryParams: [],
-    hasBody: false,
-  },
-  deleteWebsiteCommerceReport: {
-    operationId: 'deleteWebsiteCommerceReport',
-    method: 'delete',
-    path: '/api/websites/{websiteId}/commerce/reports/{reportId}',
-    pathParams: ['websiteId', 'reportId'],
     queryParams: [],
     hasBody: false,
   },
@@ -1664,53 +1648,6 @@ export const operations = {
       'timezone',
       'unit',
       'fields',
-      'currency',
-    ],
-    hasBody: false,
-  },
-  getWebsiteCommerceAbandoned: {
-    operationId: 'getWebsiteCommerceAbandoned',
-    method: 'get',
-    path: '/api/websites/{websiteId}/commerce/abandoned',
-    pathParams: ['websiteId'],
-    queryParams: [
-      'path',
-      'referrer',
-      'title',
-      'query',
-      'os',
-      'browser',
-      'device',
-      'country',
-      'region',
-      'city',
-      'tag',
-      'hostname',
-      'distinctId',
-      'language',
-      'event',
-      'utmSource',
-      'utmMedium',
-      'utmCampaign',
-      'utmContent',
-      'utmTerm',
-      'segment',
-      'cohort',
-      'eventType',
-      'excludeBounce',
-      'match',
-      'startAt',
-      'endAt',
-      'timezone',
-      'unit',
-      'currency',
-      'market',
-      'productId',
-      'category',
-      'windowHours',
-      'page',
-      'pageSize',
-      'maxResults',
     ],
     hasBody: false,
   },
@@ -1751,53 +1688,7 @@ export const operations = {
       'unit',
       'currency',
       'market',
-      'productId',
-      'category',
-      'windowHours',
       'model',
-    ],
-    hasBody: false,
-  },
-  getWebsiteCommerceBaskets: {
-    operationId: 'getWebsiteCommerceBaskets',
-    method: 'get',
-    path: '/api/websites/{websiteId}/commerce/baskets',
-    pathParams: ['websiteId'],
-    queryParams: [
-      'path',
-      'referrer',
-      'title',
-      'query',
-      'os',
-      'browser',
-      'device',
-      'country',
-      'region',
-      'city',
-      'tag',
-      'hostname',
-      'distinctId',
-      'language',
-      'event',
-      'utmSource',
-      'utmMedium',
-      'utmCampaign',
-      'utmContent',
-      'utmTerm',
-      'segment',
-      'cohort',
-      'eventType',
-      'excludeBounce',
-      'match',
-      'startAt',
-      'endAt',
-      'timezone',
-      'unit',
-      'currency',
-      'market',
-      'productId',
-      'category',
-      'windowHours',
     ],
     hasBody: false,
   },
@@ -1838,9 +1729,6 @@ export const operations = {
       'unit',
       'currency',
       'market',
-      'productId',
-      'category',
-      'windowHours',
       'page',
       'pageSize',
       'maxResults',
@@ -1885,52 +1773,6 @@ export const operations = {
       'unit',
       'currency',
       'market',
-      'productId',
-      'category',
-      'windowHours',
-    ],
-    hasBody: false,
-  },
-  getWebsiteCommerceCheckout: {
-    operationId: 'getWebsiteCommerceCheckout',
-    method: 'get',
-    path: '/api/websites/{websiteId}/commerce/checkout',
-    pathParams: ['websiteId'],
-    queryParams: [
-      'path',
-      'referrer',
-      'title',
-      'query',
-      'os',
-      'browser',
-      'device',
-      'country',
-      'region',
-      'city',
-      'tag',
-      'hostname',
-      'distinctId',
-      'language',
-      'event',
-      'utmSource',
-      'utmMedium',
-      'utmCampaign',
-      'utmContent',
-      'utmTerm',
-      'segment',
-      'cohort',
-      'eventType',
-      'excludeBounce',
-      'match',
-      'startAt',
-      'endAt',
-      'timezone',
-      'unit',
-      'currency',
-      'market',
-      'productId',
-      'category',
-      'windowHours',
     ],
     hasBody: false,
   },
@@ -2009,9 +1851,6 @@ export const operations = {
       'unit',
       'currency',
       'market',
-      'productId',
-      'category',
-      'windowHours',
     ],
     hasBody: false,
   },
@@ -2052,9 +1891,6 @@ export const operations = {
       'unit',
       'currency',
       'market',
-      'productId',
-      'category',
-      'windowHours',
     ],
     hasBody: false,
   },
@@ -2095,9 +1931,6 @@ export const operations = {
       'unit',
       'currency',
       'market',
-      'productId',
-      'category',
-      'windowHours',
       'type',
       'limit',
     ],
@@ -2148,89 +1981,11 @@ export const operations = {
       'unit',
       'currency',
       'market',
-      'productId',
-      'category',
-      'windowHours',
       'page',
       'pageSize',
       'maxResults',
       'search',
     ],
-    hasBody: false,
-  },
-  getWebsiteCommerceProducts: {
-    operationId: 'getWebsiteCommerceProducts',
-    method: 'get',
-    path: '/api/websites/{websiteId}/commerce/products',
-    pathParams: ['websiteId'],
-    queryParams: [
-      'path',
-      'referrer',
-      'title',
-      'query',
-      'os',
-      'browser',
-      'device',
-      'country',
-      'region',
-      'city',
-      'tag',
-      'hostname',
-      'distinctId',
-      'language',
-      'event',
-      'utmSource',
-      'utmMedium',
-      'utmCampaign',
-      'utmContent',
-      'utmTerm',
-      'segment',
-      'cohort',
-      'eventType',
-      'excludeBounce',
-      'match',
-      'startAt',
-      'endAt',
-      'timezone',
-      'unit',
-      'currency',
-      'market',
-      'productId',
-      'category',
-      'windowHours',
-      'page',
-      'pageSize',
-      'maxResults',
-      'search',
-      'groupBy',
-      'sort',
-      'minViews',
-      'maxCartRate',
-    ],
-    hasBody: false,
-  },
-  getWebsiteCommerceReport: {
-    operationId: 'getWebsiteCommerceReport',
-    method: 'get',
-    path: '/api/websites/{websiteId}/commerce/reports/{reportId}',
-    pathParams: ['websiteId', 'reportId'],
-    queryParams: [],
-    hasBody: false,
-  },
-  getWebsiteCommerceReports: {
-    operationId: 'getWebsiteCommerceReports',
-    method: 'get',
-    path: '/api/websites/{websiteId}/commerce/reports',
-    pathParams: ['websiteId'],
-    queryParams: ['page', 'pageSize', 'maxResults', 'search'],
-    hasBody: false,
-  },
-  getWebsiteCommerceReportStats: {
-    operationId: 'getWebsiteCommerceReportStats',
-    method: 'get',
-    path: '/api/websites/{websiteId}/commerce/reports/{reportId}/stats',
-    pathParams: ['websiteId', 'reportId'],
-    queryParams: ['page', 'pageSize', 'startAt', 'endAt'],
     hasBody: false,
   },
   getWebsiteCommerceStats: {
@@ -2270,9 +2025,6 @@ export const operations = {
       'unit',
       'currency',
       'market',
-      'productId',
-      'category',
-      'windowHours',
       'compare',
     ],
     hasBody: false,
@@ -3676,6 +3428,14 @@ export const operations = {
     ],
     hasBody: false,
   },
+  importWebsiteShopifyCommerce: {
+    operationId: 'importWebsiteShopifyCommerce',
+    method: 'post',
+    path: '/api/websites/{websiteId}/commerce/shopify',
+    pathParams: ['websiteId'],
+    queryParams: [],
+    hasBody: true,
+  },
   initiateTwoFactorSetup: {
     operationId: 'initiateTwoFactorSetup',
     method: 'post',
@@ -3729,6 +3489,14 @@ export const operations = {
     method: 'post',
     path: '/api/record',
     pathParams: [],
+    queryParams: [],
+    hasBody: true,
+  },
+  recordWebsiteCommerce: {
+    operationId: 'recordWebsiteCommerce',
+    method: 'post',
+    path: '/api/websites/{websiteId}/commerce',
+    pathParams: ['websiteId'],
     queryParams: [],
     hasBody: true,
   },
@@ -3849,14 +3617,6 @@ export const operations = {
     method: 'post',
     path: '/api/websites/{websiteId}/annotations/{annotationId}',
     pathParams: ['websiteId', 'annotationId'],
-    queryParams: [],
-    hasBody: true,
-  },
-  updateWebsiteCommerceReport: {
-    operationId: 'updateWebsiteCommerceReport',
-    method: 'post',
-    path: '/api/websites/{websiteId}/commerce/reports/{reportId}',
-    pathParams: ['websiteId', 'reportId'],
     queryParams: [],
     hasBody: true,
   },
@@ -4163,17 +3923,6 @@ export abstract class GeneratedUmamiClient {
   }
 
   /**
-   * create Website Commerce Report
-   * `POST /api/websites/{websiteId}/commerce/reports`
-   */
-  createWebsiteCommerceReport(
-    input: OperationInput<'createWebsiteCommerceReport'>,
-    options?: RequestOptions,
-  ): Promise<OperationOutput<'createWebsiteCommerceReport'>> {
-    return this.execute('createWebsiteCommerceReport', input, options);
-  }
-
-  /**
    * Create website funnel
    * `POST /api/websites/{websiteId}/funnels`
    */
@@ -4337,17 +4086,6 @@ export abstract class GeneratedUmamiClient {
     options?: RequestOptions,
   ): Promise<OperationOutput<'deleteWebsiteAnnotation'>> {
     return this.execute('deleteWebsiteAnnotation', input, options);
-  }
-
-  /**
-   * delete Website Commerce Report
-   * `DELETE /api/websites/{websiteId}/commerce/reports/{reportId}`
-   */
-  deleteWebsiteCommerceReport(
-    input: OperationInput<'deleteWebsiteCommerceReport'>,
-    options?: RequestOptions,
-  ): Promise<OperationOutput<'deleteWebsiteCommerceReport'>> {
-    return this.execute('deleteWebsiteCommerceReport', input, options);
   }
 
   /**
@@ -5127,18 +4865,6 @@ export abstract class GeneratedUmamiClient {
   }
 
   /**
-   * List abandoned carts and checkouts
-   * Returns a paginated list of sessions that reached cart or checkout without a completed payment, with the value of their latest cart or checkout.
-   * `GET /api/websites/{websiteId}/commerce/abandoned`
-   */
-  getWebsiteCommerceAbandoned(
-    input: OperationInput<'getWebsiteCommerceAbandoned'>,
-    options?: RequestOptions,
-  ): Promise<OperationOutput<'getWebsiteCommerceAbandoned'>> {
-    return this.execute('getWebsiteCommerceAbandoned', input, options);
-  }
-
-  /**
    * Get website commerce revenue attribution
    * Returns completed-order revenue attributed to channels, referrers, ad platforms, landing pages and UTM parameters with a first-click or last non-direct click model.
    * `GET /api/websites/{websiteId}/commerce/attribution`
@@ -5148,18 +4874,6 @@ export abstract class GeneratedUmamiClient {
     options?: RequestOptions,
   ): Promise<OperationOutput<'getWebsiteCommerceAttribution'>> {
     return this.execute('getWebsiteCommerceAttribution', input, options);
-  }
-
-  /**
-   * Get website commerce basket analysis
-   * Returns the distribution of units per order and the products most often bought in the same order, or the companions of one product.
-   * `GET /api/websites/{websiteId}/commerce/baskets`
-   */
-  getWebsiteCommerceBaskets(
-    input: OperationInput<'getWebsiteCommerceBaskets'>,
-    options?: RequestOptions,
-  ): Promise<OperationOutput<'getWebsiteCommerceBaskets'>> {
-    return this.execute('getWebsiteCommerceBaskets', input, options);
   }
 
   /**
@@ -5187,18 +4901,6 @@ export abstract class GeneratedUmamiClient {
   }
 
   /**
-   * Get website checkout funnel
-   * Returns sessions reaching cart, checkout and payment, inferred from the cart, checkout and order IDs of commerce events, with abandonment and time to purchase.
-   * `GET /api/websites/{websiteId}/commerce/checkout`
-   */
-  getWebsiteCommerceCheckout(
-    input: OperationInput<'getWebsiteCommerceCheckout'>,
-    options?: RequestOptions,
-  ): Promise<OperationOutput<'getWebsiteCommerceCheckout'>> {
-    return this.execute('getWebsiteCommerceCheckout', input, options);
-  }
-
-  /**
    * List website commerce currencies
    * Returns the currencies with completed orders in the date range, with order counts and revenue, most orders first.
    * `GET /api/websites/{websiteId}/commerce/currencies`
@@ -5223,7 +4925,7 @@ export abstract class GeneratedUmamiClient {
   }
 
   /**
-   * get Website Commerce Markets
+   * List website commerce markets
    * `GET /api/websites/{websiteId}/commerce/markets`
    */
   getWebsiteCommerceMarkets(
@@ -5267,51 +4969,6 @@ export abstract class GeneratedUmamiClient {
     options?: RequestOptions,
   ): Promise<OperationOutput<'getWebsiteCommerceOrders'>> {
     return this.execute('getWebsiteCommerceOrders', input, options);
-  }
-
-  /**
-   * List website commerce products
-   * Returns a paginated list of products, variants or categories in completed orders with units, orders and revenue.
-   * `GET /api/websites/{websiteId}/commerce/products`
-   */
-  getWebsiteCommerceProducts(
-    input: OperationInput<'getWebsiteCommerceProducts'>,
-    options?: RequestOptions,
-  ): Promise<OperationOutput<'getWebsiteCommerceProducts'>> {
-    return this.execute('getWebsiteCommerceProducts', input, options);
-  }
-
-  /**
-   * get Website Commerce Report
-   * `GET /api/websites/{websiteId}/commerce/reports/{reportId}`
-   */
-  getWebsiteCommerceReport(
-    input: OperationInput<'getWebsiteCommerceReport'>,
-    options?: RequestOptions,
-  ): Promise<OperationOutput<'getWebsiteCommerceReport'>> {
-    return this.execute('getWebsiteCommerceReport', input, options);
-  }
-
-  /**
-   * get Website Commerce Reports
-   * `GET /api/websites/{websiteId}/commerce/reports`
-   */
-  getWebsiteCommerceReports(
-    input: OperationInput<'getWebsiteCommerceReports'>,
-    options?: RequestOptions,
-  ): Promise<OperationOutput<'getWebsiteCommerceReports'>> {
-    return this.execute('getWebsiteCommerceReports', input, options);
-  }
-
-  /**
-   * get Website Commerce Report Stats
-   * `GET /api/websites/{websiteId}/commerce/reports/{reportId}/stats`
-   */
-  getWebsiteCommerceReportStats(
-    input: OperationInput<'getWebsiteCommerceReportStats'>,
-    options?: RequestOptions,
-  ): Promise<OperationOutput<'getWebsiteCommerceReportStats'>> {
-    return this.execute('getWebsiteCommerceReportStats', input, options);
   }
 
   /**
@@ -5928,6 +5585,18 @@ export abstract class GeneratedUmamiClient {
   }
 
   /**
+   * Import Shopify order facts
+   * Accepts selected Shopify GraphQL Admin order fields from an authenticated integration. Imports completed orders and successful refund transactions in shop currency, skipping test orders. Does not create website traffic or reconstruct item state. This endpoint is not a Shopify webhook receiver.
+   * `POST /api/websites/{websiteId}/commerce/shopify`
+   */
+  importWebsiteShopifyCommerce(
+    input: OperationInput<'importWebsiteShopifyCommerce'>,
+    options?: RequestOptions,
+  ): Promise<OperationOutput<'importWebsiteShopifyCommerce'>> {
+    return this.execute('importWebsiteShopifyCommerce', input, options);
+  }
+
+  /**
    * Set up two-factor authentication
    * Starts or replaces the current user's pending setup and returns a QR code and manual setup key for an authenticator app.
    * `POST /api/2fa/setup/initiate`
@@ -5997,6 +5666,18 @@ export abstract class GeneratedUmamiClient {
     options?: RequestOptions,
   ): Promise<OperationOutput<'record'>> {
     return this.execute('record', input, options);
+  }
+
+  /**
+   * Record an order or refund
+   * Records an authoritative order or refund independently of browser activity. Requires website edit access. Amounts are independent of optional line items. Retries deduplicate by source and external identity. Newer source updatedAt timestamps replace full order snapshots; refunds are immutable.
+   * `POST /api/websites/{websiteId}/commerce`
+   */
+  recordWebsiteCommerce(
+    input: OperationInput<'recordWebsiteCommerce'>,
+    options?: RequestOptions,
+  ): Promise<OperationOutput<'recordWebsiteCommerce'>> {
+    return this.execute('recordWebsiteCommerce', input, options);
   }
 
   /**
@@ -6171,17 +5852,6 @@ export abstract class GeneratedUmamiClient {
     options?: RequestOptions,
   ): Promise<OperationOutput<'updateWebsiteAnnotation'>> {
     return this.execute('updateWebsiteAnnotation', input, options);
-  }
-
-  /**
-   * update Website Commerce Report
-   * `POST /api/websites/{websiteId}/commerce/reports/{reportId}`
-   */
-  updateWebsiteCommerceReport(
-    input: OperationInput<'updateWebsiteCommerceReport'>,
-    options?: RequestOptions,
-  ): Promise<OperationOutput<'updateWebsiteCommerceReport'>> {
-    return this.execute('updateWebsiteCommerceReport', input, options);
   }
 
   /**

@@ -1,20 +1,15 @@
-import { Column, Loading, Row, Tab, TabList, TabPanel, Tabs } from '@umami/react-zen';
-import type { ReactNode } from 'react';
+import { Column, Loading, Tab, TabList, TabPanel, Tabs } from '@umami/react-zen';
 import { EmptyPlaceholder } from '@/components/common/EmptyPlaceholder';
 import { Panel } from '@/components/common/Panel';
 import { useMessages, useNavigation } from '@/components/hooks';
 import { ShoppingCart } from '@/components/icons';
 import { SessionModal } from '../../sessions/SessionModal';
 import { CommerceAttribution } from './CommerceAttribution';
-import { CommerceCheckout } from './CommerceCheckout';
 import { CommerceCustomers } from './CommerceCustomers';
 import { CommerceOrderModal } from './CommerceOrderModal';
 import { CommerceOverview } from './CommerceOverview';
-import { CommerceProducts } from './CommerceProducts';
-import { CommerceReportsToolbar } from './CommerceReportsToolbar';
 import { CommerceToolbar } from './CommerceToolbar';
 import { type CommerceTab, isCommerceTab } from './commerceUtils';
-import { SavedCommerceReport } from './SavedCommerceReport';
 import { useCommerceScope } from './useCommerceScope';
 
 export interface CommerceProps {
@@ -37,7 +32,6 @@ export function Commerce({ websiteId, startDate, endDate, unit }: CommerceProps)
         tab: key === 'overview' ? undefined : key,
         page: undefined,
         search: undefined,
-        product: undefined,
       }),
       { scroll: false },
     );
@@ -47,27 +41,10 @@ export function Commerce({ websiteId, startDate, endDate, unit }: CommerceProps)
     return <Loading placement="absolute" />;
   }
 
-  const reportControls = <CommerceReportsToolbar websiteId={websiteId} currency={currency} />;
-  if (query.savedReport) {
-    return (
-      <Column gap>
-        <CommerceControls>{reportControls}</CommerceControls>
-        <Panel>
-          <SavedCommerceReport
-            key={query.savedReport}
-            websiteId={websiteId}
-            reportId={query.savedReport}
-          />
-        </Panel>
-      </Column>
-    );
-  }
-
   // Nothing to report: show how to start instead of querying an empty (or missing) dataset.
   if (!hasData) {
     return (
       <Column gap>
-        <CommerceControls>{reportControls}</CommerceControls>
         <Panel>
           <EmptyPlaceholder
             icon={<ShoppingCart />}
@@ -83,33 +60,22 @@ export function Commerce({ websiteId, startDate, endDate, unit }: CommerceProps)
 
   return (
     <Column gap>
-      <CommerceControls>
-        {reportControls}
-        <CommerceToolbar
-          websiteId={websiteId}
-          currency={currency}
-          market={market}
-          currencies={currencies}
-          onCurrencyChange={setCurrency}
-          onMarketChange={setMarket}
-        />
-      </CommerceControls>
+      <CommerceToolbar
+        websiteId={websiteId}
+        currency={currency}
+        market={market}
+        currencies={currencies}
+        onCurrencyChange={setCurrency}
+        onMarketChange={setMarket}
+      />
       <Tabs selectedKey={tab} onSelectionChange={key => handleTabChange(key as CommerceTab)}>
         <TabList>
           <Tab id="overview">{t(labels.overview)}</Tab>
-          <Tab id="products">{t('commerce.products')}</Tab>
-          <Tab id="checkout">{t('commerce.checkout')}</Tab>
           <Tab id="customers">{t('commerce.customers')}</Tab>
           <Tab id="attribution">{t(labels.attribution)}</Tab>
         </TabList>
         <TabPanel id="overview">
           <CommerceOverview {...props} />
-        </TabPanel>
-        <TabPanel id="products">
-          <CommerceProducts {...props} />
-        </TabPanel>
-        <TabPanel id="checkout">
-          <CommerceCheckout websiteId={websiteId} scope={scope} />
         </TabPanel>
         <TabPanel id="customers">
           <CommerceCustomers websiteId={websiteId} scope={scope} />
@@ -121,22 +87,5 @@ export function Commerce({ websiteId, startDate, endDate, unit }: CommerceProps)
       <SessionModal websiteId={websiteId} />
       <CommerceOrderModal websiteId={websiteId} />
     </Column>
-  );
-}
-
-/** Report controls on a sunken, padded panel, set apart from the filter row and tabs. */
-function CommerceControls({ children }: { children: ReactNode }) {
-  return (
-    <Row
-      gap
-      wrap="wrap"
-      alignItems="flex-end"
-      padding="4"
-      marginY="2"
-      borderRadius
-      backgroundColor="surface-sunken"
-    >
-      {children}
-    </Row>
   );
 }

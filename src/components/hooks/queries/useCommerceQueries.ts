@@ -1,17 +1,10 @@
 import { keepPreviousData } from '@tanstack/react-query';
 import { serializeAnalyticsQuery } from '@/lib/analytics-query';
-import type {
-  CommerceAttributionModel,
-  CommerceMetricType,
-  CommerceProductGroup,
-  CommerceProductSort,
-} from '@/lib/commerce-reports';
+import type { CommerceAttributionModel, CommerceMetricType } from '@/lib/commerce-reports';
 import { MAX_PAGING_RESULTS } from '@/lib/constants';
 import type { ReactQueryOptions } from '@/lib/types';
 import type { CommerceAttribution } from '@/queries/sql/commerce/getCommerceAttribution';
-import type { CommerceBaskets } from '@/queries/sql/commerce/getCommerceBaskets';
 import type { CommerceChartPoint } from '@/queries/sql/commerce/getCommerceChart';
-import type { CommerceCheckout } from '@/queries/sql/commerce/getCommerceCheckout';
 import type { CommerceCurrency } from '@/queries/sql/commerce/getCommerceCurrencies';
 import type { CommerceCustomers } from '@/queries/sql/commerce/getCommerceCustomers';
 import type { CommerceMetric } from '@/queries/sql/commerce/getCommerceMetrics';
@@ -23,19 +16,16 @@ import { useFilterParameters } from '../useFilterParameters';
 import { usePagedQuery } from '../usePagedQuery';
 import { useAnalyticsQuery } from './useAnalyticsQuery';
 
-/** Narrows commerce reports to one currency, and optionally a market, product or category. */
+/** Narrows commerce reports to one currency and optionally a market. */
 export interface CommerceScope {
   currency: string;
   market?: string;
-  productId?: string;
-  category?: string;
-  windowHours?: number;
 }
 
 export type CommerceStatsData = CommerceStats & { comparison: CommerceStats };
 
-function scopeParams({ currency, market, productId, category, windowHours }: CommerceScope) {
-  return { currency, market, productId, category, windowHours };
+function scopeParams({ currency, market }: CommerceScope) {
+  return { currency, market };
 }
 
 function useCommerceQuery<T>(
@@ -96,22 +86,6 @@ export function useCommerceMetricsQuery(
     { ...scopeParams(scope), type: scope.type, limit: scope.limit },
     options,
   );
-}
-
-export function useCommerceBasketsQuery(
-  websiteId: string,
-  scope: CommerceScope,
-  options?: ReactQueryOptions<CommerceBaskets>,
-) {
-  return useCommerceQuery<CommerceBaskets>('baskets', websiteId, scopeParams(scope), options);
-}
-
-export function useCommerceCheckoutQuery(
-  websiteId: string,
-  scope: CommerceScope,
-  options?: ReactQueryOptions<CommerceCheckout>,
-) {
-  return useCommerceQuery<CommerceCheckout>('checkout', websiteId, scopeParams(scope), options);
 }
 
 export function useCommerceCustomersQuery(
@@ -182,30 +156,6 @@ function useCommercePagedQuery(
 
 export function useCommerceOrdersQuery(websiteId: string, scope: CommerceScope) {
   return useCommercePagedQuery('orders', websiteId, scopeParams(scope));
-}
-
-export function useCommerceProductsQuery(
-  websiteId: string,
-  scope: CommerceScope & {
-    groupBy?: CommerceProductGroup;
-    sort?: CommerceProductSort;
-    pageSize?: number;
-    minViews?: number;
-    maxCartRate?: number;
-  },
-) {
-  return useCommercePagedQuery('products', websiteId, {
-    ...scopeParams(scope),
-    groupBy: scope.groupBy,
-    sort: scope.sort,
-    minViews: scope.minViews,
-    maxCartRate: scope.maxCartRate,
-    pageSize: scope.pageSize,
-  });
-}
-
-export function useCommerceAbandonedQuery(websiteId: string, scope: CommerceScope) {
-  return useCommercePagedQuery('abandoned', websiteId, scopeParams(scope));
 }
 
 export function useCommerceBuyersQuery(websiteId: string, scope: CommerceScope, enabled = true) {

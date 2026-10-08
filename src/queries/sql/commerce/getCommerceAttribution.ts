@@ -28,7 +28,7 @@ import {
  * last-click:  the latest touch with an external referrer, campaign or click ID
  *              (last non-direct click), or the latest touch when every touch is direct.
  *
- * Orders with no recorded touch are attributed as direct.
+ * Orders with no recorded touch are explicitly unattributed.
  */
 
 const FUNCTION_NAME = 'getCommerceAttribution';
@@ -43,14 +43,14 @@ export {
 
 export interface CommerceAttributionRow {
   name: string;
-  revenue: number;
+  revenue: number | null;
   orders: number;
 }
 
 export type CommerceAttribution = Record<CommerceAttributionDimension, CommerceAttributionRow[]> & {
   model: CommerceAttributionModel;
   lookbackDays: number;
-  total: { revenue: number; orders: number };
+  total: { revenue: number | null; orders: number };
 };
 
 export async function getCommerceAttribution(
@@ -82,7 +82,7 @@ export function groupAttribution(
   for (const row of rows) {
     const value = {
       name: row.name ?? '',
-      revenue: toNumber(row.revenue),
+      revenue: row.revenue == null ? null : toNumber(row.revenue),
       orders: toNumber(row.orders),
     };
 
@@ -125,8 +125,8 @@ function getUnionQuery(dialect: 'prisma' | 'clickhouse') {
   const count = dialect === 'prisma' ? 'count(*)' : 'count()';
   const dimensions = getDimensionSelects(dialect).map(
     ([dimension, expression, excludeEmpty]) => `
-      select '${dimension}' as dimension, name, sum(value) as revenue, ${count} as orders
-      from (select ${expression} as name, model.value as value from model) as d
+      select '${dimension}' as dimension, name, case when count(value) = count(*) then coalesce(sum(value), 0) else NULL end as revenue, ${count} as orders
+      from (select case when model.has_touch = 0 then 'Unattributed' else ${expression} end as name, model.value as value from model) as d
       ${excludeEmpty ? "where name != ''" : ''}
       group by name`,
   );
@@ -134,7 +134,7 @@ function getUnionQuery(dialect: 'prisma' | 'clickhouse') {
   return [
     ...dimensions,
     `
-      select 'total' as dimension, '' as name, sum(orders.value) as revenue, ${count} as orders
+      select 'total' as dimension, '' as name, case when count(orders.value) = count(*) then coalesce(sum(orders.value), 0) else NULL end as revenue, ${count} as orders
       from orders`,
   ].join('\n      union all');
 }
@@ -174,6 +174,7 @@ async function relationalQuery(
       select
         orders.commerce_event_id,
         orders.value,
+        case when ve.visit_id is null then 0 else 1 end as has_touch,
         ${columns.map(column => `coalesce(ve.${column}, '') as ${column}`).join(',\n        ')},
         row_number() over (
           partition by orders.commerce_event_id
@@ -216,6 +217,7 @@ async function clickhouseQuery(
       select
         orders.commerce_event_id as commerce_event_id,
         orders.value as value,
+        if(ve.visit_id = toUUID('00000000-0000-0000-0000-000000000000'), 0, 1) as has_touch,
         orders.created_at as order_at,
         ve.visit_id as visit_id,
         ve.entry_at as entry_at,

@@ -35,12 +35,6 @@ vi.mock('@/queries/sql/commerce/getCommerceChart', () => ({ getCommerceChart: mo
 vi.mock('@/queries/sql/commerce/getCommerceMetrics', () => ({ getCommerceMetrics: mocks.query }));
 vi.mock('@/queries/sql/commerce/getCommerceOrders', () => ({ getCommerceOrders: mocks.query }));
 vi.mock('@/queries/sql/commerce/getCommerceOrder', () => ({ getCommerceOrder: mocks.order }));
-vi.mock('@/queries/sql/commerce/getCommerceProducts', () => ({ getCommerceProducts: mocks.query }));
-vi.mock('@/queries/sql/commerce/getCommerceBaskets', () => ({ getCommerceBaskets: mocks.query }));
-vi.mock('@/queries/sql/commerce/getCommerceCheckout', () => ({
-  getCommerceCheckout: mocks.query,
-  getCommerceAbandonedCheckouts: mocks.query,
-}));
 vi.mock('@/queries/sql/commerce/getCommerceCustomers', () => ({
   getCommerceCustomers: mocks.query,
   getCommerceBuyers: mocks.query,
@@ -48,21 +42,15 @@ vi.mock('@/queries/sql/commerce/getCommerceCustomers', () => ({
 vi.mock('@/queries/sql/commerce/getCommerceAttribution', () => ({
   getCommerceAttribution: mocks.query,
 }));
-vi.mock('@/queries/sql/breakdown/getBreakdown', () => ({ getBreakdown: mocks.query }));
 
-import { GET as breakdown } from '@/app/api/websites/[websiteId]/breakdown/route';
-import { GET as abandoned } from '@/app/api/websites/[websiteId]/commerce/abandoned/route';
 import { GET as attribution } from '@/app/api/websites/[websiteId]/commerce/attribution/route';
-import { GET as baskets } from '@/app/api/websites/[websiteId]/commerce/baskets/route';
 import { GET as buyers } from '@/app/api/websites/[websiteId]/commerce/buyers/route';
 import { GET as chart } from '@/app/api/websites/[websiteId]/commerce/chart/route';
-import { GET as checkout } from '@/app/api/websites/[websiteId]/commerce/checkout/route';
 import { GET as currencies } from '@/app/api/websites/[websiteId]/commerce/currencies/route';
 import { GET as customers } from '@/app/api/websites/[websiteId]/commerce/customers/route';
 import { GET as metrics } from '@/app/api/websites/[websiteId]/commerce/metrics/route';
 import { GET as order } from '@/app/api/websites/[websiteId]/commerce/orders/[commerceEventId]/route';
 import { GET as orders } from '@/app/api/websites/[websiteId]/commerce/orders/route';
-import { GET as products } from '@/app/api/websites/[websiteId]/commerce/products/route';
 import { GET as stats } from '@/app/api/websites/[websiteId]/commerce/stats/route';
 
 const context = { params: Promise.resolve({ websiteId: 'website' }) };
@@ -76,10 +64,6 @@ const scoped = [
   ['chart', chart, {}],
   ['metrics', metrics, { type: 'channel' }],
   ['orders', orders, {}],
-  ['products', products, { groupBy: 'variant', sort: 'units' }],
-  ['baskets', baskets, {}],
-  ['checkout', checkout, {}],
-  ['abandoned', abandoned, {}],
   ['customers', customers, {}],
   ['buyers', buyers, {}],
   ['attribution', attribution, { model: 'first-click' }],
@@ -185,13 +169,4 @@ describe('order detail', () => {
       ).status,
     ).toBe(401);
   });
-});
-
-test('breakdown revenue columns require the commerce section', async () => {
-  mocks.denied.add('commerce');
-
-  expect((await breakdown(request({ fields: '["path"]' }), context)).status).toBe(200);
-  expect((await breakdown(request({ fields: '["path"]', currency: 'EUR' }), context)).status).toBe(
-    401,
-  );
 });

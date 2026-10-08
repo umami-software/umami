@@ -589,20 +589,10 @@ export const operationDescriptions: Record<string, OperationDescription> = {
     description:
       "Clears the website's collected analytics data while keeping the website configuration.",
   },
-  'GET /api/websites/{websiteId}/commerce/abandoned': {
-    summary: 'List abandoned carts and checkouts',
-    description:
-      'Returns a paginated list of sessions that reached cart or checkout without a completed payment, with the value of their latest cart or checkout.',
-  },
   'GET /api/websites/{websiteId}/commerce/attribution': {
     summary: 'Get website commerce revenue attribution',
     description:
       'Returns completed-order revenue attributed to channels, referrers, ad platforms, landing pages and UTM parameters with a first-click or last non-direct click model.',
-  },
-  'GET /api/websites/{websiteId}/commerce/baskets': {
-    summary: 'Get website commerce basket analysis',
-    description:
-      'Returns the distribution of units per order and the products most often bought in the same order, or the companions of one product.',
   },
   'GET /api/websites/{websiteId}/commerce/buyers': {
     summary: 'List website commerce buyers',
@@ -613,11 +603,6 @@ export const operationDescriptions: Record<string, OperationDescription> = {
     summary: 'Get website commerce revenue over time',
     description:
       'Returns completed-order revenue and order counts per time bucket and event name for one currency.',
-  },
-  'GET /api/websites/{websiteId}/commerce/checkout': {
-    summary: 'Get website checkout funnel',
-    description:
-      'Returns sessions reaching cart, checkout and payment, inferred from the cart, checkout and order IDs of commerce events, with abandonment and time to purchase.',
   },
   'GET /api/websites/{websiteId}/commerce/currencies': {
     summary: 'List website commerce currencies',
@@ -642,11 +627,6 @@ export const operationDescriptions: Record<string, OperationDescription> = {
   'GET /api/websites/{websiteId}/commerce/orders/{commerceEventId}': {
     summary: 'Get a website commerce order',
     description: 'Returns one commerce record with its current items.',
-  },
-  'GET /api/websites/{websiteId}/commerce/products': {
-    summary: 'List website commerce products',
-    description:
-      'Returns a paginated list of products, variants or categories in completed orders with units, orders and revenue.',
   },
   'GET /api/websites/{websiteId}/commerce/stats': {
     summary: 'Get website commerce totals',

@@ -17,7 +17,6 @@ import { ActionSelect } from '@/components/input/ActionSelect';
 import { DateFilter } from '@/components/input/DateFilter';
 import { FieldFilters } from '@/components/input/FieldFilters';
 import { LookupField } from '@/components/input/LookupField';
-import { ProductLookupField } from '@/components/input/ProductLookupField';
 
 export function CohortEditForm({
   cohortId,
@@ -97,7 +96,7 @@ export function CohortEditForm({
               <Grid columns={{ base: '1fr', md: '1fr 1fr' }} gap>
                 <Column>
                   <FormField name="parameters.action.type" rules={{ required: t(labels.required) }}>
-                    <ActionSelect allowOrder />
+                    <ActionSelect />
                   </FormField>
                 </Column>
                 <Column>
@@ -105,13 +104,9 @@ export function CohortEditForm({
                     name="parameters.action.value"
                     rules={{ required: t(labels.required) }}
                   >
-                    {({ field }) =>
-                      type === 'order' ? (
-                        <ProductLookupField websiteId={websiteId} {...field} />
-                      ) : (
-                        <LookupField websiteId={websiteId} type={type} {...field} />
-                      )
-                    }
+                    {({ field }) => {
+                      return <LookupField websiteId={websiteId} type={type} {...field} />;
+                    }}
                   </FormField>
                 </Column>
               </Grid>

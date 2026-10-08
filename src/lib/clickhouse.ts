@@ -197,45 +197,9 @@ function getCohortQuery(filters: Record<string, any>) {
       where website_id = {websiteId:UUID}
       and created_at between {cohort_startDate:DateTime64} and {cohort_endDate:DateTime64}
       ${filterQuery}
-      ${getCohortOrderQuery(filters)}
     ) as cohort
       on cohort.cohort_session_id = website_event.session_id
     `;
-}
-
-// Purchase cohorts: sessions with a completed payment, optionally containing one product.
-// Payments are read with FINAL and matched to their current item snapshot.
-function getCohortOrderQuery(filters: Record<string, any>) {
-  const product = filters.cohort_order;
-
-  if (!product) {
-    return '';
-  }
-
-  return `and session_id in (
-        select ce.session_id
-        from (
-          select session_id, commerce_event_id, snapshot_id
-          from commerce_event final
-          where website_id = {websiteId:UUID}
-            and created_at between {cohort_startDate:DateTime64} and {cohort_endDate:DateTime64}
-            and order_id != ''
-        ) as ce
-        ${
-          product === '*'
-            ? ''
-            : `inner join (
-          select commerce_event_id, snapshot_id
-          from commerce_item final
-          where website_id = {websiteId:UUID}
-            and created_at between {cohort_startDate:DateTime64} and {cohort_endDate:DateTime64}
-            and product_id = {cohort_order:String}
-          group by commerce_event_id, snapshot_id
-        ) as ci
-          on ci.commerce_event_id = ce.commerce_event_id
-         and ci.snapshot_id = ce.snapshot_id`
-        }
-      )`;
 }
 
 function getExcludeBounceQuery(filters: Record<string, any>) {

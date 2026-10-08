@@ -1,16 +1,9 @@
 import { LoadingPanel } from '@/components/common/LoadingPanel';
-import {
-  useCommerceCurrenciesQuery,
-  useCommerceStatsQuery,
-  useDateRange,
-  useFlag,
-  useMessages,
-  useTimezone,
-} from '@/components/hooks';
+import { useDateRange, useMessages, useTimezone } from '@/components/hooks';
 import { useWebsiteStatsQuery } from '@/components/hooks/queries/useWebsiteStatsQuery';
 import { MetricCard } from '@/components/metrics/MetricCard';
 import { MetricsBar } from '@/components/metrics/MetricsBar';
-import { formatLongCurrency, formatLongNumber, formatShortTime } from '@/lib/format';
+import { formatLongNumber, formatShortTime } from '@/lib/format';
 
 interface WebsiteMetric {
   label: string;
@@ -38,7 +31,6 @@ export function WebsiteMetricsBar({
   });
 
   const { pageviews, visitors, visits, bounces, totaltime, comparison } = data || {};
-  const revenue = useRevenueMetric(websiteId, compareMode ? dateCompare?.compare : undefined);
 
   const metrics: WebsiteMetric[] | null = data
     ? [
@@ -78,7 +70,6 @@ export function WebsiteMetricsBar({
           formatValue: n =>
             `${+n < 0 ? '-' : ''}${formatShortTime(Math.abs(~~n), ['m', 's'], ' ')}`,
         },
-        ...(revenue ? [revenue] : []),
       ]
     : null;
 
@@ -108,38 +99,4 @@ export function WebsiteMetricsBar({
       </MetricsBar>
     </LoadingPanel>
   );
-}
-
-/**
- * Revenue from completed orders, in the currency with the most orders, when the website
- * records commerce data in the period. Shares without the Commerce section never see it,
- * and nobody sees it while the commerce feature flag is off.
- */
-function useRevenueMetric(websiteId: string, compare?: string): WebsiteMetric | null {
-  const { t } = useMessages();
-  const commerceEnabled = useFlag('commerce');
-  const { data: currencies } = useCommerceCurrenciesQuery(websiteId, {
-    retry: false,
-    enabled: commerceEnabled,
-  });
-  // Only when the period has completed orders; carts alone do not earn a revenue card.
-  const currency = currencies?.[0]?.orders > 0 ? currencies[0].currency : undefined;
-  const { data } = useCommerceStatsQuery(
-    websiteId,
-    { currency, compare },
-    { retry: false, enabled: !!currency },
-  );
-
-  if (!commerceEnabled || !currency || !data) {
-    return null;
-  }
-
-  return {
-    label: t('commerce.revenue'),
-    value: data.revenue,
-    prev: data.comparison?.revenue,
-    change: data.revenue - (data.comparison?.revenue ?? 0),
-    formatValue: (n: number) => formatLongCurrency(n, currency),
-    reverseColors: false,
-  };
 }
