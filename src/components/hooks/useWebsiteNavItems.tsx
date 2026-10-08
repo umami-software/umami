@@ -6,21 +6,18 @@ import {
   Eye,
   Flame,
   Sheet,
-  ShoppingCart,
   Tag,
   User,
   UserPlus,
   Video,
 } from '@/components/icons';
 import { Funnel, Gauge, Lightning, Magnet, Money, Network, Path, Target } from '@/components/svg';
-import { useFlag } from './useFlag';
 import { useMessages } from './useMessages';
 import { useNavigation } from './useNavigation';
 
 export function useWebsiteNavItems(websiteId: string) {
   const { t, labels } = useMessages();
   const { pathname, renderUrl } = useNavigation();
-  const commerceEnabled = useFlag('commerce');
   const resetParams = {
     search: undefined,
     page: undefined,
@@ -34,14 +31,6 @@ export function useWebsiteNavItems(websiteId: string) {
       view: undefined,
       unit: undefined,
       excludeBounce: undefined,
-      // Commerce report state
-      tab: undefined,
-      market: undefined,
-      product: undefined,
-      order: undefined,
-      group: undefined,
-      sort: undefined,
-      model: undefined,
     });
 
   const items = [
@@ -159,16 +148,6 @@ export function useWebsiteNavItems(websiteId: string) {
           icon: <Money />,
           path: renderPath('/revenue'),
         },
-        ...(commerceEnabled
-          ? [
-              {
-                id: 'commerce',
-                label: t(labels.commerce),
-                icon: <ShoppingCart />,
-                path: renderPath('/commerce'),
-              },
-            ]
-          : []),
         {
           id: 'attribution',
           label: t(labels.attribution),

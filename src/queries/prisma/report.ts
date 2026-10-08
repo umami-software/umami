@@ -19,7 +19,6 @@ export async function getReport(reportId: string) {
   return findReport({
     where: {
       id: reportId,
-      type: { not: 'commerce' },
     },
   });
 }
@@ -32,10 +31,8 @@ export async function getReports(
   const orderBy = criteria.orderBy ?? [{ name: 'asc' }, { id: 'asc' }];
 
   const where: Prisma.ReportWhereInput = {
-    // Retired commerce definitions must not reappear through compatibility APIs.
     AND: [
       criteria.where ?? {},
-      { type: { not: 'commerce' } },
       prisma.getSearchParameters(search, [
         { name: 'contains' },
         { description: 'contains' },

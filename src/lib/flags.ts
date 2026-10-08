@@ -1,8 +1,8 @@
-import { evaluate, flag } from 'flags/next';
+import { evaluate, type flag } from 'flags/next';
 
 /**
  * Whether a flag key is listed in FEATURE_FLAGS, a comma-separated list of enabled flags,
- * e.g. `FEATURE_FLAGS=commerce,other`. Whitespace and case are ignored.
+ * e.g. `FEATURE_FLAGS=example,other`. Whitespace and case are ignored.
  */
 export function isFeatureEnabled(key: string): boolean {
   return (process.env.FEATURE_FLAGS ?? '')
@@ -21,15 +21,7 @@ export function isFeatureEnabled(key: string): boolean {
  *
  * Every flag must have a `defaultValue` so the app keeps working if a flag cannot be evaluated.
  */
-export const flags = {
-  // Commerce UI only. Collection through /api/send and the commerce APIs are not gated.
-  commerce: flag<boolean>({
-    key: 'commerce',
-    description: 'Show the Commerce report and commerce features in the UI.',
-    defaultValue: false,
-    decide: () => isFeatureEnabled('commerce'),
-  }),
-};
+export const flags: Record<string, ReturnType<typeof flag<boolean>>> = {};
 
 export type FlagKey = keyof typeof flags;
 

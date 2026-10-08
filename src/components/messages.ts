@@ -182,8 +182,6 @@ export const labels: Record<string, string> = {
   funnelDescription: 'label.funnel-description',
   revenue: 'label.revenue',
   revenueDescription: 'label.revenue-description',
-  commerce: 'label.commerce',
-  commerceDescription: 'label.commerce-description',
   attribution: 'label.attribution',
   attributionDescription: 'label.attribution-description',
   currency: 'label.currency',

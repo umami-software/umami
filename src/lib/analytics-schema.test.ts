@@ -33,26 +33,3 @@ describe('analytics GET schemas', () => {
     });
   });
 });
-
-describe('commerce GET schemas', () => {
-  test('uppercases the currency and requires a three-letter code', async () => {
-    const { commerceStatsQuerySchema } = await import('./analytics-schema');
-
-    expect(commerceStatsQuerySchema.parse({ ...range, currency: 'eur' }).currency).toBe('EUR');
-    expect(commerceStatsQuerySchema.safeParse(range).success).toBe(false);
-    expect(commerceStatsQuerySchema.safeParse({ ...range, currency: 'EURO' }).success).toBe(false);
-  });
-
-  test('restricts dimensions and models to known values', async () => {
-    const { commerceAttributionQuerySchema, commerceMetricsQuerySchema } = await import(
-      './analytics-schema'
-    );
-    const base = { ...range, currency: 'USD' };
-
-    expect(commerceMetricsQuerySchema.safeParse({ ...base, type: 'channel' }).success).toBe(true);
-    expect(commerceMetricsQuerySchema.safeParse({ ...base, type: 'url_path' }).success).toBe(false);
-    expect(commerceAttributionQuerySchema.safeParse({ ...base, model: 'linear' }).success).toBe(
-      false,
-    );
-  });
-});

@@ -2,7 +2,7 @@
 import { Loading } from '@umami/react-zen';
 import { usePathname, useRouter } from 'next/navigation';
 import { createContext, type ReactNode, useEffect } from 'react';
-import { useFlag, useShareTokenQuery } from '@/components/hooks';
+import { useShareTokenQuery } from '@/components/hooks';
 import { ENTITY_TYPE } from '@/lib/constants';
 import type { ShareParameters, WhiteLabel } from '@/lib/types';
 import { setShareData, useApp } from '@/store/app';
@@ -39,7 +39,6 @@ const ALL_SECTION_IDS = [
   'retention',
   'utm',
   'revenue',
-  'commerce',
   'attribution',
 ];
 
@@ -63,12 +62,7 @@ export function ShareProvider({ slug, children }: { slug: string; children: Reac
   const path = getSharePath(pathname);
   const isWebsiteShare = share?.shareType === ENTITY_TYPE.website;
   const isShareReady = !!share?.token && shareToken?.token === share.token;
-  const commerceEnabled = useFlag('commerce');
-  // Hide the Commerce section while the commerce feature flag is off.
-  const parameters =
-    share?.parameters && !commerceEnabled
-      ? { ...share.parameters, commerce: false }
-      : share?.parameters;
+  const parameters = share?.parameters;
 
   const allowedSections =
     isWebsiteShare && parameters ? ALL_SECTION_IDS.filter(id => parameters[id] === true) : [];

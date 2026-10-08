@@ -438,54 +438,6 @@ ENGINE = ReplacingMergeTree
     ORDER BY (website_id, distinct_id, session_id)
     SETTINGS index_granularity = 8192;
 
-CREATE TABLE umami.commerce_event
-(
-    website_id UUID,
-    commerce_event_id UUID,
-    snapshot_id UUID,
-    session_id Nullable(UUID),
-    visit_id Nullable(UUID),
-    event_name String,
-    currency LowCardinality(String),
-    market String,
-    cart_id String,
-    checkout_id String,
-    order_id String,
-    kind LowCardinality(String) DEFAULT 'order',
-    source String DEFAULT '',
-    reference_id String DEFAULT '',
-    customer_id String DEFAULT '',
-    subtotal Nullable(Decimal(19, 4)),
-    shipping Nullable(Decimal(19, 4)),
-    tax Nullable(Decimal(19, 4)),
-    total Decimal(19, 4),
-    created_at DateTime64(3, 'UTC'),
-    updated_at DateTime64(3, 'UTC')
-)
-ENGINE = ReplacingMergeTree(updated_at)
--- Stable partitions allow order retries to deduplicate across calendar boundaries.
-PARTITION BY cityHash64(website_id) % 16
-ORDER BY (website_id, commerce_event_id);
-
-CREATE TABLE umami.commerce_item
-(
-    website_id UUID,
-    commerce_event_id UUID,
-    snapshot_id UUID,
-    item_index UInt32,
-    line_id String DEFAULT '',
-    product_id String,
-    name String,
-    variant String,
-    category String,
-    price Nullable(Decimal(19, 4)),
-    total Nullable(Decimal(19, 4)),
-    created_at DateTime64(3, 'UTC')
-)
-ENGINE = ReplacingMergeTree
-PARTITION BY toYYYYMM(created_at)
-ORDER BY (website_id, commerce_event_id, snapshot_id, item_index);
-
 CREATE TABLE IF NOT EXISTS umami.error_event
 (
     website_id UUID,

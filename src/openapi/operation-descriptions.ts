@@ -280,7 +280,7 @@ export const operationDescriptions: Record<string, OperationDescription> = {
   'POST /api/send': {
     summary: 'Send tracking data',
     description:
-      'Collects a pageview, custom event, visitor identification, or performance payload and returns session information and a tracking cache token when accepted. Named website events can include structured payload.data.commerce, which is extracted into dedicated commerce tables.',
+      'Collects a pageview, custom event, visitor identification, or performance payload and returns session information and a tracking cache token when accepted.',
   },
   'POST /api/share': {
     summary: 'Create a share',
@@ -588,50 +588,6 @@ export const operationDescriptions: Record<string, OperationDescription> = {
     summary: 'Reset website analytics',
     description:
       "Clears the website's collected analytics data while keeping the website configuration.",
-  },
-  'GET /api/websites/{websiteId}/commerce/attribution': {
-    summary: 'Get website commerce revenue attribution',
-    description:
-      'Returns completed-order revenue attributed to channels, referrers, ad platforms, landing pages and UTM parameters with a first-click or last non-direct click model.',
-  },
-  'GET /api/websites/{websiteId}/commerce/buyers': {
-    summary: 'List website commerce buyers',
-    description:
-      'Returns a paginated list of buyers with their orders and revenue. Buyers are identified visitors, or sessions without a distinct ID.',
-  },
-  'GET /api/websites/{websiteId}/commerce/chart': {
-    summary: 'Get website commerce revenue over time',
-    description:
-      'Returns completed-order revenue and order counts per time bucket and event name for one currency.',
-  },
-  'GET /api/websites/{websiteId}/commerce/currencies': {
-    summary: 'List website commerce currencies',
-    description:
-      'Returns the currencies with completed orders in the date range, with order counts and revenue, most orders first.',
-  },
-  'GET /api/websites/{websiteId}/commerce/customers': {
-    summary: 'Get website commerce customer totals',
-    description:
-      'Returns buyers, new and returning buyers, repeat purchase rate, revenue per buyer and median time to first purchase.',
-  },
-  'GET /api/websites/{websiteId}/commerce/metrics': {
-    summary: 'Get website commerce revenue by dimension',
-    description:
-      'Returns completed-order revenue, orders and buyers grouped by market, event, visitor attributes or the acquisition of the purchasing visit.',
-  },
-  'GET /api/websites/{websiteId}/commerce/orders': {
-    summary: 'List website commerce orders',
-    description:
-      'Returns a paginated list of completed orders in one currency, newest first, searchable by order ID.',
-  },
-  'GET /api/websites/{websiteId}/commerce/orders/{commerceEventId}': {
-    summary: 'Get a website commerce order',
-    description: 'Returns one commerce record with its current items.',
-  },
-  'GET /api/websites/{websiteId}/commerce/stats': {
-    summary: 'Get website commerce totals',
-    description:
-      'Returns revenue, orders, average order value, buyers, conversion rate and revenue per visitor for one currency, with the comparison period.',
   },
   'GET /api/websites/{websiteId}/revenue/chart': {
     summary: 'Get website revenue over time',

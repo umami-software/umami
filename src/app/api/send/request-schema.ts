@@ -1,5 +1,4 @@
 import { z } from 'zod';
-import { commerceSchema } from '@/lib/commerce';
 import { errorCollectionSchema } from '@/lib/errors/schema';
 import { anyObjectParam, urlOrPathParam } from '@/lib/schema';
 
@@ -42,25 +41,12 @@ export const collectionSchema = z
   .discriminatedUnion('type', [
     errorCollectionSchema,
     z.object({
-      type: z.enum(['identify', 'performance']),
+      type: z.enum(['event', 'identify', 'performance']),
       payload: payloadSchema,
-    }),
-    z.object({
-      type: z.literal('event'),
-      payload: payloadSchema.extend({
-        data: z.object({ commerce: commerceSchema.optional() }).catchall(z.any()).optional(),
-      }),
     }),
   ])
   .superRefine(({ type, payload }, ctx) => {
     if (type === 'error') return;
-    if (type === 'event' && payload.data?.commerce && (!payload.website || !payload.name?.trim())) {
-      ctx.addIssue({
-        code: 'custom',
-        path: ['payload', 'data', 'commerce'],
-        message: 'Commerce requires a named website event.',
-      });
-    }
     if ([payload.website, payload.link, payload.pixel].filter(Boolean).length !== 1) {
       ctx.addIssue({
         code: 'custom',

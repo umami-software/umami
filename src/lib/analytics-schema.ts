@@ -1,5 +1,4 @@
 import { z } from 'zod';
-import { COMMERCE_ATTRIBUTION_MODELS, COMMERCE_METRIC_TYPES } from './commerce-reports';
 import {
   attributionReportSchema,
   breakdownReportSchema,
@@ -96,44 +95,4 @@ export const performanceMetricsQuerySchema = analyticsSchema({
 });
 export const utmMetricsQuerySchema = analyticsSchema({
   type: z.enum(['utm_source', 'utm_medium', 'utm_campaign', 'utm_term', 'utm_content']),
-});
-
-// Commerce reports. One currency at a time, optionally narrowed to a market.
-const commerceCurrencyParam = z
-  .string()
-  .regex(/^[A-Za-z]{3}$/, 'Invalid currency code')
-  .transform(value => value.toUpperCase());
-const commerceIdentifierParam = z.string().trim().min(1).max(200);
-const commerceScopeParams = {
-  currency: commerceCurrencyParam,
-  market: commerceIdentifierParam.optional(),
-};
-const commercePagingParams = {
-  ...pagingParams,
-  search: z.string().max(200).optional(),
-};
-
-export const commerceCurrenciesQuerySchema = analyticsSchema({});
-export const commerceStatsQuerySchema = analyticsSchema({
-  ...commerceScopeParams,
-  compare: z.enum(['prev', 'yoy']).optional(),
-});
-export const commerceChartQuerySchema = analyticsSchema(commerceScopeParams);
-export const commerceMetricsQuerySchema = analyticsSchema({
-  ...commerceScopeParams,
-  type: z.enum(COMMERCE_METRIC_TYPES),
-  limit: z.coerce.number().int().min(1).max(500).optional(),
-});
-export const commerceOrdersQuerySchema = analyticsSchema({
-  ...commerceScopeParams,
-  ...commercePagingParams,
-});
-export const commerceCustomersQuerySchema = analyticsSchema(commerceScopeParams);
-export const commerceBuyersQuerySchema = analyticsSchema({
-  ...commerceScopeParams,
-  ...commercePagingParams,
-});
-export const commerceAttributionQuerySchema = analyticsSchema({
-  ...commerceScopeParams,
-  model: z.enum(COMMERCE_ATTRIBUTION_MODELS).optional(),
 });

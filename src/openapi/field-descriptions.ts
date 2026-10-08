@@ -65,7 +65,8 @@ const fieldDescriptions: Record<string, string> = {
   endAt: 'End of the date range as a Unix timestamp in milliseconds.',
   startDate: 'Start of the date range as an ISO 8601 date or date-time.',
   endDate: 'End of the date range as an ISO 8601 date or date-time.',
-  period: 'Relative date range, for example 7d or 30day, used instead of an explicit startAt/endAt range.',
+  period:
+    'Relative date range, for example 7d or 30day, used instead of an explicit startAt/endAt range.',
   timezone:
     'IANA time zone used to interpret dates and group results, for example America/New_York.',
   unit: 'Time interval used to group results: minute, hour, day, month, or year.',
@@ -113,13 +114,6 @@ const fieldDescriptions: Record<string, string> = {
   min: 'Minimum numeric property value.',
   max: 'Maximum numeric property value.',
   currency: 'Currency code used for revenue values.',
-  market: 'Market the order was placed in, as sent with the commerce payload.',
-  orders: 'Number of completed orders (commerce payments with an order ID).',
-  units: 'Number of item units.',
-  buyers: 'Number of distinct buyers: identified visitors, or sessions without a distinct ID.',
-  productId: 'Product identifier sent with the commerce item.',
-  variant: 'Product variant sent with the commerce item.',
-  category: 'Product category sent with the commerce item.',
   propertyName: 'Name of the custom event or session property.',
   propertyValue: 'Value of the custom property.',
   propertyKeys: 'Names of the custom properties.',

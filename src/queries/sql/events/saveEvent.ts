@@ -1,13 +1,10 @@
-import type { Prisma } from '@/generated/prisma/client';
 import clickhouse from '@/lib/clickhouse';
-import { commerceSchema, getCommerceEventId } from '@/lib/commerce';
-import { EVENT_TYPE, FIELD_LENGTH } from '@/lib/constants';
+import { FIELD_LENGTH } from '@/lib/constants';
 import { uuid } from '@/lib/crypto';
 import { CLICKHOUSE, PRISMA, runQuery } from '@/lib/db';
 import { truncateString } from '@/lib/format';
 import kafka from '@/lib/kafka';
 import prisma from '@/lib/prisma';
-import { saveCommerceEvent } from '../commerce/saveCommerceEvent';
 import { saveEventData } from './saveEventData';
 import { saveRevenue } from './saveRevenue';
 
@@ -67,94 +64,46 @@ export interface SaveEventArgs {
 }
 
 export async function saveEvent(args: SaveEventArgs) {
-  if (args.eventType !== EVENT_TYPE.customEvent || args.eventData?.commerce === undefined) {
-    return runQuery({
-      [PRISMA]: () => relationalQuery(args),
-      [CLICKHOUSE]: () => clickhouseQuery(args),
-    });
-  }
-  const { commerce: rawCommerce, ...properties } = args.eventData;
-  const commerce = commerceSchema.parse(rawCommerce);
-  const eventId = getCommerceEventId(args.websiteId, commerce);
-  const eventArgs = {
-    ...args,
-    createdAt: args.createdAt ?? new Date(),
-    eventName: truncateString(args.eventName, FIELD_LENGTH.eventName),
-    eventData: Object.keys(properties).length ? properties : undefined,
-  };
-  const context = {
-    websiteId: args.websiteId,
-    sessionId: args.sessionId,
-    visitId: args.visitId,
-    eventId,
-    eventName: eventArgs.eventName,
-    createdAt: eventArgs.createdAt,
-    data: commerce,
-  };
   return runQuery({
-    [PRISMA]: () =>
-      prisma.transaction(async (tx: Prisma.TransactionClient) => {
-        await relationalQuery(eventArgs, tx, eventId);
-        await saveCommerceEvent(context, tx);
-      }),
-    [CLICKHOUSE]: async () => {
-      // Skip completed payment retries. MergeTree cannot guarantee exactly-once
-      // generic events across concurrent requests or ambiguous insert failures.
-      if (commerce.orderId) {
-        const existing = await clickhouse.rawQuery<Array<{ commerce_event_id: string }>>(
-          'select commerce_event_id from commerce_event final where website_id = {websiteId:UUID} and commerce_event_id = {eventId:UUID} limit 1',
-          { websiteId: args.websiteId, eventId },
-        );
-        if (existing.length) {
-          await saveCommerceEvent(context);
-          return;
-        }
-      }
-      // Commerce-associated events go directly to ClickHouse so failures are surfaced.
-      await clickhouseQuery(eventArgs, eventId);
-      await saveCommerceEvent(context);
-    },
+    [PRISMA]: () => relationalQuery(args),
+    [CLICKHOUSE]: () => clickhouseQuery(args),
   });
 }
 
-async function relationalQuery(
-  {
-    websiteId,
-    sessionId,
-    visitId,
-    eventType,
-    createdAt,
-    pageTitle,
-    hostname,
-    urlPath,
-    urlQuery,
-    referrerPath,
-    referrerQuery,
-    referrerDomain,
-    eventName,
-    eventData,
-    tag,
-    utmSource,
-    utmMedium,
-    utmCampaign,
-    utmContent,
-    utmTerm,
-    gclid,
-    fbclid,
-    msclkid,
-    ttclid,
-    lifatid,
-    twclid,
-    lcp,
-    inp,
-    cls,
-    fcp,
-    ttfb,
-  }: SaveEventArgs,
-  tx?: Prisma.TransactionClient,
-  suppliedEventId?: string,
-) {
-  const websiteEventId = suppliedEventId ?? uuid();
+async function relationalQuery({
+  websiteId,
+  sessionId,
+  visitId,
+  eventType,
+  createdAt,
+  pageTitle,
+  hostname,
+  urlPath,
+  urlQuery,
+  referrerPath,
+  referrerQuery,
+  referrerDomain,
+  eventName,
+  eventData,
+  tag,
+  utmSource,
+  utmMedium,
+  utmCampaign,
+  utmContent,
+  utmTerm,
+  gclid,
+  fbclid,
+  msclkid,
+  ttclid,
+  lifatid,
+  twclid,
+  lcp,
+  inp,
+  cls,
+  fcp,
+  ttfb,
+}: SaveEventArgs) {
+  const websiteEventId = uuid();
 
   const row = {
     id: websiteEventId,
@@ -189,96 +138,80 @@ async function relationalQuery(
     ttfb,
     createdAt,
   };
-  const client = tx ?? prisma.client;
-  if (suppliedEventId) {
-    const result = await client.websiteEvent.createMany({ data: row, skipDuplicates: true });
-    if (!result.count) return false;
-  } else {
-    await client.websiteEvent.create({ data: row });
-  }
+  await prisma.client.websiteEvent.create({ data: row });
 
   if (eventData) {
-    await saveEventData(
-      {
-        websiteId,
-        sessionId,
-        eventId: websiteEventId,
-        urlPath: truncateString(urlPath, FIELD_LENGTH.url),
-        eventName: truncateString(eventName, FIELD_LENGTH.eventName),
-        eventData,
-        createdAt,
-      },
-      tx,
-    );
+    await saveEventData({
+      websiteId,
+      sessionId,
+      eventId: websiteEventId,
+      urlPath: truncateString(urlPath, FIELD_LENGTH.url),
+      eventName: truncateString(eventName, FIELD_LENGTH.eventName),
+      eventData,
+      createdAt,
+    });
 
     const { revenue, currency } = eventData;
 
     if (revenue > 0 && currency) {
-      await saveRevenue(
-        {
-          websiteId,
-          sessionId,
-          eventId: websiteEventId,
-          eventName: truncateString(eventName, FIELD_LENGTH.eventName),
-          currency,
-          revenue,
-          createdAt,
-        },
-        tx,
-      );
+      await saveRevenue({
+        websiteId,
+        sessionId,
+        eventId: websiteEventId,
+        eventName: truncateString(eventName, FIELD_LENGTH.eventName),
+        currency,
+        revenue,
+        createdAt,
+      });
     }
   }
-  return true;
 }
 
-async function clickhouseQuery(
-  {
-    websiteId,
-    sessionId,
-    visitId,
-    eventType,
-    createdAt,
-    pageTitle,
-    hostname,
-    urlPath,
-    urlQuery,
-    referrerPath,
-    referrerQuery,
-    referrerDomain,
-    distinctId,
-    browser,
-    os,
-    device,
-    screen,
-    language,
-    country,
-    region,
-    city,
-    eventName,
-    eventData,
-    tag,
-    utmSource,
-    utmMedium,
-    utmCampaign,
-    utmContent,
-    utmTerm,
-    gclid,
-    fbclid,
-    msclkid,
-    ttclid,
-    lifatid,
-    twclid,
-    lcp,
-    inp,
-    cls,
-    fcp,
-    ttfb,
-  }: SaveEventArgs,
-  suppliedEventId?: string,
-) {
+async function clickhouseQuery({
+  websiteId,
+  sessionId,
+  visitId,
+  eventType,
+  createdAt,
+  pageTitle,
+  hostname,
+  urlPath,
+  urlQuery,
+  referrerPath,
+  referrerQuery,
+  referrerDomain,
+  distinctId,
+  browser,
+  os,
+  device,
+  screen,
+  language,
+  country,
+  region,
+  city,
+  eventName,
+  eventData,
+  tag,
+  utmSource,
+  utmMedium,
+  utmCampaign,
+  utmContent,
+  utmTerm,
+  gclid,
+  fbclid,
+  msclkid,
+  ttclid,
+  lifatid,
+  twclid,
+  lcp,
+  inp,
+  cls,
+  fcp,
+  ttfb,
+}: SaveEventArgs) {
   const { insert, getUTCString } = clickhouse;
   const { sendMessage } = kafka;
-  const eventId = suppliedEventId ?? uuid();
+  const eventId = uuid();
 
   const message = {
     website_id: websiteId,
@@ -326,7 +259,7 @@ async function clickhouseQuery(
     ttfb: ttfb,
   };
 
-  if (kafka.enabled && !suppliedEventId) {
+  if (kafka.enabled) {
     await sendMessage('event', message);
   } else {
     await insert('website_event', [message]);
@@ -337,7 +270,6 @@ async function clickhouseQuery(
       websiteId,
       sessionId,
       eventId,
-      direct: !!suppliedEventId,
       urlPath: truncateString(urlPath, FIELD_LENGTH.url),
       eventName: truncateString(eventName, FIELD_LENGTH.eventName),
       eventData,

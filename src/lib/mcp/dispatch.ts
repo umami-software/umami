@@ -195,36 +195,6 @@ export const MCP_DISPATCH_ROUTES: readonly DispatchRoute[] = [
   },
   {
     method: 'GET',
-    path: '/api/websites/{websiteId}/commerce/currencies',
-    load: () => import('@/app/api/websites/[websiteId]/commerce/currencies/route'),
-  },
-  {
-    method: 'GET',
-    path: '/api/websites/{websiteId}/commerce/stats',
-    load: () => import('@/app/api/websites/[websiteId]/commerce/stats/route'),
-  },
-  {
-    method: 'GET',
-    path: '/api/websites/{websiteId}/commerce/chart',
-    load: () => import('@/app/api/websites/[websiteId]/commerce/chart/route'),
-  },
-  {
-    method: 'GET',
-    path: '/api/websites/{websiteId}/commerce/metrics',
-    load: () => import('@/app/api/websites/[websiteId]/commerce/metrics/route'),
-  },
-  {
-    method: 'GET',
-    path: '/api/websites/{websiteId}/commerce/customers',
-    load: () => import('@/app/api/websites/[websiteId]/commerce/customers/route'),
-  },
-  {
-    method: 'GET',
-    path: '/api/websites/{websiteId}/commerce/attribution',
-    load: () => import('@/app/api/websites/[websiteId]/commerce/attribution/route'),
-  },
-  {
-    method: 'GET',
     path: '/api/websites/{websiteId}/revenue/stats',
     load: () => import('@/app/api/websites/[websiteId]/revenue/stats/route'),
   },

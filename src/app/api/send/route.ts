@@ -1,7 +1,6 @@
 import { isbot } from 'isbot';
 import clickhouse from '@/lib/clickhouse';
 import { type CollectionCache, resolveCollectionSession } from '@/lib/collection-session';
-import { CommerceIdentityError } from '@/lib/commerce';
 import { CACHE_TOKEN_TYPE, COLLECTION_TYPE, EVENT_TYPE, FIELD_LENGTH } from '@/lib/constants';
 import { hash, secret } from '@/lib/crypto';
 import { getClientInfo, hasBlockedIp } from '@/lib/detect';
@@ -322,7 +321,6 @@ export async function POST(request: Request) {
 
     return json({ cache: token, sessionId, visitId });
   } catch (e) {
-    if (e instanceof CommerceIdentityError) return badRequest({ message: e.message });
     return serverError(e);
   }
 }

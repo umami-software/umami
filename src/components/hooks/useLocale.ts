@@ -28,8 +28,6 @@ export function useLocale() {
       ...data,
       label: {
         monitoring: enUS.label.monitoring,
-        commerce: enUS.label.commerce,
-        'commerce-description': enUS.label['commerce-description'],
         'language-default': enUS.label['language-default'],
         '12-hour': enUS.label['12-hour'],
         '24-hour': enUS.label['24-hour'],
@@ -37,7 +35,6 @@ export function useLocale() {
         ...data.label,
       },
       errorTracking: { ...enUS.errorTracking, ...data.errorTracking },
-      commerce: { ...enUS.commerce, ...data.commerce },
     };
   }
 

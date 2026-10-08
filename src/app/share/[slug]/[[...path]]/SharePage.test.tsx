@@ -1,9 +1,9 @@
-import { beforeEach, describe, expect, test, vi } from 'vitest';
 import type { ReactNode } from 'react';
-import { render, screen } from '@/test/render';
-import { resetTestNavigation } from '@/test/navigation';
-import { setShareData } from '@/store/app';
+import { beforeEach, describe, expect, test, vi } from 'vitest';
 import { ShareProvider } from '@/app/share/ShareProvider';
+import { setShareData } from '@/store/app';
+import { resetTestNavigation } from '@/test/navigation';
+import { render, screen } from '@/test/render';
 import { SharePage } from './SharePage';
 
 const mockShare = vi.hoisted(() => ({
@@ -14,7 +14,6 @@ const mockShare = vi.hoisted(() => ({
   token: 'share-token',
   parameters: {
     events: true,
-    commerce: true,
   },
 }));
 
@@ -63,10 +62,6 @@ vi.mock('@/app/(main)/websites/[websiteId]/(reports)/attribution/AttributionPage
 
 vi.mock('@/app/(main)/websites/[websiteId]/(reports)/breakdown/BreakdownPage', () => ({
   BreakdownPage: () => <div>breakdown page</div>,
-}));
-
-vi.mock('@/app/(main)/websites/[websiteId]/(reports)/commerce/CommercePage', () => ({
-  CommercePage: () => <div>commerce page</div>,
 }));
 
 vi.mock('@/app/(main)/websites/[websiteId]/(reports)/funnels/FunnelsPage', () => ({
@@ -130,9 +125,11 @@ vi.mock('@/components/common/PageBody', () => ({
 }));
 
 vi.mock('@/components/input/MobileMenuButton', () => ({
-  MobileMenuButton: ({ children }: { children: ReactNode | ((props: { close: () => void }) => ReactNode) }) => (
-    <div>{typeof children === 'function' ? children({ close: () => {} }) : children}</div>
-  ),
+  MobileMenuButton: ({
+    children,
+  }: {
+    children: ReactNode | ((props: { close: () => void }) => ReactNode);
+  }) => <div>{typeof children === 'function' ? children({ close: () => {} }) : children}</div>,
 }));
 
 vi.mock('./ShareFooter', () => ({
@@ -162,27 +159,5 @@ describe('SharePage', () => {
     expect(screen.getByText('website header')).toBeInTheDocument();
     expect(screen.getByText('events page')).toBeInTheDocument();
     expect(initTheme).toHaveBeenCalled();
-  });
-
-  test('renders the commerce section when the commerce flag is on', () => {
-    render(
-      <ShareProvider slug="slug">
-        <SharePage />
-      </ShareProvider>,
-      { route: '/share/slug/commerce', flags: { commerce: true } },
-    );
-
-    expect(screen.getByText('commerce page')).toBeInTheDocument();
-  });
-
-  test('hides the commerce section when the commerce flag is off', () => {
-    render(
-      <ShareProvider slug="slug">
-        <SharePage />
-      </ShareProvider>,
-      { route: '/share/slug/commerce', flags: { commerce: false } },
-    );
-
-    expect(screen.queryByText('commerce page')).not.toBeInTheDocument();
   });
 });

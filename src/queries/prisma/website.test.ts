@@ -64,16 +64,6 @@ describe('team website access', () => {
 
 function createDeleteTx(calls: string[]) {
   return {
-    commerceItem: {
-      deleteMany: vi.fn(async () => {
-        calls.push('commerceItem');
-      }),
-    },
-    commerceEvent: {
-      deleteMany: vi.fn(async () => {
-        calls.push('commerceEvent');
-      }),
-    },
     sessionReplaySaved: {
       deleteMany: vi.fn(async () => {
         calls.push('sessionReplaySaved');
@@ -172,8 +162,6 @@ describe('website delete dependencies', () => {
 
     await deleteWebsite('website-1');
 
-    expect(tx.commerceItem.deleteMany).toHaveBeenCalledWith({ where: { websiteId: 'website-1' } });
-    expect(tx.commerceEvent.deleteMany).toHaveBeenCalledWith({ where: { websiteId: 'website-1' } });
     expect(tx.eventData.deleteMany).toHaveBeenCalledWith({
       where: { websiteId: 'website-1' },
     });
@@ -192,8 +180,6 @@ describe('website delete dependencies', () => {
       'website-1',
     );
     expect(calls).toEqual([
-      'commerceItem',
-      'commerceEvent',
       'sessionReplaySaved',
       'sessionReplay',
       'heatmapEvent',
@@ -221,8 +207,6 @@ describe('website delete dependencies', () => {
 
     await resetWebsite('website-1');
 
-    expect(tx.commerceItem.deleteMany).toHaveBeenCalledWith({ where: { websiteId: 'website-1' } });
-    expect(tx.commerceEvent.deleteMany).toHaveBeenCalledWith({ where: { websiteId: 'website-1' } });
     expect(tx.eventData.deleteMany).toHaveBeenCalledWith({
       where: { websiteId: 'website-1' },
     });
@@ -236,8 +220,6 @@ describe('website delete dependencies', () => {
       'website-1',
     );
     expect(calls).toEqual([
-      'commerceItem',
-      'commerceEvent',
       'sessionReplaySaved',
       'sessionReplay',
       'heatmapEvent',

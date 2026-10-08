@@ -68,14 +68,7 @@ export type TrackedProperties = {
 
 export type WithRequired<T, K extends keyof T> = T & { [P in K]-?: T[P] };
 
-export type EventDataValue =
-  | boolean
-  | number
-  | string
-  | null
-  | EventData
-  | CommerceData
-  | EventDataValue[];
+export type EventDataValue = boolean | number | string | null | EventData | EventDataValue[];
 
 /**
  *
@@ -86,37 +79,7 @@ export type EventDataValue =
  * - Objects have a max of 50 properties. Arrays are considered 1 property.
  */
 export interface EventData {
-  /** Reserved structured commerce data for named website events. */
-  commerce?: CommerceData;
   [key: string]: EventDataValue | undefined;
-}
-
-export interface CommerceItem {
-  lineId?: string;
-  productId: string;
-  name?: string;
-  variant?: string;
-  category?: string;
-  price?: number | string;
-  /** Authoritative line amount; never reconstructed from other item fields. */
-  total?: number | string;
-}
-
-export interface CommerceData {
-  type?: 'order' | 'refund';
-  source?: string;
-  orderId: string;
-  refundId?: string;
-  currency: string;
-  /** Authoritative order/refund amount, independent of optional items. */
-  total: number | string;
-  market?: string;
-  customerId?: string;
-  updatedAt?: string;
-  subtotal?: number | string;
-  shipping?: number | string;
-  tax?: number | string;
-  items?: CommerceItem[];
 }
 
 export type EventProperties = {
@@ -438,12 +401,9 @@ type MetricEntry = PerformanceEntry & {
 
     if (!payload) return;
 
-    const isCommerce = type === 'event' && !!(payload.data as EventData)?.commerce;
-
     try {
       const res = await fetch(endpoint, {
-        // Commerce baskets can exceed the browser's 64 KiB keepalive budget.
-        keepalive: !isCommerce,
+        keepalive: true,
         method: 'POST',
         body: JSON.stringify({ type, payload }),
         headers: {
@@ -455,18 +415,12 @@ type MetricEntry = PerformanceEntry & {
         credentials,
       });
 
-      if (isCommerce && !res.ok) {
-        throw new Error(`Commerce collection failed (${res.status}).`);
-      }
-
       const data = (await res.json()) as { cache?: string; disabled?: boolean } | null;
       if (data) {
         disabled = !!data.disabled;
         cache = data.cache;
       }
-    } catch (error) {
-      if (isCommerce) throw error;
-    }
+    } catch {}
   };
 
   const init = () => {

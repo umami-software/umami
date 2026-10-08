@@ -121,20 +121,6 @@ const CURRENCY_OPTIONS = CURRENCIES.map(({ id, name }) => ({
   value: id,
 }));
 
-const _COMMERCE_METRIC_TYPE_OPTIONS = [
-  { label: 'Channels', value: 'channel' },
-  { label: 'Referrers', value: 'referrer' },
-  { label: 'UTM sources', value: 'utmSource' },
-  { label: 'UTM campaigns', value: 'utmCampaign' },
-  { label: 'Entry pages', value: 'entry' },
-  { label: 'Countries', value: 'country' },
-  { label: 'Regions', value: 'region' },
-  { label: 'Markets', value: 'market' },
-  { label: 'Devices', value: 'device' },
-  { label: 'Browsers', value: 'browser' },
-  { label: 'Events', value: 'event' },
-];
-
 const PixelMetricsBarAdapter = ({ websiteId }: { websiteId?: string }) =>
   websiteId ? <PixelMetricsBar pixelId={websiteId} /> : null;
 

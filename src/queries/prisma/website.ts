@@ -18,8 +18,6 @@ export type WebsiteListItem = Website & {
 };
 
 async function deleteWebsiteDependentData(tx: any, websiteId: string) {
-  await tx.commerceItem.deleteMany({ where: { websiteId } });
-  await tx.commerceEvent.deleteMany({ where: { websiteId } });
   await tx.sessionReplaySaved.deleteMany({
     where: { websiteId },
   });

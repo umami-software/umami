@@ -1,6 +1,5 @@
 import type { AnyToolDefinition } from '../lib/tool';
 import { getAnnotations } from './annotations';
-import { getCommerce } from './commerce';
 import { getWebsiteDateRange } from './daterange';
 import { getEventProperties } from './event-properties';
 import { getEventSeries, getEventStats } from './event-stats';
@@ -47,7 +46,6 @@ export const reportTools: AnyToolDefinition[] = [
   runRetention,
   runAttribution,
   getRevenue,
-  getCommerce,
   getPerformance,
 ];
 
@@ -55,7 +53,6 @@ export const allTools: AnyToolDefinition[] = [...coreTools, ...reportTools];
 
 export {
   getAnnotations,
-  getCommerce,
   getEventProperties,
   getEventSeries,
   getEventStats,
