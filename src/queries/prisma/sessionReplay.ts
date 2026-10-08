@@ -2,6 +2,7 @@ import type { SessionReplaySaved } from '@/generated/prisma/client';
 import { uuid } from '@/lib/crypto';
 import prisma from '@/lib/prisma';
 import type { PageResult, QueryFilters } from '@/lib/types';
+import { getReplayDistinctIds } from '@/queries/sql/replays/getReplayDistinctIds';
 
 export interface CreateReplayChunkArgs {
   websiteId: string;
@@ -95,7 +96,7 @@ export async function deleteReplaySaved(websiteId: string, visitId: string) {
 export async function getSavedReplays(
   websiteId: string,
   filters: QueryFilters,
-): Promise<PageResult<SessionReplaySaved[]>> {
+): Promise<PageResult<(SessionReplaySaved & { distinctIds: string[] })[]>> {
   const { search } = filters;
   const { getSearchParameters, pagedQuery } = prisma;
 
@@ -104,7 +105,7 @@ export async function getSavedReplays(
     ...getSearchParameters(search, [{ name: 'contains' }]),
   };
 
-  return pagedQuery(
+  const result = await pagedQuery(
     'sessionReplaySaved',
     {
       where,
@@ -112,4 +113,13 @@ export async function getSavedReplays(
     },
     filters,
   );
+  const distinctIds = await getReplayDistinctIds(
+    websiteId,
+    result.data.map(({ visitId }) => visitId),
+  );
+
+  return {
+    ...result,
+    data: result.data.map(row => ({ ...row, distinctIds: distinctIds[row.visitId] })),
+  };
 }

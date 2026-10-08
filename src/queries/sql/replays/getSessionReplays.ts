@@ -2,16 +2,26 @@ import clickhouse from '@/lib/clickhouse';
 import { CLICKHOUSE, PRISMA, runQuery } from '@/lib/db';
 import prisma from '@/lib/prisma';
 import type { PageResult, QueryFilters, SessionReplaySummary } from '@/lib/types';
+import { getReplayDistinctIds } from './getReplayDistinctIds';
 
 const FUNCTION_NAME = 'getSessionReplays';
 
-export function getSessionReplays(
+export async function getSessionReplays(
   ...args: [websiteId: string, filters: QueryFilters, sessionId?: string]
 ): Promise<PageResult<SessionReplaySummary[]>> {
-  return runQuery({
+  const result = await runQuery({
     [PRISMA]: () => relationalQuery(...args),
     [CLICKHOUSE]: () => clickhouseQuery(...args),
   });
+  const distinctIds = await getReplayDistinctIds(
+    args[0],
+    result.data.map(({ id }) => id),
+  );
+
+  return {
+    ...result,
+    data: result.data.map(row => ({ ...row, distinctIds: distinctIds[row.id] })),
+  };
 }
 
 async function relationalQuery(websiteId: string, filters: QueryFilters, sessionId?: string) {
