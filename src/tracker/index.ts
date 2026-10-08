@@ -287,6 +287,7 @@ type MetricEntry = PerformanceEntry & {
   const domain = config('domains') || '';
   const credentials = (config('fetch-credentials') || 'omit') as RequestCredentials;
   const perf = config('performance') === _true;
+  const engagement = config('engagement') === _true;
   const autoPageview = config('auto-pageview') !== _false;
 
   const domains = domain.split(',').map(n => n.trim());
@@ -341,6 +342,10 @@ type MetricEntry = PerformanceEntry & {
 
     if (typeof flushPerformance === 'function') {
       flushPerformance();
+    }
+
+    if (typeof flushEngagement === 'function') {
+      flushEngagement();
     }
 
     currentRef = currentUrl;
@@ -470,6 +475,7 @@ type MetricEntry = PerformanceEntry & {
       handlePathChanges();
       handleClicks();
       if (perf) initPerformance();
+      if (engagement) initEngagement();
     }
   };
 
@@ -670,6 +676,36 @@ type MetricEntry = PerformanceEntry & {
     window.addEventListener('pagehide', sendPerformance);
   };
 
+  /* Engagement */
+
+  const initEngagement = () => {
+    let time = 0;
+    let start = 0;
+
+    // Accumulate time while the page is visible and focused
+    const update = () => {
+      const now = performance.now();
+      if (start) time += now - start;
+      start = document.visibilityState === 'visible' && document.hasFocus() ? now : 0;
+    };
+
+    const flush = () => {
+      update();
+      // Carry sub-second time over to the next flush instead of dropping it
+      if (time >= 1000) {
+        send({ ...getPayload(), engagement: Math.round(time) }, 'engagement');
+        time = 0;
+      }
+    };
+
+    window.addEventListener('focus', update);
+    window.addEventListener('blur', update);
+    document.addEventListener('visibilitychange', flush);
+    window.addEventListener('pagehide', flush);
+    flushEngagement = flush;
+    update();
+  };
+
   /* Start */
 
   let currentUrl = normalize(href);
@@ -680,6 +716,7 @@ type MetricEntry = PerformanceEntry & {
   let cache: string | undefined;
   let identity = distinctId;
   let flushPerformance: (() => void) | undefined;
+  let flushEngagement: (() => void) | undefined;
 
   if (!window.umami) {
     const errors = createErrorCollector({

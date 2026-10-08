@@ -36,13 +36,14 @@ const payloadSchema = z.object({
   cls: z.number().nonnegative().max(100).optional(),
   fcp: z.number().nonnegative().max(60000).optional(),
   ttfb: z.number().nonnegative().max(60000).optional(),
+  engagement: z.number().int().positive().max(86400000).optional(),
 });
 
 export const collectionSchema = z
   .discriminatedUnion('type', [
     errorCollectionSchema,
     z.object({
-      type: z.enum(['identify', 'performance']),
+      type: z.enum(['identify', 'performance', 'engagement']),
       payload: payloadSchema,
     }),
     z.object({

@@ -33,6 +33,7 @@ async function loadModule({
       rawQuery: prismaRawQuery,
       parseFilters: prismaParseFilters,
       getTimestampDiffSQL,
+      getEngagementQuery: (alias: string) => `engagement_join(${alias})`,
     },
   }));
 
@@ -40,6 +41,7 @@ async function loadModule({
     default: {
       rawQuery: clickhouseRawQuery,
       parseFilters: clickhouseParseFilters,
+      getEngagementQuery: () => 'engagement_join',
     },
   }));
 
@@ -132,4 +134,36 @@ describe('getWebsiteStats excludeBounce path', () => {
     expect(query).toContain('0 as "bounces"');
     expect(query).not.toContain('left join (');
   });
+});
+
+describe('getWebsiteStats engagement time', () => {
+  test.each([{}, { path: '/pricing' }])(
+    'postgres prefers engaged time over the event span per visit (%o)',
+    async filters => {
+      const { getWebsiteStats, prismaRawQuery } = await loadModule({ mode: 'prisma' });
+
+      await getWebsiteStats('website-1', filters as any);
+
+      const [query] = prismaRawQuery.mock.calls[0];
+
+      expect(query).toContain(
+        'sum(coalesce(engagement.engagement_time, ts_diff(t.min_time, t.max_time)))',
+      );
+      expect(query).toContain('engagement_join(t)');
+    },
+  );
+
+  test.each([{}, { path: '/pricing' }])(
+    'clickhouse prefers engaged time over the event span per visit (%o)',
+    async filters => {
+      const { getWebsiteStats, clickhouseRawQuery } = await loadModule({ mode: 'clickhouse' });
+
+      await getWebsiteStats('website-1', filters as any);
+
+      const [query] = clickhouseRawQuery.mock.calls[0];
+
+      expect(query).toContain('sum(ifNull(engagement_time, max_time-min_time)) as "totaltime"');
+      expect(query).toContain('engagement_join');
+    },
+  );
 });

@@ -84,11 +84,11 @@ services:
       - ./tests/api/docker/clickhouse-init/00-create-db.sql:/docker-entrypoint-initdb.d/00-create-db.sql:ro
       - ./db/clickhouse/schema.sql:/docker-entrypoint-initdb.d/01-schema.sql:ro
     healthcheck:
-      # Healthy only once schema.sql has been applied (session_link is the last table it creates).
+      # Healthy only once schema.sql has been applied (website_engagement is the last table it creates).
       test:
         [
           "CMD-SHELL",
-          "clickhouse-client --user umami --password umami --query \"SELECT throwIf(count() = 0) FROM system.tables WHERE database = 'umami' AND name = 'session_link'\"",
+          "clickhouse-client --user umami --password umami --query \"SELECT throwIf(count() = 0) FROM system.tables WHERE database = 'umami' AND name = 'website_engagement'\"",
         ]
       interval: 2s
       timeout: 5s
