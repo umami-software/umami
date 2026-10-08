@@ -118,10 +118,13 @@ async function clickhouseQuery(
       ? `and event_type = ${eventType}`
       : `and event_type NOT IN (${EVENT_TYPE.customEvent}, ${EVENT_TYPE.performance})`;
   const localTime = `toTimeZone(website_event.created_at, '${timezone}')`;
+  // Build the label from the local date and hour rather than adding hours to midnight, which
+  // lands on 11:00 or 13:00 on a DST change day
   const bucketSql = `
-    formatDateTime(
-      toStartOfDay(${localTime}) + toIntervalHour(intDiv(toHour(${localTime}), ${BUCKET_HOURS}) * ${BUCKET_HOURS}),
-      '%Y-%m-%d %H:00:00'
+    concat(
+      formatDateTime(${localTime}, '%Y-%m-%d '),
+      leftPad(toString(intDiv(toHour(${localTime}), ${BUCKET_HOURS}) * ${BUCKET_HOURS}), 2, '0'),
+      ':00:00'
     )
   `;
 
