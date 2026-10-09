@@ -17,6 +17,7 @@ CREATE OR REPLACE FUNCTION refresh_website_rollups(
 ) RETURNS TABLE (from_hour TIMESTAMPTZ, to_hour TIMESTAMPTZ, event_rows BIGINT, visit_rows BIGINT)
 LANGUAGE plpgsql AS $$
 DECLARE
+    v_dirty RECORD;
     v_from TIMESTAMPTZ;
     v_to   TIMESTAMPTZ;
     v_event_rows BIGINT := 0;
@@ -45,6 +46,58 @@ BEGIN
         RAISE NOTICE 'refresh_website_rollups: another run in progress, skipping';
         RETURN;
     END IF;
+
+    -- Rebuild hours invalidated by session deletions (bounded batch per run).
+    -- Runs inside the advisory lock, so these rebuilds are serialized with
+    -- each other and with normal refresh; reading committed raw state here
+    -- is what makes concurrent deletions safe. Explicit created_at ranges
+    -- let the (website_id, created_at, ...) indexes slice each hour.
+    FOR v_dirty IN
+        DELETE FROM rollup_dirty_hours d
+        USING (
+            SELECT website_id, bucket FROM rollup_dirty_hours
+            ORDER BY bucket
+            LIMIT 48
+        ) pick
+        WHERE d.website_id = pick.website_id AND d.bucket = pick.bucket
+        RETURNING d.website_id, d.bucket
+    LOOP
+        DELETE FROM website_event_rollup_hourly
+        WHERE website_id = v_dirty.website_id AND bucket = v_dirty.bucket;
+
+        INSERT INTO website_event_rollup_hourly
+            (website_id, bucket, event_type, event_name, events)
+        SELECT website_id, v_dirty.bucket, event_type, COALESCE(event_name, ''), count(*)
+        FROM website_event
+        WHERE website_id = v_dirty.website_id
+          AND created_at >= v_dirty.bucket
+          AND created_at < v_dirty.bucket + interval '1 hour'
+          AND event_type IN (1, 2)
+        GROUP BY 1, 2, 3, 4;
+
+        DELETE FROM website_visit_rollup_hourly
+        WHERE website_id = v_dirty.website_id AND bucket = v_dirty.bucket;
+
+        INSERT INTO website_visit_rollup_hourly
+            (website_id, bucket, session_id, visit_id, hostname,
+             views, event_views, other_views, min_time, max_time, all_min_time, all_max_time)
+        SELECT
+            website_id, v_dirty.bucket, session_id, visit_id, COALESCE(hostname, ''),
+            count(*) FILTER (WHERE event_type = 1),
+            count(*) FILTER (WHERE event_type = 2),
+            count(*) FILTER (WHERE event_type IN (3, 4)),
+            min(created_at) FILTER (WHERE event_type NOT IN (2, 5)),
+            max(created_at) FILTER (WHERE event_type NOT IN (2, 5)),
+            min(created_at),
+            max(created_at)
+        FROM website_event
+        WHERE website_id = v_dirty.website_id
+          AND created_at >= v_dirty.bucket
+          AND created_at < v_dirty.bucket + interval '1 hour'
+          AND event_type IN (1, 2, 3, 4)
+        GROUP BY 1, 2, 3, 4, 5;
+    END LOOP;
+
 
     -- Hour-align defensively: buckets are hour-truncated, so a watermark that
     -- is not on an hour boundary (e.g. set by hand during backfill) would
@@ -123,5 +176,82 @@ BEGIN
     SET processed_until = GREATEST(processed_until, v_to)
     WHERE name = 'website_rollups';
 
+
     RETURN QUERY SELECT v_from, v_to, v_event_rows, v_visit_rows;
 END $$;
+
+-- -------------------------------------------------------------------------
+-- Targeted rebuild of specific hours, for out-of-band mutation of historical
+-- raw data (e.g. session deletion). Takes the SAME advisory lock as
+-- refresh_website_rollups so rebuilds serialize against the scheduled refresh
+-- AND against each other: concurrent deletions of different sessions in the
+-- same hour cannot both read each other's not-yet-deleted rows and both
+-- persist an inflated count. Must be called AFTER the raw deletion has
+-- committed, so the recompute reads post-deletion truth.
+--
+-- Unlike refresh_website_rollups this does not touch the watermark: it only
+-- corrects already-materialized hours and never advances the frontier.
+CREATE OR REPLACE FUNCTION rebuild_website_rollup_hours(
+    p_website_id UUID,
+    p_hours      TIMESTAMPTZ[]
+) RETURNS VOID
+LANGUAGE plpgsql AS $$
+BEGIN
+    IF p_hours IS NULL OR array_length(p_hours, 1) IS NULL THEN
+        RETURN;
+    END IF;
+
+    PERFORM set_config('TimeZone', 'UTC', true);
+
+    -- Serialize with the scheduled refresh and other rebuilds. Blocking
+    -- (not try_): correctness here depends on exclusive access, and the
+    -- critical section is tiny (a handful of hours for one website).
+    PERFORM pg_advisory_xact_lock(hashtext('refresh_website_rollups'));
+
+    -- Tier 1: exact event counts for the affected hours.
+    DELETE FROM website_event_rollup_hourly
+    WHERE website_id = p_website_id
+      AND bucket = ANY(p_hours);
+
+    INSERT INTO website_event_rollup_hourly
+        (website_id, bucket, event_type, event_name, events)
+    SELECT
+        website_id,
+        date_trunc('hour', created_at),
+        event_type,
+        COALESCE(event_name, ''),
+        count(*)
+    FROM website_event
+    WHERE website_id = p_website_id
+      AND date_trunc('hour', created_at) = ANY(p_hours)
+      AND event_type IN (1, 2)
+    GROUP BY 1, 2, 3, 4;
+
+    -- Tier 2: visit grain for the affected hours.
+    DELETE FROM website_visit_rollup_hourly
+    WHERE website_id = p_website_id
+      AND bucket = ANY(p_hours);
+
+    INSERT INTO website_visit_rollup_hourly
+        (website_id, bucket, session_id, visit_id, hostname,
+         views, event_views, other_views, min_time, max_time, all_min_time, all_max_time)
+    SELECT
+        website_id,
+        date_trunc('hour', created_at),
+        session_id,
+        visit_id,
+        COALESCE(hostname, ''),
+        count(*) FILTER (WHERE event_type = 1),
+        count(*) FILTER (WHERE event_type = 2),
+        count(*) FILTER (WHERE event_type IN (3, 4)),
+        min(created_at) FILTER (WHERE event_type NOT IN (2, 5)),
+        max(created_at) FILTER (WHERE event_type NOT IN (2, 5)),
+        min(created_at),
+        max(created_at)
+    FROM website_event
+    WHERE website_id = p_website_id
+      AND date_trunc('hour', created_at) = ANY(p_hours)
+      AND event_type IN (1, 2, 3, 4)
+    GROUP BY 1, 2, 3, 4, 5;
+END;
+$$;

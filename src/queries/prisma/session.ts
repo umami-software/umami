@@ -5,8 +5,9 @@ export async function deleteSession(
   websiteId: string,
   sessionId: string,
 ): Promise<{ id: string } | null> {
-  // Remove this session's contribution from the rollup tables first: the
-  // tier-1 decrement reads the raw events this transaction is about to delete.
+  // Enqueue this session's rollup cleanup first: capturing the affected
+  // hours reads the raw events this transaction is about to delete. The
+  // serialized refresh rebuilds those hours; tier-2 rows are removed here.
   await deleteSessionRollups(websiteId, sessionId);
 
   const transaction = prisma.transaction as <T>(input: (tx: any) => Promise<T>) => Promise<T>;

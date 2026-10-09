@@ -1,7 +1,12 @@
 import clickhouse from '@/lib/clickhouse';
 import { CLICKHOUSE, PRISMA, runQuery } from '@/lib/db';
 import prisma from '@/lib/prisma';
-import { getRollupRange, getRollupWatermark, hasWholeHourOffset, logRollupError } from '@/lib/rollups';
+import {
+  getRollupRange,
+  getRollupWatermark,
+  hasWholeHourOffset,
+  logRollupError,
+} from '@/lib/rollups';
 import type { QueryFilters } from '@/lib/types';
 
 const FUNCTION_NAME = 'getEventStats';

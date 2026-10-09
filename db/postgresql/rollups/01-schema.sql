@@ -53,6 +53,16 @@ CREATE INDEX IF NOT EXISTS website_visit_rollup_hourly_website_bucket_idx
     ON website_visit_rollup_hourly (website_id, bucket);
 
 -- Watermark: everything strictly before processed_until is materialized.
+-- Hours invalidated by session deletions. The deletion hook enqueues the
+-- affected hour buckets here (a race-free set insert); the single-runner
+-- refresh pops them and rebuilds those hours from the surviving raw events,
+-- so concurrent deletions can never overwrite each other's rebuilds.
+CREATE TABLE IF NOT EXISTS rollup_dirty_hours (
+    website_id UUID        NOT NULL,
+    bucket     TIMESTAMPTZ NOT NULL,
+    PRIMARY KEY (website_id, bucket)
+);
+
 CREATE TABLE IF NOT EXISTS rollup_watermark (
     name             TEXT PRIMARY KEY,
     processed_until  TIMESTAMPTZ NOT NULL

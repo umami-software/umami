@@ -123,7 +123,11 @@ export interface RollupRange {
  * or null if it contains less than one whole bucket (raw path is cheaper).
  * endDate is treated as inclusive, matching the raw queries' BETWEEN.
  */
-export function getRollupRange(startDate: Date, endDate: Date, watermark: Date): RollupRange | null {
+export function getRollupRange(
+  startDate: Date,
+  endDate: Date,
+  watermark: Date,
+): RollupRange | null {
   const hstart = new Date(Math.ceil(startDate.getTime() / HOUR_MS) * HOUR_MS);
   const hend = new Date(
     Math.min(Math.floor((endDate.getTime() + 1) / HOUR_MS) * HOUR_MS, watermark.getTime()),
@@ -138,22 +142,16 @@ export function getRollupRange(startDate: Date, endDate: Date, watermark: Date):
 
 /**
  * Remove a deleted session's contribution from the rollup tables. Called
- * BEFORE the raw events are deleted (the rebuild below reads them to find
- * the affected hours and to recompute from the surviving sessions).
+ * BEFORE the raw events are deleted (the hour capture below reads them).
  *
- * Tier 1 is rebuilt, not decremented: subtracting the session's raw counts
- * would be wrong for events that were never absorbed into the rollup (e.g.
- * backdated events awaiting, or beyond, the refresh lookback), and would
- * corrupt other visitors' totals in the shared (bucket, event_type,
- * event_name) grain. Delete-and-recompute from the remaining raw events is
- * exact regardless of absorption state — the same idempotent primitive the
- * refresh uses. Tier 2 rows are per-session, so a plain delete is exact.
- *
- * Failures are logged, not fatal; a concurrent refresh racing this rebuild
- * converges on its next pass for hours inside the lookback window. If the
- * caller's delete transaction fails after this ran, rollups for the affected
- * hours briefly exclude a session whose raw events still exist; the next
- * refresh pass restores them for hours inside the lookback.
+ * Tier 1 is not modified here: concurrent deletions rebuilding shared grain
+ * rows can overwrite each other with counts that still include the other
+ * deleted session. Instead the affected hours are enqueued (a race-free set
+ * insert) and the single-runner refresh rebuilds them from committed raw
+ * state, serialized under its advisory lock — including hours outside the
+ * lookback. Deleted activity therefore persists in tier-1-served totals
+ * until the next refresh tick. Tier 2 rows are per-session, so an immediate
+ * delete is exact and race-free.
  */
 export async function deleteSessionRollups(websiteId: string, sessionId: string) {
   if (!ENABLED) {
@@ -163,46 +161,15 @@ export async function deleteSessionRollups(websiteId: string, sessionId: string)
   try {
     await prisma.rawQuery(
       `
-      with hours as (
-        select distinct date_trunc('hour', created_at at time zone 'UTC') at time zone 'UTC' as bucket
-        from website_event
-        where website_id = {{websiteId::uuid}}
-          and session_id = {{sessionId::uuid}}
-          and event_type in (1, 2)
-      )
-      delete from website_event_rollup_hourly r
-      using hours h
-      where r.website_id = {{websiteId::uuid}}
-        and r.bucket = h.bucket
-      `,
-      { websiteId, sessionId },
-      'deleteSessionRollups',
-    );
-    await prisma.rawQuery(
-      `
-      with hours as (
-        select distinct date_trunc('hour', created_at at time zone 'UTC') at time zone 'UTC' as bucket
-        from website_event
-        where website_id = {{websiteId::uuid}}
-          and session_id = {{sessionId::uuid}}
-          and event_type in (1, 2)
-      )
-      insert into website_event_rollup_hourly (website_id, bucket, event_type, event_name, events)
-      select
-        website_event.website_id,
-        date_trunc('hour', website_event.created_at at time zone 'UTC') at time zone 'UTC',
-        website_event.event_type,
-        coalesce(website_event.event_name, ''),
-        count(*)
+      insert into rollup_dirty_hours (website_id, bucket)
+      select distinct
+        {{websiteId::uuid}},
+        date_trunc('hour', created_at at time zone 'UTC') at time zone 'UTC'
       from website_event
-      join hours
-        on hours.bucket = date_trunc('hour', website_event.created_at at time zone 'UTC') at time zone 'UTC'
-      where website_event.website_id = {{websiteId::uuid}}
-        and website_event.session_id != {{sessionId::uuid}}
-        and website_event.event_type in (1, 2)
-      group by 1, 2, 3, 4
-      on conflict (website_id, bucket, event_type, event_name)
-        do update set events = excluded.events
+      where website_id = {{websiteId::uuid}}
+        and session_id = {{sessionId::uuid}}
+        and event_type in (1, 2)
+      on conflict do nothing
       `,
       { websiteId, sessionId },
       'deleteSessionRollups',
