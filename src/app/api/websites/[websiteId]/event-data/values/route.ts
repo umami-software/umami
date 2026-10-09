@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { fetchQuery } from '@/lib/queryCache';
 import { getQueryFilters, parseRequest } from '@/lib/request';
 import { json, unauthorized } from '@/lib/response';
 import { filterParams } from '@/lib/schema';
@@ -33,11 +34,11 @@ export async function GET(
   const { eventName, propertyName, dataType } = query;
   const filters = await getQueryFilters(query, websiteId);
 
-  const data = await getEventDataValues(websiteId, eventName, {
+  const data = await fetchQuery(websiteId, 'event-data-values', query, filters.endDate, () => getEventDataValues(websiteId, eventName, {
     ...filters,
     propertyName,
     dataType,
-  });
+  }));
 
   return json(data);
 }

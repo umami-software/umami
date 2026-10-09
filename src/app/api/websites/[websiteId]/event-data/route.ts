@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { fetchQuery } from '@/lib/queryCache';
 import { getQueryFilters, parseRequest } from '@/lib/request';
 import { json, unauthorized } from '@/lib/response';
 import { filterParams, pagingParams } from '@/lib/schema';
@@ -50,7 +51,9 @@ export async function GET(
     count,
     page,
     pageSize,
-  } = (await getEventData(websiteId, filters)) as PageResult<EventDataRow[]>;
+  } = (await fetchQuery(websiteId, 'event-data', query, filters.endDate, () =>
+    getEventData(websiteId, filters),
+  )) as PageResult<EventDataRow[]>;
 
   const eventMap = new Map<
     string,

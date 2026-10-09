@@ -1,5 +1,6 @@
 import { z } from 'zod';
 import { EVENT_COLUMNS, EVENT_TYPE, SESSION_COLUMNS } from '@/lib/constants';
+import { fetchQuery } from '@/lib/queryCache';
 import { getQueryFilters, parseRequest } from '@/lib/request';
 import { badRequest, json, unauthorized } from '@/lib/response';
 import { filterParams, searchParams, withDateRange } from '@/lib/schema';
@@ -52,24 +53,30 @@ export async function GET(
     filters[type] = `c.${search}`;
   }
 
-  if (SESSION_COLUMNS.includes(type)) {
-    const data = await getSessionMetrics(websiteId, { type, limit, offset }, filters);
-
-    return json(data);
-  }
-
-  if (EVENT_COLUMNS.includes(type)) {
-    if (type === 'event') {
-      filters.eventType = EVENT_TYPE.customEvent;
-      return json(await getEventMetrics(websiteId, { type, limit, offset }, filters));
-    } else {
-      return json(await getPageviewMetrics(websiteId, { type, limit, offset }, filters));
+  const result = await fetchQuery(websiteId, 'metrics', query, filters.endDate, async () => {
+    if (SESSION_COLUMNS.includes(type)) {
+      return getSessionMetrics(websiteId, { type, limit, offset }, filters);
     }
+
+    if (EVENT_COLUMNS.includes(type)) {
+      if (type === 'event') {
+        filters.eventType = EVENT_TYPE.customEvent;
+        return getEventMetrics(websiteId, { type, limit, offset }, filters);
+      } else {
+        return getPageviewMetrics(websiteId, { type, limit, offset }, filters);
+      }
+    }
+
+    if (type === 'channel') {
+      return getChannelMetrics(websiteId, filters);
+    }
+
+    return null;
+  });
+
+  if (result === null) {
+    return badRequest();
   }
 
-  if (type === 'channel') {
-    return json(await getChannelMetrics(websiteId, filters));
-  }
-
-  return badRequest();
+  return json(result);
 }

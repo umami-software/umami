@@ -1,4 +1,5 @@
 import { getCompareDate } from '@/lib/date';
+import { fetchQuery } from '@/lib/queryCache';
 import { getQueryFilters, parseRequest } from '@/lib/request';
 import { json, unauthorized } from '@/lib/response';
 import { filterParams, withDateRange } from '@/lib/schema';
@@ -27,6 +28,7 @@ export async function GET(
 
   const filters = await getQueryFilters(query, websiteId);
 
+  const result = await fetchQuery(websiteId, 'pageviews', query, filters.endDate, async () => {
   const [pageviews, sessions] = await Promise.all([
     getPageviewStats(websiteId, filters),
     getSessionStats(websiteId, filters),
@@ -52,7 +54,7 @@ export async function GET(
       }),
     ]);
 
-    return json({
+    return {
       pageviews,
       sessions,
       startDate: filters.startDate,
@@ -63,8 +65,11 @@ export async function GET(
         startDate: compareStartDate,
         endDate: compareEndDate,
       },
-    });
+    };
   }
 
-  return json({ pageviews, sessions });
+  return { pageviews, sessions };
+  });
+
+  return json(result);
 }

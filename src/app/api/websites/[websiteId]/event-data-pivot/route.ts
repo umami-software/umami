@@ -1,5 +1,6 @@
 import { z } from 'zod';
 import { parseEventPropertyFilters } from '@/lib/params';
+import { fetchQuery } from '@/lib/queryCache';
 import { getQueryFilters, parseRequest } from '@/lib/request';
 import { json, unauthorized } from '@/lib/response';
 import { filterParams, pagingParams, timezoneParam, unitParam } from '@/lib/schema';
@@ -35,7 +36,7 @@ export async function GET(
   const { eventName, ...rest } = query;
   const filters = await getQueryFilters(rest, websiteId);
   const eventFilters = parseEventPropertyFilters(query);
-  const result = await getEventDataPivot(websiteId, eventName, filters, eventFilters);
+  const result = await fetchQuery(websiteId, 'event-data-pivot', query, filters.endDate, () => getEventDataPivot(websiteId, eventName, filters, eventFilters));
 
   return json(result);
 }

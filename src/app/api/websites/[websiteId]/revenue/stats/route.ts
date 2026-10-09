@@ -1,5 +1,6 @@
 import { z } from 'zod';
 import { getCompareDate } from '@/lib/date';
+import { fetchQuery } from '@/lib/queryCache';
 import { getQueryFilters, parseRequest } from '@/lib/request';
 import { json, unauthorized } from '@/lib/response';
 import { filterParams, withDateRange } from '@/lib/schema';
@@ -35,10 +36,14 @@ export async function GET(
   const { startDate, endDate } = getCompareDate(compare, parameters.startDate, parameters.endDate);
   const comparisonParameters = { ...parameters, startDate, endDate };
 
-  const [stats, comparison] = await Promise.all([
-    getRevenueStats(websiteId, parameters, filters),
-    getRevenueStats(websiteId, comparisonParameters, filters),
-  ]);
+  const result = await fetchQuery(websiteId, 'revenue-stats', query, filters.endDate, async () => {
+    const [stats, comparison] = await Promise.all([
+      getRevenueStats(websiteId, parameters, filters),
+      getRevenueStats(websiteId, comparisonParameters, filters),
+    ]);
 
-  return json({ ...stats, comparison });
+    return { ...stats, comparison };
+  });
+
+  return json(result);
 }
