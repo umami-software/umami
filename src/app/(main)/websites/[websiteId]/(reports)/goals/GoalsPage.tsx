@@ -4,12 +4,12 @@ import { WebsiteControls } from '@/app/(main)/websites/[websiteId]/WebsiteContro
 import { LoadingPanel } from '@/components/common/LoadingPanel';
 import { Panel } from '@/components/common/Panel';
 import { SectionHeader } from '@/components/common/SectionHeader';
-import { useDateRange, useNavigation, useReportsQuery } from '@/components/hooks';
+import { useDateRange, useGoalsQuery, useNavigation } from '@/components/hooks';
 import { Goal } from './Goal';
 import { GoalAddButton } from './GoalAddButton';
 
 export function GoalsPage({ websiteId }: { websiteId: string }) {
-  const { data, isLoading, error } = useReportsQuery({ websiteId, type: 'goal' });
+  const { data, isLoading, error } = useGoalsQuery({ websiteId });
   const {
     dateRange: { startDate, endDate },
   } = useDateRange();

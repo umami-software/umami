@@ -2,12 +2,16 @@ import { Button, Column, Row, Tab, TabList, TabPanel, Tabs } from '@umami/react-
 import { useState } from 'react';
 import { useFilters, useMessages, useMobile, useNavigation } from '@/components/hooks';
 import { FieldFilters } from '@/components/input/FieldFilters';
+import { PropertyFilters } from '@/components/property-data/PropertyFilters';
 import { SegmentFilters } from '@/components/input/SegmentFilters';
+import type { EventPropertyFilter, SessionPropertyFilter } from '@/lib/types';
 
 export interface FilterEditFormProps {
   websiteId?: string;
   onChange?: (params: {
     filters: any[];
+    eventPropertyFilters: EventPropertyFilter[];
+    sessionPropertyFilters: SessionPropertyFilter[];
     segment?: string;
     cohort?: string;
     match?: string;
@@ -20,14 +24,18 @@ export function FilterEditForm({ websiteId, onChange, onClose }: FilterEditFormP
     query: { segment, cohort, match },
     pathname,
   } = useNavigation();
-  const { filters } = useFilters();
+  const { filters, eventPropertyFilters, sessionPropertyFilters } = useFilters();
   const { t, labels } = useMessages();
   const [currentFilters, setCurrentFilters] = useState(filters);
+  const [currentEventPropertyFilters, setCurrentEventPropertyFilters] = useState(eventPropertyFilters);
+  const [currentSessionPropertyFilters, setCurrentSessionPropertyFilters] =
+    useState(sessionPropertyFilters);
   const [currentSegment, setCurrentSegment] = useState(segment);
   const [currentCohort, setCurrentCohort] = useState(cohort);
   const [currentMatch, setCurrentMatch] = useState<string>(match || 'all');
   const { isMobile } = useMobile();
   const isPixelLink = !websiteId || pathname.includes('/pixels') || pathname.includes('/links');
+  const isEventsPath = pathname.endsWith('/events');
   const excludeEvent =
     !pathname.endsWith('/events') &&
     !pathname.endsWith('/replays') &&
@@ -55,6 +63,8 @@ export function FilterEditForm({ websiteId, onChange, onClose }: FilterEditFormP
 
   const handleReset = () => {
     setCurrentFilters([]);
+    setCurrentEventPropertyFilters([]);
+    setCurrentSessionPropertyFilters([]);
     setCurrentSegment(undefined);
     setCurrentCohort(undefined);
     setCurrentMatch('all');
@@ -63,6 +73,8 @@ export function FilterEditForm({ websiteId, onChange, onClose }: FilterEditFormP
   const handleSave = () => {
     onChange?.({
       filters: currentFilters.filter(f => f.value),
+      eventPropertyFilters: currentEventPropertyFilters.filter(f => f.value),
+      sessionPropertyFilters: currentSessionPropertyFilters.filter(f => f.value),
       segment: currentSegment,
       cohort: currentCohort,
       match: currentMatch !== 'all' ? currentMatch : undefined,
@@ -76,6 +88,16 @@ export function FilterEditForm({ websiteId, onChange, onClose }: FilterEditFormP
   };
 
   const panelStyle = { overflowY: 'auto' as const, minHeight: 0 };
+  const mobileTabListStyle = isMobile
+    ? ({
+        overflowX: 'auto',
+        overflowY: 'hidden',
+        flexWrap: 'nowrap',
+        scrollbarWidth: 'none',
+        WebkitOverflowScrolling: 'touch',
+      } as const)
+    : undefined;
+  const mobileTabStyle = isMobile ? ({ flex: '0 0 auto', whiteSpace: 'nowrap' } as const) : undefined;
 
   return (
     <Column width={isMobile ? 'auto' : '800px'} gap="6" style={{ flex: 1, minHeight: 0 }}>
@@ -87,12 +109,28 @@ export function FilterEditForm({ websiteId, onChange, onClose }: FilterEditFormP
           overflow: 'hidden',
         }}
       >
-        <TabList>
-          <Tab id="fields">{t(labels.fields)}</Tab>
+        <TabList style={mobileTabListStyle}>
+          <Tab id="fields" style={mobileTabStyle}>
+            {t(labels.fields)}
+          </Tab>
           {!isPixelLink && (
             <>
-              <Tab id="segments">{t(labels.segments)}</Tab>
-              <Tab id="cohorts">{t(labels.cohorts)}</Tab>
+              <Tab id="segments" style={mobileTabStyle}>
+                {t(labels.segments)}
+              </Tab>
+              <Tab id="cohorts" style={mobileTabStyle}>
+                {t(labels.cohorts)}
+              </Tab>
+              {websiteId && isEventsPath && (
+                <Tab id="event-properties" style={mobileTabStyle}>
+                  {t(labels.eventProperties)}
+                </Tab>
+              )}
+              {websiteId && (
+                <Tab id="session-data" style={mobileTabStyle}>
+                  {t(labels.sessionData)}
+                </Tab>
+              )}
             </>
           )}
         </TabList>
@@ -106,21 +144,45 @@ export function FilterEditForm({ websiteId, onChange, onClose }: FilterEditFormP
             exclude={excludedFields}
           />
         </TabPanel>
-        <TabPanel id="segments" style={panelStyle}>
-          <SegmentFilters
-            websiteId={websiteId}
-            segmentId={currentSegment}
-            onChange={handleSegmentChange}
-          />
-        </TabPanel>
-        <TabPanel id="cohorts" style={panelStyle}>
-          <SegmentFilters
-            type="cohort"
-            websiteId={websiteId}
-            segmentId={currentCohort}
-            onChange={handleSegmentChange}
-          />
-        </TabPanel>
+        {!isPixelLink && websiteId && (
+          <TabPanel id="segments" style={panelStyle}>
+            <SegmentFilters
+              websiteId={websiteId}
+              segmentId={currentSegment}
+              onChange={handleSegmentChange}
+            />
+          </TabPanel>
+        )}
+        {!isPixelLink && websiteId && (
+          <TabPanel id="cohorts" style={panelStyle}>
+            <SegmentFilters
+              type="cohort"
+              websiteId={websiteId}
+              segmentId={currentCohort}
+              onChange={handleSegmentChange}
+            />
+          </TabPanel>
+        )}
+        {!isPixelLink && websiteId && isEventsPath && (
+          <TabPanel id="event-properties" style={panelStyle}>
+            <PropertyFilters
+              source="event"
+              websiteId={websiteId}
+              value={currentEventPropertyFilters}
+              onChange={setCurrentEventPropertyFilters}
+            />
+          </TabPanel>
+        )}
+        {!isPixelLink && websiteId && (
+          <TabPanel id="session-data" style={panelStyle}>
+            <PropertyFilters
+              source="session"
+              websiteId={websiteId}
+              value={currentSessionPropertyFilters}
+              onChange={setCurrentSessionPropertyFilters}
+            />
+          </TabPanel>
+        )}
       </Tabs>
       <Row
         alignItems="center"

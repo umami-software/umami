@@ -1,13 +1,13 @@
 import clickhouse from '@/lib/clickhouse';
 import { CLICKHOUSE, PRISMA, runQuery } from '@/lib/db';
 import prisma from '@/lib/prisma';
-import type { QueryFilters } from '@/lib/types';
+import type { PageResult, QueryFilters, SessionReplaySummary } from '@/lib/types';
 
 const FUNCTION_NAME = 'getSessionReplays';
 
 export function getSessionReplays(
   ...args: [websiteId: string, filters: QueryFilters, sessionId?: string]
-) {
+): Promise<PageResult<SessionReplaySummary[]>> {
   return runQuery({
     [PRISMA]: () => relationalQuery(...args),
     [CLICKHOUSE]: () => clickhouseQuery(...args),
@@ -114,7 +114,7 @@ async function clickhouseQuery(websiteId: string, filters: QueryFilters, session
     : '';
 
   const havingQuery = minDurationMs
-    ? `having toInt64(sum(dateDiff('millisecond', session_replay.started_at, session_replay.ended_at))) >= {minDurationMs:Int64}`
+    ? `having toInt64(sum(toUnixTimestamp64Milli(session_replay.ended_at) - toUnixTimestamp64Milli(session_replay.started_at))) >= {minDurationMs:Int64}`
     : '';
 
   return pagedRawQuery(
@@ -132,7 +132,7 @@ async function clickhouseQuery(websiteId: string, filters: QueryFilters, session
       count(session_replay.replay_id) as chunkCount,
       min(session_replay.started_at) as startedAt,
       max(session_replay.ended_at) as endedAt,
-      toInt64(sum(dateDiff('millisecond', session_replay.started_at, session_replay.ended_at))) as duration,
+      toInt64(sum(toUnixTimestamp64Milli(session_replay.ended_at) - toUnixTimestamp64Milli(session_replay.started_at))) as duration,
       max(session_replay.created_at) as createdAt
     from session_replay
     join (

@@ -4,6 +4,7 @@ import Link from '@/components/common/Link';
 import { PageHeader } from '@/components/common/PageHeader';
 import { useMessages, useNavigation, useWebsite } from '@/components/hooks';
 import { ArrowLeft, Globe } from '@/components/icons';
+import { decodePunycodeDomain } from '@/lib/format';
 
 export function WebsiteSettingsHeader() {
   const website = useWebsite();
@@ -17,7 +18,11 @@ export function WebsiteSettingsHeader() {
           <IconLabel icon={<ArrowLeft />} label={t(labels.website)} />
         </Link>
       </Row>
-      <PageHeader title={website?.name} description={website?.domain} icon={<Globe />} />
+      <PageHeader
+        title={website?.name}
+        description={decodePunycodeDomain(website?.domain)}
+        icon={<Globe />}
+      />
     </>
   );
 }

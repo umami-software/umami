@@ -1,10 +1,11 @@
 'use client';
-import { Column, Grid, ListItem, Row, SearchField, Select } from '@umami/react-zen';
+import { Column, Grid, ListItem, Row, Select } from '@umami/react-zen';
 import { useState } from 'react';
 import { WebsiteControls } from '@/app/(main)/websites/[websiteId]/WebsiteControls';
 import { Panel } from '@/components/common/Panel';
 import { useDateRange, useMessages } from '@/components/hooks';
 import { FilterButtons } from '@/components/input/FilterButtons';
+import { WebsiteValueComboBox } from '@/components/input/WebsiteValueComboBox';
 import { Journey } from './Journey';
 
 const JOURNEY_STEPS = [2, 3, 4, 5, 6, 7];
@@ -19,6 +20,8 @@ export function JourneysPage({ websiteId }: { websiteId: string }) {
   const [steps, setSteps] = useState(DEFAULT_STEP);
   const [startStep, setStartStep] = useState('');
   const [endStep, setEndStep] = useState('');
+  const stepType = view === 'events' ? 'event' : 'path';
+  const additionalStepType = view === 'all' ? 'event' : undefined;
 
   const buttons = [
     {
@@ -39,7 +42,12 @@ export function JourneysPage({ websiteId }: { websiteId: string }) {
     <Column gap>
       <WebsiteControls websiteId={websiteId} />
       <Grid columns="repeat(3, 1fr)" gap>
-        <Select label={t(labels.steps)} value={steps} defaultValue={steps} onChange={setSteps}>
+        <Select
+          label={t(labels.steps)}
+          value={steps}
+          defaultValue={steps}
+          onChange={value => setSteps(Number(value))}
+        >
           {JOURNEY_STEPS.map(step => (
             <ListItem key={step} id={step}>
               {step}
@@ -47,19 +55,27 @@ export function JourneysPage({ websiteId }: { websiteId: string }) {
           ))}
         </Select>
         <Column>
-          <SearchField
+          <WebsiteValueComboBox
             label={t(labels.startStep)}
+            websiteId={websiteId}
+            type={stepType}
+            additionalType={additionalStepType}
+            startDate={startDate}
+            endDate={endDate}
             value={startStep}
-            onSearch={setStartStep}
-            delay={1000}
+            onChange={setStartStep}
           />
         </Column>
         <Column>
-          <SearchField
+          <WebsiteValueComboBox
             label={t(labels.endStep)}
+            websiteId={websiteId}
+            type={stepType}
+            additionalType={additionalStepType}
+            startDate={startDate}
+            endDate={endDate}
             value={endStep}
-            onSearch={setEndStep}
-            delay={1000}
+            onChange={setEndStep}
           />
         </Column>
       </Grid>

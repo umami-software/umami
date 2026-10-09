@@ -1,5 +1,6 @@
-import { Focusable, Grid, Row, Text, Tooltip, TooltipTrigger } from '@umami/react-zen';
+import { Grid, Row, Text, Tooltip, TooltipTrigger } from '@umami/react-zen';
 import { addHours, format, startOfDay } from 'date-fns';
+import { Fragment } from 'react';
 import { LoadingPanel } from '@/components/common/LoadingPanel';
 import { useLocale, useMessages, useWeeklyTrafficQuery } from '@/components/hooks';
 import { getDayOfWeekAsDate } from '@/lib/date';
@@ -75,28 +76,35 @@ export function WeeklyTraffic({ websiteId }: { websiteId: string }) {
                 >
                   {day?.map((count: number, j) => {
                     const pct = max ? count / max : 0;
+                    const cell = (
+                      <Row
+                        tabIndex={0}
+                        alignItems="center"
+                        justifyContent="center"
+                        backgroundColor="surface-raised"
+                        width="16px"
+                        height="16px"
+                        borderRadius="full"
+                        style={{ margin: '0 auto' }}
+                        role="button"
+                      >
+                        <Row
+                          backgroundColor="primary"
+                          width="16px"
+                          height="16px"
+                          borderRadius="full"
+                          style={{ opacity: pct, transform: `scale(${pct})` }}
+                        />
+                      </Row>
+                    );
+
+                    if (count <= 0) {
+                      return <Fragment key={j}>{cell}</Fragment>;
+                    }
+
                     return (
-                      <TooltipTrigger key={j} delay={0} isDisabled={count <= 0}>
-                        <Focusable>
-                          <Row
-                            alignItems="center"
-                            justifyContent="center"
-                            backgroundColor="surface-raised"
-                            width="16px"
-                            height="16px"
-                            borderRadius="full"
-                            style={{ margin: '0 auto' }}
-                            role="button"
-                          >
-                            <Row
-                              backgroundColor="primary"
-                              width="16px"
-                              height="16px"
-                              borderRadius="full"
-                              style={{ opacity: pct, transform: `scale(${pct})` }}
-                            />
-                          </Row>
-                        </Focusable>
+                      <TooltipTrigger key={j} delay={0}>
+                        {cell}
                         <Tooltip
                           placement="right"
                           style={{ backgroundColor: 'rgba(0,0,0,0.8)', color: 'white' }}

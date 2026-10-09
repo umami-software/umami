@@ -1,3 +1,4 @@
+/** Public types for the browser tracker. */
 export type TrackedProperties = {
   /**
    * Hostname of server
@@ -5,48 +6,46 @@ export type TrackedProperties = {
    * @description extracted from `window.location.hostname`
    * @example 'analytics.umami.is'
    */
-  hostname: string;
-
+  hostname?: string;
+  /** Distinct ID associated with the current visitor. */
+  id?: string;
   /**
    * Browser language
    *
    * @description extracted from `window.navigator.language`
    * @example 'en-US', 'fr-FR'
    */
-  language: string;
-
+  language?: string;
   /**
    * Page referrer
    *
-   * @description extracted from `window.navigator.language`
+   * @description extracted from `document.referrer`
    * @example 'https://analytics.umami.is/docs/getting-started'
    */
-  referrer: string;
-
+  referrer?: string;
   /**
    * Screen dimensions
    *
    * @description extracted from `window.screen.width` and `window.screen.height`
    * @example '1920x1080', '2560x1440'
    */
-  screen: string;
-
+  screen?: string;
+  /** Tag configured on the tracker script. */
+  tag?: string;
   /**
    * Page title
    *
    * @description extracted from `document.querySelector('head > title')`
    * @example 'umami'
    */
-  title: string;
-
+  title?: string;
   /**
    * Page url
    *
-   * @description built from `${window.location.pathname}${window.location.search}`
-   * @example 'docs/getting-started'
+   * @description normalized from `window.location.href`
+   * @example 'https://analytics.umami.is/docs/getting-started'
    */
-  url: string;
-
+  url?: string;
   /**
    * Website ID (required)
    *
@@ -54,9 +53,10 @@ export type TrackedProperties = {
    */
   website: string;
 };
-
-export type WithRequired<T, K extends keyof T> = T & { [P in K]-?: T[P] };
-
+export type WithRequired<T, K extends keyof T> = T & {
+  [P in K]-?: T[P];
+};
+export type EventDataValue = boolean | number | string | null | EventData | EventDataValue[];
 /**
  *
  * Event Data can work with any JSON data. There are a few rules in place to maintain performance.
@@ -66,9 +66,8 @@ export type WithRequired<T, K extends keyof T> = T & { [P in K]-?: T[P] };
  * - Objects have a max of 50 properties. Arrays are considered 1 property.
  */
 export interface EventData {
-  [key: string]: boolean | number | string | EventData | boolean[] | number[] | string[] | EventData[];
+  [key: string]: EventDataValue;
 }
-
 export type EventProperties = {
   /**
    * NOTE: event names will be truncated past 50 characters
@@ -80,7 +79,6 @@ export type PageViewProperties = WithRequired<TrackedProperties, 'website'>;
 export type CustomEventFunction = (
   props: PageViewProperties,
 ) => EventProperties | PageViewProperties;
-
 export type UmamiTracker = {
   track: {
     /**
@@ -90,8 +88,7 @@ export type UmamiTracker = {
      * umami.track();
      * ```
      */
-    (): Promise<string>;
-
+    (): Promise<void>;
     /**
      * Track an event with a given name
      *
@@ -101,8 +98,7 @@ export type UmamiTracker = {
      * umami.track('signup-button');
      * ```
      */
-    (eventName: string): Promise<string>;
-
+    (eventName: string): Promise<void>;
     /**
      * Tracks an event with dynamic data.
      *
@@ -125,8 +121,7 @@ export type UmamiTracker = {
      * umami.track('signup-button', { name: 'newsletter', id: 123 });
      * ```
      */
-    (eventName: string, obj: EventData): Promise<string>;
-
+    (eventName: string, obj: EventData): Promise<void>;
     /**
      * Tracks a page view with custom properties
      *
@@ -134,8 +129,7 @@ export type UmamiTracker = {
      * umami.track({ website: 'e676c9b4-11e4-4ef1-a4d7-87001773e9f2', url: '/home', title: 'Home page' });
      * ```
      */
-    (properties: PageViewProperties): Promise<string>;
-
+    (properties: PageViewProperties): Promise<void>;
     /**
      * Tracks an event with fully customizable dynamic data
      * If you don't specify any `name` and/or `data`, it will be treated as a page view
@@ -144,7 +138,7 @@ export type UmamiTracker = {
      * umami.track((props) => ({ ...props, url: path }));
      * ```
      */
-    (eventFunction: CustomEventFunction): Promise<string>;
+    (eventFunction: CustomEventFunction): Promise<void>;
   };
   identify: {
     /**
@@ -154,19 +148,25 @@ export type UmamiTracker = {
      * umami.identify('user-123', { plan: 'pro' });
      * ```
      */
-    (id: string, data?: EventData): Promise<string>;
-
+    (id: string, data?: EventData): Promise<void>;
     /**
-     * Associate data with the current visitor without setting an identity string.
+     * Associate data with the current visitor. An `id` string sets the Distinct ID.
      *
      * @example ```
-     * umami.identify({ plan: 'pro' });
+     * umami.identify({ id: 'user-123', plan: 'pro' });
      * ```
      */
-    (data: EventData): Promise<string>;
+    (
+      data: EventData & {
+        id?: string;
+      },
+    ): Promise<void>;
+  };
+  getSession: () => {
+    cache: string | undefined;
+    website: string | null;
   };
 };
-
 declare global {
   interface Window {
     umami: UmamiTracker;

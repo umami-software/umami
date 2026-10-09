@@ -3,7 +3,7 @@ import type { ReactNode } from 'react';
 import { useMessages } from '@/components/hooks';
 
 export interface ConfirmationFormProps {
-  message: ReactNode;
+  message?: ReactNode;
   buttonLabel?: ReactNode;
   buttonVariant?: 'primary' | 'quiet' | 'danger';
   isLoading?: boolean;
@@ -25,7 +25,7 @@ export function ConfirmationForm({
 
   return (
     <Form onSubmit={onConfirm} error={getErrorMessage(error)}>
-      <Box marginY="4">{message}</Box>
+      {message && <Box marginY="4">{message}</Box>}
       <FormButtons>
         <Button onPress={onClose}>{t(labels.cancel)}</Button>
         <FormSubmitButton

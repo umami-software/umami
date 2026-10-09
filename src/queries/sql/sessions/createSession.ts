@@ -6,7 +6,7 @@ import prisma from '@/lib/prisma';
 const FUNCTION_NAME = 'createSession';
 
 export async function createSession(data: Prisma.SessionCreateInput) {
-  const { rawQuery } = prisma;
+  const { writeRawQuery } = prisma;
   const normalizedData: Prisma.SessionCreateInput = {
     ...data,
     browser: truncateString(data.browser, FIELD_LENGTH.browser),
@@ -20,7 +20,7 @@ export async function createSession(data: Prisma.SessionCreateInput) {
     distinctId: truncateString(data.distinctId, FIELD_LENGTH.distinctId),
   };
 
-  await rawQuery(
+  await writeRawQuery(
     `
     insert into session (
       session_id,

@@ -1,5 +1,6 @@
 import { parseRequest } from '@/lib/request';
 import { json } from '@/lib/response';
+import type { Auth } from '@/lib/types';
 
 export async function GET(request: Request) {
   const { auth, error } = await parseRequest(request);
@@ -8,5 +9,5 @@ export async function GET(request: Request) {
     return error();
   }
 
-  return json(auth);
+  return json(auth as Auth);
 }

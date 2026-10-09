@@ -10,10 +10,10 @@
  *   - Demo SaaS: Average traffic (~500 sessions/day)
  *
  * Usage:
- *   npm run seed-data              # Generate 30 days of data
- *   npm run seed-data -- --days 90 # Generate 90 days of data
- *   npm run seed-data -- --clear   # Clear existing demo data first
- *   npm run seed-data -- --verbose # Show detailed progress
+ *   pnpm db:seed              # Generate 30 days of data
+ *   pnpm db:seed --days 90    # Generate 90 days of data
+ *   pnpm db:seed --clear      # Clear existing demo data first
+ *   pnpm db:seed --verbose    # Show detailed progress
  */
 
 import { type SeedConfig, seed } from './seed/index.js';
@@ -63,7 +63,7 @@ Umami Sample Data Generator
 Generates realistic analytics data for local development and testing.
 
 Usage:
-  npm run seed-data [options]
+  pnpm db:seed [options]
 
 Options:
   --days <number>    Number of days of data to generate (default: 30)
@@ -72,10 +72,10 @@ Options:
   --help, -h         Show this help message
 
 Examples:
-  npm run seed-data                   # Generate 30 days of data
-  npm run seed-data -- --days 90      # Generate 90 days of data
-  npm run seed-data -- --clear        # Clear existing demo data first
-  npm run seed-data -- --days 7 -v    # Generate 7 days with verbose output
+  pnpm db:seed                 # Generate 30 days of data
+  pnpm db:seed --days 90       # Generate 90 days of data
+  pnpm db:seed --clear         # Clear existing demo data first
+  pnpm db:seed --days 7 -v     # Generate 7 days with verbose output
 
 Generated Sites:
   - Demo Blog:  Low traffic (~90 sessions/month)
@@ -91,13 +91,13 @@ function checkEnvironment(): void {
   const nodeEnv = process.env.NODE_ENV;
 
   if (nodeEnv === 'production') {
-    console.error('\nError: seed-data cannot run in production environment.');
+    console.error('\nError: db:seed cannot run in production environment.');
     console.error('This script is only for local development and testing.\n');
     process.exit(1);
   }
 
   if (process.env.VERCEL || process.env.NETLIFY || process.env.RAILWAY_ENVIRONMENT) {
-    console.error('\nError: seed-data cannot run in cloud environments.');
+    console.error('\nError: db:seed cannot run in cloud environments.');
     console.error('This script is only for local development and testing.\n');
     process.exit(1);
   }

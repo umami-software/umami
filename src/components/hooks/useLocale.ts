@@ -32,8 +32,6 @@ export function useLocale() {
 
     setItem(LOCALE_CONFIG, value);
 
-    document.getElementById('__next')?.setAttribute('dir', getTextDirection(value));
-
     if (locale !== value) {
       setLocale(value);
     } else {
@@ -45,6 +43,11 @@ export function useLocale() {
     if (!messages[locale]) {
       saveLocale(locale);
     }
+  }, [locale]);
+
+  useEffect(() => {
+    document.documentElement.lang = locale.split('-')[0];
+    document.documentElement.setAttribute('dir', getTextDirection(locale));
   }, [locale]);
 
   useEffect(() => {

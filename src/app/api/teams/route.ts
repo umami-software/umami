@@ -6,8 +6,9 @@ import redis from '@/lib/redis';
 import { getQueryFilters, parseRequest } from '@/lib/request';
 import { json, unauthorized } from '@/lib/response';
 import { pagingParams, sortingParams } from '@/lib/schema';
+import { getCloudTeamLimit } from '@/lib/subscription';
 import { canCreateTeam } from '@/permissions';
-import { createTeam, getUserTeams } from '@/queries/prisma';
+import { createTeam, getUserOwnedTeamCount, getUserTeams } from '@/queries/prisma';
 
 export async function GET(request: Request) {
   const schema = z.object({
@@ -49,6 +50,22 @@ export async function POST(request: Request) {
   const teamId = uuid();
   const teamOwnerId = ownerId && auth.user.isAdmin ? ownerId : auth.user.id;
 
+  let account = null;
+
+  if (process.env.CLOUD_MODE) {
+    account = await fetchAccount(teamOwnerId);
+
+    const teamLimit = getCloudTeamLimit(account);
+
+    if (teamLimit !== null) {
+      const count = await getUserOwnedTeamCount(teamOwnerId);
+
+      if (count >= teamLimit) {
+        return unauthorized({ message: 'Team limit reached.' });
+      }
+    }
+  }
+
   const team = await createTeam(
     {
       id: teamId,
@@ -58,23 +75,19 @@ export async function POST(request: Request) {
     teamOwnerId,
   );
 
-  if (process.env.CLOUD_MODE && redis.enabled) {
-    const account = await fetchAccount(teamOwnerId);
-
-    if (account) {
-      await redis.client.set(
-        `team:${teamId}`,
-        {
-          teamOwnerId,
-          isPro: account.isPro || false,
-          isBusiness: account.isBusiness || false,
-          isNoBilling: account.isNoBilling || false,
-          hasSubscription: account.hasSubscription || false,
-          unlimitedWebsites: account.unlimitedWebsites || false,
-        },
-        60 * 60 * 24 * 90,
-      );
-    }
+  if (process.env.CLOUD_MODE && redis.enabled && account) {
+    await redis.client.set(
+      `team:${teamId}`,
+      {
+        teamOwnerId,
+        isPro: account.isPro || false,
+        isBusiness: account.isBusiness || false,
+        isNoBilling: account.isNoBilling || false,
+        hasSubscription: account.hasSubscription || false,
+        unlimitedWebsites: account.unlimitedWebsites || false,
+      },
+      60 * 60 * 24 * 90,
+    );
   }
 
   return json(team);

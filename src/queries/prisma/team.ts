@@ -1,4 +1,4 @@
-import { Prisma, type Team } from '@/generated/prisma/client';
+import { Prisma, type Team, type TeamUser } from '@/generated/prisma/client';
 import { ROLES } from '@/lib/constants';
 import { uuid } from '@/lib/crypto';
 import prisma from '@/lib/prisma';
@@ -105,6 +105,17 @@ export async function getAllUserTeams(userId: string) {
   });
 }
 
+export async function getUserOwnedTeamCount(userId: string) {
+  return prisma.client.team.count({
+    where: {
+      deletedAt: null,
+      members: {
+        some: { userId, role: ROLES.teamOwner },
+      },
+    },
+  });
+}
+
 export async function getTeamOwner(teamId: string) {
   return prisma.client.teamUser.findFirst({
     where: { teamId, role: ROLES.teamOwner },
@@ -112,7 +123,10 @@ export async function getTeamOwner(teamId: string) {
   });
 }
 
-export async function createTeam(data: Prisma.TeamCreateInput, userId: string): Promise<any> {
+export async function createTeam(
+  data: Prisma.TeamCreateInput,
+  userId: string,
+): Promise<[Team, TeamUser]> {
   const { id } = data;
   const { client, transaction } = prisma;
 
@@ -128,7 +142,7 @@ export async function createTeam(data: Prisma.TeamCreateInput, userId: string): 
         role: ROLES.teamOwner,
       },
     }),
-  ]);
+  ]) as Promise<[Team, TeamUser]>;
 }
 
 export async function updateTeam(teamId: string, data: Prisma.TeamUpdateInput): Promise<Team> {
@@ -179,6 +193,7 @@ export async function deleteTeam(teamId: string) {
       client.team.update({
         data: {
           deletedAt: new Date(),
+          accessCode: null,
         },
         where: {
           id: teamId,

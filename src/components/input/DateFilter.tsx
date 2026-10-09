@@ -1,11 +1,12 @@
 import { Dialog, ListItem, ListSeparator, Modal, Select, type SelectProps } from '@umami/react-zen';
 import { Fragment, type Key, useState } from 'react';
+import { ControlledDialog } from '@/components/common/ControlledDialog';
 import { DateDisplay } from '@/components/common/DateDisplay';
 import { useMessages, useMobile } from '@/components/hooks';
 import { DatePickerForm } from '@/components/metrics/DatePickerForm';
 import { getMaxSelectableDate, parseDateRange } from '@/lib/date';
 
-export interface DateFilterProps extends SelectProps {
+export interface DateFilterProps extends Omit<SelectProps, 'value' | 'onChange'> {
   value?: string;
   onChange?: (value: string) => void;
   showAllTime?: boolean;
@@ -101,6 +102,8 @@ export function DateFilter({
 
   const selectedValue = value.endsWith(':all') ? 'all' : value;
 
+  const [side, align] = String(placement).split(' ');
+
   return (
     <>
       <Select
@@ -109,7 +112,23 @@ export function DateFilter({
         placeholder={t(labels.selectDate)}
         onChange={handleChange}
         renderValue={renderValue}
-        popoverProps={{ placement, style: { minWidth: 200 } }}
+        popoverProps={{
+          side: side as any,
+          align: (align === 'top' ? 'start' : align === 'bottom' ? 'end' : align) as any,
+          style: isMobile
+            ? {
+                // Base UI's positioned wrapper contains React Zen's fullscreen popup.
+                position: 'fixed',
+                top: 0,
+                right: 0,
+                bottom: 0,
+                left: 0,
+                width: '100vw',
+                height: '100dvh',
+                transform: 'none',
+              }
+            : { minWidth: 200 },
+        }}
         isFullscreen={isMobile}
       >
         {options.map(({ label, value, divider }: any) => {
@@ -122,18 +141,20 @@ export function DateFilter({
         })}
       </Select>
       {showPicker && (
-        <Modal isOpen={true}>
-          <Dialog>
-            <DatePickerForm
-              startDate={startDate}
-              endDate={endDate}
-              minDate={new Date(2000, 0, 1)}
-              maxDate={getMaxSelectableDate()}
-              onChange={handlePickerChange}
-              onClose={() => setShowPicker(false)}
-            />
-          </Dialog>
-        </Modal>
+        <ControlledDialog>
+          <Modal isOpen={true}>
+            <Dialog>
+              <DatePickerForm
+                startDate={startDate}
+                endDate={endDate}
+                minDate={new Date(2000, 0, 1)}
+                maxDate={getMaxSelectableDate()}
+                onChange={handlePickerChange}
+                onClose={() => setShowPicker(false)}
+              />
+            </Dialog>
+          </Modal>
+        </ControlledDialog>
       )}
     </>
   );

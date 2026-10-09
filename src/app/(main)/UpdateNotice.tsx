@@ -1,4 +1,4 @@
-import { AlertBanner, Button, Column, Row } from '@umami/react-zen';
+import { Alert, AlertTitle, Button, Column, Row } from '@umami/react-zen';
 import { usePathname } from 'next/navigation';
 import { useCallback, useEffect, useState } from 'react';
 import { useMessages } from '@/components/hooks';
@@ -49,12 +49,15 @@ export function UpdateNotice({ user, config }) {
   return (
     <Column justifyContent="center" alignItems="center" position="fixed" top="10px" width="100%">
       <Row width="600px">
-        <AlertBanner title={t(messages.newVersionAvailable, { version: `v${latest}` })}>
-          <Button variant="primary" onPress={handleViewClick}>
-            {t(labels.viewDetails)}
-          </Button>
-          <Button onPress={handleDismissClick}>{t(labels.dismiss)}</Button>
-        </AlertBanner>
+        <Alert style={{ width: '100%' }}>
+          <AlertTitle>{t(messages.newVersionAvailable, { version: `v${latest}` })}</AlertTitle>
+          <Row gap="3" paddingTop="2">
+            <Button variant="primary" onPress={handleViewClick}>
+              {t(labels.viewDetails)}
+            </Button>
+            <Button onPress={handleDismissClick}>{t(labels.dismiss)}</Button>
+          </Row>
+        </Alert>
       </Row>
     </Column>
   );

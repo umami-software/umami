@@ -1,5 +1,6 @@
 import {
   arSA,
+  az,
   be,
   bg,
   bn,
@@ -22,6 +23,7 @@ import {
   id,
   it,
   ja,
+  ka,
   km,
   ko,
   lt,
@@ -48,7 +50,9 @@ import {
 } from 'date-fns/locale';
 
 export const languages = {
+  'ka-GE': { label: 'ქართული', dateLocale: ka },
   'ar-SA': { label: 'العربية', dateLocale: arSA, dir: 'rtl' },
+  'az-AZ': { label: 'Azərbaycan', dateLocale: az },
   'be-BY': { label: 'Беларуская', dateLocale: be },
   'bg-BG': { label: 'български език', dateLocale: bg },
   'bn-BD': { label: 'বাংলা', dateLocale: bn },
@@ -67,7 +71,7 @@ export const languages = {
   'fo-FO': { label: 'Føroyskt' },
   'fr-FR': { label: 'Français', dateLocale: fr },
   'ga-ES': { label: 'Galacian (Spain)', dateLocale: es },
-  'he-IL': { label: 'עברית', dateLocale: he },
+  'he-IL': { label: 'עברית', dateLocale: he, dir: 'rtl' },
   'hi-IN': { label: 'हिन्दी', dateLocale: hi },
   'hr-HR': { label: 'Hrvatski', dateLocale: hr },
   'hu-HU': { label: 'Hungarian', dateLocale: hu },

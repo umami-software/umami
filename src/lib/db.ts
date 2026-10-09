@@ -19,6 +19,10 @@ export function getDatabaseType(url = process.env.DATABASE_URL) {
   return type;
 }
 
+export function isRelationalOnly() {
+  return !process.env.CLICKHOUSE_URL && getDatabaseType() === POSTGRESQL;
+}
+
 export async function runQuery(queries: any) {
   if (process.env.CLICKHOUSE_URL) {
     if (queries[KAFKA]) {

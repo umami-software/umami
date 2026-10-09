@@ -9,9 +9,9 @@ import {
   Select,
   TextField,
 } from '@umami/react-zen';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Empty } from '@/components/common/Empty';
-import { MultiSelect } from '@/components/common/MultiSelect';
+import { MultiSelect, MultiSelectItem } from '@/components/common/MultiSelect';
 import { useFilters, useFormat, useWebsiteValuesQuery } from '@/components/hooks';
 import { X } from '@/components/icons';
 import { isSearchOperator } from '@/lib/params';
@@ -29,6 +29,12 @@ export interface FilterRecordProps {
   onChange?: (name: string, value: string) => void;
 }
 
+function getSelectedValues(value: string | string[], operator: string) {
+  if (Array.isArray(value)) return value;
+  if (!value) return [];
+  return isSearchOperator(operator) ? [value] : value.split(',');
+}
+
 export function FilterRecord({
   websiteId,
   type,
@@ -42,8 +48,8 @@ export function FilterRecord({
   onChange,
 }: FilterRecordProps) {
   const { fields, operators } = useFilters();
-  const initValues = Array.isArray(value) ? value : value ? value.split(',') : [];
-  const [selected, setSelected] = useState<string[]>(initValues);
+  const isSearch = isSearchOperator(operator);
+  const [selected, setSelected] = useState<string[]>(() => getSelectedValues(value, operator));
   const [search, setSearch] = useState('');
   const { formatValue } = useFormat();
   const { data, isLoading } = useWebsiteValuesQuery({
@@ -53,8 +59,11 @@ export function FilterRecord({
     startDate,
     endDate,
   });
-  const isSearch = isSearchOperator(operator);
   const items = data?.filter(({ value }) => value) || [];
+
+  useEffect(() => {
+    setSelected(getSelectedValues(value, operator));
+  }, [operator, value]);
 
   const handleSearch = (value: string) => {
     setSearch(value);
@@ -75,7 +84,7 @@ export function FilterRecord({
   };
 
   return (
-    <Column>
+    <Column gap="1">
       <Label>{fields.find(f => f.name === name)?.label}</Label>
       <Grid columns="1fr auto" gap>
         <Grid columns={{ base: '1fr', md: '200px 1fr' }} gap>
@@ -108,9 +117,9 @@ export function FilterRecord({
               allowSearch
             >
               {items.map(({ value }) => (
-                <ListItem key={value} id={value}>
+                <MultiSelectItem key={value} value={value}>
                   {formatValue(value, type)}
-                </ListItem>
+                </MultiSelectItem>
               ))}
             </MultiSelect>
           )}

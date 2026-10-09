@@ -1,5 +1,6 @@
 import { Dialog, Modal } from '@umami/react-zen';
 import { WebsiteExpandedView } from '@/app/(main)/websites/[websiteId]/WebsiteExpandedView';
+import { ControlledDialog } from '@/components/common/ControlledDialog';
 import { useMobile, useNavigation } from '@/components/hooks';
 
 export function ExpandedViewModal({
@@ -28,25 +29,27 @@ export function ExpandedViewModal({
   };
 
   return (
-    <Modal isOpen={!!view} onOpenChange={handleOpenChange} isDismissable>
-      <Dialog
-        style={{
-          maxWidth: 1320,
-          width: '100vw',
-          height: isMobile ? '100dvh' : 'calc(100dvh - 40px)',
-          overflow: 'hidden',
-        }}
-      >
-        {({ close }) => {
-          return (
-            <WebsiteExpandedView
-              websiteId={websiteId}
-              excludedIds={excludedIds}
-              onClose={() => handleClose(close)}
-            />
-          );
-        }}
-      </Dialog>
-    </Modal>
+    <ControlledDialog>
+      <Modal isOpen={!!view} onOpenChange={handleOpenChange}>
+        <Dialog
+          style={{
+            maxWidth: 1320,
+            width: '100vw',
+            height: isMobile ? '100dvh' : 'calc(100dvh - 40px)',
+            overflow: 'hidden',
+          }}
+        >
+          {({ close }) => {
+            return (
+              <WebsiteExpandedView
+                websiteId={websiteId}
+                excludedIds={excludedIds}
+                onClose={() => handleClose(close)}
+              />
+            );
+          }}
+        </Dialog>
+      </Modal>
+    </ControlledDialog>
   );
 }

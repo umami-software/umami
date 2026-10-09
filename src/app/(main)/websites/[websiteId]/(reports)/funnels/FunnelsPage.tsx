@@ -4,12 +4,12 @@ import { WebsiteControls } from '@/app/(main)/websites/[websiteId]/WebsiteContro
 import { LoadingPanel } from '@/components/common/LoadingPanel';
 import { Panel } from '@/components/common/Panel';
 import { SectionHeader } from '@/components/common/SectionHeader';
-import { useDateRange, useNavigation, useReportsQuery } from '@/components/hooks';
+import { useDateRange, useFunnelsQuery, useNavigation } from '@/components/hooks';
 import { Funnel } from './Funnel';
 import { FunnelAddButton } from './FunnelAddButton';
 
 export function FunnelsPage({ websiteId }: { websiteId: string }) {
-  const { data, isLoading, error } = useReportsQuery({ websiteId, type: 'funnel' });
+  const { data, isLoading, error } = useFunnelsQuery({ websiteId });
   const {
     dateRange: { startDate, endDate },
   } = useDateRange();

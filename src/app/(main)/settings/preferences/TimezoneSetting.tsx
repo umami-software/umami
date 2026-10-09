@@ -30,7 +30,7 @@ export function TimezoneSetting() {
         onSearch={setSearch}
         onOpenChange={handleOpen}
         maxHeight={480}
-        style={{ minWidth: '250px' }}
+        buttonProps={{ style: { minWidth: '250px' } }}
       >
         {items.map((item: any) => (
           <ListItem key={item} id={item}>

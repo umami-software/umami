@@ -12,7 +12,7 @@
 .railDivider {
   width: 1px;
   height: 100%;
-  background: var(--gray-300, #d1d5db);
+  background: var(--zen-palette-300, #d1d5db);
   justify-self: center;
 }
 
@@ -49,13 +49,42 @@
 }
 
 .pageButton:hover {
-  background: var(--surface-sunken);
+  background: var(--zen-surface-sunken);
 }
 
 .pageButtonSelected,
 .pageButtonSelected:hover {
-  background: var(--surface-sunken);
+  background: var(--zen-surface-sunken);
   font-weight: 600;
+}
+
+.mobilePageHeader {
+  min-width: 0;
+}
+
+.mobilePageSection {
+  padding: 4px 0 2px;
+}
+
+.mobileSectionLabel {
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.mobileSelectedPageButton {
+  width: 100%;
+  text-align: left;
+  border: 1px solid var(--zen-border);
+  background: var(--zen-surface-raised);
+  border-radius: 8px;
+  padding: 10px 12px;
+  cursor: pointer;
+  font: inherit;
+  color: inherit;
+}
+
+.mobileSelectedPageButton:hover {
+  background: var(--zen-surface-sunken);
 }
 
 .summaryHeader {
@@ -79,8 +108,8 @@
   align-items: center;
   padding: 4px 10px;
   border-radius: 999px;
-  background: var(--surface-raised);
-  border: 1px solid var(--border-base);
+  background: var(--zen-surface-raised);
+  border: 1px solid var(--zen-border);
   white-space: nowrap;
 }
 
@@ -96,6 +125,10 @@
 
 .screenWidthValue {
   min-width: 0;
+}
+
+.mobileSummaryControls {
+  width: 100%;
 }
 
 .screenWidthCount {
@@ -142,9 +175,9 @@
 .canvas {
   position: relative;
   overflow: hidden;
-  border: 1px solid var(--border-base);
+  border: 1px solid var(--zen-border);
   border-radius: 8px;
-  background: var(--surface-sunken);
+  background: var(--zen-surface-sunken);
   flex: 0 0 auto;
   margin-inline: auto;
 }
@@ -168,7 +201,9 @@
 
 .snapshot {
   position: absolute;
-  inset: 0;
+  top: 0;
+  left: 0;
+  right: 0;
   z-index: 1;
   transform-origin: top left;
   pointer-events: none;
@@ -189,7 +224,7 @@
   width: 100%;
   height: 100%;
   border: 0;
-  background: var(--surface-base);
+  background: var(--zen-surface);
   overflow: hidden;
   pointer-events: none;
 }
@@ -208,7 +243,7 @@
   position: absolute;
   inset: 0;
   z-index: 2;
-  background: var(--surface-sunken);
+  background: var(--zen-surface-sunken);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -225,4 +260,39 @@
   );
   pointer-events: auto;
   mix-blend-mode: multiply;
+}
+
+@media (max-width: 640px) {
+  .summaryStats,
+  .summaryHeader {
+    width: 100%;
+    align-items: stretch;
+  }
+
+  .summaryStats {
+    gap: 8px;
+  }
+
+  .summaryStat {
+    width: 100%;
+    justify-content: flex-start;
+  }
+
+  .screenWidthControl {
+    width: 100%;
+    margin-left: 0;
+    justify-content: space-between;
+  }
+
+  .screenWidthLabel {
+    font-size: 12px;
+  }
+
+  .canvasWrapper {
+    max-height: 70vh;
+  }
+
+  .scrollBandLabel {
+    display: none;
+  }
 }
