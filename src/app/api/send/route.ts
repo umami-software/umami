@@ -95,6 +95,11 @@ export async function POST(request: Request) {
       payload,
     );
 
+    // Global Privacy Control (GPC)
+    if (request.headers.get('sec-gpc') === '1') {
+      return json({ disabled: true });
+    }
+
     // Bot check
     if (!process.env.DISABLE_BOT_CHECK && isbot(userAgent)) {
       return json({ beep: 'boop' });
