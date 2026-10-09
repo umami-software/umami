@@ -99,8 +99,7 @@ export async function fetchQuery<T>(
 
   try {
     if (result !== null && result !== undefined) {
-      await redis.client.set(key, result);
-      await redis.client.expire(key, getTTL(endDate));
+      await redis.client.set(key, result, getTTL(endDate));
     }
   } catch (e) {
     log(e);
