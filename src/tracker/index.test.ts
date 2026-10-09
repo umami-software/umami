@@ -7,6 +7,7 @@ afterEach(() => {
   delete (document as Document & { readyState?: DocumentReadyState }).readyState;
   delete (document as Document & { visibilityState?: DocumentVisibilityState }).visibilityState;
   delete (document as Document & { prerendering?: boolean }).prerendering;
+  delete (navigator as Navigator & { globalPrivacyControl?: unknown }).globalPrivacyControl;
   vi.restoreAllMocks();
   vi.unstubAllGlobals();
   vi.resetModules();
