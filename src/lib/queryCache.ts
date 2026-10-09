@@ -121,5 +121,7 @@ export async function expireQueryCache(websiteId: string) {
   // Invalidation failures propagate: callers (reset, delete, segment edits)
   // must not report success while stale cached analytics remain servable.
   // The operations are idempotent, so a failed request can simply be retried.
-  await redis.client.incr(getEpochKey(websiteId));
+  if (queryCacheEnabled()) {
+    await redis.client.incr(getEpochKey(websiteId));
+  }
 }
