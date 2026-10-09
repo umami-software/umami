@@ -8,7 +8,7 @@ import {
   withDateRange,
 } from '@/lib/schema';
 import { canViewAuthenticatedWebsite } from '@/permissions';
-import { getSessionReplays } from '@/queries/sql';
+import { getReplayDistinctIds, getSessionReplays } from '@/queries/sql';
 
 export async function GET(
   request: Request,
@@ -36,6 +36,13 @@ export async function GET(
   const filters = await getQueryFilters(query, websiteId);
 
   const data = await getSessionReplays(websiteId, filters);
+  const distinctIds = await getReplayDistinctIds(
+    websiteId,
+    data.data.map(({ id }) => id),
+  );
 
-  return json(data);
+  return json({
+    ...data,
+    data: data.data.map(row => ({ ...row, distinctIds: distinctIds[row.id] })),
+  });
 }
