@@ -22,6 +22,11 @@ import { collectionSchema } from './request-schema';
 
 export async function POST(request: Request) {
   try {
+    // Global Privacy Control (GPC)
+    if (request.headers.get('sec-gpc') === '1') {
+      return json({ disabled: true });
+    }
+
     const { body, error } = await parseRequest(request, collectionSchema, { skipAuth: true });
 
     if (error) {
@@ -94,11 +99,6 @@ export async function POST(request: Request) {
       request,
       payload,
     );
-
-    // Global Privacy Control (GPC)
-    if (request.headers.get('sec-gpc') === '1') {
-      return json({ disabled: true });
-    }
 
     // Bot check
     if (!process.env.DISABLE_BOT_CHECK && isbot(userAgent)) {

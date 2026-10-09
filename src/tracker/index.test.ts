@@ -4,6 +4,7 @@ afterEach(() => {
   delete (window as Window & { umami?: unknown }).umami;
   delete (document as Document & { currentScript?: HTMLScriptElement }).currentScript;
   delete (document as Document & { readyState?: DocumentReadyState }).readyState;
+  delete (navigator as Navigator & { globalPrivacyControl?: unknown }).globalPrivacyControl;
   vi.unstubAllGlobals();
   vi.resetModules();
 });

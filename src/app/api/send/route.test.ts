@@ -256,6 +256,19 @@ describe('Global Privacy Control (GPC)', () => {
     expect(saveEventMock).not.toHaveBeenCalled();
     expect(createSessionMock).not.toHaveBeenCalled();
   });
+
+  test('returns 200 with disabled: true for error reports when sec-gpc header is 1', async () => {
+    const response = await callPOST(
+      {
+        type: 'error',
+        payload: { website: WEBSITE_ID, url: '/', message: 'Test error' },
+      },
+      { headers: { 'sec-gpc': '1' } },
+    );
+
+    expect(response.status).toBe(200);
+    await expect(response.json()).resolves.toEqual({ disabled: true });
+  });
 });
 
 describe('bot detection gate', () => {
