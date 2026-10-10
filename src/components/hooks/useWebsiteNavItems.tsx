@@ -59,12 +59,6 @@ export function useWebsiteNavItems(websiteId: string) {
           path: renderPath('/sessions'),
         },
         {
-          id: 'realtime',
-          label: t(labels.realtime),
-          icon: <Clock />,
-          path: renderPath('/realtime'),
-        },
-        {
           id: 'compare',
           label: t(labels.compare),
           icon: <AlignEndHorizontal />,
@@ -173,6 +167,12 @@ export function useWebsiteNavItems(websiteId: string) {
     {
       label: t(labels.monitoring),
       items: [
+        {
+          id: 'realtime',
+          label: t(labels.realtime),
+          icon: <Clock />,
+          path: renderPath('/realtime'),
+        },
         {
           id: 'performance',
           label: t(labels.performance),

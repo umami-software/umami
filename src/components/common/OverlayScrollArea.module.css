@@ -53,3 +53,77 @@
   --overlay-scrollbar-thumb: var(--zen-palette-600);
   --overlay-scrollbar-thumb-hover: var(--zen-palette-500);
 }
+
+.container {
+  --overlay-scroll-indicator-background: var(--zen-surface);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.container > .root {
+  flex: 1;
+  min-height: 0;
+}
+
+.indicator {
+  position: absolute;
+  left: 0;
+  right: 0;
+  z-index: 1;
+  display: flex;
+  justify-content: center;
+  height: 40px;
+  pointer-events: none;
+  opacity: 0;
+  visibility: hidden;
+  transition:
+    opacity 0.15s ease,
+    visibility 0.15s ease;
+}
+
+.indicator[data-visible] {
+  opacity: 1;
+  visibility: visible;
+}
+
+.top {
+  top: 0;
+  align-items: flex-start;
+  background: linear-gradient(
+    to bottom,
+    var(--overlay-scroll-indicator-background) 35%,
+    transparent
+  );
+}
+
+.bottom {
+  bottom: 0;
+  align-items: flex-end;
+  background: linear-gradient(to top, var(--overlay-scroll-indicator-background) 35%, transparent);
+}
+
+.indicatorButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 20px;
+  padding: 0;
+  border: 0;
+  border-radius: 4px;
+  background: none;
+  color: var(--zen-fg-muted);
+  cursor: pointer;
+  pointer-events: auto;
+}
+
+.indicatorButton:hover {
+  color: var(--zen-fg);
+}
+
+.indicatorButton:focus-visible {
+  outline: 2px solid var(--zen-focus-ring);
+  outline-offset: 1px;
+}

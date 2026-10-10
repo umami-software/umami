@@ -106,6 +106,8 @@ export const labels: Record<string, string> = {
   referrers: 'label.referrers',
   screen: 'label.screen',
   screens: 'label.screens',
+  scrollDown: 'label.scroll-down',
+  scrollUp: 'label.scroll-up',
   browsers: 'label.browsers',
   os: 'label.os',
   devices: 'label.devices',
