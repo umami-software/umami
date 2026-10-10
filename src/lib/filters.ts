@@ -1,7 +1,7 @@
-export const percentFilter = (data: any[]) => {
+export const percentFilter = (data: any[], total?: number) => {
   if (!Array.isArray(data)) return [];
-  const total = data.reduce((n, { y }) => n + y, 0);
-  return data.map(({ x, y, ...props }) => ({ x, y, z: total ? (y / total) * 100 : 0, ...props }));
+  const sum = total ?? data.reduce((n, { y }) => n + y, 0);
+  return data.map(({ x, y, ...props }) => ({ x, y, z: sum ? (y / sum) * 100 : 0, ...props }));
 };
 
 export const paramFilter = (data: any[]) => {
