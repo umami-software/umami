@@ -3,10 +3,11 @@ import { Column } from '@umami/react-zen';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { Empty } from '@/components/common/Empty';
 import { useMobile } from '@/components/hooks';
-import { getReplayPlayerEvents, getReplayViewport } from '@/lib/replay';
+import { getReplayPlayerEvents, getReplayViewport, REPLAY_CONSOLE_EVENT_TAG } from '@/lib/replay';
 import 'rrweb-player/dist/style.css';
 
 const DEFAULT_REPLAY_ASPECT_RATIO = 9 / 16;
+const CONSOLE_EVENT_TAG_COLOR = '#f59e0b';
 
 function destroyReplayPlayer(player: { $destroy?: () => void } | null) {
   if (!player) {
@@ -120,7 +121,11 @@ export function ReplayPlayer({ events }: { events: any[] }) {
               autoPlay: false,
               showController: true,
               speedOption: [1, 2, 4, 8],
+              tags: {
+                [REPLAY_CONSOLE_EVENT_TAG]: CONSOLE_EVENT_TAG_COLOR,
+              },
               useVirtualDom: false,
+              UNSAFE_replayCanvas: true,
               showWarning: false,
             },
           });
