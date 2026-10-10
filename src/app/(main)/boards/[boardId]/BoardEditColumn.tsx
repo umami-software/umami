@@ -16,11 +16,12 @@ import { Panel } from '@/components/common/Panel';
 import { useBoard, useMessages, useNavigation } from '@/components/hooks';
 import { Pencil, Plus, X } from '@/components/icons';
 import { getBoardEntity, getBoardType, getResolvedComponentEntity } from '@/lib/boards';
-import type { BoardComponentConfig } from '@/lib/types';
+import type { BoardComponentConfig, BoardRowFilters } from '@/lib/types';
 import { getComponentDefinition } from '../boardComponentRegistry';
 import { useBoardEntityAvailability } from '../useBoardEntityAvailability';
 import { BoardComponentRenderer } from './BoardComponentRenderer';
 import { BoardComponentSelect } from './BoardComponentSelect';
+import { BoardRowFilterIndicator } from './BoardRowFilterIndicator';
 
 export function BoardEditColumn({
   id,
@@ -29,6 +30,8 @@ export function BoardEditColumn({
   onRemove,
   onSetComponent,
   canRemove = true,
+  rowFilters,
+  filterWebsiteId,
 }: {
   id: string;
   component?: BoardComponentConfig;
@@ -36,6 +39,9 @@ export function BoardEditColumn({
   onRemove: (id: string) => void;
   onSetComponent: (id: string, config: BoardComponentConfig | null) => void;
   canRemove?: boolean;
+  /** The row's filters, passed only when they scope this column. */
+  rowFilters?: BoardRowFilters;
+  filterWebsiteId?: string;
 }) {
   const [showSelect, setShowSelect] = useState(false);
   const [showActions, setShowActions] = useState(false);
@@ -84,6 +90,11 @@ export function BoardEditColumn({
     <Panel
       title={title}
       description={description}
+      toolbar={
+        rowFilters ? (
+          <BoardRowFilterIndicator rowFilters={rowFilters} websiteId={filterWebsiteId} />
+        ) : undefined
+      }
       width="100%"
       height="100%"
       position="relative"
