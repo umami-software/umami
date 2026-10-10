@@ -53,6 +53,7 @@ export * from './queries/useRevenueChartQuery';
 export * from './queries/useRevenueMetricsQuery';
 export * from './queries/useRevenueSessionsQuery';
 export * from './queries/useRevenueStatsQuery';
+export * from './queries/useSearchConsoleQuery';
 export * from './queries/useSavedDefinitionsQuery';
 export * from './queries/useSavedReplaysQuery';
 export * from './queries/useSessionActivityQuery';

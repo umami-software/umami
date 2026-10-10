@@ -5,6 +5,7 @@ import {
   Clock,
   Eye,
   Flame,
+  Search,
   Sheet,
   Tag,
   User,
@@ -12,12 +13,14 @@ import {
   Video,
 } from '@/components/icons';
 import { Funnel, Gauge, Lightning, Magnet, Money, Network, Path, Target } from '@/components/svg';
+import { useConfig } from './useConfig';
 import { useMessages } from './useMessages';
 import { useNavigation } from './useNavigation';
 
 export function useWebsiteNavItems(websiteId: string) {
   const { t, labels } = useMessages();
   const { pathname, renderUrl } = useNavigation();
+  const config = useConfig();
   const resetParams = {
     search: undefined,
     page: undefined,
@@ -73,6 +76,17 @@ export function useWebsiteNavItems(websiteId: string) {
           icon: <Sheet />,
           path: renderPath('/breakdown'),
         },
+        // Google Search Console is a Cloud integration.
+        ...(config?.cloudMode
+          ? [
+              {
+                id: 'search-console',
+                label: t('searchConsole.searches'),
+                icon: <Search />,
+                path: renderPath('/search-console'),
+              },
+            ]
+          : []),
       ],
     },
     {

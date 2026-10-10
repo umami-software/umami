@@ -580,5 +580,29 @@
     "noStack": "No stack trace was available.",
     "rawStack": "Original browser stack trace. Source-map processing is not available yet.",
     "tags": "Tags"
+  },
+  "searchConsole": {
+    "description": "See which Google searches bring visitors to your website.",
+    "clicks": "Clicks",
+    "impressions": "Impressions",
+    "ctr": "CTR",
+    "position": "Position",
+    "averagePosition": "Average position",
+    "searches": "Searches",
+    "queries": "Queries",
+    "query": "Query",
+    "pages": "Pages",
+    "page": "Page",
+    "countries": "Countries",
+    "country": "Country",
+    "devices": "Devices",
+    "device": "Device",
+    "notConnected": "Connect Google Search Console",
+    "notConnectedDescription": "Connect a Search Console property to this website to see its search performance here.",
+    "propertyNotSet": "Choose a Search Console property",
+    "propertyNotSetDescription": "Your Google Search Console connection does not have a property selected for this website.",
+    "reconnect": "Reconnect Google Search Console",
+    "reconnectDescription": "Google rejected the connection. Reconnect it to continue reading search data.",
+    "manageIntegrations": "Manage integrations"
   }
 }
