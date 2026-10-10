@@ -199,6 +199,9 @@ type BeforeSend = (
 ) => Payload | null | undefined | Promise<Payload | null | undefined>;
 type TrackerWindow = Window &
   typeof globalThis & {
+    umamiConfig?: Record<string, string | string[] | BeforeSend | undefined> & {
+      websiteId?: string;
+    };
     doNotTrack?: string | number | null;
     navigator: Navigator & {
       msDoNotTrack?: string | number | null;
@@ -227,7 +230,8 @@ type MetricEntry = PerformanceEntry & {
     doNotTrack,
   } = window;
   const { currentScript, referrer } = document as TrackerDocument;
-  if (!currentScript) return;
+  const globalConfig = window.umamiConfig || {};
+  if (!currentScript && !globalConfig.websiteId) return;
 
   const { hostname, href, origin } = location;
 
@@ -241,26 +245,40 @@ type MetricEntry = PerformanceEntry & {
   const _data = 'data-';
   const _false = 'false';
   const _true = 'true';
-  const attr = currentScript.getAttribute.bind(currentScript);
-  const config = (value: string) => attr(`${_data}${value}`);
+  const attr = currentScript ? currentScript.getAttribute.bind(currentScript) : () => null;
+  const toCamelCase = (value: string) => value.replace(/-([a-z])/g, match => match[1].toUpperCase());
+  const config = (value: string): string | BeforeSend | null => {
+    const camelKey = toCamelCase(value);
+    const configured = globalConfig[camelKey];
+    if (configured != null) {
+      return value === 'before-send' && typeof configured === 'function'
+        ? configured
+        : Array.isArray(configured)
+          ? configured.join(',')
+          : String(configured);
+    }
+    return attr(`${_data}${value}`);
+  };
 
-  const website = config('website-id');
-  const hostUrl = config('host-url');
+  const website = config('website-id') as string | null;
+  const hostUrl = config('host-url') as string | null;
   const beforeSend = config('before-send');
-  const distinctId = config('distinct-id') || undefined;
-  const tag = config('tag') || undefined;
+  const distinctId = (config('distinct-id') as string | null) || undefined;
+  const tag = (config('tag') as string | null) || undefined;
   const autoTrack = config('auto-track') !== _false;
   const dnt = config('do-not-track') === _true;
   const excludeSearch = config('exclude-search') === _true;
   const excludeHash = config('exclude-hash') === _true;
-  const domain = config('domains') || '';
-  const credentials = (config('fetch-credentials') || 'omit') as RequestCredentials;
+  const domain = (config('domains') as string | null) || '';
+  const credentials = ((config('fetch-credentials') as string | null) || 'omit') as RequestCredentials;
   const perf = config('performance') === _true;
   const autoPageview = config('auto-pageview') !== _false;
 
   const domains = domain.split(',').map(n => n.trim());
   const host =
-    hostUrl || '__COLLECT_API_HOST__' || currentScript.src.split('/').slice(0, -1).join('/');
+    hostUrl ||
+    '__COLLECT_API_HOST__' ||
+    (currentScript ? currentScript.src.split('/').slice(0, -1).join('/') : '');
   const endpoint = `${host.replace(/\/$/, '')}__COLLECT_API_ENDPOINT__`;
   const screen = `${width}x${height}`;
   const eventRegex = /data-umami-event-([\w-_]+)/;
@@ -392,9 +410,10 @@ type MetricEntry = PerformanceEntry & {
   const send = async (payload: Payload | null | undefined, type = 'event'): Promise<void> => {
     if (trackingDisabled()) return;
 
-    const callback = (window as unknown as Record<string, unknown>)[beforeSend as string] as
-      | BeforeSend
-      | undefined;
+    const callback =
+      typeof beforeSend === 'function'
+        ? beforeSend
+        : ((window as unknown as Record<string, unknown>)[beforeSend || ''] as BeforeSend | undefined);
 
     if (typeof callback === 'function') {
       payload = await Promise.resolve(callback(type, payload as Payload));
@@ -651,12 +670,15 @@ type MetricEntry = PerformanceEntry & {
       updateCache: token => {
         cache = token;
       },
-      release: config('release') || '',
-      environment: config('environment') || 'production',
+      release: (config('release') as string | null) || '',
+      environment: (config('environment') as string | null) || 'production',
       beforeSend: async payload => {
-        const callback = (window as unknown as Record<string, unknown>)[beforeSend as string] as
-          | BeforeSend
-          | undefined;
+        const callback =
+          typeof beforeSend === 'function'
+            ? beforeSend
+            : ((window as unknown as Record<string, unknown>)[beforeSend || ''] as
+                | BeforeSend
+                | undefined);
         return typeof callback === 'function' ? callback('error', payload) : payload;
       },
     });
