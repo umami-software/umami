@@ -422,7 +422,18 @@
     "two-factor-reset": "Нулиране 2FA",
     "two-factor-global-active-tooltip": "Глобалният 2FA е активиран",
     "two-factor-verify": "Проверете",
-    "two-factor-login": "Двуфакторна автентификация"
+    "two-factor-login": "Двуфакторна автентификация",
+    "add-note": "Добави бележка",
+    "note": "Бележка",
+    "notes": "Бележки",
+    "api-keys": "API ключове",
+    "api-key": "API ключ",
+    "create-api-key": "Създай API ключ",
+    "last-used": "Последно използване",
+    "never": "Никога",
+    "copy": "Копирай",
+    "authorize": "Оторизирай",
+    "deny": "Откажи"
   },
   "message": {
     "action-confirmation": "Въведете {confirmation} в полето по-долу, за да потвърдите.",
@@ -507,6 +518,9 @@
     "two-factor-error-no-pending-setup": "Не е намерена чакаща настройка за двуфакторно удостоверяване.",
     "two-factor-locked-message": "Твърде много неуспешни опити. Опитайте отново на {time}.",
     "two-factor-active-description": "Вашият акаунт е защитен с двуфакторно удостоверяване. Всяко влизане изисква код от вашето приложение за удостоверяване.",
-    "two-factor-error-not-configured": "Двуфакторното удостоверяване не е налично, защото на сървъра липсва валиден TWO_FACTOR_ENCRYPTION_KEY. Свържете се с администратора за помощ."
+    "two-factor-error-not-configured": "Двуфакторното удостоверяване не е налично, защото на сървъра липсва валиден TWO_FACTOR_ENCRYPTION_KEY. Свържете се с администратора за помощ.",
+    "max-length": "Максимална дължина {n} знака",
+    "api-key-created": "Копирайте своя API ключ сега. Няма да можете да го видите отново.",
+    "no-api-keys": "Не сте създали API ключове."
   }
 }

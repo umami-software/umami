@@ -422,7 +422,18 @@
     "two-factor-reset": "Qayta tiklash 2FA",
     "two-factor-global-active-tooltip": "Global [[9001]]] yoqilgan",
     "two-factor-verify": "Tasdiqlash",
-    "two-factor-login": "Ikki faktorli autentifikatsiya"
+    "two-factor-login": "Ikki faktorli autentifikatsiya",
+    "add-note": "Izoh qo'shish",
+    "note": "Izoh",
+    "notes": "Izohlar",
+    "api-keys": "API kalitlari",
+    "api-key": "API kaliti",
+    "create-api-key": "API kalitini yaratish",
+    "last-used": "Oxirgi foydalanish",
+    "never": "Hech qachon",
+    "copy": "Nusxalash",
+    "authorize": "Ruxsat berish",
+    "deny": "Rad etish"
   },
   "message": {
     "action-confirmation": "Tasdiqlash uchun pastdagi qutiga **{confirmation}** yozing.",
@@ -507,6 +518,9 @@
     "two-factor-error-no-pending-setup": "Kutilayotgan ikki faktorli autentifikatsiya sozlamalari topilmadi.",
     "two-factor-locked-message": "Juda ko'p muvaffaqiyatsiz urinishlar. {time} orqali qayta urinib koʻring.",
     "two-factor-active-description": "Hisobingiz ikki faktorli autentifikatsiya bilan himoyalangan. Har bir login uchun autentifikatsiya ilovangizdan kod talab qilinadi.",
-    "two-factor-error-not-configured": "Ikki faktorli autentifikatsiya mavjud emas, chunki serverda yaroqli TWO_FACTOR_ENCRYPTION_KEY yoʻq. Yordam uchun administratoringiz bilan bogʻlaning."
+    "two-factor-error-not-configured": "Ikki faktorli autentifikatsiya mavjud emas, chunki serverda yaroqli TWO_FACTOR_ENCRYPTION_KEY yoʻq. Yordam uchun administratoringiz bilan bogʻlaning.",
+    "max-length": "Maksimal uzunlik {n} belgi",
+    "api-key-created": "API kalitingizni hozir nusxalang. Uni qayta ko'ra olmaysiz.",
+    "no-api-keys": "Siz hech qanday API kalitini yaratmagansiz."
   }
 }

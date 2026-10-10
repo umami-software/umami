@@ -422,7 +422,18 @@
     "two-factor-reset": "Restablecer [[9001]]]",
     "two-factor-global-active-tooltip": "Global [[9001]]] está activado",
     "two-factor-verify": "Verificar",
-    "two-factor-login": "Autenticación de dous factores"
+    "two-factor-login": "Autenticación de dous factores",
+    "add-note": "Engadir nota",
+    "note": "Nota",
+    "notes": "Notas",
+    "api-keys": "Claves API",
+    "api-key": "Clave API",
+    "create-api-key": "Crear clave API",
+    "last-used": "Último uso",
+    "never": "Nunca",
+    "copy": "Copiar",
+    "authorize": "Autorizar",
+    "deny": "Denegar"
   },
   "message": {
     "action-confirmation": "Escribe {confirmation} na caixa de embaixo para confirmar.",
@@ -507,6 +518,9 @@
     "two-factor-error-no-pending-setup": "Non se atopou ningunha configuración de autenticación de dous factores pendente.",
     "two-factor-locked-message": "Demasiados intentos fallidos. Téntao de novo en {time}.",
     "two-factor-active-description": "A túa conta está protexida cunha autenticación de dous factores. Cada inicio de sesión require un código da túa aplicación de autenticación.",
-    "two-factor-error-not-configured": "Níl fíordheimhniú ar fáil toisc go bhfuil TWO_FACTOR_ENCRYPTION_KEY bailí in easnamh ar an bhfreastalaí. Déan teagmháil le do riarthóir chun cabhair a fháil."
+    "two-factor-error-not-configured": "A autenticación de dous factores non está dispoñible porque ao servidor fáltalle unha TWO_FACTOR_ENCRYPTION_KEY válida. Contacta co teu administrador para obter axuda.",
+    "max-length": "Lonxitude máxima de {n} caracteres",
+    "api-key-created": "Copia a túa clave API agora. Non poderás vela de novo.",
+    "no-api-keys": "Non creaches ningunha clave API."
   }
 }

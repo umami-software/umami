@@ -422,7 +422,18 @@
     "two-factor-reset": "Resetten 2FA",
     "two-factor-global-active-tooltip": "Globaal 2FA is ingeschakeld",
     "two-factor-verify": "Verifieer",
-    "two-factor-login": "Tweefactorauthenticatie"
+    "two-factor-login": "Tweefactorauthenticatie",
+    "add-note": "Notitie toevoegen",
+    "note": "Notitie",
+    "notes": "Notities",
+    "api-keys": "API-sleutels",
+    "api-key": "API-sleutel",
+    "create-api-key": "API-sleutel aanmaken",
+    "last-used": "Laatst gebruikt",
+    "never": "Nooit",
+    "copy": "Kopiëren",
+    "authorize": "Autoriseren",
+    "deny": "Weigeren"
   },
   "message": {
     "action-confirmation": "Typ {confirmation} in het veld hieronder om te bevestigen.",
@@ -507,6 +518,9 @@
     "two-factor-error-no-pending-setup": "Er is geen openstaande configuratie voor tweefactorauthenticatie gevonden.",
     "two-factor-locked-message": "Te veel mislukte pogingen. Probeer het opnieuw op {time}.",
     "two-factor-active-description": "Uw account is beveiligd met tweefactorauthenticatie. Voor elke login is een code van uw authenticator-app vereist.",
-    "two-factor-error-not-configured": "Tweefactorauthenticatie is niet beschikbaar omdat de server geen geldige TWO_FACTOR_ENCRYPTION_KEY heeft. Neem contact op met je beheerder voor hulp."
+    "two-factor-error-not-configured": "Tweefactorauthenticatie is niet beschikbaar omdat de server geen geldige TWO_FACTOR_ENCRYPTION_KEY heeft. Neem contact op met je beheerder voor hulp.",
+    "max-length": "Maximale lengte van {n} tekens",
+    "api-key-created": "Kopieer je API-sleutel nu. Je kunt hem niet meer zien.",
+    "no-api-keys": "Je hebt geen API-sleutels aangemaakt."
   }
 }

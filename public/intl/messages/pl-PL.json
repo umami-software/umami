@@ -422,7 +422,18 @@
     "two-factor-reset": "Zresetuj 2FA",
     "two-factor-global-active-tooltip": "Globalny 2FA jest włączony",
     "two-factor-verify": "Zweryfikuj",
-    "two-factor-login": "Uwierzytelnianie dwuskładnikowe"
+    "two-factor-login": "Uwierzytelnianie dwuskładnikowe",
+    "add-note": "Dodaj notatkę",
+    "note": "Notatka",
+    "notes": "Notatki",
+    "api-keys": "Klucze API",
+    "api-key": "Klucz API",
+    "create-api-key": "Utwórz klucz API",
+    "last-used": "Ostatnio używane",
+    "never": "Nigdy",
+    "copy": "Kopiuj",
+    "authorize": "Autoryzuj",
+    "deny": "Odmów"
   },
   "message": {
     "action-confirmation": "Wpisz {confirmation}, aby potwierdzić.",
@@ -507,6 +518,9 @@
     "two-factor-error-no-pending-setup": "Nie znaleziono oczekującej konfiguracji uwierzytelniania dwuskładnikowego.",
     "two-factor-locked-message": "Zbyt wiele nieudanych prób. Spróbuj ponownie w {time}.",
     "two-factor-active-description": "Twoje konto jest chronione za pomocą uwierzytelniania dwuskładnikowego. Każde logowanie wymaga kodu z aplikacji uwierzytelniającej.",
-    "two-factor-error-not-configured": "Uwierzytelnianie dwuskładnikowe jest niedostępne, ponieważ na serwerze brakuje prawidłowego TWO_FACTOR_ENCRYPTION_KEY. Skontaktuj się z administratorem, aby uzyskać pomoc."
+    "two-factor-error-not-configured": "Uwierzytelnianie dwuskładnikowe jest niedostępne, ponieważ na serwerze brakuje prawidłowego TWO_FACTOR_ENCRYPTION_KEY. Skontaktuj się z administratorem, aby uzyskać pomoc.",
+    "max-length": "Maksymalna długość {n} znaków",
+    "api-key-created": "Skopiuj teraz swój klucz API. Nie będzie można go ponownie zobaczyć.",
+    "no-api-keys": "Nie utworzyłeś żadnych kluczy API."
   }
 }

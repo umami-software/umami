@@ -422,7 +422,18 @@
     "two-factor-reset": "Nollaa 2FA",
     "two-factor-global-active-tooltip": "Globaali 2FA on käytössä",
     "two-factor-verify": "Vahvista",
-    "two-factor-login": "Kaksivaiheinen todennus"
+    "two-factor-login": "Kaksivaiheinen todennus",
+    "add-note": "Lisää muistiinpano",
+    "note": "Muistiinpano",
+    "notes": "Muistiinpanot",
+    "api-keys": "API-avaimet",
+    "api-key": "API-avain",
+    "create-api-key": "Luo API-avain",
+    "last-used": "Viimeksi käytetty",
+    "never": "Ei koskaan",
+    "copy": "Kopioi",
+    "authorize": "Valtuuta",
+    "deny": "Kiellä"
   },
   "message": {
     "action-confirmation": "Kirjoita {confirmation} alla olevaan kenttään vahvistaaksesi.",
@@ -507,6 +518,9 @@
     "two-factor-error-no-pending-setup": "Odottavaa kaksivaiheista todennusasetusta ei löytynyt.",
     "two-factor-locked-message": "Liian monta epäonnistunutta yritystä. Yritä uudelleen osoitteessa {time}.",
     "two-factor-active-description": "Tilisi on suojattu kaksivaiheisella todennuksella. Jokainen kirjautuminen vaatii koodin todennussovelluksestasi.",
-    "two-factor-error-not-configured": "Kaksivaiheinen todennus ei ole käytettävissä, koska palvelimelta puuttuu kelvollinen TWO_FACTOR_ENCRYPTION_KEY. Ota yhteyttä järjestelmänvalvojaasi saadaksesi apua."
+    "two-factor-error-not-configured": "Kaksivaiheinen todennus ei ole käytettävissä, koska palvelimelta puuttuu kelvollinen TWO_FACTOR_ENCRYPTION_KEY. Ota yhteyttä järjestelmänvalvojaasi saadaksesi apua.",
+    "max-length": "Enimmäispituus {n} merkkiä",
+    "api-key-created": "Kopioi API-avaimesi nyt. Et näe sitä enää uudelleen.",
+    "no-api-keys": "Et ole luonut yhtään API-avainta."
   }
 }

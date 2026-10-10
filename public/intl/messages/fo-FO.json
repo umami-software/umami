@@ -422,7 +422,18 @@
     "two-factor-reset": "Nullstilla [[9001]]]",
     "two-factor-global-active-tooltip": "Alheims [[9001]]] er virkið",
     "two-factor-verify": "Staðfest",
-    "two-factor-login": "Tvífaktor sannroynd"
+    "two-factor-login": "Tvífaktor sannroynd",
+    "add-note": "Legg notu afturat",
+    "note": "Nota",
+    "notes": "Notur",
+    "api-keys": "API-lyklar",
+    "api-key": "API-lykil",
+    "create-api-key": "Stovna API-lykil",
+    "last-used": "Seinast brúkt",
+    "never": "Ongantíð",
+    "copy": "Avrita",
+    "authorize": "Heimila",
+    "deny": "Hafna"
   },
   "message": {
     "action-confirmation": "Skriva {confirmation} í teigin niðanfyri at vátta.",
@@ -507,6 +518,9 @@
     "two-factor-error-no-pending-setup": "Eingin bíðandi tvífaktor-autentikatiónsuppseting funnin.",
     "two-factor-locked-message": "Ov nógvar miseydnaðar royndir. Royn aftur við {time}.",
     "two-factor-active-description": "Tín konta er vard við tvífaktor-góðkenning. Hvørt innritan krevur eina kodu frá tínari sannroyndarapp.",
-    "two-factor-error-not-configured": "Tvíþátta innriting er ikki tøk, tí tænaranum vantar ein galdandi TWO_FACTOR_ENCRYPTION_KEY. Set teg í samband við tín skipara fyri hjálp."
+    "two-factor-error-not-configured": "Tvíþátta innriting er ikki tøk, tí tænaranum vantar ein galdandi TWO_FACTOR_ENCRYPTION_KEY. Set teg í samband við tín skipara fyri hjálp.",
+    "max-length": "Størsta longd {n} tekn",
+    "api-key-created": "Avrita tín API-lykil nú. Tú kanst ikki síggja hann aftur.",
+    "no-api-keys": "Tú hefur ikki stovnað nakran API-lykil."
   }
 }

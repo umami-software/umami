@@ -422,7 +422,18 @@
     "two-factor-reset": "אפס 2FA",
     "two-factor-global-active-tooltip": "גלובלי 2FA מופעל",
     "two-factor-verify": "אמת",
-    "two-factor-login": "אימות דו-גורמי"
+    "two-factor-login": "אימות דו-גורמי",
+    "add-note": "הוסף הערה",
+    "note": "הערה",
+    "notes": "הערות",
+    "api-keys": "מפתחות API",
+    "api-key": "מפתח API",
+    "create-api-key": "צור מפתח API",
+    "last-used": "שימוש אחרון",
+    "never": "מעולם לא",
+    "copy": "העתק",
+    "authorize": "אישור",
+    "deny": "דחה"
   },
   "message": {
     "action-confirmation": "הקלידו {confirmation} בתיבה למטה לאישור.",
@@ -507,6 +518,9 @@
     "two-factor-error-no-pending-setup": "לא נמצאה הגדרת אימות דו-גורמי בהמתנה.",
     "two-factor-locked-message": "יותר מדי ניסיונות כושלים. נסה שוב ב-{time}.",
     "two-factor-active-description": "החשבון שלך מוגן באמצעות אימות דו-גורמי. כל התחברות דורשת קוד מאפליקציית המאמת שלך.",
-    "two-factor-error-not-configured": "אימות דו-שלבי אינו זמין משום שלשרת חסר TWO_FACTOR_ENCRYPTION_KEY תקף. יש לפנות למנהל המערכת לקבלת עזרה."
+    "two-factor-error-not-configured": "אימות דו-שלבי אינו זמין משום שלשרת חסר TWO_FACTOR_ENCRYPTION_KEY תקף. יש לפנות למנהל המערכת לקבלת עזרה.",
+    "max-length": "אורך מרבי {n} תווים",
+    "api-key-created": "העתק את מפתח ה-API כעת. לא תוכל לראות אותו שוב.",
+    "no-api-keys": "לא יצרת מפתחות API."
   }
 }
