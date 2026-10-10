@@ -6,9 +6,18 @@ import { addCustomEvent, record } from 'rrweb';
 
   if (!currentScript) return;
 
+  const globalConfig = window.umamiConfig || {};
   const _data = 'data-';
   const attr = currentScript.getAttribute.bind(currentScript);
-  const config = value => attr(`${_data}${value}`);
+  const toCamelCase = str => str.replace(/-([a-z])/g, g => g[1].toUpperCase());
+  const config = value => {
+    const camelKey = toCamelCase(value);
+    if (globalConfig[camelKey] != null) {
+      const v = globalConfig[camelKey];
+      return Array.isArray(v) ? v.join(',') : String(v);
+    }
+    return attr(`${_data}${value}`);
+  };
 
   const website = config('website-id');
   const hostUrl = config('host-url');
