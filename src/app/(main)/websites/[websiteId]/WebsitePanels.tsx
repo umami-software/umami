@@ -26,11 +26,15 @@ export function WebsitePanels({ websiteId }: { websiteId: string }) {
           <Tabs>
             <TabList>
               <Tab id="path">{t(labels.path)}</Tab>
+              <Tab id="fullPath">{t(labels.url)}</Tab>
               <Tab id="entry">{t(labels.entry)}</Tab>
               <Tab id="exit">{t(labels.exit)}</Tab>
             </TabList>
             <TabPanel id="path">
               <MetricsTable type="path" title={t(labels.path)} {...tableProps} />
+            </TabPanel>
+            <TabPanel id="fullPath">
+              <MetricsTable type="fullPath" title={t(labels.url)} {...tableProps} />
             </TabPanel>
             <TabPanel id="entry">
               <MetricsTable type="entry" title={t(labels.path)} {...tableProps} />

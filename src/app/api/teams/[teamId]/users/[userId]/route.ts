@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { ROLES, TEAM_ROLE_RANK } from '@/lib/constants';
 import { parseRequest } from '@/lib/request';
 import { badRequest, json, ok, unauthorized } from '@/lib/response';
 import { teamRoleParam } from '@/lib/schema';
@@ -52,6 +53,17 @@ export async function POST(
     return badRequest({ message: 'The User does not exists on this team.' });
   }
 
+  // Server-side rank check: actor must outrank target to modify their role.
+  if (!auth.user.isAdmin) {
+    const actorTeamUser = await getTeamUser(teamId, auth.user.id);
+    const actorRank = TEAM_ROLE_RANK[actorTeamUser?.role] ?? -1;
+    const targetRank = TEAM_ROLE_RANK[teamUser.role] ?? -1;
+
+    if (actorRank <= targetRank) {
+      return unauthorized({ message: 'You do not have permission to modify this user.' });
+    }
+  }
+
   const user = await updateTeamUser(teamUser.id, body);
 
   return json(user);
@@ -77,6 +89,21 @@ export async function DELETE(
 
   if (!teamUser) {
     return badRequest({ message: 'The User does not exists on this team.' });
+  }
+
+  if (!auth.user.isAdmin && teamUser.role === ROLES.teamOwner) {
+    return unauthorized({ message: 'You do not have permission to remove this user.' });
+  }
+
+  // Server-side rank check: actor must outrank target to remove them.
+  if (!auth.user.isAdmin && userId !== auth.user.id) {
+    const actorTeamUser = await getTeamUser(teamId, auth.user.id);
+    const actorRank = TEAM_ROLE_RANK[actorTeamUser?.role] ?? -1;
+    const targetRank = TEAM_ROLE_RANK[teamUser.role] ?? -1;
+
+    if (actorRank <= targetRank) {
+      return unauthorized({ message: 'You do not have permission to remove this user.' });
+    }
   }
 
   await deleteTeamUser(teamId, userId);

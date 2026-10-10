@@ -21,6 +21,7 @@ export async function GET(request: Request, { params }: { params: Promise<{ slug
         return findPixel({
           where: {
             slug,
+            deletedAt: null,
           },
         });
       },
@@ -34,6 +35,7 @@ export async function GET(request: Request, { params }: { params: Promise<{ slug
     pixel = await findPixel({
       where: {
         slug,
+        deletedAt: null,
       },
     });
 
@@ -47,7 +49,7 @@ export async function GET(request: Request, { params }: { params: Promise<{ slug
     payload: {
       pixel: pixel.id,
       url: request.url,
-      referrer: request.headers.get("referer") || undefined,
+      referrer: request.headers.get('referer') || undefined,
     },
   };
 

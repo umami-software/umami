@@ -6,7 +6,7 @@ export interface PieChartProps extends ChartProps {
   type?: 'doughnut' | 'pie';
 }
 
-export function PieChart({ type = 'pie', ...props }: PieChartProps) {
+export function PieChart({ type = 'pie', height = '300px', ...props }: PieChartProps) {
   const [tooltip, setTooltip] = useState(null);
 
   const handleTooltip = ({ tooltip }) => {
@@ -24,7 +24,7 @@ export function PieChart({ type = 'pie', ...props }: PieChartProps) {
 
   return (
     <>
-      <Chart {...props} type={type} onTooltip={handleTooltip} />
+      <Chart {...props} type={type} height={height} onTooltip={handleTooltip} />
       {tooltip && <ChartTooltip {...tooltip} />}
     </>
   );

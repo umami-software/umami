@@ -1,5 +1,7 @@
+import type { Locale } from 'date-fns';
 import {
   arSA,
+  az,
   be,
   bg,
   bn,
@@ -22,6 +24,7 @@ import {
   id,
   it,
   ja,
+  ka,
   km,
   ko,
   lt,
@@ -48,7 +51,9 @@ import {
 } from 'date-fns/locale';
 
 export const languages = {
+  'ka-GE': { label: 'ქართული', dateLocale: ka },
   'ar-SA': { label: 'العربية', dateLocale: arSA, dir: 'rtl' },
+  'az-AZ': { label: 'Azərbaycan', dateLocale: az },
   'be-BY': { label: 'Беларуская', dateLocale: be },
   'bg-BG': { label: 'български език', dateLocale: bg },
   'bn-BD': { label: 'বাংলা', dateLocale: bn },
@@ -67,7 +72,7 @@ export const languages = {
   'fo-FO': { label: 'Føroyskt' },
   'fr-FR': { label: 'Français', dateLocale: fr },
   'ga-ES': { label: 'Galacian (Spain)', dateLocale: es },
-  'he-IL': { label: 'עברית', dateLocale: he },
+  'he-IL': { label: 'עברית', dateLocale: he, dir: 'rtl' },
   'hi-IN': { label: 'हिन्दी', dateLocale: hi },
   'hr-HR': { label: 'Hrvatski', dateLocale: hr },
   'hu-HU': { label: 'Hungarian', dateLocale: hu },
@@ -102,8 +107,58 @@ export const languages = {
   'zh-TW': { label: '中文(繁體)', dateLocale: zhTW },
 };
 
+let hour12: boolean | undefined;
+
+const hour12Locales = new Map<Locale, Locale>();
+
+// Overrides the clock format of localized time tokens (p/pp/PPpp), which
+// otherwise follow the locale's own convention. Pass undefined to disable.
+export function setHour12(value: boolean | undefined) {
+  hour12 = value;
+  hour12Locales.clear();
+}
+
+export function getHour12() {
+  return hour12;
+}
+
+function getHour12Locale(locale: Locale): Locale {
+  let override = hour12Locales.get(locale);
+
+  if (!override) {
+    override = {
+      ...locale,
+      formatLong: {
+        ...locale.formatLong,
+        time: ({ width }) => {
+          const patterns: Record<string, string> = hour12
+            ? {
+                short: 'h:mm a',
+                medium: 'h:mm:ss a',
+                long: 'h:mm:ss a zzz',
+                full: 'h:mm:ss a zzzz',
+              }
+            : {
+                short: 'HH:mm',
+                medium: 'HH:mm:ss',
+                long: 'HH:mm:ss zzz',
+                full: 'HH:mm:ss zzzz',
+              };
+          return patterns[width] ?? locale.formatLong.time({ width });
+        },
+      },
+    };
+
+    hour12Locales.set(locale, override);
+  }
+
+  return override;
+}
+
 export function getDateLocale(locale: string) {
-  return languages[locale]?.dateLocale || enUS;
+  const dateLocale = languages[locale]?.dateLocale || enUS;
+
+  return hour12 === undefined ? dateLocale : getHour12Locale(dateLocale);
 }
 
 export function getTextDirection(locale: string) {

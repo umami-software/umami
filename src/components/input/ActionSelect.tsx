@@ -10,7 +10,7 @@ export function ActionSelect({ value = 'path', onChange }: ActionSelectProps) {
   const { t, labels } = useMessages();
 
   return (
-    <Select value={value} onChange={onChange}>
+    <Select value={value} onChange={val => onChange?.(val as string)}>
       <ListItem id="path">{t(labels.viewedPage)}</ListItem>
       <ListItem id="event">{t(labels.triggeredEvent)}</ListItem>
     </Select>

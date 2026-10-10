@@ -1,6 +1,6 @@
 import { z } from 'zod';
-import { isValidTimezone, normalizeTimezone } from '@/lib/date';
-import { UNIT_TYPES } from './constants';
+import { DATE_PERIODS, isValidTimezone, normalizeTimezone } from '@/lib/date';
+import { DATA_TYPE, FIELD_LENGTH, UNIT_TYPES } from './constants';
 
 export const timezoneParam = z
   .string()
@@ -12,6 +12,48 @@ export const timezoneParam = z
 export const unitParam = z.string().refine(value => UNIT_TYPES.includes(value), {
   message: 'Invalid unit',
 });
+
+export const periodParam = z.enum(DATE_PERIODS);
+
+const periodDateRangeParams = {
+  startAt: z.coerce.number().int().optional(),
+  endAt: z.coerce.number().int().optional(),
+  period: periodParam.optional(),
+};
+
+export function withPeriodDateRange<T extends z.ZodRawShape>(shape: T, required = true) {
+  return z
+    .object({
+      ...shape,
+      ...periodDateRangeParams,
+    })
+    .superRefine((data: Record<string, unknown>, ctx) => {
+      const hasStartAt = data.startAt != null;
+      const hasEndAt = data.endAt != null;
+      const hasPeriod = data.period != null;
+
+      if (hasStartAt !== hasEndAt) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          message: 'startAt and endAt must be provided together',
+        });
+      }
+
+      if (required && !hasStartAt && !hasPeriod) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          message: 'Either startAt+endAt or period must be provided',
+        });
+      }
+
+      if (hasPeriod && (hasStartAt || hasEndAt)) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          message: 'period cannot be combined with an explicit date range',
+        });
+      }
+    });
+}
 
 export const dateRangeParams = {
   startAt: z.coerce.number().optional(),
@@ -27,16 +69,30 @@ export function withDateRange<T extends z.ZodRawShape>(shape?: T) {
   return z
     .object({
       ...dateRangeParams,
+      period: periodParam.optional(),
       ...shape,
     })
     .superRefine((data: Record<string, unknown>, ctx) => {
       const hasTimestamps = data.startAt != null && data.endAt != null;
       const hasDates = data.startDate != null && data.endDate != null;
+      const hasExplicitRange =
+        data.startAt != null ||
+        data.endAt != null ||
+        data.startDate != null ||
+        data.endDate != null;
+      const hasPeriod = data.period != null;
 
-      if (!hasTimestamps && !hasDates) {
+      if (!hasTimestamps && !hasDates && !hasPeriod) {
         ctx.addIssue({
           code: z.ZodIssueCode.custom,
-          message: 'Either startAt+endAt or startDate+endDate must be provided',
+          message: 'Either startAt+endAt, startDate+endDate, or period must be provided',
+        });
+      }
+
+      if (hasPeriod && hasExplicitRange) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          message: 'period cannot be combined with an explicit date range',
         });
       }
     });
@@ -74,13 +130,34 @@ export const searchParams = {
   search: z.string().optional(),
 };
 
+export const replayParams = {
+  minDuration: z.coerce.number().int().nonnegative().optional(),
+};
+
+export const annotationSchema = z.object({
+  date: z.coerce.date(),
+  allDay: z.boolean().optional().default(true),
+  note: z.string().min(1).max(500),
+});
+
 export const pagingParams = {
   page: z.coerce.number().int().positive().optional(),
   pageSize: z.coerce.number().int().positive().optional(),
+  maxResults: z.coerce.number().int().positive().optional(),
 };
 
 export const sortingParams = {
   orderBy: z.string().optional(),
+  sortDescending: z
+    .enum(['true', 'false'])
+    .optional()
+    .transform(value => {
+      if (value === undefined) {
+        return undefined;
+      }
+
+      return value === 'true';
+    }),
 };
 
 export const userRoleParam = z.enum(['admin', 'user', 'view-only']);
@@ -131,6 +208,7 @@ export const reportTypeParam = z.enum([
   'breakdown',
   'funnel',
   'goal',
+  'heatmap',
   'journey',
   'performance',
   'retention',
@@ -159,13 +237,12 @@ export const operatorParam = z.enum([
 
 export const goalReportSchema = z.object({
   type: z.literal('goal'),
-  parameters: z
-    .object({
-      startDate: z.coerce.date(),
-      endDate: z.coerce.date(),
-      type: z.string(),
-      value: z.string(),
-    }),
+  parameters: z.object({
+    startDate: z.coerce.date(),
+    endDate: z.coerce.date(),
+    type: z.enum(['path', 'event']),
+    value: z.string(),
+  }),
 });
 
 export const funnelReportSchema = z.object({
@@ -268,6 +345,16 @@ export const breakdownReportSchema = z.object({
   }),
 });
 
+export const heatmapReportSchema = z.object({
+  type: z.literal('heatmap'),
+  parameters: z.object({
+    startDate: z.coerce.date(),
+    endDate: z.coerce.date(),
+    urlPath: z.string().max(500).optional(),
+    mode: z.enum(['click', 'scroll']).optional(),
+  }),
+});
+
 export const reportBaseSchema = z.object({
   websiteId: z.uuid(),
   type: reportTypeParam,
@@ -286,6 +373,7 @@ export const reportTypeSchema = z.discriminatedUnion('type', [
   revenueReportSchema,
   attributionReportSchema,
   breakdownReportSchema,
+  heatmapReportSchema,
 ]);
 
 export const reportSchema = reportBaseSchema;
@@ -293,12 +381,25 @@ export const reportSchema = reportBaseSchema;
 export const reportResultSchema = z.intersection(
   z.object({
     websiteId: z.uuid(),
-    filters: z.object({ ...filterParams }),
+    filters: z.object({ ...filterParams }).passthrough(),
   }),
   reportTypeSchema,
 );
 
 export const segmentTypeParam = z.enum(['segment', 'cohort']);
+
+const propertyFilterParamSchema = z.object({
+  propertyName: z.string().min(1).max(FIELD_LENGTH.dataKey),
+  dataType: z.union([
+    z.literal(DATA_TYPE.string),
+    z.literal(DATA_TYPE.number),
+    z.literal(DATA_TYPE.boolean),
+    z.literal(DATA_TYPE.date),
+    z.literal(DATA_TYPE.array),
+  ]),
+  operator: operatorParam,
+  value: z.string(),
+});
 
 export const segmentParamSchema = z.object({
   filters: z
@@ -310,11 +411,12 @@ export const segmentParamSchema = z.object({
       }),
     )
     .optional(),
+  sessionPropertyFilters: z.array(propertyFilterParamSchema).optional(),
   match: z.enum(['all', 'any']).optional(),
   dateRange: z.string().optional(),
   action: z
     .object({
-      type: z.string(),
+      type: z.enum(['path', 'event']),
       value: z.string(),
     })
     .optional(),

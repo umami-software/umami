@@ -1,6 +1,7 @@
 import { DataColumn, DataTable, type DataTableProps, Row } from '@umami/react-zen';
-import Link from '@/components/common/Link';
 import { DateDistance } from '@/components/common/DateDistance';
+import Link from '@/components/common/Link';
+import { SortableLabel } from '@/components/common/SortableLabel';
 import { useMessages, useNavigation } from '@/components/hooks';
 import { BoardDeleteButton } from './BoardDeleteButton';
 import { BoardDesignButton } from './BoardDesignButton';
@@ -12,13 +13,25 @@ export function BoardsTable(props: DataTableProps) {
 
   return (
     <DataTable {...props}>
-      <DataColumn id="name" label={t(labels.name)}>
+      <DataColumn id="name" label={<SortableLabel label={t(labels.name)} sortKey="name" />}>
         {({ id, name }: any) => {
           return <Link href={renderUrl(`/boards/${id}`)}>{name}</Link>;
         }}
       </DataColumn>
-      <DataColumn id="description" label={t(labels.description)} />
-      <DataColumn id="created" label={t(labels.created)} width="200px">
+      <DataColumn
+        id="description"
+        label={<SortableLabel label={t(labels.description)} sortKey="description" />}
+      />
+      <DataColumn id="type" label={<SortableLabel label={t(labels.boardType)} sortKey="type" />}>
+        {({ type }: any) => (type ? type.charAt(0).toUpperCase() + type.slice(1) : '')}
+      </DataColumn>
+      <DataColumn
+        id="created"
+        label={
+          <SortableLabel label={t(labels.created)} sortKey="createdAt" defaultDirection="desc" />
+        }
+        width="200px"
+      >
         {(row: any) => <DateDistance date={new Date(row.createdAt)} />}
       </DataColumn>
       <DataColumn id="action" align="end" width="100px">

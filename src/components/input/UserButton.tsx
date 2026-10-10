@@ -1,4 +1,5 @@
 import {
+  Button,
   Column,
   Icon,
   Menu,
@@ -6,7 +7,6 @@ import {
   MenuSeparator,
   MenuTrigger,
   Popover,
-  Pressable,
   Row,
   SubmenuTrigger,
   Text,
@@ -14,6 +14,7 @@ import {
   TooltipTrigger,
   useTheme,
 } from '@umami/react-zen';
+import { useRouter } from 'next/navigation';
 import { useConfig, useLocale, useLoginQuery, useMessages, useMobile } from '@/components/hooks';
 import {
   BookText,
@@ -43,9 +44,32 @@ export function UserButton({ showText = true, onClose }: UserButtonProps) {
   const { locale, saveLocale } = useLocale();
   const { theme, setTheme } = useTheme();
   const { isMobile } = useMobile();
+  const router = useRouter();
 
   const getUrl = (url: string) => {
     return cloudMode ? `${process.env.cloudUrl}${url}` : url;
+  };
+
+  const handleNavigate = (url: string, target?: string) => {
+    onClose?.();
+
+    if (target) {
+      window.open(url, target);
+    } else if (url.startsWith('http')) {
+      window.location.href = url;
+    } else {
+      router.push(url);
+    }
+  };
+
+  const handleSelectLocale = (key: string) => {
+    saveLocale(key);
+    onClose?.();
+  };
+
+  const handleSelectTheme = (key: 'light' | 'dark') => {
+    setTheme(key);
+    onClose?.();
   };
 
   const languageItems = Object.keys(languages).map(key => ({
@@ -87,33 +111,44 @@ export function UserButton({ showText = true, onClose }: UserButtonProps) {
     },
   ].filter(Boolean);
 
-  return (
+  const trigger = (
+    <Button
+      variant="zero"
+      aria-label={showText ? undefined : user.username}
+      style={{
+        display: 'flex',
+        padding: 0,
+        width: '100%',
+        flexGrow: 1,
+        justifyContent: 'flex-start',
+      }}
+    >
+      <Row
+        alignItems="center"
+        flexGrow={1}
+        width="100%"
+        hover={{ backgroundColor: 'surface-sunken' }}
+        borderRadius
+        minHeight="40px"
+        style={{ textWrap: 'nowrap', overflow: 'hidden' }}
+      >
+        <Row alignItems="center" gap padding>
+          <Icon>
+            <UserCircle />
+          </Icon>
+          {showText && <Text>{user.username}</Text>}
+        </Row>
+      </Row>
+    </Button>
+  );
+
+  const menu = (
     <MenuTrigger>
-      <TooltipTrigger isDisabled={showText} delay={0}>
-        <Pressable>
-          <Row
-            alignItems="center"
-            flexGrow={1}
-            hover={{ backgroundColor: 'surface-sunken' }}
-            borderRadius
-            minHeight="40px"
-            role="button"
-            style={{ cursor: 'pointer', textWrap: 'nowrap', overflow: 'hidden', outline: 'none' }}
-          >
-            <Row alignItems="center" gap padding>
-              <Icon>
-                <UserCircle />
-              </Icon>
-              {showText && <Text>{user.username}</Text>}
-            </Row>
-          </Row>
-        </Pressable>
-        <Tooltip placement="right">{user.username}</Tooltip>
-      </TooltipTrigger>
-      <Popover placement="top start">
+      {trigger}
+      <Popover side="top" align="start">
         <Column minWidth="200px">
-          <Menu autoFocus="last" onAction={onClose}>
-            <MenuItem id="settings" href={getUrl('/settings')}>
+          <Menu>
+            <MenuItem id="settings" onAction={() => handleNavigate(getUrl('/settings'))}>
               <Row alignItems="center" gap>
                 <Icon>
                   <Settings />
@@ -130,15 +165,18 @@ export function UserButton({ showText = true, onClose }: UserButtonProps) {
                   <Text>{t(labels.language)}</Text>
                 </Row>
               </MenuItem>
-              <Popover placement={isMobile ? 'bottom start' : 'right bottom'} isNonModal>
+              <Popover
+                side={isMobile ? 'bottom' : 'right'}
+                align={isMobile ? 'start' : 'end'}
+                isNonModal
+              >
                 <Menu
                   selectionMode="single"
                   selectedKeys={new Set([locale])}
-                  onAction={key => saveLocale(key as string)}
                   style={{ maxHeight: 300, overflow: 'auto' }}
                 >
                   {languageItems.map(({ value, label }) => (
-                    <MenuItem key={value} id={value}>
+                    <MenuItem key={value} id={value} onAction={() => handleSelectLocale(value)}>
                       <Text weight={value === locale ? 'bold' : undefined}>{label}</Text>
                     </MenuItem>
                   ))}
@@ -154,27 +192,23 @@ export function UserButton({ showText = true, onClose }: UserButtonProps) {
                   <Text>{t(labels.theme)}</Text>
                 </Row>
               </MenuItem>
-              <Popover placement={isMobile ? 'bottom start' : 'right bottom'} isNonModal>
-                <Menu
-                  selectionMode="single"
-                  selectedKeys={new Set([theme])}
-                  onAction={key => setTheme(key as 'light' | 'dark')}
-                >
-                  <MenuItem id="light">
-                    <Row alignItems="center" gap>
-                      <Icon>
-                        <Sun />
-                      </Icon>
-                      <Text>Light</Text>
-                    </Row>
+              <Popover
+                side={isMobile ? 'bottom' : 'right'}
+                align={isMobile ? 'start' : 'end'}
+                isNonModal
+              >
+                <Menu selectionMode="single" selectedKeys={new Set([theme])}>
+                  <MenuItem id="light" onAction={() => handleSelectTheme('light')}>
+                    <Icon>
+                      <Sun />
+                    </Icon>
+                    <Text weight={theme === 'light' ? 'bold' : undefined}>Light</Text>
                   </MenuItem>
-                  <MenuItem id="dark">
-                    <Row alignItems="center" gap>
-                      <Icon>
-                        <Moon />
-                      </Icon>
-                      <Text>Dark</Text>
-                    </Row>
+                  <MenuItem id="dark" onAction={() => handleSelectTheme('dark')}>
+                    <Icon>
+                      <Moon />
+                    </Icon>
+                    <Text weight={theme === 'dark' ? 'bold' : undefined}>Dark</Text>
                   </MenuItem>
                 </Menu>
               </Popover>
@@ -183,8 +217,9 @@ export function UserButton({ showText = true, onClose }: UserButtonProps) {
               if (separator) {
                 return <MenuSeparator key={id} />;
               }
+
               return (
-                <MenuItem key={id} id={id} href={path} target={target}>
+                <MenuItem key={id} id={id} onAction={() => handleNavigate(path, target)}>
                   <Row alignItems="center" gap>
                     <Icon>{icon}</Icon>
                     <Text>{label}</Text>
@@ -201,5 +236,16 @@ export function UserButton({ showText = true, onClose }: UserButtonProps) {
         </Column>
       </Popover>
     </MenuTrigger>
+  );
+
+  if (showText) {
+    return <div style={{ width: '100%' }}>{menu}</div>;
+  }
+
+  return (
+    <TooltipTrigger delay={0}>
+      <div style={{ width: '100%' }}>{menu}</div>
+      <Tooltip placement="right">{user.username}</Tooltip>
+    </TooltipTrigger>
   );
 }

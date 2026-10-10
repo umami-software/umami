@@ -2,9 +2,19 @@ import { startOfMonth, subMonths } from 'date-fns';
 import { z } from 'zod';
 import { checkAuth } from '@/lib/auth';
 import { DEFAULT_PAGE_SIZE, FILTER_COLUMNS, OPERATORS } from '@/lib/constants';
-import { getAllowedUnits, getMinimumUnit, maxDate, parseDateRange } from '@/lib/date';
+import {
+  getAllowedUnits,
+  getMinimumUnit,
+  getPeriodDateRange,
+  maxDate,
+  parseDateRange,
+} from '@/lib/date';
 import { fetchAccount, fetchWebsite } from '@/lib/load';
-import { filtersArrayToObject } from '@/lib/params';
+import {
+  filtersArrayToObject,
+  parseSessionPropertyFilters,
+  parseUniversalEventPropertyFilters,
+} from '@/lib/params';
 import { badRequest, unauthorized } from '@/lib/response';
 import type { QueryFilters } from '@/lib/types';
 import { getWebsiteSegment } from '@/queries/prisma';
@@ -30,9 +40,12 @@ export async function parseRequest(
     } else if (isGet) {
       query = result.data;
 
-      // Re-add suffixed filter params (e.g., browser1, os2) stripped by Zod schema
+      // Re-add dynamic params stripped by Zod schema: suffixed filter params (browser1, os2)
       for (const key of Object.keys(rawQuery)) {
-        if (/\d+$/.test(key) && !(key in query)) {
+        if (
+          (/\d+$/.test(key) || /^pf_/.test(key) || /^epf\d+$/.test(key) || /^spf\d+$/.test(key)) &&
+          !(key in query)
+        ) {
           query[key] = rawQuery[key];
         }
       }
@@ -76,6 +89,21 @@ export function getRequestDateRange(query: Record<string, string>) {
   };
 }
 
+export function resolvePeriodDateRange(params: Record<string, any>, now = new Date()) {
+  if (!params.period) {
+    return params;
+  }
+
+  const { startDate, endDate } = getPeriodDateRange(params.period, params.timezone || 'UTC', now);
+
+  return {
+    ...params,
+    startAt: +startDate,
+    endAt: +endDate,
+    timezone: params.timezone || 'UTC',
+  };
+}
+
 export function getRequestFilters(query: Record<string, any>) {
   const result: Record<string, any> = {};
 
@@ -112,36 +140,43 @@ export async function getQueryFilters(
   params: Record<string, any>,
   websiteId?: string,
 ): Promise<QueryFilters> {
-  const dateRange = getRequestDateRange(params);
-  const filters = getRequestFilters(params);
+  const resolvedParams = resolvePeriodDateRange(params);
+  const dateRange = getRequestDateRange(resolvedParams);
+  const filters = getRequestFilters(resolvedParams);
+  const eventPropertyFilters = parseUniversalEventPropertyFilters(resolvedParams);
+  const sessionPropertyFilters = parseSessionPropertyFilters(resolvedParams);
 
-  let match = params?.match;
+  let match = resolvedParams?.match;
 
   if (websiteId) {
     await setWebsiteDate(websiteId, dateRange);
 
-    if (params.segment) {
-      const segmentParams = (await getWebsiteSegment(websiteId, params.segment))
+    if (resolvedParams.segment) {
+      const segmentParams = (await getWebsiteSegment(websiteId, resolvedParams.segment))
         ?.parameters as Record<string, any>;
 
       Object.assign(filters, filtersArrayToObject(segmentParams.filters));
+      sessionPropertyFilters.push(...(segmentParams.sessionPropertyFilters ?? []));
 
       if (segmentParams.match) {
         match = segmentParams.match;
       }
     }
 
-    if (params.cohort) {
-      const cohortParams = (await getWebsiteSegment(websiteId, params.cohort))
+    if (resolvedParams.cohort) {
+      const cohortParams = (await getWebsiteSegment(websiteId, resolvedParams.cohort))
         ?.parameters as Record<string, any>;
 
       const { startDate, endDate } = parseDateRange(cohortParams.dateRange);
 
-      const cohortFilters = cohortParams.filters.map(({ name, ...props }) => ({
+      const cohortFilters = (cohortParams.filters ?? []).map(({ name, ...props }) => ({
         ...props,
         name: `cohort_${name}`,
       }));
 
+      if (!['path', 'event'].includes(cohortParams.action.type)) {
+        throw new Error('This cohort uses a retired action and must be updated.');
+      }
       cohortFilters.push({
         name: `cohort_${cohortParams.action.type}`,
         operator: OPERATORS.equals,
@@ -159,7 +194,7 @@ export async function getQueryFilters(
       });
     }
 
-    if (params.excludeBounce) {
+    if (resolvedParams.excludeBounce) {
       Object.assign(filters, { excludeBounce: true });
     }
   }
@@ -168,11 +203,15 @@ export async function getQueryFilters(
     ...dateRange,
     ...filters,
     match,
-    page: params?.page,
-    pageSize: params?.pageSize ? params?.pageSize || DEFAULT_PAGE_SIZE : undefined,
-    orderBy: params?.orderBy,
-    sortDescending: params?.sortDescending,
-    search: params?.search,
-    compare: params?.compare,
+    minDuration: resolvedParams?.minDuration,
+    eventPropertyFilters,
+    sessionPropertyFilters,
+    page: resolvedParams?.page,
+    pageSize: resolvedParams?.pageSize ? resolvedParams?.pageSize || DEFAULT_PAGE_SIZE : undefined,
+    orderBy: resolvedParams?.orderBy,
+    sortDescending: resolvedParams?.sortDescending,
+    search: resolvedParams?.search,
+    compare: resolvedParams?.compare,
+    maxResults: resolvedParams?.maxResults,
   };
 }

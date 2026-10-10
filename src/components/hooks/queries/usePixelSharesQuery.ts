@@ -3,10 +3,7 @@ import { useApi } from '../useApi';
 import { useModified } from '../useModified';
 import { usePagedQuery } from '../usePagedQuery';
 
-export function usePixelSharesQuery(
-  { pixelId }: { pixelId: string },
-  options?: ReactQueryOptions,
-) {
+export function usePixelSharesQuery({ pixelId }: { pixelId: string }, options?: ReactQueryOptions) {
   const { modified } = useModified('shares');
   const { get } = useApi();
 

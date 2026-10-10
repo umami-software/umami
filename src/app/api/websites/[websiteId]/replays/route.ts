@@ -1,8 +1,14 @@
 import { getQueryFilters, parseRequest } from '@/lib/request';
 import { json, unauthorized } from '@/lib/response';
-import { filterParams, pagingParams, searchParams, withDateRange } from '@/lib/schema';
-import { canViewWebsite } from '@/permissions';
-import { getSessionReplays } from '@/queries/sql';
+import {
+  filterParams,
+  pagingParams,
+  replayParams,
+  searchParams,
+  withDateRange,
+} from '@/lib/schema';
+import { canViewAuthenticatedWebsite } from '@/permissions';
+import { getReplayDistinctIds, getSessionReplays } from '@/queries/sql';
 
 export async function GET(
   request: Request,
@@ -10,6 +16,7 @@ export async function GET(
 ) {
   const schema = withDateRange({
     ...filterParams,
+    ...replayParams,
     ...pagingParams,
     ...searchParams,
   });
@@ -22,13 +29,20 @@ export async function GET(
 
   const { websiteId } = await params;
 
-  if (!(await canViewWebsite(auth, websiteId))) {
+  if (!(await canViewAuthenticatedWebsite(auth, websiteId))) {
     return unauthorized();
   }
 
   const filters = await getQueryFilters(query, websiteId);
 
   const data = await getSessionReplays(websiteId, filters);
+  const distinctIds = await getReplayDistinctIds(
+    websiteId,
+    data.data.map(({ id }) => id),
+  );
 
-  return json(data);
+  return json({
+    ...data,
+    data: data.data.map(row => ({ ...row, distinctIds: distinctIds[row.id] })),
+  });
 }

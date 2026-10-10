@@ -1,8 +1,9 @@
 import { Column, Grid, Icon, Row, Text } from '@umami/react-zen';
+import { differenceInCalendarDays } from 'date-fns';
 import type { ReactNode } from 'react';
 import { LoadingPanel } from '@/components/common/LoadingPanel';
 import { Panel } from '@/components/common/Panel';
-import { useLocale, useMessages, useResultQuery } from '@/components/hooks';
+import { useLocale, useMessages, useRetentionQuery } from '@/components/hooks';
 import { Users } from '@/components/icons';
 import { formatDate } from '@/lib/date';
 import { formatLongNumber } from '@/lib/format';
@@ -19,7 +20,7 @@ export interface RetentionProps {
 export function Retention({ websiteId, days = DAYS, startDate, endDate }: RetentionProps) {
   const { t, labels } = useMessages();
   const { locale } = useLocale();
-  const { data, error, isLoading } = useResultQuery('retention', {
+  const { data, error, isLoading } = useRetentionQuery({
     websiteId,
     startDate,
     endDate,
@@ -44,8 +45,6 @@ export function Retention({ websiteId, days = DAYS, startDate, endDate }: Retent
       }
       return arr;
     }, []) || [];
-
-  const totalDays = rows.length;
 
   return (
     <LoadingPanel data={data} isLoading={isLoading} error={error}>
@@ -84,6 +83,7 @@ export function Retention({ websiteId, days = DAYS, startDate, endDate }: Retent
                 ))}
               </Grid>
               {rows.map(({ date, visitors, records }: any, rowIndex: number) => {
+                const maxDay = differenceInCalendarDays(endDate, new Date(date));
                 return (
                   <Grid
                     key={rowIndex}
@@ -103,10 +103,8 @@ export function Retention({ websiteId, days = DAYS, startDate, endDate }: Retent
                       </Row>
                     </Column>
                     {days.map(day => {
-                      if (totalDays - rowIndex < day) {
-                        return null;
-                      }
-                      const percentage = records.filter(a => a.day === day)[0]?.percentage;
+                      if (day > maxDay) return null;
+                      const percentage = records.find(a => a.day === day)?.percentage;
                       return (
                         <Cell key={day}>
                           {percentage ? `${Number(percentage).toFixed(2)}%` : ''}

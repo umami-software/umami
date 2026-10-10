@@ -1,6 +1,7 @@
+import type { SessionReplaySaved } from '@/generated/prisma/client';
 import { uuid } from '@/lib/crypto';
 import prisma from '@/lib/prisma';
-import type { QueryFilters } from '@/lib/types';
+import type { PageResult, QueryFilters } from '@/lib/types';
 
 export interface CreateReplayChunkArgs {
   websiteId: string;
@@ -91,7 +92,10 @@ export async function deleteReplaySaved(websiteId: string, visitId: string) {
   });
 }
 
-export async function getSavedReplays(websiteId: string, filters: QueryFilters) {
+export async function getSavedReplays(
+  websiteId: string,
+  filters: QueryFilters,
+): Promise<PageResult<SessionReplaySaved[]>> {
   const { search } = filters;
   const { getSearchParameters, pagedQuery } = prisma;
 

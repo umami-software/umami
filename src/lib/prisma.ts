@@ -2,11 +2,21 @@ import { PrismaPg } from '@prisma/adapter-pg';
 import { readReplicas } from '@prisma/extension-read-replicas';
 import debug from 'debug';
 import { PrismaClient } from '@/generated/prisma/client';
-import { DEFAULT_PAGE_SIZE, FILTER_COLUMNS, OPERATORS, SESSION_COLUMNS } from './constants';
+import {
+  DATA_TYPE,
+  DEFAULT_PAGE_SIZE,
+  FILTER_COLUMNS,
+  OPERATORS,
+  SESSION_COLUMNS,
+} from './constants';
 import { filtersObjectToArray } from './params';
-import type { Operator, QueryFilters, QueryOptions } from './types';
+import type { Operator, PropertyFilter, QueryFilters, QueryOptions } from './types';
 
 const log = debug('umami:prisma');
+
+const EQUALITY_OPERATORS: Operator[] = [OPERATORS.equals, OPERATORS.notEquals];
+const SEARCH_OPERATORS: Operator[] = [OPERATORS.contains, OPERATORS.doesNotContain];
+const REGEX_OPERATORS: Operator[] = [OPERATORS.regex, OPERATORS.notRegex];
 
 const PRISMA = 'prisma';
 
@@ -19,21 +29,69 @@ const PRISMA_LOG_OPTIONS = {
   ],
 };
 
-const DATE_FORMATS = {
-  minute: 'YYYY-MM-DD HH24:MI:00',
-  hour: 'YYYY-MM-DD HH24:00:00',
-  day: 'YYYY-MM-DD HH24:00:00',
-  month: 'YYYY-MM-01 HH24:00:00',
-  year: 'YYYY-01-01 HH24:00:00',
-};
+export interface RawQueryExecutor {
+  $executeRawUnsafe: (query: string, ...params: any[]) => unknown;
+  $queryRawUnsafe: (query: string, ...params: any[]) => unknown;
+}
 
-const DATE_FORMATS_UTC = {
+export interface RawQueryClient extends RawQueryExecutor {
+  $primary?: () => unknown;
+  $replica?: () => unknown;
+}
+
+function isRawQueryExecutor(value: unknown): value is RawQueryExecutor {
+  return (
+    !!value &&
+    typeof value === 'object' &&
+    '$executeRawUnsafe' in value &&
+    '$queryRawUnsafe' in value
+  );
+}
+
+export function getRawQueryClient(
+  client: RawQueryClient,
+  {
+    useReplica = false,
+    write = false,
+  }: {
+    useReplica?: boolean;
+    write?: boolean;
+  } = {},
+) {
+  if (write) {
+    const primary = typeof client.$primary === 'function' ? client.$primary() : null;
+    return isRawQueryExecutor(primary) ? primary : client;
+  }
+
+  if (useReplica && typeof client.$replica === 'function') {
+    const replica = client.$replica();
+
+    if (isRawQueryExecutor(replica)) {
+      return replica;
+    }
+  }
+
+  return client;
+}
+
+// Always Z-suffixed so JS parses the already-shifted local value as an unambiguous
+// instant instead of re-interpreting it in the runtime's own timezone.
+const DATE_FORMATS = {
   minute: 'YYYY-MM-DD"T"HH24:MI:00"Z"',
   hour: 'YYYY-MM-DD"T"HH24:00:00"Z"',
   day: 'YYYY-MM-DD"T"HH24:00:00"Z"',
   month: 'YYYY-MM-01"T"HH24:00:00"Z"',
   year: 'YYYY-01-01"T"HH24:00:00"Z"',
 };
+
+const DATE_STRING_FORMATS = {
+  utc: 'YYYY-MM-DD"T"HH24:MI:SS"Z"',
+  second: 'YYYY-MM-DD"T"HH24:MI:SS"Z"',
+};
+
+function isUtcTimezone(timezone?: string) {
+  return timezone?.toLowerCase() === 'utc';
+}
 
 function getAddIntervalQuery(field: string, interval: string): string {
   return `${field} + interval '${interval}'`;
@@ -48,15 +106,29 @@ function getCastColumnQuery(field: string, type: string): string {
 }
 
 function getDateSQL(field: string, unit: string, timezone?: string): string {
-  if (timezone && timezone !== 'utc') {
-    return `to_char(date_trunc('${unit}', ${field} at time zone '${timezone}'), '${DATE_FORMATS[unit]}')`;
-  }
+  // Explicit `at time zone` even for UTC — `date_trunc` without one falls back to the
+  // DB session's ambient TimeZone setting, which this app never pins.
+  const tz = timezone && !isUtcTimezone(timezone) ? timezone : 'UTC';
 
-  return `to_char(date_trunc('${unit}', ${field}), '${DATE_FORMATS_UTC[unit]}')`;
+  return `to_char(date_trunc('${unit}', ${field} at time zone '${tz}'), '${DATE_FORMATS[unit]}')`;
+}
+
+function getDateStringSQL(
+  field: string,
+  unit: keyof typeof DATE_STRING_FORMATS = 'utc',
+  timezone?: string,
+): string {
+  const isUtc = !timezone || isUtcTimezone(timezone);
+  const tz = isUtc ? 'UTC' : timezone;
+  const format = isUtc ? DATE_STRING_FORMATS.utc : DATE_STRING_FORMATS[unit];
+
+  return `to_char(${field} at time zone '${tz}', '${format}')`;
 }
 
 function getDateWeeklySQL(field: string, timezone?: string) {
-  return `concat(extract(dow from (${field} at time zone '${timezone}')), ':', to_char((${field} at time zone '${timezone}'), 'HH24'))`;
+  const tz = timezone && !isUtcTimezone(timezone) ? timezone : 'UTC';
+
+  return `concat(extract(dow from (${field} at time zone '${tz}')), ':', to_char((${field} at time zone '${tz}'), 'HH24'))`;
 }
 
 export function getTimestampSQL(field: string) {
@@ -87,19 +159,20 @@ function mapFilter(
 
   const table = SESSION_COLUMNS.includes(name) ? 'session' : 'website_event';
 
+  // Negative operators read NULL as '' to match ClickHouse, which stores missing values as ''.
   switch (operator) {
     case OPERATORS.equals:
       return `${table}.${column} = ANY(${value})`;
     case OPERATORS.notEquals:
-      return `${table}.${column} != ALL(${value})`;
+      return `coalesce(${table}.${column}, '') != ALL(${value})`;
     case OPERATORS.contains:
       return `${table}.${column} ilike ${value}`;
     case OPERATORS.doesNotContain:
-      return `${table}.${column} not ilike ${value}`;
+      return `coalesce(${table}.${column}, '') not ilike ${value}`;
     case OPERATORS.regex:
       return `${table}.${column} ~* ${value}`;
     case OPERATORS.notRegex:
-      return `${table}.${column} !~* ${value}`;
+      return `coalesce(${table}.${column}, '') !~* ${value}`;
     default:
       return '';
   }
@@ -178,13 +251,17 @@ function getExcludeBounceQuery(filters: Record<string, any>) {
   }
 
   return `join
-    (select distinct session_id, visit_id
+    (select session_id, visit_id
     from website_event
     where website_id = {{websiteId}}
       and created_at between {{startDate}} and {{endDate}}
-      and event_type = 1
+      and event_type != 5
     group by session_id, visit_id
-    having count(*) > 1
+    having sum(case when event_type NOT IN (2, 5) then 1 else 0 end) > 1
+      or (
+        sum(case when event_type NOT IN (2, 5) then 1 else 0 end) = 1
+        and sum(case when event_type = 2 then 1 else 0 end) > 0
+      )
     ) excludeBounce
     on excludeBounce.session_id = website_event.session_id
       and excludeBounce.visit_id = website_event.visit_id
@@ -216,9 +293,9 @@ function getQueryParams(filters: Record<string, any>) {
 
       const key = paramName ?? name;
 
-      if (([OPERATORS.contains, OPERATORS.doesNotContain] as Operator[]).includes(operator)) {
+      if (SEARCH_OPERATORS.includes(operator)) {
         obj[key] = `%${value}%`;
-      } else if (([OPERATORS.equals, OPERATORS.notEquals] as Operator[]).includes(operator)) {
+      } else if (EQUALITY_OPERATORS.includes(operator)) {
         obj[key] = Array.isArray(value) ? value : [value];
       } else {
         obj[key] = value;
@@ -238,6 +315,13 @@ function parseFilters(filters: Record<string, any>, options?: QueryOptions) {
   const cohortFilters = Object.fromEntries(
     Object.entries(filters).filter(([key]) => key.startsWith('cohort_')),
   );
+  const { sql: eventPropertyFilterQuery, params: eventPropertyFilterParams } =
+    getEventPropertyFilterQuery((filters as QueryFilters).eventPropertyFilters, filters.timezone);
+  const { sql: sessionPropertyFilterQuery, params: sessionPropertyFilterParams } =
+    getSessionPropertyFilterQuery(
+      (filters as QueryFilters).sessionPropertyFilters,
+      filters.timezone,
+    );
 
   return {
     joinSessionQuery:
@@ -245,14 +329,408 @@ function parseFilters(filters: Record<string, any>, options?: QueryOptions) {
         ? `inner join session on website_event.session_id = session.session_id and website_event.website_id = session.website_id`
         : '',
     dateQuery: getDateQuery(filters),
-    filterQuery: getFilterQuery(filters, options),
-    queryParams: getQueryParams(filters),
+    filterQuery: [
+      getFilterQuery(filters, options),
+      eventPropertyFilterQuery,
+      sessionPropertyFilterQuery,
+    ]
+      .filter(Boolean)
+      .join('\n'),
+    queryParams: {
+      ...getQueryParams(filters),
+      ...eventPropertyFilterParams,
+      ...sessionPropertyFilterParams,
+    },
     cohortQuery: getCohortQuery(cohortFilters),
     excludeBounceQuery: getExcludeBounceQuery(filters),
   };
 }
 
-async function rawQuery(sql: string, data: Record<string, any>, name?: string): Promise<any> {
+function getPropertyFilterQuery(
+  filters: PropertyFilter[] = [],
+  propertyType: 'event' | 'session' = 'event',
+  timezone?: string,
+): {
+  sql: string;
+  params: Record<string, any>;
+} {
+  if (!filters.length) return { sql: '', params: {} };
+
+  const parts: string[] = [];
+  const params: Record<string, any> = {};
+  const table = propertyType === 'event' ? 'event_data' : 'session_data';
+  const column = propertyType === 'event' ? 'website_event_id' : 'session_id';
+  const outerColumn =
+    propertyType === 'event' ? 'website_event.event_id' : 'website_event.session_id';
+  const dateFilter =
+    propertyType === 'event' ? `and created_at between {{startDate}} and {{endDate}}` : '';
+
+  filters.forEach(({ propertyName, dataType, operator, value }, i) => {
+    const keyParam = `pf_key_${i}`;
+    const valParam = `pf_val_${i}`;
+    params[keyParam] = propertyName;
+
+    let condition: string;
+    switch (dataType) {
+      case DATA_TYPE.number: {
+        const col = 'cast(number_value as decimal)';
+        params[valParam] = parseFloat(value) || 0;
+        const opMap: Record<string, string> = {
+          [OPERATORS.equals]: `${col} = {{${valParam}}}`,
+          [OPERATORS.notEquals]: `${col} != {{${valParam}}}`,
+          [OPERATORS.greaterThan]: `${col} > {{${valParam}}}`,
+          [OPERATORS.lessThan]: `${col} < {{${valParam}}}`,
+          [OPERATORS.greaterThanEquals]: `${col} >= {{${valParam}}}`,
+          [OPERATORS.lessThanEquals]: `${col} <= {{${valParam}}}`,
+        };
+        condition = opMap[operator] ?? `${col} = {{${valParam}}}`;
+        break;
+      }
+      case DATA_TYPE.date: {
+        if (!value) return;
+        params[valParam] = value;
+        const dateCol =
+          timezone && !isUtcTimezone(timezone)
+            ? `(date_value at time zone {{timezone}})::date`
+            : `(date_value at time zone 'utc')::date`;
+        const opMap: Record<string, string> = {
+          [OPERATORS.before]: `${dateCol} < {{${valParam}::date}}`,
+          [OPERATORS.after]: `${dateCol} > {{${valParam}::date}}`,
+        };
+        condition = opMap[operator] ?? `${dateCol} = {{${valParam}::date}}`;
+        break;
+      }
+      case DATA_TYPE.array: {
+        if (!value) return;
+        params[valParam] = value;
+        condition =
+          operator === OPERATORS.contains
+            ? `exists (
+                select 1
+                from jsonb_array_elements_text(coalesce(string_value, '[]')::jsonb) as array_item(value)
+                where array_item.value = {{${valParam}}}
+              )`
+            : `not exists (
+                select 1
+                from jsonb_array_elements_text(coalesce(string_value, '[]')::jsonb) as array_item(value)
+                where array_item.value = {{${valParam}}}
+              )`;
+        break;
+      }
+      default: {
+        const col = 'string_value';
+
+        if (EQUALITY_OPERATORS.includes(operator)) {
+          const vals = value.split(',').filter(Boolean);
+          if (!vals.length) return;
+          params[valParam] = vals;
+          condition =
+            operator === OPERATORS.equals
+              ? `${col} = ANY({{${valParam}}})`
+              : `${col} != ALL({{${valParam}}})`;
+        } else if (REGEX_OPERATORS.includes(operator)) {
+          if (!value) return;
+          params[valParam] = value;
+          condition =
+            operator === OPERATORS.regex
+              ? `${col} ~* {{${valParam}}}`
+              : `${col} !~* {{${valParam}}}`;
+        } else {
+          if (!value) return;
+          params[valParam] = `%${value}%`;
+          condition =
+            operator === OPERATORS.contains
+              ? `${col} ilike {{${valParam}}}`
+              : `${col} not ilike {{${valParam}}}`;
+        }
+        break;
+      }
+    }
+
+    if (propertyType === 'session') {
+      parts.push(`and exists (
+      select 1
+      from ${table}
+      where website_id = website_event.website_id
+        and session_id = website_event.session_id
+        and data_key = {{${keyParam}}}
+        and data_type = ${dataType}
+        and ${condition}
+    )`);
+    } else {
+      parts.push(`and ${outerColumn} in (
+      select ${column}
+      from ${table}
+      where website_id = {{websiteId::uuid}}
+        ${dateFilter}
+        and data_key = {{${keyParam}}}
+        and data_type = ${dataType}
+        and ${condition}
+    )`);
+    }
+  });
+
+  return { sql: parts.join('\n'), params };
+}
+
+function getEventPropertyFilterQuery(
+  filters: PropertyFilter[] = [],
+  timezone?: string,
+): {
+  sql: string;
+  params: Record<string, any>;
+} {
+  if (!filters.length) {
+    return { sql: '', params: {} };
+  }
+
+  const clauses: string[] = [];
+  const keyRefs: string[] = [];
+  const params: Record<string, any> = {};
+
+  filters.forEach(({ propertyName, dataType, operator, value }, index) => {
+    const keyParam = `epf_key_${index}`;
+    const valParam = `epf_val_${index}`;
+    params[keyParam] = propertyName;
+    keyRefs.push(`{{${keyParam}}}`);
+
+    let condition: string;
+
+    switch (dataType) {
+      case DATA_TYPE.number: {
+        const col = 'cast(number_value as decimal)';
+        params[valParam] = parseFloat(value) || 0;
+        const opMap: Record<string, string> = {
+          [OPERATORS.equals]: `${col} = {{${valParam}}}`,
+          [OPERATORS.notEquals]: `${col} != {{${valParam}}}`,
+          [OPERATORS.greaterThan]: `${col} > {{${valParam}}}`,
+          [OPERATORS.lessThan]: `${col} < {{${valParam}}}`,
+          [OPERATORS.greaterThanEquals]: `${col} >= {{${valParam}}}`,
+          [OPERATORS.lessThanEquals]: `${col} <= {{${valParam}}}`,
+        };
+        condition = opMap[operator] ?? `${col} = {{${valParam}}}`;
+        break;
+      }
+      case DATA_TYPE.date: {
+        if (!value) return;
+        params[valParam] = value;
+        const dateCol =
+          timezone && !isUtcTimezone(timezone)
+            ? `(date_value at time zone {{timezone}})::date`
+            : `(date_value at time zone 'utc')::date`;
+        const opMap: Record<string, string> = {
+          [OPERATORS.before]: `${dateCol} < {{${valParam}::date}}`,
+          [OPERATORS.after]: `${dateCol} > {{${valParam}::date}}`,
+        };
+        condition = opMap[operator] ?? `${dateCol} = {{${valParam}::date}}`;
+        break;
+      }
+      case DATA_TYPE.array: {
+        if (!value) return;
+        params[valParam] = value;
+        condition =
+          operator === OPERATORS.contains
+            ? `exists (
+                select 1
+                from jsonb_array_elements_text(coalesce(string_value, '[]')::jsonb) as array_item(value)
+                where array_item.value = {{${valParam}}}
+              )`
+            : `not exists (
+                select 1
+                from jsonb_array_elements_text(coalesce(string_value, '[]')::jsonb) as array_item(value)
+                where array_item.value = {{${valParam}}}
+              )`;
+        break;
+      }
+      default: {
+        const col = 'string_value';
+
+        if (EQUALITY_OPERATORS.includes(operator)) {
+          const vals = value.split(',').filter(Boolean);
+
+          if (!vals.length) return;
+
+          params[valParam] = vals;
+          condition =
+            operator === OPERATORS.equals
+              ? `${col} = ANY({{${valParam}}})`
+              : `${col} != ALL({{${valParam}}})`;
+        } else if (REGEX_OPERATORS.includes(operator)) {
+          if (!value) return;
+
+          params[valParam] = value;
+          condition =
+            operator === OPERATORS.regex
+              ? `${col} ~* {{${valParam}}}`
+              : `${col} !~* {{${valParam}}}`;
+        } else {
+          if (!value) return;
+
+          params[valParam] = `%${value}%`;
+          condition =
+            operator === OPERATORS.contains
+              ? `${col} ilike {{${valParam}}}`
+              : `${col} not ilike {{${valParam}}}`;
+        }
+        break;
+      }
+    }
+
+    clauses.push(
+      `bool_or(data_key = {{${keyParam}}} and data_type = ${dataType} and ${condition})`,
+    );
+  });
+
+  if (!clauses.length) {
+    return { sql: '', params: {} };
+  }
+
+  return {
+    sql: `and website_event.event_id in (
+      select website_event_id
+      from event_data
+      where website_id = {{websiteId::uuid}}
+        and created_at between {{startDate}} and {{endDate}}
+        and data_key in (${keyRefs.join(', ')})
+      group by website_event_id
+      having ${clauses.join('\n        and ')}
+    )`,
+    params,
+  };
+}
+
+function getSessionPropertyFilterQuery(
+  filters: PropertyFilter[] = [],
+  timezone?: string,
+): {
+  sql: string;
+  params: Record<string, any>;
+} {
+  if (!filters.length) {
+    return { sql: '', params: {} };
+  }
+
+  const clauses: string[] = [];
+  const keyRefs: string[] = [];
+  const params: Record<string, any> = {};
+
+  filters.forEach(({ propertyName, dataType, operator, value }, index) => {
+    const keyParam = `spf_key_${index}`;
+    const valParam = `spf_val_${index}`;
+    params[keyParam] = propertyName;
+    keyRefs.push(`{{${keyParam}}}`);
+
+    let condition: string;
+
+    switch (dataType) {
+      case DATA_TYPE.number: {
+        const col = 'cast(number_value as decimal)';
+        params[valParam] = parseFloat(value) || 0;
+        const opMap: Record<string, string> = {
+          [OPERATORS.equals]: `${col} = {{${valParam}}}`,
+          [OPERATORS.notEquals]: `${col} != {{${valParam}}}`,
+          [OPERATORS.greaterThan]: `${col} > {{${valParam}}}`,
+          [OPERATORS.lessThan]: `${col} < {{${valParam}}}`,
+          [OPERATORS.greaterThanEquals]: `${col} >= {{${valParam}}}`,
+          [OPERATORS.lessThanEquals]: `${col} <= {{${valParam}}}`,
+        };
+        condition = opMap[operator] ?? `${col} = {{${valParam}}}`;
+        break;
+      }
+      case DATA_TYPE.date: {
+        if (!value) return;
+        params[valParam] = value;
+        const dateCol =
+          timezone && !isUtcTimezone(timezone)
+            ? `(date_value at time zone {{timezone}})::date`
+            : `(date_value at time zone 'utc')::date`;
+        const opMap: Record<string, string> = {
+          [OPERATORS.before]: `${dateCol} < {{${valParam}::date}}`,
+          [OPERATORS.after]: `${dateCol} > {{${valParam}::date}}`,
+        };
+        condition = opMap[operator] ?? `${dateCol} = {{${valParam}::date}}`;
+        break;
+      }
+      case DATA_TYPE.array: {
+        if (!value) return;
+        params[valParam] = value;
+        condition =
+          operator === OPERATORS.contains
+            ? `exists (
+                select 1
+                from jsonb_array_elements_text(coalesce(string_value, '[]')::jsonb) as array_item(value)
+                where array_item.value = {{${valParam}}}
+              )`
+            : `not exists (
+                select 1
+                from jsonb_array_elements_text(coalesce(string_value, '[]')::jsonb) as array_item(value)
+                where array_item.value = {{${valParam}}}
+              )`;
+        break;
+      }
+      default: {
+        const col = 'string_value';
+
+        if (EQUALITY_OPERATORS.includes(operator)) {
+          const vals = value.split(',').filter(Boolean);
+
+          if (!vals.length) return;
+
+          params[valParam] = vals;
+          condition =
+            operator === OPERATORS.equals
+              ? `${col} = ANY({{${valParam}}})`
+              : `${col} != ALL({{${valParam}}})`;
+        } else if (REGEX_OPERATORS.includes(operator)) {
+          if (!value) return;
+
+          params[valParam] = value;
+          condition =
+            operator === OPERATORS.regex
+              ? `${col} ~* {{${valParam}}}`
+              : `${col} !~* {{${valParam}}}`;
+        } else {
+          if (!value) return;
+
+          params[valParam] = `%${value}%`;
+          condition =
+            operator === OPERATORS.contains
+              ? `${col} ilike {{${valParam}}}`
+              : `${col} not ilike {{${valParam}}}`;
+        }
+        break;
+      }
+    }
+
+    clauses.push(
+      `bool_or(data_key = {{${keyParam}}} and data_type = ${dataType} and ${condition})`,
+    );
+  });
+
+  if (!clauses.length) {
+    return { sql: '', params: {} };
+  }
+
+  return {
+    sql: `and exists (
+      select 1
+      from session_data
+      where website_id = website_event.website_id
+        and session_id = website_event.session_id
+        and data_key in (${keyRefs.join(', ')})
+      group by website_id, session_id
+      having ${clauses.join('\n        and ')}
+    )`,
+    params,
+  };
+}
+
+async function executeRawQuery(
+  sql: string,
+  data: Record<string, any>,
+  name?: string,
+  write = false,
+): Promise<any> {
   if (process.env.LOG_QUERY) {
     log('QUERY:\n', sql);
     log('PARAMETERS:\n', data);
@@ -260,10 +738,6 @@ async function rawQuery(sql: string, data: Record<string, any>, name?: string): 
   }
   const params = [];
   const schema = getSchema();
-
-  if (schema) {
-    await client.$executeRawUnsafe(`SET search_path TO "${schema}";`);
-  }
 
   const query = sql?.replaceAll(/\{\{\s*(\w+)(::\w+)?\s*}}/g, (...args) => {
     const [, name, type] = args;
@@ -275,17 +749,33 @@ async function rawQuery(sql: string, data: Record<string, any>, name?: string): 
     return `$${params.length}${type ?? ''}`;
   });
 
-  if (process.env.DATABASE_REPLICA_URL && '$replica' in client) {
-    return client.$replica().$queryRawUnsafe(query, ...params);
+  const queryClient = getRawQueryClient(client, {
+    useReplica: !!process.env.DATABASE_REPLICA_URL,
+    write,
+  });
+
+  if (schema) {
+    await queryClient.$executeRawUnsafe(`SET search_path TO "${schema}";`);
   }
-  return client.$queryRawUnsafe(query, ...params);
+
+  return queryClient.$queryRawUnsafe(query, ...params);
+}
+
+async function rawQuery(sql: string, data: Record<string, any>, name?: string): Promise<any> {
+  return executeRawQuery(sql, data, name);
+}
+
+async function writeRawQuery(sql: string, data: Record<string, any>, name?: string): Promise<any> {
+  return executeRawQuery(sql, data, name, true);
 }
 
 async function pagedQuery<T>(model: string, criteria: T, filters?: QueryFilters) {
   const { page = 1, pageSize, orderBy, sortDescending = false, search } = filters || {};
   const size = +pageSize || DEFAULT_PAGE_SIZE;
 
-  const data = await client[model].findMany({
+  // Independent queries; run concurrently (mirrors pagedRawQuery).
+  const [data, count] = await Promise.all([
+    client[model].findMany({
     ...criteria,
     ...{
       ...(size > 0 && { take: +size, skip: +size * (+page - 1) }),
@@ -297,9 +787,9 @@ async function pagedQuery<T>(model: string, criteria: T, filters?: QueryFilters)
         ],
       }),
     },
-  });
-
-  const count = await client[model].count({ where: (criteria as any).where });
+  }),
+    client[model].count({ where: (criteria as any).where }),
+  ]);
 
   return { data, count, page: +page, pageSize: size, orderBy, search };
 }
@@ -309,6 +799,7 @@ async function pagedRawQuery(
   queryParams: Record<string, any>,
   filters: QueryFilters,
   name?: string,
+  defaultOrderBy?: string,
 ) {
   const { page = 1, pageSize, orderBy, sortDescending = false } = filters;
   const size = +pageSize || DEFAULT_PAGE_SIZE;
@@ -316,19 +807,32 @@ async function pagedRawQuery(
   const direction = sortDescending ? 'desc' : 'asc';
 
   const statements = [
-    orderBy && `order by ${orderBy} ${direction}`,
+    orderBy ? `order by ${orderBy} ${direction}` : defaultOrderBy && `order by ${defaultOrderBy}`,
     +size > 0 && `limit ${+size} offset ${offset}`,
   ]
     .filter(n => n)
     .join('\n');
 
-  const count = await rawQuery(`select count(*) as num from (${query}) t`, queryParams).then(
-    res => res[0].num,
-  );
+  const { maxResults } = filters;
+  const countQuery = maxResults
+    ? `select count(*) as num from (select 1 from (${query}) t limit ${+maxResults}) t2`
+    : `select count(*) as num from (${query}) t`;
 
-  const data = await rawQuery(`${query}${statements}`, queryParams, name);
+  // The count and page queries are independent; on large tables each can be
+  // an expensive aggregation, so running them concurrently halves wall time.
+  const [count, data] = await Promise.all([
+    rawQuery(countQuery, queryParams).then(res => Number(res[0].num)),
+    rawQuery(`${query}${statements}`, queryParams, name),
+  ]);
 
-  return { data, count, page: +page, pageSize: size, orderBy };
+  return {
+    data,
+    count,
+    page: +page,
+    pageSize: size,
+    orderBy,
+    isCapped: !!maxResults && +count >= +maxResults,
+  };
 }
 
 function getSearchParameters(query: string, filters: Record<string, any>[]) {
@@ -361,8 +865,14 @@ function transaction(input: any, options?: any) {
   return client.$transaction(input, options);
 }
 
-function getSchema() {
-  const connectionUrl = new URL(process.env.DATABASE_URL);
+export function getSchema() {
+  const databaseUrl = process.env.DATABASE_URL;
+
+  if (!databaseUrl) {
+    throw new Error('DATABASE_URL is not set.');
+  }
+
+  const connectionUrl = new URL(databaseUrl);
 
   return connectionUrl.searchParams.get('schema');
 }
@@ -371,6 +881,11 @@ function getClient() {
   const url = process.env.DATABASE_URL;
   const replicaUrl = process.env.DATABASE_REPLICA_URL;
   const logQuery = process.env.LOG_QUERY;
+
+  if (!url) {
+    throw new Error('DATABASE_URL is not set.');
+  }
+
   const schema = getSchema();
 
   const baseAdapter = new PrismaPg({ connectionString: url }, { schema });
@@ -424,8 +939,10 @@ export default {
   getCastColumnQuery,
   getDayDiffQuery,
   getDateSQL,
+  getDateStringSQL,
   getDateWeeklySQL,
   getFilterQuery,
+  getPropertyFilterQuery,
   getSearchParameters,
   getTimestampDiffSQL,
   getSearchSQL,
@@ -433,4 +950,5 @@ export default {
   pagedRawQuery,
   parseFilters,
   rawQuery,
+  writeRawQuery,
 };

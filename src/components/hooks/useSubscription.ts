@@ -1,50 +1,50 @@
+import { DEFAULT_SUBSCRIPTION, type Subscription } from '@/lib/subscription';
 import { useApp } from '@/store/app';
+import { useApi } from './useApi';
 import { useConfig } from './useConfig';
 
-export interface Subscription {
-  isPro: boolean;
-  isBusiness: boolean;
-  isNoBilling: boolean;
-  hasSubscription: boolean;
-}
-
+// Each feature lists the plans that include it.
 const FEATURES = {
-  replays: 'isBusiness',
-} as const;
+  replays: ['isBusiness'],
+  searchConsole: ['hasSubscription'],
+} as const satisfies Record<string, readonly (keyof Subscription)[]>;
 
 export type FeatureName = keyof typeof FEATURES;
 
-const defaultSubscription: Subscription = {
-  isPro: false,
-  isBusiness: false,
-  isNoBilling: false,
-  hasSubscription: false,
-};
-
 export function useSubscription(teamId?: string | null) {
-  const { user } = useApp();
+  const userId = useApp(state => state.user?.id);
   const config = useConfig();
-
-  const ownSubscription: Subscription = user?.subscription || defaultSubscription;
-  const teamSubscription: Subscription | null = teamId
-    ? user?.teams?.find((t: any) => t.id === teamId)?.subscription ?? null
-    : null;
-
-  const subscription: Subscription = teamSubscription || ownSubscription;
+  const { get, useQuery } = useApi();
   const cloudMode = config?.cloudMode || false;
+  // isFetching is deliberately not read: react-query re-renders for every result field a
+  // component reads, and a background refetch would re-render every caller twice for nothing.
+  const {
+    data: subscription = DEFAULT_SUBSCRIPTION,
+    isLoading,
+    error,
+  } = useQuery<Subscription>({
+    queryKey: ['subscription', { teamId: teamId || null }],
+    queryFn: () => get('/auth/subscription', teamId ? { teamId } : {}),
+    enabled: cloudMode && !!userId,
+    // Cached data is reused when a page mounts. Returning to the tab refetches, so a plan
+    // change made in another tab (the upgrade button opens billing in a new tab) shows up.
+    refetchOnMount: false,
+    refetchOnWindowFocus: 'always',
+  });
 
   function hasFeature(feature: FeatureName): boolean {
     if (!cloudMode || subscription.isNoBilling) {
       return true;
     }
 
-    const requiredFlag = FEATURES[feature];
-    return subscription[requiredFlag] || false;
+    return FEATURES[feature].some(plan => !!subscription[plan]);
   }
 
   return {
     ...subscription,
     cloudMode,
     hasFeature,
+    isLoading,
+    error,
   };
 }

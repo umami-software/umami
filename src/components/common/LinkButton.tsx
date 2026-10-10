@@ -1,6 +1,6 @@
 import { Button, type ButtonProps } from '@umami/react-zen';
-import Link from '@/components/common/Link';
 import type { ReactNode } from 'react';
+import Link from '@/components/common/Link';
 import { useLocale } from '@/components/hooks';
 
 export interface LinkButtonProps extends ButtonProps {
@@ -35,5 +35,5 @@ export function LinkButton({
     </Link>
   );
 
-  return <Button {...props} variant={variant} render={linkElement} />;
+  return <Button {...props} variant={variant} nativeButton={false} render={linkElement} />;
 }

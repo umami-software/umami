@@ -1,77 +1,39 @@
-import { startOfHour } from 'date-fns';
 import { isbot } from 'isbot';
-import { serializeError } from 'serialize-error';
-import { z } from 'zod';
 import clickhouse from '@/lib/clickhouse';
-import { COLLECTION_TYPE, EVENT_TYPE } from '@/lib/constants';
-import { getSalt, hash, secret, uuid } from '@/lib/crypto';
+import { type CollectionCache, resolveCollectionSession } from '@/lib/collection-session';
+import { CACHE_TOKEN_TYPE, COLLECTION_TYPE, EVENT_TYPE, FIELD_LENGTH } from '@/lib/constants';
+import { hash, secret } from '@/lib/crypto';
 import { getClientInfo, hasBlockedIp } from '@/lib/detect';
+import { truncateString } from '@/lib/format';
 import { createToken, parseToken } from '@/lib/jwt';
-import { fetchWebsite } from '@/lib/load';
+import { fetchWebsite, isWebsiteCollectionBlocked } from '@/lib/load';
 import { parseRequest } from '@/lib/request';
 import { badRequest, forbidden, json, serverError } from '@/lib/response';
-import { anyObjectParam, urlOrPathParam } from '@/lib/schema';
 import { safeDecodeURI, safeDecodeURIComponent } from '@/lib/url';
-import { createSession, saveEvent, saveSessionData } from '@/queries/sql';
-
-interface Cache {
-  websiteId: string;
-  sessionId: string;
-  visitId: string;
-  iat: number;
-}
-
-const schema = z.object({
-  type: z.enum(['event', 'identify', 'performance']),
-  payload: z
-    .object({
-      website: z.uuid().optional(),
-      link: z.uuid().optional(),
-      pixel: z.uuid().optional(),
-      data: anyObjectParam.optional(),
-      hostname: z.string().max(100).optional(),
-      language: z.string().max(35).optional(),
-      referrer: urlOrPathParam.optional(),
-      screen: z.string().max(11).optional(),
-      title: z.string().optional(),
-      url: urlOrPathParam.optional(),
-      name: z.string().max(50).optional(),
-      tag: z.string().max(50).optional(),
-      ip: z.string().optional(),
-      userAgent: z.string().optional(),
-      timestamp: z.coerce.number().int().optional(),
-      id: z.string().optional(),
-      browser: z.string().optional(),
-      os: z.string().optional(),
-      device: z.string().optional(),
-      lcp: z.number().nonnegative().max(60000).optional(),
-      inp: z.number().nonnegative().max(60000).optional(),
-      cls: z.number().nonnegative().max(100).optional(),
-      fcp: z.number().nonnegative().max(60000).optional(),
-      ttfb: z.number().nonnegative().max(60000).optional(),
-    })
-    .refine(
-      data => {
-        const keys = [data.website, data.link, data.pixel];
-        const count = keys.filter(Boolean).length;
-        return count === 1;
-      },
-      {
-        message: 'Exactly one of website, link, or pixel must be provided',
-        path: ['website'],
-      },
-    ),
-});
+import {
+  createSession,
+  saveEvent,
+  saveSessionData,
+  saveSessionLink,
+  tryClaimAnonymousSession,
+  updateSession,
+} from '@/queries/sql';
+import { collectionSchema } from './request-schema';
 
 export async function POST(request: Request) {
   try {
-    const { body, error } = await parseRequest(request, schema, { skipAuth: true });
+    const { body, error } = await parseRequest(request, collectionSchema, { skipAuth: true });
 
     if (error) {
       return error();
     }
 
     const { type, payload } = body;
+
+    if (type === 'error') {
+      const { collectError } = await import('@/lib/errors/collect');
+      return collectError(request, payload);
+    }
 
     const {
       website: websiteId,
@@ -98,7 +60,7 @@ export async function POST(request: Request) {
     const sourceId = websiteId || pixelId || linkId;
 
     // Cache check
-    let cache: Cache | null = null;
+    let cache: CollectionCache | null = null;
 
     if (websiteId) {
       const cacheHeader = request.headers.get('x-umami-cache');
@@ -106,20 +68,26 @@ export async function POST(request: Request) {
       if (cacheHeader) {
         const result = await parseToken(cacheHeader, secret());
 
-        if (result) {
+        if (result?.type === CACHE_TOKEN_TYPE && result.websiteId === websiteId) {
           cache = result;
         }
       }
 
-      // Find website
-      if (!cache?.websiteId) {
-        const website = await fetchWebsite(websiteId);
+      // Fetch even when the client supplied a cache token so account blocks
+      // take effect immediately for existing visitors.
+      const website = await fetchWebsite(websiteId);
 
-        if (!website) {
-          return badRequest({ message: 'Website not found.' });
-        }
+      if (!website) {
+        return badRequest({ message: 'Website not found.' });
+      }
+
+      if (process.env.CLOUD_MODE && (await isWebsiteCollectionBlocked(website))) {
+        return forbidden({ message: 'Collection blocked.' });
       }
     }
+
+    // Carried forward in the cache token so repeat identify calls skip identity writes
+    let sessionLinkId = cache?.sessionLinkId;
 
     // Client info
     const { ip, userAgent, device, browser, os, country, region, city } = await getClientInfo(
@@ -137,17 +105,73 @@ export async function POST(request: Request) {
       return forbidden();
     }
 
-    const createdAt = timestamp ? new Date(timestamp * 1000) : new Date();
-    const now = Math.floor(Date.now() / 1000);
+    const createdAt = timestamp !== undefined ? new Date(timestamp * 1000) : new Date();
+    const distinctId = truncateString(id, FIELD_LENGTH.distinctId);
 
-    const saltRotation = process.env.SALT_ROTATION || 'month';
-    const sessionSalt = getSalt(saltRotation, createdAt);
-    const visitSalt = hash(startOfHour(createdAt).toUTCString());
+    let { sessionId, visitId, iat, sessionDrift } = resolveCollectionSession({
+      sourceId,
+      ip,
+      userAgent,
+      distinctId,
+      createdAt,
+      cache,
+      historical: timestamp !== undefined,
+    });
 
-    const sessionId = id ? uuid(sourceId, id) : uuid(sourceId, ip, userAgent, sessionSalt);
+    // Reuse the anonymous session when the same visitor identifies, but only if:
+    //  - the client fingerprint (IP/UA) has not genuinely changed
+    //  - the session is not already claimed by a different identity
+    // sessionDrift is true whenever cache.sessionId !== computed sessionId.
+    // That includes the normal identify transition (distinctId changes the hash).
+    // To tell apart "same client, new identity" from "different client", we
+    // recompute the session ID without distinctId and compare to the cached one.
+    if (distinctId && cache?.sessionId && sessionDrift) {
+      // Resolved without distinctId, so its visit state has not been reset by
+      // the identity drift: it keeps the cached visit and applies the normal
+      // 30-minute expiry.
+      const fingerprint = resolveCollectionSession({
+        sourceId,
+        ip,
+        userAgent,
+        createdAt,
+        cache,
+        historical: timestamp !== undefined,
+      });
+      // If the fingerprint-only ID still doesn't match the cache, the client
+      // itself changed (IP or UA rotation) — do not reuse.
+      const clientChanged = fingerprint.sessionId !== cache.sessionId;
+
+      if (!clientChanged) {
+        let canReuse = false;
+
+        if (cache.sessionLinkId === hash(cache.sessionId, distinctId)) {
+          // Fast path: the cache token already proves this user owns the session
+          canReuse = true;
+        } else {
+          // Slow path: atomically check-and-claim the session in the DB so
+          // concurrent identities cannot both claim the same anonymous session.
+          try {
+            canReuse = await tryClaimAnonymousSession({
+              websiteId,
+              sessionId: cache.sessionId,
+              distinctId,
+              createdAt,
+            });
+          } catch {
+            // Best-effort: if the lookup fails, fall through to the new session
+            // so collection is never blocked by an identity-link read failure.
+          }
+        }
+
+        if (canReuse) {
+          ({ sessionId, visitId, iat, sessionDrift } = fingerprint);
+        }
+      }
+    }
+    const shouldEnsureSession = !clickhouse.enabled && sessionDrift;
 
     // Create a session if not found
-    if (!clickhouse.enabled && !cache?.sessionId) {
+    if ((!clickhouse.enabled && !cache?.sessionId) || shouldEnsureSession) {
       await createSession({
         id: sessionId,
         websiteId: sourceId,
@@ -159,19 +183,9 @@ export async function POST(request: Request) {
         country,
         region,
         city,
-        distinctId: id,
+        distinctId,
         createdAt,
       });
-    }
-
-    // Visit info
-    let visitId = cache?.visitId || uuid(sessionId, visitSalt);
-    let iat = cache?.iat || now;
-
-    // Expire visit after 30 minutes
-    if (!timestamp && now - iat > 1800) {
-      visitId = uuid(sessionId, visitSalt);
-      iat = now;
     }
 
     if (type === COLLECTION_TYPE.event) {
@@ -181,7 +195,7 @@ export async function POST(request: Request) {
       let urlPath =
         currentUrl.pathname === '/undefined' ? '' : currentUrl.pathname + currentUrl.hash;
       const urlQuery = currentUrl.search.substring(1);
-      const urlDomain = currentUrl.hostname.replace(/^www./, '');
+      const urlDomain = currentUrl.hostname.replace(/^www\./, '');
 
       let referrerPath: string;
       let referrerQuery: string;
@@ -203,15 +217,32 @@ export async function POST(request: Request) {
       const twclid = currentUrl.searchParams.get('twclid');
 
       if (process.env.REMOVE_TRAILING_SLASH) {
-        urlPath = urlPath.replace(/\/(?=(#.*)?$)/, '');
+        // Never strip the root slash, otherwise the home page is saved with an empty path
+        urlPath = urlPath.replace(/(?!^)\/(?=(#.*)?$)/, '');
       }
 
       if (referrer) {
-        const referrerUrl = new URL(referrer, base);
+        // Canonicalize the event domain (lowercase, punycode, no port) so it
+        // compares correctly against the parsed referrer hostname
+        let eventDomain = urlDomain;
+        if (hostname) {
+          try {
+            eventDomain = new URL(`https://${hostname}`).hostname.replace(/^www\./, '');
+          } catch {
+            eventDomain = hostname.replace(/^www\./, '');
+          }
+        }
+        // Resolve path-only referrers against the event's domain, not the localhost fallback
+        const referrerUrl = new URL(referrer, eventDomain ? `https://${eventDomain}` : base);
 
         referrerPath = referrerUrl.pathname;
         referrerQuery = referrerUrl.search.substring(1);
         referrerDomain = referrerUrl.hostname.replace(/^www\./, '');
+
+        // Never save the referrer domain for self-referrals
+        if (referrerDomain === eventDomain) {
+          referrerDomain = undefined;
+        }
       }
 
       const eventType = linkId
@@ -239,7 +270,7 @@ export async function POST(request: Request) {
         referrerDomain,
 
         // Session
-        distinctId: id,
+        distinctId,
         browser,
         os,
         device,
@@ -270,12 +301,39 @@ export async function POST(request: Request) {
         twclid,
       });
     } else if (type === COLLECTION_TYPE.identify) {
+      if (websiteId && distinctId) {
+        const newLinkId = hash(sessionId, distinctId);
+
+        if (sessionLinkId !== newLinkId) {
+          // Best-effort: identity link failures must not block the session data write below.
+          try {
+            await Promise.all([
+              saveSessionLink({
+                websiteId,
+                sessionId,
+                distinctId,
+                createdAt,
+              }),
+              updateSession({
+                websiteId,
+                sessionId,
+                distinctId,
+              }),
+            ]);
+            sessionLinkId = newLinkId;
+          } catch (e) {
+            // eslint-disable-next-line no-console
+            console.error('Failed to save session link:', e);
+          }
+        }
+      }
+
       if (data) {
         await saveSessionData({
           websiteId,
           sessionId,
           sessionData: data,
-          distinctId: id,
+          distinctId,
           createdAt,
         });
       }
@@ -308,15 +366,13 @@ export async function POST(request: Request) {
       });
     }
 
-    const token = createToken({ websiteId, sessionId, visitId, iat }, secret());
+    const token = createToken(
+      { websiteId, sessionId, visitId, iat, sessionLinkId, type: CACHE_TOKEN_TYPE },
+      secret(),
+    );
 
     return json({ cache: token, sessionId, visitId });
   } catch (e) {
-    const error = serializeError(e);
-
-    // eslint-disable-next-line no-console
-    console.log(error);
-
-    return serverError({ errorObject: error });
+    return serverError(e);
   }
 }

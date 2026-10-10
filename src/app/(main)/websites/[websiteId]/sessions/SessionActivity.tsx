@@ -22,11 +22,13 @@ export function SessionActivity({
   sessionId,
   startDate,
   endDate,
+  distinctId,
 }: {
   websiteId: string;
   sessionId: string;
   startDate: Date;
   endDate: Date;
+  distinctId?: string;
 }) {
   const { t, labels } = useMessages();
   const { formatTimezoneDate } = useTimezone();
@@ -35,6 +37,7 @@ export function SessionActivity({
     sessionId,
     startDate,
     endDate,
+    distinctId,
   );
   const { isMobile } = useMobile();
   let lastDay = null;
@@ -62,16 +65,21 @@ export function SessionActivity({
           return (
             <Column key={eventId} gap>
               {showHeader && <Heading size="lg">{formatTimezoneDate(createdAt, 'PPPP')}</Heading>}
-              <Row alignItems="center" gap="6" height="40px">
+              <Row alignItems="center" gap="6" height="40px" style={{ minWidth: 0 }}>
                 <StatusLight color={`#${visitId?.substring(0, 6)}`}>
                   <Text wrap="nowrap">{formatTimezoneDate(createdAt, 'pp')}</Text>
                 </StatusLight>
-                <Row alignItems="center" gap="2">
+                <Row alignItems="center" gap="2" style={{ minWidth: 0 }}>
                   <Icon>{eventName ? <Lightning /> : <Eye />}</Icon>
                   <Text wrap="nowrap">
                     {eventName ? t(labels.triggeredEvent) : t(labels.viewedPage)}
                   </Text>
-                  <Text weight="bold" style={{ maxWidth: isMobile ? '400px' : null }} truncate>
+                  <Text
+                    weight="bold"
+                    title={eventName || urlPath}
+                    style={{ minWidth: 0, maxWidth: isMobile ? '400px' : '600px' }}
+                    truncate
+                  >
                     {eventName || renderLink(urlPath, hostname)}
                   </Text>
                   {hasData > 0 && <PropertiesButton websiteId={websiteId} eventId={eventId} />}
@@ -95,7 +103,7 @@ const PropertiesButton = props => {
           </Icon>
         </Row>
       </Button>
-      <Popover placement="right">
+      <Popover side="right" sideOffset={8}>
         <Dialog>
           <EventData {...props} />
         </Dialog>

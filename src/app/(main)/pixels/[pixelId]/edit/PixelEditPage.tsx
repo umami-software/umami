@@ -1,12 +1,12 @@
 'use client';
 import { Column } from '@umami/react-zen';
-import Link from '@/components/common/Link';
+import { PixelShareForm } from '@/app/(main)/pixels/[pixelId]/PixelShareForm';
 import { PixelEditForm } from '@/app/(main)/pixels/PixelEditForm';
 import { PixelProvider } from '@/app/(main)/pixels/PixelProvider';
-import { PixelShareForm } from '@/app/(main)/pixels/[pixelId]/PixelShareForm';
-import { Panel } from '@/components/common/Panel';
 import { IconLabel } from '@/components/common/IconLabel';
+import Link from '@/components/common/Link';
 import { PageHeader } from '@/components/common/PageHeader';
+import { Panel } from '@/components/common/Panel';
 import { useMessages, useNavigation, usePixel } from '@/components/hooks';
 import { ArrowLeft, Grid2x2 } from '@/components/icons';
 

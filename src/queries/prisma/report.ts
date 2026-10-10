@@ -1,8 +1,15 @@
-import { Prisma } from '@/generated/prisma/client';
+import { Prisma, type Report } from '@/generated/prisma/client';
 import prisma from '@/lib/prisma';
-import type { QueryFilters } from '@/lib/types';
+import type { PageResult, QueryFilters } from '@/lib/types';
 
 import ReportFindManyArgs = Prisma.ReportFindManyArgs;
+
+export type ReportListItem = Report & {
+  website?: {
+    domain: string;
+    userId: string;
+  } | null;
+};
 
 async function findReport(criteria: Prisma.ReportFindUniqueArgs) {
   return prisma.client.report.findUnique(criteria);
@@ -16,34 +23,40 @@ export async function getReport(reportId: string) {
   });
 }
 
-export async function getReports(criteria: ReportFindManyArgs, filters: QueryFilters = {}) {
+export async function getReports(
+  criteria: ReportFindManyArgs,
+  filters: QueryFilters = {},
+): Promise<PageResult<ReportListItem[]>> {
   const { search } = filters;
+  const orderBy = criteria.orderBy ?? [{ name: 'asc' }, { id: 'asc' }];
 
   const where: Prisma.ReportWhereInput = {
-    ...criteria.where,
-    ...prisma.getSearchParameters(search, [
-      { name: 'contains' },
-      { description: 'contains' },
-      { type: 'contains' },
-      {
-        user: {
-          username: 'contains',
+    AND: [
+      criteria.where ?? {},
+      prisma.getSearchParameters(search, [
+        { name: 'contains' },
+        { description: 'contains' },
+        { type: 'contains' },
+        {
+          user: {
+            username: 'contains',
+          },
         },
-      },
-      {
-        website: {
-          name: 'contains',
+        {
+          website: {
+            name: 'contains',
+          },
         },
-      },
-      {
-        website: {
-          domain: 'contains',
+        {
+          website: {
+            domain: 'contains',
+          },
         },
-      },
-    ]),
+      ]) ?? {},
+    ],
   };
 
-  return prisma.pagedQuery('report', { ...criteria, where }, filters);
+  return prisma.pagedQuery('report', { ...criteria, where, orderBy }, filters);
 }
 
 export async function getUserReports(userId: string, filters?: QueryFilters) {

@@ -1,5 +1,7 @@
+import { FIELD_LENGTH } from '@/lib/constants';
 import { uuid } from '@/lib/crypto';
 import { PRISMA, runQuery } from '@/lib/db';
+import { truncateString } from '@/lib/format';
 import prisma from '@/lib/prisma';
 
 export interface SaveRevenueArgs {
@@ -27,8 +29,8 @@ async function relationalQuery(data: SaveRevenueArgs) {
       websiteId,
       sessionId,
       eventId,
-      eventName,
-      currency,
+      eventName: truncateString(eventName, FIELD_LENGTH.eventName),
+      currency: truncateString(currency, FIELD_LENGTH.currency),
       revenue,
       createdAt,
     },

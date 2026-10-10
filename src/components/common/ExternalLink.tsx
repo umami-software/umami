@@ -1,6 +1,6 @@
 import { Icon, Row, Text } from '@umami/react-zen';
-import Link, { type LinkProps } from '@/components/common/Link';
 import type { ReactNode } from 'react';
+import Link, { type LinkProps } from '@/components/common/Link';
 import { ExternalLink as LinkIcon } from '@/components/icons';
 
 export function ExternalLink({

@@ -3,10 +3,7 @@ import { useApi } from '../useApi';
 import { useModified } from '../useModified';
 import { usePagedQuery } from '../usePagedQuery';
 
-export function useLinkSharesQuery(
-  { linkId }: { linkId: string },
-  options?: ReactQueryOptions,
-) {
+export function useLinkSharesQuery({ linkId }: { linkId: string }, options?: ReactQueryOptions) {
   const { modified } = useModified('shares');
   const { get } = useApi();
 

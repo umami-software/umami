@@ -29,8 +29,8 @@ export function TimezoneSetting() {
         allowSearch={true}
         onSearch={setSearch}
         onOpenChange={handleOpen}
-        listProps={{ style: { maxHeight: 300 } }}
-        style={{ minWidth: '250px' }}
+        maxHeight={480}
+        buttonProps={{ style: { minWidth: '250px' } }}
       >
         {items.map((item: any) => (
           <ListItem key={item} id={item}>

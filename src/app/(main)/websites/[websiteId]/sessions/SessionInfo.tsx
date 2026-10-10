@@ -1,20 +1,26 @@
-import { Column, Grid, Icon, Label, Row } from '@umami/react-zen';
+import { Column, Grid, Icon, Row, Text } from '@umami/react-zen';
 import type { ReactNode } from 'react';
 import { DateDistance } from '@/components/common/DateDistance';
 import { TypeIcon } from '@/components/common/TypeIcon';
 import { useFormat, useLocale, useMessages, useRegionNames } from '@/components/hooks';
 import { Calendar, KeyRound, Landmark, MapPin } from '@/components/icons';
+import { Network } from '@/components/svg';
 
 export function SessionInfo({ data }) {
   const { locale } = useLocale();
   const { t, labels } = useMessages();
   const { formatValue } = useFormat();
   const { getRegionName } = useRegionNames(locale);
+  const distinctId =
+    data?.distinctIds?.length > 1
+      ? `${data.distinctIds.length} linked IDs`
+      : data?.distinctId?.trim();
+  const stitchedSessionCount = data?.stitchedSessionCount;
 
   return (
     <Grid columns="repeat(auto-fit, minmax(200px, 1fr)" gap>
       <Info label={t(labels.distinctId)} icon={<KeyRound />}>
-        {data?.distinctId}
+        {distinctId ? <span style={{ overflowWrap: 'anywhere' }}>{distinctId}</span> : '—'}
       </Info>
 
       <Info label={t(labels.lastSeen)} icon={<Calendar />}>
@@ -51,6 +57,12 @@ export function SessionInfo({ data }) {
       <Info label={t(labels.device)} icon={<TypeIcon type="device" value={data?.device} />}>
         {formatValue(data?.device, 'device')}
       </Info>
+
+      {distinctId && stitchedSessionCount > 1 && (
+        <Info label="Linked sessions" icon={<Network />}>
+          {stitchedSessionCount}
+        </Info>
+      )}
     </Grid>
   );
 }
@@ -65,8 +77,8 @@ const Info = ({
   children: ReactNode;
 }) => {
   return (
-    <Column>
-      <Label>{label}</Label>
+    <Column gap="2">
+      <Text weight="bold">{label}</Text>
       <Row alignItems="center" gap>
         {icon && <Icon>{icon}</Icon>}
         {children || '—'}

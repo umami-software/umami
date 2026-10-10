@@ -1,7 +1,11 @@
+import { FlagValues as FlagValuesScript } from 'flags/react';
 import type { Metadata } from 'next';
-import { headers } from 'next/headers';
 import { Inter } from 'next/font/google';
+import { headers } from 'next/headers';
+import { connection } from 'next/server';
 import { Suspense } from 'react';
+import { getConfig } from '@/lib/config';
+import { getFlagValues } from '@/lib/flags';
 import { getBaseUrl } from '@/lib/get-base-url';
 import { Providers } from './Providers';
 import '@umami/react-zen/styles.full.css';
@@ -13,7 +17,7 @@ const inter = Inter({
   variable: '--font-inter',
 });
 
-export default function ({ children }) {
+export default async function ({ children }) {
   if (process.env.DISABLE_UI) {
     return (
       <html>
@@ -22,6 +26,12 @@ export default function ({ children }) {
     );
   }
 
+  // Force request-time rendering so config reflects runtime env, not build-time env.
+  await connection();
+
+  const config = getConfig();
+  const flags = await getFlagValues();
+
   return (
     <html lang="en" className={`${inter.className} ${inter.variable}`}>
       <head>
@@ -29,7 +39,7 @@ export default function ({ children }) {
         <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
         <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
         <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
-        <link rel="manifest" href="/site.webmanifest" />
+        <link rel="manifest" href="/site.webmanifest" crossOrigin="use-credentials" />
         <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5" />
         <meta name="msapplication-TileColor" content="#da532c" />
         <meta name="theme-color" content="#fafafa" media="(prefers-color-scheme: light)" />
@@ -38,8 +48,11 @@ export default function ({ children }) {
       </head>
       <body>
         <Suspense>
-          <Providers>{children}</Providers>
+          <Providers config={config} flags={flags}>
+            {children}
+          </Providers>
         </Suspense>
+        <FlagValuesScript values={flags} />
       </body>
     </html>
   );

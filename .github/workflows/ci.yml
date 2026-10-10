@@ -3,26 +3,32 @@ name: Node.js CI
 on: [push]
 
 env:
+  APP_SECRET: "test-app-secret-not-for-production"
   DATABASE_URL: "postgresql://user:pass@localhost:5432/dummy"
   SKIP_DB_CHECK: 1
 
 jobs:
   build:
     if: github.repository == 'umami-software/umami'
-    runs-on: ubuntu-latest
+    runs-on: blacksmith-4vcpu-ubuntu-2404
 
     steps:
       - uses: actions/checkout@v4
       - uses: pnpm/action-setup@v4
         with:
-          version: 10
+          version: 12.3.4
           run_install: false
       - name: Use Node.js 22
         uses: actions/setup-node@v4
         with:
           node-version: 22
           cache: "pnpm"
-      - run: npm install --global pnpm
       - run: pnpm install
+      - run: pnpm lint:i18n
+      - run: pnpm openapi:generate
+      - run: pnpm openapi:check --explicit
+      - run: pnpm check:api:client
+      - run: pnpm build:packages
       - run: pnpm test
+      - run: pnpm test:packages
       - run: pnpm build

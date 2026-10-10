@@ -1,4 +1,6 @@
 'use client';
+import { Button, Column, Loading, Tab, TabList, TabPanel, Tabs } from '@umami/react-zen';
+import { type Key, useState } from 'react';
 import { SessionModal } from '@/app/(main)/websites/[websiteId]/sessions/SessionModal';
 import { WebsiteControls } from '@/app/(main)/websites/[websiteId]/WebsiteControls';
 import { EmptyPlaceholder } from '@/components/common/EmptyPlaceholder';
@@ -6,8 +8,7 @@ import { Panel } from '@/components/common/Panel';
 import { useMessages, useSubscription, useWebsite } from '@/components/hooks';
 import { Video } from '@/components/icons';
 import { getItem, setItem } from '@/lib/storage';
-import { Button, Column, Tab, TabList, TabPanel, Tabs } from '@umami/react-zen';
-import { type Key, useState } from 'react';
+import type { ReplaySource } from '@/store/replays';
 import { ReplayModal } from './ReplayModal';
 import { ReplaysDataTable } from './ReplaysDataTable';
 import { SavedReplaysDataTable } from './SavedReplaysDataTable';
@@ -15,15 +16,20 @@ import { SavedReplaysDataTable } from './SavedReplaysDataTable';
 const KEY_NAME = 'umami.replays.tab';
 
 export function ReplaysPage({ websiteId }: { websiteId: string }) {
-  const [tab, setTab] = useState(getItem(KEY_NAME) || 'replays');
+  const [tab, setTab] = useState<ReplaySource>(() => (getItem(KEY_NAME) === 'saved' ? 'saved' : 'replays'));
   const website = useWebsite();
   const { t, labels, messages } = useMessages();
-  const { hasFeature, cloudMode } = useSubscription(website?.teamId);
+  const { hasFeature, cloudMode, isLoading } = useSubscription(website?.teamId);
 
   const handleSelect = (value: Key) => {
-    setItem(KEY_NAME, value);
-    setTab(value);
+    const source: ReplaySource = value === 'saved' ? 'saved' : 'replays';
+    setItem(KEY_NAME, source);
+    setTab(source);
   };
+
+  if (isLoading) {
+    return <Loading placement="absolute" />;
+  }
 
   if (cloudMode && !hasFeature('replays')) {
     return (
@@ -64,7 +70,7 @@ export function ReplaysPage({ websiteId }: { websiteId: string }) {
         </Tabs>
       </Panel>
       <SessionModal websiteId={websiteId} />
-      <ReplayModal websiteId={websiteId} />
+      <ReplayModal websiteId={websiteId} replaySource={tab} />
     </Column>
   );
 }

@@ -1,0 +1,719 @@
+import {
+  addDays,
+  addMonths,
+  endOfDay,
+  endOfHour,
+  endOfMonth,
+  endOfWeek,
+  endOfYear,
+  startOfDay,
+  startOfHour,
+  startOfMonth,
+  startOfWeek,
+  startOfYear,
+  subDays,
+  subHours,
+  subMonths,
+  subWeeks,
+  subYears,
+} from 'date-fns';
+import { afterEach, beforeEach, describe, expect, test, vi } from 'vitest';
+import {
+  alignCompareSeries,
+  formatDate,
+  generateTimeSeries,
+  getAllowedUnits,
+  getCompareDate,
+  getDateRangeValue,
+  getDayOfWeekAsDate,
+  getMaxSelectableDate,
+  getMinimumUnit,
+  getMonthDateRangeValue,
+  getOffsetDateRange,
+  getPeriodDateRange,
+  getTimezone,
+  isInvalidDate,
+  isValidTimezone,
+  maxDate,
+  minDate,
+  normalizeTimezone,
+  parseDateRange,
+  parseDateValue,
+} from './date';
+import { setHour12 } from './lang';
+
+// A fixed instant used across timezone-sensitive tests. All expected date
+// values are recomputed with the same date-fns helpers the implementation
+// uses, so assertions stay robust regardless of the host timezone.
+const NOW = new Date('2026-07-24T12:00:00');
+
+beforeEach(() => {
+  vi.useFakeTimers();
+  vi.setSystemTime(NOW);
+});
+
+afterEach(() => {
+  vi.useRealTimers();
+});
+
+describe('parseDateValue', () => {
+  test.each([
+    ['1hour', { num: 1, unit: 'hour' }],
+    ['24hour', { num: 24, unit: 'hour' }],
+    ['1day', { num: 1, unit: 'day' }],
+    ['7day', { num: 7, unit: 'day' }],
+    ['1week', { num: 1, unit: 'week' }],
+    ['1month', { num: 1, unit: 'month' }],
+    ['12month', { num: 12, unit: 'month' }],
+    ['1year', { num: 1, unit: 'year' }],
+    ['0day', { num: 0, unit: 'day' }],
+  ])('parses %s', (input, expected) => {
+    expect(parseDateValue(input)).toEqual(expected);
+  });
+
+  test('returns null for unsupported units', () => {
+    expect(parseDateValue('1minute')).toBeNull();
+    expect(parseDateValue('1decade')).toBeNull();
+    expect(parseDateValue('range:1:2')).toBeNull();
+    expect(parseDateValue('')).toBeNull();
+    expect(parseDateValue('day')).toBeNull();
+  });
+
+  test('returns null when value lacks a matching pattern (has match method)', () => {
+    // Non-string values that still expose (an absent) `.match` are guarded by
+    // optional chaining and yield null.
+    expect(parseDateValue(123 as any)).toBeNull();
+    expect(parseDateValue({} as any)).toBeNull();
+  });
+});
+
+describe('getPeriodDateRange', () => {
+  test('resolves rolling periods from the request time', () => {
+    const range = getPeriodDateRange('24h', 'UTC', NOW);
+
+    expect(range).toEqual({
+      startDate: subHours(NOW, 24),
+      endDate: NOW,
+    });
+  });
+
+  test('resolves today using the supplied timezone before converting to UTC', () => {
+    const range = getPeriodDateRange('today', 'America/Los_Angeles', NOW);
+
+    expect(range).toEqual({
+      startDate: new Date('2026-07-24T07:00:00.000Z'),
+      endDate: new Date('2026-07-25T06:59:59.999Z'),
+    });
+  });
+
+  test('uses the same calendar boundaries as the date picker presets', () => {
+    const range = getPeriodDateRange('0month', 'America/Los_Angeles', NOW);
+
+    expect(range).toEqual({
+      startDate: new Date('2026-07-01T07:00:00.000Z'),
+      endDate: new Date('2026-08-01T06:59:59.999Z'),
+    });
+  });
+});
+
+describe('parseDateRange', () => {
+  test('returns null for non-string input', () => {
+    expect(parseDateRange(null as any)).toBeNull();
+    expect(parseDateRange(123 as any)).toBeNull();
+    expect(parseDateRange(undefined as any)).toBeNull();
+  });
+
+  test('parses hour ranges', () => {
+    const result = parseDateRange('24hour');
+    expect(result).toMatchObject({
+      unit: 'hour',
+      num: 24,
+      offset: 0,
+      value: '24hour',
+    });
+    expect(result.startDate).toEqual(subHours(startOfHour(NOW), 24));
+    expect(result.endDate).toEqual(endOfHour(NOW));
+  });
+
+  test('parses day ranges', () => {
+    const result = parseDateRange('7day');
+    expect(result).toMatchObject({
+      unit: 'day',
+      num: 7,
+      offset: 0,
+      value: '7day',
+    });
+    expect(result.startDate).toEqual(subDays(startOfDay(NOW), 7));
+    expect(result.endDate).toEqual(endOfDay(NOW));
+  });
+
+  test('parses week ranges', () => {
+    const result = parseDateRange('4week');
+    expect(result).toMatchObject({
+      unit: 'day',
+      num: 4,
+      offset: 0,
+      value: '4week',
+    });
+    expect(result.startDate).toEqual(subWeeks(startOfWeek(NOW), 4));
+    expect(result.endDate).toEqual(endOfWeek(NOW));
+  });
+
+  test('parses month ranges', () => {
+    const result = parseDateRange('6month');
+    expect(result).toMatchObject({
+      unit: 'month',
+      num: 6,
+      offset: 0,
+      value: '6month',
+    });
+    expect(result.startDate).toEqual(subMonths(startOfMonth(NOW), 6));
+    expect(result.endDate).toEqual(endOfMonth(NOW));
+  });
+
+  test('parses year ranges', () => {
+    const result = parseDateRange('1year');
+    expect(result).toMatchObject({
+      unit: 'month',
+      num: 1,
+      offset: 0,
+      value: '1year',
+    });
+    expect(result.startDate).toEqual(subYears(startOfYear(NOW), 1));
+    expect(result.endDate).toEqual(endOfYear(NOW));
+  });
+
+  test('handles zero-num keyword variants ("this period")', () => {
+    // 0day => the current day only, unit collapses to hour
+    const day = parseDateRange('0day');
+    expect(day).toMatchObject({ unit: 'hour', num: 1, offset: 0 });
+    expect(day.startDate).toEqual(startOfDay(NOW));
+    expect(day.endDate).toEqual(endOfDay(NOW));
+
+    // 0month => the current month only, unit collapses to day
+    const month = parseDateRange('0month');
+    expect(month).toMatchObject({ unit: 'day', num: 1 });
+    expect(month.startDate).toEqual(startOfMonth(NOW));
+
+    // 0hour => still one hour, unit stays hour
+    const hour = parseDateRange('0hour');
+    expect(hour).toMatchObject({ unit: 'hour', num: 1 });
+    expect(hour.startDate).toEqual(startOfHour(NOW));
+  });
+
+  test('honors the unitValue override', () => {
+    const result = parseDateRange('7day', 'week');
+    expect(result.unit).toBe('week');
+    expect(result.num).toBe(7);
+  });
+
+  test('parses explicit range values', () => {
+    const start = new Date('2026-01-01T00:00:00Z');
+    const end = new Date('2026-01-11T00:00:00Z'); // 10 days -> day unit
+    const value = `range:${start.getTime()}:${end.getTime()}`;
+
+    const result = parseDateRange(value);
+    expect(result.startDate).toEqual(start);
+    expect(result.endDate).toEqual(end);
+    expect(result.value).toBe(value);
+    expect(result.unit).toBe('day');
+  });
+
+  test('range unit reflects minimum unit of the span', () => {
+    const start = new Date('2026-01-01T00:00:00Z');
+    const end = new Date('2026-01-01T00:30:00Z'); // 30 minutes
+    const value = getDateRangeValue(start, end);
+    expect(parseDateRange(value).unit).toBe('minute');
+  });
+
+  test('applies timezone conversion without throwing and preserves metadata', () => {
+    const result = parseDateRange('1day', undefined, 'en-US', 'America/New_York');
+    expect(result.startDate).toBeInstanceOf(Date);
+    expect(result.endDate).toBeInstanceOf(Date);
+    expect(result).toMatchObject({ unit: 'day', num: 1, value: '1day' });
+  });
+});
+
+describe('getOffsetDateRange', () => {
+  test('returns the same range when offset is 0', () => {
+    const range = parseDateRange('7day');
+    expect(getOffsetDateRange(range, 0)).toBe(range);
+  });
+
+  test('shifts day ranges backward', () => {
+    const range = parseDateRange('7day');
+    const shifted = getOffsetDateRange(range, -1);
+    expect(shifted.offset).toBe(-1);
+    // change = num * offset = 7 * -1
+    expect(shifted.startDate).toEqual(addDays(range.startDate, -7));
+    expect(shifted.endDate).toEqual(addDays(range.endDate, -7));
+  });
+
+  test('shifts month ranges and handles month boundaries', () => {
+    const range = parseDateRange('1month');
+    const shifted = getOffsetDateRange(range, -1);
+    expect(shifted.offset).toBe(-1);
+    expect(shifted.startDate).toEqual(addMonths(range.startDate, -1));
+    expect(shifted.endDate).toEqual(addMonths(range.endDate, -1));
+  });
+
+  test.each([
+    ['2026-09-15T12:00:00', -1], // September (30 days) -> August (31 days)
+    ['2026-02-15T12:00:00', -1], // February (28 days) -> January (31 days)
+    ['2026-04-15T12:00:00', -1], // April (30 days) -> March (31 days)
+    ['2026-02-15T12:00:00', 1], // February (28 days) -> March (31 days)
+  ])('covers the whole target month when shifting a month range from %s by %i', (now, offset) => {
+    vi.setSystemTime(new Date(now));
+    const range = parseDateRange('0month');
+    const shifted = getOffsetDateRange(range, offset);
+    const target = addMonths(range.startDate, offset);
+
+    expect(shifted.startDate).toEqual(startOfMonth(target));
+    expect(shifted.endDate).toEqual(endOfMonth(target));
+  });
+
+  test('shifts year ranges (year rollover)', () => {
+    const range = parseDateRange('1year');
+    const shifted = getOffsetDateRange(range, 1);
+    expect(shifted.startDate.getFullYear()).toBe(range.startDate.getFullYear() + 1);
+  });
+
+  test('falls back to unit add function for explicit ranges', () => {
+    const start = new Date('2026-01-01T00:00:00Z');
+    const end = new Date('2026-01-11T00:00:00Z');
+    const range = parseDateRange(getDateRangeValue(start, end));
+    // originalUnit from parseDateValue('range:...') is undefined -> default branch
+    const shifted = getOffsetDateRange(range, 1);
+    expect(shifted.offset).toBe(1);
+    expect(shifted.startDate).toBeInstanceOf(Date);
+    expect(shifted.endDate).toBeInstanceOf(Date);
+  });
+});
+
+describe('getMinimumUnit', () => {
+  const base = new Date('2026-01-01T00:00:00Z');
+
+  test('returns minute for spans up to 60 minutes', () => {
+    expect(getMinimumUnit(base, new Date('2026-01-01T00:59:00Z'))).toBe('minute');
+    expect(getMinimumUnit(base, new Date('2026-01-01T01:00:00Z'))).toBe('minute');
+  });
+
+  test('returns hour for spans up to 30 days (non date-range)', () => {
+    expect(getMinimumUnit(base, new Date('2026-01-15T00:00:00Z'))).toBe('hour');
+  });
+
+  test('date-range mode caps hour at 48 hours', () => {
+    const within = new Date('2026-01-02T23:00:00Z'); // ~47h
+    const beyond = new Date('2026-01-05T00:00:00Z'); // >48h
+    expect(getMinimumUnit(base, within, true)).toBe('hour');
+    expect(getMinimumUnit(base, beyond, true)).toBe('day');
+  });
+
+  test('returns day for spans up to 7 calendar months', () => {
+    expect(getMinimumUnit(base, new Date('2026-06-01T00:00:00Z'))).toBe('day');
+  });
+
+  test('returns month for spans up to 24 calendar months', () => {
+    expect(getMinimumUnit(base, new Date('2027-06-01T00:00:00Z'))).toBe('month');
+  });
+
+  test('returns year for spans beyond 24 calendar months', () => {
+    expect(getMinimumUnit(base, new Date('2029-01-01T00:00:00Z'))).toBe('year');
+  });
+});
+
+describe('getAllowedUnits', () => {
+  const base = new Date('2026-01-01T00:00:00Z');
+
+  test('includes all units for minute-level spans', () => {
+    expect(getAllowedUnits(base, new Date('2026-01-01T00:30:00Z'))).toEqual([
+      'minute',
+      'hour',
+      'day',
+      'month',
+      'year',
+    ]);
+  });
+
+  test('drops finer units for day-level spans', () => {
+    // ~4 months -> minimum unit day
+    expect(getAllowedUnits(base, new Date('2026-05-01T00:00:00Z'))).toEqual([
+      'day',
+      'month',
+      'year',
+    ]);
+  });
+
+  test('maps year minimum down to month as the finest allowed unit', () => {
+    expect(getAllowedUnits(base, new Date('2030-01-01T00:00:00Z'))).toEqual(['month', 'year']);
+  });
+});
+
+describe('getCompareDate', () => {
+  const startDate = new Date('2026-07-01T00:00:00Z');
+  const endDate = new Date('2026-07-08T00:00:00Z');
+
+  test('year over year shifts both bounds back one year', () => {
+    expect(getCompareDate('yoy', startDate, endDate)).toEqual({
+      compare: 'yoy',
+      startDate: subYears(startDate, 1),
+      endDate: subYears(endDate, 1),
+    });
+  });
+
+  // Ranges include both ends (presets end at endOfHour/endOfDay and queries use `between`), so
+  // the previous period must end one millisecond before the current one starts.
+  test('previous period has the same length and ends just before the current one', () => {
+    expect(
+      getCompareDate(
+        'prev',
+        new Date('2026-07-01T00:00:00.000Z'),
+        new Date('2026-07-07T23:59:59.999Z'),
+      ),
+    ).toEqual({
+      compare: 'prev',
+      startDate: new Date('2026-06-24T00:00:00.000Z'),
+      endDate: new Date('2026-06-30T23:59:59.999Z'),
+    });
+  });
+
+  // ClickHouse reads hourly rollup rows stamped at the start of each hour. A previous period that
+  // started even 1 ms after midnight dropped the whole 12 AM hour on ClickHouse but not Postgres.
+  test('previous period of a preset starts exactly on the bucket boundary', () => {
+    const { startDate: start, endDate: end } = parseDateRange('0day');
+
+    expect(getCompareDate('prev', start, end).startDate).toEqual(addDays(start, -1));
+  });
+
+  describe('when limited to the elapsed part of the current range', () => {
+    const now = new Date('2026-07-24T19:07:00');
+    const HOUR = 60 * 60 * 1000;
+
+    // Whole hours, so hourly rollups and raw events cover exactly the same window.
+    test.each(['24hour', '0day', '7day', '30day', '0week', '0month', '6month', '0year'])(
+      '%s compares the elapsed whole hours from the start of the previous period',
+      value => {
+        const { startDate: start, endDate: end } = parseDateRange(
+          value,
+          undefined,
+          'en-US',
+          undefined,
+          now,
+        );
+        const full = getCompareDate('prev', start, end);
+        const elapsed = getCompareDate('prev', start, end, now);
+
+        expect(elapsed.startDate).toEqual(full.startDate);
+        expect(+elapsed.endDate - +elapsed.startDate + 1).toBe(
+          Math.floor((+now - +start) / HOUR) * HOUR,
+        );
+      },
+    );
+
+    test('year over year stops at the same whole hour last year', () => {
+      const { startDate: start, endDate: end } = parseDateRange(
+        '0month',
+        undefined,
+        'en-US',
+        undefined,
+        now,
+      );
+
+      expect(getCompareDate('yoy', start, end, now)).toEqual({
+        compare: 'yoy',
+        startDate: subYears(start, 1),
+        endDate: subYears(new Date('2026-07-24T18:59:59.999'), 1),
+      });
+    });
+
+    test('ranges that already ended are compared in full', () => {
+      expect(getCompareDate('prev', startDate, endDate, now)).toEqual(
+        getCompareDate('prev', startDate, endDate),
+      );
+    });
+
+    test('ranges that have not started yet compare an empty window', () => {
+      const result = getCompareDate(
+        'prev',
+        new Date('2026-08-01T00:00:00'),
+        new Date('2026-08-08T00:00:00'),
+        now,
+      );
+
+      expect(+result.endDate).toBeLessThan(+result.startDate);
+    });
+  });
+
+  test('returns empty object for unknown compare modes', () => {
+    expect(getCompareDate('unknown', startDate, endDate)).toEqual({});
+  });
+});
+
+describe('alignCompareSeries', () => {
+  // Backend series only include buckets with data. Pairing them by array index put yesterday's
+  // 1 AM under today's 12 AM whenever yesterday's 12 AM hour was empty.
+  const yesterday = new Date('2026-09-24T00:00:00');
+  const today = new Date('2026-09-25T00:00:00');
+  const endOfToday = new Date('2026-09-25T04:59:59.999');
+  const previous = [
+    { x: '2026-09-24T01:00:00Z', y: 5 },
+    { x: '2026-09-24T03:00:00Z', y: 7 },
+  ];
+
+  function chartValues(endDate: Date) {
+    return generateTimeSeries(
+      alignCompareSeries(previous, yesterday, today, endDate, 'hour'),
+      today,
+      endOfToday,
+      'hour',
+      'en-US',
+    );
+  }
+
+  test('lines up hour N of the previous day under hour N of the current day', () => {
+    const series = chartValues(endOfToday);
+
+    // Hours with no traffic yesterday plot as zero instead of shifting the later hours.
+    expect(series.map(({ y }) => y)).toEqual([0, 5, 0, 7, 0]);
+    expect(series[1].d).toBe('2026-09-24T01:00:00Z');
+    expect(series[0].d).toBe('2026-09-24T00:00:00');
+  });
+
+  test('stops the comparison at the current hour', () => {
+    const series = chartValues(new Date('2026-09-25T02:35:00'));
+
+    expect(series.map(({ y }) => y)).toEqual([0, 5, 0, null, null]);
+  });
+
+  test('keeps day positions when the previous period is in a different month', () => {
+    const aligned = alignCompareSeries(
+      [{ x: '2026-08-02T00:00:00Z', y: 3 }],
+      new Date('2026-08-01T00:00:00'),
+      new Date('2026-09-01T00:00:00'),
+      new Date('2026-09-30T23:59:59.999'),
+      'day',
+    );
+
+    expect(aligned).toHaveLength(30);
+    expect(aligned[1]).toEqual({ x: '2026-09-02T00:00:00', y: 3, d: '2026-08-02T00:00:00Z' });
+  });
+});
+
+describe('maxDate / minDate', () => {
+  const a = new Date('2026-01-01T00:00:00Z');
+  const b = new Date('2026-06-01T00:00:00Z');
+  const c = new Date('2026-12-01T00:00:00Z');
+
+  test('maxDate returns the latest valid date, ignoring non-dates', () => {
+    expect(maxDate(a, b, c)).toEqual(c);
+    expect(maxDate(a, null as any, c, undefined as any)).toEqual(c);
+  });
+
+  test('minDate returns the earliest valid date, ignoring non-dates', () => {
+    expect(minDate(a, b, c)).toEqual(a);
+    expect(minDate(null, a, 'nope', c)).toEqual(a);
+  });
+});
+
+describe('getDayOfWeekAsDate', () => {
+  test('returns a future date, never today', () => {
+    const result = getDayOfWeekAsDate(0);
+    // Same weekday as start of current week would collide with today -> pushed +7
+    expect(result.getTime()).toBeGreaterThan(NOW.getTime());
+  });
+
+  test('later weekdays fall within the current week window', () => {
+    const start = startOfWeek(NOW);
+    const result = getDayOfWeekAsDate(6);
+    expect(result).toEqual(addDays(start, 6));
+  });
+});
+
+describe('formatDate', () => {
+  test('formats a Date with a custom pattern', () => {
+    const date = new Date('2026-07-24T00:00:00');
+    expect(formatDate(date, 'yyyy-MM-dd')).toBe('2026-07-24');
+  });
+
+  test('accepts string input', () => {
+    expect(formatDate('2026-07-24T00:00:00', 'yyyy-MM-dd')).toBe('2026-07-24');
+  });
+
+  test('accepts numeric timestamp input', () => {
+    const date = new Date('2026-07-24T00:00:00');
+    expect(formatDate(date.getTime(), 'yyyy')).toBe('2026');
+  });
+});
+
+describe('formatDate clock format', () => {
+  const date = new Date(2026, 9, 1, 13, 5, 9);
+
+  afterEach(() => {
+    setHour12(undefined);
+  });
+
+  test('follows the locale convention by default', () => {
+    expect(formatDate(date, 'p')).toBe('1:05 PM');
+    expect(formatDate(date, 'p', 'de-DE')).toBe('13:05');
+  });
+
+  test('forces 24-hour time regardless of locale', () => {
+    setHour12(false);
+    expect(formatDate(date, 'p')).toBe('13:05');
+    expect(formatDate(date, 'pp')).toBe('13:05:09');
+    expect(formatDate(date, 'ppp')).toMatch(/^13:05:09 /);
+    expect(formatDate(date, 'pppp')).toMatch(/^13:05:09 /);
+    expect(formatDate(date, 'p', 'de-DE')).toBe('13:05');
+    expect(formatDate(date, 'PPpp')).toBe('Oct 1, 2026, 13:05:09');
+  });
+
+  test('forces 12-hour time regardless of locale', () => {
+    setHour12(true);
+    expect(formatDate(date, 'p', 'de-DE')).toBe('1:05 nachm.');
+    expect(formatDate(date, 'pp', 'de-DE')).toBe('1:05:09 nachm.');
+    expect(formatDate(date, 'ppp', 'de-DE')).toMatch(/^1:05:09 nachm\. /);
+    expect(formatDate(date, 'p')).toBe('1:05 PM');
+  });
+
+  test('leaves date-only patterns untouched', () => {
+    setHour12(false);
+    expect(formatDate(date, 'PP')).toBe('Oct 1, 2026');
+    expect(formatDate(date, 'yyyy-MM-dd')).toBe('2026-10-01');
+  });
+});
+
+describe('generateTimeSeries', () => {
+  test('fills gaps between min and max with null values (day unit)', () => {
+    const min = new Date('2026-07-01T00:00:00');
+    const max = new Date('2026-07-05T00:00:00');
+    const data = [
+      { x: '2026-07-02T00:00:00', y: 10 },
+      { x: '2026-07-04T00:00:00', y: 20 },
+    ];
+
+    const series = generateTimeSeries(data, min, max, 'day', 'en-US');
+
+    // Inclusive of both ends: Jul 1..5 => 5 buckets
+    expect(series).toHaveLength(5);
+    expect(series.map(s => s.x)).toEqual([
+      '2026-07-01',
+      '2026-07-02',
+      '2026-07-03',
+      '2026-07-04',
+      '2026-07-05',
+    ]);
+    expect(series[0].y).toBeNull();
+    expect(series[1].y).toBe(10);
+    expect(series[3].y).toBe(20);
+    expect(series[4].y).toBeNull();
+  });
+
+  test('single bucket when min and max share a period', () => {
+    const min = new Date('2026-07-01T03:00:00');
+    const max = new Date('2026-07-01T21:00:00');
+    const series = generateTimeSeries([], min, max, 'day', 'en-US');
+    expect(series).toHaveLength(1);
+    expect(series[0].y).toBeNull();
+  });
+
+  test('matches backend-bucketed values without re-shifting them through the system zone', () => {
+    // Backend x is already the target-zone wall clock (e.g. Tokyo's day bucket),
+    // stamped with a literal "Z". minDate/maxDate carry that same wall clock via
+    // their local getters, per the "fake zoned" Date convention from parseDateRange.
+    const minDate = new Date(2026, 6, 2); // local wall clock: 2026-07-02 00:00
+    const data = [{ x: '2026-07-02T00:00:00Z', y: 42 }];
+
+    const series = generateTimeSeries(data, minDate, minDate, 'day', 'en-US');
+
+    expect(series).toHaveLength(1);
+    expect(series[0].x).toBe('2026-07-02');
+    expect(series[0].y).toBe(42);
+  });
+
+  test('does not double-shift hour buckets near a day boundary', () => {
+    // Regression guard: an earlier version of this fix re-applied toZonedTime(x, timezone)
+    // on top of the backend's already-shifted value, pushing a 23:00 bucket into the
+    // next day. The backend value must be read back as-is (via 'UTC'), not re-shifted.
+    const minDate = new Date(2026, 6, 2, 23); // local wall clock: 2026-07-02 23:00
+    const data = [{ x: '2026-07-02T23:00:00Z', y: 7 }];
+
+    const series = generateTimeSeries(data, minDate, minDate, 'hour', 'en-US');
+
+    expect(series).toHaveLength(1);
+    expect(series[0].x).toBe('2026-07-02 23');
+    expect(series[0].y).toBe(7);
+  });
+
+  test('does not reinterpret plain local bucket keys (no "Z") as UTC', () => {
+    // Regression guard: PropertyDateChart's bucket keys have no "Z" (plain local
+    // strings) and must be read as-is, not run through the "fake-Z" reinterpretation.
+    const minDate = new Date(2026, 6, 2, 23); // local wall clock: 2026-07-02 23:00
+    const data = [{ x: '2026-07-02T23:00:00', y: 7 }];
+
+    const series = generateTimeSeries(data, minDate, minDate, 'hour', 'en-US');
+
+    expect(series).toHaveLength(1);
+    expect(series[0].x).toBe('2026-07-02 23');
+    expect(series[0].y).toBe(7);
+  });
+});
+
+describe('getDateRangeValue / getMonthDateRangeValue', () => {
+  test('builds a range token from two dates', () => {
+    const start = new Date('2026-01-01T00:00:00Z');
+    const end = new Date('2026-02-01T00:00:00Z');
+    expect(getDateRangeValue(start, end)).toBe(`range:${start.getTime()}:${end.getTime()}`);
+  });
+
+  test('builds a month range token spanning the whole month', () => {
+    const date = new Date('2026-07-15T12:00:00');
+    const value = getMonthDateRangeValue(date);
+    const [, startTime, endTime] = value.split(':');
+    expect(new Date(+startTime)).toEqual(startOfMonth(date));
+    expect(new Date(+endTime)).toEqual(endOfMonth(date));
+  });
+});
+
+describe('getMaxSelectableDate', () => {
+  test('returns the later of end-of-year or six months out', () => {
+    // For July, +6 months (late Jan next year) is later than end of the year.
+    expect(getMaxSelectableDate(NOW)).toEqual(addMonths(NOW, 6));
+  });
+
+  test('picks end of year when it is later than +6 months', () => {
+    // Early January: end of this year is far beyond +6 months.
+    const january = new Date('2026-01-02T00:00:00');
+    expect(getMaxSelectableDate(january)).toEqual(endOfYear(january));
+  });
+});
+
+describe('timezone helpers', () => {
+  test('normalizeTimezone maps deprecated aliases', () => {
+    expect(normalizeTimezone('Asia/Calcutta')).toBe('Asia/Kolkata');
+    expect(normalizeTimezone('America/New_York')).toBe('America/New_York');
+  });
+
+  test('isValidTimezone accepts real and aliased zones', () => {
+    expect(isValidTimezone('America/New_York')).toBe(true);
+    expect(isValidTimezone('Asia/Calcutta')).toBe(true);
+    expect(isValidTimezone('Not/AZone')).toBe(false);
+  });
+
+  test('getTimezone returns a non-empty string', () => {
+    expect(typeof getTimezone()).toBe('string');
+    expect(getTimezone().length).toBeGreaterThan(0);
+  });
+});
+
+describe('isInvalidDate', () => {
+  test('detects invalid Date instances', () => {
+    expect(isInvalidDate(new Date('not a date'))).toBe(true);
+  });
+
+  test('valid dates and non-dates are not flagged', () => {
+    expect(isInvalidDate(new Date('2026-07-24'))).toBe(false);
+    expect(isInvalidDate('2026-07-24')).toBe(false);
+    expect(isInvalidDate(null)).toBe(false);
+    expect(isInvalidDate(undefined)).toBe(false);
+  });
+});

@@ -1,6 +1,6 @@
-import type { Prisma } from '@/generated/prisma/client';
+import type { Prisma, Segment } from '@/generated/prisma/client';
 import prisma from '@/lib/prisma';
-import type { QueryFilters } from '@/lib/types';
+import type { PageResult, QueryFilters } from '@/lib/types';
 
 async function findSegment(criteria: Prisma.SegmentFindUniqueArgs) {
   return prisma.client.segment.findUnique(criteria);
@@ -14,7 +14,10 @@ export async function getSegment(segmentId: string) {
   });
 }
 
-export async function getSegments(criteria: Prisma.SegmentFindManyArgs, filters: QueryFilters) {
+export async function getSegments(
+  criteria: Prisma.SegmentFindManyArgs,
+  filters: QueryFilters,
+): Promise<PageResult<Segment[]>> {
   const { search } = filters;
   const { getSearchParameters, pagedQuery } = prisma;
 

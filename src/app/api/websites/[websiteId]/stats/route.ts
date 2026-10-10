@@ -1,19 +1,15 @@
 import { getCompareDate } from '@/lib/date';
 import { getQueryFilters, parseRequest } from '@/lib/request';
 import { json, unauthorized } from '@/lib/response';
-import { filterParams, withDateRange } from '@/lib/schema';
-import { canViewWebsite } from '@/permissions';
+import { canViewWebsiteSection } from '@/permissions';
 import { getWebsiteStats } from '@/queries/sql';
+import { analyticsQuerySchema } from '../analytics-schema';
 
 export async function GET(
   request: Request,
   { params }: { params: Promise<{ websiteId: string }> },
 ) {
-  const schema = withDateRange({
-    ...filterParams,
-  });
-
-  const { auth, query, error } = await parseRequest(request, schema);
+  const { auth, query, error } = await parseRequest(request, analyticsQuerySchema);
 
   if (error) {
     return error();
@@ -21,7 +17,7 @@ export async function GET(
 
   const { websiteId } = await params;
 
-  if (!(await canViewWebsite(auth, websiteId))) {
+  if (!(await canViewWebsiteSection(auth, websiteId, ['overview', 'compare']))) {
     return unauthorized();
   }
 
@@ -33,6 +29,7 @@ export async function GET(
     filters.compare ?? 'prev',
     filters.startDate,
     filters.endDate,
+    new Date(),
   );
 
   const comparison = await getWebsiteStats(websiteId, {

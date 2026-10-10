@@ -1,8 +1,11 @@
 import {
   AlignEndHorizontal,
+  Bug,
   ChartPie,
   Clock,
   Eye,
+  Flame,
+  Search,
   Sheet,
   Tag,
   User,
@@ -10,15 +13,22 @@ import {
   Video,
 } from '@/components/icons';
 import { Funnel, Gauge, Lightning, Magnet, Money, Network, Path, Target } from '@/components/svg';
+import { useConfig } from './useConfig';
 import { useMessages } from './useMessages';
 import { useNavigation } from './useNavigation';
 
 export function useWebsiteNavItems(websiteId: string) {
   const { t, labels } = useMessages();
   const { pathname, renderUrl } = useNavigation();
+  const config = useConfig();
+  const resetParams = {
+    search: undefined,
+    page: undefined,
+  };
 
   const renderPath = (path: string) =>
     renderUrl(`/websites/${websiteId}${path}`, {
+      ...resetParams,
       event: undefined,
       compare: undefined,
       view: undefined,
@@ -55,12 +65,6 @@ export function useWebsiteNavItems(websiteId: string) {
           path: renderPath('/realtime'),
         },
         {
-          id: 'performance',
-          label: t(labels.performance),
-          icon: <Gauge />,
-          path: renderPath('/performance'),
-        },
-        {
           id: 'compare',
           label: t(labels.compare),
           icon: <AlignEndHorizontal />,
@@ -72,6 +76,17 @@ export function useWebsiteNavItems(websiteId: string) {
           icon: <Sheet />,
           path: renderPath('/breakdown'),
         },
+        // Google Search Console is a Cloud integration.
+        ...(config?.cloudMode
+          ? [
+              {
+                id: 'search-console',
+                label: t('searchConsole.searches'),
+                icon: <Search />,
+                path: renderPath('/search-console'),
+              },
+            ]
+          : []),
       ],
     },
     {
@@ -106,6 +121,12 @@ export function useWebsiteNavItems(websiteId: string) {
           label: t(labels.replays),
           icon: <Video />,
           path: renderPath('/replays'),
+        },
+        {
+          id: 'heatmaps',
+          label: t(labels.heatmaps),
+          icon: <Flame />,
+          path: renderPath('/heatmaps'),
         },
       ],
     },
@@ -149,11 +170,33 @@ export function useWebsiteNavItems(websiteId: string) {
         },
       ],
     },
+    {
+      label: t(labels.monitoring),
+      items: [
+        {
+          id: 'performance',
+          label: t(labels.performance),
+          icon: <Gauge />,
+          path: renderPath('/performance'),
+        },
+        {
+          id: 'errors',
+          label: t('errorTracking.title'),
+          icon: <Bug />,
+          path: renderPath('/errors'),
+        },
+      ],
+    },
   ];
 
   const selectedKey = items
     .flatMap(e => e.items)
-    .find(({ path }) => path && pathname.endsWith(path.split('?')[0]))?.id;
+    .find(
+      ({ path }) =>
+        path &&
+        (pathname.endsWith(path.split('?')[0]) ||
+          (path.split('?')[0].endsWith('/errors') && pathname.includes('/errors/'))),
+    )?.id;
 
   return { items, selectedKey, renderPath };
 }

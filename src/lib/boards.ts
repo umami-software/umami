@@ -1,5 +1,5 @@
-import type { Board, BoardComponentConfig, BoardParameters } from './types';
 import { isBoardComponentSupportedByEntityType } from './boardComponentCompatibility';
+import type { Board, BoardComponentConfig, BoardParameters } from './types';
 
 export const BOARD_TYPES = {
   dashboard: 'dashboard',
@@ -72,9 +72,7 @@ export function isOpenBoardType(type?: string) {
 }
 
 export function requiresBoardEntity(type?: string) {
-  return (
-    type === BOARD_TYPES.website || type === BOARD_TYPES.pixel || type === BOARD_TYPES.link
-  );
+  return type === BOARD_TYPES.website || type === BOARD_TYPES.pixel || type === BOARD_TYPES.link;
 }
 
 export function getBoardEntity(board?: Pick<Board, 'type' | 'parameters'> | Partial<Board>): {
@@ -141,10 +139,7 @@ export function getResolvedComponentEntity(
   return getComponentEntity(config);
 }
 
-export function isBoardComponentSupported(
-  componentType: string,
-  entityType?: BoardEntityType,
-) {
+export function isBoardComponentSupported(componentType: string, entityType?: BoardEntityType) {
   return isBoardComponentSupportedByEntityType(componentType, entityType);
 }
 

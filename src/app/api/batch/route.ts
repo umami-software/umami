@@ -4,7 +4,7 @@ import { parseRequest } from '@/lib/request';
 import { json, serverError } from '@/lib/response';
 import { anyObjectParam } from '@/lib/schema';
 
-const schema = z.array(anyObjectParam);
+const schema = z.array(anyObjectParam).max(500);
 
 export async function POST(request: Request) {
   try {
