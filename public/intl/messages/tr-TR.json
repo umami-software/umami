@@ -442,7 +442,7 @@
   },
   "message": {
     "action-confirmation": "Onaylamak için aşağıdaki kutuya {confirmation} yazın.",
-    "active-users": "{x} aktif ziyaretçi",
+    "active-users": "{x} aktif {x, plural, one {ziyaretçi} other {ziyaretçi}}",
     "bad-request": "Geçersiz istek",
     "collected-data": "Toplanan veriler",
     "confirm-delete": "{target} kaydını silmek istediğinizden emin misiniz?",
