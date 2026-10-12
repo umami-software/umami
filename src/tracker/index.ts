@@ -202,6 +202,7 @@ type TrackerWindow = Window &
     doNotTrack?: string | number | null;
     navigator: Navigator & {
       msDoNotTrack?: string | number | null;
+      globalPrivacyControl?: boolean;
     };
   };
 type TrackerDocument = Document & {
@@ -219,7 +220,7 @@ type MetricEntry = PerformanceEntry & {
 (window => {
   const {
     screen: { width, height },
-    navigator: { language, doNotTrack: ndnt, msDoNotTrack: msdnt },
+    navigator: { language, doNotTrack: ndnt, msDoNotTrack: msdnt, globalPrivacyControl: ngpc },
     location,
     document,
     history,
@@ -251,6 +252,7 @@ type MetricEntry = PerformanceEntry & {
   const tag = config('tag') || undefined;
   const autoTrack = config('auto-track') !== _false;
   const dnt = config('do-not-track') === _true;
+  const gpc = config('global-privacy-control') === _true;
   const excludeSearch = config('exclude-search') === _true;
   const excludeHash = config('exclude-hash') === _true;
   const domain = config('domains') || '';
@@ -299,8 +301,12 @@ type MetricEntry = PerformanceEntry & {
   });
 
   const hasDoNotTrack = () => {
-    const dnt = doNotTrack || ndnt || msdnt;
-    return dnt === 1 || dnt === '1' || dnt === 'yes';
+    const dntValue = doNotTrack || ndnt || msdnt;
+    return dntValue === 1 || dntValue === '1' || dntValue === 'yes';
+  };
+
+  const hasGlobalPrivacyControl = () => {
+    return ngpc === true;
   };
 
   /* Event handlers */
@@ -387,7 +393,8 @@ type MetricEntry = PerformanceEntry & {
     localStorage?.getItem('umami.disabled') ||
     (window.name === 'umami.disabled' && top !== window) ||
     (domain && !domains.includes(hostname)) ||
-    (dnt && hasDoNotTrack());
+    (dnt && (hasDoNotTrack() || hasGlobalPrivacyControl())) ||
+    (gpc && hasGlobalPrivacyControl());
 
   const send = async (payload: Payload | null | undefined, type = 'event'): Promise<void> => {
     if (trackingDisabled()) return;

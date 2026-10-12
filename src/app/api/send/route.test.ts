@@ -104,7 +104,13 @@ function makeComputedSessionId(
   const createdAt = new Date(timestamp * 1000);
   const sessionSalt = getSalt(process.env.SALT_ROTATION, createdAt);
 
-  return uuid(sourceId, defaultClientInfo.ip, defaultClientInfo.userAgent, sessionSalt, distinctId ?? '');
+  return uuid(
+    sourceId,
+    defaultClientInfo.ip,
+    defaultClientInfo.userAgent,
+    sessionSalt,
+    distinctId ?? '',
+  );
 }
 
 beforeEach(() => {
@@ -232,6 +238,36 @@ describe('schema validation', () => {
       schema.safeParse({ type: 'performance', payload: { website: WEBSITE_ID, lcp: 2500 } })
         .success,
     ).toBe(true);
+  });
+});
+
+describe('Global Privacy Control (GPC)', () => {
+  test('returns 200 with disabled: true when sec-gpc header is 1 and skips persistence', async () => {
+    const response = await callPOST(
+      {
+        type: 'event',
+        payload: { website: WEBSITE_ID, url: '/' },
+      },
+      { headers: { 'sec-gpc': '1' } },
+    );
+
+    expect(response.status).toBe(200);
+    await expect(response.json()).resolves.toEqual({ disabled: true });
+    expect(saveEventMock).not.toHaveBeenCalled();
+    expect(createSessionMock).not.toHaveBeenCalled();
+  });
+
+  test('returns 200 with disabled: true for error reports when sec-gpc header is 1', async () => {
+    const response = await callPOST(
+      {
+        type: 'error',
+        payload: { website: WEBSITE_ID, url: '/', message: 'Test error' },
+      },
+      { headers: { 'sec-gpc': '1' } },
+    );
+
+    expect(response.status).toBe(200);
+    await expect(response.json()).resolves.toEqual({ disabled: true });
   });
 });
 
