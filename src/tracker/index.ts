@@ -366,12 +366,23 @@ type MetricEntry = PerformanceEntry & {
           e.shiftKey ||
           e.metaKey ||
           (e.button && e.button === 1);
-        if (!external) e.preventDefault();
-        return trackElement(eventEl).finally(() => {
-          if (!external) {
-            (target === '_top' ? (top as WindowProxy).location : location).href = href;
-          }
-        });
+        const tracking = trackElement(eventEl);
+        if (!external) {
+          // Decide once the click has bubbled, so client-side routers that
+          // call preventDefault() keep handling the navigation (#3267)
+          window.addEventListener(
+            'click',
+            ev => {
+              if (ev !== e || e.defaultPrevented) return;
+              e.preventDefault();
+              tracking.finally(() => {
+                (target === '_top' ? (top as WindowProxy).location : location).href = href;
+              });
+            },
+            { once: true },
+          );
+        }
+        return tracking;
       }
 
       return trackElement(eventEl);
