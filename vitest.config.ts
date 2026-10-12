@@ -1,7 +1,16 @@
 import { fileURLToPath } from 'node:url';
 import { defineConfig } from 'vitest/config';
+import replace from '@rollup/plugin-replace';
 
 export default defineConfig({
+  plugins: [
+    replace({
+      __COLLECT_API_HOST__: process.env.COLLECT_API_HOST || '',
+      __COLLECT_API_ENDPOINT__: process.env.COLLECT_API_ENDPOINT || '/api/send',
+      delimiters: ['', ''],
+      preventAssignment: true,
+    }),
+  ],
   resolve: {
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url)),

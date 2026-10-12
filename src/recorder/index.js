@@ -4,19 +4,19 @@ import { addCustomEvent, record } from 'rrweb';
   const { document } = window;
   const { currentScript } = document;
 
-  if (!currentScript) return;
-
   const globalConfig = window.umamiConfig || {};
+  if (!currentScript && !globalConfig.websiteId) return;
+
   const _data = 'data-';
-  const attr = currentScript.getAttribute.bind(currentScript);
+  const attr = currentScript ? currentScript.getAttribute.bind(currentScript) : () => null;
   const toCamelCase = str => str.replace(/-([a-z])/g, g => g[1].toUpperCase());
   const config = value => {
-    const camelKey = toCamelCase(value);
-    if (globalConfig[camelKey] != null) {
-      const v = globalConfig[camelKey];
-      return Array.isArray(v) ? v.join(',') : String(v);
-    }
-    return attr(`${_data}${value}`);
+    const fromAttr = attr(`${_data}${value}`);
+    if (fromAttr != null) return fromAttr;
+
+    const fromGlobal = globalConfig[toCamelCase(value)];
+    if (fromGlobal == null || typeof fromGlobal === 'function') return null;
+    return Array.isArray(fromGlobal) ? fromGlobal.join(',') : String(fromGlobal);
   };
 
   const website = config('website-id');
@@ -25,7 +25,12 @@ import { addCustomEvent, record } from 'rrweb';
   if (!website) return;
 
   const host =
-    hostUrl || '__COLLECT_API_HOST__' || currentScript.src.split('/').slice(0, -1).join('/');
+    hostUrl ||
+    '__COLLECT_API_HOST__' ||
+    (currentScript ? currentScript.src.split('/').slice(0, -1).join('/') : '');
+
+  if (!currentScript && !host) return;
+
   const hostBase = host.replace(/\/$/, '');
   const endpoint = `${hostBase}/api/record`;
   const configEndpoint = `${hostBase}/api/websites/${website}/recorder`;
