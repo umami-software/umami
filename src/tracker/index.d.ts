@@ -172,12 +172,20 @@ export type UmamiTracker = {
     website: string | null;
   };
 };
-
+declare global {
+  interface Window {
+    umami: UmamiTracker;
+    umamiConfig?: UmamiConfig;
+  }
+}
 export type BeforeSend = (
   type: string,
   payload: Record<string, unknown>,
-) => Record<string, unknown> | null | undefined | Promise<Record<string, unknown> | null | undefined>;
-
+) =>
+  | Record<string, unknown>
+  | null
+  | undefined
+  | Promise<Record<string, unknown> | null | undefined>;
 export type UmamiConfig = {
   websiteId?: string;
   hostUrl?: string;
@@ -197,10 +205,3 @@ export type UmamiConfig = {
   fetchCredentials?: RequestCredentials;
   [key: string]: unknown;
 };
-
-declare global {
-  interface Window {
-    umami: UmamiTracker;
-    umamiConfig?: UmamiConfig;
-  }
-}

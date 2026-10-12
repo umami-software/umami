@@ -1,6 +1,6 @@
 import { fileURLToPath } from 'node:url';
-import { defineConfig } from 'vitest/config';
 import replace from '@rollup/plugin-replace';
+import { defineConfig } from 'vitest/config';
 
 export default defineConfig({
   plugins: [

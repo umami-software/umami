@@ -196,7 +196,11 @@ declare global {
 export type BeforeSend = (
   type: string,
   payload: Record<string, unknown>,
-) => Record<string, unknown> | null | undefined | Promise<Record<string, unknown> | null | undefined>;
+) =>
+  | Record<string, unknown>
+  | null
+  | undefined
+  | Promise<Record<string, unknown> | null | undefined>;
 
 export type UmamiConfig = {
   websiteId?: string;
@@ -265,7 +269,8 @@ type MetricEntry = PerformanceEntry & {
   const _false = 'false';
   const _true = 'true';
   const attr = currentScript ? currentScript.getAttribute.bind(currentScript) : () => null;
-  const toCamelCase = (value: string) => value.replace(/-([a-z])/g, match => match[1].toUpperCase());
+  const toCamelCase = (value: string) =>
+    value.replace(/-([a-z])/g, match => match[1].toUpperCase());
   const config = (value: string): string | null => {
     const fromAttr = attr(`${_data}${value}`);
     if (fromAttr != null) return fromAttr;

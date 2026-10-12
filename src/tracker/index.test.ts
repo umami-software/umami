@@ -157,7 +157,29 @@ test('data-* attribute takes precedence over umamiConfig', async () => {
   expect(request.payload.tag).toBe('attr-tag');
 });
 
-test('respects domains given as an array in umamiConfig', async () => {
+test('tracks when the hostname is in domains given as an array in umamiConfig', async () => {
+  const script = document.createElement('script');
+  script.src = 'https://analytics.example.com/script.js';
+  script.dataset.websiteId = 'website-id';
+
+  Object.defineProperties(document, {
+    currentScript: { configurable: true, value: script },
+    readyState: { configurable: true, value: 'complete' },
+  });
+
+  window.umamiConfig = {
+    domains: ['other.com', location.hostname],
+  };
+
+  const fetchMock = vi.fn().mockResolvedValue({ json: vi.fn().mockResolvedValue({}) });
+  vi.stubGlobal('fetch', fetchMock);
+
+  await import('./index');
+
+  await vi.waitFor(() => expect(fetchMock).toHaveBeenCalledTimes(1));
+});
+
+test('does not track when the hostname is not in domains given as an array in umamiConfig', async () => {
   const script = document.createElement('script');
   script.src = 'https://analytics.example.com/script.js';
   script.dataset.websiteId = 'website-id';
@@ -190,7 +212,7 @@ test('applies beforeSend given as a function in umamiConfig', async () => {
     readyState: { configurable: true, value: 'complete' },
   });
 
-  const beforeSendFn = vi.fn((type, payload) => ({
+  const beforeSendFn = vi.fn((_type, payload) => ({
     ...payload,
     customProp: 'modified',
   }));
@@ -221,7 +243,7 @@ test('applies beforeSend given as a string name in umamiConfig', async () => {
     readyState: { configurable: true, value: 'complete' },
   });
 
-  const globalHook = vi.fn((type, payload) => ({
+  const globalHook = vi.fn((_type, payload) => ({
     ...payload,
     fromWindowHook: true,
   }));
@@ -287,4 +309,3 @@ test('initializes without currentScript when websiteId and hostUrl are provided 
   expect(init.headers['x-umami-website-id']).toBe('website-id');
   expect(window.umami).toBeDefined();
 });
-
