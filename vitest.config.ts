@@ -5,8 +5,8 @@ import replace from '@rollup/plugin-replace';
 export default defineConfig({
   plugins: [
     replace({
-      __COLLECT_API_HOST__: process.env.COLLECT_API_HOST || '',
-      __COLLECT_API_ENDPOINT__: process.env.COLLECT_API_ENDPOINT || '/api/send',
+      __COLLECT_API_HOST__: '',
+      __COLLECT_API_ENDPOINT__: '/api/send',
       delimiters: ['', ''],
       preventAssignment: true,
     }),
