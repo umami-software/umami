@@ -94,3 +94,63 @@ test('ignores clicks dispatched on non-element targets', async () => {
 
   expect(errors).toHaveLength(0);
 });
+
+const clickTrackedLink = async (href: string, router?: (e: MouseEvent) => void) => {
+  const script = document.createElement('script');
+  script.src = 'https://analytics.example.com/script.js';
+  script.dataset.websiteId = 'website-id';
+
+  Object.defineProperties(document, {
+    currentScript: { configurable: true, value: script },
+    readyState: { configurable: true, value: 'complete' },
+  });
+
+  const fetchMock = vi.fn().mockResolvedValue({ json: vi.fn().mockResolvedValue({}) });
+  vi.stubGlobal('fetch', fetchMock);
+
+  await import('./index');
+
+  const link = document.createElement('a');
+  link.href = href;
+  link.dataset.umamiEvent = 'cta';
+  document.body.appendChild(link);
+  if (router) document.addEventListener('click', router, { once: true });
+
+  const notPrevented = link.dispatchEvent(
+    new MouseEvent('click', { bubbles: true, cancelable: true }),
+  );
+
+  await vi.waitFor(() =>
+    expect(fetchMock).toHaveBeenCalledWith(
+      expect.any(String),
+      expect.objectContaining({ body: expect.stringContaining('"name":"cta"') }),
+    ),
+  );
+  await new Promise(resolve => setTimeout(resolve, 0));
+  link.remove();
+
+  return notPrevented;
+};
+
+test('lets client-side routers handle navigation of tracked links', async () => {
+  let routed = false;
+  // Mimics SPA routers (SvelteKit, Next.js, Vue Router, Blazor), which skip
+  // clicks that were already prevented and otherwise navigate themselves
+  const router = (e: MouseEvent) => {
+    if (e.defaultPrevented) return;
+    e.preventDefault();
+    routed = true;
+  };
+
+  await clickTrackedLink('#routed', router);
+
+  expect(routed).toBe(true);
+  expect(location.hash).not.toBe('#routed');
+});
+
+test('delays navigation of tracked links until the event is sent', async () => {
+  const notPrevented = await clickTrackedLink('#plain');
+
+  expect(notPrevented).toBe(false);
+  await vi.waitFor(() => expect(location.hash).toBe('#plain'));
+});
