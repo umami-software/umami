@@ -175,5 +175,33 @@ export type UmamiTracker = {
 declare global {
   interface Window {
     umami: UmamiTracker;
+    umamiConfig?: UmamiConfig;
   }
 }
+export type BeforeSend = (
+  type: string,
+  payload: Record<string, unknown>,
+) =>
+  | Record<string, unknown>
+  | null
+  | undefined
+  | Promise<Record<string, unknown> | null | undefined>;
+export type UmamiConfig = {
+  websiteId?: string;
+  hostUrl?: string;
+  autoTrack?: boolean;
+  autoPageview?: boolean;
+  doNotTrack?: boolean;
+  excludeSearch?: boolean;
+  excludeHash?: boolean;
+  domains?: string | string[];
+  tag?: string;
+  distinctId?: string;
+  beforeSend?: BeforeSend | string;
+  errors?: boolean;
+  release?: string;
+  environment?: string;
+  performance?: boolean;
+  fetchCredentials?: RequestCredentials;
+  [key: string]: unknown;
+};
