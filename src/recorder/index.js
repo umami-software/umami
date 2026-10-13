@@ -551,6 +551,7 @@ import { addCustomEvent, record } from 'rrweb';
 
     const { computePageMetrics, computeScrollPct } = createPageMetrics();
     let scrollUrl = location.href;
+    let replayUrl = transformUrl(scrollUrl);
     let maxScrollPct = 0;
     let lastFlushedScrollPct = 0;
     let scrollTimer = null;
@@ -633,8 +634,14 @@ import { addCustomEvent, record } from 'rrweb';
       scrollUrl = location.href;
       lastFlushedScrollPct = 0;
 
+      const url = transformUrl(scrollUrl);
+
+      if (url === replayUrl) return;
+
+      replayUrl = url;
+
       if (replayStopFn && !replayStopped) {
-        addCustomEvent('url-change', { url: transformUrl(scrollUrl) });
+        addCustomEvent('url-change', { url });
       }
     };
 
