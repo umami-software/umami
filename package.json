@@ -41,6 +41,7 @@
     "db:migrate": "prisma migrate deploy",
     "check:db": "node scripts/check-db.js",
     "check:env": "node scripts/check-env.js",
+    "test:env": "node --test scripts/check-env.test.mjs",
     "check:messages": "node scripts/check-missing-messages.js",
     "download:countries": "node scripts/download-country-names.js",
     "download:languages": "node scripts/download-language-names.js",
