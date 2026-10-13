@@ -29,6 +29,7 @@ export function WebsitePanels({ websiteId }: { websiteId: string }) {
               <Tab id="fullPath">{t(labels.url)}</Tab>
               <Tab id="entry">{t(labels.entry)}</Tab>
               <Tab id="exit">{t(labels.exit)}</Tab>
+              <Tab id="hostname">{t(labels.hostname)}</Tab>
             </TabList>
             <TabPanel id="path">
               <MetricsTable type="path" title={t(labels.path)} {...tableProps} />
@@ -41,6 +42,9 @@ export function WebsitePanels({ websiteId }: { websiteId: string }) {
             </TabPanel>
             <TabPanel id="exit">
               <MetricsTable type="exit" title={t(labels.path)} {...tableProps} />
+            </TabPanel>
+            <TabPanel id="hostname">
+              <MetricsTable type="hostname" title={t(labels.hostname)} {...tableProps} />
             </TabPanel>
           </Tabs>
         </Panel>
