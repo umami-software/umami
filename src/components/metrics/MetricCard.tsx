@@ -94,19 +94,21 @@ export const MetricCard = ({
       gap="2"
     >
       {showLabel && (
-        <Row justifyContent="space-between" alignItems="flex-start">
+        <Row justifyContent="space-between" alignItems="center">
           <Text weight="bold" wrap="nowrap">
             {label}
           </Text>
           {tooltip && (
-            <TooltipTrigger delay={0}>
-              <Button size="sm" variant="quiet">
-                <Icon size="sm">
-                  <Info />
-                </Icon>
-              </Button>
-              <Tooltip placement="top">{tooltip}</Tooltip>
-            </TooltipTrigger>
+            <span className={styles.tooltip}>
+              <TooltipTrigger delay={0}>
+                <Button size="sm" variant="quiet">
+                  <Icon size="sm">
+                    <Info />
+                  </Icon>
+                </Button>
+                <Tooltip placement="top">{tooltip}</Tooltip>
+              </TooltipTrigger>
+            </span>
           )}
         </Row>
       )}

@@ -24,3 +24,10 @@
 .clickable:not(.bordered).selected {
   box-shadow: inset 0 -2px 0 var(--zen-fg);
 }
+
+/* Keep the info button from making the label row taller than cards without one. */
+.tooltip {
+  display: flex;
+  align-items: center;
+  height: 0;
+}
