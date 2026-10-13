@@ -1,5 +1,5 @@
 import { beforeEach, expect, test, vi } from 'vitest';
-import { getLocation, hasBlockedIp } from './detect';
+import { getClientInfo, getLocation, hasBlockedIp } from './detect';
 import { getIpAddress } from './ip';
 
 const IP = '127.0.0.1';
@@ -80,4 +80,36 @@ test('hasBlockedIp: returns false for malformed client ip with cidr block', () =
   process.env.IGNORE_IP = '10.0.0.0/8';
 
   expect(hasBlockedIp('not-an-ip')).toBe(false);
+});
+
+test('getClientInfo: payload location overrides geo lookup', async () => {
+  const request = new Request('http://localhost/api/send', {
+    headers: { 'cf-connecting-ip': '8.8.8.8', 'cf-ipcountry': 'US', 'cf-ipcity': 'Los Angeles' },
+  });
+
+  await expect(
+    getClientInfo(request, { country: 'DE', region: 'BE', city: 'Berlin' }),
+  ).resolves.toMatchObject({ country: 'DE', region: 'DE-BE', city: 'Berlin' });
+});
+
+test('getClientInfo: payload country without region or city leaves them empty', async () => {
+  const request = new Request('http://localhost/api/send', {
+    headers: { 'cf-connecting-ip': '8.8.8.8', 'cf-ipcountry': 'US', 'cf-ipcity': 'Los Angeles' },
+  });
+
+  const info = await getClientInfo(request, { country: 'DE', region: 'DE-BE' });
+
+  expect(info).toMatchObject({ country: 'DE', region: 'DE-BE' });
+  expect(info.city).toBeUndefined();
+});
+
+test('getClientInfo: uses geo lookup when no payload country is sent', async () => {
+  const request = new Request('http://localhost/api/send', {
+    headers: { 'cf-connecting-ip': '8.8.8.8', 'cf-ipcountry': 'US', 'cf-ipcity': 'Los Angeles' },
+  });
+
+  await expect(getClientInfo(request, {})).resolves.toMatchObject({
+    country: 'US',
+    city: 'Los Angeles',
+  });
 });

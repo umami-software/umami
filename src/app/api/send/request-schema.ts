@@ -30,6 +30,16 @@ const payloadSchema = z.object({
   browser: z.string().optional(),
   os: z.string().optional(),
   device: z.string().optional(),
+  // ISO 3166-1 alpha-2 country and ISO 3166-2 subdivision codes, matching what geo lookup stores
+  country: z
+    .string()
+    .regex(/^[A-Z]{2}$/)
+    .optional(),
+  region: z
+    .string()
+    .regex(/^([A-Z]{2}-)?[A-Z0-9]{1,3}$/)
+    .optional(),
+  city: z.string().max(50).optional(),
   lcp: z.number().nonnegative().max(60000).optional(),
   inp: z.number().nonnegative().max(60000).optional(),
   cls: z.number().nonnegative().max(100).optional(),
@@ -52,6 +62,13 @@ export const collectionSchema = z
         code: 'custom',
         path: ['payload', 'website'],
         message: 'Exactly one of website, link, or pixel must be provided',
+      });
+    }
+    if ((payload.region || payload.city) && !payload.country) {
+      ctx.addIssue({
+        code: 'custom',
+        path: ['payload', 'country'],
+        message: 'country is required when region or city is provided',
       });
     }
   });
