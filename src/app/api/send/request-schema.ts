@@ -71,4 +71,15 @@ export const collectionSchema = z
         message: 'country is required when region or city is provided',
       });
     }
+    if (
+      payload.country &&
+      payload.region?.includes('-') &&
+      !payload.region.startsWith(`${payload.country}-`)
+    ) {
+      ctx.addIssue({
+        code: 'custom',
+        path: ['payload', 'region'],
+        message: 'region prefix must match country',
+      });
+    }
   });

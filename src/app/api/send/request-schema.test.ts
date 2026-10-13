@@ -33,3 +33,10 @@ test('requires country when region or city is provided', () => {
   expect(result.success).toBe(false);
   expect(result.error?.issues[0]).toMatchObject({ path: ['payload', 'country'] });
 });
+
+test('rejects a region prefixed with a different country', () => {
+  const result = parse({ country: 'DE', region: 'US-CA' });
+
+  expect(result.success).toBe(false);
+  expect(result.error?.issues[0]).toMatchObject({ path: ['payload', 'region'] });
+});

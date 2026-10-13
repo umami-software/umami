@@ -94,6 +94,23 @@ test('getClientInfo: payload location overrides geo lookup', async () => {
 
 test('getClientInfo: payload country without region or city leaves them empty', async () => {
   const request = new Request('http://localhost/api/send', {
+    headers: {
+      'cf-connecting-ip': '8.8.8.8',
+      'cf-ipcountry': 'US',
+      'cf-region-code': 'CA',
+      'cf-ipcity': 'Los Angeles',
+    },
+  });
+
+  const info = await getClientInfo(request, { country: 'DE' });
+
+  expect(info.country).toBe('DE');
+  expect(info.region).toBeUndefined();
+  expect(info.city).toBeUndefined();
+});
+
+test('getClientInfo: payload region without city leaves city empty', async () => {
+  const request = new Request('http://localhost/api/send', {
     headers: { 'cf-connecting-ip': '8.8.8.8', 'cf-ipcountry': 'US', 'cf-ipcity': 'Los Angeles' },
   });
 
