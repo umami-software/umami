@@ -23,6 +23,9 @@ export const umami = createTracker({
 });
 ```
 
+`createTracker` reads `window` when called, so it only works in the browser. With server-side
+rendering, create the tracker on the client only, e.g. in a client-only plugin or an effect.
+
 ```ts
 import { umami } from './analytics';
 
