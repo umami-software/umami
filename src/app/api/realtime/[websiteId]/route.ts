@@ -1,4 +1,4 @@
-import { startOfMinute, subMinutes } from 'date-fns';
+import { subMinutes } from 'date-fns';
 import { z } from 'zod';
 import { REALTIME_RANGE } from '@/lib/constants';
 import { getQueryFilters, parseRequest } from '@/lib/request';
@@ -32,7 +32,7 @@ export async function GET(
   const filters = await getQueryFilters(
     {
       ...query,
-      startAt: subMinutes(startOfMinute(new Date()), REALTIME_RANGE).getTime(),
+      startAt: subMinutes(new Date(), REALTIME_RANGE).getTime(),
       endAt: Date.now(),
     },
     websiteId,

@@ -5,7 +5,7 @@ import { GridRow } from '@/components/common/GridRow';
 import { PageBody } from '@/components/common/PageBody';
 import { Panel } from '@/components/common/Panel';
 import { useMobile, useRealtimeQuery } from '@/components/hooks';
-import { RealtimeChart } from '@/components/metrics/RealtimeChart';
+import { RealtimeGlobe } from '@/components/metrics/RealtimeGlobe';
 import { WorldMap } from '@/components/metrics/WorldMap';
 import { percentFilter } from '@/lib/filters';
 import { RealtimeCountries } from './RealtimeCountries';
@@ -32,7 +32,7 @@ export function RealtimePage({ websiteId }: { websiteId: string }) {
     <Grid gap="3">
       <RealtimeHeader data={data} />
       <Panel>
-        <RealtimeChart data={data} unit="minute" />
+        <RealtimeGlobe data={data} />
       </Panel>
       <Panel>
         <RealtimeLog data={data} />
