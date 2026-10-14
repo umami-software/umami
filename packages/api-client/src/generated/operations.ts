@@ -2832,6 +2832,7 @@ export const operations = {
       'eventType',
       'excludeBounce',
       'match',
+      'minDuration',
       'page',
       'pageSize',
       'maxResults',

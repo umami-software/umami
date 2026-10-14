@@ -20,7 +20,7 @@ export async function getWebsiteSessions(
 
 async function relationalQuery(websiteId: string, filters: QueryFilters) {
   const { pagedRawQuery, parseFilters } = prisma;
-  const { search } = filters;
+  const { search, minDuration } = filters;
   const { filterQuery, dateQuery, cohortQuery, queryParams } = parseFilters({
     ...filters,
     websiteId,
@@ -34,6 +34,11 @@ async function relationalQuery(websiteId: string, filters: QueryFilters) {
            or os ilike {{search}}
            or device ilike {{search}})`
     : '';
+
+  const havingQuery =
+    minDuration && minDuration > 0
+      ? `having extract(epoch from (max(website_event.created_at) - min(website_event.created_at))) >= {{minDuration}}`
+      : '';
 
   return pagedRawQuery(
     `
@@ -75,8 +80,9 @@ async function relationalQuery(websiteId: string, filters: QueryFilters) {
       session.country, 
       session.region, 
       session.city
+    ${havingQuery}
     `,
-    queryParams,
+    { ...queryParams, minDuration },
     filters,
     FUNCTION_NAME,
     'max(website_event.created_at) desc, session.session_id',
@@ -85,7 +91,7 @@ async function relationalQuery(websiteId: string, filters: QueryFilters) {
 
 async function clickhouseQuery(websiteId: string, filters: QueryFilters) {
   const { pagedRawQuery, parseFilters, getDateStringSQL } = clickhouse;
-  const { search } = filters;
+  const { search, minDuration } = filters;
   const { filterQuery, dateQuery, cohortQuery, queryParams } = parseFilters(
     {
       ...filters,
@@ -95,6 +101,15 @@ async function clickhouseQuery(websiteId: string, filters: QueryFilters) {
       columns: QUALIFIED_FILTER_COLUMNS,
     },
   );
+
+  const havingQuery =
+    minDuration && minDuration > 0
+      ? `having toInt64(toUnixTimestamp(max(created_at)) - toUnixTimestamp(min(created_at))) >= {minDuration:Int64}`
+      : '';
+  const havingHourlyQuery =
+    minDuration && minDuration > 0
+      ? `having toInt64(toUnixTimestamp(max(max_time)) - toUnixTimestamp(min(min_time))) >= {minDuration:Int64}`
+      : '';
 
   const searchQuery = search
     ? `and ((positionCaseInsensitive(website_event.distinct_id, {search:String}) > 0)
@@ -138,6 +153,7 @@ async function clickhouseQuery(websiteId: string, filters: QueryFilters) {
     ${normalizedFilterQuery}
     ${searchQuery}
     group by session_id
+    ${havingQuery}
     order by lastAt desc, id
     `;
   } else {
@@ -168,9 +184,10 @@ async function clickhouseQuery(websiteId: string, filters: QueryFilters) {
     ${normalizedFilterQuery}
     ${searchQuery}
     group by session_id
+    ${havingHourlyQuery}
     order by lastAt desc, id
     `;
   }
 
-  return pagedRawQuery(sql, queryParams, filters, FUNCTION_NAME);
+  return pagedRawQuery(sql, { ...queryParams, minDuration }, filters, FUNCTION_NAME);
 }
