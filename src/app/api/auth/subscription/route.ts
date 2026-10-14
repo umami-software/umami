@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { fetchAccount, fetchTeam, getBillingAccess, getTeamBillingScope } from '@/lib/load';
+import { fetchAccount, getBillingAccess, getTeamBillingScope } from '@/lib/load';
 import { parseRequest } from '@/lib/request';
 import { normalizeSubscription } from '@/lib/subscription';
 import { canViewTeamSubscription } from '@/permissions';
@@ -36,9 +36,8 @@ export async function GET(request: Request) {
     );
   }
 
-  const account = teamId
-    ? ((await fetchTeam(teamId)) ?? (await fetchAccount(auth.user.id)))
-    : await fetchAccount(auth.user.id);
+  const scope = teamId ? await getTeamBillingScope(teamId) : { accountId: auth.user.id };
+  const account = await fetchAccount(scope.accountId ?? auth.user.id);
   const subscription = normalizeSubscription(account);
 
   if (!process.env.CLOUD_MODE) {
@@ -47,7 +46,6 @@ export async function GET(request: Request) {
     return Response.json(response, { headers });
   }
 
-  const scope = teamId ? await getTeamBillingScope(teamId) : { accountId: auth.user.id };
   const { isOwner } = await getBillingAccess(scope, auth.user.id);
 
   return Response.json({ ...subscription, isOwner }, { headers });
