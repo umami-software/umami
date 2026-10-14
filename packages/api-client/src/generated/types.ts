@@ -22709,6 +22709,8 @@ export interface operations {
             lastAt: string;
             /** @description Operating system used by the visitor. */
             os: string | null;
+            /** @description Domain of the session's first external referrer. */
+            referrerDomain: string | null;
             /** @description Region or subdivision of the visitor. */
             region: string | null;
             /** @description Screen resolution of the visitor device. */
