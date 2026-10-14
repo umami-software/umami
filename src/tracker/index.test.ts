@@ -38,6 +38,34 @@ test('identifies data-distinct-id before the initial page view', async () => {
   });
 });
 
+test('exposes window.umami before the initial page view is sent', async () => {
+  const script = document.createElement('script');
+  script.src = 'https://analytics.example.com/script.js';
+  script.dataset.websiteId = 'website-id';
+
+  Object.defineProperties(document, {
+    currentScript: { configurable: true, value: script },
+    readyState: { configurable: true, value: 'complete' },
+  });
+
+  let exposed: unknown;
+  window.umamiConfig = {
+    beforeSend: (_type, payload) => {
+      exposed = window.umami;
+      return payload;
+    },
+  };
+
+  const fetchMock = vi.fn().mockResolvedValue({ json: vi.fn().mockResolvedValue({}) });
+  vi.stubGlobal('fetch', fetchMock);
+
+  await import('./index');
+
+  await vi.waitFor(() => expect(fetchMock).toHaveBeenCalledTimes(1));
+  expect(exposed).toBeDefined();
+  expect(exposed).toBe(window.umami);
+});
+
 const loadTracker = async (framed: boolean) => {
   const script = document.createElement('script');
   script.src = 'https://analytics.example.com/script.js';

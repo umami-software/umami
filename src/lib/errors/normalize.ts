@@ -1,6 +1,10 @@
 import { createHash } from 'node:crypto';
 import { v5 } from 'uuid';
-import { errorPagePath, scrubErrorTags, scrubErrorText } from '@/tracker/error-utils';
+import {
+  errorPagePath,
+  scrubErrorTags,
+  scrubErrorText,
+} from '../../../packages/tracker/src/error-utils';
 import type { ErrorFrame, ErrorPayload } from './schema';
 
 export function normalizeError(payload: ErrorPayload) {
