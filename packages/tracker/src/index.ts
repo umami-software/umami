@@ -413,7 +413,8 @@ export function createTracker(options: TrackerConfig): UmamiTracker {
     if (trackingDisabled()) return;
 
     if (typeof beforeSend === 'function') {
-      payload = await Promise.resolve(beforeSend(type, payload as Payload));
+      // Called a tick later, so the caller can expose the tracker (as window.umami) beforehand.
+      payload = await Promise.resolve().then(() => beforeSend(type, payload as Payload));
     }
 
     if (!payload) return;
@@ -672,20 +673,17 @@ export function createTracker(options: TrackerConfig): UmamiTracker {
       typeof beforeSend === 'function' ? beforeSend('error', payload) : payload,
   });
 
-  // Defer the first sends, so the caller can expose the tracker (as window.umami) beforehand.
-  queueMicrotask(() => {
-    if (distinctId) {
-      void identify(distinctId);
-    }
+  if (distinctId) {
+    void identify(distinctId);
+  }
 
-    if (autoTrack && !trackingDisabled()) {
-      if (document.readyState === 'complete') {
-        init();
-      } else {
-        document.addEventListener('readystatechange', init, true);
-      }
+  if (autoTrack && !trackingDisabled()) {
+    if (document.readyState === 'complete') {
+      init();
+    } else {
+      document.addEventListener('readystatechange', init, true);
     }
-  });
+  }
 
   return {
     track,
