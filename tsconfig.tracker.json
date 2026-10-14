@@ -6,7 +6,6 @@
     "noEmit": true,
     "noImplicitAny": true,
     "outDir": "./public",
-    "rootDir": "./src/tracker",
     "sourceMap": false,
     "strict": true,
     "strictNullChecks": true,
