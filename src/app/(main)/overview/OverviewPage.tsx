@@ -62,19 +62,29 @@ interface OverviewWebsite {
   pageviews: Point[];
   sessions: Point[];
   events: EventPoint[];
+  // Distinct visitors over the whole period; summing `sessions` would count a
+  // visitor once per time bucket.
+  visitors: number;
 }
 
 function sum(points: { y: number }[]) {
   return points.reduce((total, point) => total + Number(point.y), 0);
 }
 
-// One series per website for the chosen metric. Built-in metrics come from the
-// pageview/session series; anything else is a custom event name.
-function seriesFor(website: OverviewWebsite, metric: string): Point[] {
-  if (metric === 'pageviews') return website.pageviews;
-  if (metric === 'visitors') return website.sessions;
+// Custom events are free-form names, so one could be called `pageviews` or
+// `visitors`. Their ids carry a prefix to keep them apart from the built-ins.
+const EVENT_PREFIX = 'event:';
 
-  return website.events.filter(event => event.x === metric).map(({ t, y }) => ({ x: t, y }));
+// One series per website for the chosen metric. Built-in metrics come from the
+// pageview/session series; prefixed ids are custom event names.
+function seriesFor(website: OverviewWebsite, metric: string): Point[] {
+  if (metric.startsWith(EVENT_PREFIX)) {
+    const name = metric.slice(EVENT_PREFIX.length);
+
+    return website.events.filter(event => event.x === name).map(({ t, y }) => ({ x: t, y }));
+  }
+
+  return metric === 'visitors' ? website.sessions : website.pageviews;
 }
 
 export function OverviewPage() {
@@ -88,7 +98,7 @@ export function OverviewPage() {
     area: labels.stackedArea,
   };
   const { user } = useLoginQuery();
-  const { teamId, router, updateParams } = useNavigation();
+  const { teamId, query, router, updateParams } = useNavigation();
   const { locale, dateLocale } = useLocale();
   const { dateRange } = useDateRange();
   const { startAt, endAt, unit, timezone } = useDateParameters();
@@ -145,7 +155,11 @@ export function OverviewPage() {
   }, [rows]);
 
   const metricLabel = (value: string) =>
-    value === 'pageviews' ? t(labels.views) : value === 'visitors' ? t(labels.visitors) : value;
+    value.startsWith(EVENT_PREFIX)
+      ? value.slice(EVENT_PREFIX.length)
+      : value === 'visitors'
+        ? t(labels.visitors)
+        : t(labels.views);
 
   const chartData: any = useMemo(() => {
     return {
@@ -202,10 +216,10 @@ export function OverviewPage() {
         name: website.name,
         domain: website.domain,
         pageviews: sum(website.pageviews),
-        visitors: sum(website.sessions),
+        visitors: website.visitors,
       };
       for (const name of eventNames) {
-        row[`event:${name}`] = sum(website.events.filter(event => event.x === name));
+        row[`${EVENT_PREFIX}${name}`] = sum(website.events.filter(event => event.x === name));
       }
       return row;
     });
@@ -214,20 +228,27 @@ export function OverviewPage() {
   // "All time" spans the earliest to the latest data across the selected
   // websites, mirroring WebsiteDateFilter's handling for a single website.
   const hasData = Boolean(data?.startDate && data?.endDate);
+  const allTimeValue = hasData
+    ? `${getDateRangeValue(new Date(data.startDate), new Date(data.endDate))}:all`
+    : null;
+  const isAllTime = Boolean(query.date?.endsWith(':all'));
 
   const handleDateChange = (date: string) => {
-    if (date === 'all' && hasData) {
-      router.push(
-        updateParams({
-          date: `${getDateRangeValue(new Date(data.startDate), new Date(data.endDate))}:all`,
-          offset: undefined,
-          unit: undefined,
-        }),
-      );
+    if (date === 'all' && allTimeValue) {
+      router.push(updateParams({ date: allTimeValue, offset: undefined, unit: undefined }));
       return;
     }
     router.push(updateParams({ date, offset: undefined, unit: undefined }));
   };
+
+  // The URL holds All time as fixed dates. When the selection changes, the
+  // response reports the new websites' combined range; follow it so a newly
+  // added website is not cut down to the old websites' history.
+  useEffect(() => {
+    if (isAllTime && allTimeValue && allTimeValue !== query.date) {
+      router.replace(updateParams({ date: allTimeValue, offset: undefined, unit: undefined }));
+    }
+  }, [isAllTime, allTimeValue]);
 
   // Built-in metrics first, then every event name seen in the data. The picker
   // in the page header toggles these; name and domain are always shown.
@@ -235,7 +256,7 @@ export function OverviewPage() {
     () => [
       { id: 'pageviews', label: t(labels.views) },
       { id: 'visitors', label: t(labels.visitors) },
-      ...eventNames.map(name => ({ id: `event:${name}`, label: name })),
+      ...eventNames.map(name => ({ id: `${EVENT_PREFIX}${name}`, label: name })),
     ],
     [eventNames, t, labels],
   );
@@ -301,7 +322,7 @@ export function OverviewPage() {
               <ListItem id="pageviews">{t(labels.views)}</ListItem>
               <ListItem id="visitors">{t(labels.visitors)}</ListItem>
               {eventNames.map(name => (
-                <ListItem key={name} id={name}>
+                <ListItem key={name} id={`${EVENT_PREFIX}${name}`}>
                   {name}
                 </ListItem>
               ))}
@@ -326,7 +347,7 @@ export function OverviewPage() {
             </ToggleGroup>
           </Column>
           <DateFilter value={dateRange.value} onChange={handleDateChange} showAllTime={hasData} />
-          {dateRange.value?.endsWith(':all') && (
+          {isAllTime && (
             <Text size="sm" color="muted">
               {t(labels.allTime)}
             </Text>
