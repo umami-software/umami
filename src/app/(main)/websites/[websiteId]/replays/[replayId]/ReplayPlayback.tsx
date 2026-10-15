@@ -17,6 +17,7 @@ import {
 import { type ReplaySource, useReplays } from '@/store/replays';
 import { touch } from '@/components/hooks/useModified';
 import { getReplayViewport } from '@/lib/replay';
+import { ReplayConsoleLogs } from './ReplayConsoleLogs';
 import { ReplayPlayer } from './ReplayPlayer';
 import { ReplaySaveForm } from './ReplaySaveForm';
 
@@ -198,6 +199,7 @@ export function ReplayPlayback({
             </Row>
           )}
           <ReplayPlayer events={replay.events} />
+          <ReplayConsoleLogs events={replay.events} />
           {showSessionInfo && session && <SessionInfo data={session} />}
         </Column>
       )}

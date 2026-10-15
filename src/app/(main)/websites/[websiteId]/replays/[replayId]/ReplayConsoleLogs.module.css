@@ -1,0 +1,27 @@
+.logs {
+  max-height: 240px;
+  overflow: auto;
+  padding: 8px;
+  border: 1px solid var(--zen-border);
+  border-radius: 8px;
+  background: var(--zen-surface-sunken);
+}
+
+.offset,
+.level,
+.message {
+  font-family: monospace;
+}
+
+.offset {
+  min-width: 40px;
+}
+
+.level {
+  min-width: 44px;
+  text-transform: uppercase;
+}
+
+.message {
+  overflow-wrap: anywhere;
+}
