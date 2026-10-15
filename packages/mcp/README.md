@@ -24,7 +24,7 @@ user/team permission checks as the web app.
 | `get_sessions`        | Visitor sessions (paginated).                                           |
 | `get_session_stats`   | Session-level totals: visitors, visits, pageviews, events, countries.   |
 | `get_annotations`     | Dated notes on the timeline (launches, campaigns) to explain changes.  |
-| `list_segments`       | Saved segments and cohorts; pass IDs via `filters.segment` / `.cohort`. |
+| `list_segments`       | Saved segments and cohorts; pass IDs via top-level `segment` / `cohort` filter fields. |
 | `get_session`         | One session with its activity timeline and properties.                  |
 | `list_funnels`        | Saved funnels with their steps (get a `funnelId` for `run_funnel`).     |
 | `run_funnel`          | Conversion funnel from a saved `funnelId` or ad-hoc page/event steps.    |

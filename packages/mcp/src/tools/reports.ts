@@ -1,6 +1,13 @@
 import { z } from 'zod';
 import { dateRangeInput, parseDateRange, timeUnit, timezone } from '../lib/dates';
-import { filtersSchema, toFilterParams } from '../lib/filters';
+import { eventFilterToolFields, filtersFromInput, toFilterParams } from '../lib/filters';
+import {
+  assertNoRemovedFunnelSteps,
+  FUNNEL_STEPS_JSON_EXAMPLE,
+  parseFunnelStepsJson,
+  removedFunnelStepsGuardField,
+  stepsJsonField,
+} from '../lib/funnel-steps';
 import { defineTool } from '../lib/tool';
 
 const websiteId = z.string().uuid().describe('Website ID from list_websites.');
@@ -19,7 +26,8 @@ export const runFunnel = defineTool({
     'Calculates how many visitors progressed through an ordered sequence of 2–8 steps (page paths or custom events) ' +
     'within a time window, and where they dropped off. Use this for conversion questions such as ' +
     '"how many visitors who viewed /pricing went on to sign up?". Either pass "funnelId" for a funnel saved in Umami ' +
-    '(find it with list_funnels) or define ad-hoc "steps". Requires a websiteId from list_websites.',
+    `(find it with list_funnels) or define ad-hoc steps in stepsJson. Example stepsJson: ${FUNNEL_STEPS_JSON_EXAMPLE}. ` +
+    'Requires a websiteId from list_websites.',
   inputSchema: z
     .object({
       websiteId,
@@ -29,24 +37,7 @@ export const runFunnel = defineTool({
         .uuid()
         .optional()
         .describe('ID of a saved funnel from list_funnels. Its steps and window are used.'),
-      steps: z
-        .array(
-          z.object({
-            type: z
-              .enum(['path', 'event'])
-              .describe('"path" for a page path, "event" for a custom event name.'),
-            value: z
-              .string()
-              .min(1)
-              .describe(
-                'The page path (e.g. "/pricing") or event name (e.g. "signup"). Use * as a wildcard.',
-              ),
-          }),
-        )
-        .min(2)
-        .max(8)
-        .optional()
-        .describe('Ordered funnel steps. Required unless funnelId is given.'),
+      stepsJson: stepsJsonField,
       windowMinutes: z
         .number()
         .int()
@@ -56,15 +47,18 @@ export const runFunnel = defineTool({
         .describe(
           'Maximum minutes allowed between the first and each following step (default 60). Ignored with funnelId.',
         ),
-      filters: filtersSchema.optional(),
+      ...eventFilterToolFields,
+      ...removedFunnelStepsGuardField,
     })
-    .refine(input => Boolean(input.funnelId) !== Boolean(input.steps), {
-      message: 'Provide either funnelId or steps, not both.',
-      path: ['steps'],
+    .refine(input => Boolean(input.funnelId) !== Boolean(input.stepsJson), {
+      message: 'Provide either funnelId or stepsJson, not both.',
+      path: ['stepsJson'],
     }),
   async handler(input, { client }) {
+    assertNoRemovedFunnelSteps(input);
     const range = parseDateRange(input);
-    const filters = toFilterParams(input.filters);
+    const filters = toFilterParams(filtersFromInput(input));
+    const steps = parseFunnelStepsJson(input.stepsJson);
     const result = input.funnelId
       ? await client.getWebsiteSavedFunnelStats({
           websiteId: input.websiteId,
@@ -77,7 +71,7 @@ export const runFunnel = defineTool({
           ...range,
           ...filters,
           window: input.windowMinutes ?? 60,
-          steps: JSON.stringify(input.steps),
+          steps: JSON.stringify(steps),
         });
 
     return {
@@ -122,14 +116,14 @@ export const runJourney = defineTool({
       .optional()
       .describe('Only journeys starting with this page path or event.'),
     endStep: z.string().optional().describe('Only journeys ending with this page path or event.'),
-    filters: filtersSchema.optional(),
+    ...eventFilterToolFields,
   }),
   async handler(input, { client }) {
     const range = parseDateRange(input);
     const result = await client.getWebsiteJourneys({
       websiteId: input.websiteId,
       ...range,
-      ...toFilterParams(input.filters),
+      ...toFilterParams(filtersFromInput(input)),
       steps: input.steps ?? 3,
       startStep: input.startStep,
       endStep: input.endStep,
@@ -160,14 +154,14 @@ export const runRetention = defineTool({
     websiteId,
     ...dateRangeInput,
     timezone: timezone.optional(),
-    filters: filtersSchema.optional(),
+    ...eventFilterToolFields,
   }),
   async handler(input, { client }) {
     const range = parseDateRange(input);
     const result = await client.getWebsiteRetention({
       websiteId: input.websiteId,
       ...range,
-      ...toFilterParams(input.filters),
+      ...toFilterParams(filtersFromInput(input)),
       timezone: input.timezone,
     });
 
@@ -216,14 +210,14 @@ export const runAttribution = defineTool({
       .string()
       .min(1)
       .describe('The conversion page path (e.g. "/thank-you") or event name (e.g. "signup").'),
-    filters: filtersSchema.optional(),
+    ...eventFilterToolFields,
   }),
   async handler(input, { client }) {
     const range = parseDateRange(input);
     const result = (await client.getWebsiteAttribution({
       websiteId: input.websiteId,
       ...range,
-      ...toFilterParams(input.filters),
+      ...toFilterParams(filtersFromInput(input)),
       model: input.model ?? 'last-click',
       type: input.conversionType,
       step: input.conversion,
@@ -266,14 +260,14 @@ export const getRevenue = defineTool({
     currency: z.string().length(3).optional().describe('ISO 4217 currency code (default USD).'),
     unit: timeUnit.optional(),
     timezone: timezone.optional(),
-    filters: filtersSchema.optional(),
+    ...eventFilterToolFields,
   }),
   async handler(input, { client }) {
     const range = parseDateRange(input);
     const params = {
       websiteId: input.websiteId,
       ...range,
-      ...toFilterParams(input.filters),
+      ...toFilterParams(filtersFromInput(input)),
       currency: (input.currency ?? 'USD').toUpperCase(),
       unit: input.unit,
       timezone: input.timezone,
