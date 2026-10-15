@@ -94,3 +94,30 @@ export function createKeyValue(key: string, value: any): KeyValueData {
 export function objectToArray(obj: object) {
   return Object.keys(obj).map(key => obj[key]);
 }
+
+export interface StoredDataValue {
+  dataType: number;
+  stringValue?: string | null;
+  numberValue?: number | string | null;
+  dateValue?: string | Date | null;
+}
+
+// string_value is not guaranteed for number/date rows (e.g. rows written by external integrations),
+// so prefer the typed column and fall back to string_value.
+export function getDisplayValue({
+  dataType,
+  stringValue,
+  numberValue,
+  dateValue,
+}: StoredDataValue) {
+  if (dataType === DATA_TYPE.number && numberValue !== null && numberValue !== undefined) {
+    const n = Number(numberValue);
+    return Number.isNaN(n) ? String(numberValue) : String(n);
+  }
+
+  if (dataType === DATA_TYPE.date && !stringValue && dateValue) {
+    return new Date(dateValue).toISOString();
+  }
+
+  return stringValue ?? '';
+}

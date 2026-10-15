@@ -1,0 +1,13 @@
+/*
+ * Joined cells: every cell draws its left and top border, and the grid is pulled
+ * up and left by 1px so the outer container clips the first column's left edge and
+ * the first row's top edge. Wrapped rows then get dividers without stray lines.
+ */
+.joined {
+  margin: -1px 0 0 -1px;
+}
+
+.joined > * {
+  border-left: 1px solid var(--zen-border);
+  border-top: 1px solid var(--zen-border);
+}

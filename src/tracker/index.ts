@@ -68,14 +68,7 @@ export type TrackedProperties = {
 
 export type WithRequired<T, K extends keyof T> = T & { [P in K]-?: T[P] };
 
-export type EventDataValue =
-  | boolean
-  | number
-  | string
-  | null
-  | EventData
-  | CommerceData
-  | EventDataValue[];
+export type EventDataValue = boolean | number | string | null | EventData | EventDataValue[];
 
 /**
  *
@@ -86,31 +79,7 @@ export type EventDataValue =
  * - Objects have a max of 50 properties. Arrays are considered 1 property.
  */
 export interface EventData {
-  /** Reserved structured commerce data for named website events. */
-  commerce?: CommerceData;
   [key: string]: EventDataValue | undefined;
-}
-
-export interface CommerceItem {
-  productId: string;
-  name?: string;
-  variant?: string;
-  category?: string;
-  /** Net unit price after discounts, excluding tax and shipping. */
-  price: number;
-  quantity: number;
-}
-
-export interface CommerceData {
-  currency: string;
-  market?: string;
-  cartId?: string;
-  checkoutId?: string;
-  /** Identifies a completed payment; unique within this website. Omit before payment. */
-  orderId?: string;
-  shipping?: number;
-  tax?: number;
-  items: CommerceItem[];
 }
 
 export type EventProperties = {
@@ -220,14 +189,40 @@ export type UmamiTracker = {
 declare global {
   interface Window {
     umami: UmamiTracker;
+    umamiConfig?: UmamiConfig;
   }
 }
 
-type Payload = Record<string, unknown>;
-type BeforeSend = (
+export type BeforeSend = (
   type: string,
-  payload: Payload,
-) => Payload | null | undefined | Promise<Payload | null | undefined>;
+  payload: Record<string, unknown>,
+) =>
+  | Record<string, unknown>
+  | null
+  | undefined
+  | Promise<Record<string, unknown> | null | undefined>;
+
+export type UmamiConfig = {
+  websiteId?: string;
+  hostUrl?: string;
+  autoTrack?: boolean;
+  autoPageview?: boolean;
+  doNotTrack?: boolean;
+  excludeSearch?: boolean;
+  excludeHash?: boolean;
+  domains?: string | string[];
+  tag?: string;
+  distinctId?: string;
+  beforeSend?: BeforeSend | string;
+  errors?: boolean;
+  release?: string;
+  environment?: string;
+  performance?: boolean;
+  fetchCredentials?: RequestCredentials;
+  [key: string]: unknown;
+};
+
+type Payload = Record<string, unknown>;
 type TrackerWindow = Window &
   typeof globalThis & {
     doNotTrack?: string | number | null;
@@ -258,7 +253,8 @@ type MetricEntry = PerformanceEntry & {
     doNotTrack,
   } = window;
   const { currentScript, referrer } = document as TrackerDocument;
-  if (!currentScript) return;
+  const globalConfig = window.umamiConfig || {};
+  if (!currentScript && !globalConfig.websiteId) return;
 
   const { hostname, href, origin } = location;
 
@@ -272,12 +268,28 @@ type MetricEntry = PerformanceEntry & {
   const _data = 'data-';
   const _false = 'false';
   const _true = 'true';
-  const attr = currentScript.getAttribute.bind(currentScript);
-  const config = (value: string) => attr(`${_data}${value}`);
+  const attr = currentScript ? currentScript.getAttribute.bind(currentScript) : () => null;
+  const toCamelCase = (value: string) =>
+    value.replace(/-([a-z])/g, match => match[1].toUpperCase());
+  const config = (value: string): string | null => {
+    const fromAttr = attr(`${_data}${value}`);
+    if (fromAttr != null) return fromAttr;
+
+    const fromGlobal = (globalConfig as Record<string, unknown>)[toCamelCase(value)];
+    if (fromGlobal == null || typeof fromGlobal === 'function') return null;
+    return Array.isArray(fromGlobal) ? fromGlobal.join(',') : String(fromGlobal);
+  };
+
+  const getBeforeSend = (): BeforeSend | undefined => {
+    const name = config('before-send');
+    const callback = name
+      ? (window as unknown as Record<string, unknown>)[name]
+      : (globalConfig as Record<string, unknown>).beforeSend;
+    return typeof callback === 'function' ? (callback as BeforeSend) : undefined;
+  };
 
   const website = config('website-id');
   const hostUrl = config('host-url');
-  const beforeSend = config('before-send');
   const distinctId = config('distinct-id') || undefined;
   const tag = config('tag') || undefined;
   const autoTrack = config('auto-track') !== _false;
@@ -292,7 +304,12 @@ type MetricEntry = PerformanceEntry & {
 
   const domains = domain.split(',').map(n => n.trim());
   const host =
-    hostUrl || '__COLLECT_API_HOST__' || currentScript.src.split('/').slice(0, -1).join('/');
+    hostUrl ||
+    '__COLLECT_API_HOST__' ||
+    (currentScript ? currentScript.src.split('/').slice(0, -1).join('/') : '');
+
+  if (!currentScript && !host) return;
+
   const endpoint = `${host.replace(/\/$/, '')}__COLLECT_API_ENDPOINT__`;
   const screen = `${width}x${height}`;
   const eventRegex = /data-umami-event-([\w-_]+)/;
@@ -316,7 +333,7 @@ type MetricEntry = PerformanceEntry & {
   // Strip the origin from same-origin referrers so the referrer domain
   // is never saved when it matches the current hostname
   const stripOrigin = (url: string): string =>
-    url === origin || url?.startsWith(origin + '/') ? url.slice(origin.length) : url;
+    url === origin || url?.startsWith(`${origin}/`) ? url.slice(origin.length) : url;
 
   const getPayload = () => ({
     website,
@@ -421,15 +438,14 @@ type MetricEntry = PerformanceEntry & {
     disabled ||
     !website ||
     localStorage?.getItem('umami.disabled') ||
+    (window.name === 'umami.disabled' && top !== window) ||
     (domain && !domains.includes(hostname)) ||
     (dnt && hasDoNotTrack());
 
   const send = async (payload: Payload | null | undefined, type = 'event'): Promise<void> => {
     if (trackingDisabled()) return;
 
-    const callback = (window as unknown as Record<string, unknown>)[beforeSend as string] as
-      | BeforeSend
-      | undefined;
+    const callback = getBeforeSend();
 
     if (typeof callback === 'function') {
       payload = await Promise.resolve(callback(type, payload as Payload));
@@ -437,12 +453,9 @@ type MetricEntry = PerformanceEntry & {
 
     if (!payload) return;
 
-    const isCommerce = type === 'event' && !!(payload.data as EventData)?.commerce;
-
     try {
       const res = await fetch(endpoint, {
-        // Commerce baskets can exceed the browser's 64 KiB keepalive budget.
-        keepalive: !isCommerce,
+        keepalive: true,
         method: 'POST',
         body: JSON.stringify({ type, payload }),
         headers: {
@@ -454,18 +467,12 @@ type MetricEntry = PerformanceEntry & {
         credentials,
       });
 
-      if (isCommerce && !res.ok) {
-        throw new Error(`Commerce collection failed (${res.status}).`);
-      }
-
       const data = (await res.json()) as { cache?: string; disabled?: boolean } | null;
       if (data) {
         disabled = !!data.disabled;
         cache = data.cache;
       }
-    } catch (error) {
-      if (isCommerce) throw error;
-    }
+    } catch {}
   };
 
   const init = () => {
@@ -499,7 +506,6 @@ type MetricEntry = PerformanceEntry & {
       identity = nextIdentity;
     }
 
-    cache = '';
     return send(
       {
         ...getPayload(),
@@ -731,9 +737,7 @@ type MetricEntry = PerformanceEntry & {
       release: config('release') || '',
       environment: config('environment') || 'production',
       beforeSend: async payload => {
-        const callback = (window as unknown as Record<string, unknown>)[beforeSend as string] as
-          | BeforeSend
-          | undefined;
+        const callback = getBeforeSend();
         return typeof callback === 'function' ? callback('error', payload) : payload;
       },
     });

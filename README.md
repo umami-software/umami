@@ -5,7 +5,7 @@
 <h1 align="center">Umami</h1>
 
 <p align="center">
-  <i>Umami is a privacy-first analytics platform. Traffic, campaigns, behavior, conversions, and revenue in one place — no cookies, no surveillance, self-hosted or in the cloud.</i>
+  <i>Umami is an open-source web and product analytics platform. Understand acquisition, behavior, conversion, and retention with privacy-first analytics — no cookies, self-hosted or in the cloud.</i>
 </p>
 
 <p align="center">
@@ -44,6 +44,7 @@ Create an `.env` file with the following:
 
 ```bash
 DATABASE_URL=connection-url
+APP_SECRET=random-string  # generate with: openssl rand -hex 32
 ```
 
 Optional: set `API_URL` to change the base URL used by internal UI API calls.

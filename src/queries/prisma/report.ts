@@ -31,27 +31,29 @@ export async function getReports(
   const orderBy = criteria.orderBy ?? [{ name: 'asc' }, { id: 'asc' }];
 
   const where: Prisma.ReportWhereInput = {
-    ...criteria.where,
-    ...prisma.getSearchParameters(search, [
-      { name: 'contains' },
-      { description: 'contains' },
-      { type: 'contains' },
-      {
-        user: {
-          username: 'contains',
+    AND: [
+      criteria.where ?? {},
+      prisma.getSearchParameters(search, [
+        { name: 'contains' },
+        { description: 'contains' },
+        { type: 'contains' },
+        {
+          user: {
+            username: 'contains',
+          },
         },
-      },
-      {
-        website: {
-          name: 'contains',
+        {
+          website: {
+            name: 'contains',
+          },
         },
-      },
-      {
-        website: {
-          domain: 'contains',
+        {
+          website: {
+            domain: 'contains',
+          },
         },
-      },
-    ]),
+      ]) ?? {},
+    ],
   };
 
   return prisma.pagedQuery('report', { ...criteria, where, orderBy }, filters);

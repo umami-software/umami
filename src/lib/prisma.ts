@@ -2,7 +2,13 @@ import { PrismaPg } from '@prisma/adapter-pg';
 import { readReplicas } from '@prisma/extension-read-replicas';
 import debug from 'debug';
 import { PrismaClient } from '@/generated/prisma/client';
-import { DATA_TYPE, DEFAULT_PAGE_SIZE, FILTER_COLUMNS, OPERATORS, SESSION_COLUMNS } from './constants';
+import {
+  DATA_TYPE,
+  DEFAULT_PAGE_SIZE,
+  FILTER_COLUMNS,
+  OPERATORS,
+  SESSION_COLUMNS,
+} from './constants';
 import { filtersObjectToArray } from './params';
 import type { Operator, PropertyFilter, QueryFilters, QueryOptions } from './types';
 
@@ -34,7 +40,12 @@ export interface RawQueryClient extends RawQueryExecutor {
 }
 
 function isRawQueryExecutor(value: unknown): value is RawQueryExecutor {
-  return !!value && typeof value === 'object' && '$executeRawUnsafe' in value && '$queryRawUnsafe' in value;
+  return (
+    !!value &&
+    typeof value === 'object' &&
+    '$executeRawUnsafe' in value &&
+    '$queryRawUnsafe' in value
+  );
 }
 
 export function getRawQueryClient(
@@ -148,19 +159,20 @@ function mapFilter(
 
   const table = SESSION_COLUMNS.includes(name) ? 'session' : 'website_event';
 
+  // Negative operators read NULL as '' to match ClickHouse, which stores missing values as ''.
   switch (operator) {
     case OPERATORS.equals:
       return `${table}.${column} = ANY(${value})`;
     case OPERATORS.notEquals:
-      return `${table}.${column} != ALL(${value})`;
+      return `coalesce(${table}.${column}, '') != ALL(${value})`;
     case OPERATORS.contains:
       return `${table}.${column} ilike ${value}`;
     case OPERATORS.doesNotContain:
-      return `${table}.${column} not ilike ${value}`;
+      return `coalesce(${table}.${column}, '') not ilike ${value}`;
     case OPERATORS.regex:
       return `${table}.${column} ~* ${value}`;
     case OPERATORS.notRegex:
-      return `${table}.${column} !~* ${value}`;
+      return `coalesce(${table}.${column}, '') !~* ${value}`;
     default:
       return '';
   }
@@ -228,37 +240,9 @@ function getCohortQuery(filters: QueryFilters = {}) {
     where website_event.website_id = {{websiteId}}
       and website_event.created_at between {{cohort_startDate}} and {{cohort_endDate}}
       ${filterQuery}
-      ${getCohortOrderQuery(filters)}
     ) cohort
     on cohort.session_id = website_event.session_id
     `;
-}
-
-// Purchase cohorts: sessions with a completed payment, optionally containing one product.
-function getCohortOrderQuery(filters: Record<string, any>) {
-  const product = (filters as any).cohort_order;
-
-  if (!product) {
-    return '';
-  }
-
-  return `and website_event.session_id in (
-        select commerce_event.session_id
-        from commerce_event
-        where commerce_event.website_id = {{websiteId::uuid}}
-          and commerce_event.created_at between {{cohort_startDate}} and {{cohort_endDate}}
-          and commerce_event.order_id is not null
-          ${
-            product === '*'
-              ? ''
-              : `and exists (
-            select 1
-            from commerce_item
-            where commerce_item.commerce_event_id = commerce_event.commerce_event_id
-              and commerce_item.product_id = {{cohort_order}}
-          )`
-          }
-      )`;
 }
 
 function getExcludeBounceQuery(filters: Record<string, any>) {
@@ -346,14 +330,13 @@ function parseFilters(filters: Record<string, any>, options?: QueryOptions) {
   const cohortFilters = Object.fromEntries(
     Object.entries(filters).filter(([key]) => key.startsWith('cohort_')),
   );
-  const {
-    sql: eventPropertyFilterQuery,
-    params: eventPropertyFilterParams,
-  } = getEventPropertyFilterQuery((filters as QueryFilters).eventPropertyFilters, filters.timezone);
-  const {
-    sql: sessionPropertyFilterQuery,
-    params: sessionPropertyFilterParams,
-  } = getSessionPropertyFilterQuery((filters as QueryFilters).sessionPropertyFilters, filters.timezone);
+  const { sql: eventPropertyFilterQuery, params: eventPropertyFilterParams } =
+    getEventPropertyFilterQuery((filters as QueryFilters).eventPropertyFilters, filters.timezone);
+  const { sql: sessionPropertyFilterQuery, params: sessionPropertyFilterParams } =
+    getSessionPropertyFilterQuery(
+      (filters as QueryFilters).sessionPropertyFilters,
+      filters.timezone,
+    );
 
   return {
     joinSessionQuery:
@@ -361,7 +344,11 @@ function parseFilters(filters: Record<string, any>, options?: QueryOptions) {
         ? `inner join session on website_event.session_id = session.session_id and website_event.website_id = session.website_id`
         : '',
     dateQuery: getDateQuery(filters),
-    filterQuery: [getFilterQuery(filters, options), eventPropertyFilterQuery, sessionPropertyFilterQuery]
+    filterQuery: [
+      getFilterQuery(filters, options),
+      eventPropertyFilterQuery,
+      sessionPropertyFilterQuery,
+    ]
       .filter(Boolean)
       .join('\n'),
     queryParams: {
@@ -801,7 +788,9 @@ async function pagedQuery<T>(model: string, criteria: T, filters?: QueryFilters)
   const { page = 1, pageSize, orderBy, sortDescending = false, search } = filters || {};
   const size = +pageSize || DEFAULT_PAGE_SIZE;
 
-  const data = await client[model].findMany({
+  // Independent queries; run concurrently (mirrors pagedRawQuery).
+  const [data, count] = await Promise.all([
+    client[model].findMany({
     ...criteria,
     ...{
       ...(size > 0 && { take: +size, skip: +size * (+page - 1) }),
@@ -813,9 +802,9 @@ async function pagedQuery<T>(model: string, criteria: T, filters?: QueryFilters)
         ],
       }),
     },
-  });
-
-  const count = await client[model].count({ where: (criteria as any).where });
+  }),
+    client[model].count({ where: (criteria as any).where }),
+  ]);
 
   return { data, count, page: +page, pageSize: size, orderBy, search };
 }
@@ -844,8 +833,12 @@ async function pagedRawQuery(
     ? `select count(*) as num from (select 1 from (${query}) t limit ${+maxResults}) t2`
     : `select count(*) as num from (${query}) t`;
 
-  const count = await rawQuery(countQuery, queryParams).then(res => Number(res[0].num));
-  const data = await rawQuery(`${query}${statements}`, queryParams, name);
+  // The count and page queries are independent; on large tables each can be
+  // an expensive aggregation, so running them concurrently halves wall time.
+  const [count, data] = await Promise.all([
+    rawQuery(countQuery, queryParams).then(res => Number(res[0].num)),
+    rawQuery(`${query}${statements}`, queryParams, name),
+  ]);
 
   return {
     data,

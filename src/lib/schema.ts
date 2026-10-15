@@ -76,7 +76,10 @@ export function withDateRange<T extends z.ZodRawShape>(shape?: T) {
       const hasTimestamps = data.startAt != null && data.endAt != null;
       const hasDates = data.startDate != null && data.endDate != null;
       const hasExplicitRange =
-        data.startAt != null || data.endAt != null || data.startDate != null || data.endDate != null;
+        data.startAt != null ||
+        data.endAt != null ||
+        data.startDate != null ||
+        data.endDate != null;
       const hasPeriod = data.period != null;
 
       if (!hasTimestamps && !hasDates && !hasPeriod) {
@@ -237,7 +240,7 @@ export const goalReportSchema = z.object({
   parameters: z.object({
     startDate: z.coerce.date(),
     endDate: z.coerce.date(),
-    type: z.string(),
+    type: z.enum(['path', 'event']),
     value: z.string(),
   }),
 });
@@ -413,7 +416,7 @@ export const segmentParamSchema = z.object({
   dateRange: z.string().optional(),
   action: z
     .object({
-      type: z.string(),
+      type: z.enum(['path', 'event']),
       value: z.string(),
     })
     .optional(),

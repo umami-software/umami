@@ -106,6 +106,7 @@ export function SideNav(props: any) {
         </Row>
       </Row>
       <OverlayScrollArea
+        showScrollIndicators
         className={isCollapsed ? styles.collapsed : undefined}
         style={{ flexGrow: 1, minHeight: 0 }}
       >

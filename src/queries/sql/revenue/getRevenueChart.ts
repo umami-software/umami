@@ -3,6 +3,7 @@ import { EVENT_TYPE } from '@/lib/constants';
 import { CLICKHOUSE, PRISMA, runQuery } from '@/lib/db';
 import prisma from '@/lib/prisma';
 import type { QueryFilters } from '@/lib/types';
+import { isImportedRevenue } from './importedRevenue';
 
 export interface RevenuParameters {
   startDate: Date;
@@ -77,7 +78,7 @@ async function relationalQuery(
       filtered_revenue.event_name x,
       ${getDateSQL('filtered_revenue.created_at', unit, timezone)} t,
       sum(filtered_revenue.revenue) y,
-      count(filtered_revenue.event_id) count
+      count(case when filtered_revenue.revenue > 0 then 1 end) count
     from filtered_revenue
     group by x, t
     order by t
@@ -107,34 +108,29 @@ async function clickhouseQuery(
     `
     with
       filtered_sessions as (
-        select website_id, session_id
+        select session_id
         from website_event
         ${cohortQuery}
         where website_id = {websiteId:UUID}
           and event_type != ${EVENT_TYPE.performance}
         ${dateQuery}
         ${filterQuery}
-        group by website_id, session_id
+        group by session_id
       ),
       filtered_revenue as (
-        select
-          website_revenue.event_id,
-          website_revenue.event_name,
-          website_revenue.created_at,
-          website_revenue.revenue
+        select event_name, created_at, revenue
         from website_revenue
-        inner join filtered_sessions
-          on filtered_sessions.website_id = website_revenue.website_id
-         and filtered_sessions.session_id = website_revenue.session_id
-        where website_revenue.website_id = {websiteId:UUID}
-          and website_revenue.created_at between {startDate:DateTime64} and {endDate:DateTime64}
-          and upper(website_revenue.currency) = {currency:String}
+        where website_id = {websiteId:UUID}
+          and created_at between {startDate:DateTime64} and {endDate:DateTime64}
+          and upper(currency) = {currency:String}
+          and (${isImportedRevenue('event_name')}
+            or session_id in (select session_id from filtered_sessions))
       )
     select
       filtered_revenue.event_name x,
       ${getDateSQL('filtered_revenue.created_at', unit, timezone)} t,
       sum(filtered_revenue.revenue) y,
-      count(filtered_revenue.event_id) count
+      countIf(filtered_revenue.revenue > 0) count
     from filtered_revenue
     group by x, t
     order by t

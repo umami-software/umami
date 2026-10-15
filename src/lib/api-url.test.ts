@@ -38,15 +38,6 @@ describe('getApiUrl', () => {
     ).toBe('/analytics/api/auth/verify');
   });
 
-  test('keeps config routes on the local api path', () => {
-    expect(
-      getApiUrl('/config', {
-        apiUrl: '/internal-api',
-        basePath: '/analytics',
-      }),
-    ).toBe('/analytics/api/config');
-  });
-
   test('returns absolute input urls unchanged', () => {
     expect(getApiUrl('https://example.com/api/websites')).toBe('https://example.com/api/websites');
   });

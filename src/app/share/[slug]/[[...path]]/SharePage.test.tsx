@@ -1,9 +1,9 @@
-import { beforeEach, describe, expect, test, vi } from 'vitest';
 import type { ReactNode } from 'react';
-import { render, screen } from '@/test/render';
-import { resetTestNavigation } from '@/test/navigation';
-import { setShareData } from '@/store/app';
+import { beforeEach, describe, expect, test, vi } from 'vitest';
 import { ShareProvider } from '@/app/share/ShareProvider';
+import { setShareData } from '@/store/app';
+import { resetTestNavigation } from '@/test/navigation';
+import { render, screen } from '@/test/render';
 import { SharePage } from './SharePage';
 
 const mockShare = vi.hoisted(() => ({
@@ -125,9 +125,11 @@ vi.mock('@/components/common/PageBody', () => ({
 }));
 
 vi.mock('@/components/input/MobileMenuButton', () => ({
-  MobileMenuButton: ({ children }: { children: ReactNode | ((props: { close: () => void }) => ReactNode) }) => (
-    <div>{typeof children === 'function' ? children({ close: () => {} }) : children}</div>
-  ),
+  MobileMenuButton: ({
+    children,
+  }: {
+    children: ReactNode | ((props: { close: () => void }) => ReactNode);
+  }) => <div>{typeof children === 'function' ? children({ close: () => {} }) : children}</div>,
 }));
 
 vi.mock('./ShareFooter', () => ({

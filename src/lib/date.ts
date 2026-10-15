@@ -301,7 +301,9 @@ export function getOffsetDateRange(dateRange: DateRange, offset: number) {
         ...dateRange,
         offset,
         startDate: addMonths(startDate, change),
-        endDate: addMonths(endDate, change),
+        // endDate is the end of a month, and addMonths keeps its day number
+        // (Sep 30 - 1 month = Aug 30), so re-anchor it to the end of the target month.
+        endDate: endOfMonth(addMonths(endDate, change)),
       };
     case 'year':
       return {

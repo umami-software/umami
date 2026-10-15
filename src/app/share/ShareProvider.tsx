@@ -39,7 +39,6 @@ const ALL_SECTION_IDS = [
   'retention',
   'utm',
   'revenue',
-  'commerce',
   'attribution',
 ];
 
@@ -63,11 +62,10 @@ export function ShareProvider({ slug, children }: { slug: string; children: Reac
   const path = getSharePath(pathname);
   const isWebsiteShare = share?.shareType === ENTITY_TYPE.website;
   const isShareReady = !!share?.token && shareToken?.token === share.token;
+  const parameters = share?.parameters;
 
   const allowedSections =
-    isWebsiteShare && share?.parameters
-      ? ALL_SECTION_IDS.filter(id => share.parameters[id] === true)
-      : [];
+    isWebsiteShare && parameters ? ALL_SECTION_IDS.filter(id => parameters[id] === true) : [];
 
   const shouldRedirect =
     isWebsiteShare &&
@@ -95,5 +93,7 @@ export function ShareProvider({ slug, children }: { slug: string; children: Reac
     return null;
   }
 
-  return <ShareContext.Provider value={{ ...share, slug }}>{children}</ShareContext.Provider>;
+  return (
+    <ShareContext.Provider value={{ ...share, parameters, slug }}>{children}</ShareContext.Provider>
+  );
 }

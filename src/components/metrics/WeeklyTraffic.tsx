@@ -3,12 +3,13 @@ import { addHours, format, startOfDay } from 'date-fns';
 import { Fragment } from 'react';
 import { LoadingPanel } from '@/components/common/LoadingPanel';
 import { useLocale, useMessages, useWeeklyTrafficQuery } from '@/components/hooks';
+import { TIME_FORMATS } from '@/lib/constants';
 import { getDayOfWeekAsDate } from '@/lib/date';
 import { formatLongNumber } from '@/lib/format';
 
 export function WeeklyTraffic({ websiteId }: { websiteId: string }) {
   const { data, isLoading, error } = useWeeklyTrafficQuery(websiteId);
-  const { dateLocale } = useLocale();
+  const { dateLocale, timeFormat } = useLocale();
   const { labels, t } = useMessages();
   const { weekStartsOn } = dateLocale.options;
   const daysOfWeek = Array(7)
@@ -53,9 +54,11 @@ export function WeeklyTraffic({ websiteId }: { websiteId: string }) {
               {Array(24)
                 .fill(null)
                 .map((_, i) => {
-                  const label = format(addHours(startOfDay(new Date()), i), 'haaa', {
-                    locale: dateLocale,
-                  });
+                  const label = format(
+                    addHours(startOfDay(new Date()), i),
+                    timeFormat === TIME_FORMATS.h24 ? 'H' : 'haaa',
+                    { locale: dateLocale },
+                  );
                   return (
                     <Row key={i} justifyContent="flex-end">
                       <Text color="muted" size="sm">

@@ -28,7 +28,6 @@ const COMPONENT_GROUP_ORDER: string[] = [
   'Realtime',
   'Growth',
   'Revenue',
-  'Commerce',
   'Content',
 ];
 
@@ -176,12 +175,9 @@ export function BoardComponentSelect({
 
       const entries = await Promise.all(
         types.map(async type => {
-          const response = await get(
-            `/websites/${resolvedEntityId}/${type === 'commerce' ? 'commerce/reports' : `${type}s`}`,
-            {
-              pageSize: 1000,
-            },
-          );
+          const response = await get(`/websites/${resolvedEntityId}/${type}s`, {
+            pageSize: 1000,
+          });
 
           return [type, response.data] as const;
         }),
@@ -265,9 +261,9 @@ export function BoardComponentSelect({
     () =>
       allDefinitions.filter(
         def =>
-          isBoardComponentSupported(def.type, activeEntityType) || def.type === selectedDef?.type,
+          def.type === selectedDef?.type || isBoardComponentSupported(def.type, activeEntityType),
       ),
-    [activeEntityType, allDefinitions, selectedDef?.type],
+    [allDefinitions, selectedDef?.type, activeEntityType],
   );
   const groupedDefinitions = useMemo(() => {
     const order = new Map(COMPONENT_GROUP_ORDER.map((group, index) => [group, index]));

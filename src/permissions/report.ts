@@ -23,7 +23,6 @@ export function getReportSection(type?: string): ShareSection | null {
     case 'performance':
     case 'retention':
     case 'revenue':
-    case 'commerce':
     case 'utm':
       return type;
     case 'funnel':
