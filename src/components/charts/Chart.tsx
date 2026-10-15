@@ -140,11 +140,17 @@ export function Chart({
     };
   }, [chartOptions]);
 
-  const handleLegendClick = (item: LegendItem) => {
+  const handleLegendClick = (item: LegendItem, shiftkey: boolean) => {
     if (onLegendClick && type === 'bar') {
       const { datasetIndex } = item;
       const ds = chart.current.data.datasets[datasetIndex];
-      onLegendClick(ds.label, !hiddenLabels?.has(ds.label));
+      if (shiftkey) {
+        document.getSelection().removeAllRanges(); // prevent shift click from selecting text
+        chart.current.legend.legendItems.forEach(legend => onLegendClick(legend.text, true))
+        onLegendClick(ds.label, false);
+      } else {
+        onLegendClick(ds.label, !hiddenLabels?.has(ds.label));
+      }
       return;
     }
 
