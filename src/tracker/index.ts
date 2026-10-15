@@ -218,6 +218,7 @@ export type UmamiConfig = {
   release?: string;
   environment?: string;
   performance?: boolean;
+  engagement?: boolean;
   fetchCredentials?: RequestCredentials;
   [key: string]: unknown;
 };
