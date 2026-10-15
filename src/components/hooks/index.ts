@@ -4,6 +4,7 @@
 export * from './context/useBoard';
 export * from './context/useLink';
 export * from './context/usePixel';
+export * from './context/useFilterScope';
 export * from './context/useShare';
 export * from './context/useTeam';
 export * from './context/useUser';
