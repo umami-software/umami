@@ -197,6 +197,10 @@
   overflow: hidden;
   border-radius: inherit;
   background: inherit;
+  /* Keep the iframe snapshot in its own stacking context below the overlay.
+     Safari otherwise paints the composited iframe above the dots while scrolling. */
+  z-index: 0;
+  isolation: isolate;
 }
 
 .snapshot {
@@ -208,6 +212,9 @@
   transform-origin: top left;
   pointer-events: none;
   overflow: hidden;
+  /* Contain the iframe layer for the scroll heatmap view, which renders
+     .snapshot directly without the .snapshotClip wrapper. */
+  isolation: isolate;
 }
 
 .snapshotImage {
@@ -237,6 +244,9 @@
   bottom: 0;
   z-index: 3;
   pointer-events: none;
+  /* Force a dedicated compositing layer so Safari keeps the dots painted
+     above the iframe snapshot while scrolling the canvas. */
+  transform: translateZ(0);
 }
 
 .canvasLoading {
