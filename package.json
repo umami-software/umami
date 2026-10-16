@@ -64,7 +64,6 @@
     "test:api:up": "tsx scripts/test-api.ts --up-only",
     "test:api:down": "tsx scripts/test-api.ts --down",
     "test:api:coverage": "tsx scripts/test-api.ts --coverage-report",
-    "errors:cleanup": "tsx scripts/cleanup-errors.ts",
     "db:seed": "tsx scripts/seed-data.ts",
     "lint": "biome lint .",
     "lint:i18n": "eloqnt lint",

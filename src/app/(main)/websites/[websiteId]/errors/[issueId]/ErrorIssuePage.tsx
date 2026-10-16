@@ -35,7 +35,6 @@ export function ErrorIssuePage({ websiteId, issueId }: { websiteId: string; issu
   const filters = useErrorFilters();
   const issue = useErrorQuery(websiteId, `/${issueId}`, filters);
   const events = useErrorQuery(websiteId, `/${issueId}/events`, filters);
-  const settings = useErrorQuery(websiteId, '/settings');
   const { query, renderUrl, updateParams } = useNavigation();
   const { formatTimezoneDate } = useTimezone();
   const { formatValue } = useFormat();
@@ -88,7 +87,7 @@ export function ErrorIssuePage({ websiteId, issueId }: { websiteId: string; issu
               }
             >
               <Row gap="2" alignItems="center" justifyContent="flex-end" wrap="wrap">
-                {settings.data?.canManage &&
+                {issue.data.canUpdate &&
                   ['unresolved', 'resolved', 'ignored']
                     .filter(status => status !== issue.data.status)
                     .map(status => (
@@ -102,7 +101,7 @@ export function ErrorIssuePage({ websiteId, issueId }: { websiteId: string; issu
                     ))}
               </Row>
             </PageHeader>
-            {(mutation.error || settings.error) && <ErrorMessage />}
+            {mutation.error && <ErrorMessage />}
             <WebsiteControls websiteId={websiteId} allowFilter={false} />
             <ErrorStats data={issue.data} {...filters} />
           </Column>

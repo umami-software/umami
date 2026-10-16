@@ -107,10 +107,8 @@ model Website {
   updatedAt DateTime? @updatedAt @map("updated_at") @db.Timestamptz(6)
   deletedAt DateTime? @map("deleted_at") @db.Timestamptz(6)
 
-  recorderEnabled    Boolean @default(false) @map("recorder_enabled")
-  replayConfig       Json?   @map("replay_config")
-  errorsEnabled      Boolean @default(false) @map("errors_enabled")
-  errorRetentionDays Int     @default(30) @map("error_retention_days")
+  recorderEnabled Boolean @default(false) @map("recorder_enabled")
+  replayConfig    Json?   @map("replay_config")
 
   user                User?                @relation("user", fields: [userId], references: [id])
   createUser          User?                @relation("createUser", fields: [createdBy], references: [id])
@@ -574,7 +572,6 @@ model ErrorEvent {
   @@id([websiteId, id])
   @@index([websiteId, createdAt])
   @@index([websiteId, issueId, createdAt])
-  @@index([websiteId, receivedAt])
   @@map("error_event")
 }
 

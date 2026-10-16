@@ -1530,24 +1530,6 @@ export interface paths {
     patch?: never;
     trace?: never;
   };
-  '/api/websites/{websiteId}/errors/settings': {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    /** Get error tracking settings */
-    get: operations['getWebsiteErrorSettings'];
-    /** Configure error tracking */
-    put: operations['updateWebsiteErrorSettings'];
-    post?: never;
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
-    trace?: never;
-  };
   '/api/websites/{websiteId}/errors/stats': {
     parameters: {
       query?: never;
@@ -9208,7 +9190,7 @@ export interface operations {
                  */
                 ok: false;
                 /** @enum {string} */
-                reason: 'errors_disabled' | 'bot';
+                reason: 'bot';
               };
         };
       };
@@ -13517,6 +13499,7 @@ export interface operations {
         };
         content: {
           'application/json': {
+            canUpdate: boolean;
             /** @description Date and time the record was created. */
             createdAt: string;
             fingerprint: string;
@@ -13886,117 +13869,6 @@ export interface operations {
             count: number;
             value: string;
           }[];
-        };
-      };
-      /** @description Invalid request. */
-      400: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          'application/json': components['schemas']['ApiError'];
-        };
-      };
-      /** @description Authenticated website access required. */
-      401: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          'application/json': components['schemas']['ApiError'];
-        };
-      };
-      /** @description Website, issue, or occurrence not found. */
-      404: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          'application/json': components['schemas']['ApiError'];
-        };
-      };
-    };
-  };
-  getWebsiteErrorSettings: {
-    parameters: {
-      query?: never;
-      header?: never;
-      path: {
-        /** @description ID of the website. */
-        websiteId: string;
-      };
-      cookie?: never;
-    };
-    requestBody?: never;
-    responses: {
-      /** @description Successful response. */
-      200: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          'application/json': {
-            canManage: boolean;
-            enabled: boolean;
-            retentionDays: number;
-          };
-        };
-      };
-      /** @description Invalid request. */
-      400: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          'application/json': components['schemas']['ApiError'];
-        };
-      };
-      /** @description Authenticated website access required. */
-      401: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          'application/json': components['schemas']['ApiError'];
-        };
-      };
-      /** @description Website, issue, or occurrence not found. */
-      404: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          'application/json': components['schemas']['ApiError'];
-        };
-      };
-    };
-  };
-  updateWebsiteErrorSettings: {
-    parameters: {
-      query?: never;
-      header?: never;
-      path: {
-        /** @description ID of the website. */
-        websiteId: string;
-      };
-      cookie?: never;
-    };
-    requestBody: {
-      content: {
-        'application/json': {
-          enabled: boolean;
-          retentionDays: number;
-        };
-      };
-    };
-    responses: {
-      /** @description Successful response. */
-      200: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          'application/json': components['schemas']['Ok'];
         };
       };
       /** @description Invalid request. */

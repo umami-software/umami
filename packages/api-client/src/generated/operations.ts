@@ -1743,14 +1743,6 @@ export const operations = {
     ],
     hasBody: false,
   },
-  getWebsiteErrorSettings: {
-    operationId: 'getWebsiteErrorSettings',
-    method: 'get',
-    path: '/api/websites/{websiteId}/errors/settings',
-    pathParams: ['websiteId'],
-    queryParams: [],
-    hasBody: false,
-  },
   getWebsiteErrorStats: {
     operationId: 'getWebsiteErrorStats',
     method: 'get',
@@ -3234,14 +3226,6 @@ export const operations = {
     queryParams: [],
     hasBody: true,
   },
-  updateWebsiteErrorSettings: {
-    operationId: 'updateWebsiteErrorSettings',
-    method: 'put',
-    path: '/api/websites/{websiteId}/errors/settings',
-    pathParams: ['websiteId'],
-    queryParams: [],
-    hasBody: true,
-  },
   updateWebsiteFunnel: {
     operationId: 'updateWebsiteFunnel',
     method: 'post',
@@ -4538,17 +4522,6 @@ export abstract class GeneratedUmamiClient {
   }
 
   /**
-   * Get error tracking settings
-   * `GET /api/websites/{websiteId}/errors/settings`
-   */
-  getWebsiteErrorSettings(
-    input: OperationInput<'getWebsiteErrorSettings'>,
-    options?: RequestOptions,
-  ): Promise<OperationOutput<'getWebsiteErrorSettings'>> {
-    return this.execute('getWebsiteErrorSettings', input, options);
-  }
-
-  /**
    * Get website error totals and trend
    * `GET /api/websites/{websiteId}/errors/stats`
    */
@@ -5326,17 +5299,6 @@ export abstract class GeneratedUmamiClient {
     options?: RequestOptions,
   ): Promise<OperationOutput<'updateWebsiteErrorIssue'>> {
     return this.execute('updateWebsiteErrorIssue', input, options);
-  }
-
-  /**
-   * Configure error tracking
-   * `PUT /api/websites/{websiteId}/errors/settings`
-   */
-  updateWebsiteErrorSettings(
-    input: OperationInput<'updateWebsiteErrorSettings'>,
-    options?: RequestOptions,
-  ): Promise<OperationOutput<'updateWebsiteErrorSettings'>> {
-    return this.execute('updateWebsiteErrorSettings', input, options);
   }
 
   /**
