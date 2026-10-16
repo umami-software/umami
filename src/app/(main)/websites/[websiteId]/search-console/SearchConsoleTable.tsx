@@ -1,4 +1,4 @@
-import { DataColumn, DataTable, Text } from '@umami/react-zen';
+import { DataColumn, DataTable, Row, Text } from '@umami/react-zen';
 import { useTranslations } from 'next-intl';
 import { Empty } from '@/components/common/Empty';
 import { LoadingPanel } from '@/components/common/LoadingPanel';
@@ -84,10 +84,15 @@ function DimensionLabel({
         path = `${url.pathname}${url.search}`;
       } catch {}
 
+      // The anchor is inline, so truncation needs a block that is bounded by the cell's width.
       return (
-        <a href={value} target="_blank" rel="noopener noreferrer" title={value}>
-          <Text truncate>{path}</Text>
-        </a>
+        <Row overflow="hidden" minWidth="0" width="100%">
+          <Text truncate title={value} style={{ maxWidth: '100%' }}>
+            <a href={value} target="_blank" rel="noopener noreferrer">
+              {path}
+            </a>
+          </Text>
+        </Row>
       );
     }
     case 'country': {
@@ -111,9 +116,11 @@ function DimensionLabel({
     }
     default:
       return (
-        <Text truncate title={value}>
-          {value}
-        </Text>
+        <Row overflow="hidden" minWidth="0" width="100%">
+          <Text truncate title={value} style={{ maxWidth: '100%' }}>
+            {value}
+          </Text>
+        </Row>
       );
   }
 }
