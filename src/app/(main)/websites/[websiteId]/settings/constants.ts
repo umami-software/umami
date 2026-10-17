@@ -18,6 +18,7 @@ export const SHARE_NAV_ITEMS = [
       { id: 'funnels', label: 'funnels' },
       { id: 'journeys', label: 'journeys' },
       { id: 'retention', label: 'retention' },
+      { id: 'feature-adoption', label: 'featureAdoption' },
     ],
   },
   {

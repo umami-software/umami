@@ -93,6 +93,11 @@ export const performanceMetricsQuerySchema = analyticsSchema({
   type: z.enum(['path', 'title', 'device', 'browser']),
   limit: z.coerce.number().int().min(1).max(500).optional(),
 });
+export const featureAdoptionQuerySchema = analyticsSchema({
+  feature: z.string().min(1),
+  successEvent: z.string().min(1).optional(),
+  window: z.coerce.number().int().positive().max(1440).optional(),
+});
 export const utmMetricsQuerySchema = analyticsSchema({
   type: z.enum(['utm_source', 'utm_medium', 'utm_campaign', 'utm_term', 'utm_content']),
 });
