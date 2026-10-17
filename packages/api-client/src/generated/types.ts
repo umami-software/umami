@@ -9104,7 +9104,11 @@ export interface operations {
               payload: {
                 /** @description Browser used by the visitor. */
                 browser?: string;
+                /** @description City of the visitor. */
+                city?: string;
                 cls?: number;
+                /** @description Country code of the visitor. */
+                country?: string;
                 /** @description Data returned by the operation. */
                 data?: {
                   [key: string]: unknown;
@@ -9131,6 +9135,8 @@ export interface operations {
                 pixel?: string;
                 /** @description URL of the referring page. */
                 referrer?: string;
+                /** @description Region or subdivision of the visitor. */
+                region?: string;
                 /** @description Screen resolution of the visitor device. */
                 screen?: string;
                 /** @description Tag attached to the tracked activity. */
