@@ -19,11 +19,13 @@ import { useFormat, useMessages, useNavigation } from '@/components/hooks';
 import { Eye, FileText } from '@/components/icons';
 import { EventData } from '@/components/metrics/EventData';
 import { Lightning } from '@/components/svg';
+import { formatUrlLabel, hasMultipleHostnames } from '@/lib/url';
 
 export function EventsTable(props: DataTableProps) {
   const { t, labels } = useMessages();
   const { updateParams } = useNavigation();
   const { formatValue } = useFormat();
+  const showHostname = hasMultipleHostnames(props.data as any[]);
 
   const renderLink = (label: string, hostname: string) => {
     return (
@@ -33,7 +35,7 @@ export function EventsTable(props: DataTableProps) {
         target="_blank"
         rel="noreferrer noopener"
       >
-        {label}
+        {formatUrlLabel(label, hostname, showHostname)}
       </a>
     );
   };
@@ -55,7 +57,7 @@ export function EventsTable(props: DataTableProps) {
                 <Text
                   weight="bold"
                   style={{ maxWidth: '300px' }}
-                  title={row.eventName || row.urlPath}
+                  title={row.eventName || formatUrlLabel(row.urlPath, row.hostname, showHostname)}
                   truncate
                 >
                   {row.eventName || renderLink(row.urlPath, row.hostname)}
