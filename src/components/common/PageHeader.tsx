@@ -4,6 +4,7 @@ import { LinkButton } from './LinkButton';
 
 export function PageHeader({
   title,
+  titleSuffix,
   description,
   label,
   icon,
@@ -12,6 +13,7 @@ export function PageHeader({
   children,
 }: {
   title: string;
+  titleSuffix?: ReactNode;
   description?: string;
   label?: ReactNode;
   icon?: ReactNode;
@@ -42,6 +44,11 @@ export function PageHeader({
             </LinkButton>
           ) : (
             title && <Heading size={{ base: 'lg', md: '2xl', lg: '3xl' }}>{title}</Heading>
+          )}
+          {titleSuffix && (
+            <Row alignItems="center" alignSelf="center" style={{ flexShrink: 0 }}>
+              {titleSuffix}
+            </Row>
           )}
         </Row>
         {description && (

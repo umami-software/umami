@@ -26,7 +26,12 @@ export async function POST(request: Request) {
   const parameters = await setWebsiteDate(websiteId, body.parameters);
   const filters = await getQueryFilters(body.filters, websiteId);
   const { compare = 'prev' } = parameters as RevenuParameters;
-  const { startDate, endDate } = getCompareDate(compare, parameters.startDate, parameters.endDate);
+  const { startDate, endDate } = getCompareDate(
+    compare,
+    parameters.startDate,
+    parameters.endDate,
+    new Date(),
+  );
   const comparisonParameters = { ...(parameters as RevenuParameters), startDate, endDate };
 
   const [{ chart }, total, comparison, country, region, referrer, channel] = await Promise.all([

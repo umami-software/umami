@@ -60,6 +60,7 @@ vi.mock('@/components/hooks', () => ({
   useDateRange: () => ({
     dateRange: mockDateRange,
   }),
+  useTimezone: () => ({ timezone: 'UTC', toUtc: (date: Date) => date }),
   useMessages: () => ({
     t: (value: string) => value,
     labels: {
@@ -118,9 +119,15 @@ vi.mock('@/components/input/WebsiteValueComboBox', () => ({
   }) => (
     <label>
       {label}
-      <select aria-label={label} value={value} onChange={event => onChange(event.currentTarget.value)}>
+      <select
+        aria-label={label}
+        value={value}
+        onChange={event => onChange(event.currentTarget.value)}
+      >
         <option value="" />
-        {value && !mockValues.some(item => item.value === value) && <option value={value}>{value}</option>}
+        {value && !mockValues.some(item => item.value === value) && (
+          <option value={value}>{value}</option>
+        )}
         {mockValues.map(({ value }) => (
           <option key={value} value={value}>
             {value}

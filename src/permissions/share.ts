@@ -1,4 +1,3 @@
-import { ENTITY_TYPE } from '@/lib/constants';
 import type { Auth } from '@/lib/types';
 import { canViewWebsite } from './website';
 
@@ -17,23 +16,6 @@ export type ShareSection =
   | 'utm'
   | 'revenue'
   | 'attribution';
-
-const SHARE_SECTIONS: ShareSection[] = [
-  'overview',
-  'events',
-  'sessions',
-  'realtime',
-  'performance',
-  'compare',
-  'breakdown',
-  'goals',
-  'funnels',
-  'journeys',
-  'retention',
-  'utm',
-  'revenue',
-  'attribution',
-];
 
 type ShareSectionInput = ShareSection | ShareSection[];
 
@@ -66,8 +48,8 @@ export async function canViewWebsiteSection(
   }
 
   const sections = Array.isArray(section) ? section : [section];
-  const hasSectionParameters = SHARE_SECTIONS.some(
-    key => typeof shareToken.parameters?.[key] === 'boolean',
+  const hasSectionParameters = Object.entries(shareToken.parameters ?? {}).some(
+    ([key, value]) => key !== 'allowFilter' && typeof value === 'boolean',
   );
 
   if (!hasSectionParameters) {
@@ -95,7 +77,9 @@ export async function canViewSharedWebsiteFilters(
 
   const { shareToken } = auth || {};
 
-  return shareTokenIncludesWebsite(auth, websiteId) && shareToken?.parameters?.allowFilter !== false;
+  return (
+    shareTokenIncludesWebsite(auth, websiteId) && shareToken?.parameters?.allowFilter !== false
+  );
 }
 
 export async function canViewAuthenticatedWebsite(

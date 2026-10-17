@@ -1,12 +1,12 @@
 import { isbot } from 'isbot';
 import { serializeError } from 'serialize-error';
 import { z } from 'zod';
-import { HEATMAP_EVENT_TYPE } from '@/lib/constants';
+import { CACHE_TOKEN_TYPE, HEATMAP_EVENT_TYPE } from '@/lib/constants';
 import { corsPreflight, withCorsHeaders } from '@/lib/cors';
 import { secret } from '@/lib/crypto';
 import { getClientInfo, hasBlockedIp } from '@/lib/detect';
 import { parseToken } from '@/lib/jwt';
-import { fetchAccount, fetchTeam } from '@/lib/load';
+import { fetchAccount, fetchTeam, isWebsiteCollectionBlocked } from '@/lib/load';
 import { getRecorderConfig } from '@/lib/recorder';
 import { getReplayEventCount } from '@/lib/replay';
 import { parseRequest } from '@/lib/request';
@@ -16,6 +16,8 @@ import { saveRecording } from '@/queries/sql';
 import { saveHeatmapEvents } from '@/queries/sql/heatmap/saveHeatmapEvents';
 
 interface Cache {
+  type?: string;
+  websiteId?: string;
   sessionId: string;
   visitId: string;
 }
@@ -138,7 +140,15 @@ export async function POST(request: Request) {
 
     const cache = (await parseToken(cacheHeader, secret())) as Cache | null;
 
-    if (!cache?.sessionId || !cache?.visitId) {
+    // Only accept cache tokens minted by /api/send, and only for the website they
+    // were issued to. Otherwise a token from one website could be replayed to write
+    // recordings/heatmap data into another website.
+    if (
+      cache?.type !== CACHE_TOKEN_TYPE ||
+      !cache.sessionId ||
+      !cache.visitId ||
+      cache.websiteId !== websiteId
+    ) {
       return withCorsHeaders(badRequest({ message: 'Invalid session token.' }));
     }
 
@@ -157,6 +167,10 @@ export async function POST(request: Request) {
 
     if (!website.recorderEnabled) {
       return withCorsHeaders(json({ ok: false, reason: 'recorder_disabled' }));
+    }
+
+    if (process.env.CLOUD_MODE && (await isWebsiteCollectionBlocked(website))) {
+      return withCorsHeaders(forbidden({ message: 'Collection blocked.' }));
     }
 
     if (process.env.CLOUD_MODE) {

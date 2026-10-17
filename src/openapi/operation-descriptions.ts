@@ -143,11 +143,6 @@ export const operationDescriptions: Record<string, OperationDescription> = {
     summary: 'Create a share for a board',
     description: 'Creates a named share for the specified board with optional parameters.',
   },
-  'GET /api/config': {
-    summary: 'Get application configuration',
-    description:
-      'Returns public application settings, including deployment mode, feature availability, and tracker and resource URLs.',
-  },
   'GET /api/dashboard': {
     summary: 'Get my dashboard',
     description: "Returns the current user's personal dashboard board and its configuration.",

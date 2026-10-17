@@ -59,6 +59,7 @@ export function TopNav() {
               <WebsiteSelect
                 websiteId={websiteId}
                 teamId={teamId}
+                includeTeams={!teamId}
                 onChange={handleWebsiteChange}
                 buttonProps={{
                   style: { minWidth: 200, maxWidth: 200 },

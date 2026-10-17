@@ -342,6 +342,12 @@ const operation1 = defineOperation({
                   items: {
                     type: 'object',
                     properties: {
+                      distinctIds: {
+                        type: 'array',
+                        items: {
+                          type: 'string',
+                        },
+                      },
                       id: {
                         type: 'string',
                       },
@@ -410,6 +416,7 @@ const operation1 = defineOperation({
                       },
                     },
                     required: [
+                      'distinctIds',
                       'id',
                       'sessionId',
                       'websiteId',

@@ -1,6 +1,5 @@
 import { z } from 'zod';
 import type { Prisma, Website } from '@/generated/prisma/client';
-import { ROLES } from '@/lib/constants';
 import prisma, { getSchema } from '@/lib/prisma';
 import redis from '@/lib/redis';
 import { sanitizeSortFilters } from '@/lib/sort';
@@ -31,6 +30,18 @@ async function deleteWebsiteDependentData(tx: any, websiteId: string) {
   });
 
   await tx.revenue.deleteMany({
+    where: { websiteId },
+  });
+
+  await tx.errorEvent.deleteMany({
+    where: { websiteId },
+  });
+
+  await tx.errorIssue.deleteMany({
+    where: { websiteId },
+  });
+
+  await tx.errorRateLimit.deleteMany({
     where: { websiteId },
   });
 
@@ -133,7 +144,6 @@ export async function getAllUserWebsitesIncludingTeamAccess(
               deletedAt: null,
               members: {
                 some: {
-                  role: { in: [ROLES.teamOwner, ROLES.teamManager] },
                   userId,
                 },
               },

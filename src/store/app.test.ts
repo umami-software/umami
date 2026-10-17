@@ -1,13 +1,5 @@
 import { beforeEach, describe, expect, test } from 'vitest';
-import {
-  setConfig,
-  setDateRangeValue,
-  setLocale,
-  setShareData,
-  setTimezone,
-  setUser,
-  useApp,
-} from './app';
+import { setDateRangeValue, setLocale, setShareData, setTimezone, setUser, useApp } from './app';
 
 const initialState = { ...useApp.getState() };
 
@@ -60,14 +52,6 @@ describe('setUser', () => {
     const user = { id: 'user-1' };
     setUser(user);
     expect(useApp.getState().user).toBe(user);
-  });
-});
-
-describe('setConfig', () => {
-  test('sets the config object', () => {
-    const config = { cloudMode: true };
-    setConfig(config);
-    expect(useApp.getState().config).toBe(config);
   });
 });
 

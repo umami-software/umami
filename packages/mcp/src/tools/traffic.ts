@@ -1,6 +1,6 @@
 import { z } from 'zod';
 import { dateRangeInput, parseDateRange, timeUnit, timezone } from '../lib/dates';
-import { filtersSchema, toFilterParams } from '../lib/filters';
+import { pageviewFiltersSchema, toFilterParams } from '../lib/filters';
 import { defineTool } from '../lib/tool';
 
 interface Point {
@@ -32,7 +32,7 @@ export const getWebsiteTraffic = defineTool({
       .enum(['prev', 'yoy'])
       .optional()
       .describe('Also return the previous period ("prev") or same period last year ("yoy").'),
-    filters: filtersSchema.optional(),
+    filters: pageviewFiltersSchema.optional(),
   }),
   async handler(input, { client }) {
     const range = parseDateRange(input);

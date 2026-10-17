@@ -3,7 +3,7 @@ type ApiUrlOptions = {
   basePath?: string;
 };
 
-const APP_ROUTE_PATTERNS: RegExp[] = [/^\/auth(\/|$)/, /^\/config(\/|$)/];
+const APP_ROUTE_PATTERNS: RegExp[] = [/^\/auth(\/|$)/];
 
 function trimTrailingSlash(value: string) {
   return value.replace(/\/+$/, '');

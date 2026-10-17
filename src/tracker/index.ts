@@ -1,3 +1,7 @@
+import { createErrorCollector, type ErrorCaptureOptions } from './errors';
+
+export type { ErrorCaptureOptions } from './errors';
+
 /** Public types for the browser tracker. */
 export type TrackedProperties = {
   /**
@@ -75,7 +79,7 @@ export type EventDataValue = boolean | number | string | null | EventData | Even
  * - Objects have a max of 50 properties. Arrays are considered 1 property.
  */
 export interface EventData {
-  [key: string]: EventDataValue;
+  [key: string]: EventDataValue | undefined;
 }
 
 export type EventProperties = {
@@ -91,6 +95,8 @@ export type CustomEventFunction = (
 ) => EventProperties | PageViewProperties;
 
 export type UmamiTracker = {
+  /** Capture an exception when data-errors is enabled. Never throws. */
+  captureException: (error: unknown, options?: ErrorCaptureOptions) => Promise<void>;
   track: {
     /**
      * Track a page view
@@ -183,14 +189,40 @@ export type UmamiTracker = {
 declare global {
   interface Window {
     umami: UmamiTracker;
+    umamiConfig?: UmamiConfig;
   }
 }
 
-type Payload = Record<string, unknown>;
-type BeforeSend = (
+export type BeforeSend = (
   type: string,
-  payload: Payload,
-) => Payload | null | undefined | Promise<Payload | null | undefined>;
+  payload: Record<string, unknown>,
+) =>
+  | Record<string, unknown>
+  | null
+  | undefined
+  | Promise<Record<string, unknown> | null | undefined>;
+
+export type UmamiConfig = {
+  websiteId?: string;
+  hostUrl?: string;
+  autoTrack?: boolean;
+  autoPageview?: boolean;
+  doNotTrack?: boolean;
+  excludeSearch?: boolean;
+  excludeHash?: boolean;
+  domains?: string | string[];
+  tag?: string;
+  distinctId?: string;
+  beforeSend?: BeforeSend | string;
+  errors?: boolean;
+  release?: string;
+  environment?: string;
+  performance?: boolean;
+  fetchCredentials?: RequestCredentials;
+  [key: string]: unknown;
+};
+
+type Payload = Record<string, unknown>;
 type TrackerWindow = Window &
   typeof globalThis & {
     doNotTrack?: string | number | null;
@@ -221,7 +253,8 @@ type MetricEntry = PerformanceEntry & {
     doNotTrack,
   } = window;
   const { currentScript, referrer } = document as TrackerDocument;
-  if (!currentScript) return;
+  const globalConfig = window.umamiConfig || {};
+  if (!currentScript && !globalConfig.websiteId) return;
 
   const { hostname, href, origin } = location;
 
@@ -235,12 +268,28 @@ type MetricEntry = PerformanceEntry & {
   const _data = 'data-';
   const _false = 'false';
   const _true = 'true';
-  const attr = currentScript.getAttribute.bind(currentScript);
-  const config = (value: string) => attr(`${_data}${value}`);
+  const attr = currentScript ? currentScript.getAttribute.bind(currentScript) : () => null;
+  const toCamelCase = (value: string) =>
+    value.replace(/-([a-z])/g, match => match[1].toUpperCase());
+  const config = (value: string): string | null => {
+    const fromAttr = attr(`${_data}${value}`);
+    if (fromAttr != null) return fromAttr;
+
+    const fromGlobal = (globalConfig as Record<string, unknown>)[toCamelCase(value)];
+    if (fromGlobal == null || typeof fromGlobal === 'function') return null;
+    return Array.isArray(fromGlobal) ? fromGlobal.join(',') : String(fromGlobal);
+  };
+
+  const getBeforeSend = (): BeforeSend | undefined => {
+    const name = config('before-send');
+    const callback = name
+      ? (window as unknown as Record<string, unknown>)[name]
+      : (globalConfig as Record<string, unknown>).beforeSend;
+    return typeof callback === 'function' ? (callback as BeforeSend) : undefined;
+  };
 
   const website = config('website-id');
   const hostUrl = config('host-url');
-  const beforeSend = config('before-send');
   const distinctId = config('distinct-id') || undefined;
   const tag = config('tag') || undefined;
   const autoTrack = config('auto-track') !== _false;
@@ -254,7 +303,12 @@ type MetricEntry = PerformanceEntry & {
 
   const domains = domain.split(',').map(n => n.trim());
   const host =
-    hostUrl || '__COLLECT_API_HOST__' || currentScript.src.split('/').slice(0, -1).join('/');
+    hostUrl ||
+    '__COLLECT_API_HOST__' ||
+    (currentScript ? currentScript.src.split('/').slice(0, -1).join('/') : '');
+
+  if (!currentScript && !host) return;
+
   const endpoint = `${host.replace(/\/$/, '')}__COLLECT_API_ENDPOINT__`;
   const screen = `${width}x${height}`;
   const eventRegex = /data-umami-event-([\w-_]+)/;
@@ -278,7 +332,7 @@ type MetricEntry = PerformanceEntry & {
   // Strip the origin from same-origin referrers so the referrer domain
   // is never saved when it matches the current hostname
   const stripOrigin = (url: string): string =>
-    url === origin || url?.startsWith(origin + '/') ? url.slice(origin.length) : url;
+    url === origin || url?.startsWith(`${origin}/`) ? url.slice(origin.length) : url;
 
   const getPayload = () => ({
     website,
@@ -347,7 +401,8 @@ type MetricEntry = PerformanceEntry & {
       }
     };
     const onClick = (e: MouseEvent) => {
-      const el = e.target as Element;
+      const el = e.target as Element | null;
+      if (!el || typeof el.closest !== 'function') return;
       const eventEl = el.closest(`[${eventNameAttribute}]`);
       if (!eventEl) return;
 
@@ -378,15 +433,14 @@ type MetricEntry = PerformanceEntry & {
     disabled ||
     !website ||
     localStorage?.getItem('umami.disabled') ||
+    (window.name === 'umami.disabled' && top !== window) ||
     (domain && !domains.includes(hostname)) ||
     (dnt && hasDoNotTrack());
 
   const send = async (payload: Payload | null | undefined, type = 'event'): Promise<void> => {
     if (trackingDisabled()) return;
 
-    const callback = (window as unknown as Record<string, unknown>)[beforeSend as string] as
-      | BeforeSend
-      | undefined;
+    const callback = getBeforeSend();
 
     if (typeof callback === 'function') {
       payload = await Promise.resolve(callback(type, payload as Payload));
@@ -413,10 +467,7 @@ type MetricEntry = PerformanceEntry & {
         disabled = !!data.disabled;
         cache = data.cache;
       }
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    } catch (_e) {
-      /* no-op */
-    }
+    } catch {}
   };
 
   const init = () => {
@@ -449,7 +500,6 @@ type MetricEntry = PerformanceEntry & {
       identity = nextIdentity;
     }
 
-    cache = '';
     return send(
       {
         ...getPayload(),
@@ -628,14 +678,6 @@ type MetricEntry = PerformanceEntry & {
 
   /* Start */
 
-  if (!window.umami) {
-    window.umami = {
-      track,
-      identify,
-      getSession: () => ({ cache, website }),
-    } as UmamiTracker;
-  }
-
   let currentUrl = normalize(href);
   let currentRef = normalize(referrer);
 
@@ -644,6 +686,31 @@ type MetricEntry = PerformanceEntry & {
   let cache: string | undefined;
   let identity = distinctId;
   let flushPerformance: (() => void) | undefined;
+
+  if (!window.umami) {
+    const errors = createErrorCollector({
+      endpoint,
+      enabled: config('errors') === _true,
+      disabled: () => !!trackingDisabled(),
+      context: getPayload,
+      cache: () => cache,
+      updateCache: token => {
+        cache = token;
+      },
+      release: config('release') || '',
+      environment: config('environment') || 'production',
+      beforeSend: async payload => {
+        const callback = getBeforeSend();
+        return typeof callback === 'function' ? callback('error', payload) : payload;
+      },
+    });
+    window.umami = {
+      track,
+      identify,
+      getSession: () => ({ cache, website }),
+      ...errors,
+    } as UmamiTracker;
+  }
 
   if (distinctId) {
     void identify(distinctId);

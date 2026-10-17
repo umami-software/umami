@@ -28,7 +28,7 @@ vi.mock('@/components/hooks', () => ({
   useMobile: () => ({ isMobile: false }),
   useNavigation: () => ({ router: { push: vi.fn() }, updateParams: vi.fn() }),
   useShare: () => null,
-  useTimezone: () => ({ localFromUtc: (date: Date) => date }),
+  useTimezone: () => ({ fromUtc: (date: Date) => date }),
   useWebsiteAnnotationsQuery: (...args: unknown[]) => mockUseWebsiteAnnotationsQuery(...args),
 }));
 

@@ -1,6 +1,6 @@
 import { z } from 'zod';
 import { dateRangeInput, parseDateRange, timezone } from '../lib/dates';
-import { filtersSchema, toFilterParams } from '../lib/filters';
+import { pageviewFiltersSchema, toFilterParams } from '../lib/filters';
 import { defineTool } from '../lib/tool';
 
 interface StatsRow {
@@ -67,7 +67,7 @@ export const getWebsiteStats = defineTool({
       .describe(
         'Comparison period: "prev" (previous period, default) or "yoy" (same period last year).',
       ),
-    filters: filtersSchema.optional(),
+    filters: pageviewFiltersSchema.optional(),
   }),
   async handler(input, { client }) {
     const range = parseDateRange(input);

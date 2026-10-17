@@ -13,6 +13,7 @@ import { CLICKHOUSE, PRISMA, runQuery } from '@/lib/db';
 import prisma from '@/lib/prisma';
 import type { QueryFilters } from '@/lib/types';
 import type { RevenuParameters } from './getRevenueChart';
+import { isImportedRevenue } from './importedRevenue';
 
 export interface RevenueMetricsResult {
   country: { name: string; value: number }[];
@@ -241,7 +242,7 @@ async function relationalQuery(
           when ${toPostgresLikeClause('referrer_domain', SHOPPING_DOMAINS)} or utm_medium ilike '%shop%' then concat(prefix, 'Shopping')
           when ${toPostgresLikeClause('referrer_domain', VIDEO_DOMAINS)} or utm_medium ilike '%video%' then concat(prefix, 'Video')
           when referrer_domain != regexp_replace(hostname, '^www.', '') and referrer_domain != '' then 'referral'
-          else 'Unknown' end AS "name",
+          else 'unknown' end AS "name",
         value
       from revenue_prefix)
 
@@ -269,130 +270,130 @@ async function clickhouseQuery(
     endDate,
     currency,
   });
-  const filteredSessionsQuery = `
+
+  // Imported revenue is always kept, whether or not its session matches the filters.
+  const filteredRevenueQuery = `
     filtered_sessions as (
-      select
-        website_id,
-        session_id,
-        any(country) as country,
-        any(region) as region
+      select session_id
       from website_event
       ${cohortQuery}
       where website_id = {websiteId:UUID}
         and event_type != ${EVENT_TYPE.performance}
       ${dateQuery}
       ${filterQuery}
-      group by website_id, session_id
-    )
-  `;
-  const filteredRevenueQuery = `
+      group by session_id
+    ),
     filtered_revenue as (
-      select
-        website_revenue.website_id,
-        website_revenue.session_id,
-        website_revenue.created_at,
-        website_revenue.revenue
+      select session_id, revenue
       from website_revenue
-      inner join filtered_sessions
-        on filtered_sessions.website_id = website_revenue.website_id
-       and filtered_sessions.session_id = website_revenue.session_id
-      where website_revenue.website_id = {websiteId:UUID}
-        and website_revenue.created_at between {startDate:DateTime64} and {endDate:DateTime64}
-        and upper(website_revenue.currency) = {currency:String}
+      where website_id = {websiteId:UUID}
+        and created_at between {startDate:DateTime64} and {endDate:DateTime64}
+        and upper(currency) = {currency:String}
+        and (${isImportedRevenue('event_name')}
+          or session_id in (select session_id from filtered_sessions))
     )
   `;
 
-  if (type === 'country') {
-    return rawQuery<{ name: string; value: number }[]>(
-      `
-      with
-      ${filteredSessionsQuery},
-      ${filteredRevenueQuery}
-      select
-        filtered_sessions.country as "name",
-        sum(filtered_revenue.revenue) as "value"
-      from filtered_revenue
-      inner join filtered_sessions
-        on filtered_sessions.website_id = filtered_revenue.website_id
-       and filtered_sessions.session_id = filtered_revenue.session_id
-      group by filtered_sessions.country
-      order by value desc
-      `,
-      queryParams,
-    );
-  }
+  if (type === 'country' || type === 'region') {
+    // Left join: revenue whose session has no event row still counts, under an empty location.
+    const revenueSessionQuery = `
+      revenue_session as (
+        select session_id, any(country) as country, any(region) as region
+        from website_event
+        where website_id = {websiteId:UUID}
+          and created_at between {startDate:DateTime64} and {endDate:DateTime64}
+          and session_id in (select session_id from filtered_revenue)
+        group by session_id
+      )
+    `;
 
-  if (type === 'region') {
+    if (type === 'country') {
+      return rawQuery<{ name: string; value: number }[]>(
+        `
+        with
+        ${filteredRevenueQuery},
+        ${revenueSessionQuery}
+        select
+          revenue_session.country as "name",
+          sum(filtered_revenue.revenue) as "value"
+        from filtered_revenue
+        any left join revenue_session
+          on revenue_session.session_id = filtered_revenue.session_id
+        group by revenue_session.country
+        order by value desc
+        `,
+        queryParams,
+      );
+    }
+
     return rawQuery<{ name: string; value: number; country: string }[]>(
       `
       with
-      ${filteredSessionsQuery},
-      ${filteredRevenueQuery}
+      ${filteredRevenueQuery},
+      ${revenueSessionQuery}
       select
-        filtered_sessions.country,
-        filtered_sessions.region as "name",
+        revenue_session.country as country,
+        revenue_session.region as "name",
         sum(filtered_revenue.revenue) as "value"
       from filtered_revenue
-      inner join filtered_sessions
-        on filtered_sessions.website_id = filtered_revenue.website_id
-       and filtered_sessions.session_id = filtered_revenue.session_id
-      group by 1, 2
+      any left join revenue_session
+        on revenue_session.session_id = filtered_revenue.session_id
+      group by revenue_session.country, revenue_session.region
       order by value desc
       `,
       queryParams,
     );
   }
+
+  // Revenue is credited to the session's first tracked event in the range. Imported events
+  // are not visits, so a session with nothing else (tracked = 0) has no referrer or channel.
+  const attributedQuery = `
+    session_revenue as (
+      select session_id, sum(revenue) as value
+      from filtered_revenue
+      group by session_id
+    ),
+    first_event as (
+      select
+        session_id,
+        argMin(
+          tuple(referrer_domain, url_query, utm_medium, utm_source, hostname),
+          created_at
+        ) as first,
+        1 as tracked
+      from website_event
+      where website_id = {websiteId:UUID}
+        and created_at between {startDate:DateTime64} and {endDate:DateTime64}
+        and session_id in (select session_id from session_revenue)
+        and not ${isImportedRevenue('event_name')}
+      group by session_id
+    ),
+    attributed as (
+      select
+        session_revenue.value as value,
+        first_event.tracked as tracked,
+        tupleElement(first_event.first, 1) as referrer_domain,
+        tupleElement(first_event.first, 2) as url_query,
+        tupleElement(first_event.first, 3) as utm_medium,
+        tupleElement(first_event.first, 4) as utm_source,
+        tupleElement(first_event.first, 5) as hostname
+      from session_revenue
+      any left join first_event
+        on first_event.session_id = session_revenue.session_id
+    )
+  `;
 
   if (type === 'referrer') {
     return rawQuery<{ name: string; value: number }[]>(
       `
       with
-      ${filteredSessionsQuery},
-      events as (
-        select
-          website_revenue.website_id,
-          website_revenue.session_id,
-          sum(website_revenue.revenue) as "value"
-        from website_revenue
-        inner join filtered_sessions
-          on filtered_sessions.website_id = website_revenue.website_id
-         and filtered_sessions.session_id = website_revenue.session_id
-        where website_revenue.website_id = {websiteId:UUID}
-          and website_revenue.created_at between {startDate:DateTime64} and {endDate:DateTime64}
-          and upper(website_revenue.currency) = {currency:String}
-        group by 1, 2
-      ),
-
-      revenue as (
-        select
-          e.website_id,
-          e.session_id,
-          e.value,
-          we.min_date as created_at
-        from events e
-        join (
-          select session_id, min(created_at) min_date
-          from website_event
-          where website_id = {websiteId:UUID}
-            and created_at between {startDate:DateTime64} and {endDate:DateTime64}
-          group by 1
-        ) we
-          on we.session_id = e.session_id
-      )
-
+      ${filteredRevenueQuery},
+      ${attributedQuery}
       select
-          website_event.referrer_domain as "name",
-          sum(revenue.value) as "value"
-      from revenue
-      any left join (
-        select website_id, session_id, referrer_domain, created_at
-        from website_event
-        where website_id = {websiteId:UUID}
-        and created_at between {startDate:DateTime64} and {endDate:DateTime64}) website_event
-      on website_event.website_id = revenue.website_id
-      and website_event.session_id = revenue.session_id
-      and website_event.created_at = revenue.created_at
-      group by 1
+        referrer_domain as "name",
+        sum(value) as "value"
+      from attributed
+      group by referrer_domain
       order by value desc
       `,
       queryParams,
@@ -402,43 +403,13 @@ async function clickhouseQuery(
   return rawQuery<{ name: string; value: number }[]>(
     `
     with
-    ${filteredSessionsQuery},
-    events as (
-      select
-        website_revenue.website_id,
-        website_revenue.session_id,
-        sum(website_revenue.revenue) as "value"
-      from website_revenue
-      inner join filtered_sessions
-        on filtered_sessions.website_id = website_revenue.website_id
-       and filtered_sessions.session_id = website_revenue.session_id
-      where website_revenue.website_id = {websiteId:UUID}
-        and website_revenue.created_at between {startDate:DateTime64} and {endDate:DateTime64}
-        and upper(website_revenue.currency) = {currency:String}
-      group by 1, 2
-    ),
-
-    revenue as (
-      select
-          e.website_id,
-          e.session_id,
-          e.value,
-          we.min_date as created_at
-      from events e
-      join (
-        select session_id, min(created_at) min_date
-        from website_event
-        where website_id = {websiteId:UUID}
-          and created_at between {startDate:DateTime64} and {endDate:DateTime64}
-        group by 1
-      ) we
-        on we.session_id = e.session_id
-    ),
-
+    ${filteredRevenueQuery},
+    ${attributedQuery},
     channels as (
       select
         case when multiSearchAny(lower(utm_medium), ['cp', 'ppc', 'retargeting', 'paid']) != 0 then 'paid' else 'organic' end prefix,
         case
+          when tracked = 0 then 'unknown'
           when referrer_domain = '' and url_query = '' then 'direct'
           when multiSearchAny(lower(url_query), [${toClickHouseStringArray(
             PAID_AD_PARAMS,
@@ -465,25 +436,15 @@ async function clickhouseQuery(
             VIDEO_DOMAINS,
           )}]) != 0 or position(lower(utm_medium), 'video') > 0 then concat(prefix, 'Video')
           when referrer_domain != hostname and referrer_domain != '' then 'referral'
-        else 'Unknown' end AS "name",
-        sum(revenue.value) as "value"
-      from revenue
-      any left join (
-        select *
-        from website_event
-        where website_id = {websiteId:UUID}
-          and created_at between {startDate:DateTime64} and {endDate:DateTime64}
-      ) website_event
-        on website_event.website_id = revenue.website_id
-       and website_event.session_id = revenue.session_id
-       and website_event.created_at = revenue.created_at
-      group by 1, 2
+        else 'unknown' end AS "name",
+        value
+      from attributed
     )
 
     select name, sum(value) value
     from channels
-    group by 1
-    order by value desc;
+    group by name
+    order by value desc
     `,
     queryParams,
   );

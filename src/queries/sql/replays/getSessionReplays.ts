@@ -49,7 +49,7 @@ async function relationalQuery(websiteId: string, filters: QueryFilters, session
     : '';
 
   const havingQuery = minDurationMs
-    ? `having sum(extract(epoch from sr.ended_at - sr.started_at) * 1000) >= {{minDurationMs}}`
+    ? `having extract(epoch from max(sr.ended_at) - min(sr.started_at)) * 1000 >= {{minDurationMs}}`
     : '';
 
   return pagedRawQuery(
@@ -67,7 +67,7 @@ async function relationalQuery(websiteId: string, filters: QueryFilters, session
       count(sr.replay_id) as "chunkCount",
       min(sr.started_at) as "startedAt",
       max(sr.ended_at) as "endedAt",
-      sum(extract(epoch from sr.ended_at - sr.started_at) * 1000)::bigint as "duration",
+      (extract(epoch from max(sr.ended_at) - min(sr.started_at)) * 1000)::bigint as "duration",
       max(sr.created_at) as "createdAt"
     from session_replay sr
     join session on session.session_id = sr.session_id
@@ -114,7 +114,7 @@ async function clickhouseQuery(websiteId: string, filters: QueryFilters, session
     : '';
 
   const havingQuery = minDurationMs
-    ? `having toInt64(sum(toUnixTimestamp64Milli(session_replay.ended_at) - toUnixTimestamp64Milli(session_replay.started_at))) >= {minDurationMs:Int64}`
+    ? `having toInt64(toUnixTimestamp64Milli(max(session_replay.ended_at)) - toUnixTimestamp64Milli(min(session_replay.started_at))) >= {minDurationMs:Int64}`
     : '';
 
   return pagedRawQuery(
@@ -132,7 +132,7 @@ async function clickhouseQuery(websiteId: string, filters: QueryFilters, session
       count(session_replay.replay_id) as chunkCount,
       min(session_replay.started_at) as startedAt,
       max(session_replay.ended_at) as endedAt,
-      toInt64(sum(toUnixTimestamp64Milli(session_replay.ended_at) - toUnixTimestamp64Milli(session_replay.started_at))) as duration,
+      toInt64(toUnixTimestamp64Milli(max(session_replay.ended_at)) - toUnixTimestamp64Milli(min(session_replay.started_at))) as duration,
       max(session_replay.created_at) as createdAt
     from session_replay
     join (

@@ -2,7 +2,7 @@ import { Column, Heading, Text } from '@umami/react-zen';
 import { useEffect, useRef, useState } from 'react';
 import { PieChart } from '@/components/charts/PieChart';
 import { LoadingPanel } from '@/components/common/LoadingPanel';
-import { useDateRange, useMessages, useUTMMetricsQuery } from '@/components/hooks';
+import { useDateRange, useMessages, useTimezone, useUTMMetricsQuery } from '@/components/hooks';
 import { ListTable } from '@/components/metrics/ListTable';
 import { CHART_COLORS } from '@/lib/constants';
 
@@ -19,9 +19,10 @@ export function BoardUTM({
 }) {
   const wrapperRef = useRef<HTMLDivElement>(null);
   const [isStacked, setIsStacked] = useState(false);
+  const { timezone } = useTimezone();
   const {
     dateRange: { startDate, endDate },
-  } = useDateRange();
+  } = useDateRange({ timezone });
   const { t, labels } = useMessages();
   const { data, error, isLoading } = useUTMMetricsQuery({
     type: param,

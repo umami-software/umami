@@ -72,6 +72,24 @@ beforeEach(() => {
 });
 
 describe('getFunnel postgres branch', () => {
+  test('emits an explicit report start bound for every subsequent step', async () => {
+    await getFunnel(
+      'website-1',
+      {
+        ...baseParameters,
+        steps: Array.from({ length: 8 }, (_, i) => ({ type: 'path', value: `/step-${i}` })),
+      },
+      {},
+    );
+
+    const [query] = prismaRawQuery.mock.calls[0];
+    const subsequentLevels = query.split(/,\s*level\d+ AS \(/).slice(1);
+    expect(subsequentLevels).toHaveLength(7);
+    for (const level of subsequentLevels) {
+      expect(level.match(/and we\.created_at >= \{\{startDate}}/g)).toHaveLength(1);
+    }
+  });
+
   test('builds level CTEs and a UNION sum query, one per step', async () => {
     await getFunnel('website-1', baseParameters, {});
 

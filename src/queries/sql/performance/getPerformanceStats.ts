@@ -19,7 +19,7 @@ async function relationalQuery(
   parameters: PerformanceParameters,
   filters: QueryFilters,
 ): Promise<PerformanceResult['summary']> {
-  const { startDate, endDate } = parameters;
+  const { startDate, endDate, metric = 'lcp' } = parameters;
   const { rawQuery, parseFilters } = prisma;
   const { filterQuery, joinSessionQuery, cohortQuery, queryParams } = parseFilters({
     ...filters,
@@ -44,7 +44,7 @@ async function relationalQuery(
       percentile_cont(0.5) within group (order by ttfb) as ttfb_p50,
       percentile_cont(0.75) within group (order by ttfb) as ttfb_p75,
       percentile_cont(0.95) within group (order by ttfb) as ttfb_p95,
-      count(*) as count
+      count(${metric}) as count
     from website_event
     ${cohortQuery}
     ${joinSessionQuery}
@@ -93,7 +93,7 @@ async function clickhouseQuery(
   parameters: PerformanceParameters,
   filters: QueryFilters,
 ): Promise<PerformanceResult['summary']> {
-  const { startDate, endDate } = parameters;
+  const { startDate, endDate, metric = 'lcp' } = parameters;
   const { rawQuery, parseFilters } = clickhouse;
   const { filterQuery, cohortQuery, queryParams } = parseFilters({ ...filters, websiteId });
 
@@ -115,7 +115,7 @@ async function clickhouseQuery(
       quantile(0.5)(ttfb) as ttfb_p50,
       quantile(0.75)(ttfb) as ttfb_p75,
       quantile(0.95)(ttfb) as ttfb_p95,
-      count() as count
+      count(${metric}) as count
     from website_event
     ${cohortQuery}
     where website_event.website_id = {websiteId:UUID}

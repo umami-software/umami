@@ -48,23 +48,6 @@ async function relationalQuery(
     eventType,
   });
 
-  function getUTMQuery(utmColumn: string) {
-    return `
-    select
-        coalesce(we.${utmColumn}, '') as "name",
-        count(distinct we.session_id) as "value"
-    from model m
-    join website_event we
-    on we.created_at = m.created_at
-        and we.session_id = m.session_id
-    where we.website_id = {{websiteId::uuid}}
-          and we.created_at between {{startDate}} and {{endDate}}
-          and we.${utmColumn} != ''
-    group by 1
-    order by 2 desc
-    limit 20`;
-  }
-
   const eventQuery = `WITH events AS (
         select distinct
             website_event.session_id,
@@ -101,10 +84,27 @@ async function relationalQuery(
     group by e.session_id)`;
   }
 
-  const referrerRes = await rawQuery(
-    `
-    ${eventQuery}
-    ${getModelQuery(model)}
+  function getUTMQuery(utmColumn: string) {
+    return `
+    select
+        coalesce(we.${utmColumn}, '') as "name",
+        count(distinct we.session_id) as "value"
+    from model m
+    join website_event we
+    on we.created_at = m.created_at
+        and we.session_id = m.session_id
+    where we.website_id = {{websiteId::uuid}}
+          and we.created_at between {{startDate}} and {{endDate}}
+          and we.${utmColumn} != ''
+    group by 1
+    order by 2 desc
+    limit 20`;
+  }
+
+  const dimensions = [
+    [
+      'referrer',
+      `
     select coalesce(we.referrer_domain, '') as "name",
         count(distinct we.session_id) value
     from model m
@@ -119,17 +119,12 @@ async function relationalQuery(
           and we.referrer_domain != ''
     group by 1
     order by 2 desc
-    limit 20
-    `,
-    queryParams,
-  );
-
-  const paidAdsres = await rawQuery(
-    `
-    ${eventQuery}
-    ${getModelQuery(model)},
-
-    results AS (
+    limit 20`,
+    ],
+    [
+      'paidAds',
+      `
+    WITH results AS (
     select case
             when coalesce(gclid, '') != '' then 'Google Ads'
             when coalesce(fbclid, '') != '' then 'Facebook / Meta'
@@ -151,58 +146,21 @@ async function relationalQuery(
     limit 20)
     SELECT *
     FROM results
-    WHERE name != ''
-    `,
-    queryParams,
-  );
+    WHERE name != ''`,
+    ],
+    ['utm_source', getUTMQuery('utm_source')],
+    ['utm_medium', getUTMQuery('utm_medium')],
+    ['utm_campaign', getUTMQuery('utm_campaign')],
+    ['utm_content', getUTMQuery('utm_content')],
+    ['utm_term', getUTMQuery('utm_term')],
+  ] as const;
 
-  const sourceRes = await rawQuery(
-    `
-    ${eventQuery}
-    ${getModelQuery(model)}
-    ${getUTMQuery('utm_source')}
-    `,
-    queryParams,
-  );
-
-  const mediumRes = await rawQuery(
-    `
-    ${eventQuery}
-    ${getModelQuery(model)}
-    ${getUTMQuery('utm_medium')}
-    `,
-    queryParams,
-  );
-
-  const campaignRes = await rawQuery(
-    `
-    ${eventQuery}
-    ${getModelQuery(model)}
-    ${getUTMQuery('utm_campaign')}
-    `,
-    queryParams,
-  );
-
-  const contentRes = await rawQuery(
-    `
-    ${eventQuery}
-    ${getModelQuery(model)}
-    ${getUTMQuery('utm_content')}
-    `,
-    queryParams,
-  );
-
-  const termRes = await rawQuery(
-    `
-    ${eventQuery}
-    ${getModelQuery(model)}
-    ${getUTMQuery('utm_term')}
-    `,
-    queryParams,
-  );
-
-  const totalRes = await rawQuery(
-    `
+  const dimensionCtes = dimensions
+    .map(([name, query]) => `
+    ${name} AS (${query}
+    )`)
+    .join(',');
+  const totalQuery = `
     select
         count(*) as "pageviews",
         count(distinct website_event.session_id) as "visitors",
@@ -213,21 +171,22 @@ async function relationalQuery(
     where website_event.website_id = {{websiteId::uuid}}
         and website_event.created_at between {{startDate}} and {{endDate}}
         and website_event.${column} = {{step}}
-        ${filterQuery}
-    `,
-    queryParams,
-  ).then(result => result?.[0]);
+        ${filterQuery}`;
+  const jsonDimensions = dimensions
+    .map(([name]) => `        '${name}', coalesce((select json_agg(dim_row order by dim_row.value desc) from ${name} dim_row), '[]'::json)`)
+    .join(',\n');
+  const query = `
+    ${eventQuery}
+    ${getModelQuery(model)},
+    ${dimensionCtes},
+    total AS (${totalQuery}
+    )
+    select json_build_object(
+${jsonDimensions},
+        'total', (select row_to_json(total_row) from total total_row)
+    ) as result`;
 
-  return {
-    referrer: referrerRes,
-    paidAds: paidAdsres,
-    utm_source: sourceRes,
-    utm_medium: mediumRes,
-    utm_campaign: campaignRes,
-    utm_content: contentRes,
-    utm_term: termRes,
-    total: totalRes,
-  };
+  return rawQuery(query, queryParams).then(result => result?.[0]?.result);
 }
 
 async function clickhouseQuery(

@@ -34,16 +34,18 @@ export function PropertyFilters({
   websiteId,
   eventName,
   fields: providedFields,
-  value,
+  value: valueProp,
   onChange,
 }: {
   source: PropertyDataSource;
   websiteId: string;
   eventName?: string;
   fields?: Array<{ propertyName: string; dataType: number }>;
-  value: PropertyFilter[];
+  value?: PropertyFilter[] | null;
   onChange: (filters: PropertyFilter[]) => void;
 }) {
+  // Segments saved before session property filters existed have no value for this field.
+  const value = valueProp ?? [];
   const { t, messages } = useMessages();
   const { isMobile } = useMobile();
   const {

@@ -1,5 +1,6 @@
 import { Button, Column, Heading, Row, Text } from '@umami/react-zen';
 import { useState } from 'react';
+import { Empty } from '@/components/common/Empty';
 import { IconLabel } from '@/components/common/IconLabel';
 import { LoadingPanel } from '@/components/common/LoadingPanel';
 import { useBoardSharesQuery, useMessages } from '@/components/hooks';
@@ -54,7 +55,7 @@ function BoardShareDialogContent({
         (hasShares ? (
           <BoardSharesTable data={shares} />
         ) : (
-          <Text color="muted">{t(messages.noDataAvailable)}</Text>
+          <Empty />
         ))}
     </Column>
   );

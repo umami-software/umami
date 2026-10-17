@@ -43,6 +43,14 @@ export const filtersSchema = z
   .strict()
   .describe('Optional analytics filters. Only include keys you want to filter on.');
 
+// Pageview and performance queries never match a custom event name (#3886),
+// so their tools reject the event filter instead of returning zeros.
+export const pageviewFiltersSchema = filtersSchema
+  .omit({ event: true })
+  .describe(
+    'Optional analytics filters. Only include keys you want to filter on. To filter by custom event, use the event tools.',
+  );
+
 export type Filters = z.infer<typeof filtersSchema>;
 
 export function toFilterParams(filters?: Filters): Record<string, string> {
