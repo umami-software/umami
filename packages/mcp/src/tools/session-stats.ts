@@ -1,6 +1,6 @@
 import { z } from 'zod';
 import { dateRangeInput, parseDateRange } from '../lib/dates';
-import { filtersSchema, toFilterParams } from '../lib/filters';
+import { eventFilterToolFields, filtersFromInput, toFilterParams } from '../lib/filters';
 import { defineTool } from '../lib/tool';
 
 type StatValue = { value?: number } | number | undefined;
@@ -19,12 +19,12 @@ export const getSessionStats = defineTool({
   description:
     'Returns session-level totals for a website over a time range: unique visitors, visits (sessions), pageviews, ' +
     'custom events and the number of distinct countries visitors came from. ' +
-    'Lighter than get_sessions when you only need counts, and works with filters (e.g. sessions from Chrome users in the US). ' +
+    'Lighter than get_sessions when you only need counts; optional top-level filter fields scope results (e.g. browser "chrome" and country "US"). ' +
     'For bounce rate and visit duration use get_website_stats. Requires a websiteId from list_websites.',
   inputSchema: z.object({
     websiteId: z.string().uuid().describe('Website ID from list_websites.'),
     ...dateRangeInput,
-    filters: filtersSchema.optional(),
+    ...eventFilterToolFields,
   }),
   async handler(input, { client }) {
     const range = parseDateRange(input);
@@ -32,7 +32,7 @@ export const getSessionStats = defineTool({
       websiteId: input.websiteId,
       startAt: range.startAt,
       endAt: range.endAt,
-      ...toFilterParams(input.filters),
+      ...toFilterParams(filtersFromInput(input)),
     })) as Record<string, StatValue>;
 
     return {

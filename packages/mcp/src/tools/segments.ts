@@ -15,8 +15,8 @@ export const listSegments = defineTool({
   title: 'List saved segments and cohorts',
   description:
     'Lists the saved segments (filter presets such as "mobile visitors from the US") and cohorts (groups of visitors who ' +
-    'performed an action) defined for a website, with their IDs and definitions. Pass the ID as filters.segment or ' +
-    'filters.cohort in other tools to scope results to that audience. Requires a websiteId from list_websites.',
+    'performed an action) defined for a website, with their IDs and definitions. Pass the ID as the top-level segment or ' +
+    'cohort argument on other tools to scope results to that audience. Requires a websiteId from list_websites.',
   inputSchema: z.object({
     websiteId: z.string().uuid().describe('Website ID from list_websites.'),
     type: z
