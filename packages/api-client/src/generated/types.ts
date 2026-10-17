@@ -22413,6 +22413,8 @@ export interface operations {
         match?: 'all' | 'any';
         /** @description Maximum number of results to include. */
         maxResults?: number;
+        /** @description Only include sessions whose visit lasted at least this many seconds. */
+        minDuration?: number;
         /** @description Operating system used by the visitor. */
         os?: string;
         /** @description Page number, starting at 1. */
