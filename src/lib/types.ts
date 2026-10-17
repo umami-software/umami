@@ -235,6 +235,7 @@ export interface WebsiteSession {
   country: string;
   region: string;
   city: string;
+  referrerDomain: string;
   firstAt: Date | string;
   lastAt: Date | string;
   visits: number;

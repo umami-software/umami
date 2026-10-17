@@ -1,10 +1,12 @@
 import { Column, Grid, Icon, Row, Text } from '@umami/react-zen';
 import type { ReactNode } from 'react';
 import { DateDistance } from '@/components/common/DateDistance';
+import { Favicon } from '@/components/common/Favicon';
 import { TypeIcon } from '@/components/common/TypeIcon';
 import { useFormat, useLocale, useMessages, useRegionNames } from '@/components/hooks';
 import { Calendar, KeyRound, Landmark, MapPin } from '@/components/icons';
 import { Network } from '@/components/svg';
+import { decodePunycodeDomain } from '@/lib/format';
 
 export function SessionInfo({ data }) {
   const { locale } = useLocale();
@@ -29,6 +31,19 @@ export function SessionInfo({ data }) {
 
       <Info label={t(labels.firstSeen)} icon={<Calendar />}>
         <DateDistance date={new Date(data.firstAt)} />
+      </Info>
+
+      <Info label={t(labels.referrer)} icon={<Favicon domain={data?.referrerDomain} />}>
+        {data?.referrerDomain && (
+          <a
+            href={`https://${data.referrerDomain}`}
+            target="_blank"
+            rel="noreferrer noopener"
+            style={{ fontWeight: 'bold' }}
+          >
+            {decodePunycodeDomain(data.referrerDomain)}
+          </a>
+        )}
       </Info>
 
       <Info label={t(labels.country)} icon={<TypeIcon type="country" value={data?.country} />}>
