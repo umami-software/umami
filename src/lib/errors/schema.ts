@@ -1,10 +1,6 @@
 import { z } from 'zod';
 
 export const errorStatusSchema = z.enum(['unresolved', 'resolved', 'ignored']);
-export const errorSettingsSchema = z.object({
-  enabled: z.boolean(),
-  retentionDays: z.number().int().min(1).max(90),
-});
 export const errorUpdateSchema = z.object({ status: errorStatusSchema });
 export const errorPayloadSchema = z.object({
   version: z.literal(1),

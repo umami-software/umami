@@ -120,9 +120,9 @@ describe('canUpdateTeam', () => {
     await expect(canUpdateTeam({ user: normalUser }, 'team-1')).resolves.toBe(false);
   });
 
-  test('returns falsy for a non-member', async () => {
+  test('denies a non-member', async () => {
     vi.mocked(getTeamUser).mockResolvedValue(null as any);
-    await expect(canUpdateTeam({ user: normalUser }, 'team-1')).resolves.toBeNull();
+    await expect(canUpdateTeam({ user: normalUser }, 'team-1')).resolves.toBe(false);
   });
 });
 

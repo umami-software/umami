@@ -31,10 +31,6 @@ export async function errorAccess(
     ...parsed,
     website,
     issue,
-    scope: {
-      websiteId: website.id,
-      resetAt: website.resetAt,
-      retentionDays: website.errorRetentionDays,
-    },
+    scope: { websiteId: website.id, resetAt: website.resetAt },
   };
 }

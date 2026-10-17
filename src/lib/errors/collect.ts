@@ -5,7 +5,6 @@ import { CACHE_TOKEN_TYPE } from '@/lib/constants';
 import { withCorsHeaders } from '@/lib/cors';
 import { secret } from '@/lib/crypto';
 import { getClientInfo, hasBlockedIp } from '@/lib/detect';
-import { isErrorTrackingEnabled } from '@/lib/errors/config';
 import { type ErrorIngestionOutcome, recordErrorIngestion } from '@/lib/errors/metrics';
 import type { ErrorPayload } from '@/lib/errors/schema';
 import { createToken, parseToken } from '@/lib/jwt';
@@ -45,15 +44,11 @@ export async function collectError(request: Request, payload: ErrorPayload) {
     const website = await prisma.client.website.findUnique({ where: { id: payload.website } });
     if (!website || website.deletedAt)
       return respond(badRequest({ message: 'Website not found.' }));
-    if (!isErrorTrackingEnabled(website))
-      return respond(json({ ok: false, reason: 'errors_disabled' }), 'disabled');
-    const now = Date.now();
     if (
-      payload.timestamp > now + 300000 ||
-      payload.timestamp < now - website.errorRetentionDays * 86400000 ||
+      payload.timestamp > Date.now() + 300000 ||
       (website.resetAt && payload.timestamp <= +website.resetAt)
     ) {
-      return respond(badRequest({ message: 'Error timestamp is outside the retention window.' }));
+      return respond(badRequest({ message: 'Error timestamp is out of range.' }));
     }
     let cache: CollectionCache | null = null;
     const header = request.headers.get('x-umami-cache');

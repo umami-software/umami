@@ -1,14 +1,19 @@
 import { beforeEach, describe, expect, test, vi } from 'vitest';
 import { deleteWebsite, getAllUserWebsitesIncludingTeamAccess, resetWebsite } from './website';
 
-const { transactionMock, redisDelMock, redisSetMock, getSearchParametersMock, pagedQueryMock } =
-  vi.hoisted(() => ({
-    transactionMock: vi.fn(),
-    redisDelMock: vi.fn(),
-    redisSetMock: vi.fn(),
-    getSearchParametersMock: vi.fn(),
-    pagedQueryMock: vi.fn(),
-  }));
+const {
+  transactionMock,
+  redisDelMock,
+  redisSetMock,
+  getSearchParametersMock,
+  pagedQueryMock,
+} = vi.hoisted(() => ({
+  transactionMock: vi.fn(),
+  redisDelMock: vi.fn(),
+  redisSetMock: vi.fn(),
+  getSearchParametersMock: vi.fn(),
+  pagedQueryMock: vi.fn(),
+}));
 
 vi.mock('@/lib/prisma', () => ({
   default: {
@@ -87,6 +92,21 @@ function createDeleteTx(calls: string[]) {
     revenue: {
       deleteMany: vi.fn(async () => {
         calls.push('revenue');
+      }),
+    },
+    errorEvent: {
+      deleteMany: vi.fn(async () => {
+        calls.push('errorEvent');
+      }),
+    },
+    errorIssue: {
+      deleteMany: vi.fn(async () => {
+        calls.push('errorIssue');
+      }),
+    },
+    errorRateLimit: {
+      deleteMany: vi.fn(async () => {
+        calls.push('errorRateLimit');
       }),
     },
     eventData: {
@@ -190,6 +210,9 @@ describe('website delete dependencies', () => {
       'heatmapEvent',
       'websiteEngagement',
       'revenue',
+      'errorEvent',
+      'errorIssue',
+      'errorRateLimit',
       'eventData',
       'rawSql',
       'rawSql',
@@ -231,6 +254,9 @@ describe('website delete dependencies', () => {
       'heatmapEvent',
       'websiteEngagement',
       'revenue',
+      'errorEvent',
+      'errorIssue',
+      'errorRateLimit',
       'eventData',
       'rawSql',
       'rawSql',

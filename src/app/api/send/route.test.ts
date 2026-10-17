@@ -558,7 +558,8 @@ describe('cache token handling', () => {
     );
   }
 
-  test('a valid cache token skips session creation when it matches the computed session', async () => {
+  // The website is still fetched so billing blocks apply to visitors who already hold a token.
+  test('a valid cache token skips session creation but still checks the website when it matches the computed session', async () => {
     const timestamp = 1704067200;
     const token = makeCacheToken({ sessionId: makeComputedSessionId(WEBSITE_ID, timestamp) });
 
@@ -567,8 +568,7 @@ describe('cache token handling', () => {
       { headers: { 'x-umami-cache': token } },
     );
 
-    // The website is still looked up so account blocks take effect immediately.
-    expect(fetchWebsiteMock).toHaveBeenCalledWith(WEBSITE_ID);
+    expect(fetchWebsiteMock).toHaveBeenCalledTimes(1);
     expect(createSessionMock).not.toHaveBeenCalled();
     await expect(response.json()).resolves.toMatchObject({ visitId: 'cached-visit' });
   });

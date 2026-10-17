@@ -5,7 +5,6 @@ import prisma from '@/lib/prisma';
 export interface ErrorScope {
   websiteId: string;
   resetAt?: Date | null;
-  retentionDays: number;
 }
 
 type ErrorFilters = Omit<ErrorQuery, 'page' | 'pageSize'>;
@@ -14,14 +13,12 @@ async function queryContext(scope: ErrorScope, filters?: ErrorFilters, issueId?:
   const ch = clickhouse.enabled;
   const params: Record<string, any> = {
     websiteId: scope.websiteId,
-    cutoff: new Date(Date.now() - scope.retentionDays * 86400000),
     resetAt: scope.resetAt || new Date(0),
   };
   const param = (name: string, type = 'String') =>
     ch ? `{${name}:${type}}` : `{{${name}${type === 'UUID' ? '::uuid' : ''}}}`;
   const conditions = [
     `website_id = ${param('websiteId', 'UUID')}`,
-    `received_at >= ${param('cutoff', 'DateTime64(3)')}`,
     `created_at > ${param('resetAt', 'DateTime64(3)')}`,
   ];
   if (filters) {

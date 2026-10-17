@@ -93,16 +93,3 @@ export async function saveError(
   }
   return { eventId: payload.eventId, issueId };
 }
-
-export async function deleteClickHouseErrors(websiteId: string, before?: Date) {
-  if (!clickhouse.enabled) return;
-  const client = await clickhouse.connect();
-  await client.command({
-    query: `ALTER TABLE error_event DELETE WHERE website_id = {websiteId:UUID}${before ? ' AND received_at < {before:DateTime64(3)}' : ''}`,
-    query_params: {
-      websiteId,
-      ...(before ? { before: before.toISOString().replace('T', ' ').replace('Z', '') } : {}),
-    },
-    clickhouse_settings: { mutations_sync: '1' },
-  });
-}
