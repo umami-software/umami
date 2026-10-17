@@ -96,32 +96,27 @@ async function relationalQuery(
 
   const params = { ...queryParams, feature, ...(successEvent ? { successEvent } : {}) };
 
+  // Completion must be derived from the same filtered feature events as featureUsers, and must
+  // match a success event that follows *any* qualifying feature occurrence within the window
+  // (not just the first one, so a retried feature still counts).
   const completionSelect = successEvent
     ? `,
-      (select count(distinct fc.session_id)
-        from (
-          select website_event.session_id as session_id,
-            min(website_event.created_at) as start_at
-          from website_event
-          where website_event.website_id = {{websiteId::uuid}}
-            and website_event.created_at between {{startDate}} and {{endDate}}
-            and website_event.event_name = {{feature}}
-          group by website_event.session_id
-        ) fc
+      (select count(distinct fe.session_id)
+        from feature_events fe
         join website_event se
           on se.website_id = {{websiteId::uuid}}
-          and se.session_id = fc.session_id
+          and se.session_id = fe.session_id
           and se.event_name = {{successEvent}}
-          and se.created_at >= fc.start_at
-          and se.created_at <= ${getAddIntervalQuery('fc.start_at', `${window} minute`)}
+          and se.created_at >= fe.created_at
+          and se.created_at <= ${getAddIntervalQuery('fe.created_at', `${window} minute`)}
       ) as "completedUsers"`
     : `,
       0 as "completedUsers"`;
 
   const totals = await rawQuery(
     `
-    WITH feature_sessions AS (
-      select distinct website_event.session_id
+    WITH feature_events AS (
+      select website_event.session_id, website_event.created_at
       from website_event
       ${cohortQuery}
       ${joinSessionQuery}
@@ -129,6 +124,9 @@ async function relationalQuery(
         and website_event.created_at between {{startDate}} and {{endDate}}
         and website_event.event_name = {{feature}}
         ${filterQuery}
+    ),
+    feature_sessions AS (
+      select distinct session_id from feature_events
     ),
     active_sessions AS (
       select distinct website_event.session_id
@@ -174,11 +172,12 @@ async function relationalQuery(
       ${getDateSQL('website_event.created_at', unit, timezone)} as date,
       count(distinct website_event.session_id) as "featureUsers",
       count(distinct case
-        when ${getDateSQL('u.first_used_at', unit, timezone)} = ${getDateSQL(
-          'website_event.created_at',
-          unit,
-          timezone,
-        )}
+        when u.first_used_at between {{startDate}} and {{endDate}}
+          and ${getDateSQL('u.first_used_at', unit, timezone)} = ${getDateSQL(
+            'website_event.created_at',
+            unit,
+            timezone,
+          )}
         then website_event.session_id end) as "newUsers"
     from website_event
     ${cohortQuery}
@@ -224,35 +223,31 @@ async function clickhouseQuery(
 
   const completionSelect = successEvent
     ? `,
-      (select uniq(fc.session_id)
-        from (
-          select session_id, min(created_at) as start_at
-          from website_event
-          where website_id = {websiteId:UUID}
-            and created_at between {startDate:DateTime64} and {endDate:DateTime64}
-            and event_name = {feature:String}
-          group by session_id
-        ) fc
+      (select uniq(fe.session_id)
+        from feature_events fe
         inner join website_event se
           on se.website_id = {websiteId:UUID}
-          and se.session_id = fc.session_id
+          and se.session_id = fe.session_id
           and se.event_name = {successEvent:String}
-          and se.created_at >= fc.start_at
-          and se.created_at <= fc.start_at + interval ${window} minute
+          and se.created_at >= fe.created_at
+          and se.created_at <= fe.created_at + interval ${window} minute
       ) as completedUsers`
     : `,
       0 as completedUsers`;
 
   const totals = await rawQuery(
     `
-    WITH feature_sessions AS (
-      select distinct session_id
+    WITH feature_events AS (
+      select session_id, created_at
       from website_event
       ${cohortQuery}
       where website_id = {websiteId:UUID}
         and created_at between {startDate:DateTime64} and {endDate:DateTime64}
         and event_name = {feature:String}
         ${filterQuery}
+    ),
+    feature_sessions AS (
+      select distinct session_id from feature_events
     ),
     active_sessions AS (
       select distinct session_id
@@ -296,11 +291,11 @@ async function clickhouseQuery(
     select
       ${getDateSQL('website_event.created_at', unit, timezone)} as date,
       uniq(website_event.session_id) as featureUsers,
-      uniqIf(website_event.session_id, ${getDateSQL('u.first_used_at', unit, timezone)} = ${getDateSQL(
-        'website_event.created_at',
+      uniqIf(website_event.session_id, u.first_used_at between {startDate:DateTime64} and {endDate:DateTime64} and ${getDateSQL(
+        'u.first_used_at',
         unit,
         timezone,
-      )}) as newUsers
+      )} = ${getDateSQL('website_event.created_at', unit, timezone)}) as newUsers
     from website_event
     ${cohortQuery}
     inner join first_use u on u.session_id = website_event.session_id

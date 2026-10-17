@@ -7,6 +7,7 @@ import { LinkPage } from '@/app/(main)/links/[linkId]/LinkPage';
 import { PixelPage } from '@/app/(main)/pixels/[pixelId]/PixelPage';
 import { AttributionPage } from '@/app/(main)/websites/[websiteId]/(reports)/attribution/AttributionPage';
 import { BreakdownPage } from '@/app/(main)/websites/[websiteId]/(reports)/breakdown/BreakdownPage';
+import { FeatureAdoptionPage } from '@/app/(main)/websites/[websiteId]/(reports)/feature-adoption/FeatureAdoptionPage';
 import { FunnelsPage } from '@/app/(main)/websites/[websiteId]/(reports)/funnels/FunnelsPage';
 import { GoalsPage } from '@/app/(main)/websites/[websiteId]/(reports)/goals/GoalsPage';
 import { JourneysPage } from '@/app/(main)/websites/[websiteId]/(reports)/journeys/JourneysPage';
@@ -45,6 +46,7 @@ const PAGE_COMPONENTS: Record<string, React.ComponentType<{ websiteId: string }>
   utm: UTMPage,
   revenue: RevenuePage,
   attribution: AttributionPage,
+  'feature-adoption': FeatureAdoptionPage,
 };
 
 function getSharePath(pathname: string) {

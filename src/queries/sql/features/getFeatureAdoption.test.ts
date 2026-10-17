@@ -100,10 +100,11 @@ describe('getFeatureAdoption postgres branch', () => {
     expect(clickhouseRawQuery).not.toHaveBeenCalled();
 
     const [totalsQuery] = prismaRawQuery.mock.calls[0];
-    expect(totalsQuery).toContain('WITH feature_sessions AS');
+    expect(totalsQuery).toContain('WITH feature_events AS');
+    expect(totalsQuery).toContain('feature_sessions AS');
     expect(totalsQuery).toContain('active_sessions AS');
     expect(totalsQuery).toContain('first_use AS');
-    expect(totalsQuery).toContain('website_event.event_name = {{feature}}');
+    expect(totalsQuery).toContain('and website_event.event_name = {{feature}}');
     expect(totalsQuery).toContain('as "activeUsers"');
 
     expect(result).toMatchObject({
@@ -125,7 +126,20 @@ describe('getFeatureAdoption postgres branch', () => {
     });
   });
 
-  test('computes completion rate and window interval when a success event is provided', async () => {
+  test('applies the selected filters to the feature events used for completion', async () => {
+    await getFeatureAdoption(
+      'website-1',
+      { ...baseParameters, successEvent: 'checkout_completed' },
+      {},
+    );
+
+    const [totalsQuery] = prismaRawQuery.mock.calls[0];
+    // The filtered feature_events CTE must feed completion, not an unfiltered scan.
+    const completionBlock = totalsQuery.slice(totalsQuery.indexOf('"completedUsers"') - 600);
+    expect(completionBlock).toContain('from feature_events fe');
+  });
+
+  test('computes completion from any feature occurrence within the window', async () => {
     prismaRawQuery.mockReset();
     prismaRawQuery
       .mockResolvedValueOnce([totalsRowWithCompletion])
@@ -138,13 +152,22 @@ describe('getFeatureAdoption postgres branch', () => {
     );
 
     const [totalsQuery] = prismaRawQuery.mock.calls[0];
+    expect(totalsQuery).toContain('join website_event se');
     expect(totalsQuery).toContain('and se.event_name = {{successEvent}}');
-    expect(totalsQuery).toContain("fc.start_at + interval '30 minute'");
-    expect(prismaGetAddIntervalQuery).toHaveBeenCalledWith('fc.start_at', '30 minute');
+    expect(totalsQuery).toContain('and se.created_at >= fe.created_at');
+    expect(totalsQuery).toContain("fe.created_at + interval '30 minute'");
+    expect(prismaGetAddIntervalQuery).toHaveBeenCalledWith('fe.created_at', '30 minute');
 
     expect(result.successEvent).toBe('checkout_completed');
     expect(result.completedUsers).toBe(80);
     expect(result.completionRate).toBeCloseTo(40);
+  });
+
+  test('series only counts a first use that falls inside the range', async () => {
+    await getFeatureAdoption('website-1', baseParameters, {});
+
+    const [seriesQuery] = prismaRawQuery.mock.calls[1];
+    expect(seriesQuery).toContain('u.first_used_at between {{startDate}} and {{endDate}}');
   });
 
   test('passes the feature and success event to the query params', async () => {
@@ -168,7 +191,7 @@ describe('getFeatureAdoption clickhouse branch', () => {
     state.mode = 'clickhouse';
   });
 
-  test('emits clickhouse bindings and uniqIf series', async () => {
+  test('emits clickhouse bindings, a filtered feature_events CTE and uniqIf series', async () => {
     const result = await getFeatureAdoption(
       'website-1',
       { ...baseParameters, successEvent: 'checkout_completed' },
@@ -179,12 +202,17 @@ describe('getFeatureAdoption clickhouse branch', () => {
     expect(prismaRawQuery).not.toHaveBeenCalled();
 
     const [totalsQuery] = clickhouseRawQuery.mock.calls[0];
+    expect(totalsQuery).toContain('WITH feature_events AS');
     expect(totalsQuery).toContain('event_name = {feature:String}');
+    expect(totalsQuery).toContain('join website_event se');
     expect(totalsQuery).toContain('and se.event_name = {successEvent:String}');
     expect(totalsQuery).toContain('as activeUsers');
 
     const [seriesQuery] = clickhouseRawQuery.mock.calls[1];
     expect(seriesQuery).toContain('uniqIf(website_event.session_id');
+    expect(seriesQuery).toContain(
+      'u.first_used_at between {startDate:DateTime64} and {endDate:DateTime64}',
+    );
 
     expect(result.adoptionRate).toBeCloseTo(20);
   });

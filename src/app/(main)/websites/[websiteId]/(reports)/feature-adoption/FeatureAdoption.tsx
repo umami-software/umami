@@ -3,7 +3,7 @@ import { Column, Grid, Text } from '@umami/react-zen';
 import { Empty } from '@/components/common/Empty';
 import { LoadingPanel } from '@/components/common/LoadingPanel';
 import { Panel } from '@/components/common/Panel';
-import { useFeatureAdoptionQuery, useLocale, useMessages } from '@/components/hooks';
+import { useDateRange, useFeatureAdoptionQuery, useLocale, useMessages } from '@/components/hooks';
 import { formatDate } from '@/lib/date';
 import { formatLongNumber } from '@/lib/format';
 
@@ -22,6 +22,8 @@ export function FeatureAdoption({
 }: FeatureAdoptionProps) {
   const { t, labels } = useMessages();
   const { locale } = useLocale();
+  const { unit } = useDateRange();
+  const dateFormat = unit === 'hour' || unit === 'minute' ? 'PP p' : 'PP';
   const { data, error, isLoading } = useFeatureAdoptionQuery(
     { websiteId, feature: feature ?? '', successEvent, window },
     { enabled: !!feature },
@@ -29,7 +31,10 @@ export function FeatureAdoption({
 
   if (!feature) {
     return (
-      <Panel title={t(labels.featureAdoptionTitle)} description={t(labels.featureAdoptionDescription)}>
+      <Panel
+        title={t(labels.featureAdoptionTitle)}
+        description={t(labels.featureAdoptionDescription)}
+      >
         <Empty />
       </Panel>
     );
@@ -66,7 +71,7 @@ export function FeatureAdoption({
               <Text weight="bold">{t(labels.newUsers)}</Text>
               <Text weight="bold">{t(labels.returningUsers)}</Text>
               {data.series.flatMap(item => [
-                <Text key={`${item.date}-d`}>{formatDate(item.date, 'PP', locale)}</Text>,
+                <Text key={`${item.date}-d`}>{formatDate(item.date, dateFormat, locale)}</Text>,
                 <Text key={`${item.date}-f`}>{formatLongNumber(item.featureUsers)}</Text>,
                 <Text key={`${item.date}-n`}>{formatLongNumber(item.newUsers)}</Text>,
                 <Text key={`${item.date}-r`}>{formatLongNumber(item.returningUsers)}</Text>,
