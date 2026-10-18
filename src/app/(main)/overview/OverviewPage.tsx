@@ -100,8 +100,10 @@ export function OverviewPage() {
   const { user } = useLoginQuery();
   const { teamId, query, router, updateParams } = useNavigation();
   const { locale, dateLocale } = useLocale();
-  const { dateRange } = useDateRange();
   const { startAt, endAt, unit, timezone } = useDateParameters();
+  // Chart buckets must be built in the same timezone the request uses, or a
+  // day boundary between the two zones draws buckets the response never filled.
+  const { dateRange } = useDateRange({ timezone });
   const { get, useQuery } = useApi();
 
   const websitesQuery = useUserWebsitesQuery(
