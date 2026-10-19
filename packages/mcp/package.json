@@ -37,7 +37,7 @@
     "zod": "^4.4.3"
   },
   "devDependencies": {
-    "@modelcontextprotocol/client": "^2.0.0",
+    "@modelcontextprotocol/client": "^2.2.0",
     "@types/node": "^26.4.0",
     "tsup": "^8.5.0",
     "typescript": "^6.0.3",
