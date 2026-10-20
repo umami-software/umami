@@ -12,7 +12,7 @@ import {
   ChartAnnotationMarkers,
 } from '@/components/charts/ChartAnnotationMarkers';
 import { Legend } from '@/components/metrics/Legend';
-import { getChartBucketIndex } from '@/lib/charts';
+import { getChartBucketIndex, getChartBucketTime } from '@/lib/charts';
 import { DEFAULT_ANIMATION_DURATION } from '@/lib/constants';
 
 ChartJS.defaults.font.family = 'Inter';
@@ -82,13 +82,12 @@ export function Chart({
 
         // Group annotations that land on the same pixel column into a single marker
         const groups = new Map<number, AnnotationMarker>();
+        // Parse the buckets once per layout; every annotation searches the same ones
+        const buckets = (instance.data.datasets[0]?.data || []).map(getChartBucketTime);
 
         for (const annotation of list) {
           const markerDate = annotation.markerDate || annotation.date;
-          const bucketIndex = getChartBucketIndex(
-            instance.data.datasets[0]?.data || [],
-            markerDate,
-          );
+          const bucketIndex = getChartBucketIndex(buckets, markerDate);
           const bucket = instance.getDatasetMeta(0)?.data[bucketIndex];
           const x = Math.round(bucket?.x ?? scales.x.getPixelForValue(markerDate.getTime()));
 

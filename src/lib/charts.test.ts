@@ -1,4 +1,4 @@
-import { describe, expect, test } from 'vitest';
+import { afterEach, describe, expect, test } from 'vitest';
 import { getChartBucketIndex, renderNumberLabels } from './charts';
 
 // test for renderNumberLabels
@@ -44,5 +44,36 @@ describe('getChartBucketIndex', () => {
     const data = [{ x: '2026-08' }, { x: '2026-09' }];
 
     expect(getChartBucketIndex(data, new Date('2026-08-27T07:00:00.000Z'))).toBe(0);
+  });
+
+  test('accepts raw timestamps', () => {
+    expect(getChartBucketIndex([0, 10, 20], new Date(15))).toBe(1);
+  });
+
+  describe('in the browser timezone', () => {
+    const tz = process.env.TZ;
+
+    afterEach(() => {
+      if (tz === undefined) {
+        delete process.env.TZ;
+      } else {
+        process.env.TZ = tz;
+      }
+    });
+
+    test.each(['Asia/Seoul', 'Europe/Copenhagen', 'UTC', 'America/Los_Angeles'])(
+      'matches local day and month labels in %s',
+      timezone => {
+        process.env.TZ = timezone;
+
+        const days = [{ x: '2026-09-04' }, { x: '2026-09-05' }, { x: '2026-09-06' }];
+        const months = [{ x: '2026-08' }, { x: '2026-09' }];
+
+        expect(getChartBucketIndex(days, new Date(2026, 8, 3))).toBe(-1);
+        expect(getChartBucketIndex(days, new Date(2026, 8, 5))).toBe(1);
+        expect(getChartBucketIndex(days, new Date(2026, 8, 5, 23, 59))).toBe(1);
+        expect(getChartBucketIndex(months, new Date(2026, 8, 1))).toBe(1);
+      },
+    );
   });
 });
