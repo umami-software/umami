@@ -151,9 +151,16 @@ async function relationalQuery({
       createdAt,
     });
 
-    const { revenue, currency } = eventData;
+    const { revenue: revenueValue, currency: currencyValue } = eventData;
+    const revenue = Number(revenueValue);
+    const currency = typeof currencyValue === 'string' ? currencyValue.trim() : '';
 
-    if (revenue > 0 && currency) {
+    if (
+      (typeof revenueValue === 'number' || typeof revenueValue === 'string') &&
+      Number.isFinite(revenue) &&
+      revenue > 0 &&
+      currency
+    ) {
       await saveRevenue({
         websiteId,
         sessionId,
@@ -275,5 +282,26 @@ async function clickhouseQuery({
       eventData,
       createdAt,
     });
+
+    const { revenue: revenueValue, currency: currencyValue } = eventData;
+    const revenue = Number(revenueValue);
+    const currency = typeof currencyValue === 'string' ? currencyValue.trim() : '';
+
+    if (
+      (typeof revenueValue === 'number' || typeof revenueValue === 'string') &&
+      Number.isFinite(revenue) &&
+      revenue > 0 &&
+      currency
+    ) {
+      await saveRevenue({
+        websiteId,
+        sessionId,
+        eventId,
+        eventName: truncateString(eventName, FIELD_LENGTH.eventName),
+        currency,
+        revenue,
+        createdAt,
+      });
+    }
   }
 }
