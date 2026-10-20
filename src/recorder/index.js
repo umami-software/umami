@@ -299,10 +299,10 @@ import { addCustomEvent, record } from 'rrweb';
     heatmapFlushTimer = setTimeout(() => flushHeatmap(), HEATMAP_FLUSH_INTERVAL);
   };
 
-  const bufferHeatmapEvent = event => {
+  const bufferHeatmapEvent = (event, timestamp) => {
     heatmapBuffer.push({
       ...event,
-      timestamp: Date.now(),
+      timestamp,
     });
 
     if (heatmapBuffer.length >= HEATMAP_FLUSH_EVENT_COUNT) {
@@ -314,15 +314,16 @@ import { addCustomEvent, record } from 'rrweb';
   };
 
   const queueHeatmapEvent = event => {
+    const timestamp = Date.now();
     const callback = getBeforeSend();
 
     if (!callback) {
-      bufferHeatmapEvent(event);
+      bufferHeatmapEvent(event, timestamp);
       return;
     }
 
     Promise.resolve(callback('heatmap', event)).then(result => {
-      if (result) bufferHeatmapEvent(result);
+      if (result) bufferHeatmapEvent(result, timestamp);
     });
   };
 

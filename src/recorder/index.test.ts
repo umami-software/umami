@@ -196,6 +196,25 @@ test('applies umamiConfig.beforeSend and waits for a returned promise', async ()
   expect(events.find(event => event.type === 'click')).toMatchObject({ pageY: 520, pageH: 2000 });
 });
 
+test('keeps the click time when before-send resolves later', async () => {
+  let resolveHook: () => void = () => {};
+  (window as TestWindow).umamiConfig = {
+    beforeSend: (_type: string, event: Record<string, unknown>) =>
+      new Promise(resolve => {
+        resolveHook = () => resolve(event);
+      }),
+  };
+
+  const fetchMock = await loadRecorder();
+  const now = vi.spyOn(Date, 'now').mockReturnValue(1_000);
+  await click();
+  now.mockReturnValue(5_000);
+  resolveHook();
+  const events = await flushHeatmap(fetchMock);
+
+  expect(events.find(event => event.type === 'click')).toMatchObject({ timestamp: 1_000 });
+});
+
 test('data-before-send takes precedence over umamiConfig.beforeSend', async () => {
   const fromGlobal = vi.fn((_type, event) => event);
   (window as TestWindow).umamiConfig = { beforeSend: fromGlobal };
