@@ -178,6 +178,7 @@ export function RealtimeLog({ data }: { data: any }) {
               <Avatar seed={row.sessionId} size={32} />
               {isActive && (
                 <span
+                  role="img"
                   title={t(labels.online)}
                   aria-label={t(labels.online)}
                   data-testid="realtime-active-indicator"
