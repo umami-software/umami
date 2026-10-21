@@ -54,7 +54,7 @@ export function RealtimeLog({ data }: { data: any }) {
       return active;
     }
 
-    const now = Date.now();
+    const now = data.timestamp;
     const threshold = ACTIVE_THRESHOLD_MINUTES * 60 * 1000;
     const latestBySession = new Map<string, number>();
 
