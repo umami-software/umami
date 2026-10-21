@@ -21,6 +21,7 @@
     "start:docker": "npm-run-all check:db update:tracker start:server",
     "start-docker": "pnpm run start:docker",
     "start:env": "node scripts/start-env.js",
+    "start-env": "pnpm run start:env",
     "start:server": "node server.js",
     "build:app": "next build --turbo",
     "build:icons": "svgr ./src/assets --out-dir src/components/svg --typescript",
