@@ -1,3 +1,4 @@
+import { fetchQuery } from '@/lib/queryCache';
 import { getQueryFilters, parseRequest } from '@/lib/request';
 import { json, unauthorized } from '@/lib/response';
 import {
@@ -35,7 +36,7 @@ export async function GET(
 
   const filters = await getQueryFilters(query, websiteId);
 
-  const data = await getSessionReplays(websiteId, filters);
+  const data = await fetchQuery(websiteId, 'replays-list', query, filters.endDate, () => getSessionReplays(websiteId, filters));
 
   return json(data);
 }

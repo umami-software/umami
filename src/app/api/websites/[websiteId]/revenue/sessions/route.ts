@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { fetchQuery } from '@/lib/queryCache';
 import { getQueryFilters, parseRequest } from '@/lib/request';
 import { json, unauthorized } from '@/lib/response';
 import { filterParams, pagingParams, searchParams, withDateRange } from '@/lib/schema';
@@ -31,7 +32,7 @@ export async function GET(
   const { currency, ...rest } = query;
   const filters = await getQueryFilters(rest, websiteId);
 
-  const data = await getRevenueSessions(websiteId, currency, filters);
+  const data = await fetchQuery(websiteId, 'revenue-sessions', query, filters.endDate, () => getRevenueSessions(websiteId, currency, filters));
 
   return json(data);
 }

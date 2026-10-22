@@ -1,3 +1,4 @@
+import { expireQueryCache } from '@/lib/queryCache';
 import type { Prisma } from '@/generated/prisma/client';
 import { ENTITY_TYPE } from '@/lib/constants';
 import { uuid } from '@/lib/crypto';
@@ -123,6 +124,8 @@ export async function DELETE(
   }
 
   await deleteWebsite(websiteId);
+
+  await expireQueryCache(websiteId);
 
   return ok();
 }

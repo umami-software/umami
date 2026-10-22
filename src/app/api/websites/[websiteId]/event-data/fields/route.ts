@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { fetchQuery } from '@/lib/queryCache';
 import { getQueryFilters, parseRequest } from '@/lib/request';
 import { json, unauthorized } from '@/lib/response';
 import { filterParams } from '@/lib/schema';
@@ -31,7 +32,9 @@ export async function GET(
   const { eventName } = query;
   const filters = await getQueryFilters(query, websiteId);
 
-  const data = await getEventDataFields(websiteId, eventName, filters);
+  const data = await fetchQuery(websiteId, 'event-data-fields', query, filters.endDate, () =>
+    getEventDataFields(websiteId, eventName, filters),
+  );
 
   return json(data);
 }

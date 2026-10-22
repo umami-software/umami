@@ -1,3 +1,4 @@
+import { expireQueryCache } from '@/lib/queryCache';
 import { parseRequest } from '@/lib/request';
 import { ok, unauthorized } from '@/lib/response';
 import { canUpdateWebsite } from '@/permissions';
@@ -20,6 +21,8 @@ export async function POST(
   }
 
   await resetWebsite(websiteId);
+
+  await expireQueryCache(websiteId);
 
   return ok();
 }

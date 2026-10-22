@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { fetchQuery } from '@/lib/queryCache';
 import { getQueryFilters, parseRequest } from '@/lib/request';
 import { badRequest, json, unauthorized } from '@/lib/response';
 import { filterParams, withDateRange } from '@/lib/schema';
@@ -39,5 +40,5 @@ export async function GET(
 
   const parameters = { ...filters, currency } as RevenuParameters;
 
-  return json(await getRevenueMetrics(websiteId, parameters, filters, type as RevenueMetricType));
+  return json(await fetchQuery(websiteId, 'revenue-metrics', query, filters.endDate, () => getRevenueMetrics(websiteId, parameters, filters, type as RevenueMetricType)));
 }

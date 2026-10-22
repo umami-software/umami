@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { fetchQuery } from '@/lib/queryCache';
 import { getQueryFilters, parseRequest } from '@/lib/request';
 import { json, unauthorized } from '@/lib/response';
 import { filterParams, timezoneParam } from '@/lib/schema';
@@ -30,7 +31,9 @@ export async function GET(
 
   const filters = await getQueryFilters(query, websiteId);
 
-  const data = await getWeeklyTraffic(websiteId, filters);
+  const data = await fetchQuery(websiteId, 'sessions-weekly', query, filters.endDate, () =>
+    getWeeklyTraffic(websiteId, filters),
+  );
 
   return json(data);
 }

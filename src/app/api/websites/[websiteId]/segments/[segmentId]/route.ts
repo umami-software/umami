@@ -1,3 +1,4 @@
+import { expireQueryCache } from '@/lib/queryCache';
 import { z } from 'zod';
 import { parseRequest } from '@/lib/request';
 import { badRequest, json, notFound, ok, unauthorized } from '@/lib/response';
@@ -69,6 +70,9 @@ export async function POST(
     parameters,
   } as any);
 
+  // Cached analytics keyed by this segment's id reflect its old definition.
+  await expireQueryCache(websiteId);
+
   return json(result);
 }
 
@@ -95,6 +99,8 @@ export async function DELETE(
   }
 
   await deleteSegment(segmentId);
+
+  await expireQueryCache(websiteId);
 
   return ok();
 }

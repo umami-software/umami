@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { fetchQuery } from '@/lib/queryCache';
 import { getQueryFilters, parseRequest } from '@/lib/request';
 import { json, unauthorized } from '@/lib/response';
 import { filterParams } from '@/lib/schema';
@@ -29,7 +30,9 @@ export async function GET(
 
   const filters = await getQueryFilters(query, websiteId);
 
-  const metrics = await getWebsiteSessionStats(websiteId, filters);
+  const metrics = await fetchQuery(websiteId, 'sessions-stats', query, filters.endDate, () =>
+    getWebsiteSessionStats(websiteId, filters),
+  );
 
   const data = Object.keys(metrics[0]).reduce((obj, key) => {
     obj[key] = {

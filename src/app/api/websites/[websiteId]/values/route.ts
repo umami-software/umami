@@ -1,4 +1,5 @@
 import { EVENT_COLUMNS, FILTER_COLUMNS, SEGMENT_TYPES, SESSION_COLUMNS } from '@/lib/constants';
+import { fetchQuery } from '@/lib/queryCache';
 import { getQueryFilters, parseRequest } from '@/lib/request';
 import { badRequest, json, unauthorized } from '@/lib/response';
 import { fieldsParam, searchParams, withDateRange } from '@/lib/schema';
@@ -51,7 +52,7 @@ export async function GET(
     }));
   } else {
     const filters = await getQueryFilters(query, websiteId);
-    values = await getValues(websiteId, FILTER_COLUMNS[type], filters);
+    values = await fetchQuery(websiteId, 'values', query, filters.endDate, () => getValues(websiteId, FILTER_COLUMNS[type], filters));
   }
 
   return json(values.filter(n => n?.value != null).sort());

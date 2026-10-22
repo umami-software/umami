@@ -1,3 +1,4 @@
+import { fetchQuery } from '@/lib/queryCache';
 import { getQueryFilters, parseRequest } from '@/lib/request';
 import { json, unauthorized } from '@/lib/response';
 import { filterParams, pagingParams, searchParams, withDateRange } from '@/lib/schema';
@@ -28,7 +29,9 @@ export async function GET(
 
   const filters = await getQueryFilters(query, websiteId);
 
-  const data = await getWebsiteEvents(websiteId, filters);
+  const data = await fetchQuery(websiteId, 'events-list', query, filters.endDate, () =>
+    getWebsiteEvents(websiteId, filters),
+  );
 
   return json(data);
 }

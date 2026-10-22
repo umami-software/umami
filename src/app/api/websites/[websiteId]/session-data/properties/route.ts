@@ -1,5 +1,6 @@
 import { z } from 'zod';
 import { parsePropertyFilters } from '@/lib/params';
+import { fetchQuery } from '@/lib/queryCache';
 import { getQueryFilters, parseRequest } from '@/lib/request';
 import { json, unauthorized } from '@/lib/response';
 import { filterParams } from '@/lib/schema';
@@ -33,7 +34,7 @@ export async function GET(
   const filters = await getQueryFilters(rest, websiteId);
   const propertyFilters = parsePropertyFilters(query);
 
-  const data = await getSessionDataProperties(websiteId, filters, propertyFilters, propertyName);
+  const data = await fetchQuery(websiteId, 'session-data-properties', query, filters.endDate, () => getSessionDataProperties(websiteId, filters, propertyFilters, propertyName));
 
   return json(data);
 }

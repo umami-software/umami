@@ -1,4 +1,5 @@
 import { getCompareDate } from '@/lib/date';
+import { fetchQuery } from '@/lib/queryCache';
 import { getQueryFilters, parseRequest } from '@/lib/request';
 import { json, unauthorized } from '@/lib/response';
 import { filterParams, withDateRange } from '@/lib/schema';
@@ -27,19 +28,26 @@ export async function GET(
 
   const filters = await getQueryFilters(query, websiteId);
 
-  const data = await getWebsiteStats(websiteId, filters);
+  const result = await fetchQuery(websiteId, 'stats', query, filters.endDate, async () => {
+    const { startDate, endDate } = getCompareDate(
+      filters.compare ?? 'prev',
+      filters.startDate,
+      filters.endDate,
+    );
 
-  const { startDate, endDate } = getCompareDate(
-    filters.compare ?? 'prev',
-    filters.startDate,
-    filters.endDate,
-  );
+    // The current and comparison periods are independent aggregations over the
+    // event table; running them concurrently halves the endpoint's wall time.
+    const [data, comparison] = await Promise.all([
+      getWebsiteStats(websiteId, filters),
+      getWebsiteStats(websiteId, {
+        ...filters,
+        startDate,
+        endDate,
+      }),
+    ]);
 
-  const comparison = await getWebsiteStats(websiteId, {
-    ...filters,
-    startDate,
-    endDate,
+    return { ...data, comparison };
   });
 
-  return json({ ...data, comparison });
+  return json(result);
 }
