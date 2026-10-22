@@ -942,10 +942,16 @@ function ScrollHeatmapView({
                 transform: `scale(${fit.scale})`,
               }}
             >
-              {shouldRenderSnapshot && !snapshotReady && <CanvasLoading />}
-              {shouldRenderSnapshot && snapshot && (
-                <SnapshotPreview snapshot={snapshot} onReady={handleSnapshotReady} />
-              )}
+              {/* Same snapshotClip wrapper as the click view: it carries the
+                  Safari compositing isolation (z-index 0 + isolation) so the
+                  iframe snapshot cannot paint above the overlay while
+                  scrolling .canvasWrapper. See issue #4624. */}
+              <div className={styles.snapshotClip}>
+                {shouldRenderSnapshot && !snapshotReady && <CanvasLoading />}
+                {shouldRenderSnapshot && snapshot && (
+                  <SnapshotPreview snapshot={snapshot} onReady={handleSnapshotReady} />
+                )}
+              </div>
               {showOverlay && (
                 <div className={styles.overlay}>
                   {bands.map(band => {

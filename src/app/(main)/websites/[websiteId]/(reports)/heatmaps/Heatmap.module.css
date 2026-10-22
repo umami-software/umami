@@ -197,6 +197,13 @@
   overflow: hidden;
   border-radius: inherit;
   background: inherit;
+  /* Pin the iframe snapshot subtree into its own stacking context. Safari
+     composites the iframe into a separate GPU layer and, while scrolling
+     .canvasWrapper, can paint that layer above the click/scroll overlay,
+     ignoring the z-index order (issue #4624). isolation keeps the snapshot
+     layer below the overlay; z-index 0 gives it an explicit level. */
+  z-index: 0;
+  isolation: isolate;
 }
 
 .snapshot {
@@ -237,6 +244,15 @@
   bottom: 0;
   z-index: 3;
   pointer-events: none;
+  /* Promote the overlay to its own compositing layer. In real Safari, the
+     iframe snapshot gets its own GPU layer and paints over the non-composited
+     overlay after scrolling, so the click dots flash or vanish (issue #4624).
+     translateZ(0) plus will-change keeps the overlay composited above the
+     iframe snapshot. The -webkit prefix covers older Safari builds. No visual
+     change in Chrome or Firefox. */
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0);
+  will-change: transform;
 }
 
 .canvasLoading {
