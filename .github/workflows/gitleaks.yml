@@ -43,11 +43,12 @@ jobs:
         run: |
           # A new branch has no previous SHA. Compare it with the default branch.
           if [[ "$BASE_SHA" == "0000000000000000000000000000000000000000" ]]; then
-            BASE_SHA=$(git merge-base "origin/$DEFAULT_BRANCH" "$HEAD_SHA")
+            BASE_SHA=$(git merge-base "origin/$DEFAULT_BRANCH" "$HEAD_SHA") || BASE_SHA=""
           fi
-          # Manual runs have no base SHA and scan the complete history.
-          if [[ -n "$BASE_SHA" && "$BASE_SHA" != "0000000000000000000000000000000000000000" ]]; then
+          # Force-pushes may discard the previous tip even with a full checkout.
+          if [[ -n "$BASE_SHA" ]] && git cat-file -e "$BASE_SHA^{commit}" 2>/dev/null; then
             gitleaks git --redact --log-opts="$BASE_SHA..$HEAD_SHA"
           else
+            # Manual runs and unavailable bases must still scan current history.
             gitleaks git --redact --log-opts="$HEAD_SHA"
           fi
