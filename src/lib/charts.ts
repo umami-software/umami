@@ -1,3 +1,4 @@
+import { parseISO } from 'date-fns';
 import { formatDate } from '@/lib/date';
 import { formatLongNumber } from '@/lib/format';
 
@@ -25,11 +26,19 @@ export function renderDateLabels(unit: string, locale: string) {
   };
 }
 
+// Reads a bucket like the time scale does: '2026-09-05' is local midnight, new Date() makes it UTC
+export function getChartBucketTime(bucket: any) {
+  const x = bucket?.x ?? bucket;
+
+  return (typeof x === 'string' ? parseISO(x) : new Date(x)).getTime();
+}
+
+// Returns the last bucket starting at or before date, or -1. Buckets must be in ascending order.
 export function getChartBucketIndex(data: any[], date: Date) {
   let index = -1;
 
   for (let i = 0; i < data.length; i++) {
-    const timestamp = new Date(data[i]?.x ?? data[i]).getTime();
+    const timestamp = getChartBucketTime(data[i]);
 
     if (!Number.isFinite(timestamp)) continue;
     if (timestamp > date.getTime()) break;
