@@ -48,6 +48,7 @@ export async function GET(
   const {
     data: rows,
     count,
+    isCapped,
     page,
     pageSize,
   } = (await getEventData(websiteId, filters)) as PageResult<EventDataRow[]>;
@@ -66,5 +67,5 @@ export async function GET(
     entry.eventProperties.push(props);
   }
 
-  return json({ data: [...eventMap.values()], count, page, pageSize });
+  return json({ data: [...eventMap.values()], count, isCapped, page, pageSize });
 }
