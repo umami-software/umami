@@ -1,8 +1,9 @@
 import { ENTITY_TYPE } from '@/lib/constants';
 import { uuid } from '@/lib/crypto';
+import { isEntityIdInUse } from '@/lib/entity';
 import { fetchAccount, fetchTeam } from '@/lib/load';
 import { getQueryFilters, parseRequest } from '@/lib/request';
-import { json, unauthorized } from '@/lib/response';
+import { badRequest, json, unauthorized } from '@/lib/response';
 import { getCloudWebsiteLimit } from '@/lib/subscription';
 import { canCreateTeamWebsite, canCreateWebsite } from '@/permissions';
 import { createShare, createWebsite, getTeamWebsiteCount, getWebsiteCount } from '@/queries/prisma';
@@ -57,6 +58,11 @@ export async function POST(request: Request) {
 
   if (!canCreate) {
     return unauthorized();
+  }
+
+  // Ids share one namespace with every entity and user; see isEntityIdInUse.
+  if (id && (await isEntityIdInUse(id))) {
+    return badRequest({ message: 'ID already in use.' });
   }
 
   const data: any = {
