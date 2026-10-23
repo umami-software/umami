@@ -11,12 +11,14 @@ export function useDateRange(options: { ignoreOffset?: boolean; timezone?: strin
   } = useNavigation();
   const { locale } = useLocale();
   const dateRange = useMemo(() => {
-    const dateRangeObject = parseDateRange(
-      date || getItem(DATE_RANGE_CONFIG) || DEFAULT_DATE_RANGE_VALUE,
-      unit,
-      locale,
-      options.timezone,
-    );
+    // Fall back to the default range when the URL or stored value can't be parsed.
+    const dateRangeObject =
+      parseDateRange(
+        date || getItem(DATE_RANGE_CONFIG) || DEFAULT_DATE_RANGE_VALUE,
+        unit,
+        locale,
+        options.timezone,
+      ) ?? parseDateRange(DEFAULT_DATE_RANGE_VALUE, unit, locale, options.timezone);
 
     return !options.ignoreOffset && offset
       ? getOffsetDateRange(dateRangeObject, +offset)
@@ -24,14 +26,16 @@ export function useDateRange(options: { ignoreOffset?: boolean; timezone?: strin
   }, [date, unit, offset, options]);
 
   const dateCompare = getCompareDate(compare, dateRange.startDate, dateRange.endDate);
+  // False when an invalid date was replaced by the default range.
+  const isValidDate = dateRange.value === date;
 
   return {
     date,
     unit,
     offset,
     compare,
-    isAllTime: date.endsWith(`:all`),
-    isCustomRange: date.startsWith('range:'),
+    isAllTime: isValidDate && date.endsWith(`:all`),
+    isCustomRange: isValidDate && date.startsWith('range:'),
     dateRange,
     dateCompare,
   };

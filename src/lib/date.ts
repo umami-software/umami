@@ -23,6 +23,7 @@ import {
   isDate,
   isEqual,
   isSameDay,
+  isValid,
   max,
   min,
   startOfDay,
@@ -156,6 +157,11 @@ export function parseDateRange(
 
     const startDate = new Date(+startTime);
     const endDate = new Date(+endTime);
+
+    if (!isValid(startDate) || !isValid(endDate)) {
+      return null;
+    }
+
     const unit = getMinimumUnit(startDate, endDate, true);
 
     return {
@@ -170,7 +176,13 @@ export function parseDateRange(
   const date = new Date();
   const now = timezone ? toZonedTime(date, timezone) : date;
   const dateLocale = getDateLocale(locale);
-  const { num = 1, unit } = parseDateValue(value);
+  const dateValue = parseDateValue(value);
+
+  if (!dateValue) {
+    return null;
+  }
+
+  const { num = 1, unit } = dateValue;
 
   switch (unit) {
     case 'hour':
