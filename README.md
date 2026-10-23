@@ -15,6 +15,10 @@
   <a href="https://cloud.umami.is/share/LGazGOecbDtaIwDr/umami.is" style="text-decoration: none;"><img src="https://img.shields.io/badge/Try%20Demo%20Now-Click%20Here-brightgreen" alt="Umami Demo" /></a>
 </p>
 
+<p align="center">
+  [![Deploy to Railyard](https://app.railyard.run/deploy/badge)](https://app.railyard.run/deploy?repo=https://github.com/umami-software/umami)
+</p>
+
 ---
 
 ## 🚀 Getting Started
