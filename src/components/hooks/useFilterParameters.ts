@@ -2,6 +2,7 @@ import { useMemo } from 'react';
 import { FILTER_COLUMNS } from '@/lib/constants';
 import { useShare } from './context/useShare';
 import { useNavigation } from './useNavigation';
+import { allowShareFilter } from '@/lib/share';
 
 export function useFilterParameters({
   includePagination = true,
@@ -10,7 +11,7 @@ export function useFilterParameters({
 } = {}) {
   const { pathname, query } = useNavigation();
   const share = useShare();
-  const allowFilter = share?.parameters?.allowFilter !== false;
+  const allowFilter = allowShareFilter(share?.parameters);
   const isEventsPath = pathname.endsWith('/events');
 
   return useMemo(() => {
