@@ -1,6 +1,7 @@
 import { describe, expect, test } from 'vitest';
 import { DATA_TYPE, OPERATORS } from './constants';
 import {
+  filtersObjectToArray,
   parseSessionPropertyFilters,
   parseUniversalEventPropertyFilters,
   serializeSessionPropertyFilters,
@@ -69,5 +70,40 @@ describe('session property filter params', () => {
         epf2: '1.eq',
       }),
     ).toEqual([]);
+  });
+});
+
+describe('filtersObjectToArray', () => {
+  // name and paramName become SQL placeholder names ({{name}} / {name:Type}).
+  // Object filters arrive from request bodies (compat Reports API), so letting them
+  // pick those names allows breaking out of the placeholder into raw SQL.
+  const injection = 'p}} or 1=1 --';
+
+  test('ignores client-supplied paramName in object filters', () => {
+    const [filter] = filtersObjectToArray({
+      entry: { name: 'entry', operator: OPERATORS.contains, value: 'x', paramName: injection },
+    } as any);
+
+    expect(filter.name).toBe('entry');
+    expect(filter.paramName).toBeUndefined();
+  });
+
+  test('ignores client-supplied name in object filters', () => {
+    const [filter] = filtersObjectToArray({
+      entry: { name: injection, operator: OPERATORS.contains, value: 'x' },
+    } as any);
+
+    expect(filter.name).toBe('entry');
+    expect(filter.paramName).toBeUndefined();
+  });
+
+  test('keeps numbered keys as distinct params for repeated filters', () => {
+    const [filter] = filtersObjectToArray({
+      path1: { name: 'path', operator: OPERATORS.equals, value: '/a', paramName: injection },
+    } as any);
+
+    expect(filter.name).toBe('path');
+    expect(filter.paramName).toBe('path1');
+    expect(filter.value).toBe('/a');
   });
 });
