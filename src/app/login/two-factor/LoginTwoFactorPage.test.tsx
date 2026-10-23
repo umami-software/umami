@@ -4,15 +4,33 @@ import { LoginTwoFactorPage } from './LoginTwoFactorPage';
 
 const mockVerify = vi.fn();
 
-vi.mock('@/components/hooks', () => ({
-  useMessages: () => ({
-    t: (value: string) => value,
-    labels: new Proxy({}, { get: (_, key) => String(key) }),
-    messages: new Proxy({}, { get: (_, key) => String(key) }),
-    getErrorMessage: () => 'Invalid code',
-  }),
-  useTwoFactorVerifyMutation: () => ({ mutateAsync: mockVerify, isPending: false }),
-}));
+vi.mock('@/components/hooks', async () => {
+  const { useState } = await import('react');
+
+  return {
+    useMessages: () => ({
+      t: (value: string) => value,
+      labels: new Proxy({}, { get: (_, key) => String(key) }),
+      messages: new Proxy({}, { get: (_, key) => String(key) }),
+      getErrorMessage: () => 'Invalid code',
+    }),
+    // Tracks isPending like the real mutation hook.
+    useTwoFactorVerifyMutation: () => {
+      const [isPending, setIsPending] = useState(false);
+
+      const mutateAsync = async (data: unknown) => {
+        setIsPending(true);
+        try {
+          return await mockVerify(data);
+        } finally {
+          setIsPending(false);
+        }
+      };
+
+      return { mutateAsync, isPending };
+    },
+  };
+});
 
 beforeEach(() => {
   mockVerify.mockReset();
@@ -40,6 +58,28 @@ test('clears a rejected code and focuses the first digit again', async () => {
   expect(screen.getByLabelText('Digit 1')).toHaveValue('');
   expect(screen.getByLabelText('Digit 6')).toHaveValue('');
   expect(screen.getByLabelText('Digit 1')).toHaveFocus();
+});
+
+test('keeps focus on the code while it is being verified', async () => {
+  let rejectVerify: (error: Error) => void = () => {};
+  mockVerify.mockReturnValue(
+    new Promise((_, reject) => {
+      rejectVerify = reject;
+    }),
+  );
+  const { user } = render(<LoginTwoFactorPage />);
+
+  await user.keyboard('123456');
+
+  const lastDigit = screen.getByLabelText('Digit 6');
+  expect(lastDigit).toHaveAttribute('readonly');
+  expect(lastDigit).not.toBeDisabled();
+  expect(lastDigit).toHaveFocus();
+
+  rejectVerify(new Error('Invalid code'));
+
+  await waitFor(() => expect(screen.getByLabelText('Digit 1')).toHaveFocus());
+  expect(screen.getByLabelText('Digit 6')).not.toHaveAttribute('readonly');
 });
 
 test('focuses the backup code field when switching to backup codes', async () => {
