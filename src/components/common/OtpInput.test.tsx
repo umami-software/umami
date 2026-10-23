@@ -40,3 +40,46 @@ test('a multi-character value delivered via onChange (mobile paste fallback) fil
   expect(onChange).toHaveBeenLastCalledWith('123456');
   expect(onComplete).toHaveBeenCalledWith('123456');
 });
+
+test('autoFocus focuses the first digit on mount', () => {
+  render(<OtpInput value="" onChange={vi.fn()} autoFocus />);
+
+  expect(getDigitInput(0)).toHaveFocus();
+});
+
+test('does not take focus without autoFocus', () => {
+  render(<OtpInput value="" onChange={vi.fn()} />);
+
+  expect(getDigitInput(0)).not.toHaveFocus();
+});
+
+test('autoFocus focuses the first digit again when re-enabled', () => {
+  const { rerender } = render(<OtpInput value="" onChange={vi.fn()} disabled autoFocus />);
+
+  expect(getDigitInput(0)).not.toHaveFocus();
+
+  rerender(<OtpInput value="" onChange={vi.fn()} autoFocus />);
+
+  expect(getDigitInput(0)).toHaveFocus();
+});
+
+test('clearing the value moves focus back to the first digit', async () => {
+  const { user, rerender } = render(<OtpInput value="123456" onChange={vi.fn()} />);
+
+  await user.click(getDigitInput(5));
+  rerender(<OtpInput value="" onChange={vi.fn()} />);
+
+  expect(getDigitInput(0)).toHaveFocus();
+});
+
+test('readOnly keeps focus and ignores paste and backspace', async () => {
+  const onChange = vi.fn();
+  const { user } = render(<OtpInput value="123456" onChange={onChange} readOnly />);
+
+  await user.click(getDigitInput(5));
+  await user.keyboard('{Backspace}');
+  await user.paste('654321');
+
+  expect(getDigitInput(5)).toHaveFocus();
+  expect(onChange).not.toHaveBeenCalled();
+});
