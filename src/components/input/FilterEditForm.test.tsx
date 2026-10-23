@@ -62,3 +62,44 @@ test('hides the event property tab outside the events page', () => {
   expect(screen.queryByRole('tab', { name: 'Event Properties' })).not.toBeInTheDocument();
   expect(screen.getByRole('tab', { name: 'Session Properties' })).toBeInTheDocument();
 });
+
+test('seeds from the URL when no saved values are given', async () => {
+  mockUseNavigation.mockReturnValue({
+    pathname: '/websites/test',
+    query: { segment: 'url-segment', match: 'any' },
+  });
+  const onChange = vi.fn();
+
+  render(<FilterEditForm websiteId="test-website" onChange={onChange} />);
+  screen.getByRole('button', { name: 'Apply' }).click();
+
+  expect(onChange).toHaveBeenCalledWith(
+    expect.objectContaining({ segment: 'url-segment', match: 'any' }),
+  );
+});
+
+test('never mixes URL state into saved values, even for fields they leave empty', async () => {
+  mockUseNavigation.mockReturnValue({
+    pathname: '/websites/test',
+    query: { segment: 'url-segment', cohort: 'url-cohort', match: 'any' },
+  });
+  const onChange = vi.fn();
+
+  render(
+    <FilterEditForm
+      websiteId="test-website"
+      defaultValues={{ filters: [{ name: 'browser', operator: 'eq', value: 'chrome' }] }}
+      onChange={onChange}
+    />,
+  );
+  screen.getByRole('button', { name: 'Apply' }).click();
+
+  expect(onChange).toHaveBeenCalledWith({
+    filters: [{ name: 'browser', operator: 'eq', value: 'chrome' }],
+    eventPropertyFilters: [],
+    sessionPropertyFilters: [],
+    segment: undefined,
+    cohort: undefined,
+    match: undefined,
+  });
+});

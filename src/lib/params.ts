@@ -1,5 +1,6 @@
 import { DATA_TYPE, FILTER_COLUMNS, OPERATORS } from '@/lib/constants';
 import type {
+  BoardRowFilters,
   Filter,
   Operator,
   PropertyFilter,
@@ -263,6 +264,65 @@ export function serializePropertyFilters(
       ];
     }),
   );
+}
+
+/**
+ * Merges an extra set of filter params into a base set without letting equal
+ * param names collide: a second `path` becomes `path1`, a second `spf0`
+ * becomes the next free `spfN`. Without the renumbering an added filter would
+ * silently replace the base one instead of narrowing it further.
+ *
+ * `segment`, `cohort` and `match` are single-valued and left to the caller.
+ */
+export function mergeFilterParams(
+  base: Record<string, any>,
+  extra: Record<string, string>,
+): Record<string, any> {
+  const merged: Record<string, any> = { ...base };
+
+  const nextFreeKey = (format: (n: number) => string) => {
+    let n = 0;
+    while (merged[format(n)] !== undefined) {
+      n += 1;
+    }
+    return format(n);
+  };
+
+  for (const [key, value] of Object.entries(extra)) {
+    if (key === 'segment' || key === 'cohort' || key === 'match') {
+      continue;
+    }
+
+    if (SESSION_PROPERTY_FILTER_PARAM.test(key)) {
+      merged[nextFreeKey(n => `spf${n}`)] = value;
+      continue;
+    }
+
+    const baseName = key.replace(/\d+$/, '');
+    merged[nextFreeKey(n => (n === 0 ? baseName : `${baseName}${n}`))] = value;
+  }
+
+  return merged;
+}
+
+/**
+ * Flattens a board row's saved filters into the same query-param shape the
+ * URL uses, so scoped queries are indistinguishable from filtered ones.
+ */
+export function boardRowFiltersToParams(rowFilters?: BoardRowFilters): Record<string, string> {
+  if (!rowFilters) {
+    return {};
+  }
+
+  const { filters = [], sessionPropertyFilters = [], segment, cohort, match } = rowFilters;
+
+  return {
+    ...filtersArrayToObject(filters),
+    ...serializeSessionPropertyFilters(sessionPropertyFilters),
+    ...(segment ? { segment } : {}),
+    ...(cohort ? { cohort } : {}),
+    ...(match ? { match } : {}),
+  };
 }
 
 export function serializeEventPropertyFilters(filters: PropertyFilter[]) {
