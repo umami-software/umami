@@ -194,6 +194,11 @@ describe('parseDateRange', () => {
     expect(parseDateRange('range:')).toBeNull();
   });
 
+  test('returns null for unknown date values', () => {
+    expect(parseDateRange('invalid')).toBeNull();
+    expect(parseDateRange('7days')).toBeNull();
+  });
+
   test('range unit reflects minimum unit of the span', () => {
     const start = new Date('2026-01-01T00:00:00Z');
     const end = new Date('2026-01-01T00:30:00Z'); // 30 minutes

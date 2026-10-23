@@ -37,6 +37,22 @@ describe('useDateRange', () => {
     expectDefaultRange(result);
   });
 
+  test('falls back to the default range for an unknown value in the URL', () => {
+    query.date = 'invalid';
+
+    const { result } = renderHook(() => useDateRange());
+
+    expectDefaultRange(result);
+  });
+
+  test('falls back to the default range for an unknown stored value', () => {
+    setItem(DATE_RANGE_CONFIG, 'invalid');
+
+    const { result } = renderHook(() => useDateRange());
+
+    expectDefaultRange(result);
+  });
+
   test('falls back to the default range for an invalid stored range', () => {
     setItem(DATE_RANGE_CONFIG, 'range:NaN:1767225600000');
 

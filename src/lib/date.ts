@@ -176,7 +176,13 @@ export function parseDateRange(
   const date = new Date();
   const now = timezone ? toZonedTime(date, timezone) : date;
   const dateLocale = getDateLocale(locale);
-  const { num = 1, unit } = parseDateValue(value);
+  const dateValue = parseDateValue(value);
+
+  if (!dateValue) {
+    return null;
+  }
+
+  const { num = 1, unit } = dateValue;
 
   switch (unit) {
     case 'hour':
