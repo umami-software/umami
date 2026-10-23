@@ -23,6 +23,7 @@ import {
   isDate,
   isEqual,
   isSameDay,
+  isValid,
   max,
   min,
   startOfDay,
@@ -156,6 +157,11 @@ export function parseDateRange(
 
     const startDate = new Date(+startTime);
     const endDate = new Date(+endTime);
+
+    if (!isValid(startDate) || !isValid(endDate)) {
+      return null;
+    }
+
     const unit = getMinimumUnit(startDate, endDate, true);
 
     return {

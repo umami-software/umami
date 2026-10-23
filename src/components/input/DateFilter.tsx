@@ -93,7 +93,7 @@ export function DateFilter({
   };
 
   const renderValue = ({ defaultChildren }) => {
-    return value?.startsWith('range') || renderDate ? (
+    return (value?.startsWith('range') || renderDate) && startDate ? (
       <DateDisplay startDate={startDate} endDate={endDate} />
     ) : (
       defaultChildren

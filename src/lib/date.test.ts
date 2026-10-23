@@ -188,6 +188,12 @@ describe('parseDateRange', () => {
     expect(result.unit).toBe('day');
   });
 
+  test('returns null for range values with invalid timestamps', () => {
+    expect(parseDateRange('range:NaN:1767225600000')).toBeNull();
+    expect(parseDateRange('range:1767225600000:abc')).toBeNull();
+    expect(parseDateRange('range:')).toBeNull();
+  });
+
   test('range unit reflects minimum unit of the span', () => {
     const start = new Date('2026-01-01T00:00:00Z');
     const end = new Date('2026-01-01T00:30:00Z'); // 30 minutes
