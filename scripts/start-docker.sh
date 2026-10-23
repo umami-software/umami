@@ -11,6 +11,15 @@
 set -e
 export PATH="$PWD/node_modules/.bin:$PATH"
 
+# Next's standalone server.js binds to $HOSTNAME, but that name is also owned
+# by the container runtime. Some orchestrators (e.g. Podman pods) set it to
+# the pod's own hostname, which can land in this script's environment
+# unintended, causing the server to bind to one container IP instead of all
+# interfaces. Recompute it here, right before exec, from our own UMAMI_HOST
+# (for an intentional override) so it always wins over whatever the runtime
+# injected.
+export HOSTNAME="${UMAMI_HOST:-0.0.0.0}"
+
 node scripts/check-db.js
 node scripts/update-tracker.js
 exec node server.js
