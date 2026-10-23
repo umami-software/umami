@@ -47,17 +47,6 @@ DATABASE_URL=connection-url
 APP_SECRET=random-string  # generate with: openssl rand -hex 32
 ```
 
-Optional: set `API_URL` to change the base URL used by internal UI API calls.
-Relative paths are served under `BASE_PATH`; absolute URLs are proxied through the local `/api` route.
-For example, `API_URL=/internal-api` or `API_URL=https://api.example.com/api`.
-
-Optional: set `TWO_FACTOR_ENCRYPTION_KEY` to a 64-character hex string to enable two-factor
-authentication. Generate one with `openssl rand -hex 32`. Two-factor authentication is unavailable
-and cannot be required until this key is set.
-
-MCP is disabled by default. Set `MCP_ENABLED=1` to enable the `/mcp` endpoint, then
-authenticate with an API key generated under Settings → API keys.
-
 The connection URL format:
 
 ```bash
