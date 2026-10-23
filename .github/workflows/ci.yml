@@ -1,6 +1,9 @@
 name: Node.js CI
 
-on: [push]
+on: [push, pull_request]
+
+permissions:
+  contents: read
 
 env:
   DATABASE_URL: "postgresql://user:pass@localhost:5432/dummy"
@@ -13,6 +16,8 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
       - uses: pnpm/action-setup@v4
         with:
           version: 12.3.4
