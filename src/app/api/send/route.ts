@@ -9,7 +9,7 @@ import { createToken, parseToken } from '@/lib/jwt';
 import { fetchWebsite, isWebsiteCollectionBlocked } from '@/lib/load';
 import { parseRequest } from '@/lib/request';
 import { badRequest, forbidden, json, serverError } from '@/lib/response';
-import { safeDecodeURI, safeDecodeURIComponent } from '@/lib/url';
+import { getHashRoute, safeDecodeURI, safeDecodeURIComponent } from '@/lib/url';
 import {
   createSession,
   saveEvent,
@@ -340,7 +340,10 @@ export async function POST(request: Request) {
     } else if (type === COLLECTION_TYPE.performance) {
       const base = hostname ? `https://${hostname}` : 'https://localhost';
       const currentUrl = new URL(url, base);
-      const urlPath = currentUrl.pathname === '/undefined' ? '' : currentUrl.pathname;
+      const urlPath =
+        currentUrl.pathname === '/undefined'
+          ? ''
+          : currentUrl.pathname + getHashRoute(currentUrl.hash);
 
       await saveEvent({
         websiteId: sourceId,
