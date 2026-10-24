@@ -19,6 +19,12 @@ import { addCustomEvent, record } from 'rrweb';
     return Array.isArray(fromGlobal) ? fromGlobal.join(',') : String(fromGlobal);
   };
 
+  const getBeforeSend = () => {
+    const name = config('before-send');
+    const callback = name ? window[name] : globalConfig.beforeSend;
+    return typeof callback === 'function' ? callback : undefined;
+  };
+
   const website = config('website-id');
   const hostUrl = config('host-url');
 
@@ -293,10 +299,10 @@ import { addCustomEvent, record } from 'rrweb';
     heatmapFlushTimer = setTimeout(() => flushHeatmap(), HEATMAP_FLUSH_INTERVAL);
   };
 
-  const queueHeatmapEvent = event => {
+  const bufferHeatmapEvent = (event, timestamp) => {
     heatmapBuffer.push({
       ...event,
-      timestamp: Date.now(),
+      timestamp,
     });
 
     if (heatmapBuffer.length >= HEATMAP_FLUSH_EVENT_COUNT) {
@@ -305,6 +311,20 @@ import { addCustomEvent, record } from 'rrweb';
     }
 
     scheduleHeatmapFlush();
+  };
+
+  const queueHeatmapEvent = event => {
+    const timestamp = Date.now();
+    const callback = getBeforeSend();
+
+    if (!callback) {
+      bufferHeatmapEvent(event, timestamp);
+      return;
+    }
+
+    Promise.resolve(callback('heatmap', event)).then(result => {
+      if (result) bufferHeatmapEvent(result, timestamp);
+    });
   };
 
   const stopReplay = () => {
