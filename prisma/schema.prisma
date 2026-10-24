@@ -122,6 +122,7 @@ model Website {
   sessionReplays      SessionReplay[]
   sessionReplaysSaved SessionReplaySaved[]
   heatmapEvents       HeatmapEvent[]
+  engagements         WebsiteEngagement[]
 
   @@index([userId])
   @@index([teamId])
@@ -478,6 +479,22 @@ model HeatmapEvent {
   @@index([websiteId, createdAt])
   @@index([websiteId, urlPath, eventType, createdAt])
   @@map("heatmap_event")
+}
+
+model WebsiteEngagement {
+  id             String   @id() @map("engagement_id") @db.Uuid
+  websiteId      String   @map("website_id") @db.Uuid
+  sessionId      String   @map("session_id") @db.Uuid
+  visitId        String   @map("visit_id") @db.Uuid
+  urlPath        String   @map("url_path") @db.VarChar(500)
+  engagementTime Int      @map("engagement_time") @db.Integer
+  createdAt      DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+
+  website Website @relation(fields: [websiteId], references: [id])
+
+  @@index([websiteId, createdAt])
+  @@index([visitId])
+  @@map("website_engagement")
 }
 
 model TwoFactorAuth {

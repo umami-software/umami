@@ -33,7 +33,7 @@ async function relationalQuery(websiteId: string, sessionId: string) {
       count(distinct visit_id) as visits,
       sum(views) as views,
       sum(events) as events,
-      sum(${getTimestampDiffSQL('min_time', 'max_time')}) as "totaltime" 
+      sum(coalesce(engagement.engagement_time, ${getTimestampDiffSQL('min_time', 'max_time')})) as "totaltime" 
     from (select
           session.session_id as id,
           session.distinct_id,
@@ -57,6 +57,14 @@ async function relationalQuery(websiteId: string, sessionId: string) {
       and session.session_id = {{sessionId::uuid}}
       and website_event.event_type != ${EVENT_TYPE.performance}
     group by session.session_id, session.distinct_id, visit_id, session.website_id, session.browser, session.os, session.device, session.screen, session.language, session.country, session.region, session.city) t
+    left join (
+      select visit_id as engagement_visit_id, floor(sum(engagement_time) / 1000) as "engagement_time"
+      from website_engagement
+      where website_id = {{websiteId::uuid}}
+        and session_id = {{sessionId::uuid}}
+      group by 1
+    ) as engagement
+      on engagement.engagement_visit_id = t.visit_id
     group by id, distinct_id, website_id, browser, os, device, screen, language, country, region, city;
     `,
     { websiteId, sessionId },
@@ -85,7 +93,7 @@ async function clickhouseQuery(websiteId: string, sessionId: string) {
       uniq(visit_id) visits,
       sum(views) as views,
       sum(events) as events,
-      sum(max_time-min_time) as totaltime
+      sum(ifNull(engagement_time, max_time-min_time)) as totaltime
     from (select
               session_id as id,
               distinct_id as distinctId,
@@ -108,6 +116,13 @@ async function clickhouseQuery(websiteId: string, sessionId: string) {
           and session_id = {sessionId:UUID}
           and event_type != ${EVENT_TYPE.performance}
         group by session_id, distinct_id, visit_id, website_id, browser, os, device, screen, language, country, region, city) t
+    left join (
+      select visit_id, toNullable(toInt64(intDiv(sum(engagement_time), 1000))) as engagement_time
+      from website_engagement
+      where website_id = {websiteId:UUID}
+        and session_id = {sessionId:UUID}
+      group by visit_id
+    ) as engagement using (visit_id)
     group by id;
     `,
     { websiteId, sessionId },
