@@ -136,7 +136,13 @@ export async function getLocation(ip: string = '', headers: Headers, skipHeaders
 export async function getClientInfo(request: Request, payload: Record<string, any>) {
   const userAgent = payload?.userAgent || request.headers.get('user-agent');
   const ip = payload?.ip || getIpAddress(request.headers);
-  const location = await getLocation(ip, request.headers, !!payload?.ip);
+  const location = payload?.country
+    ? {
+        country: payload.country,
+        region: getRegionCode(payload.country, payload.region),
+        city: payload.city,
+      }
+    : await getLocation(ip, request.headers, !!payload?.ip);
   const country = safeDecodeURIComponent(location?.country);
   const region = safeDecodeURIComponent(location?.region);
   const city = safeDecodeURIComponent(location?.city);
