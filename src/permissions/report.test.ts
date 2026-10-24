@@ -1,10 +1,29 @@
 import { expect, test, vi } from 'vitest';
-import { ENTITY_TYPE } from '@/lib/constants';
+import { ENTITY_TYPE, ROLES } from '@/lib/constants';
 import { canViewReport, getReportSection } from './report';
 import { canViewWebsite } from './website';
 
+const { getEntityMock, teamUserFindFirstMock } = vi.hoisted(() => ({
+  getEntityMock: vi.fn(),
+  teamUserFindFirstMock: vi.fn(),
+}));
+
 vi.mock('./website', () => ({
   canViewWebsite: vi.fn(),
+}));
+
+vi.mock('@/lib/entity', () => ({
+  getEntity: getEntityMock,
+}));
+
+vi.mock('@/lib/prisma', () => ({
+  default: {
+    client: {
+      teamUser: {
+        findFirst: teamUserFindFirstMock,
+      },
+    },
+  },
 }));
 
 vi.mock('@/lib/load', () => ({
@@ -131,4 +150,20 @@ test('canViewReport falls back to website access for authenticated users', async
       } as any,
     ),
   ).resolves.toBe(true);
+});
+
+test('canViewReport refuses reports outside the share sections to a limited member', async () => {
+  vi.mocked(canViewWebsite).mockResolvedValue(true);
+  getEntityMock.mockResolvedValue({ id: 'website-1', userId: null, teamId: 'team-1' });
+  teamUserFindFirstMock.mockResolvedValue({
+    role: ROLES.teamViewOnly,
+    team: { viewOnlySections: ['goals'] },
+  });
+
+  const auth = { user: { id: 'user-1', username: 'user', role: 'user', isAdmin: false } };
+  const report = { id: 'report-1', userId: 'owner-1', websiteId: 'website-1' };
+
+  await expect(canViewReport(auth, { ...report, type: 'heatmap' } as any)).resolves.toBe(false);
+  await expect(canViewReport(auth, { ...report, type: 'funnel' } as any)).resolves.toBe(false);
+  await expect(canViewReport(auth, { ...report, type: 'goal' } as any)).resolves.toBe(true);
 });
