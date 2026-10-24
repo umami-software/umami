@@ -1,6 +1,6 @@
 import { z } from 'zod';
 import { dateRangeInput, parseDateRange } from '../lib/dates';
-import { filtersSchema, toFilterParams } from '../lib/filters';
+import { eventFilterToolFields, filtersFromInput, toFilterParams } from '../lib/filters';
 import { defineTool } from '../lib/tool';
 
 const DATA_TYPES: Record<number, string> = {
@@ -67,11 +67,11 @@ export const getEventProperties = defineTool({
       .optional()
       .describe('Only consider this custom event name, e.g. "checkout".'),
     dataType: dataTypeInput.optional(),
-    filters: filtersSchema.optional(),
+    ...eventFilterToolFields,
   }),
   async handler(input, { client }) {
     const range = parseDateRange(input);
-    const filters = toFilterParams(input.filters);
+    const filters = toFilterParams(filtersFromInput(input));
     const common = {
       websiteId: input.websiteId,
       startAt: range.startAt,
