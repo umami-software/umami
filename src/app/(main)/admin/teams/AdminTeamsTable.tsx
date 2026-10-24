@@ -8,6 +8,7 @@ import { SortableLabel } from '@/components/common/SortableLabel';
 import { useMessages } from '@/components/hooks';
 import { Edit, Trash } from '@/components/icons';
 import { MenuButton } from '@/components/input/MenuButton';
+import { ROLES } from '@/lib/constants';
 import { TeamDeleteForm } from '../../teams/[teamId]/TeamDeleteForm';
 
 export function AdminTeamsTable({
@@ -40,11 +41,11 @@ export function AdminTeamsTable({
         </DataColumn>
         <DataColumn id="owner" label={t(labels.owner)}>
           {(row: any) => {
-            const name = row?.members?.[0]?.user?.username;
+            const owner = row?.members?.find(({ role }) => role === ROLES.teamOwner)?.user;
 
             return (
-              <Text title={name} truncate>
-                <Link href={`/admin/users/${row?.members?.[0]?.user?.id}`}>{name}</Link>
+              <Text title={owner?.username} truncate>
+                {owner && <Link href={`/admin/users/${owner.id}`}>{owner.username}</Link>}
               </Text>
             );
           }}
