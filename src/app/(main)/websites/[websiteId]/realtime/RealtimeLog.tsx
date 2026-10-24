@@ -20,6 +20,7 @@ import { Eye, User } from '@/components/icons';
 import { FilterButtons } from '@/components/input/FilterButtons';
 import { Lightning } from '@/components/svg';
 import { BROWSERS, OS_NAMES } from '@/lib/constants';
+import { formatUrlLabel, hasMultipleHostnames } from '@/lib/url';
 
 const TYPE_ALL = 'all';
 const TYPE_PAGEVIEW = 'pageview';
@@ -45,6 +46,7 @@ export function RealtimeLog({ data }: { data: any }) {
   const [filter, setFilter] = useState(TYPE_ALL);
   const { updateParams } = useNavigation();
   const { isPhone } = useMobile();
+  const showHostname = useMemo(() => hasMultipleHostnames(data?.events), [data]);
 
   const buttons = [
     {
@@ -84,7 +86,7 @@ export function RealtimeLog({ data }: { data: any }) {
     if (__type === TYPE_EVENT) {
       return t.rich(messages.eventLog, {
         event: eventName || t(labels.unknown),
-        url: urlPath,
+        url: formatUrlLabel(urlPath, hostname, showHostname),
         b: chunks => <b>{chunks}</b>,
         a: chunks => (
           <a
@@ -107,7 +109,7 @@ export function RealtimeLog({ data }: { data: any }) {
           target="_blank"
           rel="noreferrer noopener"
         >
-          {urlPath}
+          {formatUrlLabel(urlPath, hostname, showHostname)}
         </a>
       );
     }
@@ -150,10 +152,11 @@ export function RealtimeLog({ data }: { data: any }) {
     let logs = data.events;
 
     if (search) {
-      logs = logs.filter(({ eventName, urlPath, browser, os, country, device }) => {
+      logs = logs.filter(({ eventName, urlPath, hostname, browser, os, country, device }) => {
         return [
           eventName,
           urlPath,
+          hostname,
           os,
           formatValue(browser, 'browser'),
           formatValue(country, 'country'),
