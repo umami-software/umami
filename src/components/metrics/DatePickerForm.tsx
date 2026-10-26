@@ -38,11 +38,11 @@ export function DatePickerForm({
 
   const disabled = selected.includes(FILTER_DAY)
     ? isInvalidDate ||
-      Boolean(minDate && isBefore(date, minDate)) ||
-      Boolean(maxDate && isAfter(date, maxDate))
+      Boolean(minDate && isBefore(startOfDay(date), startOfDay(minDate))) ||
+      Boolean(maxDate && isAfter(startOfDay(date), startOfDay(maxDate)))
     : isInvalidRange ||
-      Boolean(minDate && isBefore(startDate, minDate)) ||
-      Boolean(maxDate && isAfter(endDate, maxDate));
+      Boolean(minDate && isBefore(startOfDay(startDate), startOfDay(minDate))) ||
+      Boolean(maxDate && isAfter(startOfDay(endDate), startOfDay(maxDate)));
 
   const handleSave = () => {
     if (disabled) {
