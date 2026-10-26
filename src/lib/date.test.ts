@@ -123,6 +123,16 @@ describe('parseDateRange', () => {
     expect(parseDateRange(undefined as any)).toBeNull();
   });
 
+  test('returns null for invalid or corrupted range strings', () => {
+    expect(parseDateRange('range:')).toBeNull();
+    expect(parseDateRange('range:NaN:NaN')).toBeNull();
+    expect(parseDateRange('range:undefined:undefined')).toBeNull();
+    expect(parseDateRange('range:12345:NaN')).toBeNull();
+    expect(parseDateRange('range:NaN:12345')).toBeNull();
+    expect(parseDateRange('range:abc:def')).toBeNull();
+    expect(parseDateRange('range:100000000000000000000000:0')).toBeNull();
+  });
+
   test('parses hour ranges', () => {
     const result = parseDateRange('24hour');
     expect(result).toMatchObject({

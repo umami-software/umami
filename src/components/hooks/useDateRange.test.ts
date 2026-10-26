@@ -2,8 +2,12 @@ import { renderHook } from '@testing-library/react';
 import { toZonedTime } from 'date-fns-tz';
 import { afterEach, beforeEach, describe, expect, test, vi } from 'vitest';
 
+const { mockQuery } = vi.hoisted(() => ({
+  mockQuery: { date: '0day', compare: 'prev' },
+}));
+
 vi.mock('@/components/hooks/useNavigation', () => ({
-  useNavigation: () => ({ query: { date: '0day', compare: 'prev' } }),
+  useNavigation: () => ({ query: mockQuery }),
 }));
 
 vi.mock('@/components/hooks/useLocale', () => ({
@@ -67,5 +71,17 @@ describe('useDateRange dateCompare', () => {
     const { result } = renderHook(() => useDateRange());
 
     expect(result.current.hasComparison).toBe(true);
+  });
+
+  test('falls back safely to default date range when query date is invalid', () => {
+    mockQuery.date = 'range:NaN:NaN';
+    const { result } = renderHook(() => useDateRange());
+
+    expect(result.current.dateRange).toBeDefined();
+    expect(result.current.dateRange.startDate).toBeInstanceOf(Date);
+    expect(result.current.dateRange.endDate).toBeInstanceOf(Date);
+    expect(Number.isNaN(result.current.dateRange.startDate.getTime())).toBe(false);
+    expect(Number.isNaN(result.current.dateRange.endDate.getTime())).toBe(false);
+    mockQuery.date = '0day';
   });
 });
