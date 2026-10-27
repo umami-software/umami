@@ -19,14 +19,17 @@ vi.mock('@/components/common/ComboBox', () => ({
   }: {
     'aria-label'?: string;
     inputValue: string;
-    onInputValueChange: (value: string) => void;
+    onInputValueChange: (value: string, details?: { reason: string }) => void;
     items: string[];
   }) => (
     <div>
       <input
         aria-label={ariaLabel}
         value={inputValue}
-        onChange={event => onInputValueChange(event.currentTarget.value)}
+        onChange={event =>
+          onInputValueChange(event.currentTarget.value, { reason: 'input-change' })
+        }
+        onBlur={() => onInputValueChange('', { reason: 'input-clear' })}
       />
       {items.map(item => (
         <div key={item}>{item}</div>
@@ -43,7 +46,7 @@ vi.mock('@/components/hooks', () => ({
   useWebsiteValuesQuery: () => ({ data: [], isLoading: false }),
 }));
 
-function TestLookupField() {
+function TestLookupField({ allowCustomValue = true }: { allowCustomValue?: boolean }) {
   const [value, setValue] = useState('');
 
   return (
@@ -51,7 +54,7 @@ function TestLookupField() {
       websiteId="website-1"
       type="path"
       value={value}
-      allowCustomValue
+      allowCustomValue={allowCustomValue}
       onChange={setValue}
     />
   );
@@ -63,4 +66,24 @@ test('offers a manually entered funnel value as a selectable option', () => {
   fireEvent.change(screen.getByLabelText('LookupField'), { target: { value: '/blog/*' } });
 
   expect(screen.getByText('/blog/*')).toBeInTheDocument();
+});
+
+test('keeps a manually entered funnel value when the list closes without a selection', () => {
+  render(<TestLookupField />);
+
+  const input = screen.getByLabelText('LookupField');
+  fireEvent.change(input, { target: { value: '*/page/detail/*' } });
+  fireEvent.blur(input);
+
+  expect(input).toHaveValue('*/page/detail/*');
+});
+
+test('clears an unselected value on close when custom values are not allowed', () => {
+  render(<TestLookupField allowCustomValue={false} />);
+
+  const input = screen.getByLabelText('LookupField');
+  fireEvent.change(input, { target: { value: '/blog' } });
+  fireEvent.blur(input);
+
+  expect(input).toHaveValue('');
 });

@@ -59,7 +59,11 @@ export function LookupField({
       {...props}
       items={options}
       inputValue={value}
-      onInputValueChange={value => {
+      onInputValueChange={(value, details) => {
+        // The combobox clears unselected text when the list closes; keep it for custom values
+        if (allowCustomValue && details?.reason === 'input-clear') {
+          return;
+        }
         handleSearch(value);
         onChange?.(value);
         onValueChange?.(value);
