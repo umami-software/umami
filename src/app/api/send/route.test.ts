@@ -555,8 +555,9 @@ describe('cache token handling', () => {
     );
   }
 
-  // The website is still fetched so billing blocks apply to visitors who already hold a token.
-  test('a valid cache token skips session creation but still checks the website when it matches the computed session', async () => {
+  // A valid token already proved the website exists, so repeat sends skip the lookup on the hot
+  // path. Account collection blocks are enforced by the cloud gateway, not here.
+  test('a valid cache token skips session creation and the website lookup when it matches the computed session', async () => {
     const timestamp = 1704067200;
     const token = makeCacheToken({ sessionId: makeComputedSessionId(WEBSITE_ID, timestamp) });
 
@@ -565,7 +566,7 @@ describe('cache token handling', () => {
       { headers: { 'x-umami-cache': token } },
     );
 
-    expect(fetchWebsiteMock).toHaveBeenCalledTimes(1);
+    expect(fetchWebsiteMock).not.toHaveBeenCalled();
     expect(createSessionMock).not.toHaveBeenCalled();
     await expect(response.json()).resolves.toMatchObject({ visitId: 'cached-visit' });
   });
