@@ -5,7 +5,6 @@ import { FieldFilters } from '@/components/input/FieldFilters';
 import { PropertyFilters } from '@/components/property-data/PropertyFilters';
 import { SegmentFilters } from '@/components/input/SegmentFilters';
 import type { EventPropertyFilter, SessionPropertyFilter } from '@/lib/types';
-import { PropertyFilters } from '@/components/property-data/PropertyFilters';
 import { FILTER_COLUMNS } from '@/lib/constants';
 import {
   filtersObjectToArray,

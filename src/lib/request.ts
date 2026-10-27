@@ -66,6 +66,7 @@ export async function parseRequest(
       if (url.pathname === websitePath || url.pathname.startsWith(`${websitePath}/`)) {
         query = applySharePresetFilters(query, auth.shareToken.parameters);
       }
+    }
   }
 
   return { url, query, body, auth, error };
