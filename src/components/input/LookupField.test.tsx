@@ -13,23 +13,30 @@ vi.mock('@umami/react-zen', () => ({
 vi.mock('@/components/common/ComboBox', () => ({
   ComboBox: ({
     'aria-label': ariaLabel,
+    value,
     inputValue,
+    onChange,
     onInputValueChange,
     items,
   }: {
     'aria-label'?: string;
-    inputValue: string;
-    onInputValueChange: (value: string) => void;
+    value?: string;
+    inputValue?: string;
+    onChange?: (value: string) => void;
+    onInputValueChange?: (value: string) => void;
     items: string[];
   }) => (
     <div>
       <input
         aria-label={ariaLabel}
-        value={inputValue}
-        onChange={event => onInputValueChange(event.currentTarget.value)}
+        data-value={value}
+        value={inputValue ?? value ?? ''}
+        onChange={event => onInputValueChange?.(event.currentTarget.value)}
       />
       {items.map(item => (
-        <div key={item}>{item}</div>
+        <button key={item} type="button" onClick={() => onChange?.(item)}>
+          {item}
+        </button>
       ))}
     </div>
   ),
@@ -40,18 +47,21 @@ vi.mock('@/components/hooks', () => ({
     t: (value: string) => value,
     messages: { noResultsFound: 'No results found' },
   }),
-  useWebsiteValuesQuery: () => ({ data: [], isLoading: false }),
+  useWebsiteValuesQuery: () => ({
+    data: [{ value: '/home' }, { value: '/pricing' }],
+    isLoading: false,
+  }),
 }));
 
-function TestLookupField() {
-  const [value, setValue] = useState('');
+function TestLookupField({ initialValue = '', allowCustomValue = true }: { initialValue?: string; allowCustomValue?: boolean }) {
+  const [value, setValue] = useState(initialValue);
 
   return (
     <LookupField
       websiteId="website-1"
       type="path"
       value={value}
-      allowCustomValue
+      allowCustomValue={allowCustomValue}
       onChange={setValue}
     />
   );
@@ -63,4 +73,26 @@ test('offers a manually entered funnel value as a selectable option', () => {
   fireEvent.change(screen.getByLabelText('LookupField'), { target: { value: '/blog/*' } });
 
   expect(screen.getByText('/blog/*')).toBeInTheDocument();
+});
+
+test('controls ComboBox value and retains wildcard paths when allowCustomValue is true', () => {
+  render(<TestLookupField />);
+
+  const input = screen.getByLabelText('LookupField');
+  fireEvent.change(input, { target: { value: '*/page/detail/*' } });
+
+  expect(input).toHaveValue('*/page/detail/*');
+  expect(input).toHaveAttribute('data-value', '*/page/detail/*');
+  expect(screen.getByRole('button', { name: '*/page/detail/*' })).toBeInTheDocument();
+});
+
+test('updates value and search when selecting an item from the ComboBox dropdown', () => {
+  render(<TestLookupField />);
+
+  const input = screen.getByLabelText('LookupField');
+  const option = screen.getByRole('button', { name: '/pricing' });
+  fireEvent.click(option);
+
+  expect(input).toHaveValue('/pricing');
+  expect(input).toHaveAttribute('data-value', '/pricing');
 });
