@@ -1,8 +1,10 @@
 import { fireEvent, render, screen } from '@testing-library/react';
 import type { ReactNode } from 'react';
 import { useState } from 'react';
-import { expect, test, vi } from 'vitest';
+import { beforeEach, expect, test, vi } from 'vitest';
 import { LookupField } from './LookupField';
+
+const queryMock = vi.fn();
 
 vi.mock('@umami/react-zen', () => ({
   ListItem: ({ children }: { children: ReactNode }) => <div>{children}</div>,
@@ -25,21 +27,31 @@ vi.mock('@/components/common/ComboBox', () => ({
     onChange?: (value: string) => void;
     onInputValueChange?: (value: string) => void;
     items: string[];
-  }) => (
-    <div>
-      <input
-        aria-label={ariaLabel}
-        data-value={value}
-        value={inputValue ?? value ?? ''}
-        onChange={event => onInputValueChange?.(event.currentTarget.value)}
-      />
-      {items.map(item => (
-        <button key={item} type="button" onClick={() => onChange?.(item)}>
-          {item}
-        </button>
-      ))}
-    </div>
-  ),
+  }) => {
+    const handleBlur = () => {
+      // In Base UI / ComboBox, uncontrolled value causes inputValue to reset to empty on blur/close
+      if (value === undefined || value === null) {
+        onInputValueChange?.('');
+      }
+    };
+
+    return (
+      <div>
+        <input
+          aria-label={ariaLabel}
+          data-value={value}
+          value={inputValue ?? value ?? ''}
+          onChange={event => onInputValueChange?.(event.currentTarget.value)}
+          onBlur={handleBlur}
+        />
+        {items.map(item => (
+          <button key={item} type="button" onClick={() => onChange?.(item)}>
+            {item}
+          </button>
+        ))}
+      </div>
+    );
+  },
 }));
 
 vi.mock('@/components/hooks', () => ({
@@ -47,13 +59,24 @@ vi.mock('@/components/hooks', () => ({
     t: (value: string) => value,
     messages: { noResultsFound: 'No results found' },
   }),
-  useWebsiteValuesQuery: () => ({
-    data: [{ value: '/home' }, { value: '/pricing' }],
-    isLoading: false,
-  }),
+  useWebsiteValuesQuery: (params: unknown) => {
+    queryMock(params);
+    return {
+      data: [{ value: '/home' }, { value: '/pricing' }],
+      isLoading: false,
+    };
+  },
 }));
 
-function TestLookupField({ initialValue = '', allowCustomValue = true }: { initialValue?: string; allowCustomValue?: boolean }) {
+function TestLookupField({
+  initialValue = '',
+  allowCustomValue = true,
+  onValueChange,
+}: {
+  initialValue?: string;
+  allowCustomValue?: boolean;
+  onValueChange?: (value: string) => void;
+}) {
   const [value, setValue] = useState(initialValue);
 
   return (
@@ -63,9 +86,14 @@ function TestLookupField({ initialValue = '', allowCustomValue = true }: { initi
       value={value}
       allowCustomValue={allowCustomValue}
       onChange={setValue}
+      onValueChange={onValueChange}
     />
   );
 }
+
+beforeEach(() => {
+  queryMock.mockClear();
+});
 
 test('offers a manually entered funnel value as a selectable option', () => {
   render(<TestLookupField />);
@@ -86,8 +114,20 @@ test('controls ComboBox value and retains wildcard paths when allowCustomValue i
   expect(screen.getByRole('button', { name: '*/page/detail/*' })).toBeInTheDocument();
 });
 
-test('updates value and search when selecting an item from the ComboBox dropdown', () => {
+test('retains custom wildcard path after blur when allowCustomValue is true', () => {
   render(<TestLookupField />);
+
+  const input = screen.getByLabelText('LookupField');
+  fireEvent.change(input, { target: { value: '*/page/detail/*' } });
+  fireEvent.blur(input);
+
+  expect(input).toHaveValue('*/page/detail/*');
+  expect(input).toHaveAttribute('data-value', '*/page/detail/*');
+});
+
+test('updates value, search query, and triggers onValueChange when selecting an item', () => {
+  const onValueChange = vi.fn();
+  render(<TestLookupField onValueChange={onValueChange} />);
 
   const input = screen.getByLabelText('LookupField');
   const option = screen.getByRole('button', { name: '/pricing' });
@@ -95,4 +135,12 @@ test('updates value and search when selecting an item from the ComboBox dropdown
 
   expect(input).toHaveValue('/pricing');
   expect(input).toHaveAttribute('data-value', '/pricing');
+  expect(onValueChange).toHaveBeenCalledWith('/pricing');
+  expect(queryMock).toHaveBeenCalledWith(
+    expect.objectContaining({
+      search: '/pricing',
+      websiteId: 'website-1',
+      type: 'path',
+    }),
+  );
 });
