@@ -51,7 +51,18 @@ const parseRequestMock = vi.mocked(parseRequest);
 const canEnforceTwoFactorAuthForUserMock = vi.mocked(canEnforceTwoFactorAuthForUser);
 const isTwoFactorConfiguredMock = vi.mocked(isTwoFactorConfigured);
 const updateUserMock = vi.mocked(updateUser);
-const prismaMock = vi.mocked(prisma, true);
+const prismaMock = prisma as unknown as {
+  client: {
+    twoFactorAuth: {
+      findUnique: ReturnType<typeof vi.fn>;
+      deleteMany: ReturnType<typeof vi.fn>;
+    };
+    twoFactorBackupCode: { deleteMany: ReturnType<typeof vi.fn> };
+    twoFactorOtpUsed: { deleteMany: ReturnType<typeof vi.fn> };
+    twoFactorRateLimit: { deleteMany: ReturnType<typeof vi.fn> };
+  };
+  transaction: ReturnType<typeof vi.fn>;
+};
 
 beforeEach(() => {
   parseRequestMock.mockReset();
