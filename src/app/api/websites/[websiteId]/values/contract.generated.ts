@@ -10,7 +10,9 @@ const operation1 = defineOperation({
   auth: 'bearer-or-share',
   operation: {
     operationId: 'getWebsiteValues',
-    summary: 'Get websites website id values',
+    summary: 'List website filter values',
+    description:
+      'Returns available values for a website filter, including saved segments or cohorts when requested, to populate filter choices.',
     tags: ['Websites'],
     parameters: [
       {
@@ -20,6 +22,7 @@ const operation1 = defineOperation({
         schema: {
           type: 'string',
         },
+        description: 'ID of the website.',
       },
       {
         name: 'startAt',
@@ -28,6 +31,7 @@ const operation1 = defineOperation({
         schema: {
           type: 'number',
         },
+        description: 'Start of the date range as a Unix timestamp in milliseconds.',
       },
       {
         name: 'endAt',
@@ -36,6 +40,7 @@ const operation1 = defineOperation({
         schema: {
           type: 'number',
         },
+        description: 'End of the date range as a Unix timestamp in milliseconds.',
       },
       {
         name: 'startDate',
@@ -45,6 +50,7 @@ const operation1 = defineOperation({
           type: 'string',
           format: 'date-time',
         },
+        description: 'Start of the date range as an ISO 8601 date or date-time.',
       },
       {
         name: 'endDate',
@@ -54,6 +60,7 @@ const operation1 = defineOperation({
           type: 'string',
           format: 'date-time',
         },
+        description: 'End of the date range as an ISO 8601 date or date-time.',
       },
       {
         name: 'timezone',
@@ -62,6 +69,8 @@ const operation1 = defineOperation({
         schema: {
           type: 'string',
         },
+        description:
+          'IANA time zone used to interpret dates and group results, for example America/New_York.',
       },
       {
         name: 'unit',
@@ -70,6 +79,7 @@ const operation1 = defineOperation({
         schema: {
           type: 'string',
         },
+        description: 'Time interval used to group results: minute, hour, day, month, or year.',
       },
       {
         name: 'compare',
@@ -79,6 +89,8 @@ const operation1 = defineOperation({
           type: 'string',
           enum: ['prev', 'yoy'],
         },
+        description:
+          'Comparison period: prev for the previous period or yoy for the same period last year.',
       },
       {
         name: 'type',
@@ -87,6 +99,7 @@ const operation1 = defineOperation({
         schema: {
           type: 'string',
         },
+        description: 'Type of resource or analytics dimension to return.',
       },
       {
         name: 'search',
@@ -95,6 +108,7 @@ const operation1 = defineOperation({
         schema: {
           type: 'string',
         },
+        description: 'Search text used to filter results.',
       },
     ],
     responses: {

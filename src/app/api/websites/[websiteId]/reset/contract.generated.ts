@@ -10,7 +10,9 @@ const operation1 = defineOperation({
   auth: 'bearer',
   operation: {
     operationId: 'resetWebsite',
-    summary: 'Create or update websites website id reset',
+    summary: 'Reset website analytics',
+    description:
+      "Clears the website's collected analytics data while keeping the website configuration.",
     tags: ['Websites'],
     parameters: [
       {
@@ -20,6 +22,7 @@ const operation1 = defineOperation({
         schema: {
           type: 'string',
         },
+        description: 'ID of the website.',
       },
     ],
     responses: {
@@ -32,6 +35,7 @@ const operation1 = defineOperation({
               properties: {
                 ok: {
                   const: true,
+                  description: 'Whether the operation succeeded.',
                 },
               },
               required: ['ok'],

@@ -10,7 +10,7 @@ const operation1 = defineOperation({
   auth: 'bearer-or-share',
   operation: {
     operationId: 'getEventDataPivot',
-    summary: 'Get websites website id event data pivot',
+    summary: 'List event properties in table form',
     description:
       'Returns a page of occurrences of the specified event, with event details and property keys and values grouped into one row per occurrence.',
     tags: ['Websites'],

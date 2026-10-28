@@ -10,7 +10,8 @@ const operation1 = defineOperation({
   auth: 'bearer',
   operation: {
     operationId: 'getDashboard',
-    summary: 'Get dashboard',
+    summary: 'Get my dashboard',
+    description: "Returns the current user's personal dashboard board and its configuration.",
     tags: ['Dashboard'],
     responses: {
       '200': {
@@ -22,29 +23,37 @@ const operation1 = defineOperation({
               properties: {
                 id: {
                   type: 'string',
+                  description: 'Dashboard board ID, equal to the owning user ID.',
                 },
                 userId: {
                   type: 'string',
+                  description: 'ID of the user who owns the dashboard.',
                 },
                 createdAt: {
                   type: 'string',
                   format: 'date-time',
+                  description: 'Date and time the record was created.',
                 },
                 updatedAt: {
                   type: 'string',
                   format: 'date-time',
+                  description: 'Date and time the record was last updated.',
                 },
                 name: {
                   type: 'string',
+                  description: 'Display name of the dashboard.',
                 },
                 teamId: {
                   type: 'string',
+                  description: 'ID of the associated team, if any.',
                 },
                 type: {
                   type: 'string',
+                  description: 'Board type used for the dashboard.',
                 },
                 description: {
                   type: 'string',
+                  description: 'Description of the dashboard.',
                 },
                 parameters: {
                   anyOf: [
@@ -100,6 +109,8 @@ const operation1 = defineOperation({
                       required: ['length'],
                     },
                   ],
+                  description:
+                    'Dashboard configuration, including components, layout, and saved reports.',
                 },
               },
               required: [
@@ -145,7 +156,9 @@ const operation2 = defineOperation({
   auth: 'bearer',
   operation: {
     operationId: 'postDashboard',
-    summary: 'Create or update dashboard',
+    summary: 'Save my dashboard',
+    description:
+      "Creates or updates the current user's personal dashboard with the supplied name, description, and configuration.",
     tags: ['Dashboard'],
     requestBody: {
       required: true,
@@ -157,14 +170,18 @@ const operation2 = defineOperation({
               name: {
                 type: 'string',
                 maxLength: 200,
+                description: 'Display name of the dashboard.',
               },
               description: {
                 type: 'string',
                 maxLength: 500,
+                description: 'Description of the dashboard.',
               },
               parameters: {
                 type: 'object',
                 properties: {},
+                description:
+                  'Dashboard configuration, including components, layout, and saved reports.',
               },
             },
           },
@@ -181,29 +198,37 @@ const operation2 = defineOperation({
               properties: {
                 id: {
                   type: 'string',
+                  description: 'Dashboard board ID, equal to the owning user ID.',
                 },
                 userId: {
                   type: 'string',
+                  description: 'ID of the user who owns the dashboard.',
                 },
                 createdAt: {
                   type: 'string',
                   format: 'date-time',
+                  description: 'Date and time the record was created.',
                 },
                 updatedAt: {
                   type: 'string',
                   format: 'date-time',
+                  description: 'Date and time the record was last updated.',
                 },
                 name: {
                   type: 'string',
+                  description: 'Display name of the dashboard.',
                 },
                 teamId: {
                   type: 'string',
+                  description: 'ID of the associated team, if any.',
                 },
                 type: {
                   type: 'string',
+                  description: 'Board type used for the dashboard.',
                 },
                 description: {
                   type: 'string',
+                  description: 'Description of the dashboard.',
                 },
                 parameters: {
                   anyOf: [
@@ -259,6 +284,8 @@ const operation2 = defineOperation({
                       required: ['length'],
                     },
                   ],
+                  description:
+                    'Dashboard configuration, including components, layout, and saved reports.',
                 },
               },
               required: [

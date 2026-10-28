@@ -10,7 +10,9 @@ const operation1 = defineOperation({
   auth: 'none',
   operation: {
     operationId: 'getShareBySlug',
-    summary: 'Get share slug',
+    summary: 'Open a share by its slug',
+    description:
+      'Resolves a public share slug and returns its resource references, parameters, and an access token scoped to the shared resources.',
     tags: ['Shares'],
     parameters: [
       {
@@ -20,6 +22,7 @@ const operation1 = defineOperation({
         schema: {
           type: 'string',
         },
+        description: 'URL slug used to access the resource.',
       },
     ],
     responses: {

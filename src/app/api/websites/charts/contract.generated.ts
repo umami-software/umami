@@ -10,7 +10,7 @@ const operation1 = defineOperation({
   auth: 'bearer-or-share',
   operation: {
     operationId: 'getWebsitesCharts',
-    summary: 'Get websites charts',
+    summary: 'Get visitor charts for websites',
     description:
       'Returns visitor totals and chart data for the requested websites the caller can view, within the selected date range.',
     tags: ['Websites'],

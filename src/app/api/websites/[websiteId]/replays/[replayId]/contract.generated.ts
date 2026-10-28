@@ -10,7 +10,9 @@ const operation1 = defineOperation({
   auth: 'bearer-or-share',
   operation: {
     operationId: 'getWebsiteReplay',
-    summary: 'Get websites website id replays replay id',
+    summary: 'Get a session replay recording',
+    description:
+      'Returns the merged recording events, session details, and event and chunk counts for a replay, with optional stopping points by timestamp, chunk, or event index.',
     tags: ['Websites'],
     parameters: [
       {
@@ -20,6 +22,7 @@ const operation1 = defineOperation({
         schema: {
           type: 'string',
         },
+        description: 'ID of the website.',
       },
       {
         name: 'replayId',
@@ -28,6 +31,7 @@ const operation1 = defineOperation({
         schema: {
           type: 'string',
         },
+        description: 'ID of the session replay.',
       },
     ],
     responses: {
@@ -40,6 +44,7 @@ const operation1 = defineOperation({
               properties: {
                 sessionId: {
                   type: 'string',
+                  description: 'ID of the visitor session.',
                 },
                 events: {
                   type: 'array',
@@ -48,16 +53,20 @@ const operation1 = defineOperation({
                 startedAt: {
                   type: 'string',
                   format: 'date-time',
+                  description: 'Date and time the recording started.',
                 },
                 endedAt: {
                   type: 'string',
                   format: 'date-time',
+                  description: 'Date and time the recording ended.',
                 },
                 eventCount: {
                   type: 'number',
+                  description: 'Number of recorded replay events.',
                 },
                 chunkCount: {
                   type: 'number',
+                  description: 'Number of stored recording chunks.',
                 },
               },
               required: ['sessionId', 'events', 'startedAt', 'endedAt', 'eventCount', 'chunkCount'],

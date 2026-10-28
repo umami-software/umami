@@ -10,7 +10,9 @@ const operation1 = defineOperation({
   auth: 'bearer',
   operation: {
     operationId: 'postAdmin2faGlobal',
-    summary: 'Create or update admin 2fa global',
+    summary: 'Set the two-factor requirement for everyone',
+    description:
+      'Enables or disables the installation-wide requirement for users to set up two-factor authentication.',
     tags: ['Administration'],
     requestBody: {
       required: true,
@@ -38,6 +40,7 @@ const operation1 = defineOperation({
               properties: {
                 ok: {
                   type: 'boolean',
+                  description: 'Whether the operation succeeded.',
                 },
                 required: {},
               },

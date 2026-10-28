@@ -10,7 +10,7 @@ const operation1 = defineOperation({
   auth: 'bearer-or-share',
   operation: {
     operationId: 'getSessionDataNumericStats',
-    summary: 'Get websites website id session data numeric stats',
+    summary: 'Get numeric session property statistics',
     description:
       'Returns the total, average, median, minimum, and maximum of the specified numeric session property for the selected date range and filters.',
     tags: ['Websites'],

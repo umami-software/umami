@@ -10,7 +10,8 @@ const operation1 = defineOperation({
   auth: 'bearer',
   operation: {
     operationId: 'joinTeam',
-    summary: 'Create or update teams join',
+    summary: 'Join a team',
+    description: "Adds the current user to a team as a member using the team's access code.",
     tags: ['Teams'],
     requestBody: {
       required: true,
@@ -22,6 +23,7 @@ const operation1 = defineOperation({
               accessCode: {
                 type: 'string',
                 maxLength: 50,
+                description: 'Code used to join the team.',
               },
             },
             required: ['accessCode'],
@@ -39,23 +41,29 @@ const operation1 = defineOperation({
               properties: {
                 id: {
                   type: 'string',
+                  description: 'Unique identifier of the resource.',
                 },
                 userId: {
                   type: 'string',
+                  description: 'ID of the associated user.',
                 },
                 createdAt: {
                   type: 'string',
                   format: 'date-time',
+                  description: 'Date and time the record was created.',
                 },
                 updatedAt: {
                   type: 'string',
                   format: 'date-time',
+                  description: 'Date and time the record was last updated.',
                 },
                 role: {
                   type: 'string',
+                  description: 'Permission role assigned to the user.',
                 },
                 teamId: {
                   type: 'string',
+                  description: 'ID of the associated team.',
                 },
               },
               required: ['id', 'userId', 'createdAt', 'updatedAt', 'role', 'teamId'],

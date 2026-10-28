@@ -10,7 +10,9 @@ const operation1 = defineOperation({
   auth: 'bearer',
   operation: {
     operationId: 'deleteTeamUser',
-    summary: 'Delete teams team id users user id',
+    summary: 'Remove a team member',
+    description:
+      "Removes a user's membership from the specified team, subject to team role and ownership restrictions.",
     tags: ['Teams'],
     parameters: [
       {
@@ -20,6 +22,7 @@ const operation1 = defineOperation({
         schema: {
           type: 'string',
         },
+        description: 'ID of the associated team.',
       },
       {
         name: 'userId',
@@ -28,6 +31,7 @@ const operation1 = defineOperation({
         schema: {
           type: 'string',
         },
+        description: 'ID of the associated user.',
       },
     ],
     responses: {
@@ -40,6 +44,7 @@ const operation1 = defineOperation({
               properties: {
                 ok: {
                   const: true,
+                  description: 'Whether the operation succeeded.',
                 },
               },
               required: ['ok'],
@@ -92,7 +97,8 @@ const operation2 = defineOperation({
   auth: 'bearer',
   operation: {
     operationId: 'getTeamUser',
-    summary: 'Get teams team id users user id',
+    summary: 'Get a team member',
+    description: "Returns the specified user's membership details for a team.",
     tags: ['Teams'],
     parameters: [
       {
@@ -102,6 +108,7 @@ const operation2 = defineOperation({
         schema: {
           type: 'string',
         },
+        description: 'ID of the associated team.',
       },
       {
         name: 'userId',
@@ -110,6 +117,7 @@ const operation2 = defineOperation({
         schema: {
           type: 'string',
         },
+        description: 'ID of the associated user.',
       },
     ],
     responses: {
@@ -122,23 +130,29 @@ const operation2 = defineOperation({
               properties: {
                 id: {
                   type: 'string',
+                  description: 'Unique identifier of the resource.',
                 },
                 userId: {
                   type: 'string',
+                  description: 'ID of the associated user.',
                 },
                 createdAt: {
                   type: 'string',
                   format: 'date-time',
+                  description: 'Date and time the record was created.',
                 },
                 updatedAt: {
                   type: 'string',
                   format: 'date-time',
+                  description: 'Date and time the record was last updated.',
                 },
                 role: {
                   type: 'string',
+                  description: 'Permission role assigned to the user.',
                 },
                 teamId: {
                   type: 'string',
+                  description: 'ID of the associated team.',
                 },
               },
               required: ['id', 'userId', 'createdAt', 'updatedAt', 'role', 'teamId'],
@@ -174,7 +188,9 @@ const operation3 = defineOperation({
   auth: 'bearer',
   operation: {
     operationId: 'updateTeamUser',
-    summary: 'Create or update teams team id users user id',
+    summary: "Change a team member's role",
+    description:
+      "Updates a user's role in the specified team, subject to the caller's role and permissions.",
     tags: ['Teams'],
     parameters: [
       {
@@ -184,6 +200,7 @@ const operation3 = defineOperation({
         schema: {
           type: 'string',
         },
+        description: 'ID of the associated team.',
       },
       {
         name: 'userId',
@@ -192,6 +209,7 @@ const operation3 = defineOperation({
         schema: {
           type: 'string',
         },
+        description: 'ID of the associated user.',
       },
     ],
     requestBody: {
@@ -204,6 +222,7 @@ const operation3 = defineOperation({
               role: {
                 type: 'string',
                 enum: ['team-member', 'team-view-only', 'team-manager'],
+                description: 'Permission role assigned to the user.',
               },
             },
             required: ['role'],
@@ -221,23 +240,29 @@ const operation3 = defineOperation({
               properties: {
                 id: {
                   type: 'string',
+                  description: 'Unique identifier of the resource.',
                 },
                 userId: {
                   type: 'string',
+                  description: 'ID of the associated user.',
                 },
                 createdAt: {
                   type: 'string',
                   format: 'date-time',
+                  description: 'Date and time the record was created.',
                 },
                 updatedAt: {
                   type: 'string',
                   format: 'date-time',
+                  description: 'Date and time the record was last updated.',
                 },
                 role: {
                   type: 'string',
+                  description: 'Permission role assigned to the user.',
                 },
                 teamId: {
                   type: 'string',
+                  description: 'ID of the associated team.',
                 },
               },
               required: ['id', 'userId', 'createdAt', 'updatedAt', 'role', 'teamId'],

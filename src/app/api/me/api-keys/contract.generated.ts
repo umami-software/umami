@@ -10,7 +10,9 @@ const operation1 = defineOperation({
   auth: 'bearer',
   operation: {
     operationId: 'getMyApiKeys',
-    summary: 'Get me api keys',
+    summary: 'List my API keys',
+    description:
+      "Returns metadata for the current user's API keys. Available on self-hosted installations.",
     tags: ['Account'],
     responses: {
       '200': {
@@ -24,20 +26,25 @@ const operation1 = defineOperation({
                 properties: {
                   id: {
                     type: 'string',
+                    description: 'Unique identifier of the resource.',
                   },
                   createdAt: {
                     type: 'string',
                     format: 'date-time',
+                    description: 'Date and time the record was created.',
                   },
                   name: {
                     type: 'string',
+                    description: 'Display name of the resource.',
                   },
                   keyPrefix: {
                     type: 'string',
+                    description: 'Visible prefix used to identify an API key.',
                   },
                   lastUsedAt: {
                     type: 'string',
                     format: 'date-time',
+                    description: 'Date and time the credential was last used.',
                   },
                 },
                 required: ['id', 'createdAt', 'name', 'keyPrefix', 'lastUsedAt'],
@@ -91,7 +98,9 @@ const operation2 = defineOperation({
   auth: 'bearer',
   operation: {
     operationId: 'createMyApiKey',
-    summary: 'Create or update me api keys',
+    summary: 'Create an API key',
+    description:
+      'Creates a named API key for the current user and returns its secret value. Available on self-hosted installations.',
     tags: ['Account'],
     requestBody: {
       required: true,
@@ -103,6 +112,7 @@ const operation2 = defineOperation({
               name: {
                 minimum: 1,
                 maximum: 255,
+                description: 'Display name of the resource.',
               },
             },
             required: ['name'],
@@ -123,16 +133,20 @@ const operation2 = defineOperation({
                 },
                 id: {
                   type: 'string',
+                  description: 'Unique identifier of the resource.',
                 },
                 createdAt: {
                   type: 'string',
                   format: 'date-time',
+                  description: 'Date and time the record was created.',
                 },
                 name: {
                   type: 'string',
+                  description: 'Display name of the resource.',
                 },
                 keyPrefix: {
                   type: 'string',
+                  description: 'Visible prefix used to identify an API key.',
                 },
               },
               required: ['key', 'id', 'createdAt', 'name', 'keyPrefix'],

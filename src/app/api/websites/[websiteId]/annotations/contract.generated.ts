@@ -10,7 +10,7 @@ const operation1 = defineOperation({
   auth: 'bearer-or-share',
   operation: {
     operationId: 'getWebsiteAnnotations',
-    summary: 'Get websites website id annotations',
+    summary: 'List website annotations',
     description:
       'Returns a paginated list of dated notes for the website, optionally filtered by date range or search text.',
     tags: ['Websites'],
@@ -248,7 +248,7 @@ const operation2 = defineOperation({
   auth: 'bearer',
   operation: {
     operationId: 'createWebsiteAnnotation',
-    summary: 'Create or update websites website id annotations',
+    summary: 'Create a website annotation',
     description:
       'Adds a dated note to the website, optionally marking it as an all-day annotation.',
     tags: ['Websites'],

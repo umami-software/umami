@@ -10,7 +10,7 @@ const operation1 = defineOperation({
   auth: 'bearer-or-share',
   operation: {
     operationId: 'getWebsiteEventSeries',
-    summary: 'Get websites website id events series',
+    summary: 'Get custom event counts over time',
     description:
       'Returns counts grouped by event name and time interval, optionally limited to the most frequent event names.',
     tags: ['Websites'],

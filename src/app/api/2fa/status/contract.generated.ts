@@ -10,7 +10,9 @@ const operation1 = defineOperation({
   auth: 'bearer',
   operation: {
     operationId: 'getTwoFactorStatus',
-    summary: 'Get 2fa status',
+    summary: 'Get two-factor authentication status',
+    description:
+      'Returns whether two-factor authentication is enabled, configured, or required for the current user, including the reason it is required.',
     tags: ['Two-factor authentication'],
     responses: {
       '200': {
@@ -24,18 +26,23 @@ const operation1 = defineOperation({
                   properties: {
                     isEnabled: {
                       type: 'boolean',
+                      description: 'Whether two-factor authentication is enabled.',
                     },
                     isRequired: {
                       type: 'boolean',
+                      description: 'Whether two-factor authentication is required for this user.',
                     },
                     requiredReason: {
                       type: 'null',
+                      description: 'Reason two-factor authentication is required.',
                     },
                     isConfigured: {
                       type: 'boolean',
+                      description: 'Whether two-factor authentication has been configured.',
                     },
                     globalRequired: {
                       type: 'boolean',
+                      description: 'Whether two-factor authentication is required for all users.',
                     },
                   },
                   required: [
@@ -51,18 +58,23 @@ const operation1 = defineOperation({
                   properties: {
                     isEnabled: {
                       type: 'boolean',
+                      description: 'Whether two-factor authentication is enabled.',
                     },
                     isRequired: {
                       type: 'boolean',
+                      description: 'Whether two-factor authentication is required for this user.',
                     },
                     requiredReason: {
                       type: 'string',
+                      description: 'Reason two-factor authentication is required.',
                     },
                     isConfigured: {
                       type: 'boolean',
+                      description: 'Whether two-factor authentication has been configured.',
                     },
                     globalRequired: {
                       type: 'boolean',
+                      description: 'Whether two-factor authentication is required for all users.',
                     },
                   },
                   required: [

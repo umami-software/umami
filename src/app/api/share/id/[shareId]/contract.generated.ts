@@ -10,7 +10,9 @@ const operation1 = defineOperation({
   auth: 'bearer',
   operation: {
     operationId: 'deleteShare',
-    summary: 'Delete share id share id',
+    summary: 'Delete a share',
+    description:
+      'Deletes the specified share after checking permission to delete shares for its resource.',
     tags: ['Shares'],
     parameters: [
       {
@@ -20,6 +22,7 @@ const operation1 = defineOperation({
         schema: {
           type: 'string',
         },
+        description: 'Identifier used to access a shared resource.',
       },
     ],
     responses: {
@@ -32,6 +35,7 @@ const operation1 = defineOperation({
               properties: {
                 ok: {
                   const: true,
+                  description: 'Whether the operation succeeded.',
                 },
               },
               required: ['ok'],
@@ -67,7 +71,9 @@ const operation2 = defineOperation({
   auth: 'bearer-or-share',
   operation: {
     operationId: 'getShare',
-    summary: 'Get share id share id',
+    summary: 'Get a share',
+    description:
+      "Returns a share's configuration by its ID after checking access to the shared resource.",
     tags: ['Shares'],
     parameters: [
       {
@@ -77,6 +83,7 @@ const operation2 = defineOperation({
         schema: {
           type: 'string',
         },
+        description: 'Identifier used to access a shared resource.',
       },
     ],
     responses: {
@@ -89,20 +96,25 @@ const operation2 = defineOperation({
               properties: {
                 id: {
                   type: 'string',
+                  description: 'Unique identifier of the resource.',
                 },
                 createdAt: {
                   type: 'string',
                   format: 'date-time',
+                  description: 'Date and time the record was created.',
                 },
                 updatedAt: {
                   type: 'string',
                   format: 'date-time',
+                  description: 'Date and time the record was last updated.',
                 },
                 name: {
                   type: 'string',
+                  description: 'Display name of the resource.',
                 },
                 slug: {
                   type: 'string',
+                  description: 'URL slug used to access the resource.',
                 },
                 parameters: {
                   anyOf: [
@@ -158,12 +170,15 @@ const operation2 = defineOperation({
                       required: ['length'],
                     },
                   ],
+                  description: 'Configuration parameters for the resource.',
                 },
                 entityId: {
                   type: 'string',
+                  description: 'ID of the resource being shared.',
                 },
                 shareType: {
                   type: 'number',
+                  description: 'Type of resource made available by the share.',
                 },
               },
               required: [
@@ -208,7 +223,8 @@ const operation3 = defineOperation({
   auth: 'bearer',
   operation: {
     operationId: 'updateShare',
-    summary: 'Create or update share id share id',
+    summary: 'Update a share',
+    description: "Updates the specified share's name, slug, and parameters.",
     tags: ['Shares'],
     parameters: [
       {
@@ -218,6 +234,7 @@ const operation3 = defineOperation({
         schema: {
           type: 'string',
         },
+        description: 'Identifier used to access a shared resource.',
       },
     ],
     requestBody: {
@@ -230,14 +247,17 @@ const operation3 = defineOperation({
               name: {
                 type: 'string',
                 maxLength: 200,
+                description: 'Display name of the resource.',
               },
               slug: {
                 type: 'string',
                 maxLength: 100,
+                description: 'URL slug used to access the resource.',
               },
               parameters: {
                 type: 'object',
                 additionalProperties: true,
+                description: 'Configuration parameters for the resource.',
               },
             },
             required: ['name', 'slug', 'parameters'],
@@ -255,20 +275,25 @@ const operation3 = defineOperation({
               properties: {
                 id: {
                   type: 'string',
+                  description: 'Unique identifier of the resource.',
                 },
                 createdAt: {
                   type: 'string',
                   format: 'date-time',
+                  description: 'Date and time the record was created.',
                 },
                 updatedAt: {
                   type: 'string',
                   format: 'date-time',
+                  description: 'Date and time the record was last updated.',
                 },
                 name: {
                   type: 'string',
+                  description: 'Display name of the resource.',
                 },
                 slug: {
                   type: 'string',
+                  description: 'URL slug used to access the resource.',
                 },
                 parameters: {
                   anyOf: [
@@ -324,12 +349,15 @@ const operation3 = defineOperation({
                       required: ['length'],
                     },
                   ],
+                  description: 'Configuration parameters for the resource.',
                 },
                 entityId: {
                   type: 'string',
+                  description: 'ID of the resource being shared.',
                 },
                 shareType: {
                   type: 'number',
+                  description: 'Type of resource made available by the share.',
                 },
               },
               required: [

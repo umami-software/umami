@@ -5245,6 +5245,15 @@ export interface operations {
                 isNoBilling: boolean;
                 isPro: boolean;
                 unlimitedWebsites: boolean;
+              }
+            | {
+                billingStatus: string;
+                hasSubscription: boolean;
+                isBusiness: boolean;
+                isNoBilling: boolean;
+                isOwner: boolean;
+                isPro: boolean;
+                unlimitedWebsites: boolean;
               };
         };
       };
@@ -7709,6 +7718,24 @@ export interface operations {
            *         "code": "unauthorized",
            *         "message": "Unauthorized.",
            *         "status": 401
+           *       }
+           *     }
+           */
+          'application/json': components['schemas']['ApiError'];
+        };
+      };
+      /** @description Not found. */
+      404: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          /**
+           * @example {
+           *       "error": {
+           *         "code": "not-found",
+           *         "message": "Not found.",
+           *         "status": 404
            *       }
            *     }
            */

@@ -10,7 +10,9 @@ const operation1 = defineOperation({
   auth: 'bearer',
   operation: {
     operationId: 'getPixels',
-    summary: 'Get pixels',
+    summary: 'List my tracking pixels',
+    description:
+      "Returns a paginated list of the current user's tracking pixels, with search and sorting options.",
     tags: ['Pixels'],
     parameters: [
       {
@@ -21,6 +23,7 @@ const operation1 = defineOperation({
           type: 'integer',
           minimum: 1,
         },
+        description: 'Page number, starting at 1.',
       },
       {
         name: 'pageSize',
@@ -30,6 +33,7 @@ const operation1 = defineOperation({
           type: 'integer',
           minimum: 1,
         },
+        description: 'Number of results per page.',
       },
       {
         name: 'maxResults',
@@ -39,6 +43,7 @@ const operation1 = defineOperation({
           type: 'integer',
           minimum: 1,
         },
+        description: 'Maximum number of results to include.',
       },
       {
         name: 'search',
@@ -47,6 +52,7 @@ const operation1 = defineOperation({
         schema: {
           type: 'string',
         },
+        description: 'Search text used to filter results.',
       },
       {
         name: 'orderBy',
@@ -55,6 +61,7 @@ const operation1 = defineOperation({
         schema: {
           type: 'string',
         },
+        description: 'Field to sort the results by.',
       },
       {
         name: 'sortDescending',
@@ -64,6 +71,7 @@ const operation1 = defineOperation({
           type: 'string',
           enum: ['true', 'false'],
         },
+        description: 'Whether to sort results in descending order.',
       },
     ],
     responses: {
@@ -81,30 +89,38 @@ const operation1 = defineOperation({
                     properties: {
                       id: {
                         type: 'string',
+                        description: 'Unique identifier of the resource.',
                       },
                       userId: {
                         type: 'string',
+                        description: 'ID of the associated user.',
                       },
                       createdAt: {
                         type: 'string',
                         format: 'date-time',
+                        description: 'Date and time the record was created.',
                       },
                       updatedAt: {
                         type: 'string',
                         format: 'date-time',
+                        description: 'Date and time the record was last updated.',
                       },
                       deletedAt: {
                         type: 'string',
                         format: 'date-time',
+                        description: 'Date and time the record was deleted, if applicable.',
                       },
                       name: {
                         type: 'string',
+                        description: 'Display name of the resource.',
                       },
                       teamId: {
                         type: 'string',
+                        description: 'ID of the associated team.',
                       },
                       slug: {
                         type: 'string',
+                        description: 'URL slug used to access the resource.',
                       },
                     },
                     required: [
@@ -118,27 +134,35 @@ const operation1 = defineOperation({
                       'slug',
                     ],
                   },
+                  description: 'Data returned by the operation.',
                 },
                 count: {
                   type: 'number',
+                  description: 'Number of matching records.',
                 },
                 page: {
                   type: 'number',
+                  description: 'Page number, starting at 1.',
                 },
                 pageSize: {
                   type: 'number',
+                  description: 'Number of results per page.',
                 },
                 orderBy: {
                   type: 'string',
+                  description: 'Field to sort the results by.',
                 },
                 sortDescending: {
                   type: 'boolean',
+                  description: 'Whether to sort results in descending order.',
                 },
                 search: {
                   type: 'string',
+                  description: 'Search text used to filter results.',
                 },
                 isCapped: {
                   type: 'boolean',
+                  description: 'Whether the results were truncated by the maximum result limit.',
                 },
               },
               required: ['data', 'count', 'page', 'pageSize'],
@@ -191,7 +215,8 @@ const operation2 = defineOperation({
   auth: 'bearer',
   operation: {
     operationId: 'createPixel',
-    summary: 'Create or update pixels',
+    summary: 'Create a tracking pixel',
+    description: 'Creates a tracking pixel with a name and slug, optionally assigned to a team.',
     tags: ['Pixels'],
     requestBody: {
       required: true,
@@ -203,11 +228,13 @@ const operation2 = defineOperation({
               name: {
                 type: 'string',
                 maxLength: 100,
+                description: 'Display name of the resource.',
               },
               slug: {
                 type: 'string',
                 minLength: 8,
                 maxLength: 100,
+                description: 'URL slug used to access the resource.',
               },
               teamId: {
                 anyOf: [
@@ -218,6 +245,7 @@ const operation2 = defineOperation({
                     type: 'null',
                   },
                 ],
+                description: 'ID of the associated team.',
               },
               id: {
                 anyOf: [
@@ -229,6 +257,7 @@ const operation2 = defineOperation({
                     type: 'null',
                   },
                 ],
+                description: 'Unique identifier of the resource.',
               },
             },
             required: ['name', 'slug'],
@@ -246,30 +275,38 @@ const operation2 = defineOperation({
               properties: {
                 id: {
                   type: 'string',
+                  description: 'Unique identifier of the resource.',
                 },
                 userId: {
                   type: 'string',
+                  description: 'ID of the associated user.',
                 },
                 createdAt: {
                   type: 'string',
                   format: 'date-time',
+                  description: 'Date and time the record was created.',
                 },
                 updatedAt: {
                   type: 'string',
                   format: 'date-time',
+                  description: 'Date and time the record was last updated.',
                 },
                 deletedAt: {
                   type: 'string',
                   format: 'date-time',
+                  description: 'Date and time the record was deleted, if applicable.',
                 },
                 name: {
                   type: 'string',
+                  description: 'Display name of the resource.',
                 },
                 teamId: {
                   type: 'string',
+                  description: 'ID of the associated team.',
                 },
                 slug: {
                   type: 'string',
+                  description: 'URL slug used to access the resource.',
                 },
               },
               required: [

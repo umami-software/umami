@@ -10,7 +10,9 @@ const operation1 = defineOperation({
   auth: 'bearer-or-share',
   operation: {
     operationId: 'getWebsiteSegments',
-    summary: 'Get websites website id segments',
+    summary: 'List website segments and cohorts',
+    description:
+      'Returns saved segments or cohorts for the website, filtered by the requested type and search text.',
     tags: ['Websites'],
     parameters: [
       {
@@ -20,6 +22,7 @@ const operation1 = defineOperation({
         schema: {
           type: 'string',
         },
+        description: 'ID of the website.',
       },
       {
         name: 'type',
@@ -29,6 +32,7 @@ const operation1 = defineOperation({
           type: 'string',
           enum: ['segment', 'cohort'],
         },
+        description: 'Type of resource or analytics dimension to return.',
       },
       {
         name: 'search',
@@ -37,6 +41,7 @@ const operation1 = defineOperation({
         schema: {
           type: 'string',
         },
+        description: 'Search text used to filter results.',
       },
     ],
     responses: {
@@ -54,17 +59,21 @@ const operation1 = defineOperation({
                     properties: {
                       id: {
                         type: 'string',
+                        description: 'Unique identifier of the resource.',
                       },
                       createdAt: {
                         type: 'string',
                         format: 'date-time',
+                        description: 'Date and time the record was created.',
                       },
                       updatedAt: {
                         type: 'string',
                         format: 'date-time',
+                        description: 'Date and time the record was last updated.',
                       },
                       name: {
                         type: 'string',
+                        description: 'Display name of the resource.',
                       },
                       type: {
                         type: 'string',
@@ -123,9 +132,11 @@ const operation1 = defineOperation({
                             required: ['length'],
                           },
                         ],
+                        description: 'Configuration parameters for the resource.',
                       },
                       websiteId: {
                         type: 'string',
+                        description: 'ID of the website.',
                       },
                     },
                     required: [
@@ -138,27 +149,35 @@ const operation1 = defineOperation({
                       'websiteId',
                     ],
                   },
+                  description: 'Data returned by the operation.',
                 },
                 count: {
                   type: 'number',
+                  description: 'Number of matching records.',
                 },
                 page: {
                   type: 'number',
+                  description: 'Page number, starting at 1.',
                 },
                 pageSize: {
                   type: 'number',
+                  description: 'Number of results per page.',
                 },
                 orderBy: {
                   type: 'string',
+                  description: 'Field to sort the results by.',
                 },
                 sortDescending: {
                   type: 'boolean',
+                  description: 'Whether to sort results in descending order.',
                 },
                 search: {
                   type: 'string',
+                  description: 'Search text used to filter results.',
                 },
                 isCapped: {
                   type: 'boolean',
+                  description: 'Whether the results were truncated by the maximum result limit.',
                 },
               },
               required: ['data', 'count', 'page', 'pageSize'],
@@ -211,7 +230,9 @@ const operation2 = defineOperation({
   auth: 'bearer',
   operation: {
     operationId: 'createWebsiteSegment',
-    summary: 'Create or update websites website id segments',
+    summary: 'Create a website segment or cohort',
+    description:
+      'Saves a named segment or cohort with its type and filter parameters for the website.',
     tags: ['Websites'],
     parameters: [
       {
@@ -221,6 +242,7 @@ const operation2 = defineOperation({
         schema: {
           type: 'string',
         },
+        description: 'ID of the website.',
       },
     ],
     requestBody: {
@@ -238,6 +260,7 @@ const operation2 = defineOperation({
                 type: 'string',
                 minLength: 1,
                 maxLength: 200,
+                description: 'Display name of the resource.',
               },
               parameters: {
                 type: 'object',
@@ -248,10 +271,12 @@ const operation2 = defineOperation({
                       type: 'object',
                       additionalProperties: true,
                     },
+                    description: 'Filters applied to the analytics data.',
                   },
                   match: {
                     type: 'string',
                     enum: ['all', 'any'],
+                    description: 'Whether records must match all filters or any filter.',
                   },
                   dateRange: {
                     type: 'string',
@@ -269,6 +294,7 @@ const operation2 = defineOperation({
                     required: ['type', 'value'],
                   },
                 },
+                description: 'Configuration parameters for the resource.',
               },
             },
             required: ['type', 'name', 'parameters'],
@@ -286,17 +312,21 @@ const operation2 = defineOperation({
               properties: {
                 id: {
                   type: 'string',
+                  description: 'Unique identifier of the resource.',
                 },
                 createdAt: {
                   type: 'string',
                   format: 'date-time',
+                  description: 'Date and time the record was created.',
                 },
                 updatedAt: {
                   type: 'string',
                   format: 'date-time',
+                  description: 'Date and time the record was last updated.',
                 },
                 name: {
                   type: 'string',
+                  description: 'Display name of the resource.',
                 },
                 type: {
                   type: 'string',
@@ -355,9 +385,11 @@ const operation2 = defineOperation({
                       required: ['length'],
                     },
                   ],
+                  description: 'Configuration parameters for the resource.',
                 },
                 websiteId: {
                   type: 'string',
+                  description: 'ID of the website.',
                 },
               },
               required: ['id', 'createdAt', 'updatedAt', 'name', 'type', 'parameters', 'websiteId'],

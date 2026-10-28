@@ -10,7 +10,9 @@ const operation1 = defineOperation({
   auth: 'bearer',
   operation: {
     operationId: 'deletePixel',
-    summary: 'Delete pixels pixel id',
+    summary: 'Delete a tracking pixel',
+    description:
+      "Deletes the specified tracking pixel after checking the caller's permission to remove it.",
     tags: ['Pixels'],
     parameters: [
       {
@@ -20,6 +22,7 @@ const operation1 = defineOperation({
         schema: {
           type: 'string',
         },
+        description: 'ID of the tracking pixel.',
       },
     ],
     responses: {
@@ -32,6 +35,7 @@ const operation1 = defineOperation({
               properties: {
                 ok: {
                   const: true,
+                  description: 'Whether the operation succeeded.',
                 },
               },
               required: ['ok'],
@@ -67,7 +71,8 @@ const operation2 = defineOperation({
   auth: 'bearer-or-share',
   operation: {
     operationId: 'getPixel',
-    summary: 'Get pixels pixel id',
+    summary: 'Get a tracking pixel',
+    description: 'Returns the specified tracking pixel and its configuration.',
     tags: ['Pixels'],
     parameters: [
       {
@@ -77,6 +82,7 @@ const operation2 = defineOperation({
         schema: {
           type: 'string',
         },
+        description: 'ID of the tracking pixel.',
       },
     ],
     responses: {
@@ -89,30 +95,38 @@ const operation2 = defineOperation({
               properties: {
                 id: {
                   type: 'string',
+                  description: 'Unique identifier of the resource.',
                 },
                 userId: {
                   type: 'string',
+                  description: 'ID of the associated user.',
                 },
                 createdAt: {
                   type: 'string',
                   format: 'date-time',
+                  description: 'Date and time the record was created.',
                 },
                 updatedAt: {
                   type: 'string',
                   format: 'date-time',
+                  description: 'Date and time the record was last updated.',
                 },
                 deletedAt: {
                   type: 'string',
                   format: 'date-time',
+                  description: 'Date and time the record was deleted, if applicable.',
                 },
                 name: {
                   type: 'string',
+                  description: 'Display name of the resource.',
                 },
                 teamId: {
                   type: 'string',
+                  description: 'ID of the associated team.',
                 },
                 slug: {
                   type: 'string',
+                  description: 'URL slug used to access the resource.',
                 },
               },
               required: [
@@ -157,7 +171,8 @@ const operation3 = defineOperation({
   auth: 'bearer',
   operation: {
     operationId: 'updatePixel',
-    summary: 'Create or update pixels pixel id',
+    summary: 'Update a tracking pixel',
+    description: "Updates a tracking pixel's name or slug.",
     tags: ['Pixels'],
     parameters: [
       {
@@ -167,6 +182,7 @@ const operation3 = defineOperation({
         schema: {
           type: 'string',
         },
+        description: 'ID of the tracking pixel.',
       },
     ],
     requestBody: {
@@ -179,11 +195,13 @@ const operation3 = defineOperation({
               name: {
                 type: 'string',
                 maxLength: 100,
+                description: 'Display name of the resource.',
               },
               slug: {
                 type: 'string',
                 minLength: 8,
                 maxLength: 100,
+                description: 'URL slug used to access the resource.',
               },
             },
           },
@@ -200,30 +218,38 @@ const operation3 = defineOperation({
               properties: {
                 id: {
                   type: 'string',
+                  description: 'Unique identifier of the resource.',
                 },
                 userId: {
                   type: 'string',
+                  description: 'ID of the associated user.',
                 },
                 createdAt: {
                   type: 'string',
                   format: 'date-time',
+                  description: 'Date and time the record was created.',
                 },
                 updatedAt: {
                   type: 'string',
                   format: 'date-time',
+                  description: 'Date and time the record was last updated.',
                 },
                 deletedAt: {
                   type: 'string',
                   format: 'date-time',
+                  description: 'Date and time the record was deleted, if applicable.',
                 },
                 name: {
                   type: 'string',
+                  description: 'Display name of the resource.',
                 },
                 teamId: {
                   type: 'string',
+                  description: 'ID of the associated team.',
                 },
                 slug: {
                   type: 'string',
+                  description: 'URL slug used to access the resource.',
                 },
               },
               required: [

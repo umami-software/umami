@@ -10,7 +10,9 @@ const operation1 = defineOperation({
   auth: 'bearer-or-share',
   operation: {
     operationId: 'getWebsiteSessionReplays',
-    summary: 'Get websites website id sessions session id replays',
+    summary: "List a visitor's session replays",
+    description:
+      'Returns a paginated, searchable list of recordings for the specified website session.',
     tags: ['Websites'],
     parameters: [
       {
@@ -20,6 +22,7 @@ const operation1 = defineOperation({
         schema: {
           type: 'string',
         },
+        description: 'ID of the website.',
       },
       {
         name: 'sessionId',
@@ -28,6 +31,7 @@ const operation1 = defineOperation({
         schema: {
           type: 'string',
         },
+        description: 'ID of the visitor session.',
       },
       {
         name: 'startAt',
@@ -36,6 +40,7 @@ const operation1 = defineOperation({
         schema: {
           type: 'number',
         },
+        description: 'Start of the date range as a Unix timestamp in milliseconds.',
       },
       {
         name: 'endAt',
@@ -44,6 +49,7 @@ const operation1 = defineOperation({
         schema: {
           type: 'number',
         },
+        description: 'End of the date range as a Unix timestamp in milliseconds.',
       },
       {
         name: 'startDate',
@@ -53,6 +59,7 @@ const operation1 = defineOperation({
           type: 'string',
           format: 'date-time',
         },
+        description: 'Start of the date range as an ISO 8601 date or date-time.',
       },
       {
         name: 'endDate',
@@ -62,6 +69,7 @@ const operation1 = defineOperation({
           type: 'string',
           format: 'date-time',
         },
+        description: 'End of the date range as an ISO 8601 date or date-time.',
       },
       {
         name: 'timezone',
@@ -70,6 +78,8 @@ const operation1 = defineOperation({
         schema: {
           type: 'string',
         },
+        description:
+          'IANA time zone used to interpret dates and group results, for example America/New_York.',
       },
       {
         name: 'unit',
@@ -78,6 +88,7 @@ const operation1 = defineOperation({
         schema: {
           type: 'string',
         },
+        description: 'Time interval used to group results: minute, hour, day, month, or year.',
       },
       {
         name: 'compare',
@@ -87,6 +98,8 @@ const operation1 = defineOperation({
           type: 'string',
           enum: ['prev', 'yoy'],
         },
+        description:
+          'Comparison period: prev for the previous period or yoy for the same period last year.',
       },
       {
         name: 'page',
@@ -96,6 +109,7 @@ const operation1 = defineOperation({
           type: 'integer',
           minimum: 1,
         },
+        description: 'Page number, starting at 1.',
       },
       {
         name: 'pageSize',
@@ -105,6 +119,7 @@ const operation1 = defineOperation({
           type: 'integer',
           minimum: 1,
         },
+        description: 'Number of results per page.',
       },
       {
         name: 'maxResults',
@@ -114,6 +129,7 @@ const operation1 = defineOperation({
           type: 'integer',
           minimum: 1,
         },
+        description: 'Maximum number of results to include.',
       },
       {
         name: 'search',
@@ -122,6 +138,7 @@ const operation1 = defineOperation({
         schema: {
           type: 'string',
         },
+        description: 'Search text used to filter results.',
       },
     ],
     responses: {
@@ -139,33 +156,43 @@ const operation1 = defineOperation({
                     properties: {
                       id: {
                         type: 'string',
+                        description: 'Unique identifier of the resource.',
                       },
                       sessionId: {
                         type: 'string',
+                        description: 'ID of the visitor session.',
                       },
                       websiteId: {
                         type: 'string',
+                        description: 'ID of the website.',
                       },
                       browser: {
                         type: 'string',
+                        description: 'Browser used by the visitor.',
                       },
                       os: {
                         type: 'string',
+                        description: 'Operating system used by the visitor.',
                       },
                       device: {
                         type: 'string',
+                        description: 'Device category used by the visitor.',
                       },
                       country: {
                         type: 'string',
+                        description: 'Country code of the visitor.',
                       },
                       city: {
                         type: 'string',
+                        description: 'City of the visitor.',
                       },
                       eventCount: {
                         type: 'number',
+                        description: 'Number of recorded replay events.',
                       },
                       chunkCount: {
                         type: 'number',
+                        description: 'Number of stored recording chunks.',
                       },
                       startedAt: {
                         anyOf: [
@@ -177,6 +204,7 @@ const operation1 = defineOperation({
                             format: 'date-time',
                           },
                         ],
+                        description: 'Date and time the recording started.',
                       },
                       endedAt: {
                         anyOf: [
@@ -188,9 +216,11 @@ const operation1 = defineOperation({
                             format: 'date-time',
                           },
                         ],
+                        description: 'Date and time the recording ended.',
                       },
                       duration: {
                         type: 'number',
+                        description: 'Replay duration in milliseconds.',
                       },
                       createdAt: {
                         anyOf: [
@@ -202,6 +232,7 @@ const operation1 = defineOperation({
                             format: 'date-time',
                           },
                         ],
+                        description: 'Date and time the record was created.',
                       },
                     },
                     required: [
@@ -221,27 +252,35 @@ const operation1 = defineOperation({
                       'createdAt',
                     ],
                   },
+                  description: 'Data returned by the operation.',
                 },
                 count: {
                   type: 'number',
+                  description: 'Number of matching records.',
                 },
                 page: {
                   type: 'number',
+                  description: 'Page number, starting at 1.',
                 },
                 pageSize: {
                   type: 'number',
+                  description: 'Number of results per page.',
                 },
                 orderBy: {
                   type: 'string',
+                  description: 'Field to sort the results by.',
                 },
                 sortDescending: {
                   type: 'boolean',
+                  description: 'Whether to sort results in descending order.',
                 },
                 search: {
                   type: 'string',
+                  description: 'Search text used to filter results.',
                 },
                 isCapped: {
                   type: 'boolean',
+                  description: 'Whether the results were truncated by the maximum result limit.',
                 },
               },
               required: ['data', 'count', 'page', 'pageSize'],

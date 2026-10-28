@@ -10,7 +10,8 @@ const operation1 = defineOperation({
   auth: 'bearer',
   operation: {
     operationId: 'createUser',
-    summary: 'Create or update users',
+    summary: 'Create a user',
+    description: 'Creates a user account with the supplied username, password, and role.',
     tags: ['Users'],
     requestBody: {
       required: true,
@@ -22,19 +23,23 @@ const operation1 = defineOperation({
               id: {
                 type: 'string',
                 format: 'uuid',
+                description: 'Unique identifier of the resource.',
               },
               username: {
                 type: 'string',
                 maxLength: 255,
+                description: 'Username of the account.',
               },
               password: {
                 type: 'string',
                 minLength: 8,
                 maxLength: 255,
+                description: 'Password used to authenticate the account.',
               },
               role: {
                 type: 'string',
                 enum: ['admin', 'user', 'view-only'],
+                description: 'Permission role assigned to the user.',
               },
             },
             required: ['username', 'password', 'role'],
@@ -52,12 +57,15 @@ const operation1 = defineOperation({
               properties: {
                 id: {
                   type: 'string',
+                  description: 'Unique identifier of the resource.',
                 },
                 username: {
                   type: 'string',
+                  description: 'Username of the account.',
                 },
                 role: {
                   type: 'string',
+                  description: 'Permission role assigned to the user.',
                 },
               },
               required: ['id', 'username', 'role'],

@@ -10,7 +10,9 @@ const operation1 = defineOperation({
   auth: 'none',
   operation: {
     operationId: 'verifyTwoFactor',
-    summary: 'Create or update 2fa verify',
+    summary: 'Complete two-factor sign-in',
+    description:
+      'Exchanges a partial sign-in token and a valid authenticator or backup code for a full authentication token and user details.',
     tags: ['Two-factor authentication'],
     requestBody: {
       required: true,
@@ -35,6 +37,7 @@ const operation1 = defineOperation({
                   backupCode: {
                     type: 'string',
                     minLength: 1,
+                    description: 'Single-use backup code for two-factor authentication.',
                   },
                 },
                 required: ['backupCode'],
@@ -62,13 +65,17 @@ const operation1 = defineOperation({
                         },
                         message: {
                           type: 'string',
+                          description: 'Human-readable explanation of the result.',
                         },
                         lockedUntil: {
                           type: 'string',
                           format: 'date-time',
+                          description:
+                            'Time until which further authentication attempts are blocked.',
                         },
                       },
                       required: ['code', 'message', 'lockedUntil'],
+                      description: 'Error details returned when the operation fails.',
                     },
                   },
                   required: ['error'],
@@ -84,19 +91,24 @@ const operation1 = defineOperation({
                       properties: {
                         id: {
                           type: 'string',
+                          description: 'Unique identifier of the resource.',
                         },
                         username: {
                           type: 'string',
+                          description: 'Username of the account.',
                         },
                         role: {
                           type: 'string',
+                          description: 'Permission role assigned to the user.',
                         },
                         createdAt: {
                           type: 'string',
                           format: 'date-time',
+                          description: 'Date and time the record was created.',
                         },
                         isAdmin: {
                           type: 'boolean',
+                          description: 'Whether the user has administrator privileges.',
                         },
                         teams: {
                           type: 'array',
@@ -105,19 +117,24 @@ const operation1 = defineOperation({
                             properties: {
                               id: {
                                 type: 'string',
+                                description: 'Unique identifier of the resource.',
                               },
                               logoUrl: {
                                 type: 'string',
+                                description: 'URL of the logo image.',
                               },
                               name: {
                                 type: 'string',
+                                description: 'Display name of the resource.',
                               },
                             },
                             required: ['id', 'logoUrl', 'name'],
                           },
+                          description: 'Teams associated with the user.',
                         },
                       },
                       required: ['id', 'username', 'role', 'createdAt', 'isAdmin', 'teams'],
+                      description: 'User associated with the resource.',
                     },
                   },
                   required: ['token', 'user'],
@@ -193,13 +210,16 @@ const operation1 = defineOperation({
                     },
                     message: {
                       type: 'string',
+                      description: 'Human-readable explanation of the result.',
                     },
                     lockedUntil: {
                       type: 'string',
                       format: 'date-time',
+                      description: 'Time until which further authentication attempts are blocked.',
                     },
                   },
                   required: ['code', 'message', 'lockedUntil'],
+                  description: 'Error details returned when the operation fails.',
                 },
               },
               required: ['error'],

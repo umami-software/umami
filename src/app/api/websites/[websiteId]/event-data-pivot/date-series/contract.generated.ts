@@ -10,7 +10,7 @@ const operation1 = defineOperation({
   auth: 'bearer-or-share',
   operation: {
     operationId: 'getEventDataDateSeries',
-    summary: 'Get websites website id event data pivot date series',
+    summary: 'Get the distribution of event date values',
     description:
       "Counts occurrences of dates stored in the specified event property, grouping by the property's date value within the selected event date range.",
     tags: ['Websites'],

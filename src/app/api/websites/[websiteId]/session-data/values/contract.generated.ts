@@ -10,7 +10,7 @@ const operation1 = defineOperation({
   auth: 'bearer-or-share',
   operation: {
     operationId: 'getSessionDataValues',
-    summary: 'Get websites website id session data values',
+    summary: 'List session property values',
     description:
       'Returns custom session property values and their occurrence counts, optionally filtered by property name and data type.',
     tags: ['Websites'],

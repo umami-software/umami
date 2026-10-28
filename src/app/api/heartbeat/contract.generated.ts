@@ -10,7 +10,9 @@ const operation1 = defineOperation({
   auth: 'none',
   operation: {
     operationId: 'getHeartbeat',
-    summary: 'Get heartbeat',
+    summary: 'Check application availability',
+    description:
+      'Returns a simple success response to confirm that the application can serve requests.',
     tags: ['System'],
     responses: {
       '200': {
@@ -22,6 +24,7 @@ const operation1 = defineOperation({
               properties: {
                 ok: {
                   type: 'boolean',
+                  description: 'Whether the operation succeeded.',
                 },
               },
               required: ['ok'],

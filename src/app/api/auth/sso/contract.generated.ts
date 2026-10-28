@@ -10,7 +10,9 @@ const operation1 = defineOperation({
   auth: 'bearer',
   operation: {
     operationId: 'sso',
-    summary: 'Create or update auth sso',
+    summary: 'Create a single sign-on token',
+    description:
+      'Returns the authenticated user and a new token valid for 24 hours. Requires Redis-backed authentication.',
     tags: ['Authentication'],
     responses: {
       '200': {
@@ -20,7 +22,9 @@ const operation1 = defineOperation({
             schema: {
               type: 'object',
               properties: {
-                user: {},
+                user: {
+                  description: 'User associated with the resource.',
+                },
                 token: {
                   type: 'string',
                 },

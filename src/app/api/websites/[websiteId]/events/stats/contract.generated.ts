@@ -10,7 +10,9 @@ const operation1 = defineOperation({
   auth: 'bearer-or-share',
   operation: {
     operationId: 'getWebsiteEventStats',
-    summary: 'Get websites website id events stats',
+    summary: 'Get website event statistics',
+    description:
+      'Returns website event totals for the selected date range and filters, including totals for the comparison period.',
     tags: ['Websites'],
     parameters: [
       {
@@ -20,6 +22,7 @@ const operation1 = defineOperation({
         schema: {
           type: 'string',
         },
+        description: 'ID of the website.',
       },
       {
         name: 'startAt',
@@ -28,6 +31,7 @@ const operation1 = defineOperation({
         schema: {
           type: 'number',
         },
+        description: 'Start of the date range as a Unix timestamp in milliseconds.',
       },
       {
         name: 'endAt',
@@ -36,6 +40,7 @@ const operation1 = defineOperation({
         schema: {
           type: 'number',
         },
+        description: 'End of the date range as a Unix timestamp in milliseconds.',
       },
       {
         name: 'startDate',
@@ -45,6 +50,7 @@ const operation1 = defineOperation({
           type: 'string',
           format: 'date-time',
         },
+        description: 'Start of the date range as an ISO 8601 date or date-time.',
       },
       {
         name: 'endDate',
@@ -54,6 +60,7 @@ const operation1 = defineOperation({
           type: 'string',
           format: 'date-time',
         },
+        description: 'End of the date range as an ISO 8601 date or date-time.',
       },
       {
         name: 'timezone',
@@ -62,6 +69,8 @@ const operation1 = defineOperation({
         schema: {
           type: 'string',
         },
+        description:
+          'IANA time zone used to interpret dates and group results, for example America/New_York.',
       },
       {
         name: 'unit',
@@ -70,6 +79,7 @@ const operation1 = defineOperation({
         schema: {
           type: 'string',
         },
+        description: 'Time interval used to group results: minute, hour, day, month, or year.',
       },
       {
         name: 'compare',
@@ -79,6 +89,8 @@ const operation1 = defineOperation({
           type: 'string',
           enum: ['prev', 'yoy'],
         },
+        description:
+          'Comparison period: prev for the previous period or yoy for the same period last year.',
       },
       {
         name: 'path',
@@ -87,6 +99,7 @@ const operation1 = defineOperation({
         schema: {
           type: 'string',
         },
+        description: 'Filter by page URL path.',
       },
       {
         name: 'referrer',
@@ -95,6 +108,7 @@ const operation1 = defineOperation({
         schema: {
           type: 'string',
         },
+        description: 'Filter by referring URL.',
       },
       {
         name: 'title',
@@ -103,6 +117,7 @@ const operation1 = defineOperation({
         schema: {
           type: 'string',
         },
+        description: 'Filter by page title.',
       },
       {
         name: 'query',
@@ -111,6 +126,7 @@ const operation1 = defineOperation({
         schema: {
           type: 'string',
         },
+        description: 'Filter by page URL query string.',
       },
       {
         name: 'os',
@@ -119,6 +135,7 @@ const operation1 = defineOperation({
         schema: {
           type: 'string',
         },
+        description: 'Operating system used by the visitor.',
       },
       {
         name: 'browser',
@@ -127,6 +144,7 @@ const operation1 = defineOperation({
         schema: {
           type: 'string',
         },
+        description: 'Browser used by the visitor.',
       },
       {
         name: 'device',
@@ -135,6 +153,7 @@ const operation1 = defineOperation({
         schema: {
           type: 'string',
         },
+        description: 'Device category used by the visitor.',
       },
       {
         name: 'country',
@@ -143,6 +162,7 @@ const operation1 = defineOperation({
         schema: {
           type: 'string',
         },
+        description: 'Country code of the visitor.',
       },
       {
         name: 'region',
@@ -151,6 +171,7 @@ const operation1 = defineOperation({
         schema: {
           type: 'string',
         },
+        description: 'Region or subdivision of the visitor.',
       },
       {
         name: 'city',
@@ -159,6 +180,7 @@ const operation1 = defineOperation({
         schema: {
           type: 'string',
         },
+        description: 'City of the visitor.',
       },
       {
         name: 'tag',
@@ -167,6 +189,7 @@ const operation1 = defineOperation({
         schema: {
           type: 'string',
         },
+        description: 'Tag attached to the tracked activity.',
       },
       {
         name: 'hostname',
@@ -175,6 +198,7 @@ const operation1 = defineOperation({
         schema: {
           type: 'string',
         },
+        description: 'Hostname on which the activity occurred.',
       },
       {
         name: 'distinctId',
@@ -183,6 +207,7 @@ const operation1 = defineOperation({
         schema: {
           type: 'string',
         },
+        description: 'Custom identifier assigned to the visitor.',
       },
       {
         name: 'language',
@@ -191,6 +216,7 @@ const operation1 = defineOperation({
         schema: {
           type: 'string',
         },
+        description: 'Preferred language reported by the visitor browser.',
       },
       {
         name: 'event',
@@ -199,6 +225,7 @@ const operation1 = defineOperation({
         schema: {
           type: 'string',
         },
+        description: 'Filter by custom event name.',
       },
       {
         name: 'utmSource',
@@ -207,6 +234,7 @@ const operation1 = defineOperation({
         schema: {
           type: 'string',
         },
+        description: 'UTM campaign source.',
       },
       {
         name: 'utmMedium',
@@ -215,6 +243,7 @@ const operation1 = defineOperation({
         schema: {
           type: 'string',
         },
+        description: 'UTM campaign medium.',
       },
       {
         name: 'utmCampaign',
@@ -223,6 +252,7 @@ const operation1 = defineOperation({
         schema: {
           type: 'string',
         },
+        description: 'UTM campaign name.',
       },
       {
         name: 'utmContent',
@@ -231,6 +261,7 @@ const operation1 = defineOperation({
         schema: {
           type: 'string',
         },
+        description: 'UTM campaign content.',
       },
       {
         name: 'utmTerm',
@@ -239,6 +270,7 @@ const operation1 = defineOperation({
         schema: {
           type: 'string',
         },
+        description: 'UTM campaign search term.',
       },
       {
         name: 'excludeBounce',
@@ -247,6 +279,7 @@ const operation1 = defineOperation({
         schema: {
           type: 'string',
         },
+        description: 'Set a non-empty value to exclude visits with only one pageview.',
       },
       {
         name: 'segment',
@@ -256,6 +289,7 @@ const operation1 = defineOperation({
           type: 'string',
           format: 'uuid',
         },
+        description: 'ID of a saved segment used to filter results.',
       },
       {
         name: 'cohort',
@@ -265,6 +299,7 @@ const operation1 = defineOperation({
           type: 'string',
           format: 'uuid',
         },
+        description: 'ID of a saved cohort used to filter visitors.',
       },
       {
         name: 'eventType',
@@ -274,6 +309,7 @@ const operation1 = defineOperation({
           type: 'integer',
           minimum: 1,
         },
+        description: 'Event type: 1 for a pageview or 2 for a custom event.',
       },
       {
         name: 'match',
@@ -283,6 +319,7 @@ const operation1 = defineOperation({
           type: 'string',
           enum: ['all', 'any'],
         },
+        description: 'Whether records must match all filters or any filter.',
       },
     ],
     responses: {
@@ -306,22 +343,27 @@ const operation1 = defineOperation({
                           },
                           visitors: {
                             type: 'number',
+                            description: 'Unique visitor counts for the selected period.',
                           },
                           visits: {
                             type: 'number',
+                            description: 'Visit counts for the selected period.',
                           },
                           uniqueEvents: {
                             type: 'number',
+                            description: 'Number of unique events.',
                           },
                         },
                         required: ['events', 'visitors', 'visits', 'uniqueEvents'],
                       },
+                      description: 'Analytics for the comparison period.',
                     },
                     length: {
                       type: 'number',
                     },
                   },
                   required: ['comparison', 'length'],
+                  description: 'Data returned by the operation.',
                 },
               },
               required: ['data'],

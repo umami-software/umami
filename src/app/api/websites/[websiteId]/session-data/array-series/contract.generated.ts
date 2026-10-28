@@ -10,7 +10,7 @@ const operation1 = defineOperation({
   auth: 'bearer-or-share',
   operation: {
     operationId: 'getSessionDataArraySeries',
-    summary: 'Get websites website id session data array series',
+    summary: 'Get session array values over time',
     description:
       'Counts distinct sessions for individual values in an array property, grouped by value and time interval.',
     tags: ['Websites'],

@@ -10,7 +10,9 @@ const operation1 = defineOperation({
   auth: 'none',
   operation: {
     operationId: 'getWebsiteRecorderConfig',
-    summary: 'Get websites website id recorder',
+    summary: 'Get website recording settings',
+    description:
+      'Returns public replay and heatmap settings, including sampling, masking, and duration limits. Returns disabled status when recording is unavailable.',
     tags: ['Websites'],
     parameters: [
       {
@@ -20,6 +22,7 @@ const operation1 = defineOperation({
         schema: {
           type: 'string',
         },
+        description: 'ID of the website.',
       },
     ],
     responses: {
@@ -46,15 +49,19 @@ const operation1 = defineOperation({
                     },
                     replayEnabled: {
                       type: 'boolean',
+                      description: 'Whether session replay recording is enabled.',
                     },
                     heatmapEnabled: {
                       type: 'boolean',
+                      description: 'Whether heatmap recording is enabled.',
                     },
                     sampleRate: {
                       type: 'number',
+                      description: 'Fraction of sessions to record for replay, from 0 to 1.',
                     },
                     heatmapSampleRate: {
                       type: 'number',
+                      description: 'Fraction of sessions to record for heatmaps, from 0 to 1.',
                     },
                     maskLevel: {
                       anyOf: [
@@ -65,12 +72,15 @@ const operation1 = defineOperation({
                           const: 'moderate',
                         },
                       ],
+                      description:
+                        'Privacy masking level used by the recorder: strict or moderate.',
                     },
                     maxDuration: {
                       type: 'number',
                     },
                     blockSelector: {
                       type: 'string',
+                      description: 'CSS selector for elements excluded from recordings.',
                     },
                   },
                   required: [

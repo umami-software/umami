@@ -10,7 +10,9 @@ const operation1 = defineOperation({
   auth: 'bearer-or-share',
   operation: {
     operationId: 'getLinksCharts',
-    summary: 'Get links charts',
+    summary: 'Get visitor charts for links',
+    description:
+      'Returns visitor totals and chart data for the requested links the caller can view, within the selected date range.',
     tags: ['Links'],
     parameters: [
       {
@@ -20,6 +22,7 @@ const operation1 = defineOperation({
         schema: {
           type: 'string',
         },
+        description: 'Comma-separated resource IDs. Provide between 1 and 20 IDs.',
       },
       {
         name: 'startAt',
@@ -28,6 +31,7 @@ const operation1 = defineOperation({
         schema: {
           type: 'integer',
         },
+        description: 'Start of the date range as a Unix timestamp in milliseconds.',
       },
       {
         name: 'endAt',
@@ -36,6 +40,7 @@ const operation1 = defineOperation({
         schema: {
           type: 'integer',
         },
+        description: 'End of the date range as a Unix timestamp in milliseconds.',
       },
       {
         name: 'timezone',
@@ -44,6 +49,8 @@ const operation1 = defineOperation({
         schema: {
           type: 'string',
         },
+        description:
+          'IANA time zone used to interpret dates and group results, for example America/New_York.',
       },
     ],
     responses: {
@@ -72,6 +79,7 @@ const operation1 = defineOperation({
                     },
                     required: ['values', 'total'],
                   },
+                  description: 'Data returned by the operation.',
                 },
               },
               required: ['data'],

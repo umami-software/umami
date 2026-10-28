@@ -10,7 +10,9 @@ const operation1 = defineOperation({
   auth: 'bearer-or-share',
   operation: {
     operationId: 'cloneBoard',
-    summary: 'Create or update boards board id clone',
+    summary: 'Clone a board',
+    description:
+      'Creates a copy of a board with optional changes to its name, description, and configuration. Removes invalid report references from the copy.',
     tags: ['Boards'],
     parameters: [
       {
@@ -20,6 +22,7 @@ const operation1 = defineOperation({
         schema: {
           type: 'string',
         },
+        description: 'ID of the board.',
       },
     ],
     requestBody: {
@@ -32,14 +35,17 @@ const operation1 = defineOperation({
               name: {
                 type: 'string',
                 maxLength: 200,
+                description: 'Display name of the resource.',
               },
               description: {
                 type: 'string',
                 maxLength: 500,
+                description: 'Description of the resource.',
               },
               parameters: {
                 type: 'object',
                 properties: {},
+                description: 'Configuration parameters for the resource.',
               },
             },
           },
@@ -56,29 +62,36 @@ const operation1 = defineOperation({
               properties: {
                 id: {
                   type: 'string',
+                  description: 'Unique identifier of the resource.',
                 },
                 userId: {
                   type: 'string',
+                  description: 'ID of the associated user.',
                 },
                 createdAt: {
                   type: 'string',
                   format: 'date-time',
+                  description: 'Date and time the record was created.',
                 },
                 updatedAt: {
                   type: 'string',
                   format: 'date-time',
+                  description: 'Date and time the record was last updated.',
                 },
                 name: {
                   type: 'string',
+                  description: 'Display name of the resource.',
                 },
                 teamId: {
                   type: 'string',
+                  description: 'ID of the associated team.',
                 },
                 type: {
                   type: 'string',
                 },
                 description: {
                   type: 'string',
+                  description: 'Description of the resource.',
                 },
                 parameters: {
                   anyOf: [
@@ -134,6 +147,7 @@ const operation1 = defineOperation({
                       required: ['length'],
                     },
                   ],
+                  description: 'Configuration parameters for the resource.',
                 },
               },
               required: [

@@ -10,7 +10,9 @@ const operation1 = defineOperation({
   auth: 'bearer',
   operation: {
     operationId: 'confirmTwoFactorSetup',
-    summary: 'Create or update 2fa setup confirm',
+    summary: 'Confirm two-factor authentication setup',
+    description:
+      'Verifies an authenticator code, enables two-factor authentication, and returns a new set of backup codes.',
     tags: ['Two-factor authentication'],
     requestBody: {
       required: true,
@@ -48,13 +50,17 @@ const operation1 = defineOperation({
                         },
                         message: {
                           type: 'string',
+                          description: 'Human-readable explanation of the result.',
                         },
                         lockedUntil: {
                           type: 'string',
                           format: 'date-time',
+                          description:
+                            'Time until which further authentication attempts are blocked.',
                         },
                       },
                       required: ['code', 'message', 'lockedUntil'],
+                      description: 'Error details returned when the operation fails.',
                     },
                   },
                   required: ['error'],
@@ -67,6 +73,7 @@ const operation1 = defineOperation({
                       items: {
                         type: 'string',
                       },
+                      description: 'Single-use backup codes for two-factor authentication.',
                     },
                   },
                   required: ['backupCodes'],
@@ -142,13 +149,16 @@ const operation1 = defineOperation({
                     },
                     message: {
                       type: 'string',
+                      description: 'Human-readable explanation of the result.',
                     },
                     lockedUntil: {
                       type: 'string',
                       format: 'date-time',
+                      description: 'Time until which further authentication attempts are blocked.',
                     },
                   },
                   required: ['code', 'message', 'lockedUntil'],
+                  description: 'Error details returned when the operation fails.',
                 },
               },
               required: ['error'],

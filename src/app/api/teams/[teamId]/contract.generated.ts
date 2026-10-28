@@ -10,7 +10,8 @@ const operation1 = defineOperation({
   auth: 'bearer',
   operation: {
     operationId: 'deleteTeam',
-    summary: 'Delete teams team id',
+    summary: 'Delete a team',
+    description: "Deletes the specified team after checking the caller's permission to remove it.",
     tags: ['Teams'],
     parameters: [
       {
@@ -20,6 +21,7 @@ const operation1 = defineOperation({
         schema: {
           type: 'string',
         },
+        description: 'ID of the associated team.',
       },
     ],
     responses: {
@@ -32,6 +34,7 @@ const operation1 = defineOperation({
               properties: {
                 ok: {
                   const: true,
+                  description: 'Whether the operation succeeded.',
                 },
               },
               required: ['ok'],
@@ -67,7 +70,8 @@ const operation2 = defineOperation({
   auth: 'bearer-or-share',
   operation: {
     operationId: 'getTeam',
-    summary: 'Get teams team id',
+    summary: 'Get a team',
+    description: "Returns the specified team's details, including its members.",
     tags: ['Teams'],
     parameters: [
       {
@@ -77,6 +81,7 @@ const operation2 = defineOperation({
         schema: {
           type: 'string',
         },
+        description: 'ID of the associated team.',
       },
     ],
     responses: {
@@ -89,30 +94,38 @@ const operation2 = defineOperation({
               properties: {
                 id: {
                   type: 'string',
+                  description: 'Unique identifier of the resource.',
                 },
                 createdAt: {
                   type: 'string',
                   format: 'date-time',
+                  description: 'Date and time the record was created.',
                 },
                 updatedAt: {
                   type: 'string',
                   format: 'date-time',
+                  description: 'Date and time the record was last updated.',
                 },
                 logoUrl: {
                   type: 'string',
+                  description: 'URL of the logo image.',
                 },
                 twoFactorRequired: {
                   type: 'boolean',
+                  description: 'Whether two-factor authentication is required.',
                 },
                 deletedAt: {
                   type: 'string',
                   format: 'date-time',
+                  description: 'Date and time the record was deleted, if applicable.',
                 },
                 name: {
                   type: 'string',
+                  description: 'Display name of the resource.',
                 },
                 accessCode: {
                   type: 'string',
+                  description: 'Code used to join the team.',
                 },
               },
               required: [
@@ -174,7 +187,8 @@ const operation3 = defineOperation({
   auth: 'bearer',
   operation: {
     operationId: 'updateTeam',
-    summary: 'Create or update teams team id',
+    summary: 'Update a team',
+    description: "Updates the specified team's name or access code.",
     tags: ['Teams'],
     parameters: [
       {
@@ -184,6 +198,7 @@ const operation3 = defineOperation({
         schema: {
           type: 'string',
         },
+        description: 'ID of the associated team.',
       },
     ],
     requestBody: {
@@ -196,10 +211,12 @@ const operation3 = defineOperation({
               name: {
                 type: 'string',
                 maxLength: 50,
+                description: 'Display name of the resource.',
               },
               accessCode: {
                 type: 'string',
                 maxLength: 50,
+                description: 'Code used to join the team.',
               },
             },
           },
@@ -216,30 +233,38 @@ const operation3 = defineOperation({
               properties: {
                 id: {
                   type: 'string',
+                  description: 'Unique identifier of the resource.',
                 },
                 createdAt: {
                   type: 'string',
                   format: 'date-time',
+                  description: 'Date and time the record was created.',
                 },
                 updatedAt: {
                   type: 'string',
                   format: 'date-time',
+                  description: 'Date and time the record was last updated.',
                 },
                 logoUrl: {
                   type: 'string',
+                  description: 'URL of the logo image.',
                 },
                 twoFactorRequired: {
                   type: 'boolean',
+                  description: 'Whether two-factor authentication is required.',
                 },
                 deletedAt: {
                   type: 'string',
                   format: 'date-time',
+                  description: 'Date and time the record was deleted, if applicable.',
                 },
                 name: {
                   type: 'string',
+                  description: 'Display name of the resource.',
                 },
                 accessCode: {
                   type: 'string',
+                  description: 'Code used to join the team.',
                 },
               },
               required: [

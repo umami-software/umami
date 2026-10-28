@@ -10,7 +10,9 @@ const operation1 = defineOperation({
   auth: 'bearer',
   operation: {
     operationId: 'getTeams',
-    summary: 'Get teams',
+    summary: 'List my teams',
+    description:
+      'Returns a paginated list of teams the current user belongs to, with sorting options.',
     tags: ['Teams'],
     parameters: [
       {
@@ -21,6 +23,7 @@ const operation1 = defineOperation({
           type: 'integer',
           minimum: 1,
         },
+        description: 'Page number, starting at 1.',
       },
       {
         name: 'pageSize',
@@ -30,6 +33,7 @@ const operation1 = defineOperation({
           type: 'integer',
           minimum: 1,
         },
+        description: 'Number of results per page.',
       },
       {
         name: 'maxResults',
@@ -39,6 +43,7 @@ const operation1 = defineOperation({
           type: 'integer',
           minimum: 1,
         },
+        description: 'Maximum number of results to include.',
       },
       {
         name: 'orderBy',
@@ -47,6 +52,7 @@ const operation1 = defineOperation({
         schema: {
           type: 'string',
         },
+        description: 'Field to sort the results by.',
       },
       {
         name: 'sortDescending',
@@ -56,6 +62,7 @@ const operation1 = defineOperation({
           type: 'string',
           enum: ['true', 'false'],
         },
+        description: 'Whether to sort results in descending order.',
       },
     ],
     responses: {
@@ -73,30 +80,38 @@ const operation1 = defineOperation({
                     properties: {
                       id: {
                         type: 'string',
+                        description: 'Unique identifier of the resource.',
                       },
                       createdAt: {
                         type: 'string',
                         format: 'date-time',
+                        description: 'Date and time the record was created.',
                       },
                       updatedAt: {
                         type: 'string',
                         format: 'date-time',
+                        description: 'Date and time the record was last updated.',
                       },
                       logoUrl: {
                         type: 'string',
+                        description: 'URL of the logo image.',
                       },
                       twoFactorRequired: {
                         type: 'boolean',
+                        description: 'Whether two-factor authentication is required.',
                       },
                       deletedAt: {
                         type: 'string',
                         format: 'date-time',
+                        description: 'Date and time the record was deleted, if applicable.',
                       },
                       name: {
                         type: 'string',
+                        description: 'Display name of the resource.',
                       },
                       accessCode: {
                         type: 'string',
+                        description: 'Code used to join the team.',
                       },
                     },
                     required: [
@@ -110,27 +125,35 @@ const operation1 = defineOperation({
                       'accessCode',
                     ],
                   },
+                  description: 'Data returned by the operation.',
                 },
                 count: {
                   type: 'number',
+                  description: 'Number of matching records.',
                 },
                 page: {
                   type: 'number',
+                  description: 'Page number, starting at 1.',
                 },
                 pageSize: {
                   type: 'number',
+                  description: 'Number of results per page.',
                 },
                 orderBy: {
                   type: 'string',
+                  description: 'Field to sort the results by.',
                 },
                 sortDescending: {
                   type: 'boolean',
+                  description: 'Whether to sort results in descending order.',
                 },
                 search: {
                   type: 'string',
+                  description: 'Search text used to filter results.',
                 },
                 isCapped: {
                   type: 'boolean',
+                  description: 'Whether the results were truncated by the maximum result limit.',
                 },
               },
               required: ['data', 'count', 'page', 'pageSize'],
@@ -183,7 +206,9 @@ const operation2 = defineOperation({
   auth: 'bearer',
   operation: {
     operationId: 'createTeam',
-    summary: 'Create or update teams',
+    summary: 'Create a team',
+    description:
+      'Creates a team with an access code and an owner. Administrators can specify a different user as the owner.',
     tags: ['Teams'],
     requestBody: {
       required: true,
@@ -195,6 +220,7 @@ const operation2 = defineOperation({
               name: {
                 type: 'string',
                 maxLength: 50,
+                description: 'Display name of the resource.',
               },
               ownerId: {
                 type: 'string',
@@ -219,30 +245,38 @@ const operation2 = defineOperation({
                   properties: {
                     id: {
                       type: 'string',
+                      description: 'Unique identifier of the resource.',
                     },
                     createdAt: {
                       type: 'string',
                       format: 'date-time',
+                      description: 'Date and time the record was created.',
                     },
                     updatedAt: {
                       type: 'string',
                       format: 'date-time',
+                      description: 'Date and time the record was last updated.',
                     },
                     logoUrl: {
                       type: 'string',
+                      description: 'URL of the logo image.',
                     },
                     twoFactorRequired: {
                       type: 'boolean',
+                      description: 'Whether two-factor authentication is required.',
                     },
                     deletedAt: {
                       type: 'string',
                       format: 'date-time',
+                      description: 'Date and time the record was deleted, if applicable.',
                     },
                     name: {
                       type: 'string',
+                      description: 'Display name of the resource.',
                     },
                     accessCode: {
                       type: 'string',
+                      description: 'Code used to join the team.',
                     },
                   },
                   required: [
@@ -261,23 +295,29 @@ const operation2 = defineOperation({
                   properties: {
                     id: {
                       type: 'string',
+                      description: 'Unique identifier of the resource.',
                     },
                     userId: {
                       type: 'string',
+                      description: 'ID of the associated user.',
                     },
                     createdAt: {
                       type: 'string',
                       format: 'date-time',
+                      description: 'Date and time the record was created.',
                     },
                     updatedAt: {
                       type: 'string',
                       format: 'date-time',
+                      description: 'Date and time the record was last updated.',
                     },
                     role: {
                       type: 'string',
+                      description: 'Permission role assigned to the user.',
                     },
                     teamId: {
                       type: 'string',
+                      description: 'ID of the associated team.',
                     },
                   },
                   required: ['id', 'userId', 'createdAt', 'updatedAt', 'role', 'teamId'],

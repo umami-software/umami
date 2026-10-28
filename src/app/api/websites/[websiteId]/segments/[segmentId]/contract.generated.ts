@@ -10,7 +10,7 @@ const operation1 = defineOperation({
   auth: 'bearer',
   operation: {
     operationId: 'deleteWebsiteSegment',
-    summary: 'Delete websites website id segments segment id',
+    summary: 'Delete a website segment or cohort',
     description: 'Deletes the specified saved segment or cohort from the website.',
     tags: ['Websites'],
     parameters: [
@@ -96,7 +96,7 @@ const operation2 = defineOperation({
   auth: 'bearer-or-share',
   operation: {
     operationId: 'getWebsiteSegment',
-    summary: 'Get websites website id segments segment id',
+    summary: 'Get a website segment or cohort',
     description: 'Returns a saved segment or cohort and its filter parameters for the website.',
     tags: ['Websites'],
     parameters: [
@@ -259,7 +259,7 @@ const operation3 = defineOperation({
   auth: 'bearer',
   operation: {
     operationId: 'updateWebsiteSegment',
-    summary: 'Create or update websites website id segments segment id',
+    summary: 'Update a website segment or cohort',
     description: "Updates a saved segment or cohort's type, name, and filter parameters.",
     tags: ['Websites'],
     parameters: [

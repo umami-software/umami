@@ -10,7 +10,8 @@ const operation1 = defineOperation({
   auth: 'bearer',
   operation: {
     operationId: 'updateMyPassword',
-    summary: 'Create or update me password',
+    summary: 'Change my password',
+    description: 'Verifies the current password and replaces it with the supplied new password.',
     tags: ['Account'],
     requestBody: {
       required: true,
@@ -21,10 +22,12 @@ const operation1 = defineOperation({
             properties: {
               currentPassword: {
                 type: 'string',
+                description: 'Current account password.',
               },
               newPassword: {
                 type: 'string',
                 minLength: 8,
+                description: 'New password to set for the account.',
               },
             },
             required: ['currentPassword', 'newPassword'],
@@ -42,16 +45,20 @@ const operation1 = defineOperation({
               properties: {
                 id: {
                   type: 'string',
+                  description: 'Unique identifier of the resource.',
                 },
                 createdAt: {
                   type: 'string',
                   format: 'date-time',
+                  description: 'Date and time the record was created.',
                 },
                 username: {
                   type: 'string',
+                  description: 'Username of the account.',
                 },
                 role: {
                   type: 'string',
+                  description: 'Permission role assigned to the user.',
                 },
               },
               required: ['id', 'createdAt', 'username', 'role'],
@@ -85,6 +92,23 @@ const operation1 = defineOperation({
                 message: 'Unauthorized.',
                 code: 'unauthorized',
                 status: 401,
+              },
+            },
+            schema: {
+              $ref: '#/components/schemas/ApiError',
+            },
+          },
+        },
+      },
+      '404': {
+        description: 'Not found.',
+        content: {
+          'application/json': {
+            example: {
+              error: {
+                message: 'Not found.',
+                code: 'not-found',
+                status: 404,
               },
             },
             schema: {

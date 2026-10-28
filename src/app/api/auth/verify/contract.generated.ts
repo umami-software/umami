@@ -10,7 +10,9 @@ const operation1 = defineOperation({
   auth: 'bearer',
   operation: {
     operationId: 'verify',
-    summary: 'Create or update auth verify',
+    summary: 'Verify the current sign-in',
+    description:
+      'Validates the current authentication credentials and returns the user and their team memberships.',
     tags: ['Authentication'],
     responses: {
       '200': {
@@ -20,7 +22,9 @@ const operation1 = defineOperation({
             schema: {
               type: 'object',
               properties: {
-                teams: {},
+                teams: {
+                  description: 'Teams associated with the user.',
+                },
               },
               required: ['teams'],
             },
