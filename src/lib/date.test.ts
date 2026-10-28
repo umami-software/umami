@@ -133,6 +133,11 @@ describe('parseDateRange', () => {
     expect(parseDateRange('range:100000000000000000000000:0')).toBeNull();
   });
 
+  test('returns null for unknown date values', () => {
+    expect(parseDateRange('invalid')).toBeNull();
+    expect(parseDateRange('7days')).toBeNull();
+  });
+
   test('parses hour ranges', () => {
     const result = parseDateRange('24hour');
     expect(result).toMatchObject({
