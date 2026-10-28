@@ -70,8 +70,15 @@ export function readBody(res: http.IncomingMessage, maxBytes: number): Promise<B
     const finish = (err?: Error) => {
       if (finished) return;
       finished = true;
-      if (err) reject(err);
-      else resolve(Buffer.concat(chunks));
+
+      if (err) {
+        // A broken body must not leave the connection open.
+        decoder?.destroy();
+        res.destroy();
+        reject(err);
+      } else {
+        resolve(Buffer.concat(chunks));
+      }
     };
 
     source.on('data', (chunk: Buffer) => {
@@ -147,6 +154,8 @@ export function safeRequest(
       if (settled) return;
       settled = true;
       clearTimeout(timer);
+      // Whatever the outcome, release the socket: the deadline is gone, so nothing else would.
+      req.destroy();
       if (err) reject(err);
       else resolve(value as SafeResponse);
     };

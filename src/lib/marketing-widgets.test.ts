@@ -203,4 +203,23 @@ describe('safeRequest transport', () => {
     ).rejects.toThrow(/Timed out/);
     expect(Date.now() - started).toBeLessThan(2000);
   });
+
+  test('closes the connection when the body cannot be decoded', async () => {
+    let serverClosed: Promise<void> = Promise.resolve();
+    const url = await serve((_req, res) => {
+      serverClosed = new Promise(resolve => res.on('close', () => resolve()));
+      res.writeHead(200, { 'content-encoding': 'gzip' });
+      res.write(Buffer.from('this is not gzip data at all'));
+      // never ends the response: the client has to hang up by itself
+    });
+
+    await expect(
+      safeRequest(url, { allowHttp: true, unsafeAllowPrivate: true, timeoutMs: 5000 }),
+    ).rejects.toThrow();
+
+    await Promise.race([
+      serverClosed,
+      new Promise((_, reject) => setTimeout(() => reject(new Error('connection left open')), 1500)),
+    ]);
+  });
 });
