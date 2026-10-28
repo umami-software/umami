@@ -1397,7 +1397,10 @@ export interface paths {
       path?: never;
       cookie?: never;
     };
-    /** Get website attribution */
+    /**
+     * Get website attribution
+     * @description Attributes conversions for a page path or custom event to referrers, paid ads, and UTM parameters using a first-click or last-click model.
+     */
     get: operations['getWebsiteAttribution'];
     put?: never;
     post?: never;
@@ -1414,7 +1417,10 @@ export interface paths {
       path?: never;
       cookie?: never;
     };
-    /** Get website breakdown */
+    /**
+     * Get website breakdown
+     * @description Returns pageviews, visitors, visits, bounces, and total time for the website, grouped by the requested fields, over the date range.
+     */
     get: operations['getWebsiteBreakdown'];
     put?: never;
     post?: never;
@@ -1451,7 +1457,10 @@ export interface paths {
       path?: never;
       cookie?: never;
     };
-    /** List website error issues */
+    /**
+     * List error issues
+     * @description Returns a paginated list of error issues for the website, with occurrence and affected visit counts for the selected date range.
+     */
     get: operations['getWebsiteErrors'];
     put?: never;
     post?: never;
@@ -1468,14 +1477,20 @@ export interface paths {
       path?: never;
       cookie?: never;
     };
-    /** Get an error issue */
+    /**
+     * Get an error issue
+     * @description Returns an error issue with its status, occurrence counts, and first and last seen times for the selected date range.
+     */
     get: operations['getWebsiteErrorIssue'];
     put?: never;
     post?: never;
     delete?: never;
     options?: never;
     head?: never;
-    /** Change error issue status */
+    /**
+     * Update an error issue status
+     * @description Changes the status of an error issue to unresolved, resolved, or ignored. Changing the status does not discard new occurrences.
+     */
     patch: operations['updateWebsiteErrorIssue'];
     trace?: never;
   };
@@ -1486,7 +1501,10 @@ export interface paths {
       path?: never;
       cookie?: never;
     };
-    /** List issue occurrences */
+    /**
+     * List error occurrences
+     * @description Returns a paginated list of occurrences for an error issue, newest first.
+     */
     get: operations['getWebsiteErrorEvents'];
     put?: never;
     post?: never;
@@ -1503,7 +1521,10 @@ export interface paths {
       path?: never;
       cookie?: never;
     };
-    /** Get an error occurrence */
+    /**
+     * Get an error occurrence
+     * @description Returns a single occurrence of an error issue, including its stack trace, tags, and session details.
+     */
     get: operations['getWebsiteErrorEvent'];
     put?: never;
     post?: never;
@@ -1520,7 +1541,10 @@ export interface paths {
       path?: never;
       cookie?: never;
     };
-    /** List distinct values of an error filter field for one issue */
+    /**
+     * Get error issue filter values
+     * @description Returns the distinct values and occurrence counts of an error field, such as release or browser, for one issue.
+     */
     get: operations['getWebsiteErrorIssueValues'];
     put?: never;
     post?: never;
@@ -1537,7 +1561,10 @@ export interface paths {
       path?: never;
       cookie?: never;
     };
-    /** Get website error totals and trend */
+    /**
+     * Get error stats
+     * @description Returns the total number of error occurrences, issues, and affected visits for the selected date range, with a daily trend in UTC.
+     */
     get: operations['getWebsiteErrorStats'];
     put?: never;
     post?: never;
@@ -1554,7 +1581,10 @@ export interface paths {
       path?: never;
       cookie?: never;
     };
-    /** List distinct values of an error filter field */
+    /**
+     * Get error filter values
+     * @description Returns the distinct values and occurrence counts of an error field, such as release or browser, across all issues.
+     */
     get: operations['getWebsiteErrorValues'];
     put?: never;
     post?: never;
@@ -1911,10 +1941,16 @@ export interface paths {
       path?: never;
       cookie?: never;
     };
-    /** Get website funnels */
+    /**
+     * Get website funnels
+     * @description Returns a paginated list of the saved funnels for the website, optionally filtered by search text.
+     */
     get: operations['getWebsiteFunnels'];
     put?: never;
-    /** Create website funnel */
+    /**
+     * Create a website funnel
+     * @description Saves a named funnel for the website with an optional description, its ordered steps, and the conversion window.
+     */
     post: operations['createWebsiteFunnel'];
     delete?: never;
     options?: never;
@@ -1929,12 +1965,21 @@ export interface paths {
       path?: never;
       cookie?: never;
     };
-    /** Get website funnel */
+    /**
+     * Get a website funnel
+     * @description Returns a saved funnel for the website, including its name, description, steps, and conversion window.
+     */
     get: operations['getWebsiteFunnel'];
     put?: never;
-    /** Update website funnel */
+    /**
+     * Update a website funnel
+     * @description Updates the name, description, steps, or conversion window of a saved funnel for the website.
+     */
     post: operations['updateWebsiteFunnel'];
-    /** Delete website funnel */
+    /**
+     * Delete a website funnel
+     * @description Deletes the specified saved funnel from the website after checking the caller's permissions.
+     */
     delete: operations['deleteWebsiteFunnel'];
     options?: never;
     head?: never;
@@ -1948,7 +1993,10 @@ export interface paths {
       path?: never;
       cookie?: never;
     };
-    /** Get website saved funnel stats */
+    /**
+     * Get website saved funnel stats
+     * @description Returns visitor counts and drop-off for each step of a saved funnel over the selected date range, with optional filters.
+     */
     get: operations['getWebsiteSavedFunnelStats'];
     put?: never;
     post?: never;
@@ -1965,7 +2013,10 @@ export interface paths {
       path?: never;
       cookie?: never;
     };
-    /** Get website funnel stats */
+    /**
+     * Get website funnel stats
+     * @description Returns visitor counts and drop-off for each step of an ad-hoc funnel, given its steps and conversion window, over the date range.
+     */
     get: operations['getWebsiteFunnelStats'];
     put?: never;
     post?: never;
@@ -1982,10 +2033,16 @@ export interface paths {
       path?: never;
       cookie?: never;
     };
-    /** Get website goals */
+    /**
+     * Get website goals
+     * @description Returns a paginated list of the saved goals for the website, optionally filtered by search text.
+     */
     get: operations['getWebsiteGoals'];
     put?: never;
-    /** Create website goal */
+    /**
+     * Create a website goal
+     * @description Saves a named goal for the website with an optional description and the goal type and value to track.
+     */
     post: operations['createWebsiteGoal'];
     delete?: never;
     options?: never;
@@ -2000,12 +2057,21 @@ export interface paths {
       path?: never;
       cookie?: never;
     };
-    /** Get website goal */
+    /**
+     * Get a website goal
+     * @description Returns a saved goal for the website, including its name, description, and the type and value it tracks.
+     */
     get: operations['getWebsiteGoal'];
     put?: never;
-    /** Update website goal */
+    /**
+     * Update a website goal
+     * @description Updates the name, description, or the type and value tracked by a saved goal for the website.
+     */
     post: operations['updateWebsiteGoal'];
-    /** Delete website goal */
+    /**
+     * Delete a website goal
+     * @description Deletes the specified saved goal from the website after checking the caller's permissions.
+     */
     delete: operations['deleteWebsiteGoal'];
     options?: never;
     head?: never;
@@ -2019,7 +2085,10 @@ export interface paths {
       path?: never;
       cookie?: never;
     };
-    /** Get website saved goal stats */
+    /**
+     * Get website saved goal stats
+     * @description Returns the number of conversions and the total for a saved goal over the selected date range, with optional filters.
+     */
     get: operations['getWebsiteSavedGoalStats'];
     put?: never;
     post?: never;
@@ -2036,7 +2105,10 @@ export interface paths {
       path?: never;
       cookie?: never;
     };
-    /** Get website goal stats */
+    /**
+     * Get website goal stats
+     * @description Returns the number of conversions and the total for an ad-hoc goal, given its type and value, over the selected date range.
+     */
     get: operations['getWebsiteGoalStats'];
     put?: never;
     post?: never;
@@ -2053,7 +2125,10 @@ export interface paths {
       path?: never;
       cookie?: never;
     };
-    /** Get website heatmaps */
+    /**
+     * Get website heatmaps
+     * @description Returns click or scroll heatmap data for the website, optionally for a single page path, along with the pages that have recorded data.
+     */
     get: operations['getWebsiteHeatmaps'];
     put?: never;
     post?: never;
@@ -2070,7 +2145,10 @@ export interface paths {
       path?: never;
       cookie?: never;
     };
-    /** Get website journeys */
+    /**
+     * Get website journeys
+     * @description Returns the most common paths visitors take through the website, between 2 and 7 steps long, with optional start and end steps.
+     */
     get: operations['getWebsiteJourneys'];
     put?: never;
     post?: never;
@@ -2147,7 +2225,10 @@ export interface paths {
       path?: never;
       cookie?: never;
     };
-    /** Get website performance chart */
+    /**
+     * Get website performance chart
+     * @description Returns p50, p75, and p95 values over time for a Core Web Vitals metric such as LCP, INP, CLS, FCP, or TTFB.
+     */
     get: operations['getWebsitePerformanceChart'];
     put?: never;
     post?: never;
@@ -2164,7 +2245,10 @@ export interface paths {
       path?: never;
       cookie?: never;
     };
-    /** Get website performance metrics */
+    /**
+     * Get website performance metrics
+     * @description Ranks pages, titles, devices, or browsers by a Core Web Vitals metric, with p50, p75, and p95 values and a measurement count.
+     */
     get: operations['getWebsitePerformanceMetrics'];
     put?: never;
     post?: never;
@@ -2181,7 +2265,10 @@ export interface paths {
       path?: never;
       cookie?: never;
     };
-    /** Get website performance stats */
+    /**
+     * Get website performance stats
+     * @description Returns p50, p75, and p95 values for LCP, INP, CLS, FCP, and TTFB and the number of measurements in the date range.
+     */
     get: operations['getWebsitePerformanceStats'];
     put?: never;
     post?: never;
@@ -2322,7 +2409,10 @@ export interface paths {
       path?: never;
       cookie?: never;
     };
-    /** Get website retention */
+    /**
+     * Get website retention
+     * @description Returns daily retention for the website: for each first-visit date, how many visitors returned on later days and the percentage.
+     */
     get: operations['getWebsiteRetention'];
     put?: never;
     post?: never;
@@ -2859,7 +2949,10 @@ export interface paths {
       path?: never;
       cookie?: never;
     };
-    /** Get website utm metrics */
+    /**
+     * Get website UTM metrics
+     * @description Returns pageview counts grouped by a UTM parameter, such as source, medium, campaign, term, or content, for the selected date range.
+     */
     get: operations['getWebsiteUtmMetrics'];
     put?: never;
     post?: never;
@@ -9175,7 +9268,10 @@ export interface operations {
                  * @description ID of the event.
                  */
                 eventId: string;
-                /** Format: uuid */
+                /**
+                 * Format: uuid
+                 * @description ID of the error issue.
+                 */
                 issueId: string;
                 /**
                  * @description Whether the operation succeeded.
@@ -13234,10 +13330,6 @@ export interface operations {
           'application/json': ({
             /** @description Number of visits with only one pageview. */
             bounces: number;
-            /** @description Completed orders in the requested currency. Present when currency is set. */
-            orders?: number;
-            /** @description Revenue in the requested currency. Present when currency is set. */
-            revenue?: number;
             /** @description Total visit duration in seconds. */
             totaltime: number;
             /** @description Pageview counts for the selected period. */
@@ -13366,18 +13458,21 @@ export interface operations {
         browser?: string;
         /** @description End of the date range as a Unix timestamp in milliseconds. */
         endAt: number;
+        /** @description Filter by environment, as set with `data-environment` or `captureException`. */
         environment?: string;
         /** @description Page number, starting at 1. */
         page?: number;
         /** @description Number of results per page. */
         pageSize?: number;
+        /** @description Filter by release, as set with `data-release` or `captureException`. */
         release?: string;
         /** @description Search text used to filter results. */
         search?: string;
         /** @description Start of the date range as a Unix timestamp in milliseconds. */
         startAt: number;
+        /** @description Filter by issue status: `unresolved`, `resolved`, or `ignored`. */
         status?: 'unresolved' | 'resolved' | 'ignored';
-        /** @description Path portion of the page URL. */
+        /** @description Filter by the page path on which the error occurred. */
         urlPath?: string;
       };
       header?: never;
@@ -13468,22 +13563,26 @@ export interface operations {
         browser?: string;
         /** @description End of the date range as a Unix timestamp in milliseconds. */
         endAt: number;
+        /** @description Filter by environment, as set with `data-environment` or `captureException`. */
         environment?: string;
         /** @description Page number, starting at 1. */
         page?: number;
         /** @description Number of results per page. */
         pageSize?: number;
+        /** @description Filter by release, as set with `data-release` or `captureException`. */
         release?: string;
         /** @description Search text used to filter results. */
         search?: string;
         /** @description Start of the date range as a Unix timestamp in milliseconds. */
         startAt: number;
+        /** @description Filter by issue status: `unresolved`, `resolved`, or `ignored`. */
         status?: 'unresolved' | 'resolved' | 'ignored';
-        /** @description Path portion of the page URL. */
+        /** @description Filter by the page path on which the error occurred. */
         urlPath?: string;
       };
       header?: never;
       path: {
+        /** @description ID of the error issue. */
         issueId: string;
         /** @description ID of the website. */
         websiteId: string;
@@ -13566,6 +13665,7 @@ export interface operations {
       query?: never;
       header?: never;
       path: {
+        /** @description ID of the error issue. */
         issueId: string;
         /** @description ID of the website. */
         websiteId: string;
@@ -13575,7 +13675,10 @@ export interface operations {
     requestBody: {
       content: {
         'application/json': {
-          /** @enum {string} */
+          /**
+           * @description New status of the issue.
+           * @enum {string}
+           */
           status: 'unresolved' | 'resolved' | 'ignored';
         };
       };
@@ -13626,22 +13729,26 @@ export interface operations {
         browser?: string;
         /** @description End of the date range as a Unix timestamp in milliseconds. */
         endAt: number;
+        /** @description Filter by environment, as set with `data-environment` or `captureException`. */
         environment?: string;
         /** @description Page number, starting at 1. */
         page?: number;
         /** @description Number of results per page. */
         pageSize?: number;
+        /** @description Filter by release, as set with `data-release` or `captureException`. */
         release?: string;
         /** @description Search text used to filter results. */
         search?: string;
         /** @description Start of the date range as a Unix timestamp in milliseconds. */
         startAt: number;
+        /** @description Filter by issue status: `unresolved`, `resolved`, or `ignored`. */
         status?: 'unresolved' | 'resolved' | 'ignored';
-        /** @description Path portion of the page URL. */
+        /** @description Filter by the page path on which the error occurred. */
         urlPath?: string;
       };
       header?: never;
       path: {
+        /** @description ID of the error issue. */
         issueId: string;
         /** @description ID of the website. */
         websiteId: string;
@@ -13737,6 +13844,7 @@ export interface operations {
       path: {
         /** @description ID of the event. */
         eventId: string;
+        /** @description ID of the error issue. */
         issueId: string;
         /** @description ID of the website. */
         websiteId: string;
@@ -13835,21 +13943,26 @@ export interface operations {
         browser?: string;
         /** @description End of the date range as a Unix timestamp in milliseconds. */
         endAt: number;
+        /** @description Filter by environment, as set with `data-environment` or `captureException`. */
         environment?: string;
+        /** @description Filter by release, as set with `data-release` or `captureException`. */
         release?: string;
         /** @description Search text used to filter results. */
         search?: string;
         /** @description Start of the date range as a Unix timestamp in milliseconds. */
         startAt: number;
+        /** @description Filter by issue status: `unresolved`, `resolved`, or `ignored`. */
         status?: 'unresolved' | 'resolved' | 'ignored';
-        /** @description Type of resource or analytics dimension to return. */
+        /** @description Error field to return values for: `release`, `environment`, `browser`, or `urlPath`. */
         type: 'release' | 'environment' | 'browser' | 'urlPath';
-        /** @description Path portion of the page URL. */
+        /** @description Filter by the page path on which the error occurred. */
         urlPath?: string;
+        /** @description Search text used to filter the returned values. */
         value?: string;
       };
       header?: never;
       path: {
+        /** @description ID of the error issue. */
         issueId: string;
         /** @description ID of the website. */
         websiteId: string;
@@ -13907,18 +14020,21 @@ export interface operations {
         browser?: string;
         /** @description End of the date range as a Unix timestamp in milliseconds. */
         endAt: number;
+        /** @description Filter by environment, as set with `data-environment` or `captureException`. */
         environment?: string;
         /** @description Page number, starting at 1. */
         page?: number;
         /** @description Number of results per page. */
         pageSize?: number;
+        /** @description Filter by release, as set with `data-release` or `captureException`. */
         release?: string;
         /** @description Search text used to filter results. */
         search?: string;
         /** @description Start of the date range as a Unix timestamp in milliseconds. */
         startAt: number;
+        /** @description Filter by issue status: `unresolved`, `resolved`, or `ignored`. */
         status?: 'unresolved' | 'resolved' | 'ignored';
-        /** @description Path portion of the page URL. */
+        /** @description Filter by the page path on which the error occurred. */
         urlPath?: string;
       };
       header?: never;
@@ -13986,17 +14102,21 @@ export interface operations {
         browser?: string;
         /** @description End of the date range as a Unix timestamp in milliseconds. */
         endAt: number;
+        /** @description Filter by environment, as set with `data-environment` or `captureException`. */
         environment?: string;
+        /** @description Filter by release, as set with `data-release` or `captureException`. */
         release?: string;
         /** @description Search text used to filter results. */
         search?: string;
         /** @description Start of the date range as a Unix timestamp in milliseconds. */
         startAt: number;
+        /** @description Filter by issue status: `unresolved`, `resolved`, or `ignored`. */
         status?: 'unresolved' | 'resolved' | 'ignored';
-        /** @description Type of resource or analytics dimension to return. */
+        /** @description Error field to return values for: `release`, `environment`, `browser`, or `urlPath`. */
         type: 'release' | 'environment' | 'browser' | 'urlPath';
-        /** @description Path portion of the page URL. */
+        /** @description Filter by the page path on which the error occurred. */
         urlPath?: string;
+        /** @description Search text used to filter the returned values. */
         value?: string;
       };
       header?: never;

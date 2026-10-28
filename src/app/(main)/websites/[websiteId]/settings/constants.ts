@@ -5,8 +5,6 @@ export const SHARE_NAV_ITEMS = [
       { id: 'overview', label: 'overview' },
       { id: 'events', label: 'events' },
       { id: 'sessions', label: 'sessions' },
-      { id: 'realtime', label: 'realtime' },
-      { id: 'performance', label: 'performance' },
       { id: 'compare', label: 'compare' },
       { id: 'breakdown', label: 'breakdown' },
     ],
@@ -26,6 +24,13 @@ export const SHARE_NAV_ITEMS = [
       { id: 'utm', label: 'utm' },
       { id: 'revenue', label: 'revenue' },
       { id: 'attribution', label: 'attribution' },
+    ],
+  },
+  {
+    section: 'monitoring',
+    items: [
+      { id: 'realtime', label: 'realtime' },
+      { id: 'performance', label: 'performance' },
     ],
   },
 ];

@@ -64,18 +64,6 @@ export function ShareNav({
           path: renderPath('/sessions'),
         },
         {
-          id: 'realtime',
-          label: t(labels.realtime),
-          icon: <Clock />,
-          path: renderPath('/realtime'),
-        },
-        {
-          id: 'performance',
-          label: t(labels.performance),
-          icon: <Gauge />,
-          path: renderPath('/performance'),
-        },
-        {
           id: 'compare',
           label: t(labels.compare),
           icon: <AlignEndHorizontal />,
@@ -120,6 +108,24 @@ export function ShareNav({
           label: t(labels.attribution),
           icon: <Network />,
           path: renderPath('/attribution'),
+        },
+      ],
+    },
+    {
+      section: 'monitoring',
+      label: t(labels.monitoring),
+      items: [
+        {
+          id: 'realtime',
+          label: t(labels.realtime),
+          icon: <Clock />,
+          path: renderPath('/realtime'),
+        },
+        {
+          id: 'performance',
+          label: t(labels.performance),
+          icon: <Gauge />,
+          path: renderPath('/performance'),
         },
       ],
     },
