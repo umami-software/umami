@@ -3,7 +3,7 @@ import { uuid } from '@/lib/crypto';
 import { widgetInputSchema } from '@/lib/marketing-widgets';
 import { parseRequest } from '@/lib/request';
 import { json, unauthorized } from '@/lib/response';
-import { canUpdateWebsite, canViewWebsite } from '@/permissions';
+import { canUpdateWebsite } from '@/permissions';
 import { createWidget, getWebsiteWidgets } from '@/queries/prisma';
 
 export function prepareDelivery(delivery: any) {
@@ -25,7 +25,8 @@ export async function GET(
 
   const { websiteId } = await params;
 
-  if (!(await canViewWebsite(auth, websiteId))) {
+  // Includes delivery settings (webhook secret): managers only, never share tokens.
+  if (!(await canUpdateWebsite(auth, websiteId))) {
     return unauthorized();
   }
 

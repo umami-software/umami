@@ -1,4 +1,4 @@
-import { assertPublicUrl } from './lead-delivery';
+import { safeRequest } from './safe-http';
 
 export interface SiteCheckResult {
   found: boolean;
@@ -29,34 +29,21 @@ async function fetchText(start: string) {
   let url = start;
 
   for (let hop = 0; hop < 4; hop++) {
-    const safe = await assertPublicUrl(url, true);
-    const res = await fetch(safe, {
-      redirect: 'manual',
+    // Every hop is pinned to a checked public address (no DNS rebinding, no private targets).
+    const res = await safeRequest(url, {
+      allowHttp: true,
+      timeoutMs: 7000,
+      maxBytes: MAX_BYTES,
       headers: { 'user-agent': 'umami-widget-check/1', accept: 'text/html' },
-      signal: AbortSignal.timeout(7000),
     });
+    const location = res.headers.location;
 
-    if (res.status >= 300 && res.status < 400 && res.headers.get('location')) {
-      url = new URL(res.headers.get('location') as string, safe).toString();
+    if (res.status >= 300 && res.status < 400 && location) {
+      url = new URL(location, res.url).toString();
       continue;
     }
 
-    const reader = res.body?.getReader();
-    let received = 0;
-    const chunks: Uint8Array[] = [];
-
-    while (reader) {
-      const { done, value } = await reader.read();
-      if (done || !value) break;
-      received += value.length;
-      chunks.push(value);
-      if (received > MAX_BYTES) {
-        await reader.cancel();
-        break;
-      }
-    }
-
-    return { status: res.status, url, html: Buffer.concat(chunks).toString('utf8') };
+    return { status: res.status, url: res.url, html: res.body.toString('utf8') };
   }
 
   throw new Error('Too many redirects');

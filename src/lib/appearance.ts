@@ -101,7 +101,7 @@ export function getAppearanceVars(s: AppearanceSettings): Record<string, string>
     '--zen-primary-fg': fg,
     '--glass-accent-rgb': rgb.join(' '),
     // Higher "transparency" => lower surface opacity, but never below a readable floor.
-    '--glass-alpha': String(+(0.92 - t * 0.45).toFixed(3)),
+    '--glass-alpha-user': String(+(0.92 - t * 0.45).toFixed(3)),
     '--glass-blur': `${Math.round((s.blur / 100) * 28)}px`,
     '--glass-shadow-alpha': String(+((s.shadow / 100) * 0.22).toFixed(3)),
     '--glass-shadow-blur': `${Math.round(8 + (s.shadow / 100) * 40)}px`,

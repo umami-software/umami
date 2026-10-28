@@ -110,3 +110,38 @@ describe('assertPublicUrl', () => {
     await expect(assertPublicUrl('ftp://example.com/', true)).rejects.toThrow();
   });
 });
+
+import { guardedLookup, isPublicAddress, safeRequest } from './safe-http';
+
+describe('safe-http', () => {
+  test('classifies addresses', () => {
+    expect(isPublicAddress('93.184.216.34')).toBe(true);
+    for (const ip of [
+      '127.0.0.1',
+      '10.1.2.3',
+      '192.168.0.1',
+      '169.254.169.254',
+      '::1',
+      '100.64.0.1',
+    ]) {
+      expect(isPublicAddress(ip)).toBe(false);
+    }
+  });
+
+  test('lookup refuses names that resolve to private addresses (checked at connect time)', async () => {
+    await expect(
+      new Promise((resolve, reject) =>
+        guardedLookup('localhost', {}, (err: Error | null, ...rest: unknown[]) =>
+          err ? reject(err) : resolve(rest),
+        ),
+      ),
+    ).rejects.toThrow(/non-public/);
+  });
+
+  test('rejects private literals, bad protocols and credentials before any request', async () => {
+    await expect(safeRequest('http://127.0.0.1:1/', { allowHttp: true })).rejects.toThrow();
+    await expect(safeRequest('http://[::1]/', { allowHttp: true })).rejects.toThrow();
+    await expect(safeRequest('http://example.com/')).rejects.toThrow();
+    await expect(safeRequest('https://u:p@example.com/')).rejects.toThrow();
+  });
+});

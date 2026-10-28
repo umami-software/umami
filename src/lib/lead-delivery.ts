@@ -1,7 +1,7 @@
 import { createHmac } from 'node:crypto';
 import { lookup } from 'node:dns/promises';
-import ipaddr from 'ipaddr.js';
 import type { WidgetDelivery } from './marketing-widgets';
+import { isPublicAddress, safeRequest } from './safe-http';
 
 const escapeHtml = (s: string) =>
   s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
@@ -14,15 +14,6 @@ export interface LeadPayload {
   pageUrl?: string;
   data: Record<string, string>;
   createdAt: string;
-}
-
-function isPublicAddress(address: string) {
-  try {
-    const range = ipaddr.process(address).range();
-    return range === 'unicast';
-  } catch {
-    return false;
-  }
 }
 
 /** http(s) URL without credentials whose every resolved address is public (no SSRF into the cluster). */
@@ -89,20 +80,23 @@ export async function sendTelegram(chatId: string, payload: LeadPayload) {
 }
 
 export async function sendWebhook(url: string, secret: string, payload: LeadPayload) {
-  const safe = await assertSafeWebhookUrl(url);
+  await assertSafeWebhookUrl(url);
   const body = JSON.stringify(payload);
   const signature = secret ? createHmac('sha256', secret).update(body).digest('hex') : '';
 
-  const res = await fetch(safe, {
+  // safeRequest pins the connection to the address that passed the public-host check.
+  const res = await safeRequest(url, {
     method: 'POST',
-    redirect: 'manual',
+    body,
+    allowHttp: false,
+    timeoutMs: 5000,
+    maxBytes: 100_000,
     headers: {
       'content-type': 'application/json',
       'user-agent': 'umami-widgets/1',
+      'content-length': String(Buffer.byteLength(body)),
       ...(signature ? { 'x-umami-signature': `sha256=${signature}` } : {}),
     },
-    body,
-    signal: AbortSignal.timeout(5000),
   });
 
   if (res.status >= 300) {

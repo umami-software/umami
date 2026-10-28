@@ -1,7 +1,7 @@
 import { z } from 'zod';
 import { parseRequest } from '@/lib/request';
 import { json, unauthorized } from '@/lib/response';
-import { canViewWebsite } from '@/permissions';
+import { canUpdateWebsite } from '@/permissions';
 import { getWebsiteLeads } from '@/queries/prisma';
 
 export async function GET(
@@ -20,7 +20,8 @@ export async function GET(
 
   const { websiteId } = await params;
 
-  if (!(await canViewWebsite(auth, websiteId))) {
+  // Leads are private: signed-in managers only (public share tokens must not pass).
+  if (!(await canUpdateWebsite(auth, websiteId))) {
     return unauthorized();
   }
 

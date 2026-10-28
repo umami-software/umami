@@ -15,6 +15,12 @@
   --glass-ease: cubic-bezier(0.22, 1, 0.36, 1);
 }
 
+/* The user's slider value arrives as --glass-alpha-user (inline on <html>); the accessibility and
+   fallback rules below override --glass-alpha itself, so they always win. */
+html[data-glass="on"] {
+  --glass-alpha: var(--glass-alpha-user, 0.65);
+}
+
 html[data-glass="on"][data-theme="light"] {
   --glass-base: 255 255 255;
   --glass-edge: 255 255 255;
@@ -215,7 +221,7 @@ h3 {
   gap: 8px;
   padding: 16px;
   border-radius: var(--zen-radius);
-  background: rgb(var(--glass-base, 255 255 255) / var(--glass-alpha));
+  background: rgb(var(--glass-base, 255 255 255) / var(--glass-alpha-user, var(--glass-alpha)));
   border: 1px solid var(--zen-border);
   -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(1.5);
   backdrop-filter: blur(var(--glass-blur)) saturate(1.5);

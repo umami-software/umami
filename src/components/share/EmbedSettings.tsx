@@ -2,7 +2,7 @@ import { Column, FormField, Label, Switch, Text, Textarea, TextField } from '@um
 import { useConfig } from '@/components/hooks';
 
 export function getEmbedUrl(slug: string, cloudMode?: boolean) {
-  return `${cloudMode ? process.env.cloudUrl : window?.location.origin}${process.env.basePath || ''}/embed/${slug}`;
+  return `${cloudMode ? process.env.cloudUrl : window?.location.origin}${process.env.basePath || ''}/embed/${encodeURIComponent(slug)}`;
 }
 
 export function getEmbedSnippet(url: string, slug: string) {

@@ -20,7 +20,7 @@ describe('normalizeAppearance', () => {
 describe('getAppearanceVars', () => {
   test('keeps surfaces readable at maximum transparency', () => {
     const vars = getAppearanceVars({ ...DEFAULT_APPEARANCE, transparency: 100 });
-    expect(Number(vars['--glass-alpha'])).toBeGreaterThanOrEqual(0.45);
+    expect(Number(vars['--glass-alpha-user'])).toBeGreaterThanOrEqual(0.45);
   });
 
   test('picks a contrasting foreground for the accent', () => {

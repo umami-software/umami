@@ -31,7 +31,13 @@ export function LeadsPage() {
   useEffect(load, [load]);
 
   const exportCsv = async () => {
-    const all = await get(`/websites/${websiteId}/leads`, { page: 1, pageSize: 500 });
+    // Walk every page: the API returns at most 500 leads at a time.
+    const all = { data: [] as any[] };
+    for (let pageNo = 1; ; pageNo++) {
+      const chunk = await get(`/websites/${websiteId}/leads`, { page: pageNo, pageSize: 500 });
+      all.data.push(...chunk.data);
+      if (chunk.data.length === 0 || all.data.length >= chunk.count) break;
+    }
     const rows = all.data.map((l: any) =>
       [
         l.createdAt,

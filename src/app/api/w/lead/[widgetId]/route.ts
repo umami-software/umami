@@ -1,5 +1,6 @@
 import { z } from 'zod';
 import { uuid } from '@/lib/crypto';
+import { getIpAddress } from '@/lib/ip';
 import { deliverLead } from '@/lib/lead-delivery';
 import {
   originMatchesDomain,
@@ -12,14 +13,6 @@ import { rateLimit } from '@/lib/rate-limit';
 import { badRequest, forbidden, json, notFound } from '@/lib/response';
 import { createLead, getWebsite, getWidget, setLeadDelivery } from '@/queries/prisma';
 
-function clientIp(request: Request) {
-  return (
-    request.headers.get('x-forwarded-for')?.split(',')[0]?.trim() ||
-    request.headers.get('x-real-ip') ||
-    'unknown'
-  );
-}
-
 /** Public lead intake. Body is JSON sent as text/plain to avoid a CORS preflight. */
 export async function POST(
   request: Request,
@@ -31,7 +24,14 @@ export async function POST(
     return notFound();
   }
 
-  if (!rateLimit(`lead:${clientIp(request)}:${widgetId}`, 5, 60_000)) {
+  // Client IP comes from the deployment's trusted proxy headers (CLIENT_IP_HEADER etc.), not a
+  // caller-chosen X-Forwarded-For value. A per-widget cap bounds floods that rotate addresses.
+  const ip = getIpAddress(request.headers) || 'unknown';
+
+  if (
+    !rateLimit(`lead:${ip}:${widgetId}`, 5, 60_000) ||
+    !rateLimit(`lead-widget:${widgetId}`, 60, 60_000)
+  ) {
     return Response.json({ error: 'rate_limited' }, { status: 429 });
   }
 

@@ -96,7 +96,7 @@ export function WidgetsPage() {
   };
 
   const snippet = websiteId
-    ? `<script async src="${typeof window !== 'undefined' ? window.location.origin : ''}/w.js" data-website="${websiteId}"></script>`
+    ? `<script async src="${typeof window !== 'undefined' ? window.location.origin : ''}${process.env.basePath || ''}/w.js" data-website="${websiteId}"></script>`
     : '';
 
   return (

@@ -51,7 +51,7 @@ export function WidgetPreview({
     if (!visible) return;
     const id = setTimeout(() => {
       const preview = {
-        api: window.location.origin,
+        api: `${window.location.origin}${process.env.basePath || ''}`,
         open,
         widgets: [
           {
@@ -76,7 +76,7 @@ export function WidgetPreview({
         )
         .join('');
       setHtml(
-        `<!doctype html><html><body style="margin:0;height:100vh;overflow:hidden;background:linear-gradient(135deg,#eef2fb,#f9fafe);font-family:system-ui"><div style="padding:22px 24px"><div style="height:14px;width:34%;background:#c5d0e8;border-radius:5px;margin-bottom:16px"></div>${lines}</div><script>window.__UMAMI_W_PREVIEW=${JSON.stringify(preview).replace(/</g, '\\u003c')}</script><script src="${window.location.origin}/w.js"></script></body></html>`,
+        `<!doctype html><html><body style="margin:0;height:100vh;overflow:hidden;background:linear-gradient(135deg,#eef2fb,#f9fafe);font-family:system-ui"><div style="padding:22px 24px"><div style="height:14px;width:34%;background:#c5d0e8;border-radius:5px;margin-bottom:16px"></div>${lines}</div><script>window.__UMAMI_W_PREVIEW=${JSON.stringify(preview).replace(/</g, '\\u003c')}</script><script src="${window.location.origin}${process.env.basePath || ''}/w.js"></script></body></html>`,
       );
     }, debounce);
     return () => clearTimeout(id);

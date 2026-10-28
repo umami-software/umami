@@ -187,7 +187,7 @@ export const SCENARIOS: {
   {
     id: 'engaged-popup',
     label: 'Engaged visitors',
-    description: 'Pop-up after 3 pages or 60 seconds on the site, once a week.',
+    description: 'Pop-up after 3 pages and 60 seconds on the site, once a week.',
     types: ['popup', 'email'],
     patch: { trigger: 'immediate', minPageViews: 3, minTimeSec: 60, frequency: 'week' },
   },

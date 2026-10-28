@@ -12,7 +12,8 @@
   if (!script && !preview) return;
 
   var website = script && script.getAttribute('data-website');
-  var base = script ? new URL(script.src).origin : (preview && preview.api) || '';
+  // Keep the whole script directory (origin + BASE_PATH), not just the origin.
+  var base = script ? new URL(script.src).href.replace(/\/w\.js(\?.*)?$/, '') : (preview && preview.api) || '';
   if (!website && !preview) return;
   if (window.__umamiWidgetsLoaded && !preview) return;
   window.__umamiWidgetsLoaded = true;
@@ -422,7 +423,7 @@
       }
       wrap.style.bottom = off + 'px';
     }
-    if (w.type !== 'callback') markSeen(w);
+    markSeen(w);
     track('widget-shown', { id: w.id, type: w.type });
     if (preview && preview.open && pillEl) pillEl.click();
   }
