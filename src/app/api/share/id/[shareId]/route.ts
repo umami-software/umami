@@ -1,7 +1,9 @@
 import z from 'zod';
+import { ENTITY_TYPE } from '@/lib/constants';
 import { parseRequest } from '@/lib/request';
 import { json, notFound, ok, unauthorized } from '@/lib/response';
 import { anyObjectParam } from '@/lib/schema';
+import { sanitizeShareParameters } from '@/lib/share';
 import { canDeleteEntity, canUpdateEntity, canViewEntity } from '@/permissions';
 import { deleteShare, getShare, updateShare } from '@/queries/prisma';
 
@@ -52,7 +54,8 @@ export async function POST(request: Request, { params }: { params: Promise<{ sha
   const result = await updateShare(shareId, {
     name,
     slug,
-    parameters,
+    parameters:
+      share.shareType === ENTITY_TYPE.board ? sanitizeShareParameters(parameters) : parameters,
   } as any);
 
   return json(result);

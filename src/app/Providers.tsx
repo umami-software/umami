@@ -3,6 +3,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { RouterProvider, ZenProvider } from '@umami/react-zen';
 import { NextIntlClientProvider } from 'next-intl';
 import { type ReactNode, useEffect } from 'react';
+import { AppearanceProvider } from '@/components/AppearanceProvider';
 import { ErrorBoundary } from '@/components/common/ErrorBoundary';
 import { useLocale } from '@/components/hooks';
 import { type Config, ConfigContext } from '@/components/hooks/useConfig';
@@ -50,7 +51,9 @@ export function Providers({
           <RouterProvider>
             <MessagesProvider>
               <QueryClientProvider client={client}>
-                <ErrorBoundary>{children}</ErrorBoundary>
+                <AppearanceProvider>
+                  <ErrorBoundary>{children}</ErrorBoundary>
+                </AppearanceProvider>
               </QueryClientProvider>
             </MessagesProvider>
           </RouterProvider>

@@ -2,7 +2,15 @@ import { Column, Row, Text, Tooltip, TooltipTrigger } from '@umami/react-zen';
 import { IconLabel } from '@/components/common/IconLabel';
 import Link from '@/components/common/Link';
 import { useMessages, useNavigation } from '@/components/hooks';
-import { ArrowLeft, KeyRound, Settings2, ShieldCheck, UserCircle, Users } from '@/components/icons';
+import {
+  ArrowLeft,
+  KeyRound,
+  Palette,
+  Settings2,
+  ShieldCheck,
+  UserCircle,
+  Users,
+} from '@/components/icons';
 
 export function SettingsNav({
   isCollapsed,
@@ -23,6 +31,12 @@ export function SettingsNav({
           label: t(labels.preferences),
           path: renderUrl('/settings/preferences'),
           icon: <Settings2 />,
+        },
+        {
+          id: 'appearance',
+          label: 'Appearance',
+          path: renderUrl('/settings/appearance'),
+          icon: <Palette />,
         },
         {
           id: 'profile',

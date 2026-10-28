@@ -11,6 +11,7 @@ import {
 import { useState } from 'react';
 import { useApi, useMessages, useModified } from '@/components/hooks';
 import { ThemeModeSelector } from '@/components/input/ThemeModeSelector';
+import { EmbedSettings } from '@/components/share/EmbedSettings';
 
 export function BoardShareCreateForm({
   boardId,
@@ -27,7 +28,13 @@ export function BoardShareCreateForm({
   const [isPending, setIsPending] = useState(false);
   const [error, setError] = useState<any>(null);
 
-  const handleSubmit = async (data: { name: string; allowFilter?: boolean; theme?: string }) => {
+  const handleSubmit = async (data: {
+    name: string;
+    allowFilter?: boolean;
+    theme?: string;
+    embed?: boolean;
+    embedOrigins?: string;
+  }) => {
     setIsPending(true);
     setError(null);
 
@@ -37,6 +44,8 @@ export function BoardShareCreateForm({
         parameters: {
           allowFilter: data.allowFilter ?? true,
           theme: data.theme === 'system' ? undefined : data.theme,
+          embed: data.embed ? true : undefined,
+          embedOrigins: data.embed ? data.embedOrigins : undefined,
         },
       });
 
@@ -53,7 +62,13 @@ export function BoardShareCreateForm({
     <Form
       onSubmit={handleSubmit}
       error={getErrorMessage(error)}
-      defaultValues={{ name: '', allowFilter: true, theme: 'system' }}
+      defaultValues={{
+        name: '',
+        allowFilter: true,
+        theme: 'system',
+        embed: false,
+        embedOrigins: '',
+      }}
     >
       {({ watch, setValue }) => (
         <Column gap="4">
@@ -70,6 +85,7 @@ export function BoardShareCreateForm({
               onChange={value => setValue('theme', value, { shouldDirty: true })}
             />
           </FormField>
+          <EmbedSettings watch={watch} setValue={setValue} />
           <Row justifyContent="flex-end" gap="3">
             {onCancel && (
               <Button isDisabled={isPending} onPress={onCancel}>

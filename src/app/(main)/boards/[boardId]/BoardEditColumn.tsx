@@ -107,6 +107,7 @@ export function BoardEditColumn({
             <TooltipTrigger delay={0}>
               <Button variant="outline" onPress={() => setShowSelect(true)}>
                 <Icon size="sm">{hasComponent ? <Pencil /> : <Plus />}</Icon>
+                {!hasComponent && <span>Add widget</span>}
               </Button>
               <Tooltip>{t(hasComponent ? labels.edit : labels.selectComponent)}</Tooltip>
             </TooltipTrigger>

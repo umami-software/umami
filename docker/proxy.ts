@@ -82,7 +82,44 @@ function disableLogin(request: NextRequest) {
   }
 }
 
-export default function middleware(req: NextRequest) {
+// --- Embeddable widgets: /embed/<slug> may only be framed by origins the share owner approved. ---
+const EMBED_PATH = /^\/embed\/([a-zA-Z0-9]{8,50})\/?$/;
+const EMBED_CACHE_MS = 15_000;
+const embedCache = new Map<string, { value: string; expires: number }>();
+
+async function getEmbedFrameAncestors(slug: string): Promise<string> {
+  const cached = embedCache.get(slug);
+
+  if (cached && cached.expires > Date.now()) {
+    return cached.value;
+  }
+
+  let value = "'none'";
+
+  try {
+    const origin = `http://127.0.0.1:${process.env.PORT || 3000}${BASE_PATH}`;
+    const res = await fetch(`${origin}/api/share/${slug}/embed`, { cache: 'no-store' });
+
+    if (res.ok) {
+      const data = await res.json();
+
+      if (data?.enabled && typeof data.frameAncestors === 'string') {
+        value = data.frameAncestors;
+      }
+    }
+  } catch {
+    // fail closed
+  }
+
+  if (embedCache.size > 500) {
+    embedCache.clear();
+  }
+
+  embedCache.set(slug, { value, expires: Date.now() + EMBED_CACHE_MS });
+  return value;
+}
+
+export default async function middleware(req: NextRequest) {
   const fns = [customCollectEndpoint, customScriptName, customScriptUrl, disableLogin];
 
   let res: NextResponse | undefined;
@@ -99,7 +136,16 @@ export default function middleware(req: NextRequest) {
 
   // Set the CSP here, not only at build time in next.config.ts, so
   // ALLOWED_FRAME_URLS is resolved from the runtime environment.
-  res.headers.set('Content-Security-Policy', contentSecurityPolicy);
+  const embedMatch = req.nextUrl.pathname.replace(BASE_PATH, '').match(EMBED_PATH);
+
+  if (embedMatch) {
+    res.headers.set(
+      'Content-Security-Policy',
+      getContentSecurityPolicy(await getEmbedFrameAncestors(embedMatch[1])),
+    );
+  } else {
+    res.headers.set('Content-Security-Policy', contentSecurityPolicy);
+  }
 
   return res;
 }

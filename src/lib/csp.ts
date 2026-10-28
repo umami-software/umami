@@ -9,10 +9,12 @@ function getUrlOrigin(url: string) {
 // Builds the Content-Security-Policy. Reads the environment when called, so it
 // can run at build time (next.config.ts) or per request in the Docker proxy,
 // where ALLOWED_FRAME_URLS and API_URL then apply without rebuilding the image.
-export function getContentSecurityPolicy() {
+export function getContentSecurityPolicy(frameAncestorsOverride?: string) {
   const apiUrlOrigin = getUrlOrigin(process.env.API_URL || '');
   const connectSrc = ["'self'", 'https:', apiUrlOrigin].filter(Boolean).join(' ');
-  const frameAncestors = ["'self'", process.env.ALLOWED_FRAME_URLS || ''].filter(Boolean).join(' ');
+  const frameAncestors =
+    frameAncestorsOverride ??
+    ["'self'", process.env.ALLOWED_FRAME_URLS || ''].filter(Boolean).join(' ');
 
   const directives = [
     `default-src 'self'`,

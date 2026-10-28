@@ -1,0 +1,357 @@
+/*
+ * Liquid-glass theme layer for Umami (fork). Everything here is driven by tokens:
+ *   --glass-alpha, --glass-blur, --glass-shadow-alpha, --glass-shadow-blur, --glass-accent-rgb
+ * which src/lib/appearance.ts sets on <html> from the user's Appearance settings.
+ * The layer only overrides Zen design tokens, so upstream components keep working on upgrade.
+ * Disabled entirely when <html data-glass="off"> (the "Solid" preset).
+ */
+
+:root {
+  --glass-alpha: 0.65;
+  --glass-blur: 17px;
+  --glass-shadow-alpha: 0.12;
+  --glass-shadow-blur: 30px;
+  --glass-accent-rgb: 59 130 246;
+  --glass-ease: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+html[data-glass="on"][data-theme="light"] {
+  --glass-base: 255 255 255;
+  --glass-edge: 255 255 255;
+  --glass-edge-alpha: 0.7;
+  --glass-line: 15 23 42;
+  --glass-canvas: #eef1f8;
+  --glass-shadow-rgb: 30 41 80;
+}
+
+html[data-glass="on"][data-theme="dark"] {
+  --glass-base: 24 27 36;
+  --glass-edge: 255 255 255;
+  --glass-edge-alpha: 0.12;
+  --glass-line: 255 255 255;
+  --glass-canvas: #0a0c12;
+  --glass-shadow-rgb: 0 0 0;
+}
+
+html[data-glass="on"] {
+  --zen-radius: 0.875rem;
+  --zen-surface: rgb(var(--glass-base) / var(--glass-alpha));
+  --zen-surface-raised: rgb(var(--glass-base) / calc(var(--glass-alpha) * 0.5));
+  --zen-surface-sunken: rgb(var(--glass-line) / 0.06);
+  /* Menus, popovers and dialogs stay mostly opaque: readability first. */
+  --zen-surface-overlay: rgb(var(--glass-base) / max(0.86, calc(var(--glass-alpha) + 0.2)));
+  --zen-border: rgb(var(--glass-line) / 0.12);
+  --zen-border-muted: rgb(var(--glass-line) / 0.07);
+  --zen-shadow: 0 8px var(--glass-shadow-blur) -8px
+    rgb(var(--glass-shadow-rgb) / var(--glass-shadow-alpha));
+}
+
+/* Ambient backdrop: gives the blur something to refract. */
+html[data-glass="on"] body {
+  background-color: var(--glass-canvas);
+  background-image:
+    radial-gradient(60rem 38rem at 8% -8%, rgb(var(--glass-accent-rgb) / 0.26), transparent 60%),
+    radial-gradient(48rem 36rem at 100% 0%, rgb(var(--glass-accent-rgb) / 0.14), transparent 62%),
+    radial-gradient(52rem 40rem at 70% 110%, rgb(var(--glass-accent-rgb) / 0.12), transparent 60%);
+  background-attachment: fixed;
+}
+
+/* Glass surfaces */
+html[data-glass="on"] :is(.bg-surface, .bg-surface-overlay) {
+  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(1.5);
+  backdrop-filter: blur(var(--glass-blur)) saturate(1.5);
+}
+
+html[data-glass="on"] .bg-surface.border {
+  border-color: rgb(var(--glass-edge) / var(--glass-edge-alpha));
+  box-shadow:
+    inset 0 1px 0 rgb(var(--glass-edge) / calc(var(--glass-edge-alpha) * 0.9)),
+    0 10px var(--glass-shadow-blur) -12px rgb(var(--glass-shadow-rgb) / var(--glass-shadow-alpha));
+}
+
+/* One shape for every floating surface (dialogs, menus, popovers, login card). */
+:is([role="dialog"] > .bg-surface, [role="menu"], [role="listbox"], .zen-popover, .glass-card) {
+  border-radius: var(--zen-radius, 0.875rem);
+}
+
+html[data-glass="on"]
+  :is([role="dialog"] > .bg-surface, [role="menu"], [role="listbox"], .zen-popover, .glass-card) {
+  background-color: var(--zen-surface-overlay);
+  border: 1px solid rgb(var(--glass-edge) / var(--glass-edge-alpha));
+  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(1.5);
+  backdrop-filter: blur(var(--glass-blur)) saturate(1.5);
+  box-shadow:
+    inset 0 1px 0 rgb(var(--glass-edge) / calc(var(--glass-edge-alpha) * 0.9)),
+    0 24px 60px -20px rgb(var(--glass-shadow-rgb) / calc(var(--glass-shadow-alpha) * 2.4));
+}
+
+/* Login / auth card (works with glass off too) */
+.glass-card {
+  padding: 32px 28px;
+  background-color: var(--zen-surface);
+  border: 1px solid var(--zen-border);
+  box-shadow: var(--zen-shadow);
+  width: min(380px, calc(100vw - 32px));
+}
+
+html[data-glass="on"] .zen-modal-overlay {
+  background: rgb(var(--glass-shadow-rgb) / 0.32);
+  -webkit-backdrop-filter: blur(calc(var(--glass-blur) * 0.4));
+  backdrop-filter: blur(calc(var(--glass-blur) * 0.4));
+}
+
+/* Typography & rhythm */
+h1,
+h2,
+h3 {
+  letter-spacing: -0.015em;
+}
+
+/* Motion: restrained, only on interactive state changes and entry */
+@media (prefers-reduced-motion: no-preference) {
+  html[data-glass="on"] :is(.bg-surface, .bg-surface-overlay, button, a, [role="button"]) {
+    transition:
+      background-color 0.22s var(--glass-ease),
+      border-color 0.22s var(--glass-ease),
+      box-shadow 0.28s var(--glass-ease),
+      transform 0.22s var(--glass-ease);
+  }
+
+  html[data-glass="on"] main > *,
+  html[data-glass="on"] .glass-enter {
+    animation: glass-in 0.45s var(--glass-ease) both;
+  }
+
+  html[data-glass="on"] .bg-surface.border:not(button, :has(> input, > textarea)):hover {
+    box-shadow:
+      inset 0 1px 0 rgb(var(--glass-edge) / var(--glass-edge-alpha)),
+      0 14px calc(var(--glass-shadow-blur) + 6px) -12px
+      rgb(var(--glass-shadow-rgb) / calc(var(--glass-shadow-alpha) * 1.3));
+  }
+}
+
+@keyframes glass-in {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* Fallback: no backdrop-filter support => near-opaque surfaces so text stays readable */
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  html[data-glass="on"] {
+    --glass-alpha: 0.96;
+  }
+}
+
+/* Accessibility preferences */
+@media (prefers-reduced-transparency: reduce), (prefers-contrast: more) {
+  html[data-glass="on"] {
+    --glass-alpha: 0.98;
+    --zen-border: rgb(var(--glass-line) / 0.35);
+  }
+
+  html[data-glass="on"] :is(.bg-surface, .bg-surface-overlay) {
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html[data-glass="on"] *,
+  html[data-glass="on"] *::before,
+  html[data-glass="on"] *::after {
+    animation-duration: 0.001ms !important;
+    transition-duration: 0.001ms !important;
+  }
+}
+
+/* ---- Appearance settings widgets (always on, independent of glass) ---- */
+.glass-slider {
+  width: 100%;
+  accent-color: var(--zen-primary);
+}
+
+.glass-swatch {
+  width: 28px;
+  height: 28px;
+  border-radius: 999px;
+  border: 2px solid transparent;
+  outline: 1px solid var(--zen-border);
+  cursor: pointer;
+}
+
+.glass-swatch[data-active="true"] {
+  border-color: var(--zen-surface-overlay, #fff);
+  outline: 2px solid var(--zen-primary);
+}
+
+.glass-color {
+  width: 34px;
+  height: 28px;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+}
+
+.glass-preview {
+  display: grid;
+  gap: 12px;
+  padding: 20px;
+  border-radius: 18px;
+  background-color: var(--glass-canvas, var(--zen-surface-raised));
+  background-image:
+    radial-gradient(18rem 12rem at 0% 0%, rgb(var(--glass-accent-rgb) / 0.35), transparent 70%),
+    radial-gradient(16rem 12rem at 100% 100%, rgb(var(--glass-accent-rgb) / 0.22), transparent 70%);
+}
+
+.glass-preview-card {
+  display: grid;
+  gap: 8px;
+  padding: 16px;
+  border-radius: var(--zen-radius);
+  background: rgb(var(--glass-base, 255 255 255) / var(--glass-alpha));
+  border: 1px solid var(--zen-border);
+  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(1.5);
+  backdrop-filter: blur(var(--glass-blur)) saturate(1.5);
+  box-shadow: 0 10px var(--glass-shadow-blur) -12px
+    rgb(var(--glass-shadow-rgb, 30 41 80) / var(--glass-shadow-alpha));
+}
+
+.glass-preview-btn {
+  padding: 6px 12px;
+  border-radius: 8px;
+  background: var(--zen-primary);
+  color: var(--zen-primary-fg);
+  font-weight: 500;
+}
+
+.glass-preview-btn-quiet {
+  background: var(--zen-surface-sunken);
+  color: var(--zen-fg);
+}
+
+/* ---- Controls: one radius scale, visible edges, consistent buttons ---- */
+html[data-glass="on"] {
+  --glass-control-radius: calc(var(--zen-radius) * 0.65);
+  --glass-control-edge: rgb(var(--glass-line) / 0.2);
+}
+
+html[data-glass="on"] .rounded {
+  border-radius: var(--glass-control-radius);
+}
+
+/* Text fields: the wrapper is the visible box (border, fill, focus ring); the bare input paints nothing,
+   so the ring always wraps the whole control, including trailing icons such as "show password". */
+html[data-glass="on"]
+:is(div, span).bg-surface.border:has(
+  > input:not([type="range"], [type="color"], [type="checkbox"], [type="radio"])
+),
+html[data-glass="on"] :is(div, span).bg-surface.border:has(> textarea) {
+  background-color: rgb(var(--glass-base) / 0.78);
+  border: 1px solid var(--glass-control-edge);
+  border-radius: var(--glass-control-radius);
+  box-shadow: inset 0 1px 2px rgb(var(--glass-shadow-rgb) / 0.08);
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+}
+
+html[data-glass="on"] :is(div, span).bg-surface.border:has(> input, > textarea):hover {
+  border-color: rgb(var(--glass-line) / 0.32);
+}
+
+html[data-glass="on"] :is(div, span).bg-surface.border:has(> input, > textarea):focus-within {
+  border-color: rgb(var(--glass-accent-rgb) / 0.9);
+  box-shadow: 0 0 0 3px rgb(var(--glass-accent-rgb) / 0.22);
+}
+
+html[data-glass="on"]
+  :is(input, textarea):not([type="range"], [type="color"], [type="checkbox"], [type="radio"]) {
+  background: transparent;
+  border-color: transparent;
+  box-shadow: none;
+  outline: none;
+}
+
+/* Buttons */
+html[data-glass="on"] button {
+  border-radius: var(--glass-control-radius);
+}
+
+html[data-glass="on"] button.bg-primary {
+  background-image: linear-gradient(180deg, rgb(255 255 255 / 0.22), rgb(255 255 255 / 0) 60%);
+  border-color: rgb(255 255 255 / 0.28);
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / 0.35),
+    0 6px 16px -6px rgb(var(--glass-accent-rgb) / 0.6);
+}
+
+html[data-glass="on"] button.bg-primary:hover {
+  opacity: 1;
+  filter: brightness(1.07);
+}
+
+html[data-glass="on"] button.bg-interactive {
+  background-color: rgb(var(--glass-line) / 0.07);
+  border-color: rgb(var(--glass-line) / 0.12);
+}
+
+html[data-glass="on"] button.bg-interactive:hover {
+  background-color: rgb(var(--glass-line) / 0.12);
+}
+
+html[data-glass="on"] button.bg-surface.border {
+  background-color: rgb(var(--glass-base) / 0.7);
+  border-color: var(--glass-control-edge);
+  box-shadow: 0 1px 2px rgb(var(--glass-shadow-rgb) / 0.1);
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+}
+
+html[data-glass="on"] button.bg-status-error {
+  background-image: linear-gradient(180deg, rgb(255 255 255 / 0.18), rgb(255 255 255 / 0) 60%);
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.3);
+}
+
+html[data-glass="on"] button:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px rgb(var(--glass-accent-rgb) / 0.35);
+}
+
+html[data-glass="on"] button:active:not(:disabled) {
+  transform: translateY(0.5px);
+}
+
+.glass-chip {
+  padding: 4px 12px;
+  border-radius: 999px;
+  font-size: 0.8125rem;
+  color: var(--zen-fg-muted);
+  background: var(--zen-surface-sunken);
+  border: 1px solid var(--zen-border-muted);
+}
+
+/* Small controls (checkbox, radio, switch tracks, selects) built from bg-surface+border+shadow-xs:
+   they need a visible edge on glass, and no panel blur/shadow. */
+html[data-glass="on"]
+.bg-surface.border.shadow-xs:not([data-checked], [data-indeterminate], [data-selected]) {
+  border-color: var(--glass-control-edge);
+  background-color: rgb(var(--glass-base) / 0.78);
+  box-shadow: 0 1px 2px rgb(var(--glass-shadow-rgb) / 0.1);
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+}
+
+.glass-datetime {
+  width: 100%;
+  padding: 8px 10px;
+  border-radius: 10px;
+  border: 1px solid rgb(var(--glass-line, 15 23 42) / 0.2);
+  background: transparent;
+  color: var(--zen-fg);
+}

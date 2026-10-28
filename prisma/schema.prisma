@@ -33,8 +33,19 @@ model User {
   twoFactorOtpUseds    TwoFactorOtpUsed[]
   twoFactorRateLimit   TwoFactorRateLimit?
   apiKeys              ApiKey[]
+  appearance           UserAppearance?
 
   @@map("user")
+}
+
+model UserAppearance {
+  userId    String    @id() @map("user_id") @db.Uuid
+  settings  Json
+  updatedAt DateTime? @default(now()) @updatedAt @map("updated_at") @db.Timestamptz(6)
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("user_appearance")
 }
 
 model ApiKey {
@@ -122,6 +133,8 @@ model Website {
   sessionReplays      SessionReplay[]
   sessionReplaysSaved SessionReplaySaved[]
   heatmapEvents       HeatmapEvent[]
+  marketingWidgets    MarketingWidget[]
+  leads               Lead[]
 
   @@index([userId])
   @@index([teamId])
@@ -581,4 +594,39 @@ model ErrorRateLimit {
   count     Int
 
   @@map("error_rate_limit")
+}
+
+model MarketingWidget {
+  id        String    @id() @map("widget_id") @db.Uuid
+  websiteId String    @map("website_id") @db.Uuid
+  type      String    @db.VarChar(20)
+  name      String    @db.VarChar(200)
+  enabled   Boolean   @default(true)
+  config    Json
+  delivery  Json
+  createdAt DateTime? @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt DateTime? @updatedAt @map("updated_at") @db.Timestamptz(6)
+
+  website Website @relation(fields: [websiteId], references: [id], onDelete: Cascade)
+  leads   Lead[]
+
+  @@index([websiteId])
+  @@map("marketing_widget")
+}
+
+model Lead {
+  id             String    @id() @map("lead_id") @db.Uuid
+  widgetId       String    @map("widget_id") @db.Uuid
+  websiteId      String    @map("website_id") @db.Uuid
+  data           Json
+  pageUrl        String?   @map("page_url") @db.VarChar(500)
+  deliveryStatus Json?     @map("delivery_status")
+  createdAt      DateTime? @default(now()) @map("created_at") @db.Timestamptz(6)
+
+  widget  MarketingWidget @relation(fields: [widgetId], references: [id], onDelete: Cascade)
+  website Website         @relation(fields: [websiteId], references: [id], onDelete: Cascade)
+
+  @@index([websiteId, createdAt])
+  @@index([widgetId])
+  @@map("lead")
 }

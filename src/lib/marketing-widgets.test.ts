@@ -1,0 +1,112 @@
+import { describe, expect, test } from 'vitest';
+import { assertSafeWebhookUrl } from './lead-delivery';
+import {
+  defaultConfig,
+  originMatchesDomain,
+  parseLead,
+  widgetConfigSchema,
+  widgetInputSchema,
+} from './marketing-widgets';
+import { rateLimit } from './rate-limit';
+
+describe('parseLead', () => {
+  test('callback needs a plausible phone and drops unknown fields', () => {
+    expect(parseLead('callback', { name: ' Ann ', phone: '+1 (555) 123-4567', evil: 'x' })).toEqual(
+      {
+        name: 'Ann',
+        phone: '+1 (555) 123-4567',
+      },
+    );
+    expect(parseLead('callback', { phone: 'abc' })).toBeNull();
+  });
+
+  test('email/popup need a valid email', () => {
+    expect(parseLead('email', { email: 'a@b.co' })).toEqual({ email: 'a@b.co' });
+    expect(parseLead('email', { email: 'nope' })).toBeNull();
+  });
+
+  test('banners accept no leads', () => {
+    expect(parseLead('banner', { email: 'a@b.co' })).toBeNull();
+  });
+});
+
+describe('originMatchesDomain', () => {
+  test('exact host or subdomain only', () => {
+    expect(originMatchesDomain('https://shop.example.com/x', 'example.com')).toBe(true);
+    expect(originMatchesDomain('https://example.com', 'example.com')).toBe(true);
+    expect(originMatchesDomain('https://evilexample.com', 'example.com')).toBe(false);
+    expect(originMatchesDomain('https://example.com.evil.io', 'example.com')).toBe(false);
+    expect(originMatchesDomain(null, 'example.com')).toBe(false);
+  });
+});
+
+describe('config schemas', () => {
+  test('rejects non-http button links and bad colors', () => {
+    expect(widgetConfigSchema.safeParse({ buttonUrl: 'javascript:alert(1)' }).success).toBe(false);
+    expect(widgetConfigSchema.safeParse({ accent: 'red' }).success).toBe(false);
+  });
+
+  test('defaults parse for every type', () => {
+    for (const t of ['callback', 'banner', 'popup', 'email'] as const) {
+      expect(widgetConfigSchema.safeParse(defaultConfig(t)).success).toBe(true);
+    }
+  });
+
+  test('widget input requires name and delivery defaults', () => {
+    const r = widgetInputSchema.parse({ type: 'callback', name: 'x', config: {}, delivery: {} });
+    expect(r.delivery.store).toBe(true);
+    expect(r.delivery.telegram.enabled).toBe(false);
+  });
+});
+
+describe('webhook SSRF guard', () => {
+  test('blocks http, loopback and private addresses', async () => {
+    await expect(assertSafeWebhookUrl('http://example.com/x')).rejects.toThrow();
+    await expect(assertSafeWebhookUrl('https://127.0.0.1/x')).rejects.toThrow();
+    await expect(assertSafeWebhookUrl('https://10.0.0.5/x')).rejects.toThrow();
+    await expect(assertSafeWebhookUrl('https://169.254.169.254/latest')).rejects.toThrow();
+    await expect(assertSafeWebhookUrl('https://user:pw@1.1.1.1/x')).rejects.toThrow();
+  });
+});
+
+describe('rateLimit', () => {
+  test('allows up to max then blocks', () => {
+    const k = `t-${Math.random()}`;
+    const r = [1, 2, 3, 4].map(() => rateLimit(k, 3, 60_000));
+    expect(r).toEqual([true, true, true, false]);
+  });
+});
+
+import { htmlHasLoader } from './site-check';
+
+describe('htmlHasLoader', () => {
+  const id = '713610e5-bbbc-4c51-8162-d9389e876ea6';
+
+  test('finds the snippet for this website', () => {
+    expect(
+      htmlHasLoader(`<script async src="https://a.b/w.js" data-website="${id}"></script>`, id),
+    ).toBe('ok');
+    expect(
+      htmlHasLoader(`<script data-website='${id}' src='https://a.b/w.js?x=1'></script>`, id),
+    ).toBe('ok');
+  });
+
+  test('detects a snippet for another website, and no snippet', () => {
+    expect(
+      htmlHasLoader(
+        '<script src="https://a.b/w.js" data-website="00000000-0000-0000-0000-000000000000"></script>',
+        id,
+      ),
+    ).toBe('wrong-site');
+    expect(htmlHasLoader('<script src="/app.js"></script>', id)).toBe('none');
+  });
+});
+
+describe('assertPublicUrl', () => {
+  test('rejects private hosts even over http when allowed', async () => {
+    const { assertPublicUrl } = await import('./lead-delivery');
+    await expect(assertPublicUrl('http://127.0.0.1/', true)).rejects.toThrow();
+    await expect(assertPublicUrl('http://localhost/', true)).rejects.toThrow();
+    await expect(assertPublicUrl('ftp://example.com/', true)).rejects.toThrow();
+  });
+});

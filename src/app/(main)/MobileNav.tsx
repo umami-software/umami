@@ -3,7 +3,15 @@ import { WebsiteNav } from '@/app/(main)/websites/[websiteId]/WebsiteNav';
 import { IconLabel } from '@/components/common/IconLabel';
 import Link from '@/components/common/Link';
 import { useMessages, useNavigation } from '@/components/hooks';
-import { Globe, Grid2x2, LayoutDashboard, LinkIcon, PanelsLeftBottom } from '@/components/icons';
+import {
+  Code,
+  Globe,
+  Grid2x2,
+  LayoutDashboard,
+  LinkIcon,
+  Megaphone,
+  PanelsLeftBottom,
+} from '@/components/icons';
 import { MobileMenuButton } from '@/components/input/MobileMenuButton';
 import { UserButton } from '@/components/input/UserButton';
 import { Logo } from '@/components/svg';
@@ -45,6 +53,18 @@ export function MobileNav() {
       label: t(labels.links),
       path: '/links',
       icon: <LinkIcon />,
+    },
+    {
+      id: 'widgets',
+      label: 'Site widgets',
+      path: '/widgets',
+      icon: <Megaphone />,
+    },
+    {
+      id: 'embeds',
+      label: 'Stats embeds',
+      path: '/embeds',
+      icon: <Code />,
     },
     {
       id: 'pixels',

@@ -37,7 +37,7 @@ export function LoginForm() {
   };
 
   return (
-    <Column justifyContent="center" alignItems="center" gap="6">
+    <Column justifyContent="center" alignItems="center" gap="6" className="glass-card">
       <Icon size="lg">
         <Logo />
       </Icon>
@@ -46,7 +46,7 @@ export function LoginForm() {
         onSubmit={handleSubmit}
         error={getErrorMessage(error)}
         defaultValues={{ username: '', password: '' }}
-        style={{ minWidth: 300 }}
+        style={{ width: '100%' }}
       >
         <FormField
           label={t(labels.username)}

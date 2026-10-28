@@ -5,6 +5,7 @@ import { getRandomChars } from '@/lib/generate';
 import { parseRequest } from '@/lib/request';
 import { json, unauthorized } from '@/lib/response';
 import { anyObjectParam, filterParams, pagingParams } from '@/lib/schema';
+import { sanitizeShareParameters } from '@/lib/share';
 import { canUpdateBoard, canViewBoard } from '@/permissions';
 import { createShare, getSharesByEntityId } from '@/queries/prisma';
 
@@ -50,7 +51,7 @@ export async function POST(request: Request, { params }: { params: Promise<{ boa
 
   const { boardId } = await params;
   const { name, parameters } = body;
-  const shareParameters = parameters ?? {};
+  const shareParameters = sanitizeShareParameters(parameters ?? {});
 
   if (!(await canUpdateBoard(auth, boardId))) {
     return unauthorized();
