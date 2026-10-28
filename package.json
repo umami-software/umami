@@ -134,7 +134,7 @@
     "thenby": "^1.4.1",
     "ua-parser-js": "^2.0.10",
     "uuid": "^14.0.2",
-    "zod": "^4.6.5",
+    "zod": "^4.6.6",
     "zustand": "^5.0.15"
   },
   "devDependencies": {
