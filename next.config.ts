@@ -85,7 +85,14 @@ const apiHeaders = [
   },
 ];
 
-const headers = [
+const headers: { source: string; headers: { key: string; value: string }[] }[] = [
+  {
+    source: '/w.js',
+    headers: [
+      { key: 'Access-Control-Allow-Origin', value: '*' },
+      { key: 'Cache-Control', value: 'public, max-age=300, must-revalidate' },
+    ],
+  },
   {
     source: '/api/:path*',
     headers: apiHeaders,

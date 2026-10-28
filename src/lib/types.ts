@@ -45,7 +45,11 @@ export type ShareTheme = 'light' | 'dark';
 export interface ShareParameters {
   allowFilter?: boolean;
   theme?: ShareTheme;
-  [key: string]: boolean | ShareTheme | undefined;
+  /** Board shares only: serve the share as an iframe at /embed/<slug>. */
+  embed?: boolean;
+  /** Exact origins (https://example.com) allowed to frame the embed. Empty = nobody. */
+  embedOrigins?: string[];
+  [key: string]: boolean | ShareTheme | string[] | undefined;
 }
 
 export interface PropertyFilter {

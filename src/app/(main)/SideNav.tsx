@@ -17,10 +17,12 @@ import { OverlayScrollArea } from '@/components/common/OverlayScrollArea';
 import styles from '@/components/common/OverlayScrollArea.module.css';
 import { useGlobalState, useMessages, useNavigation } from '@/components/hooks';
 import {
+  Code,
   Globe,
   Grid2x2,
   LayoutDashboard,
   LinkIcon,
+  Megaphone,
   PanelLeft,
   PanelsLeftBottom,
 } from '@/components/icons';
@@ -60,6 +62,18 @@ export function SideNav(props: any) {
       label: t(labels.links),
       path: '/links',
       icon: <LinkIcon />,
+    },
+    {
+      id: 'widgets',
+      label: 'Site widgets',
+      path: '/widgets',
+      icon: <Megaphone />,
+    },
+    {
+      id: 'embeds',
+      label: 'Stats embeds',
+      path: '/embeds',
+      icon: <Code />,
     },
     {
       id: 'pixels',

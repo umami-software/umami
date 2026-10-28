@@ -10,8 +10,8 @@ export function DashboardViewHeader() {
 
   return (
     <PageHeader title={t(labels.dashboard)}>
-      <LinkButton href={renderUrl('/dashboard/edit', false)}>
-        <IconLabel icon={<LayoutDashboard />}>{t(labels.design)}</IconLabel>
+      <LinkButton variant="primary" href={renderUrl('/dashboard/edit', false)}>
+        <IconLabel icon={<LayoutDashboard />}>Add / edit widgets</IconLabel>
       </LinkButton>
     </PageHeader>
   );

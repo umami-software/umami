@@ -1,5 +1,6 @@
 import { type NextRequest, NextResponse } from 'next/server';
 import { getContentSecurityPolicy } from '@/lib/csp';
+import { getEmbedCsp } from '@/lib/embed-proxy';
 import { matchesConfiguredPath } from '@/lib/match-configured-path';
 
 export const config = {
@@ -82,7 +83,7 @@ function disableLogin(request: NextRequest) {
   }
 }
 
-export default function middleware(req: NextRequest) {
+export default async function middleware(req: NextRequest) {
   const fns = [customCollectEndpoint, customScriptName, customScriptUrl, disableLogin];
 
   let res: NextResponse | undefined;
@@ -99,7 +100,11 @@ export default function middleware(req: NextRequest) {
 
   // Set the CSP here, not only at build time in next.config.ts, so
   // ALLOWED_FRAME_URLS is resolved from the runtime environment.
-  res.headers.set('Content-Security-Policy', contentSecurityPolicy);
+  // Embeds (/embed/<slug>) get a per-share frame-ancestors policy.
+  res.headers.set(
+    'Content-Security-Policy',
+    (await getEmbedCsp(req.nextUrl.pathname)) ?? contentSecurityPolicy,
+  );
 
   return res;
 }

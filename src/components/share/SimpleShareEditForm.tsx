@@ -13,6 +13,8 @@ import {
 import { useEffect, useState } from 'react';
 import { useApi, useConfig, useMessages, useModified } from '@/components/hooks';
 import { ThemeModeSelector } from '@/components/input/ThemeModeSelector';
+import { EmbedSettings } from '@/components/share/EmbedSettings';
+import { ENTITY_TYPE } from '@/lib/constants';
 
 export function SimpleShareEditForm({
   shareId,
@@ -51,7 +53,13 @@ export function SimpleShareEditForm({
     loadShare();
   }, [get, modified, shareId]);
 
-  const handleSubmit = async (data: { name: string; allowFilter?: boolean; theme?: string }) => {
+  const handleSubmit = async (data: {
+    name: string;
+    allowFilter?: boolean;
+    theme?: string;
+    embed?: boolean;
+    embedOrigins?: string;
+  }) => {
     setIsPending(true);
     setError(null);
 
@@ -63,6 +71,12 @@ export function SimpleShareEditForm({
           ...(share.parameters || {}),
           allowFilter: data.allowFilter ?? true,
           theme: data.theme === 'system' ? undefined : data.theme,
+          ...(isBoard
+            ? {
+                embed: data.embed ? true : undefined,
+                embedOrigins: data.embed ? data.embedOrigins : undefined,
+              }
+            : {}),
         },
       });
 
@@ -76,6 +90,8 @@ export function SimpleShareEditForm({
     }
   };
 
+  const isBoard = share?.shareType === ENTITY_TYPE.board;
+
   if (isLoading) {
     return <Loading placement="absolute" />;
   }
@@ -88,6 +104,8 @@ export function SimpleShareEditForm({
         name: share?.name || '',
         allowFilter: share?.parameters?.allowFilter ?? true,
         theme: share?.parameters?.theme || 'system',
+        embed: share?.parameters?.embed === true,
+        embedOrigins: (share?.parameters?.embedOrigins || []).join('\n'),
       }}
     >
       {({ watch, setValue }) => (
@@ -116,6 +134,7 @@ export function SimpleShareEditForm({
               />
             </FormField>
           </Row>
+          {isBoard && <EmbedSettings watch={watch} setValue={setValue} slug={share?.slug} />}
           <Row justifyContent="flex-end" paddingTop="3" gap="3">
             {onClose && (
               <Button isDisabled={isPending} onPress={onClose}>

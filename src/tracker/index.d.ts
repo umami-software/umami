@@ -1,5 +1,4 @@
 import { type ErrorCaptureOptions } from './errors';
-
 export type { ErrorCaptureOptions } from './errors';
 /** Public types for the browser tracker. */
 export type TrackedProperties = {
