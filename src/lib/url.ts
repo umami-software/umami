@@ -39,6 +39,16 @@ export function safeDecodeURIComponent(s: string | undefined | null): string | u
   }
 }
 
+// Hash routers (`#/orders/42`, `#!/orders/42`) keep the page route in the hash.
+// Returns that route without its query, or '' for a plain in-page anchor like `#install`.
+export function getHashRoute(hash: string | undefined | null): string {
+  if (!hash || !/^#!?\//.test(hash)) {
+    return '';
+  }
+
+  return hash.split('?')[0];
+}
+
 export function isValidUrl(url: string) {
   try {
     new URL(url);

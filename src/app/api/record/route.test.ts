@@ -4,6 +4,7 @@ import { parseToken } from '@/lib/jwt';
 import { parseRequest } from '@/lib/request';
 import { getWebsite } from '@/queries/prisma';
 import { saveRecording } from '@/queries/sql';
+import { saveHeatmapEvents } from '@/queries/sql/heatmap/saveHeatmapEvents';
 import { OPTIONS, POST } from './route';
 
 vi.hoisted(() => {
@@ -153,5 +154,65 @@ describe('record route cache token binding', () => {
     expect(saveRecording).toHaveBeenCalledWith(
       expect.objectContaining({ websiteId, sessionId, visitId }),
     );
+  });
+});
+
+describe('record route heatmap url paths', () => {
+  const websiteId = '11111111-1111-4111-8111-111111111111';
+  const sessionId = '33333333-3333-4333-8333-333333333333';
+  const visitId = '44444444-4444-4444-8444-444444444444';
+
+  beforeEach(() => {
+    vi.mocked(parseToken).mockResolvedValue({ type: 'cache', websiteId, sessionId, visitId });
+    vi.mocked(getWebsite).mockResolvedValue({
+      id: websiteId,
+      recorderEnabled: true,
+      replayConfig: { heatmapEnabled: true },
+    } as any);
+    vi.mocked(getClientInfo).mockResolvedValue({
+      ip: '127.0.0.1',
+      userAgent:
+        'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36',
+    } as any);
+    vi.mocked(hasBlockedIp).mockReturnValue(false);
+  });
+
+  test('keeps hash router routes and drops in-page anchors', async () => {
+    const urls = [
+      'https://example.com/#/orders/42',
+      'https://example.com/#!/orders/42',
+      'https://example.com/#/settings?tab=2',
+      'https://example.com/docs?ref=nav#install',
+      '/#/orders/42',
+      '/docs#install',
+    ];
+
+    parseRequestMock.mockResolvedValue({
+      body: {
+        type: 'heatmap',
+        payload: {
+          website: websiteId,
+          events: urls.map(url => ({ type: 'click', url, x: 10, y: 20 })),
+        },
+      },
+      error: undefined,
+    } as any);
+
+    const response = await POST(
+      new Request('http://localhost/api/record', {
+        method: 'POST',
+        headers: { 'x-umami-cache': 'token' },
+      }),
+    );
+
+    expect(response.status).toBe(200);
+    expect(vi.mocked(saveHeatmapEvents).mock.calls[0][0].map((row: any) => row.urlPath)).toEqual([
+      '/#/orders/42',
+      '/#!/orders/42',
+      '/#/settings',
+      '/docs',
+      '/#/orders/42',
+      '/docs',
+    ]);
   });
 });

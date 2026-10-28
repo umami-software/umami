@@ -989,6 +989,23 @@ describe('performance collection', () => {
       ttfb: 300,
     });
   });
+
+  test.each([
+    ['/#/orders/42', '/#/orders/42'],
+    ['/#!/orders/42', '/#!/orders/42'],
+    ['/#/settings?tab=2', '/#/settings'],
+    ['/docs#install', '/docs'],
+  ])('saves the route path for %s', async (url, urlPath) => {
+    await callPOST({
+      type: 'performance',
+      payload: { website: WEBSITE_ID, hostname: 'example.com', url, lcp: 1200 },
+    });
+
+    expect(saveEventMock.mock.calls[0][0]).toMatchObject({
+      eventType: EVENT_TYPE.performance,
+      urlPath,
+    });
+  });
 });
 
 describe('error handling', () => {

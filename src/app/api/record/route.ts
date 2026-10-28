@@ -11,6 +11,7 @@ import { getRecorderConfig } from '@/lib/recorder';
 import { getReplayEventCount } from '@/lib/replay';
 import { parseRequest } from '@/lib/request';
 import { badRequest, forbidden, json, payloadTooLarge, serverError } from '@/lib/response';
+import { getHashRoute } from '@/lib/url';
 import { getWebsite } from '@/queries/prisma';
 import { saveRecording } from '@/queries/sql';
 import { saveHeatmapEvents } from '@/queries/sql/heatmap/saveHeatmapEvents';
@@ -73,9 +74,14 @@ const schema = z.discriminatedUnion('type', [
 
 function getUrlPath(url: string) {
   try {
-    return new URL(url).pathname || '/';
+    const { pathname, hash } = new URL(url);
+    return (pathname || '/') + getHashRoute(hash);
   } catch {
-    return url.startsWith('/') ? url.split(/[?#]/)[0] || '/' : '/';
+    if (!url.startsWith('/')) return '/';
+
+    const hashIndex = url.indexOf('#');
+    const hash = hashIndex === -1 ? '' : url.slice(hashIndex);
+    return (url.split(/[?#]/)[0] || '/') + getHashRoute(hash);
   }
 }
 

@@ -1,6 +1,7 @@
 import { describe, expect, test } from 'vitest';
 import {
   buildPath,
+  getHashRoute,
   getQueryString,
   isValidUrl,
   safeDecodeURI,
@@ -66,6 +67,24 @@ describe('safeDecodeURIComponent', () => {
   test('passes through null and undefined', () => {
     expect(safeDecodeURIComponent(null)).toBeNull();
     expect(safeDecodeURIComponent(undefined)).toBeUndefined();
+  });
+});
+
+describe('getHashRoute', () => {
+  test('returns hash router routes', () => {
+    expect(getHashRoute('#/orders/42')).toBe('#/orders/42');
+    expect(getHashRoute('#!/orders/42')).toBe('#!/orders/42');
+  });
+
+  test('drops the query inside a hash route', () => {
+    expect(getHashRoute('#/settings?tab=2')).toBe('#/settings');
+  });
+
+  test('ignores in-page anchors and empty hashes', () => {
+    expect(getHashRoute('#install')).toBe('');
+    expect(getHashRoute('#')).toBe('');
+    expect(getHashRoute('')).toBe('');
+    expect(getHashRoute(undefined)).toBe('');
   });
 });
 
