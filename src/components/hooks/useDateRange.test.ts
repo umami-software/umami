@@ -1,9 +1,15 @@
 import { renderHook } from '@testing-library/react';
 import { toZonedTime } from 'date-fns-tz';
 import { afterEach, beforeEach, describe, expect, test, vi } from 'vitest';
+import { DATE_RANGE_CONFIG } from '@/lib/constants';
+import { setItem } from '@/lib/storage';
+
+const { mockQuery } = vi.hoisted(() => ({
+  mockQuery: { date: '0day', compare: 'prev' },
+}));
 
 vi.mock('@/components/hooks/useNavigation', () => ({
-  useNavigation: () => ({ query: { date: '0day', compare: 'prev' } }),
+  useNavigation: () => ({ query: mockQuery }),
 }));
 
 vi.mock('@/components/hooks/useLocale', () => ({
@@ -26,6 +32,8 @@ beforeEach(() => {
 
 afterEach(() => {
   vi.useRealTimers();
+  mockQuery.date = '0day';
+  localStorage.clear();
 });
 
 describe('useDateRange dateCompare', () => {
@@ -67,5 +75,33 @@ describe('useDateRange dateCompare', () => {
     const { result } = renderHook(() => useDateRange());
 
     expect(result.current.hasComparison).toBe(true);
+  });
+
+  test('falls back safely to default date range when query date is invalid', () => {
+    mockQuery.date = 'range:NaN:NaN';
+    const { result } = renderHook(() => useDateRange());
+
+    expect(result.current.dateRange).toBeDefined();
+    expect(result.current.dateRange.startDate).toBeInstanceOf(Date);
+    expect(result.current.dateRange.endDate).toBeInstanceOf(Date);
+    expect(Number.isNaN(result.current.dateRange.startDate.getTime())).toBe(false);
+    expect(Number.isNaN(result.current.dateRange.endDate.getTime())).toBe(false);
+  });
+
+  test('falls back safely to default date range when query date is unknown', () => {
+    mockQuery.date = 'invalid';
+    const { result } = renderHook(() => useDateRange());
+
+    expect(result.current.dateRange.value).toBe('24hour');
+    expect(result.current.isCustomRange).toBe(false);
+  });
+
+  test('falls back safely to default date range when saved date is unknown', () => {
+    mockQuery.date = '';
+    setItem(DATE_RANGE_CONFIG, 'invalid');
+    const { result } = renderHook(() => useDateRange());
+
+    expect(result.current.dateRange.value).toBe('24hour');
+    expect(result.current.isCustomRange).toBe(false);
   });
 });
