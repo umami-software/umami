@@ -133,6 +133,26 @@ describe('getFunnel postgres branch', () => {
     expect(params).toMatchObject({ 0: '/blog/%', 1: '%/thanks' });
   });
 
+  // An inner * used to fall through to `=` and silently match nothing.
+  test('inner wildcards match as LIKE and % / _ stay literal', async () => {
+    await getFunnel(
+      'website-1',
+      {
+        ...baseParameters,
+        steps: [
+          { type: 'path', value: '/blog/*/edit' },
+          { type: 'path', value: '/my_page' },
+        ],
+      },
+      {},
+    );
+
+    const [query, params] = prismaRawQuery.mock.calls[0];
+    expect(query).toContain('and url_path like {{0}}');
+    expect(query).toContain('and we.url_path = {{1}}');
+    expect(params).toMatchObject({ 0: '/blog/%/edit', 1: '/my_page' });
+  });
+
   test('event steps with contains filter emit exists() subqueries and ilike params', async () => {
     await getFunnel(
       'website-1',
@@ -249,6 +269,24 @@ describe('getFunnel clickhouse branch', () => {
     const [query, params] = clickhouseRawQuery.mock.calls[0];
     expect(query).toContain('url_path like {param0:String}');
     expect(params).toMatchObject({ param0: '/a/%', param1: '/b' });
+  });
+
+  test('inner wildcards match as LIKE with literal % and _ escaped', async () => {
+    await getFunnel(
+      'website-1',
+      {
+        ...baseParameters,
+        steps: [
+          { type: 'path', value: '/docs/*/v2_*' },
+          { type: 'path', value: '/b' },
+        ],
+      },
+      {},
+    );
+
+    const [query, params] = clickhouseRawQuery.mock.calls[0];
+    expect(query).toContain('url_path like {param0:String}');
+    expect(params).toMatchObject({ param0: '/docs/%/v2\\_%', param1: '/b' });
   });
 
   test('event data filters emit event_id IN subqueries with typed params', async () => {

@@ -2,6 +2,7 @@ import clickhouse from '@/lib/clickhouse';
 import { FILTER_COLUMNS, SESSION_COLUMNS } from '@/lib/constants';
 import { CLICKHOUSE, PRISMA, runQuery } from '@/lib/db';
 import prisma from '@/lib/prisma';
+import { escapeLikeValue } from '@/lib/search';
 import type { QueryFilters } from '@/lib/types';
 
 const SESSION_DB_COLUMNS = new Set(
@@ -33,14 +34,14 @@ async function relationalQuery(websiteId: string, column: string, filters: Query
   }
 
   if (search) {
-    if (decodeURIComponent(search).includes(',')) {
-      searchQuery = `AND (${decodeURIComponent(search)
+    if (search.includes(',')) {
+      searchQuery = `AND (${search
         .split(',')
         .slice(0, 5)
         .map((value: string, index: number) => {
           const key = `search${index}`;
 
-          params[key] = value;
+          params[key] = `%${escapeLikeValue(value)}%`;
 
           return getSearchSQL(column, key).replace('and ', '');
         })
@@ -62,7 +63,7 @@ async function relationalQuery(websiteId: string, column: string, filters: Query
       order by 2 desc
       limit 10
       `,
-      { websiteId, startDate, endDate, search: `%${search}%`, ...params },
+      { websiteId, startDate, endDate, search: `%${escapeLikeValue(search)}%`, ...params },
       FUNCTION_NAME,
     );
   }
@@ -79,7 +80,7 @@ async function relationalQuery(websiteId: string, column: string, filters: Query
     order by 2 desc
     limit 10
     `,
-    { websiteId, startDate, endDate, search: `%${search}%`, ...params },
+    { websiteId, startDate, endDate, search: `%${escapeLikeValue(search)}%`, ...params },
     FUNCTION_NAME,
   );
 }
@@ -97,8 +98,8 @@ async function clickhouseQuery(websiteId: string, column: string, filters: Query
   }
 
   if (search) {
-    if (decodeURIComponent(search).includes(',')) {
-      searchQuery = `AND (${decodeURIComponent(search)
+    if (search.includes(',')) {
+      searchQuery = `AND (${search
         .split(',')
         .slice(0, 5)
         .map((value: string, index: number) => {
