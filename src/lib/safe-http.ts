@@ -1,6 +1,7 @@
 import { lookup as dnsLookup } from 'node:dns';
 import http from 'node:http';
 import https from 'node:https';
+import zlib from 'node:zlib';
 import ipaddr from 'ipaddr.js';
 
 export function isPublicAddress(address: string) {
@@ -43,6 +44,59 @@ export interface SafeResponse {
   url: string;
 }
 
+function decoderFor(encoding?: string) {
+  switch ((encoding || '').trim().toLowerCase()) {
+    case 'gzip':
+    case 'x-gzip':
+      return zlib.createGunzip();
+    case 'deflate':
+      return zlib.createInflate();
+    case 'br':
+      return zlib.createBrotliDecompress();
+    default:
+      return null;
+  }
+}
+
+/** Reads a response body, decoding gzip/deflate/br, with a cap on the DECODED size. */
+export function readBody(res: http.IncomingMessage, maxBytes: number): Promise<Buffer> {
+  return new Promise((resolve, reject) => {
+    const decoder = decoderFor(res.headers['content-encoding'] as string | undefined);
+    const source: NodeJS.ReadableStream = decoder ? res.pipe(decoder) : res;
+    const chunks: Buffer[] = [];
+    let received = 0;
+    let finished = false;
+
+    const finish = (err?: Error) => {
+      if (finished) return;
+      finished = true;
+      if (err) reject(err);
+      else resolve(Buffer.concat(chunks));
+    };
+
+    source.on('data', (chunk: Buffer) => {
+      received += chunk.length;
+
+      if (received > maxBytes) {
+        // Truncate: callers only need the beginning of a page.
+        res.destroy();
+        finish();
+        return;
+      }
+
+      chunks.push(chunk);
+    });
+    source.on('end', () => finish());
+    source.on('error', e => finish(e));
+    res.on('error', e => finish(e));
+    // 'close' can fire before a decoder has flushed; only treat it as a failure if the peer never
+    // finished the response.
+    res.on('close', () => {
+      if (!res.complete) finish(new Error('Connection closed early'));
+    });
+  });
+}
+
 /** One outbound HTTP(S) request to a public host. Does not follow redirects. */
 export function safeRequest(
   rawUrl: string,
@@ -53,6 +107,7 @@ export function safeRequest(
     allowHttp = false,
     timeoutMs = 7000,
     maxBytes = 2_000_000,
+    unsafeAllowPrivate = false, // tests only: lets a loopback server stand in for a public host
   }: {
     method?: string;
     headers?: Record<string, string>;
@@ -60,6 +115,7 @@ export function safeRequest(
     allowHttp?: boolean;
     timeoutMs?: number;
     maxBytes?: number;
+    unsafeAllowPrivate?: boolean;
   } = {},
 ): Promise<SafeResponse> {
   return new Promise((resolve, reject) => {
@@ -80,42 +136,44 @@ export function safeRequest(
     // IP literals skip DNS, so check them here.
     const literal = url.hostname.replace(/^\[|\]$/g, '');
 
-    if (ipaddr.isValid(literal) && !isPublicAddress(literal)) {
+    if (!unsafeAllowPrivate && ipaddr.isValid(literal) && !isPublicAddress(literal)) {
       return reject(new Error('Host resolves to a non-public address'));
     }
+
+    let settled = false;
+    // Absolute deadline for the whole exchange: a peer trickling bytes cannot hold it open.
+    const timer = setTimeout(() => req.destroy(new Error('Timed out')), timeoutMs);
+    const done = (err: Error | null, value?: SafeResponse) => {
+      if (settled) return;
+      settled = true;
+      clearTimeout(timer);
+      if (err) reject(err);
+      else resolve(value as SafeResponse);
+    };
 
     const client = url.protocol === 'https:' ? https : http;
     const req = client.request(
       url,
-      { method, headers, lookup: guardedLookup as any, timeout: timeoutMs },
+      {
+        method,
+        headers: { 'accept-encoding': 'gzip, deflate, br', ...headers },
+        ...(unsafeAllowPrivate ? {} : { lookup: guardedLookup as any }),
+      },
       res => {
-        const chunks: Buffer[] = [];
-        let received = 0;
-
-        res.on('data', (chunk: Buffer) => {
-          received += chunk.length;
-
-          if (received > maxBytes) {
-            res.destroy();
-            return;
-          }
-
-          chunks.push(chunk);
-        });
-        res.on('close', () =>
-          resolve({
-            status: res.statusCode || 0,
-            headers: res.headers,
-            body: Buffer.concat(chunks),
-            url: url.toString(),
-          }),
+        readBody(res, maxBytes).then(
+          buf =>
+            done(null, {
+              status: res.statusCode || 0,
+              headers: res.headers,
+              body: buf,
+              url: url.toString(),
+            }),
+          e => done(e),
         );
-        res.on('error', reject);
       },
     );
 
-    req.on('timeout', () => req.destroy(new Error('Timed out')));
-    req.on('error', reject);
+    req.on('error', e => done(e));
 
     if (body) {
       req.write(body);

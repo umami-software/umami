@@ -1,4 +1,4 @@
-import { describe, expect, test } from 'vitest';
+import { afterAll, describe, expect, test } from 'vitest';
 import { assertSafeWebhookUrl } from './lead-delivery';
 import {
   defaultConfig,
@@ -143,5 +143,64 @@ describe('safe-http', () => {
     await expect(safeRequest('http://[::1]/', { allowHttp: true })).rejects.toThrow();
     await expect(safeRequest('http://example.com/')).rejects.toThrow();
     await expect(safeRequest('https://u:p@example.com/')).rejects.toThrow();
+  });
+});
+
+import http from 'node:http';
+import zlib from 'node:zlib';
+
+describe('safeRequest transport', () => {
+  const servers: http.Server[] = [];
+  const serve = (handler: http.RequestListener) =>
+    new Promise<string>(resolve => {
+      const srv = http.createServer(handler).listen(0, '127.0.0.1', () => {
+        servers.push(srv);
+        resolve(`http://127.0.0.1:${(srv.address() as any).port}/`);
+      });
+    });
+
+  afterAll(() => {
+    for (const s of servers) s.close();
+  });
+
+  test('decodes gzip, deflate and brotli bodies', async () => {
+    const html = '<script src="/w.js" data-website="abc"></script>';
+    const cases: [string, Buffer][] = [
+      ['gzip', zlib.gzipSync(html)],
+      ['deflate', zlib.deflateSync(html)],
+      ['br', zlib.brotliCompressSync(html)],
+    ];
+
+    for (const [enc, payload] of cases) {
+      const url = await serve((_req, res) => {
+        res.writeHead(200, { 'content-encoding': enc, 'content-type': 'text/html' });
+        res.end(payload);
+      });
+      const r = await safeRequest(url, { allowHttp: true, unsafeAllowPrivate: true });
+      expect(r.body.toString()).toBe(html);
+    }
+  });
+
+  test('caps the decoded size', async () => {
+    const url = await serve((_req, res) => {
+      res.writeHead(200, { 'content-encoding': 'gzip' });
+      res.end(zlib.gzipSync(Buffer.alloc(200_000, 97)));
+    });
+    const r = await safeRequest(url, { allowHttp: true, unsafeAllowPrivate: true, maxBytes: 1000 });
+    expect(r.body.length).toBeLessThanOrEqual(1000 + 65536);
+    expect(r.body.length).toBeLessThan(200_000);
+  });
+
+  test('absolute deadline: a peer that trickles bytes cannot hold the request open', async () => {
+    const url = await serve((_req, res) => {
+      res.writeHead(200, { 'content-type': 'text/html' });
+      const t = setInterval(() => res.write('x'), 50);
+      res.on('close', () => clearInterval(t));
+    });
+    const started = Date.now();
+    await expect(
+      safeRequest(url, { allowHttp: true, unsafeAllowPrivate: true, timeoutMs: 400 }),
+    ).rejects.toThrow(/Timed out/);
+    expect(Date.now() - started).toBeLessThan(2000);
   });
 });
