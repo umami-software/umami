@@ -112,3 +112,36 @@ test('POST keeps a caller-supplied id when no entity uses it', async () => {
   expect(createLinkMock).toHaveBeenCalledWith(expect.objectContaining({ id: entityId }));
   expect(response.status).toBe(200);
 });
+
+// Team links depend only on team permission; a past-due personal account must not block them.
+test('POST creates a team link from the team check alone', async () => {
+  parseRequestMock.mockResolvedValue({
+    auth: { user: { id: 'user-1' } },
+    body: { name: 'Docs', url: 'https://example.com', slug: 'abcdefgh', teamId: 'team-1' },
+    error: undefined,
+  });
+  canCreateTeamWebsiteMock.mockResolvedValue(true);
+  canCreateWebsiteMock.mockResolvedValue(false);
+  createLinkMock.mockResolvedValue({ id: 'link-1' } as any);
+
+  const response = await POST(new Request('http://localhost/api/links', { method: 'POST' }));
+
+  expect(canCreateTeamWebsiteMock).toHaveBeenCalledWith(expect.anything(), 'team-1');
+  expect(createLinkMock).toHaveBeenCalledWith(expect.objectContaining({ teamId: 'team-1' }));
+  expect(response.status).toBe(200);
+});
+
+test('POST rejects a team link when the team check fails', async () => {
+  parseRequestMock.mockResolvedValue({
+    auth: { user: { id: 'user-1' } },
+    body: { name: 'Docs', url: 'https://example.com', slug: 'abcdefgh', teamId: 'team-1' },
+    error: undefined,
+  });
+  canCreateTeamWebsiteMock.mockResolvedValue(false);
+  canCreateWebsiteMock.mockResolvedValue(true);
+
+  const response = await POST(new Request('http://localhost/api/links', { method: 'POST' }));
+
+  expect(createLinkMock).not.toHaveBeenCalled();
+  expect(response.status).toBe(401);
+});

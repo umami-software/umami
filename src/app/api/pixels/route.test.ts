@@ -106,3 +106,36 @@ test('POST keeps a caller-supplied id when no entity uses it', async () => {
   expect(createPixelMock).toHaveBeenCalledWith(expect.objectContaining({ id: entityId }));
   expect(response.status).toBe(200);
 });
+
+// Team pixels depend only on team permission; a past-due personal account must not block them.
+test('POST creates a team pixel from the team check alone', async () => {
+  parseRequestMock.mockResolvedValue({
+    auth: { user: { id: 'user-1' } },
+    body: { name: 'Pixel', slug: 'abcdefgh', teamId: 'team-1' },
+    error: undefined,
+  });
+  canCreateTeamWebsiteMock.mockResolvedValue(true);
+  canCreateWebsiteMock.mockResolvedValue(false);
+  createPixelMock.mockResolvedValue({ id: 'pixel-1' } as any);
+
+  const response = await POST(new Request('http://localhost/api/pixels', { method: 'POST' }));
+
+  expect(canCreateTeamWebsiteMock).toHaveBeenCalledWith(expect.anything(), 'team-1');
+  expect(createPixelMock).toHaveBeenCalledWith(expect.objectContaining({ teamId: 'team-1' }));
+  expect(response.status).toBe(200);
+});
+
+test('POST rejects a team pixel when the team check fails', async () => {
+  parseRequestMock.mockResolvedValue({
+    auth: { user: { id: 'user-1' } },
+    body: { name: 'Pixel', slug: 'abcdefgh', teamId: 'team-1' },
+    error: undefined,
+  });
+  canCreateTeamWebsiteMock.mockResolvedValue(false);
+  canCreateWebsiteMock.mockResolvedValue(true);
+
+  const response = await POST(new Request('http://localhost/api/pixels', { method: 'POST' }));
+
+  expect(createPixelMock).not.toHaveBeenCalled();
+  expect(response.status).toBe(401);
+});

@@ -24,7 +24,7 @@ export function PixelsPage() {
     <PageBody>
       <Column gap="6" margin="2">
         <PageHeader title={t(labels.pixels)}>
-          {showActions && <PixelAddButton teamId={teamId} />}
+          {showActions && user.role !== ROLES.viewOnly && <PixelAddButton teamId={teamId} />}
         </PageHeader>
         <Panel>
           <PixelsDataTable showActions={showActions} />

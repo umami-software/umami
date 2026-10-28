@@ -110,6 +110,12 @@ export async function canCreateTeamWebsite({ user }: Auth, teamId: string) {
     return true;
   }
 
+  // A team role never overrides a globally view-only user. Only the global role is
+  // checked here, not personal billing; team billing applies to team resources.
+  if (!hasPermission(user.role, PERMISSIONS.websiteCreate)) {
+    return false;
+  }
+
   const teamUser = await getTeamUser(teamId, user.id);
 
   return (

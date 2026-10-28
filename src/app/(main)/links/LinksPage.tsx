@@ -24,7 +24,7 @@ export function LinksPage() {
     <PageBody>
       <Column gap="6" margin="2">
         <PageHeader title={t(labels.links)}>
-          {showActions && <LinkAddButton teamId={teamId} />}
+          {showActions && user.role !== ROLES.viewOnly && <LinkAddButton teamId={teamId} />}
         </PageHeader>
         <Panel>
           <LinksDataTable showActions={showActions} />
