@@ -1,6 +1,6 @@
 import { z } from 'zod';
 import { errorCollectionSchema } from '@/lib/errors/schema';
-import { anyObjectParam, urlOrPathParam } from '@/lib/schema';
+import { anyObjectParam, unixTimestampParam, urlOrPathParam } from '@/lib/schema';
 
 // Reject strings whose first character is a spreadsheet formula trigger to
 // prevent CSV formula injection in analytics exports (defense-in-depth).
@@ -10,12 +10,83 @@ const safeStringParam = () =>
     message: 'Value must not start with =, +, -, @, tab, or carriage return',
   });
 
+// Data is written after the event row, so anything that would fail on write must be
+// rejected here. Numbers fit Postgres Decimal(19,4); revenue fits ClickHouse Decimal(18,4);
+// nesting is capped so flattening cannot overflow the stack.
+const MAX_DATA_DEPTH = 32;
+const MAX_DATA_NUMBER = 1e15;
+const MAX_REVENUE = 1e14;
+
+function getDataError(value: unknown, depth = 1, inArray = false): string | undefined {
+  if (typeof value === 'number') {
+    // Array values are stored as JSON strings, so only standalone numbers hit the decimal column.
+    return !inArray && Math.abs(value) >= MAX_DATA_NUMBER ? 'Number is out of range.' : undefined;
+  }
+
+  if (!value || typeof value !== 'object') {
+    return undefined;
+  }
+
+  if (depth > MAX_DATA_DEPTH) {
+    return `Data must not be nested more than ${MAX_DATA_DEPTH} levels.`;
+  }
+
+  for (const child of Object.values(value)) {
+    const error = getDataError(child, depth + 1, inArray || Array.isArray(value));
+
+    if (error) {
+      return error;
+    }
+  }
+
+  return undefined;
+}
+
+const dataParam = anyObjectParam.superRefine((value, ctx) => {
+  const error = getDataError(value);
+
+  if (error) {
+    ctx.addIssue({ code: 'custom', message: error });
+  }
+});
+
+const hostnameParam = z.string().refine(
+  value => {
+    if (!value) {
+      return true;
+    }
+
+    try {
+      new URL(`https://${value}`);
+      return true;
+    } catch {
+      return false;
+    }
+  },
+  { message: 'Invalid hostname.' },
+);
+
+// Mirrors the condition saveEvent uses to decide whether revenue is written.
+function isRevenueOutOfRange(data?: Record<string, any>) {
+  const revenueValue = data?.revenue;
+  const currencyValue = data?.currency;
+  const revenue = Number(revenueValue);
+
+  return (
+    (typeof revenueValue === 'number' || typeof revenueValue === 'string') &&
+    typeof currencyValue === 'string' &&
+    !!currencyValue.trim() &&
+    Number.isFinite(revenue) &&
+    revenue >= MAX_REVENUE
+  );
+}
+
 const payloadSchema = z.object({
   website: z.uuid().optional(),
   link: z.uuid().optional(),
   pixel: z.uuid().optional(),
-  data: anyObjectParam.optional(),
-  hostname: z.string().optional(),
+  data: dataParam.optional(),
+  hostname: hostnameParam.optional(),
   language: z.string().optional(),
   referrer: urlOrPathParam.optional(),
   screen: z.string().optional(),
@@ -25,7 +96,7 @@ const payloadSchema = z.object({
   tag: safeStringParam().optional(),
   ip: z.string().optional(),
   userAgent: z.string().optional(),
-  timestamp: z.coerce.number().int().optional(),
+  timestamp: unixTimestampParam.optional(),
   id: z.string().optional(),
   browser: z.string().optional(),
   os: z.string().optional(),
@@ -52,6 +123,13 @@ export const collectionSchema = z
         code: 'custom',
         path: ['payload', 'website'],
         message: 'Exactly one of website, link, or pixel must be provided',
+      });
+    }
+    if (type === 'event' && isRevenueOutOfRange(payload.data)) {
+      ctx.addIssue({
+        code: 'custom',
+        path: ['payload', 'data', 'revenue'],
+        message: 'Revenue is out of range.',
       });
     }
   });

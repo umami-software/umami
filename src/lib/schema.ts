@@ -180,6 +180,9 @@ export const urlOrPathParam = z.string().refine(
   },
 );
 
+// Unix seconds that fit Postgres integer columns and ClickHouse DateTime (1970 to 2038).
+export const unixTimestampParam = z.coerce.number().int().min(0).max(2147483647);
+
 export const fieldsParam = z.enum([
   'path',
   'referrer',

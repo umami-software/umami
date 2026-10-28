@@ -11,6 +11,7 @@ import { getRecorderConfig } from '@/lib/recorder';
 import { getReplayEventCount } from '@/lib/replay';
 import { parseRequest } from '@/lib/request';
 import { badRequest, forbidden, json, payloadTooLarge, serverError } from '@/lib/response';
+import { unixTimestampParam } from '@/lib/schema';
 import { getWebsite } from '@/queries/prisma';
 import { saveRecording } from '@/queries/sql';
 import { saveHeatmapEvents } from '@/queries/sql/heatmap/saveHeatmapEvents';
@@ -30,7 +31,7 @@ const schema = z.discriminatedUnion('type', [
     payload: z.object({
       website: z.uuid(),
       events: z.array(z.any()).max(200),
-      timestamp: z.coerce.number().int().optional(),
+      timestamp: unixTimestampParam.optional(),
     }),
   }),
   z.object({
@@ -66,7 +67,7 @@ const schema = z.discriminatedUnion('type', [
           ]),
         )
         .max(200),
-      timestamp: z.coerce.number().int().optional(),
+      timestamp: unixTimestampParam.optional(),
     }),
   }),
 ]);

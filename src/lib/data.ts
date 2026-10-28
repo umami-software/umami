@@ -25,7 +25,10 @@ export function flattenJSON(eventData: Record<string, any>): KeyValueData[] {
 }
 
 export function isValidDateValue(value: string) {
-  return typeof value === 'string' && DATETIME_REGEX.test(value);
+  // The regex alone accepts impossible dates like month 13, which then fail on write.
+  return (
+    typeof value === 'string' && DATETIME_REGEX.test(value) && !Number.isNaN(Date.parse(value))
+  );
 }
 
 export function getDataType(value: any): string {

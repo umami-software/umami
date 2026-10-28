@@ -38,6 +38,8 @@ const operation1 = defineOperation({
                       },
                       timestamp: {
                         type: 'integer',
+                        minimum: 0,
+                        maximum: 2147483647,
                       },
                     },
                     required: ['website', 'events'],
@@ -137,6 +139,8 @@ const operation1 = defineOperation({
                       },
                       timestamp: {
                         type: 'integer',
+                        minimum: 0,
+                        maximum: 2147483647,
                       },
                     },
                     required: ['website', 'events'],

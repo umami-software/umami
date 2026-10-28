@@ -74,6 +74,30 @@ describe('record route CORS', () => {
   });
 });
 
+describe('record route schema', () => {
+  // The payload timestamp becomes chunkIndex, a Postgres integer column.
+  test('rejects payload timestamps outside the storable range', async () => {
+    parseRequestMock.mockResolvedValue({
+      body: { type: 'record', payload: { website: 'w', events: [] } },
+      error: undefined,
+    });
+
+    await POST(new Request('http://localhost/api/record', { method: 'POST' }));
+
+    const schema = parseRequestMock.mock.calls[0][1] as {
+      safeParse: (value: unknown) => { success: boolean };
+    };
+    const payload = (timestamp: number) => ({
+      type: 'record',
+      payload: { website: '11111111-1111-4111-8111-111111111111', events: [], timestamp },
+    });
+
+    expect(schema.safeParse(payload(1767225600)).success).toBe(true);
+    expect(schema.safeParse(payload(2147483648)).success).toBe(false);
+    expect(schema.safeParse(payload(-1)).success).toBe(false);
+  });
+});
+
 describe('record route cache token binding', () => {
   const websiteId = '11111111-1111-4111-8111-111111111111';
   const otherWebsiteId = '22222222-2222-4222-8222-222222222222';

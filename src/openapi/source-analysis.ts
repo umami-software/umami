@@ -235,6 +235,7 @@ const knownSchemas: Record<string, () => InferredSchema> = {
     required({ type: 'string', enum: ['team-member', 'team-view-only', 'team-manager'] }),
   anyObjectParam: () => required({ type: 'object', additionalProperties: true }),
   urlOrPathParam: () => required(stringSchema()),
+  unixTimestampParam: () => required({ type: 'integer', minimum: 0, maximum: 2147483647 }),
   fieldsParam: () => required(stringSchema()),
   reportTypeParam: () => required(stringSchema()),
   operatorParam: () => required(stringSchema()),
