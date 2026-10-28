@@ -13,6 +13,13 @@ export function DatePickerForm({
   maxDate,
   onChange,
   onClose,
+}: {
+  startDate: Date;
+  endDate: Date;
+  minDate?: Date;
+  maxDate?: Date;
+  onChange: (value: string) => void;
+  onClose: () => void;
 }) {
   const [selected, setSelected] = useState<any>([
     isValid(defaultStartDate) &&

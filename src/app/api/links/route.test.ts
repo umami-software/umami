@@ -145,3 +145,22 @@ test('POST rejects a team link when the team check fails', async () => {
   expect(createLinkMock).not.toHaveBeenCalled();
   expect(response.status).toBe(401);
 });
+
+// A relative url passes a plain string check, then the /q redirect records a click and fails.
+test('POST accepts only absolute link urls, matching the link form', async () => {
+  parseRequestMock.mockResolvedValue({ error: () => new Response(null, { status: 400 }) } as any);
+
+  await POST(new Request('http://localhost/api/links', { method: 'POST' }));
+
+  const schema = parseRequestMock.mock.calls[0][1] as {
+    safeParse: (value: unknown) => { success: boolean };
+  };
+  const body = (url: string) => ({ name: 'Docs', url, slug: 'abcdefgh' });
+
+  expect(schema.safeParse(body('https://example.com/docs')).success).toBe(true);
+  expect(schema.safeParse(body('mailto:hi@example.com')).success).toBe(true);
+  expect(schema.safeParse(body('myapp://open')).success).toBe(true);
+  expect(schema.safeParse(body('foo')).success).toBe(false);
+  expect(schema.safeParse(body('/relative/path')).success).toBe(false);
+  expect(schema.safeParse(body('')).success).toBe(false);
+});
