@@ -21,6 +21,7 @@ const fieldDescriptions: Record<string, string> = {
   reportId: 'ID of the saved report.',
   sessionId: 'ID of the visitor session.',
   eventId: 'ID of the event.',
+  issueId: 'ID of the error issue.',
   websiteEventId: 'ID of the website event.',
   annotationId: 'ID of the annotation.',
   segmentId: 'ID of the saved segment or cohort.',

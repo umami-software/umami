@@ -1,7 +1,9 @@
 import { z } from 'zod';
 
 export const errorStatusSchema = z.enum(['unresolved', 'resolved', 'ignored']);
-export const errorUpdateSchema = z.object({ status: errorStatusSchema });
+export const errorUpdateSchema = z.object({
+  status: errorStatusSchema.meta({ description: 'New status of the issue.' }),
+});
 export const errorPayloadSchema = z.object({
   version: z.literal(1),
   website: z.uuid(),
@@ -30,12 +32,24 @@ export const errorCollectionSchema = z.object({
 const errorFilterFields = {
   startAt: z.coerce.number().int().min(0).max(4102444800000),
   endAt: z.coerce.number().int().min(0).max(4102444800000),
-  status: errorStatusSchema.optional(),
+  status: errorStatusSchema
+    .optional()
+    .meta({ description: 'Filter by issue status: `unresolved`, `resolved`, or `ignored`.' }),
   search: z.string().max(200).optional(),
-  release: z.string().max(100).optional(),
-  environment: z.string().max(50).optional(),
+  release: z
+    .string()
+    .max(100)
+    .optional()
+    .meta({ description: 'Filter by release, as set with `data-release` or `captureException`.' }),
+  environment: z.string().max(50).optional().meta({
+    description: 'Filter by environment, as set with `data-environment` or `captureException`.',
+  }),
   browser: z.string().max(50).optional(),
-  urlPath: z.string().max(500).optional(),
+  urlPath: z
+    .string()
+    .max(500)
+    .optional()
+    .meta({ description: 'Filter by the page path on which the error occurred.' }),
 };
 const dateRangeRefinement = [
   (v: { startAt: number; endAt: number }) => v.endAt >= v.startAt,
@@ -52,8 +66,15 @@ export const errorValueTypeSchema = z.enum(['release', 'environment', 'browser',
 export const errorValuesQuerySchema = z
   .object({
     ...errorFilterFields,
-    type: errorValueTypeSchema,
-    value: z.string().max(500).optional(),
+    type: errorValueTypeSchema.meta({
+      description:
+        'Error field to return values for: `release`, `environment`, `browser`, or `urlPath`.',
+    }),
+    value: z
+      .string()
+      .max(500)
+      .optional()
+      .meta({ description: 'Search text used to filter the returned values.' }),
   })
   .refine(...dateRangeRefinement);
 export type ErrorPayload = z.infer<typeof errorPayloadSchema>;
