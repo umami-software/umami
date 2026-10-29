@@ -115,6 +115,34 @@ describe('getFunnel postgres branch', () => {
     expect(params).toMatchObject({ 0: '/blog/%', 1: '%/thanks' });
   });
 
+  test('inner * becomes a wildcard and LIKE metacharacters are escaped', async () => {
+    await getFunnel(
+      'website-1',
+      {
+        ...baseParameters,
+        steps: [
+          { type: 'path', value: 'a*b' },
+          { type: 'path', value: '50%*' },
+          { type: 'path', value: 'plain' },
+        ],
+      },
+      {},
+    );
+
+    const [query, params] = prismaRawQuery.mock.calls[0];
+    // like operator gets the ESCAPE clause so escaped metacharacters match literally
+    expect(query).toContain("and url_path like {{0}} escape '\\'");
+    expect(query).toContain("and we.url_path like {{1}} escape '\\'");
+    // equality steps are not wrapped in like and need no escape clause
+    expect(query).toContain('and we.url_path = {{2}}');
+    // inner * -> %, literal % escaped as \%
+    expect(params).toMatchObject({
+      0: 'a%b',
+      1: '50\\%%',
+      2: 'plain',
+    });
+  });
+
   test('event steps with contains filter emit exists() subqueries and ilike params', async () => {
     await getFunnel(
       'website-1',
@@ -231,6 +259,26 @@ describe('getFunnel clickhouse branch', () => {
     const [query, params] = clickhouseRawQuery.mock.calls[0];
     expect(query).toContain('url_path like {param0:String}');
     expect(params).toMatchObject({ param0: '/a/%', param1: '/b' });
+  });
+
+  test('inner * becomes a wildcard and LIKE metacharacters are escaped', async () => {
+    await getFunnel(
+      'website-1',
+      {
+        ...baseParameters,
+        steps: [
+          { type: 'path', value: 'a*b' },
+          { type: 'path', value: '50%*' },
+        ],
+      },
+      {},
+    );
+
+    const [query, params] = clickhouseRawQuery.mock.calls[0];
+    expect(query).toContain('url_path like {param0:String}');
+    expect(query).toContain('y.url_path like {param1:String}');
+    // inner * -> %, literal % escaped as \%
+    expect(params).toMatchObject({ param0: 'a%b', param1: '50\\%%' });
   });
 
   test('event data filters emit event_id IN subqueries with typed params', async () => {

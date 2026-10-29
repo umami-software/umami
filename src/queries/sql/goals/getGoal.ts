@@ -2,6 +2,7 @@ import clickhouse from '@/lib/clickhouse';
 import { EVENT_TYPE } from '@/lib/constants';
 import { CLICKHOUSE, PRISMA, runQuery } from '@/lib/db';
 import prisma from '@/lib/prisma';
+import { toLikePattern } from '@/lib/like';
 import type { QueryFilters } from '@/lib/types';
 
 export interface GoalParameters {
@@ -37,10 +38,14 @@ async function relationalQuery(
 
   let operator = '=';
   let paramValue = value;
-  if (value.startsWith('*') || value.endsWith('*')) {
+  // Translate every `*` into the SQL `%` wildcard (not only at the edges) and
+  // escape LIKE metacharacters so a literal %, _ or \\ matches itself.
+  if (value.includes('*')) {
     operator = 'like';
-    paramValue = value.replace(/^\*|\*$/g, '%');
+    paramValue = toLikePattern(value);
   }
+
+  const likeEscape = operator === 'like' ? " escape '\\'" : '';
 
   const { filterQuery, dateQuery, joinSessionQuery, cohortQuery, queryParams } = parseFilters({
     ...filters,
@@ -73,7 +78,7 @@ async function relationalQuery(
     ${cohortQuery}
     ${joinSessionQuery}
     where website_event.website_id = {{websiteId::uuid}}
-      and ${column} ${operator} {{value}}
+      and ${column} ${operator} {{value}}${likeEscape}
       ${dateQuery}
       ${filterQuery}
     `,
@@ -93,9 +98,11 @@ async function clickhouseQuery(
 
   let operator = '=';
   let paramValue = value;
-  if (value.startsWith('*') || value.endsWith('*')) {
+  // Translate every `*` into the SQL `%` wildcard (not only at the edges) and
+  // escape LIKE metacharacters so a literal %, _ or \\ matches itself.
+  if (value.includes('*')) {
     operator = 'like';
-    paramValue = value.replace(/^\*|\*$/g, '%');
+    paramValue = toLikePattern(value);
   }
 
   const { filterQuery, dateQuery, cohortQuery, queryParams } = parseFilters({

@@ -1,6 +1,7 @@
 import clickhouse from '@/lib/clickhouse';
 import { CLICKHOUSE, PRISMA, runQuery } from '@/lib/db';
 import prisma from '@/lib/prisma';
+import { escapeLikeValue, toLikePattern } from '@/lib/like';
 import type { QueryFilters } from '@/lib/types';
 
 export interface FunnelStepFilter {
@@ -73,11 +74,12 @@ async function relationalQuery(
         if (f.operator === 'neq') op = '!=';
         else if (f.operator === 'c') {
           op = 'ilike';
-          val = `%${val}%`;
+          val = `%${escapeLikeValue(val)}%`;
         } else if (f.operator === 'dnc') {
           op = 'not ilike';
-          val = `%${val}%`;
+          val = `%${escapeLikeValue(val)}%`;
         }
+        const likeEscape = op === 'ilike' || op === 'not ilike' ? " escape '\\'" : '';
         extraParams[valParam] = val;
 
         return `and exists (
@@ -86,7 +88,7 @@ async function relationalQuery(
             and _ed${stepIndex}_${fi}.website_id = {{websiteId::uuid}}
             and _ed${stepIndex}_${fi}.created_at between {{startDate}} and {{endDate}}
             and _ed${stepIndex}_${fi}.data_key = {{${keyParam}}}
-            and case when _ed${stepIndex}_${fi}.data_type = 2 then replace(_ed${stepIndex}_${fi}.string_value, '.0000', '') else _ed${stepIndex}_${fi}.string_value end ${op} {{${valParam}}}
+            and case when _ed${stepIndex}_${fi}.data_type = 2 then replace(_ed${stepIndex}_${fi}.string_value, '.0000', '') else _ed${stepIndex}_${fi}.string_value end ${op} {{${valParam}}}${likeEscape}
         )`;
       })
       .join('\n');
@@ -113,10 +115,14 @@ async function relationalQuery(
         let operator = '=';
         let paramValue = cv.value;
 
-        if (cv.value.startsWith('*') || cv.value.endsWith('*')) {
+        // Translate every `*` into the SQL `%` wildcard (not only at the edges)
+        // and escape LIKE metacharacters so a literal %, _ or \\ matches itself.
+        if (cv.value.includes('*')) {
           operator = 'like';
-          paramValue = cv.value.replace(/^\*|\*$/g, '%');
+          paramValue = toLikePattern(cv.value);
         }
+
+        const likeEscape = operator === 'like' ? " escape '\\'" : '';
 
         const existsClause =
           !isURL && cv.filters?.length
@@ -137,7 +143,7 @@ async function relationalQuery(
             ${joinSessionQuery}
             where website_event.website_id = {{websiteId::uuid}}
               and website_event.created_at between {{startDate}} and {{endDate}}
-              and ${column} ${operator} {{${i}}}
+              and ${column} ${operator} {{${i}}}${likeEscape}
               ${filterQuery}
               ${existsClause}
           )`;
@@ -153,7 +159,7 @@ async function relationalQuery(
                   `l.created_at `,
                   `${window} minute`,
                 )}
-                and we.${column} ${operator} {{${i}}}
+                and we.${column} ${operator} {{${i}}}${likeEscape}
                 and we.created_at <= {{endDate}}
                 ${existsClause}
           )`;
@@ -226,10 +232,10 @@ async function clickhouseQuery(
         if (f.operator === 'neq') op = '!=';
         else if (f.operator === 'c') {
           op = 'like';
-          val = `%${val}%`;
+          val = `%${escapeLikeValue(val)}%`;
         } else if (f.operator === 'dnc') {
           op = 'not like';
-          val = `%${val}%`;
+          val = `%${escapeLikeValue(val)}%`;
         }
         params[valParam] = val;
 
@@ -267,9 +273,11 @@ async function clickhouseQuery(
         let operator = '=';
         let paramValue = cv.value;
 
-        if (cv.value.startsWith('*') || cv.value.endsWith('*')) {
+        // Translate every `*` into the SQL `%` wildcard (not only at the edges)
+        // and escape LIKE metacharacters so a literal %, _ or \\ matches itself.
+        if (cv.value.includes('*')) {
           operator = 'like';
-          paramValue = cv.value.replace(/^\*|\*$/g, '%');
+          paramValue = toLikePattern(cv.value);
         }
 
         const eventAlias = levelNumber === 1 ? 'level0' : 'y';
