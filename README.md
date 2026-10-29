@@ -27,7 +27,7 @@ A detailed getting started guide can be found at [umami.is/docs](https://umami.i
 
 ### Requirements
 
-- A server with Node.js version 18.18+.
+- A server with Node.js version 20.19+ (22 LTS recommended).
 - A PostgreSQL database version v12.14+.
 
 ### Get the source code and install packages
@@ -68,6 +68,8 @@ pnpm run start
 ```
 
 By default, this will launch the application on `http://localhost:3000`. You will need to either [proxy](https://docs.nginx.com/nginx/admin-guide/web-server/reverse-proxy/) requests from your web server or change the [port](https://nextjs.org/docs/api-reference/cli#production) to serve the application directly.
+
+To bind to the `HOSTNAME` and `PORT` set in your `.env` file, start with `pnpm run start:env` instead.
 
 ---
 
