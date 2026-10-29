@@ -1,3 +1,6 @@
+import { Box, Column, Heading, Row, SearchField, StatusLight, Text } from '@umami/react-zen';
+import { useMemo, useState } from 'react';
+import { List, type RowComponentProps } from 'react-window';
 import { SessionModal } from '@/app/(main)/websites/[websiteId]/sessions/SessionModal';
 import { Avatar } from '@/components/common/Avatar';
 import { Empty } from '@/components/common/Empty';
@@ -17,9 +20,6 @@ import { Eye, User } from '@/components/icons';
 import { FilterButtons } from '@/components/input/FilterButtons';
 import { Lightning } from '@/components/svg';
 import { BROWSERS, OS_NAMES } from '@/lib/constants';
-import { Box, Column, Heading, Row, SearchField, StatusLight, Text } from '@umami/react-zen';
-import { useMemo, useState } from 'react';
-import { List, type RowComponentProps } from 'react-window';
 
 const TYPE_ALL = 'all';
 const TYPE_PAGEVIEW = 'pageview';
