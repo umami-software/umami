@@ -622,7 +622,7 @@ function buildHeatmapPageUrl(domain: string | null | undefined, urlPath: string)
   }
 }
 
-function pickSnapshotViewport(
+export function pickSnapshotViewport(
   points: HeatmapPoint[],
 ): { width: number; height: number; pageW: number; pageH: number } | null {
   const viewportBuckets = new Map<
@@ -632,7 +632,8 @@ function pickSnapshotViewport(
       height: number;
       count: number;
       maxPageW: number;
-      maxPageH: number;
+      maxPageY: number;
+      pageHCounts: Map<number, number>;
     }
   >();
 
@@ -643,14 +644,19 @@ function pickSnapshotViewport(
     if (viewportBucket) {
       viewportBucket.count += p.count;
       viewportBucket.maxPageW = Math.max(viewportBucket.maxPageW, p.pageW);
-      viewportBucket.maxPageH = Math.max(viewportBucket.maxPageH, p.pageH);
+      viewportBucket.maxPageY = Math.max(viewportBucket.maxPageY, p.pageY);
+      viewportBucket.pageHCounts.set(
+        p.pageH,
+        (viewportBucket.pageHCounts.get(p.pageH) ?? 0) + p.count,
+      );
     } else {
       viewportBuckets.set(viewportKey, {
         width: p.viewportW,
         height: p.viewportH,
         count: p.count,
         maxPageW: p.pageW,
-        maxPageH: p.pageH,
+        maxPageY: p.pageY,
+        pageHCounts: new Map([[p.pageH, p.count]]),
       });
     }
   }
@@ -660,7 +666,8 @@ function pickSnapshotViewport(
     height: number;
     count: number;
     maxPageW: number;
-    maxPageH: number;
+    maxPageY: number;
+    pageHCounts: Map<number, number>;
   } | null = null;
 
   for (const bucket of viewportBuckets.values()) {
@@ -673,11 +680,21 @@ function pickSnapshotViewport(
     return null;
   }
 
+  let commonPageH = 0;
+  let commonPageHCount = 0;
+
+  for (const [pageH, count] of bestViewport.pageHCounts) {
+    if (count > commonPageHCount || (count === commonPageHCount && pageH > commonPageH)) {
+      commonPageH = pageH;
+      commonPageHCount = count;
+    }
+  }
+
   return {
     width: bestViewport.width,
     height: bestViewport.height,
     pageW: bestViewport.maxPageW,
-    pageH: bestViewport.maxPageH,
+    pageH: Math.max(commonPageH, Math.ceil(bestViewport.maxPageY)),
   };
 }
 
