@@ -58,7 +58,14 @@ export function LookupField({
       aria-label="LookupField"
       {...props}
       items={options}
-      inputValue={value}
+      value={value ?? ''}
+      inputValue={value ?? ''}
+      onChange={value => {
+        const next = value ?? '';
+        handleSearch(next);
+        onChange?.(next);
+        onValueChange?.(next);
+      }}
       onInputValueChange={value => {
         handleSearch(value);
         onChange?.(value);
@@ -71,7 +78,7 @@ export function LookupField({
           <Empty message={t(messages.noResultsFound)} />
         )
       }
-      >
+    >
       {options.map(item => (
         <ListItem key={item} id={item}>
           {item}
