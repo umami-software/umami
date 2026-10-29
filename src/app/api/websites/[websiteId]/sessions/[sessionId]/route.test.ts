@@ -101,6 +101,32 @@ test('GET includes canDelete when relational storage and delete permission are a
   });
 });
 
+test('GET returns the session referrer', async () => {
+  parseRequestMock.mockResolvedValue({ auth: {}, error: undefined });
+  canViewWebsiteSectionMock.mockResolvedValue(true);
+  isRelationalOnlyMock.mockReturnValue(true);
+  canDeleteWebsiteMock.mockResolvedValue(false);
+  getWebsiteSessionMock.mockResolvedValue({
+    id: 'session-1',
+    distinctId: 'distinct-1',
+    referrerDomain: 'google.com',
+  });
+  getLinkedDistinctIdsMock.mockResolvedValue(['distinct-1']);
+  getLinkedSessionIdsMock.mockResolvedValue([]);
+
+  const response = await GET(
+    new Request('http://localhost/api/websites/website-1/sessions/session-1'),
+    {
+      params: Promise.resolve({ websiteId: 'website-1', sessionId: 'session-1' }),
+    },
+  );
+
+  expect(response.status).toBe(200);
+  await expect(response.json()).resolves.toMatchObject({
+    referrerDomain: 'google.com',
+  });
+});
+
 test('GET does not stitch a session with multiple linked identities', async () => {
   parseRequestMock.mockResolvedValue({ auth: {}, error: undefined });
   canViewWebsiteSectionMock.mockResolvedValue(true);
