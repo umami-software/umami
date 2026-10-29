@@ -1,4 +1,4 @@
-import { Column, Heading, Row, SearchField, Text } from '@umami/react-zen';
+import { Box, Column, Heading, Row, SearchField, StatusLight, Text } from '@umami/react-zen';
 import { useMemo, useState } from 'react';
 import { List, type RowComponentProps } from 'react-window';
 import { SessionModal } from '@/app/(main)/websites/[websiteId]/sessions/SessionModal';
@@ -27,6 +27,7 @@ const TYPE_SESSION = 'session';
 const TYPE_EVENT = 'event';
 const MAX_LIST_HEIGHT = 500;
 const ROW_HEIGHT = 50;
+const ACTIVE_THRESHOLD_MINUTES = 5;
 
 const icons = {
   [TYPE_PAGEVIEW]: <Eye />,
@@ -45,6 +46,44 @@ export function RealtimeLog({ data }: { data: any }) {
   const [filter, setFilter] = useState(TYPE_ALL);
   const { updateParams } = useNavigation();
   const { isPhone } = useMobile();
+
+  const activeSessions = useMemo(() => {
+    const active = new Set<string>();
+
+    if (!data?.events) {
+      return active;
+    }
+
+    const now = data.timestamp;
+    const threshold = ACTIVE_THRESHOLD_MINUTES * 60 * 1000;
+    const latestBySession = new Map<string, number>();
+
+    for (const event of data.events) {
+      if (!event?.sessionId || !event?.createdAt) {
+        continue;
+      }
+
+      const time = new Date(event.createdAt).getTime();
+
+      if (Number.isNaN(time)) {
+        continue;
+      }
+
+      const prev = latestBySession.get(event.sessionId);
+
+      if (prev === undefined || time > prev) {
+        latestBySession.set(event.sessionId, time);
+      }
+    }
+
+    for (const [sessionId, time] of latestBySession) {
+      if (now - time <= threshold) {
+        active.add(sessionId);
+      }
+    }
+
+    return active;
+  }, [data]);
 
   const buttons = [
     {
@@ -123,13 +162,36 @@ export function RealtimeLog({ data }: { data: any }) {
     }
   };
 
-  const TableRow = ({ index, style, logs }: RowComponentProps<{ logs: any[] }>) => {
+  const TableRow = ({
+    index,
+    style,
+    logs,
+    activeSessions,
+  }: RowComponentProps<{ logs: any[]; activeSessions: Set<string> }>) => {
     const row = logs[index];
+    const isActive = activeSessions?.has(row.sessionId);
     return (
       <Row alignItems="center" style={{ ...style, minWidth: 0 }} gap>
         <Row minWidth="30px">
           <Link href={updateParams({ session: row.sessionId })}>
-            <Avatar seed={row.sessionId} size={32} />
+            <Row position="relative">
+              <Avatar seed={row.sessionId} size={32} />
+              {isActive && (
+                <Box
+                  position="absolute"
+                  right="-2px"
+                  bottom="-2px"
+                  borderRadius="full"
+                  backgroundColor="surface"
+                  role="img"
+                  title={t(labels.online)}
+                  aria-label={t(labels.online)}
+                  data-testid="realtime-active-indicator"
+                >
+                  <StatusLight variant="success" />
+                </Box>
+              )}
+            </Row>
           </Link>
         </Row>
         <Row minWidth="100px">
@@ -211,7 +273,7 @@ export function RealtimeLog({ data }: { data: any }) {
             rowComponent={TableRow}
             rowCount={logs.length}
             rowHeight={ROW_HEIGHT}
-            rowProps={{ logs }}
+            rowProps={{ logs, activeSessions }}
             defaultHeight={listHeight}
             style={{ width: '100%', height: listHeight }}
           />
