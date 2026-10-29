@@ -57,3 +57,6 @@ yarn-error.log*
 
 # api integration test runtime state
 /tests/api/.runtime
+
+# local PR review worktrees
+/.review-pr-*/
