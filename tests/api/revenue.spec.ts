@@ -149,6 +149,13 @@ test.describe('Revenue', () => {
     const searched = await admin.get(`${base}/revenue/sessions`, {
       params: { ...params, search: 'zzz-no-such-session' },
     });
+    const browser = response.body.data[0]?.browser;
+    const byBrowser = await admin.get(`${base}/revenue/sessions`, {
+      params: { ...params, browser },
+    });
+    const byReferrer = await admin.get(`${base}/revenue/sessions`, {
+      params: { ...params, referrer: 'zzz-no-such-referrer' },
+    });
     const shared = await (await share()).get(`${base}/revenue/sessions`, { params });
     const denied = await viewer.get(`${base}/revenue/sessions`, { params });
     const missingCurrency = await admin.get(`${base}/revenue/sessions`, {
@@ -183,6 +190,15 @@ test.describe('Revenue', () => {
 
     expect(searched.status).toBe(200);
     expect(searched.body.data).toHaveLength(0);
+
+    // Filter columns share names with the per-session aggregates on ClickHouse.
+    expect(byBrowser.status).toBe(200);
+    expect(byBrowser.body.data.length).toBeGreaterThan(0);
+    for (const row of byBrowser.body.data) {
+      expect(row.browser).toBe(browser);
+    }
+    expect(byReferrer.status).toBe(200);
+    expect(byReferrer.body.data).toHaveLength(0);
 
     expect(shared.status).toBe(200);
     expect(denied.status).toBe(401);
