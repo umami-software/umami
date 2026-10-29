@@ -16,6 +16,10 @@ export async function GET(request: Request, { params }: { params: Promise<{ shar
 
   const share = await getShare(shareId);
 
+  if (!share) {
+    return notFound();
+  }
+
   if (!(await canViewEntity(auth, share.entityId))) {
     return unauthorized();
   }
@@ -79,6 +83,10 @@ export async function DELETE(
   const { shareId } = await params;
 
   const share = await getShare(shareId);
+
+  if (!share) {
+    return notFound();
+  }
 
   if (!(await canDeleteEntity(auth, share.entityId))) {
     return unauthorized();

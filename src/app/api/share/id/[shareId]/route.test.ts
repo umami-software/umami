@@ -1,7 +1,7 @@
 import { beforeEach, expect, test, vi } from 'vitest';
 import { parseRequest } from '@/lib/request';
-import { updateShare } from '@/queries/prisma';
-import { POST } from './route';
+import { deleteShare, getShare, updateShare } from '@/queries/prisma';
+import { DELETE, GET, POST } from './route';
 
 vi.mock('@/lib/request', () => ({
   parseRequest: vi.fn(),
@@ -23,6 +23,21 @@ const parseRequestMock = vi.mocked(parseRequest);
 const updateShareMock = vi.mocked(updateShare);
 
 const context = { params: Promise.resolve({ shareId: 'share-1' }) };
+
+// An unknown id is a missing resource, not a server crash, and must not reach the delete.
+test('GET and DELETE return 404 for an unknown share', async () => {
+  vi.mocked(getShare).mockResolvedValueOnce(null).mockResolvedValueOnce(null);
+
+  const getResponse = await GET(new Request('http://localhost/api/share/id/share-1'), context);
+  const deleteResponse = await DELETE(
+    new Request('http://localhost/api/share/id/share-1', { method: 'DELETE' }),
+    context,
+  );
+
+  expect(getResponse.status).toBe(404);
+  expect(deleteResponse.status).toBe(404);
+  expect(deleteShare).not.toHaveBeenCalled();
+});
 
 beforeEach(() => {
   parseRequestMock.mockResolvedValue({
