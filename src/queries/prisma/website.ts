@@ -206,17 +206,23 @@ export async function updateWebsite(
   websiteId: string,
   data: Prisma.WebsiteUpdateInput | Prisma.WebsiteUncheckedUpdateInput,
 ) {
-  return prisma.client.website.update({
+  const website = await prisma.client.website.update({
     where: {
       id: websiteId,
     },
     data,
   });
+
+  // Collection reads the website from Redis, so drop it after any change (e.g. a transfer).
+  if (redis.enabled) {
+    await redis.client.del(`website:${websiteId}`);
+  }
+
+  return website;
 }
 
 export async function resetWebsite(websiteId: string) {
   const { transaction } = prisma;
-  const cloudMode = !!process.env.CLOUD_MODE;
 
   return transaction(
     async tx => {
@@ -235,7 +241,7 @@ export async function resetWebsite(websiteId: string) {
       timeout: 30000,
     },
   ).then(async data => {
-    if (cloudMode) {
+    if (redis.enabled) {
       await redis.client.set(`website:${websiteId}`, data);
     }
 
@@ -284,7 +290,7 @@ export async function deleteWebsite(websiteId: string) {
       timeout: 30000,
     },
   ).then(async data => {
-    if (cloudMode) {
+    if (redis.enabled) {
       await redis.client.del(`website:${websiteId}`);
     }
 

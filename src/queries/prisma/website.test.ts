@@ -1,22 +1,36 @@
 import { beforeEach, describe, expect, test, vi } from 'vitest';
-import { deleteWebsite, getAllUserWebsitesIncludingTeamAccess, resetWebsite } from './website';
+import {
+  deleteWebsite,
+  getAllUserWebsitesIncludingTeamAccess,
+  resetWebsite,
+  updateWebsite,
+} from './website';
 
 const {
   transactionMock,
+  websiteUpdateMock,
   redisDelMock,
   redisSetMock,
+  redisState,
   getSearchParametersMock,
   pagedQueryMock,
 } = vi.hoisted(() => ({
   transactionMock: vi.fn(),
+  websiteUpdateMock: vi.fn(),
   redisDelMock: vi.fn(),
   redisSetMock: vi.fn(),
+  redisState: { enabled: false },
   getSearchParametersMock: vi.fn(),
   pagedQueryMock: vi.fn(),
 }));
 
 vi.mock('@/lib/prisma', () => ({
   default: {
+    client: {
+      website: {
+        update: websiteUpdateMock,
+      },
+    },
     transaction: transactionMock,
     getSearchParameters: getSearchParametersMock,
     pagedQuery: pagedQueryMock,
@@ -26,6 +40,9 @@ vi.mock('@/lib/prisma', () => ({
 
 vi.mock('@/lib/redis', () => ({
   default: {
+    get enabled() {
+      return redisState.enabled;
+    },
     client: {
       del: redisDelMock,
       set: redisSetMock,
@@ -259,5 +276,50 @@ describe('website delete dependencies', () => {
       'session',
       'websiteUpdate',
     ]);
+  });
+});
+
+// /api/send reads the website from Redis for 24h, so self-hosted installs with Redis
+// must invalidate it too, not only cloud.
+describe('website cache invalidation', () => {
+  beforeEach(() => {
+    transactionMock.mockReset();
+    transactionMock.mockImplementation(async callback => callback(createDeleteTx([])));
+    websiteUpdateMock.mockReset();
+    websiteUpdateMock.mockResolvedValue({ id: 'website-1' });
+    redisDelMock.mockReset();
+    redisSetMock.mockReset();
+    redisState.enabled = true;
+    delete process.env.CLOUD_MODE;
+    process.env.DATABASE_URL = 'postgresql://user:pass@localhost:5432/umami?schema=public';
+  });
+
+  test('deleteWebsite drops the cached website on a self-hosted install', async () => {
+    await deleteWebsite('website-1');
+
+    expect(redisDelMock).toHaveBeenCalledWith('website:website-1');
+  });
+
+  test('resetWebsite caches the reset website so resetAt applies right away', async () => {
+    await resetWebsite('website-1');
+
+    expect(redisSetMock).toHaveBeenCalledWith('website:website-1', { id: 'website-1' });
+  });
+
+  test('updateWebsite drops the cached website so owner and team changes apply', async () => {
+    await updateWebsite('website-1', { teamId: 'team-2' });
+
+    expect(redisDelMock).toHaveBeenCalledWith('website:website-1');
+  });
+
+  test('nothing is touched in Redis when it is not enabled', async () => {
+    redisState.enabled = false;
+
+    await deleteWebsite('website-1');
+    await resetWebsite('website-1');
+    await updateWebsite('website-1', { name: 'Site' });
+
+    expect(redisDelMock).not.toHaveBeenCalled();
+    expect(redisSetMock).not.toHaveBeenCalled();
   });
 });
