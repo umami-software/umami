@@ -37,6 +37,7 @@ import {
   maxDate,
   minDate,
   normalizeTimezone,
+  parseBackendDate,
   parseDateRange,
   parseDateValue,
 } from './date';
@@ -730,5 +731,27 @@ describe('isInvalidDate', () => {
     expect(isInvalidDate('2026-07-24')).toBe(false);
     expect(isInvalidDate(null)).toBe(false);
     expect(isInvalidDate(undefined)).toBe(false);
+  });
+});
+
+describe('parseBackendDate', () => {
+  test('converts zone-shifted backend timestamps ending with Z to local wall-clock dates', () => {
+    const parsed = parseBackendDate('2026-10-01T00:00:00Z');
+    expect(parsed.getFullYear()).toBe(2026);
+    expect(parsed.getMonth()).toBe(9);
+    expect(parsed.getDate()).toBe(1);
+    expect(formatDate(parsed, 'PP')).toBe('Oct 1, 2026');
+  });
+
+  test('returns Date instances as-is', () => {
+    const date = new Date(2026, 9, 1);
+    expect(parseBackendDate(date)).toEqual(date);
+  });
+
+  test('parses timestamps without trailing Z as standard Date', () => {
+    const parsed = parseBackendDate('2026-10-01T12:00:00');
+    expect(parsed.getFullYear()).toBe(2026);
+    expect(parsed.getMonth()).toBe(9);
+    expect(parsed.getDate()).toBe(1);
   });
 });
