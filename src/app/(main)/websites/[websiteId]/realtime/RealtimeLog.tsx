@@ -1,6 +1,3 @@
-import { Column, Heading, Row, SearchField, Text } from '@umami/react-zen';
-import { useMemo, useState } from 'react';
-import { List, type RowComponentProps } from 'react-window';
 import { SessionModal } from '@/app/(main)/websites/[websiteId]/sessions/SessionModal';
 import { Avatar } from '@/components/common/Avatar';
 import { Empty } from '@/components/common/Empty';
@@ -20,6 +17,9 @@ import { Eye, User } from '@/components/icons';
 import { FilterButtons } from '@/components/input/FilterButtons';
 import { Lightning } from '@/components/svg';
 import { BROWSERS, OS_NAMES } from '@/lib/constants';
+import { Box, Column, Heading, Row, SearchField, StatusLight, Text } from '@umami/react-zen';
+import { useMemo, useState } from 'react';
+import { List, type RowComponentProps } from 'react-window';
 
 const TYPE_ALL = 'all';
 const TYPE_PAGEVIEW = 'pageview';
@@ -174,28 +174,24 @@ export function RealtimeLog({ data }: { data: any }) {
       <Row alignItems="center" style={{ ...style, minWidth: 0 }} gap>
         <Row minWidth="30px">
           <Link href={updateParams({ session: row.sessionId })}>
-            <span style={{ position: 'relative', display: 'inline-flex' }}>
+            <Row position="relative">
               <Avatar seed={row.sessionId} size={32} />
               {isActive && (
-                <span
+                <Box
+                  position="absolute"
+                  right="-2px"
+                  bottom="-2px"
+                  borderRadius="full"
+                  backgroundColor="surface"
                   role="img"
                   title={t(labels.online)}
                   aria-label={t(labels.online)}
                   data-testid="realtime-active-indicator"
-                  style={{
-                    position: 'absolute',
-                    right: -1,
-                    bottom: -1,
-                    width: 12,
-                    height: 12,
-                    borderRadius: '50%',
-                    backgroundColor: '#22c55e',
-                    border: '2px solid var(--zen-surface-raised, #fff)',
-                    boxShadow: '0 0 0 1px rgba(34, 197, 94, 0.4)',
-                  }}
-                />
+                >
+                  <StatusLight variant="success" />
+                </Box>
               )}
-            </span>
+            </Row>
           </Link>
         </Row>
         <Row minWidth="100px">
