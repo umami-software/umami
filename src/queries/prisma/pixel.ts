@@ -1,5 +1,6 @@
 import type { Pixel, Prisma } from '@/generated/prisma/client';
 import prisma from '@/lib/prisma';
+import redis from '@/lib/redis';
 import { sanitizeSortFilters } from '@/lib/sort';
 import type { PageResult, QueryFilters } from '@/lib/types';
 
@@ -58,10 +59,26 @@ export async function createPixel(data: Prisma.PixelUncheckedCreateInput) {
   return prisma.client.pixel.create({ data });
 }
 
+// The pixel is served from Redis by slug, so an update or delete must drop that key.
+async function removePixelFromCache(...slugs: string[]) {
+  if (!redis.enabled) return;
+
+  await Promise.all([...new Set(slugs)].map(slug => redis.client.del(`pixel:${slug}`)));
+}
+
 export async function updatePixel(pixelId: string, data: any) {
-  return prisma.client.pixel.update({ where: { id: pixelId }, data });
+  const previous = redis.enabled ? await getPixel(pixelId) : null;
+  const pixel = await prisma.client.pixel.update({ where: { id: pixelId }, data });
+
+  await removePixelFromCache(...(previous ? [previous.slug] : []), pixel.slug);
+
+  return pixel;
 }
 
 export async function deletePixel(pixelId: string) {
-  return prisma.client.pixel.delete({ where: { id: pixelId } });
+  const pixel = await prisma.client.pixel.delete({ where: { id: pixelId } });
+
+  await removePixelFromCache(pixel.slug);
+
+  return pixel;
 }

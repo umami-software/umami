@@ -1,5 +1,6 @@
 import type { Link, Prisma } from '@/generated/prisma/client';
 import prisma from '@/lib/prisma';
+import redis from '@/lib/redis';
 import { sanitizeSortFilters } from '@/lib/sort';
 import type { PageResult, QueryFilters } from '@/lib/types';
 
@@ -64,10 +65,26 @@ export async function createLink(data: Prisma.LinkUncheckedCreateInput) {
   return prisma.client.link.create({ data });
 }
 
+// The link is served from Redis by slug, so an update or delete must drop that key.
+async function removeLinkFromCache(...slugs: string[]) {
+  if (!redis.enabled) return;
+
+  await Promise.all([...new Set(slugs)].map(slug => redis.client.del(`link:${slug}`)));
+}
+
 export async function updateLink(linkId: string, data: any) {
-  return prisma.client.link.update({ where: { id: linkId }, data });
+  const previous = redis.enabled ? await getLink(linkId) : null;
+  const link = await prisma.client.link.update({ where: { id: linkId }, data });
+
+  await removeLinkFromCache(...(previous ? [previous.slug] : []), link.slug);
+
+  return link;
 }
 
 export async function deleteLink(linkId: string) {
-  return prisma.client.link.delete({ where: { id: linkId } });
+  const link = await prisma.client.link.delete({ where: { id: linkId } });
+
+  await removeLinkFromCache(link.slug);
+
+  return link;
 }
