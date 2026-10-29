@@ -1,6 +1,6 @@
 import z from 'zod';
 import { parseRequest } from '@/lib/request';
-import { json, notFound, ok, unauthorized } from '@/lib/response';
+import { badRequest, json, notFound, ok, serverError, unauthorized } from '@/lib/response';
 import { anyObjectParam } from '@/lib/schema';
 import { canDeleteEntity, canUpdateEntity, canViewEntity } from '@/permissions';
 import { deleteShare, getShare, updateShare } from '@/queries/prisma';
@@ -49,13 +49,21 @@ export async function POST(request: Request, { params }: { params: Promise<{ sha
     return unauthorized();
   }
 
-  const result = await updateShare(shareId, {
-    name,
-    slug,
-    parameters,
-  } as any);
+  try {
+    const result = await updateShare(shareId, {
+      name,
+      slug,
+      parameters,
+    } as any);
 
-  return json(result);
+    return json(result);
+  } catch (e: any) {
+    if (e.message.toLowerCase().includes('unique constraint') && e.message.includes('slug')) {
+      return badRequest({ message: 'That slug is already taken.' });
+    }
+
+    return serverError(e);
+  }
 }
 
 export async function DELETE(
