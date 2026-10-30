@@ -37,6 +37,7 @@ vi.mock('@/lib/prisma', () => ({
     rawQuery: prismaRawQuery,
     parseFilters: prismaParseFilters,
     getTimestampDiffSQL,
+    getEngagementQuery: (alias: string) => `engagement_join(${alias})`,
   },
 }));
 
@@ -44,6 +45,7 @@ vi.mock('@/lib/clickhouse', () => ({
   default: {
     rawQuery: clickhouseRawQuery,
     parseFilters: clickhouseParseFilters,
+    getEngagementQuery: () => 'engagement_join',
   },
 }));
 
@@ -87,7 +89,10 @@ describe('getChannelExpandedMetrics postgres branch', () => {
     expect(query).toContain('visit_events as');
     expect(query).toContain('left join visit_events');
     // getTimestampDiffSQL output is injected into the totaltime column
-    expect(query).toContain('sum(ts_diff(min_time, max_time)) as "totaltime"');
+    expect(query).toContain(
+      'sum(coalesce(engagement.engagement_time, ts_diff(min_time, max_time))) as "totaltime"',
+    );
+    expect(query).toContain('engagement_join(visit_stats)');
     expect(getTimestampDiffSQL).toHaveBeenCalledWith(
       'visit_stats.min_time',
       'visit_stats.max_time',
@@ -155,7 +160,8 @@ describe('getChannelExpandedMetrics clickhouse branch', () => {
     expect(query).toContain('uniq(t.visit_id) as "visits"');
     expect(query).toContain('sumIf(1, t.c = 1 and ifNull(e.has_custom_event, 0) = 0) as "bounces"');
     expect(query).toContain('left join (');
-    expect(query).toContain('sum(max_time-min_time) as "totaltime"');
+    expect(query).toContain('sum(ifNull(engagement_time, max_time-min_time)) as "totaltime"');
+    expect(query).toContain('engagement_join');
     expect(query).toContain('where website_id = {websiteId:UUID}');
     expect(query).toContain(
       'and created_at between {startDate:DateTime64} and {endDate:DateTime64}',

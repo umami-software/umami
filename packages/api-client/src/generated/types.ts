@@ -9231,6 +9231,7 @@ export interface operations {
                 };
                 /** @description Device category used by the visitor. */
                 device?: string;
+                engagement?: number;
                 fcp?: number;
                 /** @description Hostname on which the activity occurred. */
                 hostname?: string;
@@ -9266,7 +9267,7 @@ export interface operations {
                 website?: string;
               };
               /** @enum {string} */
-              type: 'event' | 'identify' | 'performance';
+              type: 'event' | 'identify' | 'performance' | 'engagement';
             };
       };
     };

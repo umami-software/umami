@@ -12,6 +12,7 @@ import { badRequest, forbidden, json, serverError } from '@/lib/response';
 import { safeDecodeURI, safeDecodeURIComponent } from '@/lib/url';
 import {
   createSession,
+  saveEngagement,
   saveEvent,
   saveSessionData,
   saveSessionLink,
@@ -55,7 +56,12 @@ export async function POST(request: Request) {
       cls,
       fcp,
       ttfb,
+      engagement,
     } = payload;
+
+    if (type === COLLECTION_TYPE.engagement && !engagement) {
+      return badRequest({ message: 'Engagement requests must include engagement.' });
+    }
 
     const sourceId = websiteId || pixelId || linkId;
 
@@ -113,6 +119,9 @@ export async function POST(request: Request) {
       createdAt,
       cache,
       historical: timestamp !== undefined,
+      // Engagement is reported for the page the visitor is leaving, so it stays
+      // with the visit that page belongs to even after that visit has expired.
+      preserveVisit: type === COLLECTION_TYPE.engagement,
     });
 
     // Reuse the anonymous session when the same visitor identifies, but only if:
@@ -361,6 +370,21 @@ export async function POST(request: Request) {
         ttfb,
         createdAt,
       });
+    } else if (type === COLLECTION_TYPE.engagement) {
+      if (websiteId && engagement) {
+        const base = hostname ? `https://${hostname}` : 'https://localhost';
+        const currentUrl = new URL(url, base);
+        const urlPath = currentUrl.pathname === '/undefined' ? '' : currentUrl.pathname;
+
+        await saveEngagement({
+          websiteId,
+          sessionId,
+          visitId,
+          urlPath: safeDecodeURI(urlPath),
+          engagementTime: engagement,
+          createdAt,
+        });
+      }
     }
 
     const token = createToken(

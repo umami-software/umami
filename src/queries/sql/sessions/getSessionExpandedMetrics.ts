@@ -41,7 +41,7 @@ async function relationalQuery(
 ): Promise<SessionExpandedMetricsData[]> {
   const { type, limit = 500, offset = 0 } = parameters;
   let column = FILTER_COLUMNS[type] || type;
-  const { parseFilters, rawQuery, getTimestampDiffSQL } = prisma;
+  const { parseFilters, rawQuery, getTimestampDiffSQL, getEngagementQuery } = prisma;
   const { filterQuery, joinSessionQuery, cohortQuery, excludeBounceQuery, queryParams } =
     parseFilters(
       {
@@ -83,7 +83,7 @@ async function relationalQuery(
       count(distinct t.session_id) as "visitors",
       count(distinct t.visit_id) as "visits",
       ${bounceQuery}
-      sum(${getTimestampDiffSQL('t.min_time', 't.max_time')}) as "totaltime"
+      sum(coalesce(engagement.engagement_time, ${getTimestampDiffSQL('t.min_time', 't.max_time')})) as "totaltime"
     from (
       select
         ${column} as "name",
@@ -105,6 +105,7 @@ async function relationalQuery(
       ${includeCountry ? ', country' : ''}
     ) as t
     ${visitEventsJoin}
+    ${getEngagementQuery('t')}
     where name != ''
     group by name 
     ${includeCountry ? ', country' : ''}
@@ -124,7 +125,7 @@ async function clickhouseQuery(
 ): Promise<SessionExpandedMetricsData[]> {
   const { type, limit = 500, offset = 0 } = parameters;
   let column = FILTER_COLUMNS[type] || type;
-  const { parseFilters, rawQuery } = clickhouse;
+  const { parseFilters, rawQuery, getEngagementQuery } = clickhouse;
   const { filterQuery, cohortQuery, excludeBounceQuery, queryParams } = parseFilters({
     ...filters,
     websiteId,
@@ -158,7 +159,7 @@ async function clickhouseQuery(
       uniq(t.session_id) as "visitors",
       uniq(t.visit_id) as "visits",
       ${bounceQuery}
-      sum(max_time-min_time) as "totaltime"
+      sum(ifNull(engagement_time, max_time-min_time)) as "totaltime"
     from (
       select
         ${column} name,
@@ -180,6 +181,7 @@ async function clickhouseQuery(
       ${includeCountry ? ', country' : ''}
     ) as t
     ${visitEventsJoin}
+    ${getEngagementQuery()}
     group by name
     ${includeCountry ? ', country' : ''}
     order by visitors desc, visits desc
