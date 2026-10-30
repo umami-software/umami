@@ -95,38 +95,6 @@ const operation1 = defineOperation({
                     'globalRequired',
                   ],
                 },
-                {
-                  type: 'object',
-                  properties: {
-                    isEnabled: {
-                      type: 'boolean',
-                      description: 'Whether two-factor authentication is enabled.',
-                    },
-                    isRequired: {
-                      type: 'boolean',
-                      description: 'Whether two-factor authentication is required for this user.',
-                    },
-                    requiredReason: {
-                      type: 'null',
-                      description: 'Reason two-factor authentication is required.',
-                    },
-                    isConfigured: {
-                      type: 'boolean',
-                      description: 'Whether two-factor authentication has been configured.',
-                    },
-                    globalRequired: {
-                      type: 'boolean',
-                      description: 'Whether two-factor authentication is required for all users.',
-                    },
-                  },
-                  required: [
-                    'isEnabled',
-                    'isRequired',
-                    'requiredReason',
-                    'isConfigured',
-                    'globalRequired',
-                  ],
-                },
               ],
             },
           },

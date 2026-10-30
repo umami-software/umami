@@ -501,6 +501,7 @@ export const messages: Record<string, string> = {
   upgradeRequired: 'message.upgrade-required',
   twoFactorSetupDescription: 'message.two-factor-setup-description',
   twoFactorSetupRequiredDescription: 'message.two-factor-setup-required-description',
+  twoFactorSetupSecurityKey: 'message.two-factor-setup-security-key',
   twoFactorStep1Description: 'message.two-factor-step1-description',
   twoFactorStep2Description: 'message.two-factor-step2-description',
   twoFactorEnabledDescription: 'message.two-factor-enabled-description',

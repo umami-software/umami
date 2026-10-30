@@ -4,7 +4,6 @@ import { DELETE } from './route';
 
 const mocks = vi.hoisted(() => ({
   deleteSecurityKey: vi.fn(),
-  getUserSecurityKeyCount: vi.fn(),
   isTwoFactorConfigured: vi.fn(),
   isTwoFactorRequired: vi.fn(),
   findTwoFactorAuth: vi.fn(),
@@ -16,7 +15,6 @@ vi.mock('@/lib/request', () => ({
 
 vi.mock('@/queries/prisma/securityKey', () => ({
   deleteSecurityKey: mocks.deleteSecurityKey,
-  getUserSecurityKeyCount: mocks.getUserSecurityKeyCount,
 }));
 
 vi.mock('@/lib/two-factor/crypto', () => ({
@@ -61,19 +59,18 @@ beforeEach(() => {
   mocks.isTwoFactorConfigured.mockReturnValue(true);
   mocks.isTwoFactorRequired.mockResolvedValue(false);
   mocks.findTwoFactorAuth.mockResolvedValue(null);
-  mocks.getUserSecurityKeyCount.mockResolvedValue(1);
-  mocks.deleteSecurityKey.mockResolvedValue(1);
+  mocks.deleteSecurityKey.mockResolvedValue('deleted');
 });
 
 test('DELETE removes a security key owned by the current user', async () => {
   const response = await deleteRequest();
 
   expect(response.status).toBe(200);
-  expect(mocks.deleteSecurityKey).toHaveBeenCalledWith('key-1', 'user-1');
+  expect(mocks.deleteSecurityKey).toHaveBeenCalledWith('key-1', 'user-1', { keepLastKey: false });
 });
 
 test('DELETE returns 404 when the key does not belong to the user', async () => {
-  mocks.deleteSecurityKey.mockResolvedValue(0);
+  mocks.deleteSecurityKey.mockResolvedValue('not-found');
 
   const response = await deleteRequest('someone-elses-key');
 
@@ -82,6 +79,7 @@ test('DELETE returns 404 when the key does not belong to the user', async () => 
 
 test('DELETE refuses to remove the last second factor while 2FA is required', async () => {
   mocks.isTwoFactorRequired.mockResolvedValue(true);
+  mocks.deleteSecurityKey.mockResolvedValue('last-key');
 
   const response = await deleteRequest();
 
@@ -89,7 +87,7 @@ test('DELETE refuses to remove the last second factor while 2FA is required', as
   await expect(response.json()).resolves.toMatchObject({
     error: { code: 'security-key-error-remove-not-allowed' },
   });
-  expect(mocks.deleteSecurityKey).not.toHaveBeenCalled();
+  expect(mocks.deleteSecurityKey).toHaveBeenCalledWith('key-1', 'user-1', { keepLastKey: true });
 });
 
 test('DELETE allows removing a key while 2FA is required if another factor remains', async () => {
@@ -99,7 +97,7 @@ test('DELETE allows removing a key while 2FA is required if another factor remai
   const response = await deleteRequest();
 
   expect(response.status).toBe(200);
-  expect(mocks.deleteSecurityKey).toHaveBeenCalledWith('key-1', 'user-1');
+  expect(mocks.deleteSecurityKey).toHaveBeenCalledWith('key-1', 'user-1', { keepLastKey: false });
 });
 
 test('DELETE returns 404 in cloud mode', async () => {

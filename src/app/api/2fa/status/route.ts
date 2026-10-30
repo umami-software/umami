@@ -94,6 +94,7 @@ export async function GET(request: Request) {
 
   return json({
     isEnabled,
+    hasSecurityKeys,
     isRequired: false,
     requiredReason: null,
     isConfigured: true,

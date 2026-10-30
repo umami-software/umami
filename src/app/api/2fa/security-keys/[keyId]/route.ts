@@ -3,7 +3,7 @@ import { parseRequest } from '@/lib/request';
 import { forbidden, notFound, ok } from '@/lib/response';
 import { isTwoFactorConfigured } from '@/lib/two-factor/crypto';
 import { isTwoFactorRequired } from '@/lib/two-factor/requirement';
-import { deleteSecurityKey, getUserSecurityKeyCount } from '@/queries/prisma/securityKey';
+import { deleteSecurityKey } from '@/queries/prisma/securityKey';
 
 export async function DELETE(request: Request, { params }: { params: Promise<{ keyId: string }> }) {
   if (process.env.CLOUD_MODE) {
@@ -20,20 +20,24 @@ export async function DELETE(request: Request, { params }: { params: Promise<{ k
   const userId = auth.user.id;
 
   // Keep at least one second factor while two-factor authentication is required
+  let keepLastKey = false;
+
   if (isTwoFactorConfigured() && (await isTwoFactorRequired(userId))) {
     const twoFactor = await prisma.client.twoFactorAuth.findUnique({ where: { userId } });
 
-    if (!twoFactor?.isEnabled && (await getUserSecurityKeyCount(userId)) <= 1) {
-      return forbidden({
-        code: 'security-key-error-remove-not-allowed',
-        message: 'Two-factor authentication is required and this is the last security key',
-      });
-    }
+    keepLastKey = !twoFactor?.isEnabled;
   }
 
-  const count = await deleteSecurityKey(keyId, userId);
+  const result = await deleteSecurityKey(keyId, userId, { keepLastKey });
 
-  if (!count) {
+  if (result === 'last-key') {
+    return forbidden({
+      code: 'security-key-error-remove-not-allowed',
+      message: 'Two-factor authentication is required and this is the last security key',
+    });
+  }
+
+  if (result === 'not-found') {
     return notFound();
   }
 

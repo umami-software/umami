@@ -35,21 +35,22 @@ export function SecurityKeyAddButton({ isDisabled }: { isDisabled?: boolean }) {
   );
 }
 
-function SecurityKeyAddForm({ onClose }: { onClose: () => void }) {
+export function SecurityKeyAddForm({
+  onSave,
+  onClose,
+}: {
+  onSave?: () => void;
+  onClose: () => void;
+}) {
   const { t, labels, messages, getErrorMessage } = useMessages();
   const { mutateAsync, error, isPending } = useSecurityKeyRegisterMutation();
   const queryClient = useQueryClient();
 
   const handleSubmit = async ({ name }: { name: string }) => {
-    await mutateAsync(
-      { name },
-      {
-        onSuccess: () => {
-          queryClient.invalidateQueries({ queryKey: ['2fa-status'] });
-          onClose();
-        },
-      },
-    );
+    await mutateAsync({ name });
+    // Run after the await, since per-call callbacks are dropped if this form unmounts first
+    (onSave ?? onClose)();
+    queryClient.invalidateQueries({ queryKey: ['2fa-status'] });
   };
 
   return (

@@ -22,8 +22,9 @@ const operation1 = defineOperation({
             type: 'object',
             properties: {
               name: {
-                minimum: 1,
-                maximum: 255,
+                type: 'string',
+                minLength: 1,
+                maxLength: 255,
                 description: 'Display name of the resource.',
               },
               response: {
@@ -134,15 +135,6 @@ const operation1 = defineOperation({
             schema: {
               $ref: '#/components/schemas/ApiError',
             },
-          },
-        },
-      },
-      'function toString() { [native code] }': {
-        description:
-          'Successful response. The response shape is inferred as free-form because the handler does not expose a reusable response schema.',
-        content: {
-          'application/json': {
-            schema: {},
           },
         },
       },

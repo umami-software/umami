@@ -3259,6 +3259,19 @@ export interface components {
       /** @description Fraction of sessions to record for replay, from 0 to 1. */
       sampleRate?: number;
     };
+    SecurityKey: {
+      /**
+       * Format: date-time
+       * @description Date and time the record was created.
+       */
+      createdAt: string;
+      /** @description Unique identifier of the resource. */
+      id: string;
+      /** @description Date and time the credential was last used. Null until the key is first used. */
+      lastUsedAt: string | null;
+      /** @description Display name of the resource. */
+      name: string;
+    };
     TimeSeriesPoint: {
       /** @description Bucket start (ISO date/time). */
       x: string;
@@ -3813,22 +3826,7 @@ export interface operations {
           [name: string]: unknown;
         };
         content: {
-          'application/json': {
-            /**
-             * Format: date-time
-             * @description Date and time the record was created.
-             */
-            createdAt: string;
-            /** @description Unique identifier of the resource. */
-            id: string;
-            /**
-             * Format: date-time
-             * @description Date and time the credential was last used.
-             */
-            lastUsedAt: string;
-            /** @description Display name of the resource. */
-            name: string;
-          }[];
+          'application/json': components['schemas']['SecurityKey'][];
         };
       };
       /** @description Unauthorized. */
@@ -4517,7 +4515,7 @@ export interface operations {
       content: {
         'application/json': {
           /** @description Display name of the resource. */
-          name: unknown;
+          name: string;
           response: {
             authenticatorAttachment?: string;
             clientExtensionResults: {
@@ -4607,15 +4605,6 @@ export interface operations {
            *     }
            */
           'application/json': components['schemas']['ApiError'];
-        };
-      };
-      /** @description Successful response. The response shape is inferred as free-form because the handler does not expose a reusable response schema. */
-      'function toString() { [native code] }': {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          'application/json': unknown;
         };
       };
     };
@@ -4955,18 +4944,6 @@ export interface operations {
                 isRequired: boolean;
                 /** @description Reason two-factor authentication is required. */
                 requiredReason: string;
-              }
-            | {
-                /** @description Whether two-factor authentication is required for all users. */
-                globalRequired: boolean;
-                /** @description Whether two-factor authentication has been configured. */
-                isConfigured: boolean;
-                /** @description Whether two-factor authentication is enabled. */
-                isEnabled: boolean;
-                /** @description Whether two-factor authentication is required for this user. */
-                isRequired: boolean;
-                /** @description Reason two-factor authentication is required. */
-                requiredReason: null;
               };
         };
       };
@@ -8464,7 +8441,7 @@ export interface operations {
       content: {
         'application/json': {
           /** @description Display name of the resource. */
-          name: unknown;
+          name: string;
         };
       };
     };
@@ -17477,15 +17454,6 @@ export interface operations {
            *     }
            */
           'application/json': components['schemas']['ApiError'];
-        };
-      };
-      /** @description Successful response. The response shape is inferred as free-form because the handler does not expose a reusable response schema. */
-      'function toString() { [native code] }': {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          'application/json': unknown;
         };
       };
     };

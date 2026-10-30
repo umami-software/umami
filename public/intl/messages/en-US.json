@@ -502,6 +502,7 @@
     "visitor-log": "Visitor from <b>{country}</b> using <b>{browser}</b> on <b>{os}</b> <b>{device}</b>",
     "two-factor-setup-description": "Each time you log in, in addition to your password, you'll use an authenticator app to generate and use a one-time code.",
     "two-factor-setup-required-description": "Two-factor authentication (2FA) is required to access Umami.",
+    "two-factor-setup-security-key": "Have a security key? You can add it instead of using an authenticator app.",
     "two-factor-step1-description": "Scan the QR code below or manually enter the secret key into your authenticator app.",
     "two-factor-step2-description": "Enter the 6-digit code you see in your authenticator app.",
     "two-factor-enabled-description": "Your account is now protected with two-factor authentication. From now on, you will need to enter a code from your authenticator app each time you log in.",

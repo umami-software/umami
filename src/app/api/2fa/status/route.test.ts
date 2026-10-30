@@ -117,3 +117,20 @@ test('GET reports registered security keys', async () => {
     isRequired: true,
   });
 });
+
+test('GET reports registered security keys when 2FA is not required', async () => {
+  vi.stubEnv('TWO_FACTOR_ENCRYPTION_KEY', KEY);
+  mocks.findAppSetting.mockResolvedValue(null as any);
+  mocks.getUserSecurityKeyCount.mockResolvedValue(2);
+
+  const response = await GET(new Request('http://localhost/api/2fa/status'));
+
+  await expect(response.json()).resolves.toEqual({
+    isEnabled: false,
+    hasSecurityKeys: true,
+    isRequired: false,
+    isConfigured: true,
+    globalRequired: false,
+    requiredReason: null,
+  });
+});
