@@ -9,7 +9,7 @@ import redis from '@/lib/redis';
 import { parseRequest } from '@/lib/request';
 import { json, serviceUnavailable, unauthorized } from '@/lib/response';
 import { getTwoFactorConfigurationError, isTwoFactorConfigured } from '@/lib/two-factor/crypto';
-import { getAllUserTeams, getUserByUsername } from '@/queries/prisma';
+import { getAllUserTeams, getUserByUsername, getUserSecurityKeyCount } from '@/queries/prisma';
 import { loginRequestSchema } from './schema';
 
 export async function POST(request: Request) {
@@ -35,8 +35,20 @@ export async function POST(request: Request) {
     ? await prisma.client.twoFactorAuth.findUnique({ where: { userId: id } })
     : null;
 
-  if (twoFactor?.isEnabled) {
-    if (!isTwoFactorConfigured()) {
+  const hasSecurityKeys = !cloudMode && (await getUserSecurityKeyCount(id)) > 0;
+
+  if (twoFactor?.isEnabled || hasSecurityKeys) {
+    const methods: string[] = [];
+
+    if (twoFactor?.isEnabled && isTwoFactorConfigured()) {
+      methods.push('totp');
+    }
+
+    if (hasSecurityKeys) {
+      methods.push('security-key');
+    }
+
+    if (!methods.length) {
       return serviceUnavailable(getTwoFactorConfigurationError());
     }
 
@@ -47,7 +59,7 @@ export async function POST(request: Request) {
         expiresIn: '5m',
       },
     );
-    return json({ requiresTwoFactor: true, partialToken });
+    return json({ requiresTwoFactor: true, partialToken, methods });
   }
   // Bind token to password hash so a password change invalidates old tokens.
   const pwd = hash(user.password);

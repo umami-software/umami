@@ -29,6 +29,12 @@ export const OPERATION_ID_OVERRIDES: Record<string, string> = {
   'POST /api/2fa/setup/cancel': 'cancelTwoFactorSetup',
   'POST /api/2fa/disable': 'disableTwoFactor',
   'POST /api/2fa/verify': 'verifyTwoFactor',
+  'GET /api/2fa/security-keys': 'getSecurityKeys',
+  'DELETE /api/2fa/security-keys/{keyId}': 'deleteSecurityKey',
+  'POST /api/2fa/security-keys/register/options': 'getSecurityKeyRegistrationOptions',
+  'POST /api/2fa/security-keys/register/verify': 'registerSecurityKey',
+  'POST /api/2fa/security-keys/login/options': 'getSecurityKeyLoginOptions',
+  'POST /api/2fa/security-keys/login/verify': 'verifySecurityKey',
 
   // Realtime
   'GET /api/realtime/{websiteId}': 'getRealtime',

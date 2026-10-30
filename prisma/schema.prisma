@@ -32,6 +32,8 @@ model User {
   twoFactorBackupCodes TwoFactorBackupCode[]
   twoFactorOtpUseds    TwoFactorOtpUsed[]
   twoFactorRateLimit   TwoFactorRateLimit?
+  webAuthnCredentials  WebAuthnCredential[]
+  webAuthnChallenges   WebAuthnChallenge[]
   apiKeys              ApiKey[]
 
   @@map("user")
@@ -524,6 +526,34 @@ model TwoFactorRateLimit {
   user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@map("two_factor_rate_limit")
+}
+
+model WebAuthnCredential {
+  id           String    @id @default(cuid())
+  userId       String    @map("user_id") @db.Uuid
+  name         String    @db.VarChar(255)
+  credentialId String    @unique @map("credential_id")
+  publicKey    String    @map("public_key")
+  counter      BigInt    @default(0)
+  transports   String[]  @default([])
+  lastUsedAt   DateTime? @map("last_used_at") @db.Timestamptz(6)
+  createdAt    DateTime  @default(now()) @map("created_at") @db.Timestamptz(6)
+  user         User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@map("webauthn_credential")
+}
+
+model WebAuthnChallenge {
+  id        String   @id @default(cuid())
+  userId    String   @map("user_id") @db.Uuid
+  type      String   @db.VarChar(20)
+  challenge String
+  expiresAt DateTime @map("expires_at") @db.Timestamptz(6)
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, type])
+  @@map("webauthn_challenge")
 }
 
 model AppSetting {

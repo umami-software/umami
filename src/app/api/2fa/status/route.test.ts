@@ -9,6 +9,7 @@ const mocks = vi.hoisted(() => ({
   findUser: vi.fn(),
   findTeamUsers: vi.fn(),
   findTeams: vi.fn(),
+  getUserSecurityKeyCount: vi.fn(),
 }));
 
 vi.mock('@/lib/request', () => ({
@@ -37,6 +38,10 @@ vi.mock('@/lib/prisma', () => ({
   },
 }));
 
+vi.mock('@/queries/prisma/securityKey', () => ({
+  getUserSecurityKeyCount: mocks.getUserSecurityKeyCount,
+}));
+
 const parseRequestMock = vi.mocked(parseRequest);
 
 beforeEach(() => {
@@ -47,6 +52,7 @@ beforeEach(() => {
   mocks.findUser.mockReset();
   mocks.findTeamUsers.mockReset();
   mocks.findTeams.mockReset();
+  mocks.getUserSecurityKeyCount.mockReset();
 
   parseRequestMock.mockResolvedValue({
     auth: {
@@ -64,6 +70,7 @@ beforeEach(() => {
   mocks.findUser.mockResolvedValue({ twoFactorRequired: false } as any);
   mocks.findTeamUsers.mockResolvedValue([] as any);
   mocks.findTeams.mockResolvedValue([] as any);
+  mocks.getUserSecurityKeyCount.mockResolvedValue(0);
 });
 
 test('GET requires 2FA when it is globally enabled', async () => {
@@ -73,6 +80,7 @@ test('GET requires 2FA when it is globally enabled', async () => {
 
   await expect(response.json()).resolves.toEqual({
     isEnabled: false,
+    hasSecurityKeys: false,
     isRequired: true,
     isConfigured: true,
     globalRequired: true,
@@ -88,10 +96,24 @@ test('GET does not require 2FA when the encryption key is missing', async () => 
 
   await expect(response.json()).resolves.toEqual({
     isEnabled: false,
+    hasSecurityKeys: false,
     isRequired: false,
     isConfigured: false,
     globalRequired: true,
     requiredReason: null,
   });
   expect(response.status).toBe(200);
+});
+
+test('GET reports registered security keys', async () => {
+  vi.stubEnv('TWO_FACTOR_ENCRYPTION_KEY', KEY);
+  mocks.getUserSecurityKeyCount.mockResolvedValue(1);
+
+  const response = await GET(new Request('http://localhost/api/2fa/status'));
+
+  await expect(response.json()).resolves.toMatchObject({
+    isEnabled: false,
+    hasSecurityKeys: true,
+    isRequired: true,
+  });
 });

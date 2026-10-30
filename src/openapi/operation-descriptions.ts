@@ -13,6 +13,35 @@ export const operationDescriptions: Record<string, OperationDescription> = {
     description:
       'Disables two-factor authentication for the current user after verifying their password and authenticator code. Rejected when an administrator or team requires it.',
   },
+  'GET /api/2fa/security-keys': {
+    summary: 'List security keys',
+    description: 'Returns the security keys the current user has registered as a second factor.',
+  },
+  'DELETE /api/2fa/security-keys/{keyId}': {
+    summary: 'Remove a security key',
+    description:
+      "Removes one of the current user's security keys. Rejected when two-factor authentication is required and the key is the user's only second factor.",
+  },
+  'POST /api/2fa/security-keys/login/options': {
+    summary: 'Start security key sign-in',
+    description:
+      'Exchanges a partial sign-in token for WebAuthn authentication options for the keys registered to the user.',
+  },
+  'POST /api/2fa/security-keys/login/verify': {
+    summary: 'Complete security key sign-in',
+    description:
+      'Exchanges a partial sign-in token and a signed WebAuthn assertion for a full authentication token and user details.',
+  },
+  'POST /api/2fa/security-keys/register/options': {
+    summary: 'Start security key registration',
+    description:
+      'Returns WebAuthn registration options for adding a security key to the current user.',
+  },
+  'POST /api/2fa/security-keys/register/verify': {
+    summary: 'Register a security key',
+    description:
+      'Verifies a WebAuthn registration response and saves the security key under the given name.',
+  },
   'POST /api/2fa/setup/cancel': {
     summary: 'Cancel two-factor authentication setup',
     description:
@@ -61,11 +90,12 @@ export const operationDescriptions: Record<string, OperationDescription> = {
   'DELETE /api/admin/users/{userId}/2fa': {
     summary: "Reset a user's two-factor authentication",
     description:
-      "Removes the specified user's authenticator setup, backup codes, used-code history, and failed-attempt limits so they can set up authentication again.",
+      "Removes the specified user's authenticator setup, backup codes, security keys, used-code history, and failed-attempt limits so they can set up authentication again.",
   },
   'GET /api/admin/users/{userId}/2fa': {
     summary: "Get a user's two-factor status",
-    description: 'Returns whether two-factor authentication is enabled for the specified user.',
+    description:
+      'Returns whether two-factor authentication is enabled for the specified user and how many security keys they have registered.',
   },
   'POST /api/admin/users/{userId}/2fa': {
     summary: "Set a user's two-factor requirement",

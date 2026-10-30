@@ -42,6 +42,13 @@ vi.mock('@/lib/prisma', () => ({
       twoFactorRateLimit: {
         deleteMany: vi.fn(),
       },
+      webAuthnCredential: {
+        count: vi.fn(),
+        deleteMany: vi.fn(),
+      },
+      webAuthnChallenge: {
+        deleteMany: vi.fn(),
+      },
     },
     transaction: vi.fn(),
   },
@@ -60,6 +67,11 @@ const prismaMock = prisma as unknown as {
     twoFactorBackupCode: { deleteMany: ReturnType<typeof vi.fn> };
     twoFactorOtpUsed: { deleteMany: ReturnType<typeof vi.fn> };
     twoFactorRateLimit: { deleteMany: ReturnType<typeof vi.fn> };
+    webAuthnCredential: {
+      count: ReturnType<typeof vi.fn>;
+      deleteMany: ReturnType<typeof vi.fn>;
+    };
+    webAuthnChallenge: { deleteMany: ReturnType<typeof vi.fn> };
   };
   transaction: ReturnType<typeof vi.fn>;
 };
@@ -74,6 +86,9 @@ beforeEach(() => {
   prismaMock.client.twoFactorBackupCode.deleteMany.mockReset();
   prismaMock.client.twoFactorOtpUsed.deleteMany.mockReset();
   prismaMock.client.twoFactorRateLimit.deleteMany.mockReset();
+  prismaMock.client.webAuthnCredential.count.mockReset();
+  prismaMock.client.webAuthnCredential.deleteMany.mockReset();
+  prismaMock.client.webAuthnChallenge.deleteMany.mockReset();
   prismaMock.transaction.mockReset();
 
   parseRequestMock.mockResolvedValue({
@@ -94,12 +109,13 @@ test('GET returns whether 2FA is enabled for the target user', async () => {
     userId: 'user-1',
     isEnabled: true,
   } as any);
+  prismaMock.client.webAuthnCredential.count.mockResolvedValue(2);
 
   const response = await GET(new Request('http://localhost/api/admin/users/user-1/2fa'), {
     params: Promise.resolve({ userId: 'user-1' }),
   });
 
-  await expect(response.json()).resolves.toEqual({ isEnabled: true });
+  await expect(response.json()).resolves.toEqual({ isEnabled: true, securityKeyCount: 2 });
   expect(response.status).toBe(200);
 });
 
@@ -164,6 +180,8 @@ test('DELETE clears the user 2FA configuration and related support tables', asyn
   prismaMock.client.twoFactorBackupCode.deleteMany.mockResolvedValue({ count: 8 } as any);
   prismaMock.client.twoFactorOtpUsed.deleteMany.mockResolvedValue({ count: 2 } as any);
   prismaMock.client.twoFactorRateLimit.deleteMany.mockResolvedValue({ count: 1 } as any);
+  prismaMock.client.webAuthnCredential.deleteMany.mockResolvedValue({ count: 3 } as any);
+  prismaMock.client.webAuthnChallenge.deleteMany.mockResolvedValue({ count: 1 } as any);
   prismaMock.transaction.mockImplementation(async operations => Promise.all(operations));
 
   const response = await DELETE(
@@ -183,6 +201,12 @@ test('DELETE clears the user 2FA configuration and related support tables', asyn
   expect(prismaMock.client.twoFactorRateLimit.deleteMany).toHaveBeenCalledWith({
     where: { userId: 'user-1' },
   });
+  expect(prismaMock.client.webAuthnCredential.deleteMany).toHaveBeenCalledWith({
+    where: { userId: 'user-1' },
+  });
+  expect(prismaMock.client.webAuthnChallenge.deleteMany).toHaveBeenCalledWith({
+    where: { userId: 'user-1' },
+  });
   await expect(response.json()).resolves.toEqual({
     ok: true,
     userId: 'user-1',
@@ -191,6 +215,7 @@ test('DELETE clears the user 2FA configuration and related support tables', asyn
       backupCodes: 8,
       otpUsed: 2,
       rateLimit: 1,
+      securityKeys: 3,
     },
   });
   expect(response.status).toBe(200);
