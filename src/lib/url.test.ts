@@ -1,7 +1,9 @@
 import { describe, expect, test } from 'vitest';
 import {
   buildPath,
+  formatUrlLabel,
   getQueryString,
+  hasMultipleHostnames,
   isValidUrl,
   safeDecodeURI,
   safeDecodeURIComponent,
@@ -79,5 +81,28 @@ describe('isValidUrl', () => {
     expect(isValidUrl('not a url')).toBe(false);
     expect(isValidUrl('/relative/path')).toBe(false);
     expect(isValidUrl('')).toBe(false);
+  });
+});
+
+describe('hasMultipleHostnames', () => {
+  test('returns false for a single hostname', () => {
+    expect(hasMultipleHostnames([{ hostname: 'a.com' }, { hostname: 'a.com' }])).toBe(false);
+  });
+
+  test('returns true for more than one hostname', () => {
+    expect(hasMultipleHostnames([{ hostname: 'a.com' }, { hostname: 'b.a.com' }])).toBe(true);
+  });
+
+  test('ignores empty hostnames', () => {
+    expect(hasMultipleHostnames([{ hostname: 'a.com' }, { hostname: null }, {}])).toBe(false);
+    expect(hasMultipleHostnames()).toBe(false);
+  });
+});
+
+describe('formatUrlLabel', () => {
+  test('prefixes the hostname only when requested', () => {
+    expect(formatUrlLabel('/docs', 'a.com', true)).toBe('a.com/docs');
+    expect(formatUrlLabel('/docs', 'a.com')).toBe('/docs');
+    expect(formatUrlLabel('/docs', null, true)).toBe('/docs');
   });
 });
