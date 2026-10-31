@@ -58,7 +58,7 @@ describe('team website access', () => {
     pagedQueryMock.mockResolvedValue({ data: [] });
   });
 
-  test('includes websites for a team member because membership grants view access', async () => {
+  test('includes unowned websites of any team the user belongs to, matching canViewWebsite', async () => {
     await getAllUserWebsitesIncludingTeamAccess('team-user');
 
     expect(pagedQueryMock).toHaveBeenCalledWith(
@@ -68,6 +68,9 @@ describe('team website access', () => {
           OR: [
             { userId: 'team-user' },
             {
+              // canViewWebsite only lets the owner view a website that has a userId,
+              // so listing it to other team members would lead to an Unauthorized page.
+              userId: null,
               team: {
                 deletedAt: null,
                 members: {
@@ -77,6 +80,13 @@ describe('team website access', () => {
             },
           ],
           deletedAt: null,
+        },
+        include: {
+          team: {
+            select: {
+              members: { where: { userId: 'team-user' }, select: { userId: true, role: true } },
+            },
+          },
         },
       }),
       expect.any(Object),

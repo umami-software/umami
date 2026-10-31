@@ -140,6 +140,8 @@ export async function getAllUserWebsitesIncludingTeamAccess(
         OR: [
           { userId },
           {
+            // Matches canViewWebsite: a website with a userId is visible to its owner only.
+            userId: null,
             team: {
               deletedAt: null,
               members: {
@@ -150,6 +152,21 @@ export async function getAllUserWebsitesIncludingTeamAccess(
             },
           },
         ],
+      },
+      include: {
+        team: {
+          select: {
+            members: {
+              where: {
+                userId,
+              },
+              select: {
+                userId: true,
+                role: true,
+              },
+            },
+          },
+        },
       },
     },
     sanitizeSortFilters(filters, WEBSITE_SORT_FIELDS, { orderBy: 'name' }),
