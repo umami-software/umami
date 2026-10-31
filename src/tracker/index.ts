@@ -469,6 +469,16 @@ type MetricEntry = PerformanceEntry & {
     let activationStart = 0;
     let pageStartTime = 0;
 
+    // Paints after the page was first hidden (background tab) are not user-visible, skip them
+    let firstHiddenTime = document.visibilityState === 'hidden' ? 0 : Infinity;
+    document.addEventListener(
+      'visibilitychange',
+      e => {
+        if (document.visibilityState === 'hidden') firstHiddenTime = e.timeStamp;
+      },
+      { once: true },
+    );
+
     const observe = (type: string, callback: (entry: MetricEntry) => void) => {
       try {
         const observer = new PerformanceObserver(list => {
@@ -488,14 +498,16 @@ type MetricEntry = PerformanceEntry & {
 
     // FCP
     observe('paint', entry => {
-      if (entry.name === 'first-contentful-paint') {
+      if (entry.name === 'first-contentful-paint' && entry.startTime < firstHiddenTime) {
         metrics.fcp = Math.max(entry.startTime - activationStart, 0);
       }
     });
 
     // LCP
     observe('largest-contentful-paint', entry => {
-      metrics.lcp = Math.max(entry.startTime - activationStart, 0);
+      if (entry.startTime < firstHiddenTime) {
+        metrics.lcp = Math.max(entry.startTime - activationStart, 0);
+      }
     });
 
     // CLS - session windows algorithm (gap < 1s, max 5s duration; report worst window)
@@ -577,13 +589,15 @@ type MetricEntry = PerformanceEntry & {
         const fcpEntry = getEntriesByType('paint')?.find(
           entry => entry.name === 'first-contentful-paint',
         );
-        if (fcpEntry) {
+        if (fcpEntry && fcpEntry.startTime < firstHiddenTime) {
           metrics.fcp = Math.max(fcpEntry.startTime - activationStart, 0);
         }
       }
 
       if (metrics.lcp === undefined) {
-        const lcpEntries = getEntriesByType('largest-contentful-paint');
+        const lcpEntries = getEntriesByType('largest-contentful-paint').filter(
+          entry => entry.startTime < firstHiddenTime,
+        );
         const lcpEntry = lcpEntries?.[lcpEntries.length - 1];
         if (lcpEntry) {
           metrics.lcp = Math.max(lcpEntry.startTime - activationStart, 0);
