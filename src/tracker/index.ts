@@ -200,6 +200,7 @@ type TrackerWindow = Window &
   };
 type TrackerDocument = Document & {
   currentScript: HTMLScriptElement | null;
+  prerendering?: boolean;
 };
 type MetricEntry = PerformanceEntry & {
   activationStart: number;
@@ -468,6 +469,10 @@ type MetricEntry = PerformanceEntry & {
     let isInitialLoad = true;
     let activationStart = 0;
     let pageStartTime = 0;
+    let firstHiddenTime =
+      document.visibilityState === 'hidden' && !(document as TrackerDocument).prerendering
+        ? 0
+        : Infinity;
 
     const observe = (type: string, callback: (entry: MetricEntry) => void) => {
       try {
@@ -488,14 +493,16 @@ type MetricEntry = PerformanceEntry & {
 
     // FCP
     observe('paint', entry => {
-      if (entry.name === 'first-contentful-paint') {
+      if (entry.name === 'first-contentful-paint' && entry.startTime < firstHiddenTime) {
         metrics.fcp = Math.max(entry.startTime - activationStart, 0);
       }
     });
 
     // LCP
     observe('largest-contentful-paint', entry => {
-      metrics.lcp = Math.max(entry.startTime - activationStart, 0);
+      if (entry.startTime < firstHiddenTime) {
+        metrics.lcp = Math.max(entry.startTime - activationStart, 0);
+      }
     });
 
     // CLS - session windows algorithm (gap < 1s, max 5s duration; report worst window)
@@ -577,7 +584,7 @@ type MetricEntry = PerformanceEntry & {
         const fcpEntry = getEntriesByType('paint')?.find(
           entry => entry.name === 'first-contentful-paint',
         );
-        if (fcpEntry) {
+        if (fcpEntry && fcpEntry.startTime < firstHiddenTime) {
           metrics.fcp = Math.max(fcpEntry.startTime - activationStart, 0);
         }
       }
@@ -585,7 +592,7 @@ type MetricEntry = PerformanceEntry & {
       if (metrics.lcp === undefined) {
         const lcpEntries = getEntriesByType('largest-contentful-paint');
         const lcpEntry = lcpEntries?.[lcpEntries.length - 1];
-        if (lcpEntry) {
+        if (lcpEntry && lcpEntry.startTime < firstHiddenTime) {
           metrics.lcp = Math.max(lcpEntry.startTime - activationStart, 0);
         }
       }
@@ -615,14 +622,26 @@ type MetricEntry = PerformanceEntry & {
       clsSessionEntries = [];
       interactions = {};
       sent = false;
+      firstHiddenTime =
+        document.visibilityState === 'hidden' && !(document as TrackerDocument).prerendering
+          ? 0
+          : Infinity;
       if (timeoutId) clearTimeout(timeoutId);
       timeoutId = setTimeout(sendPerformance, 10000);
     };
     timeoutId = setTimeout(sendPerformance, 10000);
 
-    document.addEventListener('visibilitychange', () => {
-      if (document.visibilityState === 'hidden') sendPerformance();
-    });
+    const onVisibilityChange = (event: Event) => {
+      if (document.visibilityState === 'hidden') {
+        if (firstHiddenTime === Infinity) {
+          firstHiddenTime = event.timeStamp || performance.now();
+        }
+        sendPerformance();
+      }
+    };
+
+    document.addEventListener('visibilitychange', onVisibilityChange, true);
+    document.addEventListener('prerenderingchange', onVisibilityChange, true);
     window.addEventListener('pagehide', sendPerformance);
   };
 
