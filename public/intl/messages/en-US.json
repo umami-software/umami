@@ -438,6 +438,9 @@
     "create-api-key": "Create API key",
     "last-used": "Last used",
     "never": "Never",
+    "security-keys": "Security keys",
+    "add-security-key": "Add security key",
+    "use-security-key": "Use security key",
     "copy": "Copy",
     "authorize": "Authorize",
     "deny": "Deny"
@@ -499,6 +502,7 @@
     "visitor-log": "Visitor from <b>{country}</b> using <b>{browser}</b> on <b>{os}</b> <b>{device}</b>",
     "two-factor-setup-description": "Each time you log in, in addition to your password, you'll use an authenticator app to generate and use a one-time code.",
     "two-factor-setup-required-description": "Two-factor authentication (2FA) is required to access Umami.",
+    "two-factor-setup-security-key": "Have a security key? You can add it instead of using an authenticator app.",
     "two-factor-step1-description": "Scan the QR code below or manually enter the secret key into your authenticator app.",
     "two-factor-step2-description": "Enter the 6-digit code you see in your authenticator app.",
     "two-factor-enabled-description": "Your account is now protected with two-factor authentication. From now on, you will need to enter a code from your authenticator app each time you log in.",
@@ -528,7 +532,18 @@
     "two-factor-locked-message": "Too many failed attempts. Try again at {time}.",
     "two-factor-active-description": "Your account is protected with two-factor authentication. Each login requires a code from your authenticator app.",
     "api-key-created": "Copy your API key now. You won't be able to see it again.",
-    "no-api-keys": "You have not created any API keys."
+    "no-api-keys": "You have not created any API keys.",
+    "security-keys-description": "Use a physical security key, such as a YubiKey, as a second step when you log in.",
+    "security-keys-not-supported": "This browser does not support security keys.",
+    "security-key-add-description": "Give the key a name, then insert it and touch it when your browser asks.",
+    "security-key-login-description": "Insert your security key and touch it to continue.",
+    "no-security-keys": "You have not added any security keys.",
+    "security-key-error-cancelled": "The security key request was cancelled or timed out.",
+    "security-key-error-challenge-expired": "The security key request expired. Please try again.",
+    "security-key-error-verification-failed": "The security key could not be verified. Please try again.",
+    "security-key-error-already-registered": "This security key has already been added.",
+    "security-key-error-not-registered": "No security keys are registered for this account.",
+    "security-key-error-remove-not-allowed": "Two-factor authentication is required for your account, so you cannot remove your last security key."
   },
   "errorTracking": {
     "title": "Errors",

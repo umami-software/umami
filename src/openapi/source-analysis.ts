@@ -596,6 +596,7 @@ function inferCallExpression(
       'meta',
       'brand',
       'readonly',
+      'trim',
     ].includes(method) &&
     base
   ) {
@@ -905,7 +906,9 @@ export function analyzeSourceOperation(
         hasShareAwarePermission = true;
       }
 
-      const mappedStatus = RESPONSE_STATUSES[name];
+      const mappedStatus = Object.hasOwn(RESPONSE_STATUSES, name)
+        ? RESPONSE_STATUSES[name]
+        : undefined;
 
       if (mappedStatus) {
         responseStatuses.add(mappedStatus);

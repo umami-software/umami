@@ -32,6 +32,7 @@ export const loginResponseSchema = z
     z.object({
       requiresTwoFactor: z.literal(true),
       partialToken: z.string(),
+      methods: z.array(z.enum(['totp', 'security-key'])),
     }),
     z.object({
       token: z.string(),

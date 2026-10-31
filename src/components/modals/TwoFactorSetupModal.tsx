@@ -1,4 +1,5 @@
 'use client';
+import { browserSupportsWebAuthn } from '@simplewebauthn/browser';
 import { useQueryClient } from '@tanstack/react-query';
 import {
   Alert,
@@ -18,6 +19,7 @@ import {
 } from '@umami/react-zen';
 import { LucideCopy } from 'lucide-react';
 import { type ReactNode, useEffect, useState } from 'react';
+import { SecurityKeyAddForm } from '@/app/(main)/settings/security/SecurityKeyAddButton';
 import { ControlledDialog } from '@/components/common/ControlledDialog';
 import { OtpInput } from '@/components/common/OtpInput';
 import { useMessages, useUpdateQuery } from '@/components/hooks';
@@ -64,6 +66,7 @@ export function TwoFactorSetupModal({ required, onClose }: TwoFactorSetupModalPr
   const [copied, setCopied] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [backupCodes, setBackupCodes] = useState<string[] | null>(null);
+  const [showSecurityKey, setShowSecurityKey] = useState(false);
 
   const queryClient = useQueryClient();
   const { mutate: initiate } = useUpdateQuery('/2fa/setup/initiate');
@@ -122,6 +125,25 @@ export function TwoFactorSetupModal({ required, onClose }: TwoFactorSetupModalPr
   }
 
   const preventDismiss = required ? () => {} : undefined;
+  // A security key also satisfies the requirement, so offer it when setup can't be skipped
+  const canUseSecurityKey = required && browserSupportsWebAuthn();
+
+  if (showSecurityKey) {
+    return (
+      <ControlledDialog>
+        <Modal isOpen={true} onOpenChange={preventDismiss}>
+          <Dialog title={t(labels.addSecurityKey)} style={{ width: 420 }}>
+            {() => (
+              <SecurityKeyAddForm
+                onSave={() => cancel({})}
+                onClose={() => setShowSecurityKey(false)}
+              />
+            )}
+          </Dialog>
+        </Modal>
+      </ControlledDialog>
+    );
+  }
 
   return (
     <ControlledDialog>
@@ -195,6 +217,19 @@ export function TwoFactorSetupModal({ required, onClose }: TwoFactorSetupModalPr
                 <Alert variant="danger">
                   <AlertTitle>{error}</AlertTitle>
                 </Alert>
+              )}
+
+              {canUseSecurityKey && (
+                <Row gap="3" alignItems="center" justifyContent="space-between" wrap="wrap">
+                  <Text>{t(messages.twoFactorSetupSecurityKey)}</Text>
+                  <Button
+                    variant="outline"
+                    onPress={() => setShowSecurityKey(true)}
+                    isDisabled={isConfirming}
+                  >
+                    {t(labels.addSecurityKey)}
+                  </Button>
+                </Row>
               )}
 
               <Row gap="2" justifyContent="flex-end">

@@ -218,6 +218,14 @@ export const operations = {
     queryParams: [],
     hasBody: false,
   },
+  deleteSecurityKey: {
+    operationId: 'deleteSecurityKey',
+    method: 'delete',
+    path: '/api/2fa/security-keys/{keyId}',
+    pathParams: ['keyId'],
+    queryParams: [],
+    hasBody: false,
+  },
   deleteShare: {
     operationId: 'deleteShare',
     method: 'delete',
@@ -1049,6 +1057,30 @@ export const operations = {
       'eventType',
       'match',
     ],
+    hasBody: false,
+  },
+  getSecurityKeyLoginOptions: {
+    operationId: 'getSecurityKeyLoginOptions',
+    method: 'post',
+    path: '/api/2fa/security-keys/login/options',
+    pathParams: [],
+    queryParams: [],
+    hasBody: false,
+  },
+  getSecurityKeyRegistrationOptions: {
+    operationId: 'getSecurityKeyRegistrationOptions',
+    method: 'post',
+    path: '/api/2fa/security-keys/register/options',
+    pathParams: [],
+    queryParams: [],
+    hasBody: false,
+  },
+  getSecurityKeys: {
+    operationId: 'getSecurityKeys',
+    method: 'get',
+    path: '/api/2fa/security-keys',
+    pathParams: [],
+    queryParams: [],
     hasBody: false,
   },
   getSessionDataArraySeries: {
@@ -3098,6 +3130,14 @@ export const operations = {
     queryParams: [],
     hasBody: true,
   },
+  registerSecurityKey: {
+    operationId: 'registerSecurityKey',
+    method: 'post',
+    path: '/api/2fa/security-keys/register/verify',
+    pathParams: [],
+    queryParams: [],
+    hasBody: true,
+  },
   resetWebsite: {
     operationId: 'resetWebsite',
     method: 'post',
@@ -3257,6 +3297,14 @@ export const operations = {
     pathParams: [],
     queryParams: [],
     hasBody: false,
+  },
+  verifySecurityKey: {
+    operationId: 'verifySecurityKey',
+    method: 'post',
+    path: '/api/2fa/security-keys/login/verify',
+    pathParams: [],
+    queryParams: [],
+    hasBody: true,
   },
   verifyTwoFactor: {
     operationId: 'verifyTwoFactor',
@@ -3606,6 +3654,18 @@ export abstract class GeneratedUmamiClient {
     options?: RequestOptions,
   ): Promise<OperationOutput<'deletePixel'>> {
     return this.execute('deletePixel', input, options);
+  }
+
+  /**
+   * Remove a security key
+   * Removes one of the current user's security keys. Rejected when two-factor authentication is required and the key is the user's only second factor.
+   * `DELETE /api/2fa/security-keys/{keyId}`
+   */
+  deleteSecurityKey(
+    input: OperationInput<'deleteSecurityKey'>,
+    options?: RequestOptions,
+  ): Promise<OperationOutput<'deleteSecurityKey'>> {
+    return this.execute('deleteSecurityKey', input, options);
   }
 
   /**
@@ -4098,6 +4158,42 @@ export abstract class GeneratedUmamiClient {
     options?: RequestOptions,
   ): Promise<OperationOutput<'getRealtime'>> {
     return this.execute('getRealtime', input, options);
+  }
+
+  /**
+   * Start security key sign-in
+   * Exchanges a partial sign-in token for WebAuthn authentication options for the keys registered to the user.
+   * `POST /api/2fa/security-keys/login/options`
+   */
+  getSecurityKeyLoginOptions(
+    input?: OperationInput<'getSecurityKeyLoginOptions'>,
+    options?: RequestOptions,
+  ): Promise<OperationOutput<'getSecurityKeyLoginOptions'>> {
+    return this.execute('getSecurityKeyLoginOptions', input, options);
+  }
+
+  /**
+   * Start security key registration
+   * Returns WebAuthn registration options for adding a security key to the current user.
+   * `POST /api/2fa/security-keys/register/options`
+   */
+  getSecurityKeyRegistrationOptions(
+    input?: OperationInput<'getSecurityKeyRegistrationOptions'>,
+    options?: RequestOptions,
+  ): Promise<OperationOutput<'getSecurityKeyRegistrationOptions'>> {
+    return this.execute('getSecurityKeyRegistrationOptions', input, options);
+  }
+
+  /**
+   * List security keys
+   * Returns the security keys the current user has registered as a second factor.
+   * `GET /api/2fa/security-keys`
+   */
+  getSecurityKeys(
+    input?: OperationInput<'getSecurityKeys'>,
+    options?: RequestOptions,
+  ): Promise<OperationOutput<'getSecurityKeys'>> {
+    return this.execute('getSecurityKeys', input, options);
   }
 
   /**
@@ -5145,6 +5241,18 @@ export abstract class GeneratedUmamiClient {
   }
 
   /**
+   * Register a security key
+   * Verifies a WebAuthn registration response and saves the security key under the given name.
+   * `POST /api/2fa/security-keys/register/verify`
+   */
+  registerSecurityKey(
+    input: OperationInput<'registerSecurityKey'>,
+    options?: RequestOptions,
+  ): Promise<OperationOutput<'registerSecurityKey'>> {
+    return this.execute('registerSecurityKey', input, options);
+  }
+
+  /**
    * Reset website analytics
    * Clears the website's collected analytics data while keeping the website configuration.
    * `POST /api/websites/{websiteId}/reset`
@@ -5376,6 +5484,18 @@ export abstract class GeneratedUmamiClient {
     options?: RequestOptions,
   ): Promise<OperationOutput<'verify'>> {
     return this.execute('verify', input, options);
+  }
+
+  /**
+   * Complete security key sign-in
+   * Exchanges a partial sign-in token and a signed WebAuthn assertion for a full authentication token and user details.
+   * `POST /api/2fa/security-keys/login/verify`
+   */
+  verifySecurityKey(
+    input: OperationInput<'verifySecurityKey'>,
+    options?: RequestOptions,
+  ): Promise<OperationOutput<'verifySecurityKey'>> {
+    return this.execute('verifySecurityKey', input, options);
   }
 
   /**

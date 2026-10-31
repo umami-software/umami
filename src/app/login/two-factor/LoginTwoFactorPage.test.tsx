@@ -3,6 +3,7 @@ import { render, screen, waitFor } from '@/test/render';
 import { LoginTwoFactorPage } from './LoginTwoFactorPage';
 
 const mockVerify = vi.fn();
+const mockSecurityKeyLogin = vi.fn();
 
 vi.mock('@/components/hooks', async () => {
   const { useState } = await import('react');
@@ -29,11 +30,17 @@ vi.mock('@/components/hooks', async () => {
 
       return { mutateAsync, isPending };
     },
+    useSecurityKeyLoginMutation: () => ({
+      mutateAsync: mockSecurityKeyLogin,
+      isPending: false,
+    }),
   };
 });
 
 beforeEach(() => {
   mockVerify.mockReset();
+  mockSecurityKeyLogin.mockReset();
+  sessionStorage.clear();
   sessionStorage.setItem('umami.partial-token', 'partial-token');
 });
 
@@ -88,4 +95,27 @@ test('focuses the backup code field when switching to backup codes', async () =>
   await user.click(screen.getByRole('button', { name: 'twoFactorUseBackup' }));
 
   expect(screen.getByLabelText('twoFactorBackupCode')).toHaveFocus();
+});
+
+test('only offers a security key when it is the only method', async () => {
+  sessionStorage.setItem('umami.two-factor-methods', JSON.stringify(['security-key']));
+  mockSecurityKeyLogin.mockRejectedValue(new Error('Cancelled'));
+  const { user } = render(<LoginTwoFactorPage />);
+
+  expect(screen.queryByLabelText('Digit 1')).not.toBeInTheDocument();
+  expect(screen.queryByRole('button', { name: 'twoFactorUseBackup' })).not.toBeInTheDocument();
+
+  await user.click(screen.getByRole('button', { name: 'useSecurityKey' }));
+
+  expect(mockSecurityKeyLogin).toHaveBeenCalledWith({ partialToken: 'partial-token' });
+  await waitFor(() => expect(screen.getByText('Invalid code')).toBeInTheDocument());
+});
+
+test('offers both a security key and a code when both are set up', () => {
+  sessionStorage.setItem('umami.two-factor-methods', JSON.stringify(['totp', 'security-key']));
+
+  render(<LoginTwoFactorPage />);
+
+  expect(screen.getByRole('button', { name: 'useSecurityKey' })).toBeInTheDocument();
+  expect(screen.getByLabelText('Digit 1')).toHaveFocus();
 });

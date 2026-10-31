@@ -81,6 +81,8 @@
     "@prisma/adapter-pg": "^7.10.0",
     "@prisma/client": "^7.10.0",
     "@prisma/extension-read-replicas": "^0.5.0",
+    "@simplewebauthn/browser": "^14.0.0",
+    "@simplewebauthn/server": "^14.0.3",
     "@svgr/cli": "^8.1.0",
     "@tanstack/react-query": "^5.104.1",
     "@umami/api-client": "workspace:*",

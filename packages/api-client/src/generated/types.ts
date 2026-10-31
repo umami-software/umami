@@ -22,6 +22,126 @@ export interface paths {
     patch?: never;
     trace?: never;
   };
+  '/api/2fa/security-keys': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /**
+     * List security keys
+     * @description Returns the security keys the current user has registered as a second factor.
+     */
+    get: operations['getSecurityKeys'];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/2fa/security-keys/{keyId}': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    post?: never;
+    /**
+     * Remove a security key
+     * @description Removes one of the current user's security keys. Rejected when two-factor authentication is required and the key is the user's only second factor.
+     */
+    delete: operations['deleteSecurityKey'];
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/2fa/security-keys/login/options': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    /**
+     * Start security key sign-in
+     * @description Exchanges a partial sign-in token for WebAuthn authentication options for the keys registered to the user.
+     */
+    post: operations['getSecurityKeyLoginOptions'];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/2fa/security-keys/login/verify': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    /**
+     * Complete security key sign-in
+     * @description Exchanges a partial sign-in token and a signed WebAuthn assertion for a full authentication token and user details.
+     */
+    post: operations['verifySecurityKey'];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/2fa/security-keys/register/options': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    /**
+     * Start security key registration
+     * @description Returns WebAuthn registration options for adding a security key to the current user.
+     */
+    post: operations['getSecurityKeyRegistrationOptions'];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/2fa/security-keys/register/verify': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    /**
+     * Register a security key
+     * @description Verifies a WebAuthn registration response and saves the security key under the given name.
+     */
+    post: operations['registerSecurityKey'];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
   '/api/2fa/setup/cancel': {
     parameters: {
       query?: never;
@@ -211,7 +331,7 @@ export interface paths {
     };
     /**
      * Get a user's two-factor status
-     * @description Returns whether two-factor authentication is enabled for the specified user.
+     * @description Returns whether two-factor authentication is enabled for the specified user and how many security keys they have registered.
      */
     get: operations['getAdminUsersUserId2fa'];
     put?: never;
@@ -222,7 +342,7 @@ export interface paths {
     post: operations['postAdminUsersUserId2fa'];
     /**
      * Reset a user's two-factor authentication
-     * @description Removes the specified user's authenticator setup, backup codes, used-code history, and failed-attempt limits so they can set up authentication again.
+     * @description Removes the specified user's authenticator setup, backup codes, security keys, used-code history, and failed-attempt limits so they can set up authentication again.
      */
     delete: operations['deleteAdminUsersUserId2fa'];
     options?: never;
@@ -3042,6 +3162,8 @@ export interface components {
     };
     LoginResponse:
       | {
+          /** @description Second factors the user can use to complete the login. */
+          methods: ('totp' | 'security-key')[];
           /** @description Temporary login token used to complete two-factor authentication. */
           partialToken: string;
           /**
@@ -3136,6 +3258,19 @@ export interface components {
       replayEnabled?: boolean;
       /** @description Fraction of sessions to record for replay, from 0 to 1. */
       sampleRate?: number;
+    };
+    SecurityKey: {
+      /**
+       * Format: date-time
+       * @description Date and time the record was created.
+       */
+      createdAt: string;
+      /** @description Unique identifier of the resource. */
+      id: string;
+      /** @description Date and time the credential was last used. Null until the key is first used. */
+      lastUsedAt: string | null;
+      /** @description Display name of the resource. */
+      name: string;
     };
     TimeSeriesPoint: {
       /** @description Bucket start (ISO date/time). */
@@ -3676,6 +3811,804 @@ export interface operations {
       };
     };
   };
+  getSecurityKeys: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description The operation completed successfully. */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['SecurityKey'][];
+        };
+      };
+      /** @description Unauthorized. */
+      401: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          /**
+           * @example {
+           *       "error": {
+           *         "code": "unauthorized",
+           *         "message": "Unauthorized.",
+           *         "status": 401
+           *       }
+           *     }
+           */
+          'application/json': components['schemas']['ApiError'];
+        };
+      };
+      /** @description Not found. */
+      404: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          /**
+           * @example {
+           *       "error": {
+           *         "code": "not-found",
+           *         "message": "Not found.",
+           *         "status": 404
+           *       }
+           *     }
+           */
+          'application/json': components['schemas']['ApiError'];
+        };
+      };
+    };
+  };
+  deleteSecurityKey: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        /** @description ID of the API key. */
+        keyId: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description The operation completed successfully. */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': {
+            /**
+             * @description Whether the operation succeeded.
+             * @constant
+             */
+            ok: true;
+          };
+        };
+      };
+      /** @description Unauthorized. */
+      401: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          /**
+           * @example {
+           *       "error": {
+           *         "code": "unauthorized",
+           *         "message": "Unauthorized.",
+           *         "status": 401
+           *       }
+           *     }
+           */
+          'application/json': components['schemas']['ApiError'];
+        };
+      };
+      /** @description Forbidden. */
+      403: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          /**
+           * @example {
+           *       "error": {
+           *         "code": "forbidden",
+           *         "message": "Forbidden.",
+           *         "status": 403
+           *       }
+           *     }
+           */
+          'application/json': components['schemas']['ApiError'];
+        };
+      };
+      /** @description Not found. */
+      404: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          /**
+           * @example {
+           *       "error": {
+           *         "code": "not-found",
+           *         "message": "Not found.",
+           *         "status": 404
+           *       }
+           *     }
+           */
+          'application/json': components['schemas']['ApiError'];
+        };
+      };
+    };
+  };
+  getSecurityKeyLoginOptions: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description The operation completed successfully. */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': {
+            allowCredentials?: {
+              /** @description Unique identifier of the resource. */
+              id: string;
+              transports?: string[];
+              type: string;
+            }[];
+            challenge: string;
+            extensions?: {
+              appid?: string;
+              credProps?: boolean;
+              hmacCreateSecret?: boolean;
+              minPinLength?: boolean;
+              prf?: {
+                eval?: {
+                  first:
+                    | {
+                        buffer:
+                          | {
+                              byteLength: number;
+                              detached: boolean;
+                              maxByteLength: number;
+                              resizable: boolean;
+                            }
+                          | {
+                              byteLength: number;
+                              growable: boolean;
+                              maxByteLength: number;
+                            };
+                        byteLength: number;
+                        byteOffset: number;
+                      }
+                    | {
+                        byteLength: number;
+                        detached: boolean;
+                        maxByteLength: number;
+                        resizable: boolean;
+                      };
+                  second?:
+                    | {
+                        buffer:
+                          | {
+                              byteLength: number;
+                              detached: boolean;
+                              maxByteLength: number;
+                              resizable: boolean;
+                            }
+                          | {
+                              byteLength: number;
+                              growable: boolean;
+                              maxByteLength: number;
+                            };
+                        byteLength: number;
+                        byteOffset: number;
+                      }
+                    | {
+                        byteLength: number;
+                        detached: boolean;
+                        maxByteLength: number;
+                        resizable: boolean;
+                      };
+                };
+                evalByCredential?: {
+                  [key: string]: {
+                    first:
+                      | {
+                          buffer:
+                            | {
+                                byteLength: number;
+                                detached: boolean;
+                                maxByteLength: number;
+                                resizable: boolean;
+                              }
+                            | {
+                                byteLength: number;
+                                growable: boolean;
+                                maxByteLength: number;
+                              };
+                          byteLength: number;
+                          byteOffset: number;
+                        }
+                      | {
+                          byteLength: number;
+                          detached: boolean;
+                          maxByteLength: number;
+                          resizable: boolean;
+                        };
+                    second?:
+                      | {
+                          buffer:
+                            | {
+                                byteLength: number;
+                                detached: boolean;
+                                maxByteLength: number;
+                                resizable: boolean;
+                              }
+                            | {
+                                byteLength: number;
+                                growable: boolean;
+                                maxByteLength: number;
+                              };
+                          byteLength: number;
+                          byteOffset: number;
+                        }
+                      | {
+                          byteLength: number;
+                          detached: boolean;
+                          maxByteLength: number;
+                          resizable: boolean;
+                        };
+                  };
+                };
+              };
+            };
+            hints?: ('hybrid' | 'security-key' | 'client-device')[];
+            rpId?: string;
+            timeout?: number;
+            userVerification?: 'discouraged' | 'preferred' | 'required';
+          };
+        };
+      };
+      /** @description Bad request. */
+      400: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          /**
+           * @example {
+           *       "error": {
+           *         "code": "bad-request",
+           *         "message": "Bad request.",
+           *         "status": 400
+           *       }
+           *     }
+           */
+          'application/json': components['schemas']['ApiError'];
+        };
+      };
+      /** @description Unauthorized. */
+      401: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          /**
+           * @example {
+           *       "error": {
+           *         "code": "unauthorized",
+           *         "message": "Unauthorized.",
+           *         "status": 401
+           *       }
+           *     }
+           */
+          'application/json': components['schemas']['ApiError'];
+        };
+      };
+      /** @description Not found. */
+      404: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          /**
+           * @example {
+           *       "error": {
+           *         "code": "not-found",
+           *         "message": "Not found.",
+           *         "status": 404
+           *       }
+           *     }
+           */
+          'application/json': components['schemas']['ApiError'];
+        };
+      };
+    };
+  };
+  verifySecurityKey: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        'application/json': {
+          response: {
+            authenticatorAttachment?: string;
+            clientExtensionResults: {
+              [key: string]: unknown;
+            };
+            /** @description Unique identifier of the resource. */
+            id: string;
+            rawId: string;
+            response: {
+              [key: string]: unknown;
+            };
+            /** @constant */
+            type: 'public-key';
+          };
+        };
+      };
+    };
+    responses: {
+      /** @description The operation completed successfully. */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json':
+            | {
+                /** @description Error details returned when the operation fails. */
+                error: {
+                  code: string;
+                  /**
+                   * Format: date-time
+                   * @description Time until which further authentication attempts are blocked.
+                   */
+                  lockedUntil: string;
+                  /** @description Human-readable explanation of the result. */
+                  message: string;
+                };
+              }
+            | {
+                token: string;
+                /** @description User associated with the resource. */
+                user: {
+                  /**
+                   * Format: date-time
+                   * @description Date and time the record was created.
+                   */
+                  createdAt: string;
+                  /** @description Unique identifier of the resource. */
+                  id: string;
+                  /** @description Whether the user has administrator privileges. */
+                  isAdmin: boolean;
+                  /** @description Permission role assigned to the user. */
+                  role: string;
+                  /** @description Teams associated with the user. */
+                  teams: {
+                    /** @description Unique identifier of the resource. */
+                    id: string;
+                    /** @description URL of the logo image. */
+                    logoUrl: string;
+                    /** @description Display name of the resource. */
+                    name: string;
+                  }[];
+                  /** @description Username of the account. */
+                  username: string;
+                };
+              };
+        };
+      };
+      /** @description Bad request. */
+      400: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          /**
+           * @example {
+           *       "error": {
+           *         "code": "bad-request",
+           *         "message": "Bad request.",
+           *         "status": 400
+           *       }
+           *     }
+           */
+          'application/json': components['schemas']['ApiError'];
+        };
+      };
+      /** @description Unauthorized. */
+      401: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          /**
+           * @example {
+           *       "error": {
+           *         "code": "unauthorized",
+           *         "message": "Unauthorized.",
+           *         "status": 401
+           *       }
+           *     }
+           */
+          'application/json': components['schemas']['ApiError'];
+        };
+      };
+      /** @description Not found. */
+      404: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          /**
+           * @example {
+           *       "error": {
+           *         "code": "not-found",
+           *         "message": "Not found.",
+           *         "status": 404
+           *       }
+           *     }
+           */
+          'application/json': components['schemas']['ApiError'];
+        };
+      };
+      /** @description The operation completed successfully. */
+      429: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': {
+            /** @description Error details returned when the operation fails. */
+            error: {
+              code: string;
+              /**
+               * Format: date-time
+               * @description Time until which further authentication attempts are blocked.
+               */
+              lockedUntil: string;
+              /** @description Human-readable explanation of the result. */
+              message: string;
+            };
+          };
+        };
+      };
+    };
+  };
+  getSecurityKeyRegistrationOptions: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description The operation completed successfully. */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': {
+            attestation?: 'none' | 'direct' | 'enterprise' | 'indirect';
+            attestationFormats?: (
+              | 'none'
+              | 'fido-u2f'
+              | 'packed'
+              | 'android-safetynet'
+              | 'android-key'
+              | 'tpm'
+              | 'apple'
+            )[];
+            authenticatorSelection?: {
+              authenticatorAttachment?: 'cross-platform' | 'platform';
+              requireResidentKey?: boolean;
+              residentKey?: 'discouraged' | 'preferred' | 'required';
+              userVerification?: 'discouraged' | 'preferred' | 'required';
+            };
+            challenge: string;
+            excludeCredentials?: {
+              /** @description Unique identifier of the resource. */
+              id: string;
+              transports?: string[];
+              type: string;
+            }[];
+            extensions?: {
+              appid?: string;
+              credProps?: boolean;
+              hmacCreateSecret?: boolean;
+              minPinLength?: boolean;
+              prf?: {
+                eval?: {
+                  first:
+                    | {
+                        buffer:
+                          | {
+                              byteLength: number;
+                              detached: boolean;
+                              maxByteLength: number;
+                              resizable: boolean;
+                            }
+                          | {
+                              byteLength: number;
+                              growable: boolean;
+                              maxByteLength: number;
+                            };
+                        byteLength: number;
+                        byteOffset: number;
+                      }
+                    | {
+                        byteLength: number;
+                        detached: boolean;
+                        maxByteLength: number;
+                        resizable: boolean;
+                      };
+                  second?:
+                    | {
+                        buffer:
+                          | {
+                              byteLength: number;
+                              detached: boolean;
+                              maxByteLength: number;
+                              resizable: boolean;
+                            }
+                          | {
+                              byteLength: number;
+                              growable: boolean;
+                              maxByteLength: number;
+                            };
+                        byteLength: number;
+                        byteOffset: number;
+                      }
+                    | {
+                        byteLength: number;
+                        detached: boolean;
+                        maxByteLength: number;
+                        resizable: boolean;
+                      };
+                };
+                evalByCredential?: {
+                  [key: string]: {
+                    first:
+                      | {
+                          buffer:
+                            | {
+                                byteLength: number;
+                                detached: boolean;
+                                maxByteLength: number;
+                                resizable: boolean;
+                              }
+                            | {
+                                byteLength: number;
+                                growable: boolean;
+                                maxByteLength: number;
+                              };
+                          byteLength: number;
+                          byteOffset: number;
+                        }
+                      | {
+                          byteLength: number;
+                          detached: boolean;
+                          maxByteLength: number;
+                          resizable: boolean;
+                        };
+                    second?:
+                      | {
+                          buffer:
+                            | {
+                                byteLength: number;
+                                detached: boolean;
+                                maxByteLength: number;
+                                resizable: boolean;
+                              }
+                            | {
+                                byteLength: number;
+                                growable: boolean;
+                                maxByteLength: number;
+                              };
+                          byteLength: number;
+                          byteOffset: number;
+                        }
+                      | {
+                          byteLength: number;
+                          detached: boolean;
+                          maxByteLength: number;
+                          resizable: boolean;
+                        };
+                  };
+                };
+              };
+            };
+            hints?: ('hybrid' | 'security-key' | 'client-device')[];
+            pubKeyCredParams: {
+              alg: number;
+              /** @constant */
+              type: 'public-key';
+            }[];
+            rp: {
+              /** @description Unique identifier of the resource. */
+              id?: string;
+              /** @description Display name of the resource. */
+              name: string;
+            };
+            timeout?: number;
+            /** @description User associated with the resource. */
+            user: {
+              displayName: string;
+              /** @description Unique identifier of the resource. */
+              id: string;
+              /** @description Display name of the resource. */
+              name: string;
+            };
+          };
+        };
+      };
+      /** @description Unauthorized. */
+      401: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          /**
+           * @example {
+           *       "error": {
+           *         "code": "unauthorized",
+           *         "message": "Unauthorized.",
+           *         "status": 401
+           *       }
+           *     }
+           */
+          'application/json': components['schemas']['ApiError'];
+        };
+      };
+      /** @description Not found. */
+      404: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          /**
+           * @example {
+           *       "error": {
+           *         "code": "not-found",
+           *         "message": "Not found.",
+           *         "status": 404
+           *       }
+           *     }
+           */
+          'application/json': components['schemas']['ApiError'];
+        };
+      };
+    };
+  };
+  registerSecurityKey: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        'application/json': {
+          /** @description Display name of the resource. */
+          name: string;
+          response: {
+            authenticatorAttachment?: string;
+            clientExtensionResults: {
+              [key: string]: unknown;
+            };
+            /** @description Unique identifier of the resource. */
+            id: string;
+            rawId: string;
+            response: {
+              [key: string]: unknown;
+            };
+            /** @constant */
+            type: 'public-key';
+          };
+        };
+      };
+    };
+    responses: {
+      /** @description The operation completed successfully. */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': {
+            /**
+             * Format: date-time
+             * @description Date and time the record was created.
+             */
+            createdAt: string;
+            /** @description Unique identifier of the resource. */
+            id: string;
+            /** @description Display name of the resource. */
+            name: string;
+          };
+        };
+      };
+      /** @description Bad request. */
+      400: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          /**
+           * @example {
+           *       "error": {
+           *         "code": "bad-request",
+           *         "message": "Bad request.",
+           *         "status": 400
+           *       }
+           *     }
+           */
+          'application/json': components['schemas']['ApiError'];
+        };
+      };
+      /** @description Unauthorized. */
+      401: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          /**
+           * @example {
+           *       "error": {
+           *         "code": "unauthorized",
+           *         "message": "Unauthorized.",
+           *         "status": 401
+           *       }
+           *     }
+           */
+          'application/json': components['schemas']['ApiError'];
+        };
+      };
+      /** @description Not found. */
+      404: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          /**
+           * @example {
+           *       "error": {
+           *         "code": "not-found",
+           *         "message": "Not found.",
+           *         "status": 404
+           *       }
+           *     }
+           */
+          'application/json': components['schemas']['ApiError'];
+        };
+      };
+    };
+  };
   cancelTwoFactorSetup: {
     parameters: {
       query?: never;
@@ -3987,6 +4920,8 @@ export interface operations {
             | {
                 /** @description Whether two-factor authentication is required for all users. */
                 globalRequired: boolean;
+                /** @description Whether the user has registered a security key. */
+                hasSecurityKeys: boolean;
                 /** @description Whether two-factor authentication has been configured. */
                 isConfigured: boolean;
                 /** @description Whether two-factor authentication is enabled. */
@@ -3999,6 +4934,8 @@ export interface operations {
             | {
                 /** @description Whether two-factor authentication is required for all users. */
                 globalRequired: boolean;
+                /** @description Whether the user has registered a security key. */
+                hasSecurityKeys: boolean;
                 /** @description Whether two-factor authentication has been configured. */
                 isConfigured: boolean;
                 /** @description Whether two-factor authentication is enabled. */
@@ -4641,6 +5578,8 @@ export interface operations {
           'application/json': {
             /** @description Whether two-factor authentication is enabled. */
             isEnabled: boolean;
+            /** @description Number of security keys registered to the user. */
+            securityKeyCount: number;
           };
         };
       };
@@ -4816,6 +5755,7 @@ export interface operations {
               backupCodes: unknown;
               otpUsed: unknown;
               rateLimit: unknown;
+              securityKeys: unknown;
               twoFactorAuth: unknown;
             };
             /** @description ID of the associated user. */
@@ -7501,7 +8441,7 @@ export interface operations {
       content: {
         'application/json': {
           /** @description Display name of the resource. */
-          name: unknown;
+          name: string;
         };
       };
     };
@@ -16514,15 +17454,6 @@ export interface operations {
            *     }
            */
           'application/json': components['schemas']['ApiError'];
-        };
-      };
-      /** @description Successful response. The response shape is inferred as free-form because the handler does not expose a reusable response schema. */
-      'function toString() { [native code] }': {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          'application/json': unknown;
         };
       };
     };

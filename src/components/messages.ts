@@ -445,6 +445,9 @@ export const labels: Record<string, string> = {
   lastUsed: 'label.last-used',
   never: 'label.never',
   copy: 'label.copy',
+  securityKeys: 'label.security-keys',
+  addSecurityKey: 'label.add-security-key',
+  useSecurityKey: 'label.use-security-key',
 };
 
 export const messages: Record<string, string> = {
@@ -498,6 +501,7 @@ export const messages: Record<string, string> = {
   upgradeRequired: 'message.upgrade-required',
   twoFactorSetupDescription: 'message.two-factor-setup-description',
   twoFactorSetupRequiredDescription: 'message.two-factor-setup-required-description',
+  twoFactorSetupSecurityKey: 'message.two-factor-setup-security-key',
   twoFactorStep1Description: 'message.two-factor-step1-description',
   twoFactorStep2Description: 'message.two-factor-step2-description',
   twoFactorEnabledDescription: 'message.two-factor-enabled-description',
@@ -529,4 +533,15 @@ export const messages: Record<string, string> = {
   replayMinDurationDescription: 'message.replay-min-duration-description',
   apiKeyCreated: 'message.api-key-created',
   noApiKeys: 'message.no-api-keys',
+  securityKeysDescription: 'message.security-keys-description',
+  securityKeysNotSupported: 'message.security-keys-not-supported',
+  securityKeyAddDescription: 'message.security-key-add-description',
+  securityKeyLoginDescription: 'message.security-key-login-description',
+  noSecurityKeys: 'message.no-security-keys',
+  securityKeyErrorCancelled: 'message.security-key-error-cancelled',
+  securityKeyErrorChallengeExpired: 'message.security-key-error-challenge-expired',
+  securityKeyErrorVerificationFailed: 'message.security-key-error-verification-failed',
+  securityKeyErrorAlreadyRegistered: 'message.security-key-error-already-registered',
+  securityKeyErrorNotRegistered: 'message.security-key-error-not-registered',
+  securityKeyErrorRemoveNotAllowed: 'message.security-key-error-remove-not-allowed',
 };

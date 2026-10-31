@@ -28,6 +28,10 @@ const operation1 = defineOperation({
                       type: 'boolean',
                       description: 'Whether two-factor authentication is enabled.',
                     },
+                    hasSecurityKeys: {
+                      type: 'boolean',
+                      description: 'Whether the user has registered a security key.',
+                    },
                     isRequired: {
                       type: 'boolean',
                       description: 'Whether two-factor authentication is required for this user.',
@@ -47,6 +51,7 @@ const operation1 = defineOperation({
                   },
                   required: [
                     'isEnabled',
+                    'hasSecurityKeys',
                     'isRequired',
                     'requiredReason',
                     'isConfigured',
@@ -59,6 +64,10 @@ const operation1 = defineOperation({
                     isEnabled: {
                       type: 'boolean',
                       description: 'Whether two-factor authentication is enabled.',
+                    },
+                    hasSecurityKeys: {
+                      type: 'boolean',
+                      description: 'Whether the user has registered a security key.',
                     },
                     isRequired: {
                       type: 'boolean',
@@ -79,6 +88,7 @@ const operation1 = defineOperation({
                   },
                   required: [
                     'isEnabled',
+                    'hasSecurityKeys',
                     'isRequired',
                     'requiredReason',
                     'isConfigured',

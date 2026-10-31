@@ -9,6 +9,7 @@ const mocks = vi.hoisted(() => ({
   secret: vi.fn(),
   hash: vi.fn(),
   getAllUserTeams: vi.fn(),
+  getUserSecurityKeyCount: vi.fn(),
   saveAuth: vi.fn(),
   isTwoFactorConfigured: vi.fn(),
 }));
@@ -20,6 +21,7 @@ vi.mock('@/lib/request', () => ({
 vi.mock('@/queries/prisma', () => ({
   getAllUserTeams: mocks.getAllUserTeams,
   getUserByUsername: mocks.getUserByUsername,
+  getUserSecurityKeyCount: mocks.getUserSecurityKeyCount,
 }));
 
 vi.mock('@/lib/password', () => ({
@@ -74,6 +76,7 @@ beforeEach(() => {
   mocks.secret.mockReset();
   mocks.hash.mockReset();
   mocks.getAllUserTeams.mockReset();
+  mocks.getUserSecurityKeyCount.mockReset();
   mocks.saveAuth.mockReset();
   mocks.isTwoFactorConfigured.mockReset();
 
@@ -91,6 +94,8 @@ beforeEach(() => {
   mocks.checkPassword.mockReturnValue(true);
   mocks.findTwoFactorAuth.mockResolvedValue({ userId: 'user-1', isEnabled: true });
   mocks.isTwoFactorConfigured.mockReturnValue(true);
+  mocks.getUserSecurityKeyCount.mockResolvedValue(0);
+  mocks.createSecureToken.mockReturnValue('partial-token');
 });
 
 test('POST returns a configuration error instead of partial auth when 2FA is enabled but unavailable', async () => {
@@ -105,4 +110,50 @@ test('POST returns a configuration error instead of partial auth when 2FA is ena
     },
   });
   expect(response.status).toBe(503);
+});
+
+test('POST returns a partial token with the totp method when 2FA is enabled', async () => {
+  const response = await POST(new Request('http://localhost/api/auth/login', { method: 'POST' }));
+
+  expect(response.status).toBe(200);
+  await expect(response.json()).resolves.toEqual({
+    requiresTwoFactor: true,
+    partialToken: 'partial-token',
+    methods: ['totp'],
+  });
+});
+
+test('POST requires a security key when the user has one registered', async () => {
+  mocks.findTwoFactorAuth.mockResolvedValue(null);
+  mocks.getUserSecurityKeyCount.mockResolvedValue(1);
+
+  const response = await POST(new Request('http://localhost/api/auth/login', { method: 'POST' }));
+
+  await expect(response.json()).resolves.toEqual({
+    requiresTwoFactor: true,
+    partialToken: 'partial-token',
+    methods: ['security-key'],
+  });
+});
+
+test('POST offers both methods when the user has an authenticator app and a security key', async () => {
+  mocks.getUserSecurityKeyCount.mockResolvedValue(2);
+
+  const response = await POST(new Request('http://localhost/api/auth/login', { method: 'POST' }));
+
+  await expect(response.json()).resolves.toMatchObject({
+    methods: ['totp', 'security-key'],
+  });
+});
+
+test('POST still allows security keys when the 2FA encryption key is missing', async () => {
+  mocks.isTwoFactorConfigured.mockReturnValue(false);
+  mocks.getUserSecurityKeyCount.mockResolvedValue(1);
+
+  const response = await POST(new Request('http://localhost/api/auth/login', { method: 'POST' }));
+
+  expect(response.status).toBe(200);
+  await expect(response.json()).resolves.toMatchObject({
+    methods: ['security-key'],
+  });
 });
