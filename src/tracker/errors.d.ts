@@ -11,6 +11,7 @@ interface CollectorOptions {
   context: () => {
     website: string | null;
     id?: string;
+    salt?: string;
     url: string;
     screen: string;
     language: string;

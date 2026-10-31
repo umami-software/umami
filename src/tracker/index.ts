@@ -16,6 +16,13 @@ export type TrackedProperties = {
   id?: string;
 
   /**
+   * Value mixed into the server's session salt. Only used when the server sets ENABLE_CLIENT_SALT.
+   *
+   * @example '2026-10-30' (rotates sessions daily)
+   */
+  salt?: string;
+
+  /**
    * Browser language
    *
    * @description extracted from `window.navigator.language`
@@ -213,6 +220,7 @@ export type UmamiConfig = {
   domains?: string | string[];
   tag?: string;
   distinctId?: string;
+  salt?: string;
   beforeSend?: BeforeSend | string;
   errors?: boolean;
   release?: string;
@@ -292,6 +300,7 @@ type MetricEntry = PerformanceEntry & {
   const hostUrl = config('host-url');
   const distinctId = config('distinct-id') || undefined;
   const tag = config('tag') || undefined;
+  const salt = config('salt') || undefined;
   const autoTrack = config('auto-track') !== _false;
   const dnt = config('do-not-track') === _true;
   const excludeSearch = config('exclude-search') === _true;
@@ -344,6 +353,7 @@ type MetricEntry = PerformanceEntry & {
     referrer: stripOrigin(currentRef),
     tag,
     id: identity ? identity : undefined,
+    salt,
   });
 
   const hasDoNotTrack = () => {

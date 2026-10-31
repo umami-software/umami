@@ -309,3 +309,45 @@ test('initializes without currentScript when websiteId and hostUrl are provided 
   expect(init.headers['x-umami-website-id']).toBe('website-id');
   expect(window.umami).toBeDefined();
 });
+
+const loadTrackerWithSalt = async (setup: (script: HTMLScriptElement) => void) => {
+  const script = document.createElement('script');
+  script.src = 'https://analytics.example.com/script.js';
+  script.dataset.websiteId = 'website-id';
+  setup(script);
+
+  Object.defineProperties(document, {
+    currentScript: { configurable: true, value: script },
+    readyState: { configurable: true, value: 'complete' },
+  });
+
+  const fetchMock = vi.fn().mockResolvedValue({ json: vi.fn().mockResolvedValue({}) });
+  vi.stubGlobal('fetch', fetchMock);
+
+  await import('./index');
+
+  await vi.waitFor(() => expect(fetchMock).toHaveBeenCalledTimes(1));
+  return JSON.parse(fetchMock.mock.calls[0][1].body).payload;
+};
+
+test('sends data-salt in the payload', async () => {
+  const payload = await loadTrackerWithSalt(script => {
+    script.dataset.salt = '2026-10-30';
+  });
+
+  expect(payload.salt).toBe('2026-10-30');
+});
+
+test('sends umamiConfig.salt in the payload', async () => {
+  const payload = await loadTrackerWithSalt(() => {
+    window.umamiConfig = { salt: '2026-10-30' };
+  });
+
+  expect(payload.salt).toBe('2026-10-30');
+});
+
+test('omits salt when it is not configured', async () => {
+  const payload = await loadTrackerWithSalt(() => {});
+
+  expect(payload).not.toHaveProperty('salt');
+});

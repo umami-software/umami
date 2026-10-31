@@ -22,6 +22,7 @@ export const errorPayloadSchema = z.object({
     .default({}),
   fingerprint: z.array(z.string().min(1).max(200)).min(1).max(5).optional(),
   id: z.string().max(50).optional(),
+  salt: z.string().max(100).optional(),
   language: z.string().max(35).optional(),
   screen: z.string().max(11).optional(),
 });

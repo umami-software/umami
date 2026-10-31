@@ -82,6 +82,7 @@ export async function collectError(request: Request, payload: ErrorPayload) {
       ip: info.ip,
       userAgent: info.userAgent,
       distinctId: payload.id,
+      salt: payload.salt,
       createdAt: new Date(payload.timestamp),
       cache,
     });

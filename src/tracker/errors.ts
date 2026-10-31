@@ -14,6 +14,7 @@ interface CollectorOptions {
   context: () => {
     website: string | null;
     id?: string;
+    salt?: string;
     url: string;
     screen: string;
     language: string;
@@ -143,6 +144,7 @@ export function createErrorCollector(options: CollectorOptions) {
         handled,
         url: errorPagePath(context.url),
         id: context.id,
+        salt: context.salt,
         screen: context.screen,
         language: context.language,
         release: scrubErrorText(config.release || options.release, 100),
