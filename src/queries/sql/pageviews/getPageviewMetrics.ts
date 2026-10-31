@@ -193,7 +193,9 @@ async function clickhouseQuery(
     }
 
     if (type === 'entry' || type === 'exit') {
-      groupByQuery = 'group by s';
+      // One entry/exit page per visit, as in the relational query; merging per
+      // session would keep only the first visit's entry or the last visit's exit.
+      groupByQuery = 'group by s, visit_id';
     }
 
     sql = `
