@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { min } from 'date-fns';
 import { fromZonedTime } from 'date-fns-tz';
 import { parseDateRange } from '@/lib/date';
 import { canViewBatchWebsites } from '@/permissions/website';
@@ -31,9 +32,12 @@ export async function GET(request: Request) {
   const startDate = hasDateRange
     ? new Date(resolvedQuery.startAt)
     : fromZonedTime(defaultRange.startDate, timezone);
-  const endDate = hasDateRange
-    ? new Date(resolvedQuery.endAt)
-    : fromZonedTime(defaultRange.endDate, timezone);
+  // The default range runs to the end of today; stop at now so the hours still
+  // to come don't show up as an empty bucket at the end of the sparkline
+  const endDate = min([
+    hasDateRange ? new Date(resolvedQuery.endAt) : fromZonedTime(defaultRange.endDate, timezone),
+    new Date(),
+  ]);
 
   const websiteIds = await canViewBatchWebsites(auth, query.ids);
 
