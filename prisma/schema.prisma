@@ -235,6 +235,7 @@ model Team {
   accessCode        String?   @unique @map("access_code") @db.VarChar(50)
   logoUrl           String?   @map("logo_url") @db.VarChar(2183)
   twoFactorRequired Boolean   @default(false) @map("two_factor_required")
+  viewOnlySections  Json?     @map("view_only_sections")
   createdAt         DateTime? @default(now()) @map("created_at") @db.Timestamptz(6)
   updatedAt         DateTime? @updatedAt @map("updated_at") @db.Timestamptz(6)
   deletedAt         DateTime? @map("deleted_at") @db.Timestamptz(6)

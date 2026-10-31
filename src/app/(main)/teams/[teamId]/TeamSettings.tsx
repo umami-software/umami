@@ -10,6 +10,7 @@ import { TeamEditForm } from './TeamEditForm';
 import { TeamManage } from './TeamManage';
 import { TeamMembersDataTable } from './TeamMembersDataTable';
 import { TeamTwoFactorSettings } from './TeamTwoFactorSettings';
+import { TeamViewOnlySections } from './TeamViewOnlySections';
 
 export function TeamSettings({ teamId }: { teamId: string }) {
   const team: any = useTeam();
@@ -46,6 +47,11 @@ export function TeamSettings({ teamId }: { teamId: string }) {
         </Row>
         <TeamMembersDataTable teamId={teamId} allowEdit={canEdit} />
       </Panel>
+      {canEdit && (
+        <Panel>
+          <TeamViewOnlySections teamId={teamId} />
+        </Panel>
+      )}
       {isAdmin && (
         <Panel>
           <TeamTwoFactorSettings teamId={teamId} />

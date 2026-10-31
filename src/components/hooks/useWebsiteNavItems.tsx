@@ -13,14 +13,48 @@ import {
   Video,
 } from '@/components/icons';
 import { Funnel, Gauge, Lightning, Magnet, Money, Network, Path, Target } from '@/components/svg';
+import { ROLES } from '@/lib/constants';
+import { useLoginQuery } from './queries/useLoginQuery';
+import { useTeamQuery } from './queries/useTeamQuery';
+import { useWebsiteQuery } from './queries/useWebsiteQuery';
 import { useConfig } from './useConfig';
 import { useMessages } from './useMessages';
 import { useNavigation } from './useNavigation';
+
+// Nav items a team can limit its view-only members to, by the section the API checks.
+const MEMBER_SECTIONS: Record<string, string> = {
+  overview: 'overview',
+  events: 'events',
+  sessions: 'sessions',
+  compare: 'compare',
+  breakdown: 'breakdown',
+  goals: 'goals',
+  funnel: 'funnels',
+  journeys: 'journeys',
+  retention: 'retention',
+  utm: 'utm',
+  revenue: 'revenue',
+  attribution: 'attribution',
+  realtime: 'realtime',
+  performance: 'performance',
+};
+
+// Filters, which a share link can also use.
+const MEMBER_ALWAYS = ['segments', 'cohorts'];
 
 export function useWebsiteNavItems(websiteId: string) {
   const { t, labels } = useMessages();
   const { pathname, renderUrl } = useNavigation();
   const config = useConfig();
+  const { user } = useLoginQuery();
+  const { data: website } = useWebsiteQuery(websiteId);
+  const teamId = !website?.userId ? website?.teamId : undefined;
+  const { data: team } = useTeamQuery(teamId);
+  const role = team?.members?.find(member => member.userId === user?.id)?.role;
+  const memberSections: string[] | null =
+    !user?.isAdmin && role === ROLES.teamViewOnly && Array.isArray(team?.viewOnlySections)
+      ? ['overview', ...team.viewOnlySections]
+      : null;
   const resetParams = {
     search: undefined,
     page: undefined,
@@ -36,7 +70,7 @@ export function useWebsiteNavItems(websiteId: string) {
       excludeBounce: undefined,
     });
 
-  const items = [
+  const allItems = [
     {
       label: t(labels.traffic),
       items: [
@@ -188,6 +222,19 @@ export function useWebsiteNavItems(websiteId: string) {
       ],
     },
   ];
+
+  const items = memberSections
+    ? allItems
+        .map(section => ({
+          ...section,
+          items: section.items.filter(
+            ({ id }) =>
+              MEMBER_ALWAYS.includes(id) ||
+              (MEMBER_SECTIONS[id] && memberSections.includes(MEMBER_SECTIONS[id])),
+          ),
+        }))
+        .filter(section => section.items.length > 0)
+    : allItems;
 
   const selectedKey = items
     .flatMap(e => e.items)
