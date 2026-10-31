@@ -11,6 +11,7 @@ export * from './context/useWebsite';
 
 // Query hooks
 export * from './queries/useActiveUsersQuery';
+export * from './queries/useAllWebsitesStatsQuery';
 export * from './queries/useApiKeysQuery';
 export * from './queries/useAttributionQuery';
 export * from './queries/useBoardQuery';
