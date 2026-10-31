@@ -20,7 +20,7 @@ export async function getWebsiteSessions(
 
 async function relationalQuery(websiteId: string, filters: QueryFilters) {
   const { pagedRawQuery, parseFilters } = prisma;
-  const { search } = filters;
+  const { search, minDuration } = filters;
   const { filterQuery, dateQuery, cohortQuery, queryParams } = parseFilters({
     ...filters,
     websiteId,
@@ -33,6 +33,28 @@ async function relationalQuery(websiteId: string, filters: QueryFilters) {
            or browser ilike {{search}}
            or os ilike {{search}}
            or device ilike {{search}})`
+    : '';
+
+  const hasMinDuration = !!minDuration && minDuration > 0;
+
+  // Measure duration over every event of a matched session, not just the events
+  // left after filters, so unrelated filters don't shrink the measured span.
+  const durationJoin = hasMinDuration
+    ? `join (
+      select
+        website_event.session_id,
+        min(website_event.created_at) as "firstAt",
+        max(website_event.created_at) as "lastAt"
+      from website_event
+      where website_event.website_id = {{websiteId::uuid}}
+        and website_event.event_type != ${EVENT_TYPE.performance}
+      ${dateQuery}
+      group by website_event.session_id
+    ) session_duration on session_duration.session_id = session.session_id`
+    : '';
+
+  const havingQuery = hasMinDuration
+    ? `having extract(epoch from (max(session_duration."lastAt") - min(session_duration."firstAt"))) >= {{minDuration}}`
     : '';
 
   return pagedRawQuery(
@@ -59,6 +81,7 @@ async function relationalQuery(websiteId: string, filters: QueryFilters) {
     ${cohortQuery}
     join session on session.session_id = website_event.session_id
       and session.website_id = website_event.website_id
+    ${durationJoin}
     where website_event.website_id = {{websiteId::uuid}}
       and website_event.event_type != ${EVENT_TYPE.performance}
     ${dateQuery}
@@ -75,8 +98,9 @@ async function relationalQuery(websiteId: string, filters: QueryFilters) {
       session.country, 
       session.region, 
       session.city
+    ${havingQuery}
     `,
-    queryParams,
+    { ...queryParams, minDuration },
     filters,
     FUNCTION_NAME,
     'max(website_event.created_at) desc, session.session_id',
@@ -85,7 +109,7 @@ async function relationalQuery(websiteId: string, filters: QueryFilters) {
 
 async function clickhouseQuery(websiteId: string, filters: QueryFilters) {
   const { pagedRawQuery, parseFilters, getDateStringSQL } = clickhouse;
-  const { search } = filters;
+  const { search, minDuration } = filters;
   const { filterQuery, dateQuery, cohortQuery, queryParams } = parseFilters(
     {
       ...filters,
@@ -95,6 +119,38 @@ async function clickhouseQuery(websiteId: string, filters: QueryFilters) {
       columns: QUALIFIED_FILTER_COLUMNS,
     },
   );
+
+  const hasMinDuration = !!minDuration && minDuration > 0;
+
+  // Measure duration over every event of a matched session, not just the events
+  // left after filters, so unrelated filters don't shrink the measured span.
+  const havingQuery = hasMinDuration
+    ? `having toInt64(toUnixTimestamp(max(session_duration.last_time)) - toUnixTimestamp(min(session_duration.first_time))) >= {minDuration:Int64}`
+    : '';
+
+  const durationJoin = () => `join (
+      select
+        session_id as duration_session_id,
+        min(created_at) as first_time,
+        max(created_at) as last_time
+      from website_event
+      where website_id = {websiteId:UUID}
+        and event_type != ${EVENT_TYPE.performance}
+      ${dateQuery}
+      group by session_id
+    ) session_duration on session_duration.duration_session_id = website_event.session_id`;
+
+  const durationJoinHourly = () => `join (
+      select
+        session_id as duration_session_id,
+        min(min_time) as first_time,
+        max(max_time) as last_time
+      from website_event_stats_hourly
+      where website_id = {websiteId:UUID}
+        and event_type != ${EVENT_TYPE.performance}
+      ${dateQuery}
+      group by session_id
+    ) session_duration on session_duration.duration_session_id = website_event.session_id`;
 
   const searchQuery = search
     ? `and ((positionCaseInsensitive(website_event.distinct_id, {search:String}) > 0)
@@ -132,12 +188,14 @@ async function clickhouseQuery(websiteId: string, filters: QueryFilters) {
       max(created_at) as createdAt
     from website_event
     ${cohortQuery}
+    ${hasMinDuration ? durationJoin() : ''}
     where website_id = {websiteId:UUID}
       and event_type != ${EVENT_TYPE.performance}
     ${dateQuery}
     ${normalizedFilterQuery}
     ${searchQuery}
     group by session_id
+    ${havingQuery}
     order by lastAt desc, id
     `;
   } else {
@@ -162,15 +220,17 @@ async function clickhouseQuery(websiteId: string, filters: QueryFilters) {
       max(max_time) as createdAt
     from website_event_stats_hourly as website_event
     ${cohortQuery}
+    ${hasMinDuration ? durationJoinHourly() : ''}
     where website_id = {websiteId:UUID}
       and event_type != ${EVENT_TYPE.performance}
     ${dateQuery}
     ${normalizedFilterQuery}
     ${searchQuery}
     group by session_id
+    ${havingQuery}
     order by lastAt desc, id
     `;
   }
 
-  return pagedRawQuery(sql, queryParams, filters, FUNCTION_NAME);
+  return pagedRawQuery(sql, { ...queryParams, minDuration }, filters, FUNCTION_NAME);
 }

@@ -62,6 +62,12 @@ export const getSessions = defineTool({
       .string()
       .optional()
       .describe('Free-text search (distinct ID, city, browser, OS, device).'),
+    minDuration: z
+      .number()
+      .int()
+      .nonnegative()
+      .optional()
+      .describe('Only include sessions whose visit lasted at least this many seconds.'),
     page: z.number().int().positive().optional().describe('Page number, starting at 1.'),
     pageSize: z
       .number()
@@ -79,6 +85,7 @@ export const getSessions = defineTool({
       startAt: range.startAt,
       endAt: range.endAt,
       search: input.search,
+      minDuration: input.minDuration,
       page: input.page ?? 1,
       pageSize: clamp(input.pageSize, DEFAULT_PAGE_SIZE, MAX_PAGE_SIZE),
       ...toFilterParams(input.filters),

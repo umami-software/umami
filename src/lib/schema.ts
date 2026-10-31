@@ -134,6 +134,15 @@ export const replayParams = {
   minDuration: z.coerce.number().int().nonnegative().optional(),
 };
 
+export const sessionParams = {
+  minDuration: z.coerce
+    .number()
+    .int()
+    .nonnegative()
+    .optional()
+    .describe('Only include sessions whose visit lasted at least this many seconds.'),
+};
+
 export const annotationSchema = z.object({
   date: z.coerce.date(),
   allDay: z.boolean().optional().default(true),
