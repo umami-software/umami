@@ -18,6 +18,7 @@ import {
 import { badRequest, unauthorized } from '@/lib/response';
 import type { QueryFilters } from '@/lib/types';
 import { getWebsiteSegment } from '@/queries/prisma';
+import { applySharePresetFilters } from '@/lib/share';
 
 export async function parseRequest(
   request: Request,
@@ -59,6 +60,12 @@ export async function parseRequest(
 
     if (!auth) {
       error = () => unauthorized();
+    } else if (auth.shareToken?.websiteId) {
+      const websitePath = `/api/websites/${auth.shareToken.websiteId}`;
+
+      if (url.pathname === websitePath || url.pathname.startsWith(`${websitePath}/`)) {
+        query = applySharePresetFilters(query, auth.shareToken.parameters);
+      }
     }
   }
 
