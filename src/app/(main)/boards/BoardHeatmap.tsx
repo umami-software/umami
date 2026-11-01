@@ -59,8 +59,8 @@ function ClickOverlay({
           const intensity = point.count / max;
           const size = Math.max(4, Math.min(40, 8 + intensity * 30));
           const opacity = 0.4 + intensity * 0.6;
-          const left = (point.pageX / pageW) * scaledW - size / 2;
-          const top = (point.pageY / pageH) * scaledH - size / 2;
+          const left = (point.pageX / pageW) * scaledW;
+          const top = (point.pageY / pageH) * scaledH;
 
           return (
             <div
