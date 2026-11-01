@@ -34,8 +34,14 @@ async function relationalQuery(websiteId: string, column: string, filters: Query
   }
 
   if (search) {
-    if (decodeURIComponent(search).includes(',')) {
-      searchQuery = `AND (${decodeURIComponent(search)
+    let decodedSearch: string;
+    try {
+      decodedSearch = decodeURIComponent(search);
+    } catch {
+      decodedSearch = search;
+    }
+    if (decodedSearch.includes(',')) {
+      searchQuery = `AND (${decodedSearch
         .split(',')
         .slice(0, 5)
         .map((value: string, index: number) => {
@@ -45,11 +51,11 @@ async function relationalQuery(websiteId: string, column: string, filters: Query
           // term matches itself instead of acting as a wildcard.
           params[key] = escapeLikeValue(value);
 
-          return getSearchSQL(column, key).replace('and ', '') + " escape '\'";
+          return `${getSearchSQL(column, key).replace('and ', '')} escape '\\'`;
         })
         .join(' OR ')})`;
     } else {
-      searchQuery = getSearchSQL(column) + " escape '\'";
+      searchQuery = `${getSearchSQL(column)} escape '\\'`;
     }
   }
 
@@ -74,7 +80,7 @@ async function relationalQuery(websiteId: string, column: string, filters: Query
     `
     select ${column} as "value", count(*) as "count"
     from website_event
-    where website_event.website_id = {{websiteId::uuid}}
+    where website_id = {{websiteId::uuid}}
       and website_event.created_at between {{startDate}} and {{endDate}}
       ${searchQuery}
       ${excludeDomain}
@@ -100,8 +106,14 @@ async function clickhouseQuery(websiteId: string, column: string, filters: Query
   }
 
   if (search) {
-    if (decodeURIComponent(search).includes(',')) {
-      searchQuery = `AND (${decodeURIComponent(search)
+    let decodedSearch: string;
+    try {
+      decodedSearch = decodeURIComponent(search);
+    } catch {
+      decodedSearch = search;
+    }
+    if (decodedSearch.includes(',')) {
+      searchQuery = `AND (${decodedSearch
         .split(',')
         .slice(0, 5)
         .map((value: string, index: number) => {
