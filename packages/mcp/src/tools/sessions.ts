@@ -1,6 +1,6 @@
 import { z } from 'zod';
 import { dateRangeInput, parseDateRange, toIso } from '../lib/dates';
-import { filtersSchema, toFilterParams } from '../lib/filters';
+import { eventFilterToolFields, filtersFromInput, toFilterParams } from '../lib/filters';
 import { clamp, DEFAULT_PAGE_SIZE, MAX_PAGE_SIZE, pageInfo } from '../lib/limits';
 import { defineTool } from '../lib/tool';
 
@@ -70,7 +70,7 @@ export const getSessions = defineTool({
       .max(MAX_PAGE_SIZE)
       .optional()
       .describe(`Results per page (default ${DEFAULT_PAGE_SIZE}, max ${MAX_PAGE_SIZE}).`),
-    filters: filtersSchema.optional(),
+    ...eventFilterToolFields,
   }),
   async handler(input, { client }) {
     const range = parseDateRange(input);
@@ -81,7 +81,7 @@ export const getSessions = defineTool({
       search: input.search,
       page: input.page ?? 1,
       pageSize: clamp(input.pageSize, DEFAULT_PAGE_SIZE, MAX_PAGE_SIZE),
-      ...toFilterParams(input.filters),
+      ...toFilterParams(filtersFromInput(input)),
     })) as { data?: SessionRow[]; count?: number; page?: number; pageSize?: number };
 
     return {

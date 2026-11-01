@@ -1,6 +1,6 @@
 import { z } from 'zod';
 import { isoTimestamp, parseDateRange, toIso } from '../lib/dates';
-import { filtersSchema, toFilterParams } from '../lib/filters';
+import { eventFilterToolFields, filtersFromInput, toFilterParams } from '../lib/filters';
 import { clamp, DEFAULT_PAGE_SIZE, MAX_PAGE_SIZE, pageInfo } from '../lib/limits';
 import { defineTool } from '../lib/tool';
 
@@ -41,7 +41,7 @@ export const getGoals = defineTool({
       .max(MAX_PAGE_SIZE)
       .optional()
       .describe(`Results per page (default ${DEFAULT_PAGE_SIZE}, max ${MAX_PAGE_SIZE}).`),
-    filters: filtersSchema.optional(),
+    ...eventFilterToolFields,
   }),
   async handler(input, { client }) {
     const result = (await client.getWebsiteGoals({
@@ -55,7 +55,7 @@ export const getGoals = defineTool({
     const range = input.startAt
       ? parseDateRange({ startAt: input.startAt, endAt: input.endAt })
       : null;
-    const filters = toFilterParams(input.filters);
+    const filters = toFilterParams(filtersFromInput(input));
 
     const goals = await Promise.all(
       rows.map(async row => {

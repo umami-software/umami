@@ -1,6 +1,6 @@
 import { z } from 'zod';
 import { dateRangeInput, parseDateRange, timeUnit, timezone } from '../lib/dates';
-import { filtersSchema, toFilterParams } from '../lib/filters';
+import { eventFilterToolFields, filtersFromInput, toFilterParams } from '../lib/filters';
 import { clamp, DEFAULT_METRIC_LIMIT, MAX_METRIC_LIMIT } from '../lib/limits';
 import { defineTool } from '../lib/tool';
 
@@ -26,7 +26,7 @@ export const getEventStats = defineTool({
   description:
     'Returns totals for custom events (not pageviews) over a time range: number of events fired, unique visitors and ' +
     'visits that triggered them, and how many distinct event names were seen. Also returns the previous period ' +
-    '(or same period last year) for comparison. Use "event" in filters to scope to one event name. ' +
+    '(or same period last year) for comparison. Pass the optional top-level "event" filter to scope to one event name. ' +
     'For a per-event ranking use get_website_metrics with type "event"; for trends over time use get_event_series. ' +
     'Requires a websiteId from list_websites.',
   inputSchema: z.object({
@@ -38,7 +38,7 @@ export const getEventStats = defineTool({
       .describe(
         'Comparison period: "prev" (previous period, default) or "yoy" (same period last year).',
       ),
-    filters: filtersSchema.optional(),
+    ...eventFilterToolFields,
   }),
   async handler(input, { client }) {
     const range = parseDateRange(input);
@@ -47,7 +47,7 @@ export const getEventStats = defineTool({
       startAt: range.startAt,
       endAt: range.endAt,
       compare: input.compare,
-      ...toFilterParams(input.filters),
+      ...toFilterParams(filtersFromInput(input)),
     })) as { data?: EventTotals & { comparison?: EventTotals } };
 
     return {
@@ -90,7 +90,7 @@ export const getEventSeries = defineTool({
       .describe(
         `Maximum number of event names to include (default ${DEFAULT_METRIC_LIMIT}, max ${MAX_METRIC_LIMIT}).`,
       ),
-    filters: filtersSchema.optional(),
+    ...eventFilterToolFields,
   }),
   async handler(input, { client }) {
     const range = parseDateRange(input);
@@ -101,7 +101,7 @@ export const getEventSeries = defineTool({
       unit: input.unit,
       timezone: input.timezone ?? 'UTC',
       limit: clamp(input.limit, DEFAULT_METRIC_LIMIT, MAX_METRIC_LIMIT),
-      ...toFilterParams(input.filters),
+      ...toFilterParams(filtersFromInput(input)),
     })) as SeriesRow[];
 
     const byName = new Map<string, { date: string; value: number }[]>();

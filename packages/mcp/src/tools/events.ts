@@ -1,6 +1,10 @@
 import { z } from 'zod';
 import { dateRangeInput, parseDateRange, toIso } from '../lib/dates';
-import { filtersSchema, toFilterParams } from '../lib/filters';
+import {
+  filtersFromInput,
+  pageviewFilterToolFieldsWithoutEventGuard,
+  toFilterParams,
+} from '../lib/filters';
 import { clamp, DEFAULT_PAGE_SIZE, MAX_PAGE_SIZE, pageInfo } from '../lib/limits';
 import { defineTool } from '../lib/tool';
 
@@ -44,11 +48,11 @@ export const getEvents = defineTool({
       .max(MAX_PAGE_SIZE)
       .optional()
       .describe(`Results per page (default ${DEFAULT_PAGE_SIZE}, max ${MAX_PAGE_SIZE}).`),
-    filters: filtersSchema.optional(),
+    ...pageviewFilterToolFieldsWithoutEventGuard,
   }),
   async handler(input, { client }) {
     const range = parseDateRange(input);
-    const filters = toFilterParams(input.filters);
+    const filters = toFilterParams(filtersFromInput(input, { allowEvent: false }));
 
     if (input.event) {
       filters.event = input.event;

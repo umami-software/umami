@@ -1,6 +1,11 @@
 import { z } from 'zod';
 import { dateRangeInput, parseDateRange, timeUnit, timezone } from '../lib/dates';
-import { pageviewFiltersSchema, toFilterParams } from '../lib/filters';
+import {
+  assertNoEventFilter,
+  filtersFromInput,
+  pageviewFilterToolFields,
+  toFilterParams,
+} from '../lib/filters';
 import { defineTool } from '../lib/tool';
 
 interface Point {
@@ -32,9 +37,14 @@ export const getWebsiteTraffic = defineTool({
       .enum(['prev', 'yoy'])
       .optional()
       .describe('Also return the previous period ("prev") or same period last year ("yoy").'),
-    filters: pageviewFiltersSchema.optional(),
+    ...pageviewFilterToolFields,
   }),
   async handler(input, { client }) {
+    assertNoEventFilter(
+      filtersFromInput(input, { allowEvent: true }),
+      'The event filter is not supported on pageview tools. Use get_event_stats or get_event_series.',
+    );
+    const filters = filtersFromInput(input, { allowEvent: false });
     const range = parseDateRange(input);
     const result = (await client.getWebsitePageviews({
       websiteId: input.websiteId,
@@ -43,7 +53,7 @@ export const getWebsiteTraffic = defineTool({
       unit: input.unit,
       timezone: input.timezone,
       compare: input.compare,
-      ...toFilterParams(input.filters),
+      ...toFilterParams(filters),
     })) as {
       pageviews?: unknown;
       sessions?: unknown;
