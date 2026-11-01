@@ -35,6 +35,7 @@ export const DEFAULT_DATE_RANGE_VALUE = '24hour';
 export const DEFAULT_WEBSITE_LIMIT = 10;
 export const DEFAULT_RESET_DATE = '2000-01-01';
 export const DEFAULT_PAGE_SIZE = 20;
+export const PAGE_SIZE_OPTIONS = [10, 20, 50, 100];
 export const MAX_PAGING_RESULTS = 10000;
 export const DEFAULT_DATE_COMPARE = 'prev';
 export const DEFAULT_CURRENCY = 'USD';

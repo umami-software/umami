@@ -9201,6 +9201,7 @@ export interface operations {
                 name: string;
                 /** @default  */
                 release?: string;
+                salt?: string;
                 /** @description Screen resolution of the visitor device. */
                 screen?: string;
                 /** @default  */
@@ -9251,6 +9252,7 @@ export interface operations {
                 pixel?: string;
                 /** @description URL of the referring page. */
                 referrer?: string;
+                salt?: string;
                 /** @description Screen resolution of the visitor device. */
                 screen?: string;
                 /** @description Tag attached to the tracked activity. */
