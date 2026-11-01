@@ -260,12 +260,7 @@ export function BoardHeatmap({
 
   const selectedPage = pages.find(page => page.urlPath === path);
   const isScrollMode = mode === 'scroll';
-  const maxCount = useMemo(() => {
-    if (points.length > 0) {
-      return Math.max(...points.map(p => p.count));
-    }
-    return 1;
-  }, [points]);
+  const maxCount = points.length > 0 ? Math.max(...points.map(p => p.count)) : 1;
 
   return (
     <LoadingPanel
