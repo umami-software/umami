@@ -45,13 +45,11 @@ async function relationalQuery(websiteId: string, column: string, filters: Query
           // term matches itself instead of acting as a wildcard.
           params[key] = escapeLikeValue(value);
 
-          const escapeChar = '\\';
-          return \`${getSearchSQL(column, key).replace('and ', '')} escape '${escapeChar}'\`;
+          return getSearchSQL(column, key).replace('and ', '') + " escape '\'";
         })
         .join(' OR ')})`;
     } else {
-      const escapeChar = '\\';
-      searchQuery = \`${getSearchSQL(column)} escape '${escapeChar}'\`;
+      searchQuery = getSearchSQL(column) + " escape '\'";
     }
   }
 
