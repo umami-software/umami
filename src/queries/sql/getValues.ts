@@ -67,7 +67,7 @@ async function relationalQuery(websiteId: string, column: string, filters: Query
       order by 2 desc
       limit 10
       `,
-      { websiteId, startDate, endDate, search: '%' + escapeLikeValue(search) + '%', ...params },
+      { websiteId, startDate, endDate, search: '%' + escapeLikeValue(search ?? '') + '%', ...params },
       FUNCTION_NAME,
     );
   }
