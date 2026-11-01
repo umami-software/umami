@@ -47,3 +47,19 @@ export function isValidUrl(url: string) {
     return false;
   }
 }
+
+export function hasMultipleHostnames(rows: { hostname?: string | null }[] = []) {
+  let first: string | undefined;
+
+  for (const { hostname } of rows) {
+    if (!hostname) continue;
+    if (first === undefined) first = hostname;
+    else if (hostname !== first) return true;
+  }
+
+  return false;
+}
+
+export function formatUrlLabel(urlPath: string, hostname?: string | null, showHostname = false) {
+  return showHostname && hostname ? `${hostname}${urlPath}` : urlPath;
+}
