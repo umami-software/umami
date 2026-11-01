@@ -12,6 +12,7 @@ import { EventsMetricsBar } from '@/app/(main)/websites/[websiteId]/events/Event
 import { BoardRealtimeActiveUsers } from '@/app/(main)/websites/[websiteId]/realtime/BoardRealtimeActiveUsers';
 import { BoardRealtimeChart } from '@/app/(main)/websites/[websiteId]/realtime/BoardRealtimeChart';
 import { BoardRealtimeMetricsBar } from '@/app/(main)/websites/[websiteId]/realtime/BoardRealtimeMetricsBar';
+import { BoardHeatmap } from './BoardHeatmap';
 import { WebsiteChart } from '@/app/(main)/websites/[websiteId]/WebsiteChart';
 import { WebsiteMetricsBar } from '@/app/(main)/websites/[websiteId]/WebsiteMetricsBar';
 import {
@@ -373,6 +374,47 @@ const componentDefinitions: ComponentDefinition[] = [
     group: 'Traffic',
     icon: Calendar,
     component: WeeklyTraffic,
+  },
+  {
+    type: 'BoardHeatmap',
+    name: 'Heatmap',
+    description: 'Click or scroll heatmap for a page',
+    category: 'visualization',
+    group: 'Traffic',
+    icon: Target,
+    component: BoardHeatmap,
+    defaultProps: { mode: 'click' },
+    configFields: [
+      {
+        name: 'mode',
+        label: 'Type',
+        type: 'select',
+        options: [
+          { label: 'Click', value: 'click' },
+          { label: 'Scroll', value: 'scroll' },
+        ],
+        defaultValue: 'click',
+      },
+      {
+        name: 'path',
+        label: 'Page path',
+        type: 'text',
+        placeholder: '/path/to/page',
+        required: true,
+      },
+      {
+        name: 'screen',
+        label: 'Screen width',
+        type: 'select',
+        options: [
+          { label: 'All', value: '' },
+          { label: 'Mobile', value: 'mobile' },
+          { label: 'Tablet', value: 'tablet' },
+          { label: 'Desktop', value: 'desktop' },
+        ],
+        defaultValue: '',
+      },
+    ],
   },
   {
     type: 'EventsChart',

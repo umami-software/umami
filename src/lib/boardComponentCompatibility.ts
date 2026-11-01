@@ -13,6 +13,7 @@ export const BOARD_COMPONENT_COMPATIBILITY_MATRIX = {
   RevenueMetricsTable: ['website'],
   UTM: ['website'],
   WeeklyTraffic: ['website'],
+  BoardHeatmap: ['website'],
 } as const satisfies Partial<Record<string, readonly BoardEntityType[]>>;
 
 export function getSupportedBoardComponentEntityTypes(componentType: string) {
