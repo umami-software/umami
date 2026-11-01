@@ -61,9 +61,10 @@ export function Pager({
           <Row alignItems="center" gap="2" wrap="nowrap" style={{ whiteSpace: 'nowrap' }}>
             <Text color="muted">{t(labels.rowsPerPage)}</Text>
             <Select
+              aria-label={t(labels.rowsPerPage)}
               value={Number(pageSize)}
               onChange={value => onPageSizeChange(Number(value))}
-              buttonProps={{ style: { minWidth: 72 } }}
+              triggerProps={{ 'aria-label': t(labels.rowsPerPage), style: { minWidth: 72 } }}
             >
               {options.map(size => (
                 <ListItem key={size} id={size}>

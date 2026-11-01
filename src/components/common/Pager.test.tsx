@@ -68,6 +68,30 @@ describe('Pager', () => {
     expect(screen.getByText('20')).toBeInTheDocument();
   });
 
+  it('calls onPageSizeChange when another page size is selected', async () => {
+    const onPageSizeChange = vi.fn();
+
+    const { user } = render(
+      <Pager
+        page={1}
+        pageSize={20}
+        count={100}
+        onPageChange={vi.fn()}
+        onPageSizeChange={onPageSizeChange}
+      />,
+    );
+
+    const trigger = screen.getByRole('combobox', { name: /rows per page/i });
+    expect(trigger).toBeInTheDocument();
+
+    await user.click(trigger);
+
+    const option = await screen.findByRole('option', { name: '50' });
+    await user.click(option);
+
+    expect(onPageSizeChange).toHaveBeenCalledWith(50);
+  });
+
   it('does not render page size selector when onPageSizeChange is omitted', () => {
     render(<Pager page={1} pageSize={20} count={100} onPageChange={vi.fn()} />);
 
