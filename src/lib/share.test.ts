@@ -1,5 +1,10 @@
 import { describe, expect, test } from 'vitest';
-import { allowShareFilter, excludeShareFilterParam, getShareTheme } from './share';
+import {
+  allowShareFilter,
+  applySharePresetFilters,
+  excludeShareFilterParam,
+  getShareTheme,
+} from './share';
 
 describe('allowShareFilter', () => {
   test('returns true when parameters are missing', () => {
@@ -11,6 +16,10 @@ describe('allowShareFilter', () => {
     expect(allowShareFilter({ allowFilter: true } as any)).toBe(true);
     expect(allowShareFilter({} as any)).toBe(true);
     expect(allowShareFilter({ allowFilter: false } as any)).toBe(false);
+  });
+  
+  test('disables recipient filtering when preset filters are configured', () => {
+    expect(allowShareFilter({ presetFilters: { country: 'eq.US' } } as any)).toBe(false);
   });
 });
 
@@ -46,5 +55,41 @@ describe('excludeShareFilterParam', () => {
 
   test('returns false for unrelated keys', () => {
     expect(excludeShareFilterParam('foo')).toBe(false);
+    expect(excludeShareFilterParam('constructor')).toBe(false);
+  });
+});
+
+describe('applySharePresetFilters', () => {
+  test('replaces requested filters with the configured preset filters', () => {
+    expect(
+      applySharePresetFilters(
+        {
+          country: 'eq.CA',
+          path: 'eq./other',
+          spf0: '1.eq.plan.free',
+          search: 'query',
+        },
+        {
+          presetFilters: {
+            country: 'eq.US',
+            path: 'eq./pricing',
+            spf0: '1.eq.plan.pro',
+            match: 'all',
+          },
+        } as any,
+      ),
+    ).toEqual({
+      country: 'eq.US',
+      path: 'eq./pricing',
+      spf0: '1.eq.plan.pro',
+      match: 'all',
+      search: 'query',
+    });
+  });
+
+  test('leaves the query unchanged when no preset filters exist', () => {
+    const query = { country: 'eq.US' };
+
+    expect(applySharePresetFilters(query)).toBe(query);
   });
 });
