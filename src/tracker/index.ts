@@ -469,10 +469,32 @@ type MetricEntry = PerformanceEntry & {
     let isInitialLoad = true;
     let activationStart = 0;
     let pageStartTime = 0;
-    let firstHiddenTime =
-      document.visibilityState === 'hidden' && !(document as TrackerDocument).prerendering
-        ? 0
-        : Infinity;
+
+    const getEntriesByType = (type: string): MetricEntry[] => {
+      try {
+        return (window.performance?.getEntriesByType?.(type) as MetricEntry[]) || [];
+      } catch {
+        return [];
+      }
+    };
+
+    const getFirstHiddenTime = () => {
+      const doc = document as TrackerDocument;
+      if (doc.prerendering) {
+        return Infinity;
+      }
+      const navEntry = getEntriesByType('navigation')?.[0];
+      const navActivationStart = navEntry?.activationStart || 0;
+      const hiddenEntry = getEntriesByType('visibility-state')?.find(
+        entry => entry.name === 'hidden' && entry.startTime >= navActivationStart,
+      );
+      return (
+        hiddenEntry?.startTime ??
+        (document.visibilityState === 'hidden' ? 0 : Infinity)
+      );
+    };
+
+    let firstHiddenTime = getFirstHiddenTime();
 
     const observe = (type: string, callback: (entry: MetricEntry) => void) => {
       try {
@@ -493,14 +515,14 @@ type MetricEntry = PerformanceEntry & {
 
     // FCP
     observe('paint', entry => {
-      if (entry.name === 'first-contentful-paint' && entry.startTime < firstHiddenTime) {
+      if (isInitialLoad && entry.name === 'first-contentful-paint' && entry.startTime < firstHiddenTime) {
         metrics.fcp = Math.max(entry.startTime - activationStart, 0);
       }
     });
 
     // LCP
     observe('largest-contentful-paint', entry => {
-      if (entry.startTime < firstHiddenTime) {
+      if (isInitialLoad && entry.startTime < firstHiddenTime) {
         metrics.lcp = Math.max(entry.startTime - activationStart, 0);
       }
     });
@@ -562,14 +584,6 @@ type MetricEntry = PerformanceEntry & {
       }
     };
 
-    const getEntriesByType = (type: string): MetricEntry[] => {
-      try {
-        return (window.performance?.getEntriesByType?.(type) as MetricEntry[]) || [];
-      } catch {
-        return [];
-      }
-    };
-
     const applyFallbackMetrics = () => {
       if (!isInitialLoad) return;
 
@@ -622,10 +636,6 @@ type MetricEntry = PerformanceEntry & {
       clsSessionEntries = [];
       interactions = {};
       sent = false;
-      firstHiddenTime =
-        document.visibilityState === 'hidden' && !(document as TrackerDocument).prerendering
-          ? 0
-          : Infinity;
       if (timeoutId) clearTimeout(timeoutId);
       timeoutId = setTimeout(sendPerformance, 10000);
     };
