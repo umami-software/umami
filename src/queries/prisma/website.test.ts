@@ -3,6 +3,7 @@ import {
   deleteWebsite,
   getAllUserWebsitesIncludingTeamAccess,
   resetWebsite,
+  transferWebsite,
   updateWebsite,
 } from './website';
 
@@ -321,5 +322,89 @@ describe('website cache invalidation', () => {
 
     expect(redisDelMock).not.toHaveBeenCalled();
     expect(redisSetMock).not.toHaveBeenCalled();
+  });
+});
+
+describe('transferWebsite', () => {
+  const tx = {
+    website: { findUnique: vi.fn(), update: vi.fn() },
+    board: { updateMany: vi.fn() },
+  };
+
+  beforeEach(() => {
+    vi.clearAllMocks();
+    redisState.enabled = false;
+    transactionMock.mockImplementation(fn => fn(tx));
+    tx.website.update.mockResolvedValue({ id: 'website-1' });
+  });
+
+  // A single-website board only shows its own website; left behind it is broken for everyone
+  // but the new owner, so it follows the website. Shares are keyed by board id and move with it.
+  test('moves the team single-website boards to the user receiving the website', async () => {
+    tx.website.findUnique.mockResolvedValue({ userId: null, teamId: 'team-1' });
+
+    await transferWebsite('website-1', { userId: 'user-1', teamId: null });
+
+    expect(tx.website.update).toHaveBeenCalledWith({
+      where: { id: 'website-1' },
+      data: { userId: 'user-1', teamId: null },
+    });
+    expect(tx.board.updateMany).toHaveBeenCalledWith({
+      where: {
+        type: 'website',
+        parameters: { path: ['websiteId'], equals: 'website-1' },
+        teamId: 'team-1',
+      },
+      data: { userId: 'user-1', teamId: null },
+    });
+  });
+
+  test("moves the user's single-website boards to the team receiving the website", async () => {
+    tx.website.findUnique.mockResolvedValue({ userId: 'user-1', teamId: null });
+
+    await transferWebsite('website-1', { userId: null, teamId: 'team-1' });
+
+    expect(tx.board.updateMany).toHaveBeenCalledWith({
+      where: {
+        type: 'website',
+        parameters: { path: ['websiteId'], equals: 'website-1' },
+        userId: 'user-1',
+        teamId: null,
+      },
+      data: { userId: null, teamId: 'team-1' },
+    });
+  });
+
+  test('moves boards between teams when the website moves to another team', async () => {
+    tx.website.findUnique.mockResolvedValue({ userId: null, teamId: 'team-1' });
+
+    await transferWebsite('website-1', { userId: null, teamId: 'team-2' });
+
+    expect(tx.board.updateMany).toHaveBeenCalledWith(
+      expect.objectContaining({
+        where: expect.objectContaining({ teamId: 'team-1' }),
+        data: { userId: null, teamId: 'team-2' },
+      }),
+    );
+  });
+
+  test('only moves single-website boards owned by the previous owner', async () => {
+    // Mixed boards and other owners' boards that reference the website are left alone.
+    tx.website.findUnique.mockResolvedValue({ userId: null, teamId: 'team-1' });
+
+    await transferWebsite('website-1', { userId: 'user-1', teamId: null });
+
+    const { where } = tx.board.updateMany.mock.calls[0][0];
+    expect(where.type).toBe('website');
+    expect(where.teamId).toBe('team-1');
+  });
+
+  test('drops the cached website after the transfer', async () => {
+    redisState.enabled = true;
+    tx.website.findUnique.mockResolvedValue({ userId: null, teamId: 'team-1' });
+
+    await transferWebsite('website-1', { userId: 'user-1', teamId: null });
+
+    expect(redisDelMock).toHaveBeenCalledWith('website:website-1');
   });
 });
