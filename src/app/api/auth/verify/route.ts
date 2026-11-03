@@ -4,7 +4,7 @@ import { json } from '@/lib/response';
 import { getAllUserTeams } from '@/queries/prisma';
 
 export async function POST(request: Request) {
-  const { auth, error } = await parseRequest(request);
+  const { auth, error } = await parseRequest(request, null, { allowTwoFactorSetup: true });
 
   if (error) {
     return error();

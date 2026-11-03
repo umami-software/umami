@@ -13,11 +13,9 @@ const mocks = vi.hoisted(() => ({
   verifyBackupCode: vi.fn(),
   decryptSecret: vi.fn(),
   isTwoFactorConfigured: vi.fn(),
-  checkRateLimit: vi.fn(),
-  recordFailedAttempt: vi.fn(),
+  reserveAttempt: vi.fn(),
   resetRateLimit: vi.fn(),
-  isOtpReplayed: vi.fn(),
-  markOtpUsed: vi.fn(),
+  claimOtp: vi.fn(),
   verifyTotp: vi.fn(),
   secret: vi.fn(),
   hash: vi.fn(),
@@ -71,14 +69,12 @@ vi.mock('@/lib/two-factor/crypto', () => ({
 }));
 
 vi.mock('@/lib/two-factor/rate-limit', () => ({
-  checkRateLimit: mocks.checkRateLimit,
-  recordFailedAttempt: mocks.recordFailedAttempt,
+  reserveAttempt: mocks.reserveAttempt,
   resetRateLimit: mocks.resetRateLimit,
 }));
 
 vi.mock('@/lib/two-factor/replay-prevention', () => ({
-  isOtpReplayed: mocks.isOtpReplayed,
-  markOtpUsed: mocks.markOtpUsed,
+  claimOtp: mocks.claimOtp,
 }));
 
 vi.mock('@/lib/two-factor/totp', () => ({
@@ -106,11 +102,9 @@ beforeEach(() => {
   mocks.verifyBackupCode.mockReset();
   mocks.decryptSecret.mockReset();
   mocks.isTwoFactorConfigured.mockReset();
-  mocks.checkRateLimit.mockReset();
-  mocks.recordFailedAttempt.mockReset();
+  mocks.reserveAttempt.mockReset();
   mocks.resetRateLimit.mockReset();
-  mocks.isOtpReplayed.mockReset();
-  mocks.markOtpUsed.mockReset();
+  mocks.claimOtp.mockReset();
   mocks.verifyTotp.mockReset();
   mocks.secret.mockReset();
   mocks.hash.mockReset();
@@ -135,11 +129,9 @@ beforeEach(() => {
   mocks.createSecureToken.mockReturnValue('full-auth-token');
   mocks.decryptSecret.mockReturnValue('plain-secret');
   mocks.isTwoFactorConfigured.mockReturnValue(true);
-  mocks.checkRateLimit.mockResolvedValue({ allowed: true });
-  mocks.recordFailedAttempt.mockResolvedValue({ lockedUntil: undefined });
+  mocks.reserveAttempt.mockResolvedValue({ allowed: true });
   mocks.resetRateLimit.mockResolvedValue(undefined);
-  mocks.isOtpReplayed.mockResolvedValue(false);
-  mocks.markOtpUsed.mockResolvedValue(undefined);
+  mocks.claimOtp.mockResolvedValue(true);
   mocks.verifyTotp.mockResolvedValue(true);
   mocks.findBackupCodes.mockResolvedValue([]);
   mocks.updateBackupCodes.mockResolvedValue({ count: 0 });
@@ -159,7 +151,7 @@ test('POST accepts a token-only payload and completes 2FA verification', async (
   );
 
   expect(mocks.verifyTotp).toHaveBeenCalledWith('123456', 'plain-secret');
-  expect(mocks.markOtpUsed).toHaveBeenCalledWith('user-1', '123456');
+  expect(mocks.claimOtp).toHaveBeenCalledWith('user-1', '123456');
   expect(mocks.resetRateLimit).toHaveBeenCalledWith('user-1');
   // Full session must not carry the partial-auth type and must be bound to the password.
   expect(mocks.hash).toHaveBeenCalledWith('$2b$10$hashedpassword');
@@ -200,4 +192,55 @@ test('POST returns a configuration error when the encryption key is missing', as
     },
   });
   expect(response.status).toBe(503);
+});
+
+test('POST rejects a valid code another request already claimed, without minting a session', async () => {
+  // Two concurrent submissions of the same code both pass verifyTotp; only the one that wins
+  // the atomic claim may receive a session, otherwise one code mints multiple sessions.
+  mocks.claimOtp.mockResolvedValue(false);
+
+  const response = await POST(
+    new Request('http://localhost/api/2fa/verify', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: 'Bearer partial-token',
+      },
+      body: JSON.stringify({ token: '123456' }),
+    }),
+  );
+
+  await expect(response.json()).resolves.toMatchObject({
+    error: { code: 'two-factor-error-code-used' },
+  });
+  expect(response.status).toBe(400);
+  expect(mocks.createSecureToken).not.toHaveBeenCalled();
+  expect(mocks.saveAuth).not.toHaveBeenCalled();
+  expect(mocks.resetRateLimit).not.toHaveBeenCalled();
+});
+
+test('POST does not check the code when no attempt can be reserved', async () => {
+  // Concurrent guesses must each reserve an attempt first; once the limit is hit, further
+  // guesses are rejected before verification so a burst cannot test more than the limit.
+  const lockedUntil = new Date(Date.now() + 60_000);
+  mocks.reserveAttempt.mockResolvedValue({ allowed: false, lockedUntil });
+
+  const response = await POST(
+    new Request('http://localhost/api/2fa/verify', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: 'Bearer partial-token',
+      },
+      body: JSON.stringify({ token: '123456' }),
+    }),
+  );
+
+  expect(response.status).toBe(429);
+  await expect(response.json()).resolves.toMatchObject({
+    error: { code: 'two-factor-error-too-many-attempts' },
+  });
+  expect(mocks.verifyTotp).not.toHaveBeenCalled();
+  expect(mocks.verifyBackupCode).not.toHaveBeenCalled();
+  expect(mocks.createSecureToken).not.toHaveBeenCalled();
 });

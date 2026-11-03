@@ -27,6 +27,8 @@ export interface Auth {
   };
   /** How the request was authenticated. Undefined for legacy callers that build Auth manually. */
   authType?: AuthType;
+  /** Session issued while 2FA was required but not yet set up; limited to the setup routes. */
+  twoFactorSetupPending?: boolean;
   shareToken?: {
     shareType?: number;
     websiteId?: string;

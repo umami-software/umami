@@ -31,6 +31,18 @@ vi.mock('@/queries/prisma/apiKey', () => ({
   updateApiKeyLastUsed: vi.fn(() => Promise.resolve()),
 }));
 
+const prismaMocks = vi.hoisted(() => ({
+  findTwoFactorAuth: vi.fn(),
+}));
+
+vi.mock('@/lib/prisma', () => ({
+  default: {
+    client: {
+      twoFactorAuth: { findUnique: prismaMocks.findTwoFactorAuth },
+    },
+  },
+}));
+
 vi.mock('@/lib/redis', () => ({
   default: {
     enabled: false,
@@ -86,6 +98,7 @@ beforeEach(() => {
   redisMock.client.get.mockReset();
   redisMock.client.expire.mockReset();
   redisMock.client.expire.mockResolvedValue(true);
+  prismaMocks.findTwoFactorAuth.mockReset();
 });
 
 describe('checkAuth api keys', () => {
@@ -431,5 +444,70 @@ describe('checkAuth share tokens', () => {
     expect(result?.authType).toBe('share');
     expect(result?.shareToken.websiteId).toBe('website-1');
     expect(result?.shareToken.parameters).toEqual({ overview: true, sessions: false });
+  });
+});
+
+describe('checkAuth required 2FA setup', () => {
+  test('flags a session issued before required 2FA was set up', async () => {
+    // Without this flag a password alone would grant full access to accounts the admin requires
+    // to use 2FA; parseRequest uses it to limit the session to the setup routes.
+    parseSecureTokenMock.mockReturnValue({
+      userId: 'user-1',
+      pwd: hash(PASSWORD_HASH),
+      twoFactorSetup: true,
+    } as any);
+    mockUser();
+    prismaMocks.findTwoFactorAuth.mockResolvedValue(null);
+
+    const result: any = await checkAuth(authedRequest());
+
+    expect(result?.user?.id).toBe('user-1');
+    expect(result?.twoFactorSetupPending).toBe(true);
+  });
+
+  test('keeps a setup that was started but not confirmed restricted', async () => {
+    parseSecureTokenMock.mockReturnValue({ userId: 'user-1', twoFactorSetup: true } as any);
+    mockUser();
+    prismaMocks.findTwoFactorAuth.mockResolvedValue({ isEnabled: false });
+
+    const result: any = await checkAuth(authedRequest());
+
+    expect(result?.twoFactorSetupPending).toBe(true);
+  });
+
+  test('lifts the restriction on the same token once 2FA is enabled', async () => {
+    parseSecureTokenMock.mockReturnValue({ userId: 'user-1', twoFactorSetup: true } as any);
+    mockUser();
+    prismaMocks.findTwoFactorAuth.mockResolvedValue({ isEnabled: true });
+
+    const result: any = await checkAuth(authedRequest());
+
+    expect(result?.twoFactorSetupPending).toBe(false);
+  });
+
+  test('flags a Redis session issued before required 2FA was set up', async () => {
+    redisMock.enabled = true;
+    parseSecureTokenMock.mockReturnValue({ authKey: 'auth:session-key' } as any);
+    redisMock.client.get.mockResolvedValue({
+      userId: 'user-1',
+      pwd: hash(PASSWORD_HASH),
+      twoFactorSetup: true,
+    });
+    mockUser();
+    prismaMocks.findTwoFactorAuth.mockResolvedValue(null);
+
+    const result: any = await checkAuth(authedRequest());
+
+    expect(result?.twoFactorSetupPending).toBe(true);
+  });
+
+  test('does not look up 2FA for ordinary sessions', async () => {
+    parseSecureTokenMock.mockReturnValue({ userId: 'user-1', pwd: hash(PASSWORD_HASH) } as any);
+    mockUser();
+
+    const result: any = await checkAuth(authedRequest());
+
+    expect(result?.twoFactorSetupPending).toBe(false);
+    expect(prismaMocks.findTwoFactorAuth).not.toHaveBeenCalled();
   });
 });
