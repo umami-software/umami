@@ -203,6 +203,8 @@ export type UmamiConfig = {
   tag?: string;
   distinctId?: string;
   salt?: string;
+  /** Generates the salt from the current UTC time. Ignored when `salt` is set. */
+  saltRotation?: 'hourly' | 'daily' | 'weekly' | 'monthly';
   beforeSend?: BeforeSend | string;
   errors?: boolean;
   release?: string;

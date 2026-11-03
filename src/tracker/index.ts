@@ -221,6 +221,8 @@ export type UmamiConfig = {
   tag?: string;
   distinctId?: string;
   salt?: string;
+  /** Generates the salt from the current UTC time. Ignored when `salt` is set. */
+  saltRotation?: 'hourly' | 'daily' | 'weekly' | 'monthly';
   beforeSend?: BeforeSend | string;
   errors?: boolean;
   release?: string;
@@ -301,6 +303,7 @@ type MetricEntry = PerformanceEntry & {
   const distinctId = config('distinct-id') || undefined;
   const tag = config('tag') || undefined;
   const salt = config('salt') || undefined;
+  const saltRotation = config('salt-rotation');
   const autoTrack = config('auto-track') !== _false;
   const dnt = config('do-not-track') === _true;
   const excludeSearch = config('exclude-search') === _true;
@@ -343,6 +346,16 @@ type MetricEntry = PerformanceEntry & {
   const stripOrigin = (url: string): string =>
     url === origin || url?.startsWith(`${origin}/`) ? url.slice(origin.length) : url;
 
+  // Evaluated per payload so a long-lived page still rotates.
+  const getSalt = () => {
+    if (salt) return salt;
+    const length = { hourly: 13, daily: 10, weekly: 10, monthly: 7 }[saltRotation as string];
+    if (!length) return undefined;
+    const now = new Date();
+    if (saltRotation === 'weekly') now.setUTCDate(now.getUTCDate() - now.getUTCDay());
+    return now.toISOString().slice(0, length);
+  };
+
   const getPayload = () => ({
     website,
     screen,
@@ -353,7 +366,7 @@ type MetricEntry = PerformanceEntry & {
     referrer: stripOrigin(currentRef),
     tag,
     id: identity ? identity : undefined,
-    salt,
+    salt: getSalt(),
   });
 
   const hasDoNotTrack = () => {

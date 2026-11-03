@@ -1,4 +1,4 @@
-import { afterEach, expect, test, vi } from 'vitest';
+import { afterEach, beforeEach, describe, expect, test, vi } from 'vitest';
 
 afterEach(() => {
   delete (window as Window & { umami?: unknown }).umami;
@@ -350,4 +350,79 @@ test('omits salt when it is not configured', async () => {
   const payload = await loadTrackerWithSalt(() => {});
 
   expect(payload).not.toHaveProperty('salt');
+});
+
+describe('data-salt-rotation', () => {
+  // Wednesday
+  const now = new Date('2026-11-04T15:30:00Z');
+
+  beforeEach(() => {
+    vi.useFakeTimers({ toFake: ['Date'], now });
+  });
+
+  afterEach(() => {
+    vi.useRealTimers();
+  });
+
+  test.each([
+    ['hourly', '2026-11-04T15'],
+    ['daily', '2026-11-04'],
+    ['weekly', '2026-11-01'],
+    ['monthly', '2026-11'],
+  ])('generates the salt for %s', async (rotation, expected) => {
+    const payload = await loadTrackerWithSalt(script => {
+      script.dataset.saltRotation = rotation;
+    });
+
+    expect(payload.salt).toBe(expected);
+  });
+
+  test('starts the week in the previous month when needed', async () => {
+    vi.setSystemTime(new Date('2026-12-02T12:00:00Z'));
+
+    const payload = await loadTrackerWithSalt(script => {
+      script.dataset.saltRotation = 'weekly';
+    });
+
+    expect(payload.salt).toBe('2026-11-29');
+  });
+
+  test('reads umamiConfig.saltRotation', async () => {
+    const payload = await loadTrackerWithSalt(() => {
+      window.umamiConfig = { saltRotation: 'daily' };
+    });
+
+    expect(payload.salt).toBe('2026-11-04');
+  });
+
+  test('prefers an explicit salt', async () => {
+    const payload = await loadTrackerWithSalt(script => {
+      script.dataset.salt = 'explicit';
+      script.dataset.saltRotation = 'daily';
+    });
+
+    expect(payload.salt).toBe('explicit');
+  });
+
+  test('omits salt for an unknown value', async () => {
+    const payload = await loadTrackerWithSalt(script => {
+      script.dataset.saltRotation = 'yearly';
+    });
+
+    expect(payload).not.toHaveProperty('salt');
+  });
+
+  test('rotates on a page that stays open', async () => {
+    const payload = await loadTrackerWithSalt(script => {
+      script.dataset.saltRotation = 'hourly';
+    });
+    expect(payload.salt).toBe('2026-11-04T15');
+
+    vi.setSystemTime(new Date('2026-11-04T16:00:00Z'));
+    const fetchMock = vi.mocked(fetch);
+    await window.umami.track('later');
+
+    const request = JSON.parse(fetchMock.mock.lastCall?.[1]?.body as string);
+    expect(request.payload.salt).toBe('2026-11-04T16');
+  });
 });
