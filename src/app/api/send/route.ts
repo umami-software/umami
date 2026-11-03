@@ -340,13 +340,18 @@ export async function POST(request: Request) {
     } else if (type === COLLECTION_TYPE.performance) {
       const base = hostname ? `https://${hostname}` : 'https://localhost';
       const currentUrl = new URL(url, base);
-      const urlPath = currentUrl.pathname === '/undefined' ? '' : currentUrl.pathname;
+      let urlPath = currentUrl.pathname === '/undefined' ? '' : currentUrl.pathname;
+
+      // Match the page view path so performance data lines up with path filters
+      if (process.env.REMOVE_TRAILING_SLASH) {
+        urlPath = urlPath.replace(/(?!^)\/$/, '');
+      }
 
       await saveEvent({
         websiteId: sourceId,
         sessionId,
         visitId,
-        urlPath,
+        urlPath: safeDecodeURI(urlPath),
         pageTitle: safeDecodeURIComponent(title),
         eventType: EVENT_TYPE.performance,
         browser,

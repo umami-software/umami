@@ -990,6 +990,30 @@ describe('performance collection', () => {
       ttfb: 300,
     });
   });
+
+  test('saves the same decoded url path as a page view of the same url', async () => {
+    const payload = { website: WEBSITE_ID, hostname: 'example.com', url: '/caf%C3%A9/men%C3%BC' };
+
+    await callPOST({ type: 'event', payload });
+    await callPOST({ type: 'performance', payload: { ...payload, lcp: 1200 } });
+
+    const [[pageView], [performance]] = saveEventMock.mock.calls as any[][];
+    expect(pageView.urlPath).toBe('/café/menü');
+    expect(performance.urlPath).toBe(pageView.urlPath);
+  });
+
+  test('REMOVE_TRAILING_SLASH strips a trailing slash but keeps the root path', async () => {
+    process.env.REMOVE_TRAILING_SLASH = '1';
+
+    for (const url of ['/blog/', '/']) {
+      await callPOST({
+        type: 'performance',
+        payload: { website: WEBSITE_ID, hostname: 'example.com', url, lcp: 1200 },
+      });
+    }
+
+    expect(saveEventMock.mock.calls.map(([arg]: any[]) => arg.urlPath)).toEqual(['/blog', '/']);
+  });
 });
 
 describe('error handling', () => {
