@@ -124,6 +124,7 @@ export const labels: Record<string, string> = {
   sum: 'label.sum',
   event: 'label.event',
   events: 'label.events',
+  errors: 'label.errors',
   eventName: 'label.event-name',
   excludeBounce: 'label.exclude-bounce',
   query: 'label.query',

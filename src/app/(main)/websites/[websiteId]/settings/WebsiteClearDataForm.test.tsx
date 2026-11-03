@@ -22,6 +22,7 @@ const counts = (values: Partial<Record<string, number>>) => ({
   revenue: 0,
   replays: 0,
   heatmaps: 0,
+  errors: 0,
   ...values,
 });
 
@@ -212,6 +213,17 @@ describe('WebsiteClearDataForm', () => {
     const heatmaps = await screen.findByTestId('clear-data-count-heatmaps');
     expect(within(heatmaps).getByText('12')).toBeInTheDocument();
     expect(screen.getByLabelText('Confirm')).toBeInTheDocument();
+  });
+
+  test('lists error events with their label', async () => {
+    getMock.mockResolvedValue(counts({ errors: 3 }));
+    const { user } = renderPeriod();
+
+    await user.click(screen.getByRole('button', { name: 'Continue' }));
+
+    const errors = await screen.findByTestId('clear-data-count-errors');
+    expect(within(errors).getByText('Errors')).toBeInTheDocument();
+    expect(within(errors).getByText('3')).toBeInTheDocument();
   });
 
   test('goes back to the range step', async () => {
