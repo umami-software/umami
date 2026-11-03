@@ -3,7 +3,7 @@ import { getQueryFilters, parseRequest } from '@/lib/request';
 import { json, unauthorized } from '@/lib/response';
 import { filterParams, pagingParams, withPeriodDateRange } from '@/lib/schema';
 import type { PageResult } from '@/lib/types';
-import { canViewWebsiteSection } from '@/permissions';
+import { canViewWebsiteSectionRows } from '@/permissions';
 import { getEventData } from '@/queries/sql/events/getEventData';
 
 interface EventDataRow {
@@ -39,7 +39,7 @@ export async function GET(
 
   const { websiteId } = await params;
 
-  if (!(await canViewWebsiteSection(auth, websiteId, 'events'))) {
+  if (!(await canViewWebsiteSectionRows(auth, websiteId, 'events'))) {
     return unauthorized();
   }
 
