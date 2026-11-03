@@ -1,3 +1,4 @@
+import { randomUUID } from 'node:crypto';
 import { expect, test } from './fixtures';
 import { createTeam, createWebsite, deleteTeam, deleteWebsite } from './helpers/entities';
 import { PERSONAS } from './seed/dataset';
@@ -132,8 +133,97 @@ test.describe('Clear website data for a date range', () => {
       revenue: 0,
       replays: 0,
       heatmaps: 0,
+      errors: 0,
     });
   });
+});
+
+test('preview over several months matches monthly deletes, errors included', async ({
+  admin,
+  api,
+  seed,
+}) => {
+  test.skip(seed.db === 'clickhouse', 'Range delete requires relational storage');
+
+  const websiteId = (await createWebsite(admin)).id;
+  const path = `/api/websites/${websiteId}/clear`;
+  const day = (month: number, date: number) => Date.UTC(2026, month, date, 12);
+  const june = { startAt: Date.UTC(2026, 5, 1), endAt: Date.UTC(2026, 6, 1) };
+  const july = { startAt: Date.UTC(2026, 6, 1), endAt: Date.UTC(2026, 7, 1) };
+  const browser = api.with({ 'user-agent': PERSONAS[0].userAgent });
+
+  try {
+    // June: two visitors, one with event data. July: one visitor.
+    const visits = [
+      { ip: '10.0.21.1', time: day(5, 10), data: { plan: 'pro' } },
+      { ip: '10.0.21.2', time: day(5, 20) },
+      { ip: '10.0.21.3', time: day(6, 5) },
+    ];
+
+    for (const { ip, time, data } of visits) {
+      const sent = await api.post('/api/send', {
+        type: 'event',
+        payload: {
+          website: websiteId,
+          hostname: 'x.test',
+          url: '/',
+          ip,
+          userAgent: PERSONAS[0].userAgent,
+          timestamp: Math.floor(time / 1000),
+          ...(data ? { data } : {}),
+        },
+      });
+
+      expect(sent.status).toBe(200);
+    }
+
+    // One error in June, and two of another issue in July.
+    const errors = [
+      { time: day(5, 15), name: 'RangeError' },
+      { time: day(6, 6), name: 'TypeError' },
+      { time: day(6, 7), name: 'TypeError' },
+    ];
+
+    for (const { time, name } of errors) {
+      const sent = await browser.post('/api/send', {
+        type: 'error',
+        payload: {
+          version: 1,
+          website: websiteId,
+          eventId: randomUUID(),
+          timestamp: time,
+          name,
+          message: 'Something broke',
+          stack: `${name}: Something broke\n    at run (app.js:1:1)`,
+          url: 'https://x.test/',
+        },
+      });
+
+      expect(sent.status).toBe(200);
+    }
+
+    const preview = await admin.get(path, { params: { startAt: june.startAt, endAt: july.endAt } });
+    expect(preview.status).toBe(200);
+    expect(preview.body).toMatchObject({ events: 3, eventData: 1, sessions: 3, errors: 3 });
+
+    const first = await admin.post(path, june);
+    const second = await admin.post(path, july);
+    expect([first.status, second.status]).toEqual([200, 200]);
+    expect(first.body).toMatchObject({ events: 2, eventData: 1, sessions: 2, errors: 1 });
+
+    const keys = ['events', 'eventData', 'sessions', 'revenue', 'replays', 'heatmaps', 'errors'];
+    for (const key of keys) {
+      expect(first.body[key] + second.body[key], key).toBe(preview.body[key]);
+    }
+
+    // Issues left without errors are removed too.
+    const issues = await admin.get(`/api/websites/${websiteId}/errors`, {
+      params: { startAt: june.startAt, endAt: july.endAt },
+    });
+    expect(issues.body.count).toBe(0);
+  } finally {
+    await deleteWebsite(admin, websiteId);
+  }
 });
 
 test('returns 400 on ClickHouse storage', async ({ admin, seed }) => {

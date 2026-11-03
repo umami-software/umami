@@ -3211,6 +3211,8 @@ export interface components {
       userId: string | null;
     };
     WebsiteDataCounts: {
+      /** @description Number of error events. */
+      errors: number;
       /** @description Number of event data rows. */
       eventData: number;
       /** @description Number of events (including pageviews). */

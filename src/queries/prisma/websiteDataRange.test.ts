@@ -22,6 +22,7 @@ function createTx({
   sessionIds = [] as string[],
   visitIds = [] as string[],
   orphanVisitIds = [] as string[],
+  issueIds = [] as string[],
   counts = {} as Record<string, number>,
   // First and last row in the range, read by the preview. Defaults to the whole of September.
   bounds = {
@@ -44,6 +45,7 @@ function createTx({
     revenue: model('revenue', 3),
     heatmapEvent: model('heatmapEvent', 5),
     sessionReplay: model('sessionReplay'),
+    errorEvent: model('errorEvent', 8),
     $queryRawUnsafe: vi.fn(async (sql: string, ..._params: unknown[]) => {
       if (sql.includes('as first_at')) {
         calls.push('bounds');
@@ -57,6 +59,7 @@ function createTx({
             event_data: counts.eventData ?? 0,
             orphan_revenue: counts.orphanRevenue ?? 0,
             orphan_heatmaps: counts.orphanHeatmaps ?? 0,
+            orphan_errors: counts.orphanErrors ?? 0,
             replays: counts.replays ?? 0,
           },
         ];
@@ -65,6 +68,10 @@ function createTx({
         calls.push('countRemovedVisits');
         // Every visit that lost chunks is gone unless the test says otherwise.
         return [{ count: counts.removedVisits ?? (_params[1] as string[]).length }];
+      }
+      if (sql.includes('distinct error_event.issue_id')) {
+        calls.push('selectIssues');
+        return issueIds.map(id => ({ id }));
       }
       if (sql.includes('candidate.session_id')) {
         calls.push('selectSessions');
@@ -91,6 +98,7 @@ function createTx({
       if (table === 'session') return sessionIds.length;
       if (table === 'revenue') return counts.orphanRevenue ?? 0;
       if (table === 'heatmap_event') return counts.orphanHeatmaps ?? 0;
+      if (table === 'error_event') return counts.orphanErrors ?? 0;
       return 0;
     }),
   };
@@ -113,17 +121,20 @@ describe('clearWebsiteData', () => {
       'selectSessions',
       'selectVisits',
       'selectOrphanVisits',
+      'selectIssues',
       'raw:event_data',
       'raw:event_data',
       'revenue',
       'heatmapEvent',
       'sessionReplay',
+      'errorEvent',
       'websiteEvent',
       'raw:session_data',
       'raw:session_link',
       'raw:session_replay',
       'raw:heatmap_event',
       'raw:revenue',
+      'raw:error_event',
       'raw:session',
       'countRemovedVisits',
       'raw:session_replay_saved',
@@ -135,6 +146,7 @@ describe('clearWebsiteData', () => {
       revenue: 3,
       replays: 1,
       heatmaps: 5,
+      errors: 8,
     });
     expect(tx.websiteEvent.deleteMany).toHaveBeenCalledWith({ where: range });
     expect(tx.revenue.deleteMany).toHaveBeenCalledWith({ where: range });
@@ -255,6 +267,37 @@ describe('clearWebsiteData', () => {
     expect(result.heatmaps).toBe(9);
   });
 
+  test('deletes error events and the issues they leave empty', async () => {
+    const tx = createTx({
+      sessionIds: ['s1'],
+      issueIds: ['i1', 'i2'],
+      counts: { orphanErrors: 1 },
+    });
+    transactionMock.mockImplementation(async cb => cb(tx));
+
+    const result = await clearWebsiteData(websiteId, startDate, endDate);
+
+    expect(result.errors).toBe(9);
+    expect(tx.errorEvent.deleteMany).toHaveBeenCalledWith({ where: range });
+    const issuesQuery = tx.$queryRawUnsafe.mock.calls.find(([sql]) =>
+      sql.includes('distinct error_event.issue_id'),
+    );
+    expect(issuesQuery?.slice(1)).toEqual([websiteId, startDate, endDate, ['s1']]);
+    const issueDelete = tx.$executeRawUnsafe.mock.calls.find(([sql]) =>
+      sql.startsWith('delete from error_issue'),
+    );
+    expect(issueDelete).toEqual([expect.stringContaining('not exists'), websiteId, ['i1', 'i2']]);
+  });
+
+  test('keeps issues untouched when no error event is deleted', async () => {
+    const tx = createTx();
+    transactionMock.mockImplementation(async cb => cb(tx));
+
+    await clearWebsiteData(websiteId, startDate, endDate);
+
+    expect(tx.calls).not.toContain('raw:error_issue');
+  });
+
   test('counts only replays left with no chunk', async () => {
     const tx = createTx({ visitIds: ['v1', 'v2'], counts: { removedVisits: 1 } });
     transactionMock.mockImplementation(async cb => cb(tx));
@@ -287,6 +330,8 @@ describe('getWebsiteDataCounts', () => {
         orphanRevenue: 2,
         heatmapEvent: 6,
         orphanHeatmaps: 1,
+        errorEvent: 4,
+        orphanErrors: 2,
         eventData: 7,
         sessions: 2,
         replays: 1,
@@ -303,6 +348,7 @@ describe('getWebsiteDataCounts', () => {
       revenue: 5,
       replays: 1,
       heatmaps: 7,
+      errors: 6,
     });
     expect(tx.websiteEvent.count).toHaveBeenCalledWith({ where: range });
     expect(tx.revenue.count).toHaveBeenCalledWith({ where: range });
@@ -331,6 +377,7 @@ describe('getWebsiteDataCounts', () => {
       revenue: 0,
       replays: 0,
       heatmaps: 0,
+      errors: 0,
     });
     expect(tx.calls).toEqual(['bounds']);
     expect(tx.$queryRawUnsafe).toHaveBeenCalledWith(
@@ -353,6 +400,7 @@ describe('getWebsiteDataCounts', () => {
           websiteEvent: 10,
           revenue: 1,
           heatmapEvent: 2,
+          errorEvent: 1,
           eventData: 2,
           sessions: 1,
           replays: 1,
@@ -375,6 +423,7 @@ describe('getWebsiteDataCounts', () => {
       revenue: 3,
       replays: 3,
       heatmaps: 6,
+      errors: 3,
     });
     // Months cover only the data, while the orphan checks keep the full range.
     expect(monthTxs.map(tx => tx.$queryRawUnsafe.mock.calls[0].slice(2, 6))).toEqual([

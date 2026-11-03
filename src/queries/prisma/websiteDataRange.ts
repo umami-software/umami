@@ -12,6 +12,7 @@ export interface WebsiteDataCounts {
   revenue: number;
   replays: number;
   heatmaps: number;
+  errors: number;
 }
 
 // The delete statements take the same positional parameters:
@@ -94,6 +95,11 @@ select
     where heatmap_event.website_id = $1::uuid
       and heatmap_event.session_id in (select id from orphan)
       and (heatmap_event.created_at < $4 or heatmap_event.created_at >= $5))::int as orphan_heatmaps,
+  -- Error events of orphan sessions outside the range, deleted with the session.
+  (select count(*) from error_event
+    where error_event.website_id = $1::uuid
+      and error_event.session_id in (select id from orphan)
+      and (error_event.created_at < $4 or error_event.created_at >= $5))::int as orphan_errors,
   -- Replays that lose every chunk. Replays with all chunks in the range are counted in
   -- the month of their first chunk.
   (select count(distinct session_replay.visit_id) from session_replay
@@ -116,7 +122,14 @@ select
 
 // Tables a range delete removes rows from by their own timestamp. Every other row it
 // removes hangs off an event in the range, so nothing is deleted outside their rows.
-const RANGE_TABLES = ['website_event', 'event_data', 'revenue', 'session_replay', 'heatmap_event'];
+const RANGE_TABLES = [
+  'website_event',
+  'event_data',
+  'revenue',
+  'session_replay',
+  'heatmap_event',
+  'error_event',
+];
 
 const rangeAggregate = (fn: 'min' | 'max') =>
   RANGE_TABLES.map(
@@ -146,7 +159,25 @@ const SESSION_TABLES = [
   'session_replay',
   'heatmap_event',
   'revenue',
+  'error_event',
 ] as const;
+
+// Issues of the error events about to be deleted. $2 is the orphan session ids.
+const AFFECTED_ISSUES = `select distinct error_event.issue_id as id
+  from error_event
+  where error_event.website_id = $1::uuid
+    and ((error_event.created_at >= $2 and error_event.created_at < $3)
+      or error_event.session_id = any($4::uuid[]))`;
+
+// Issues left without any error event. Issues still used by events outside the range stay.
+const DELETE_EMPTY_ISSUES = `delete from error_issue
+  where error_issue.website_id = $1::uuid
+    and error_issue.issue_id = any($2::uuid[])
+    and not exists (
+      select 1 from error_event
+      where error_event.website_id = $1::uuid
+        and error_event.issue_id = error_issue.issue_id
+    )`;
 
 async function setSearchPath(tx: any) {
   const schema = getSchema();
@@ -196,6 +227,7 @@ function addCounts(total: WebsiteDataCounts, counts: WebsiteDataCounts): Website
     revenue: total.revenue + counts.revenue,
     replays: total.replays + counts.replays,
     heatmaps: total.heatmaps + counts.heatmaps,
+    errors: total.errors + counts.errors,
   };
 }
 
@@ -228,6 +260,7 @@ async function getMonthCounts(
         revenue: (await tx.revenue.count({ where })) + Number(row.orphan_revenue),
         replays: Number(row.replays),
         heatmaps: (await tx.heatmapEvent.count({ where })) + Number(row.orphan_heatmaps),
+        errors: (await tx.errorEvent.count({ where })) + Number(row.orphan_errors),
       };
     },
     { timeout: 30000 },
@@ -271,6 +304,7 @@ export async function getWebsiteDataCounts(
     revenue: 0,
     replays: 0,
     heatmaps: 0,
+    errors: 0,
   };
   const bounds = await getDataBounds(websiteId, startDate, endDate);
 
@@ -310,6 +344,7 @@ export async function clearWebsiteData(
         ? await selectIds(tx, ORPHAN_SESSION_VISITS, [websiteId, sessionIds])
         : [];
       const savedVisitIds = [...new Set([...visitIds, ...orphanVisitIds])];
+      const issueIds = await selectIds(tx, AFFECTED_ISSUES, [...params, sessionIds]);
 
       // Both statements are index-friendly. The second only sees rows the first left behind.
       const eventData =
@@ -327,12 +362,15 @@ export async function clearWebsiteData(
 
       await tx.sessionReplay.deleteMany({ where });
 
+      const { count: errorsInRange } = await tx.errorEvent.deleteMany({ where });
+
       const { count: events } = await tx.websiteEvent.deleteMany({ where });
 
       let sessions = 0;
       // Revenue and heatmap events of orphan sessions outside the range go with the session.
       let orphanRevenue = 0;
       let orphanHeatmaps = 0;
+      let orphanErrors = 0;
 
       if (sessionIds.length) {
         for (const table of SESSION_TABLES) {
@@ -346,6 +384,8 @@ export async function clearWebsiteData(
             orphanRevenue = deleted;
           } else if (table === 'heatmap_event') {
             orphanHeatmaps = deleted;
+          } else if (table === 'error_event') {
+            orphanErrors = deleted;
           }
         }
 
@@ -354,6 +394,10 @@ export async function clearWebsiteData(
           websiteId,
           sessionIds,
         );
+      }
+
+      if (issueIds.length) {
+        await tx.$executeRawUnsafe(DELETE_EMPTY_ISSUES, websiteId, issueIds);
       }
 
       // Only replays with no chunk left count, so a replay that spans two batches counts once.
@@ -383,6 +427,7 @@ export async function clearWebsiteData(
         revenue: revenueInRange + orphanRevenue,
         replays,
         heatmaps: heatmapsInRange + orphanHeatmaps,
+        errors: errorsInRange + orphanErrors,
       };
     },
     { timeout: 30000 },
