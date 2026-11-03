@@ -47,7 +47,8 @@ const METRIC_DESCRIPTIONS: Record<(typeof METRIC_TYPES)[number], string> = {
   tag: 'tracker tags',
   browser: 'browsers',
   os: 'operating systems',
-  device: 'device types (desktop, laptop, tablet, mobile)',
+  device:
+    'device types (desktop, laptop, tablet, mobile, smarttv, console, wearable, xr, embedded)',
   screen: 'screen sizes',
   language: 'browser languages',
   country: 'countries (ISO codes)',

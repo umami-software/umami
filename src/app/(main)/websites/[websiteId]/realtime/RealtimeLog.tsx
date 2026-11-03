@@ -19,7 +19,7 @@ import { useFormat } from '@/components/hooks/useFormat';
 import { Eye, User } from '@/components/icons';
 import { FilterButtons } from '@/components/input/FilterButtons';
 import { Lightning } from '@/components/svg';
-import { BROWSERS, OS_NAMES } from '@/lib/constants';
+import { OS_NAMES } from '@/lib/constants';
 
 const TYPE_ALL = 'all';
 const TYPE_PAGEVIEW = 'pageview';
@@ -154,9 +154,9 @@ export function RealtimeLog({ data }: { data: any }) {
     if (__type === TYPE_SESSION) {
       return t.rich(messages.visitorLog, {
         country: countryNames[country] || t(labels.unknown),
-        browser: BROWSERS[browser],
+        browser: formatValue(browser, 'browser'),
         os: OS_NAMES[os] || os,
-        device: t(labels[device] || labels.unknown),
+        device: formatValue(device, 'device'),
         b: chunks => <b>{chunks}</b>,
       });
     }
