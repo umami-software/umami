@@ -3,7 +3,7 @@ import { getBillingAccess, getWebsiteBillingScope } from '@/lib/load';
 import type { Auth } from '@/lib/types';
 import { getWebsite } from '@/queries/prisma';
 import type { ShareSection } from './share';
-import { canViewWebsiteSection } from './share';
+import { canViewWebsiteSection, getMemberSections } from './share';
 import { canDeleteWebsite, canUpdateWebsite, canViewWebsite } from './website';
 
 async function hasReportBillingAccess(report: Report) {
@@ -55,7 +55,11 @@ export async function canViewReport(auth: Auth, report: Report | null) {
     return !!(await canViewWebsiteSection(auth, report.websiteId, section));
   }
 
-  return !!auth.user && !!(await canViewWebsite(auth, report.websiteId));
+  return (
+    !!auth.user &&
+    !!(await canViewWebsite(auth, report.websiteId)) &&
+    !(await getMemberSections(auth, report.websiteId))
+  );
 }
 
 export async function canUpdateReport(auth: Auth, report: Report) {

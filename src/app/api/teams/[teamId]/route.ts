@@ -1,7 +1,8 @@
 import { z } from 'zod';
+import { Prisma } from '@/generated/prisma/client';
 import { parseRequest } from '@/lib/request';
 import { json, notFound, ok, unauthorized } from '@/lib/response';
-import { canDeleteTeam, canUpdateTeam, canViewTeam } from '@/permissions';
+import { canDeleteTeam, canUpdateTeam, canViewTeam, SHARE_SECTIONS } from '@/permissions';
 import { deleteTeam, getTeam, updateTeam } from '@/queries/prisma';
 
 export async function GET(request: Request, { params }: { params: Promise<{ teamId: string }> }) {
@@ -30,6 +31,7 @@ export async function POST(request: Request, { params }: { params: Promise<{ tea
   const schema = z.object({
     name: z.string().max(50).optional(),
     accessCode: z.string().max(50).optional(),
+    viewOnlySections: z.array(z.enum(SHARE_SECTIONS)).nullable().optional(),
   });
 
   const { auth, body, error } = await parseRequest(request, schema);
@@ -44,7 +46,14 @@ export async function POST(request: Request, { params }: { params: Promise<{ tea
     return unauthorized({ message: 'You must be the owner/manager of this team.' });
   }
 
-  const team = await updateTeam(teamId, body);
+  const { viewOnlySections, ...data } = body;
+
+  const team = await updateTeam(teamId, {
+    ...data,
+    ...(viewOnlySections !== undefined && {
+      viewOnlySections: viewOnlySections === null ? Prisma.DbNull : viewOnlySections,
+    }),
+  });
 
   return json(team);
 }
