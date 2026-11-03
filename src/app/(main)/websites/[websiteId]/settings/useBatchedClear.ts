@@ -9,6 +9,7 @@ export interface ClearCounts {
   revenue: number;
   replays: number;
   heatmaps: number;
+  errors: number;
 }
 
 export const EMPTY_COUNTS: ClearCounts = {
@@ -18,6 +19,7 @@ export const EMPTY_COUNTS: ClearCounts = {
   revenue: 0,
   replays: 0,
   heatmaps: 0,
+  errors: 0,
 };
 
 export type BatchStatus = 'idle' | 'running' | 'stopping' | 'stopped' | 'error' | 'done';
@@ -30,6 +32,7 @@ function addCounts(total: ClearCounts, counts: Partial<ClearCounts>): ClearCount
     revenue: total.revenue + (counts?.revenue ?? 0),
     replays: total.replays + (counts?.replays ?? 0),
     heatmaps: total.heatmaps + (counts?.heatmaps ?? 0),
+    errors: total.errors + (counts?.errors ?? 0),
   };
 }
 

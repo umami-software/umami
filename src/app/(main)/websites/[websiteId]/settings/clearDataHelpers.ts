@@ -43,6 +43,7 @@ const COUNT_KEYS: CountKey[] = [
   'revenue',
   'replays',
   'heatmaps',
+  'errors',
 ];
 
 export function getOlderThanCutoff(amount: number, unit: OlderThanUnit, now: Date): Date {

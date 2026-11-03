@@ -112,12 +112,21 @@ describe('getOlderThanRange', () => {
 describe('getCountItems', () => {
   test('lists non-zero counts in display order', () => {
     expect(
-      getCountItems({ events: 3, eventData: 0, sessions: 2, revenue: 0, replays: 1, heatmaps: 4 }),
+      getCountItems({
+        events: 3,
+        eventData: 0,
+        sessions: 2,
+        revenue: 0,
+        replays: 1,
+        heatmaps: 4,
+        errors: 5,
+      }),
     ).toEqual([
       { key: 'events', value: 3 },
       { key: 'sessions', value: 2 },
       { key: 'replays', value: 1 },
       { key: 'heatmaps', value: 4 },
+      { key: 'errors', value: 5 },
     ]);
   });
 

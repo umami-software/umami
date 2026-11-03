@@ -20,6 +20,7 @@ const counts = (events: number, sessions = 0) => ({
   revenue: 0,
   replays: 0,
   heatmaps: 0,
+  errors: 0,
 });
 
 function deferred<T>() {
