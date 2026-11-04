@@ -11,8 +11,13 @@ export interface StdioEnvironment {
   [key: string]: string | undefined;
 }
 
+// A plain loop instead of /\/+$/, which backtracks quadratically on long runs of slashes.
 function trimSlashes(value: string) {
-  return value.replace(/\/+$/, '');
+  let end = value.length;
+
+  while (end > 0 && value[end - 1] === '/') end--;
+
+  return value.slice(0, end);
 }
 
 /**
