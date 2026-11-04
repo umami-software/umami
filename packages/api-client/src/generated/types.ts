@@ -1430,6 +1430,30 @@ export interface paths {
     patch?: never;
     trace?: never;
   };
+  '/api/websites/{websiteId}/clear': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /**
+     * Preview website data deletion for a date range
+     * @description Counts the rows that deleting the website data in the half-open range [startAt, endAt) would remove. Requires relational storage.
+     */
+    get: operations['getWebsiteClearPreview'];
+    put?: never;
+    /**
+     * Delete website data for a date range
+     * @description Permanently deletes the website data in the half-open range [startAt, endAt) and keeps the website configuration. Requires relational storage.
+     */
+    post: operations['clearWebsiteData'];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
   '/api/websites/{websiteId}/daterange': {
     parameters: {
       query?: never;
@@ -3185,6 +3209,28 @@ export interface components {
       user?: components['schemas']['WebsiteUser'];
       /** @description ID of the associated user. */
       userId: string | null;
+    };
+    WebsiteDataCounts: {
+      /** @description Number of error events. */
+      errors: number;
+      /** @description Number of event data rows. */
+      eventData: number;
+      /** @description Number of events (including pageviews). */
+      events: number;
+      /** @description Number of heatmap events. */
+      heatmaps: number;
+      /** @description Number of session replays left with no recording. */
+      replays: number;
+      /** @description Number of revenue rows. */
+      revenue: number;
+      /** @description Number of sessions. */
+      sessions: number;
+    };
+    WebsiteDataRange: {
+      /** @description End of the date range as a Unix timestamp in milliseconds. */
+      endAt: number | string;
+      /** @description Start of the date range as a Unix timestamp in milliseconds. */
+      startAt: number | string;
     };
     WebsiteEvent: {
       /**
@@ -13522,6 +13568,133 @@ export interface operations {
            *         "code": "not-found",
            *         "message": "Not found.",
            *         "status": 404
+           *       }
+           *     }
+           */
+          'application/json': components['schemas']['ApiError'];
+        };
+      };
+    };
+  };
+  getWebsiteClearPreview: {
+    parameters: {
+      query: {
+        /** @description End of the date range as a Unix timestamp in milliseconds. */
+        endAt: number | string;
+        /** @description Start of the date range as a Unix timestamp in milliseconds. */
+        startAt: number | string;
+      };
+      header?: never;
+      path: {
+        /** @description Website ID. */
+        websiteId: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Counts of the rows in the range. */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['WebsiteDataCounts'];
+        };
+      };
+      /** @description Bad request. */
+      400: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          /**
+           * @example {
+           *       "error": {
+           *         "code": "bad-request",
+           *         "message": "Bad request.",
+           *         "status": 400
+           *       }
+           *     }
+           */
+          'application/json': components['schemas']['ApiError'];
+        };
+      };
+      /** @description Unauthorized. */
+      401: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          /**
+           * @example {
+           *       "error": {
+           *         "code": "unauthorized",
+           *         "message": "Unauthorized.",
+           *         "status": 401
+           *       }
+           *     }
+           */
+          'application/json': components['schemas']['ApiError'];
+        };
+      };
+    };
+  };
+  clearWebsiteData: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        /** @description Website ID. */
+        websiteId: string;
+      };
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['WebsiteDataRange'];
+      };
+    };
+    responses: {
+      /** @description Counts of the rows that were deleted. */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['WebsiteDataCounts'];
+        };
+      };
+      /** @description Bad request. */
+      400: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          /**
+           * @example {
+           *       "error": {
+           *         "code": "bad-request",
+           *         "message": "Bad request.",
+           *         "status": 400
+           *       }
+           *     }
+           */
+          'application/json': components['schemas']['ApiError'];
+        };
+      };
+      /** @description Unauthorized. */
+      401: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          /**
+           * @example {
+           *       "error": {
+           *         "code": "unauthorized",
+           *         "message": "Unauthorized.",
+           *         "status": 401
            *       }
            *     }
            */
