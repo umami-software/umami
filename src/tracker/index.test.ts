@@ -6,6 +6,8 @@ afterEach(() => {
   delete (document as Document & { currentScript?: HTMLScriptElement | null }).currentScript;
   delete (document as Document & { readyState?: DocumentReadyState }).readyState;
   delete (document as Document & { visibilityState?: DocumentVisibilityState }).visibilityState;
+  delete (document as Document & { prerendering?: boolean }).prerendering;
+  vi.restoreAllMocks();
   vi.unstubAllGlobals();
   vi.resetModules();
 });
@@ -487,9 +489,11 @@ test('records LCP and FCP when page is loaded in foreground and paint occurs bef
     expect(perfCall).toBeDefined();
   });
 
+  // Trackers from earlier tests are still listening and send first, so read the last request
   const perfPayload = fetchMock.mock.calls
     .map(([, init]) => JSON.parse(init.body))
-    .find(r => r.type === 'performance')?.payload;
+    .filter(r => r.type === 'performance')
+    .pop()?.payload;
 
   expect(perfPayload).toMatchObject({
     fcp: 600,
@@ -558,7 +562,8 @@ test('discards LCP and FCP when page is loaded in a background tab', async () =>
 
   const perfPayload = fetchMock.mock.calls
     .map(([, init]) => JSON.parse(init.body))
-    .find(r => r.type === 'performance')?.payload;
+    .filter(r => r.type === 'performance')
+    .pop()?.payload;
 
   expect(perfPayload.fcp).toBeUndefined();
   expect(perfPayload.lcp).toBeUndefined();
@@ -624,7 +629,8 @@ test('discards LCP and FCP when tab becomes hidden before paint fires', async ()
 
   const perfPayload = fetchMock.mock.calls
     .map(([, init]) => JSON.parse(init.body))
-    .find(r => r.type === 'performance')?.payload;
+    .filter(r => r.type === 'performance')
+    .pop()?.payload;
 
   expect(perfPayload.fcp).toBeUndefined();
   expect(perfPayload.lcp).toBeUndefined();
@@ -698,7 +704,8 @@ test('discards LCP and FCP when tab was loaded in background even if visible whe
 
   const perfPayload = fetchMock.mock.calls
     .map(([, init]) => JSON.parse(init.body))
-    .find(r => r.type === 'performance')?.payload;
+    .filter(r => r.type === 'performance')
+    .pop()?.payload;
 
   expect(perfPayload.fcp).toBeUndefined();
   expect(perfPayload.lcp).toBeUndefined();
@@ -775,4 +782,79 @@ test('does not accept deferred FCP/LCP after SPA history navigation on backgroun
     expect(payload.fcp).toBeUndefined();
     expect(payload.lcp).toBeUndefined();
   }
+});
+
+test('records LCP and FCP relative to activation for a prerendered page', async () => {
+  type ObserverCallback = (list: { getEntries: () => unknown[] }) => void;
+  const observers: { type: string; callback: ObserverCallback }[] = [];
+
+  class MockPerformanceObserver {
+    private callback: ObserverCallback;
+    constructor(callback: ObserverCallback) {
+      this.callback = callback;
+    }
+    observe({ type }: { type: string }) {
+      observers.push({ type, callback: this.callback });
+    }
+    disconnect() {}
+    takeRecords() {
+      return [];
+    }
+  }
+
+  vi.stubGlobal('PerformanceObserver', MockPerformanceObserver);
+
+  const script = document.createElement('script');
+  script.src = 'https://analytics.example.com/script.js';
+  script.dataset.websiteId = 'website-id';
+  script.dataset.performance = 'true';
+
+  // Prerendering reports the document as hidden until it is activated
+  Object.defineProperties(document, {
+    currentScript: { configurable: true, value: script },
+    readyState: { configurable: true, value: 'complete' },
+    prerendering: { configurable: true, value: true },
+    visibilityState: { configurable: true, value: 'hidden' },
+  });
+
+  const fetchMock = vi.fn().mockResolvedValue({ json: vi.fn().mockResolvedValue({}) });
+  vi.stubGlobal('fetch', fetchMock);
+
+  await import('./index');
+
+  observers
+    .find(o => o.type === 'navigation')
+    ?.callback({ getEntries: () => [{ responseStart: 50, activationStart: 2000 }] });
+
+  Object.defineProperties(document, {
+    prerendering: { configurable: true, value: false },
+    visibilityState: { configurable: true, value: 'visible' },
+  });
+  document.dispatchEvent(new Event('prerenderingchange'));
+  document.dispatchEvent(new Event('visibilitychange'));
+
+  observers
+    .find(o => o.type === 'paint')
+    ?.callback({
+      getEntries: () => [{ name: 'first-contentful-paint', startTime: 1500 }],
+    });
+  observers
+    .find(o => o.type === 'largest-contentful-paint')
+    ?.callback({ getEntries: () => [{ startTime: 2300 }] });
+
+  Object.defineProperty(document, 'visibilityState', { configurable: true, value: 'hidden' });
+  document.dispatchEvent(new Event('visibilitychange'));
+
+  await vi.waitFor(() => {
+    expect(
+      fetchMock.mock.calls.some(([, init]) => JSON.parse(init.body).type === 'performance'),
+    ).toBe(true);
+  });
+
+  const perfPayload = fetchMock.mock.calls
+    .map(([, init]) => JSON.parse(init.body))
+    .filter(r => r.type === 'performance')
+    .pop()?.payload;
+
+  expect(perfPayload).toMatchObject({ fcp: 0, lcp: 300 });
 });

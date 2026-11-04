@@ -561,10 +561,7 @@ type MetricEntry = PerformanceEntry & {
       const hiddenEntry = getEntriesByType('visibility-state')?.find(
         entry => entry.name === 'hidden' && entry.startTime >= navActivationStart,
       );
-      return (
-        hiddenEntry?.startTime ??
-        (document.visibilityState === 'hidden' ? 0 : Infinity)
-      );
+      return hiddenEntry?.startTime ?? (document.visibilityState === 'hidden' ? 0 : Infinity);
     };
 
     let firstHiddenTime = getFirstHiddenTime();
@@ -588,7 +585,11 @@ type MetricEntry = PerformanceEntry & {
 
     // FCP
     observe('paint', entry => {
-      if (isInitialLoad && entry.name === 'first-contentful-paint' && entry.startTime < firstHiddenTime) {
+      if (
+        isInitialLoad &&
+        entry.name === 'first-contentful-paint' &&
+        entry.startTime < firstHiddenTime
+      ) {
         metrics.fcp = Math.max(entry.startTime - activationStart, 0);
       }
     });
