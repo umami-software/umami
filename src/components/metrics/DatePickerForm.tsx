@@ -1,5 +1,14 @@
 import { Button, Calendar, Column, Row, ToggleGroup, ToggleGroupItem } from '@umami/react-zen';
-import { endOfDay, isAfter, isBefore, isSameDay, isValid, startOfDay } from 'date-fns';
+import {
+  endOfDay,
+  isAfter,
+  isBefore,
+  isSameDay,
+  isValid,
+  min,
+  startOfDay,
+  subMonths,
+} from 'date-fns';
 import { useState } from 'react';
 import { useMessages } from '@/components/hooks';
 
@@ -34,14 +43,15 @@ export function DatePickerForm({
   );
   const [endDate, setEndDate] = useState(isValid(defaultEndDate) ? defaultEndDate : new Date());
   const { t, labels } = useMessages();
+  const rangeEndDate = endDate ?? startDate;
 
   const isInvalidDate = !date || !isValid(date);
   const isInvalidRange =
     !startDate ||
-    !endDate ||
+    !rangeEndDate ||
     !isValid(startDate) ||
-    !isValid(endDate) ||
-    isAfter(startDate, endDate);
+    !isValid(rangeEndDate) ||
+    isAfter(startDate, rangeEndDate);
 
   const disabled = selected.includes(FILTER_DAY)
     ? isInvalidDate ||
@@ -49,7 +59,7 @@ export function DatePickerForm({
       Boolean(maxDate && isAfter(startOfDay(date), startOfDay(maxDate)))
     : isInvalidRange ||
       Boolean(minDate && isBefore(startOfDay(startDate), startOfDay(minDate))) ||
-      Boolean(maxDate && isAfter(startOfDay(endDate), startOfDay(maxDate)));
+      Boolean(maxDate && isAfter(startOfDay(rangeEndDate), startOfDay(maxDate)));
 
   const handleSave = () => {
     if (disabled) {
@@ -62,10 +72,10 @@ export function DatePickerForm({
       }
       onChange(`range:${startOfDay(date).getTime()}:${endOfDay(date).getTime()}`);
     } else {
-      if (!isValid(startDate) || !isValid(endDate)) {
+      if (!isValid(startDate) || !isValid(rangeEndDate)) {
         return;
       }
-      onChange(`range:${startOfDay(startDate).getTime()}:${endOfDay(endDate).getTime()}`);
+      onChange(`range:${startOfDay(startDate).getTime()}:${endOfDay(rangeEndDate).getTime()}`);
     }
   };
 
@@ -95,22 +105,24 @@ export function DatePickerForm({
           />
         )}
         {selected.includes(FILTER_RANGE) && (
-          <Row gap wrap="wrap" style={{ margin: '0 auto' }}>
-            <Calendar
-              value={startDate}
-              minValue={minDate}
-              maxValue={endDate || maxDate}
-              onChange={setStartDate}
-              required
-            />
-            <Calendar
-              value={endDate}
-              minValue={startDate || minDate}
-              maxValue={maxDate}
-              onChange={setEndDate}
-              required
-            />
-          </Row>
+          <Calendar
+            mode="range"
+            numberOfMonths={2}
+            // react-zen's CalendarProps type drops range-only props
+            {...{ resetOnSelect: true }}
+            selected={{ from: startDate, to: endDate }}
+            defaultValue={subMonths(min([rangeEndDate, new Date()]), 1)}
+            showOutsideDays={false}
+            minValue={minDate}
+            maxValue={maxDate}
+            onSelect={selection => {
+              const range = selection as { from?: Date; to?: Date } | undefined;
+              setStartDate(range?.from);
+              setEndDate(range?.to);
+            }}
+            required
+            style={{ margin: '0 auto' }}
+          />
         )}
       </Column>
       <Row justifyContent="end" gap>
