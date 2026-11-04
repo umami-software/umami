@@ -100,6 +100,16 @@ describe('getChannelExpandedMetrics postgres branch', () => {
     expect(tag).toBe('getChannelExpandedMetrics');
   });
 
+  test('marks utm_medium as paid using the same terms as clickhouse', async () => {
+    await getChannelExpandedMetrics('website-1', {});
+    const [query] = prismaRawQuery.mock.calls[0];
+
+    for (const term of ['cp', 'ppc', 'retargeting', 'paid']) {
+      expect(query).toContain(`website_event.utm_medium ilike '%${term}%'`);
+    }
+    expect(query).not.toContain("LIKE 'p%'");
+  });
+
   test('toPostgresPositionClause renders one ilike per array entry', async () => {
     await getChannelExpandedMetrics('website-1', {});
     const [query] = prismaRawQuery.mock.calls[0];
