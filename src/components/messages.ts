@@ -14,6 +14,7 @@ export const labels: Record<string, string> = {
   username: 'label.username',
   password: 'label.password',
   role: 'label.role',
+  rowsPerPage: 'label.rows-per-page',
   user: 'label.user',
   viewOnly: 'label.view-only',
   manage: 'label.manage',
