@@ -94,3 +94,12 @@ describe('getValues clickhouse branch', () => {
     expect(clickhouseRawQuery.mock.calls[0][1].search).toBe('50%');
   });
 });
+
+describe('getValues without a search term', () => {
+  test('does not throw when search is omitted', async () => {
+    state.mode = 'prisma';
+
+    await expect(getValues('website-1', 'url_path', filters)).resolves.toEqual([]);
+    await expect(getValues('website-1', 'browser', filters)).resolves.toEqual([]);
+  });
+});
