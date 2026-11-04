@@ -228,7 +228,8 @@ export async function transferWebsite(
   websiteId: string,
   owner: { userId: string; teamId: null } | { userId: null; teamId: string },
 ) {
-  const website = await prisma.transaction(async (tx: Prisma.TransactionClient) => {
+  // prisma.transaction takes `any`, so TypeScript picks the batch overload and infers `any[]`
+  const website = await (prisma.transaction(async (tx: Prisma.TransactionClient) => {
     const current = await tx.website.findUnique({
       where: { id: websiteId },
       select: { userId: true, teamId: true },
@@ -250,7 +251,7 @@ export async function transferWebsite(
     }
 
     return updated;
-  });
+  }) as unknown as Promise<Website>);
 
   // Collection reads the website from Redis, so drop it after the transfer.
   if (redis.enabled) {
