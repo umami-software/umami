@@ -1,6 +1,7 @@
 import { expect, test, vi } from 'vitest';
 import { ENTITY_TYPE } from '@/lib/constants';
 import {
+  canViewAuthenticatedWebsite,
   canViewSharedWebsite,
   canViewSharedWebsiteFilters,
   canViewWebsiteSection,
@@ -220,4 +221,61 @@ test('canViewWebsiteSection allows link shares for the shared entity id', async 
       'overview',
     ),
   ).resolves.toBe(true);
+});
+
+// A share token sent together with a session must not lift the share's limits: anyone with an
+// account could otherwise pair it with a share link to read sections the owner disabled.
+// A signed-in non-owner who opens a share link still gets exactly what the share allows.
+test('a share token sent with an unrelated session keeps the share scope', async () => {
+  vi.mocked(canViewWebsite).mockReset().mockResolvedValue(false);
+  const auth = {
+    user: { id: 'other-user' },
+    shareToken: {
+      shareType: ENTITY_TYPE.website,
+      websiteId: 'website-1',
+      parameters: { overview: true, sessions: false, allowFilter: false },
+    },
+  } as any;
+
+  await expect(canViewWebsiteSection(auth, 'website-1', 'overview')).resolves.toBe(true);
+  await expect(canViewWebsiteSection(auth, 'website-1', 'sessions')).resolves.toBe(false);
+  await expect(canViewSharedWebsiteFilters(auth, 'website-1')).resolves.toBe(false);
+  expect(canViewWebsite).toHaveBeenCalledWith({ user: { id: 'other-user' } }, 'website-1');
+});
+
+// Export, replays, heatmaps and the share list are never available through a share link.
+test('canViewAuthenticatedWebsite ignores a share token sent with an unrelated session', async () => {
+  vi.mocked(canViewWebsite).mockReset().mockResolvedValue(false);
+  const auth = {
+    user: { id: 'other-user' },
+    shareToken: { shareType: ENTITY_TYPE.website, websiteId: 'website-1', parameters: {} },
+  } as any;
+
+  await expect(canViewAuthenticatedWebsite(auth, 'website-1')).resolves.toBe(false);
+  expect(canViewWebsite).toHaveBeenCalledWith({ user: { id: 'other-user' } }, 'website-1');
+});
+
+test('a board share token sent with an unrelated session still cannot read sessions or rows', async () => {
+  vi.mocked(canViewWebsite).mockReset().mockResolvedValue(false);
+  const auth = {
+    user: { id: 'other-user' },
+    shareToken: { shareType: ENTITY_TYPE.board, websiteIds: ['website-1'], parameters: {} },
+  } as any;
+
+  await expect(canViewWebsiteSection(auth, 'website-1', 'goals')).resolves.toBe(true);
+  await expect(canViewWebsiteSection(auth, 'website-1', 'sessions')).resolves.toBe(false);
+  await expect(canViewWebsiteSectionRows(auth, 'website-1', 'events')).resolves.toBe(false);
+});
+
+// Owners viewing their own share or board page keep full access to their website.
+test('a website owner keeps full access when a share token is also sent', async () => {
+  vi.mocked(canViewWebsite).mockReset().mockResolvedValue(true);
+  const auth = {
+    user: { id: 'owner' },
+    shareToken: { shareType: ENTITY_TYPE.board, websiteIds: ['website-1'], parameters: {} },
+  } as any;
+
+  await expect(canViewWebsiteSection(auth, 'website-1', 'sessions')).resolves.toBe(true);
+  await expect(canViewWebsiteSectionRows(auth, 'website-1', 'events')).resolves.toBe(true);
+  await expect(canViewAuthenticatedWebsite(auth, 'website-1')).resolves.toBe(true);
 });

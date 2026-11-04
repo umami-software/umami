@@ -25,7 +25,13 @@ type ShareSectionInput = ShareSection | ShareSection[];
 const BOARD_SHARE_EXCLUDED_SECTIONS: ShareSection[] = ['sessions'];
 
 function isBoardShare(auth: Auth | null | undefined) {
-  return !auth?.user && auth?.shareToken?.shareType === ENTITY_TYPE.board;
+  return auth?.shareToken?.shareType === ENTITY_TYPE.board;
+}
+
+// A signed-in user's own access is checked without the share token. A share token sent
+// alongside a session only grants the share's scope, never the user's level of access.
+async function canUserViewWebsite(auth: Auth | null | undefined, websiteId: string) {
+  return !!auth?.user && canViewWebsite({ user: auth.user }, websiteId);
 }
 
 function shareTokenIncludesWebsite(auth: Auth | null | undefined, websiteId: string) {
@@ -46,8 +52,8 @@ export async function canViewWebsiteSection(
   websiteId: string,
   section: ShareSectionInput,
 ) {
-  if (auth?.user) {
-    return canViewWebsite(auth, websiteId);
+  if (await canUserViewWebsite(auth, websiteId)) {
+    return true;
   }
 
   const { shareToken } = auth || {};
@@ -79,6 +85,10 @@ export async function canViewWebsiteSectionRows(
   websiteId: string,
   section: ShareSectionInput,
 ) {
+  if (await canUserViewWebsite(auth, websiteId)) {
+    return true;
+  }
+
   if (isBoardShare(auth)) {
     return false;
   }
@@ -87,8 +97,8 @@ export async function canViewWebsiteSectionRows(
 }
 
 export async function canViewSharedWebsite(auth: Auth | null | undefined, websiteId: string) {
-  if (auth?.user) {
-    return canViewWebsite(auth, websiteId);
+  if (await canUserViewWebsite(auth, websiteId)) {
+    return true;
   }
 
   return shareTokenIncludesWebsite(auth, websiteId);
@@ -98,8 +108,8 @@ export async function canViewSharedWebsiteFilters(
   auth: Auth | null | undefined,
   websiteId: string,
 ) {
-  if (auth?.user) {
-    return canViewWebsite(auth, websiteId);
+  if (await canUserViewWebsite(auth, websiteId)) {
+    return true;
   }
 
   const { shareToken } = auth || {};
@@ -113,9 +123,5 @@ export async function canViewAuthenticatedWebsite(
   auth: Auth | null | undefined,
   websiteId: string,
 ) {
-  if (!auth?.user) {
-    return false;
-  }
-
-  return canViewWebsite(auth, websiteId);
+  return canUserViewWebsite(auth, websiteId);
 }
