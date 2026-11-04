@@ -16,7 +16,8 @@ export type ShareSection =
   | 'retention'
   | 'utm'
   | 'revenue'
-  | 'attribution';
+  | 'attribution'
+  | 'feature-adoption';
 
 type ShareSectionInput = ShareSection | ShareSection[];
 

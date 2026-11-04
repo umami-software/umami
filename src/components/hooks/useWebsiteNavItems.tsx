@@ -8,6 +8,7 @@ import {
   Megaphone,
   Search,
   Sheet,
+  Sparkles,
   Tag,
   User,
   UserPlus,
@@ -116,6 +117,12 @@ export function useWebsiteNavItems(websiteId: string) {
           label: t(labels.retention),
           icon: <Magnet />,
           path: renderPath('/retention'),
+        },
+        {
+          id: 'feature-adoption',
+          label: t(labels.featureAdoption),
+          icon: <Sparkles />,
+          path: renderPath('/feature-adoption'),
         },
         {
           id: 'replays',

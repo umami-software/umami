@@ -37,6 +37,7 @@ const ALL_SECTION_IDS = [
   'funnels',
   'journeys',
   'retention',
+  'feature-adoption',
   'utm',
   'revenue',
   'attribution',
