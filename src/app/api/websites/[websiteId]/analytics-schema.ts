@@ -1,5 +1,11 @@
 import { z } from 'zod';
-import { filterParams, pagingParams, searchParams, withDateRange } from '@/lib/schema';
+import {
+  filterParams,
+  pagingParams,
+  searchParams,
+  sessionParams,
+  withDateRange,
+} from '@/lib/schema';
 
 /** Shared request/response schemas for the analytics routes under /api/websites/{websiteId}. */
 
@@ -14,6 +20,17 @@ export const pagedAnalyticsQuerySchema = withDateRange({
   ...pagingParams,
   ...searchParams,
 }).meta({ id: 'PagedAnalyticsQuery' });
+
+export const sessionQuerySchema = withDateRange({
+  ...filterParams,
+  ...sessionParams,
+  ...pagingParams,
+  ...searchParams,
+}).meta({
+  id: 'SessionQuery',
+  description:
+    'Filters and paging for the visitor sessions list. `minDuration` keeps only sessions whose visit lasted at least that many seconds.',
+});
 
 export const metricsQuerySchema = withDateRange({
   type: z.string().meta({

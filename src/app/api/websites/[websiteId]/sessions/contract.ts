@@ -1,7 +1,7 @@
 import { defineOperation } from '@/openapi/operation';
 import { badRequestResponse, jsonResponse, unauthorizedResponse } from '@/openapi/schemas';
 import { websiteIdPathSchema } from '../../response-schema';
-import { pagedAnalyticsQuerySchema, websiteSessionPageSchema } from '../analytics-schema';
+import { sessionQuerySchema, websiteSessionPageSchema } from '../analytics-schema';
 
 const getWebsiteSessionsOperation = defineOperation({
   method: 'get',
@@ -12,11 +12,11 @@ const getWebsiteSessionsOperation = defineOperation({
     operationId: 'getWebsiteSessions',
     summary: 'List visitor sessions',
     description:
-      'Returns a page of visitor sessions in the date range, newest first. `search` matches distinct ID, city, browser, OS or device.',
+      'Returns a page of visitor sessions in the date range, newest first. `search` matches distinct ID, city, browser, OS or device. `minDuration` keeps only sessions whose visit lasted at least that many seconds.',
     tags: ['Websites'],
     requestParams: {
       path: websiteIdPathSchema,
-      query: pagedAnalyticsQuerySchema,
+      query: sessionQuerySchema,
     },
     responses: {
       '200': jsonResponse(websiteSessionPageSchema, 'A page of sessions.'),
