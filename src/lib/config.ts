@@ -2,6 +2,7 @@ import { isRelationalOnly } from '@/lib/db';
 
 export type Config = {
   cloudMode: boolean;
+  dataDeletionEnabled: boolean;
   faviconUrl?: string;
   linksUrl?: string;
   pixelsUrl?: string;
@@ -19,6 +20,8 @@ export type Config = {
 export function getConfig(): Config {
   return {
     cloudMode: !!process.env.CLOUD_MODE,
+    // Range deletes run SQL against the relational tables, so they are off with ClickHouse.
+    dataDeletionEnabled: isRelationalOnly(),
     faviconUrl: process.env.FAVICON_URL,
     linksUrl: process.env.LINKS_URL,
     pixelsUrl: process.env.PIXELS_URL,

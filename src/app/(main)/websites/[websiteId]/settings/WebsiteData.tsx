@@ -1,6 +1,8 @@
 import { Button, Column, Dialog, DialogTrigger, Modal } from '@umami/react-zen';
+import { useState } from 'react';
 import { ActionForm } from '@/components/common/ActionForm';
 import {
+  useConfig,
   useLoginQuery,
   useMessages,
   useModified,
@@ -8,6 +10,7 @@ import {
   useUserTeamsQuery,
 } from '@/components/hooks';
 import { ROLES } from '@/lib/constants';
+import { WebsiteClearDataForm } from './WebsiteClearDataForm';
 import { WebsiteDeleteForm } from './WebsiteDeleteForm';
 import { WebsiteResetForm } from './WebsiteResetForm';
 import { WebsiteTransferForm } from './WebsiteTransferForm';
@@ -19,6 +22,18 @@ export function WebsiteData({ websiteId, onSave }: { websiteId: string; onSave?:
   const { router, pathname, teamId, renderUrl } = useNavigation();
   const { data: teams } = useUserTeamsQuery(user.id);
   const isAdmin = pathname.startsWith('/admin');
+  const config = useConfig();
+  const canClearData = !!config?.dataDeletionEnabled;
+  const [isClearOpen, setIsClearOpen] = useState(false);
+  const [isClearBusy, setIsClearBusy] = useState(false);
+
+  const handleClearOpenChange = (open: boolean) => {
+    // A running delete must finish or stop before the dialog can close.
+    if (!open && isClearBusy) {
+      return;
+    }
+    setIsClearOpen(open);
+  };
 
   const canTransferWebsite =
     (
@@ -70,6 +85,27 @@ export function WebsiteData({ websiteId, onSave }: { websiteId: string; onSave?:
             <Dialog title={t(labels.resetWebsite)} style={{ width: 400 }}>
               {({ close }) => (
                 <WebsiteResetForm websiteId={websiteId} onSave={handleReset} onClose={close} />
+              )}
+            </Dialog>
+          </Modal>
+        </DialogTrigger>
+      </ActionForm>
+
+      <ActionForm
+        label={t(labels.deleteData)}
+        description={t(canClearData ? messages.deleteDataWarning : messages.deleteDataUnavailable)}
+      >
+        <DialogTrigger isOpen={isClearOpen} onOpenChange={handleClearOpenChange}>
+          <Button isDisabled={!canClearData}>{t(labels.deleteData)}</Button>
+          <Modal>
+            <Dialog title={t(labels.deleteData)} style={{ width: 440, maxWidth: '100%' }}>
+              {({ close }) => (
+                <WebsiteClearDataForm
+                  websiteId={websiteId}
+                  onSave={handleReset}
+                  onClose={close}
+                  onBusyChange={setIsClearBusy}
+                />
               )}
             </Dialog>
           </Modal>
