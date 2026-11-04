@@ -56,7 +56,8 @@ test.describe('DataGrid search', () => {
 
   test('keeps text typed while the search navigation is loading', async ({ page }) => {
     // Hold the response of the first search navigation until the user has typed more, as a slow
-    // network would, then let it land before the next 600ms debounce fires.
+    // network would. A newer push would cancel that navigation and hide the bug, so stop the page
+    // clock until it has landed: the next 600ms debounce cannot fire before it does.
     let release = () => {};
     const typed = new Promise<void>(resolve => {
       release = resolve;
@@ -76,10 +77,17 @@ test.describe('DataGrid search', () => {
     const search = page.getByRole('searchbox');
     const navigation = page.waitForRequest(request => isSearchNavigation(request, 'revert'));
 
+    await page.clock.install();
     await search.pressSequentially('revert', { delay: 50 });
     await navigation;
+    await page.clock.pauseAt(Date.now() + 1000); // Must be ahead of the page's clock.
     await search.pressSequentially(' beta', { delay: 50 });
     release();
+
+    await expect(page).toHaveURL(/[?&]search=revert(&|$)/);
+    await expect(search).toHaveValue('revert beta');
+
+    await page.clock.resume();
 
     await expect(page).toHaveURL(/[?&]search=revert(\+|%20)beta(&|$)/);
     await expect(search).toHaveValue('revert beta');
