@@ -72,6 +72,33 @@ describe('isApiKeyBlockedPath', () => {
     expect(isApiKeyBlockedPath('/api/websites/abc/stats')).toBe(false);
     expect(isApiKeyBlockedPath('/api/authors')).toBe(false);
   });
+
+  // Rewrites route these paths to the blocked handlers while request.url keeps the original
+  // path, so a leaked key could otherwise mint new keys or manage users through them.
+  test('blocks credential and admin routes reached through the team rewrite', () => {
+    expect(isApiKeyBlockedPath('/teams/abc/api/me/api-keys')).toBe(true);
+    expect(isApiKeyBlockedPath('/TEAMS/abc/api/users/abc')).toBe(true);
+    expect(isApiKeyBlockedPath('/Teams/abc/api/admin/users')).toBe(true);
+    expect(isApiKeyBlockedPath('/teams/abc/api/me')).toBe(false);
+    expect(isApiKeyBlockedPath('/teams/abc/api/websites/abc/stats')).toBe(false);
+  });
+
+  test('blocks credential and admin routes reached through a relative API_URL', () => {
+    vi.stubEnv('API_URL', '/umami-api/');
+
+    expect(isApiKeyBlockedPath('/umami-api/me/api-keys')).toBe(true);
+    expect(isApiKeyBlockedPath('/Umami-API/users/abc')).toBe(true);
+    expect(isApiKeyBlockedPath('/teams/abc/umami-api/2fa/status')).toBe(true);
+    expect(isApiKeyBlockedPath('/umami-api/me')).toBe(false);
+    expect(isApiKeyBlockedPath('/umami-apiusers')).toBe(false);
+  });
+
+  test('ignores an absolute API_URL, which is not rewritten', () => {
+    vi.stubEnv('API_URL', 'https://api.example.com');
+
+    expect(isApiKeyBlockedPath('/api/me/api-keys')).toBe(true);
+    expect(isApiKeyBlockedPath('/api/me')).toBe(false);
+  });
 });
 
 describe('isApiKeyEnabled', () => {
