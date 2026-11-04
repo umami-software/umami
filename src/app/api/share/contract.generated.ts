@@ -194,6 +194,23 @@ const operation1 = defineOperation({
           },
         },
       },
+      '500': {
+        description: 'Server error.',
+        content: {
+          'application/json': {
+            example: {
+              error: {
+                message: 'Server error.',
+                code: 'server-error',
+                status: 500,
+              },
+            },
+            schema: {
+              $ref: '#/components/schemas/ApiError',
+            },
+          },
+        },
+      },
     },
   } as ZodOpenApiOperationObject,
 });

@@ -4006,7 +4006,7 @@ export interface operations {
                 /** @description Whether two-factor authentication is required for this user. */
                 isRequired: boolean;
                 /** @description Reason two-factor authentication is required. */
-                requiredReason: string;
+                requiredReason: 'user' | 'team' | 'global';
               };
         };
       };
@@ -7383,6 +7383,7 @@ export interface operations {
               websiteId?: string;
               websiteIds?: string[];
             };
+            twoFactorSetupPending?: boolean;
             /** @description User associated with the resource. */
             user?: {
               /** @description Unique identifier of the resource. */
@@ -7774,9 +7775,7 @@ export interface operations {
             /** @description Number of matching records. */
             count: number;
             /** @description Data returned by the operation. */
-            data: {
-              /** @description Code used to join the team. */
-              accessCode: string;
+            data: ({
               /**
                * Format: date-time
                * @description Date and time the record was created.
@@ -7800,7 +7799,10 @@ export interface operations {
                * @description Date and time the record was last updated.
                */
               updatedAt: string;
-            }[];
+            } & {
+              /** @description Code used to join the team. */
+              accessCode?: string;
+            })[];
             /** @description Whether the results were truncated by the maximum result limit. */
             isCapped?: boolean;
             /** @description Field to sort the results by. */
@@ -9482,6 +9484,24 @@ export interface operations {
           'application/json': components['schemas']['ApiError'];
         };
       };
+      /** @description Server error. */
+      500: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          /**
+           * @example {
+           *       "error": {
+           *         "code": "server-error",
+           *         "message": "Server error.",
+           *         "status": 500
+           *       }
+           *     }
+           */
+          'application/json': components['schemas']['ApiError'];
+        };
+      };
     };
   };
   getShareBySlug: {
@@ -9601,6 +9621,24 @@ export interface operations {
            *         "code": "unauthorized",
            *         "message": "Unauthorized.",
            *         "status": 401
+           *       }
+           *     }
+           */
+          'application/json': components['schemas']['ApiError'];
+        };
+      };
+      /** @description Not found. */
+      404: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          /**
+           * @example {
+           *       "error": {
+           *         "code": "not-found",
+           *         "message": "Not found.",
+           *         "status": 404
            *       }
            *     }
            */
@@ -9738,6 +9776,24 @@ export interface operations {
           'application/json': components['schemas']['ApiError'];
         };
       };
+      /** @description Server error. */
+      500: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          /**
+           * @example {
+           *       "error": {
+           *         "code": "server-error",
+           *         "message": "Server error.",
+           *         "status": 500
+           *       }
+           *     }
+           */
+          'application/json': components['schemas']['ApiError'];
+        };
+      };
     };
   };
   deleteShare: {
@@ -9785,6 +9841,24 @@ export interface operations {
           'application/json': components['schemas']['ApiError'];
         };
       };
+      /** @description Not found. */
+      404: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          /**
+           * @example {
+           *       "error": {
+           *         "code": "not-found",
+           *         "message": "Not found.",
+           *         "status": 404
+           *       }
+           *     }
+           */
+          'application/json': components['schemas']['ApiError'];
+        };
+      };
     };
   };
   getTeams: {
@@ -9817,9 +9891,7 @@ export interface operations {
             /** @description Number of matching records. */
             count: number;
             /** @description Data returned by the operation. */
-            data: {
-              /** @description Code used to join the team. */
-              accessCode: string;
+            data: ({
               /**
                * Format: date-time
                * @description Date and time the record was created.
@@ -9843,7 +9915,10 @@ export interface operations {
                * @description Date and time the record was last updated.
                */
               updatedAt: string;
-            }[];
+            } & {
+              /** @description Code used to join the team. */
+              accessCode?: string;
+            })[];
             /** @description Whether the results were truncated by the maximum result limit. */
             isCapped?: boolean;
             /** @description Field to sort the results by. */
@@ -10028,33 +10103,59 @@ export interface operations {
           [name: string]: unknown;
         };
         content: {
-          'application/json': {
-            /** @description Code used to join the team. */
-            accessCode: string;
-            /**
-             * Format: date-time
-             * @description Date and time the record was created.
-             */
-            createdAt: string;
-            /**
-             * Format: date-time
-             * @description Date and time the record was deleted, if applicable.
-             */
-            deletedAt: string;
-            /** @description Unique identifier of the resource. */
-            id: string;
-            /** @description URL of the logo image. */
-            logoUrl: string;
-            /** @description Display name of the resource. */
-            name: string;
-            /** @description Whether two-factor authentication is required. */
-            twoFactorRequired: boolean;
-            /**
-             * Format: date-time
-             * @description Date and time the record was last updated.
-             */
-            updatedAt: string;
-          };
+          'application/json':
+            | {
+                /**
+                 * Format: date-time
+                 * @description Date and time the record was created.
+                 */
+                createdAt: string;
+                /**
+                 * Format: date-time
+                 * @description Date and time the record was deleted, if applicable.
+                 */
+                deletedAt: string;
+                /** @description Unique identifier of the resource. */
+                id: string;
+                /** @description URL of the logo image. */
+                logoUrl: string;
+                /** @description Display name of the resource. */
+                name: string;
+                /** @description Whether two-factor authentication is required. */
+                twoFactorRequired: boolean;
+                /**
+                 * Format: date-time
+                 * @description Date and time the record was last updated.
+                 */
+                updatedAt: string;
+              }
+            | {
+                /** @description Code used to join the team. */
+                accessCode: string;
+                /**
+                 * Format: date-time
+                 * @description Date and time the record was created.
+                 */
+                createdAt: string;
+                /**
+                 * Format: date-time
+                 * @description Date and time the record was deleted, if applicable.
+                 */
+                deletedAt: string;
+                /** @description Unique identifier of the resource. */
+                id: string;
+                /** @description URL of the logo image. */
+                logoUrl: string;
+                /** @description Display name of the resource. */
+                name: string;
+                /** @description Whether two-factor authentication is required. */
+                twoFactorRequired: boolean;
+                /**
+                 * Format: date-time
+                 * @description Date and time the record was last updated.
+                 */
+                updatedAt: string;
+              };
         };
       };
       /** @description Unauthorized. */
@@ -12018,9 +12119,7 @@ export interface operations {
             /** @description Number of matching records. */
             count: number;
             /** @description Data returned by the operation. */
-            data: {
-              /** @description Code used to join the team. */
-              accessCode: string;
+            data: ({
               /**
                * Format: date-time
                * @description Date and time the record was created.
@@ -12044,7 +12143,10 @@ export interface operations {
                * @description Date and time the record was last updated.
                */
               updatedAt: string;
-            }[];
+            } & {
+              /** @description Code used to join the team. */
+              accessCode?: string;
+            })[];
             /** @description Whether the results were truncated by the maximum result limit. */
             isCapped?: boolean;
             /** @description Field to sort the results by. */
@@ -20491,6 +20593,8 @@ export interface operations {
               lastAt: string;
               /** @description Operating system used by the visitor. */
               os: string;
+              /** @description Domain of the referring page. */
+              referrerDomain: string;
               /** @description Region or subdivision of the visitor. */
               region: string;
               /** @description Screen resolution of the visitor device. */

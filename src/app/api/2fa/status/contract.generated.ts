@@ -65,7 +65,17 @@ const operation1 = defineOperation({
                       description: 'Whether two-factor authentication is required for this user.',
                     },
                     requiredReason: {
-                      type: 'string',
+                      anyOf: [
+                        {
+                          const: 'user',
+                        },
+                        {
+                          const: 'team',
+                        },
+                        {
+                          const: 'global',
+                        },
+                      ],
                       description: 'Reason two-factor authentication is required.',
                     },
                     isConfigured: {

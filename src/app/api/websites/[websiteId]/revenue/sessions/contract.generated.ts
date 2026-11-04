@@ -427,6 +427,10 @@ const operation1 = defineOperation({
                         type: 'string',
                         description: 'City of the visitor.',
                       },
+                      referrerDomain: {
+                        type: 'string',
+                        description: 'Domain of the referring page.',
+                      },
                       firstAt: {
                         anyOf: [
                           {
@@ -487,6 +491,7 @@ const operation1 = defineOperation({
                       'country',
                       'region',
                       'city',
+                      'referrerDomain',
                       'firstAt',
                       'lastAt',
                       'visits',
