@@ -71,7 +71,7 @@ export function useWebsiteNavItems(websiteId: string) {
           icon: <Sheet />,
           path: renderPath('/breakdown'),
         },
-        // Google Search Console and Google Ads are Cloud integrations.
+        // Google Search Console is a Cloud integration.
         ...(config?.cloudMode
           ? [
               {
@@ -79,12 +79,6 @@ export function useWebsiteNavItems(websiteId: string) {
                 label: t('searchConsole.searches'),
                 icon: <Search />,
                 path: renderPath('/search-console'),
-              },
-              {
-                id: 'google-ads',
-                label: t('googleAds.ads'),
-                icon: <Megaphone />,
-                path: renderPath('/google-ads'),
               },
             ]
           : []),
@@ -151,6 +145,17 @@ export function useWebsiteNavItems(websiteId: string) {
     {
       label: t(labels.growth),
       items: [
+        // Google Ads is a Cloud integration.
+        ...(config?.cloudMode
+          ? [
+              {
+                id: 'google-ads',
+                label: t('googleAds.ads'),
+                icon: <Megaphone />,
+                path: renderPath('/google-ads'),
+              },
+            ]
+          : []),
         {
           id: 'utm',
           label: t(labels.utm),
