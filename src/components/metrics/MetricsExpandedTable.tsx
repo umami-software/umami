@@ -110,7 +110,7 @@ export function MetricsExpandedTable({
                   {row => row?.visits?.toLocaleString()}
                 </DataColumn>
                 <DataColumn id="pageviews" label={t(labels.views)} align="end" width="120px">
-                  {row => row?.pageviews?.toLocaleString()}
+                  {row => Number(row?.pageviews).toLocaleString()}
                 </DataColumn>
                 {showBounceDuration && [
                   <DataColumn
