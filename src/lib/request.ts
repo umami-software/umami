@@ -162,7 +162,9 @@ export async function getQueryFilters(
       const segmentParams = (await getWebsiteSegment(websiteId, resolvedParams.segment))
         ?.parameters as Record<string, any>;
 
-      Object.assign(filters, filtersArrayToObject(segmentParams.filters));
+      // Stored filter names are free-form, so keep only real filter columns. Otherwise a filter
+      // named e.g. "timezone" would replace the validated request value on its way into SQL.
+      Object.assign(filters, getRequestFilters(filtersArrayToObject(segmentParams.filters)));
       sessionPropertyFilters.push(...(segmentParams.sessionPropertyFilters ?? []));
 
       if (segmentParams.match) {

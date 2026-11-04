@@ -78,6 +78,35 @@ test("combines a saved segment's session property filters with active filters", 
   expect(filters.endDate).toEqual(new Date('2026-09-02T00:00:00.000Z'));
 });
 
+// Segment filter names are stored as free-form strings. A stored filter named after a query
+// option (e.g. timezone, which is interpolated into SQL) must not replace the validated value.
+test('ignores saved segment filters that are not filter columns', async () => {
+  getWebsiteSegmentMock.mockResolvedValue({
+    parameters: {
+      filters: [
+        { name: 'timezone', operator: 'eq', value: "UTC'; select 1; --" },
+        { name: 'unit', operator: 'eq', value: 'x' },
+        { name: 'browser', operator: 'eq', value: 'chrome' },
+      ],
+    },
+  } as any);
+
+  const filters = await getQueryFilters(
+    {
+      startAt: String(+new Date('2026-09-01T00:00:00.000Z')),
+      endAt: String(+new Date('2026-09-02T00:00:00.000Z')),
+      timezone: 'America/New_York',
+      unit: 'day',
+      segment: 'segment-1',
+    },
+    'website-1',
+  );
+
+  expect(filters.timezone).toBe('America/New_York');
+  expect(filters.unit).toBe('day');
+  expect(filters.browser).toBe('eq.chrome');
+});
+
 // The API accepts segments and cohorts without `filters` (e.g. created through the API or by
 // older versions), so applying one must not throw.
 test('applies a saved segment that has no filters array', async () => {
