@@ -596,6 +596,7 @@ function inferCallExpression(
       'meta',
       'brand',
       'readonly',
+      'trim',
     ].includes(method) &&
     base
   ) {

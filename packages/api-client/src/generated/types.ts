@@ -7502,7 +7502,7 @@ export interface operations {
       content: {
         'application/json': {
           /** @description Display name of the resource. */
-          name: unknown;
+          name: string;
         };
       };
     };
