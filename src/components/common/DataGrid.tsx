@@ -17,6 +17,7 @@ import {
   type ReactNode,
   useCallback,
   useEffect,
+  useRef,
   useState,
 } from 'react';
 import { Empty } from '@/components/common/Empty';
@@ -58,6 +59,7 @@ export function DataGrid({
   const { data, error, isLoading, isFetching } = query;
   const { router, updateParams, query: queryParams } = useNavigation();
   const [search, setSearch] = useState(queryParams?.search || data?.search || '');
+  const pushedSearch = useRef<string | null>(null);
   const showPager = allowPaging && data && data.count > 0;
   const { isMobile } = useMobile();
   const [userDisplayMode, setUserDisplayMode] = useState<DisplayMode | null>(() => {
@@ -87,7 +89,15 @@ export function DataGrid({
   );
 
   useEffect(() => {
-    setSearch(queryParams?.search || '');
+    const currentSearch = queryParams?.search || '';
+
+    // The URL is catching up with our own debounced push: keep anything typed since then.
+    if (currentSearch === pushedSearch.current) {
+      pushedSearch.current = null;
+      return;
+    }
+
+    setSearch(currentSearch);
   }, [queryParams?.search]);
 
   useEffect(() => {
@@ -98,6 +108,7 @@ export function DataGrid({
     }
 
     const timer = window.setTimeout(() => {
+      pushedSearch.current = search;
       router.push(updateParams({ search: search || undefined, page: 1 }));
     }, searchDelay || DEFAULT_SEARCH_DELAY);
 
