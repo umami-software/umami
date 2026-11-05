@@ -27,7 +27,7 @@ export function WebsitesPage() {
           {showActions && user.role !== ROLES.viewOnly && <WebsiteAddButton teamId={teamId} />}
         </PageHeader>
         <Panel>
-          <WebsitesDataTable teamId={teamId} showActions={showActions} />
+          <WebsitesDataTable teamId={teamId} includeTeams={!teamId} showActions={showActions} />
         </Panel>
       </Column>
     </PageBody>
