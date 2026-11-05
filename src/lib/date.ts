@@ -40,6 +40,7 @@ import {
   subYears,
 } from 'date-fns';
 import { fromZonedTime, toZonedTime } from 'date-fns-tz';
+import { TIMEZONE_LEGACY } from '@/lib/constants';
 import { getDateLocale } from '@/lib/lang';
 import type { DateRange } from '@/lib/types';
 
@@ -125,12 +126,8 @@ export const DATE_FORMATS = {
   year: 'yyyy',
 };
 
-const TIMEZONE_MAPPINGS: Record<string, string> = {
-  'Asia/Calcutta': 'Asia/Kolkata',
-};
-
 export function normalizeTimezone(timezone: string): string {
-  return TIMEZONE_MAPPINGS[timezone] || timezone;
+  return TIMEZONE_LEGACY[timezone] || timezone;
 }
 
 export function getMaxSelectableDate(now = new Date()) {
