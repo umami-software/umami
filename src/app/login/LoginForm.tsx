@@ -26,6 +26,10 @@ export function LoginForm() {
       onSuccess: async (response: any) => {
         if (response.requiresTwoFactor) {
           sessionStorage.setItem('umami.partial-token', response.partialToken);
+          sessionStorage.setItem(
+            'umami.two-factor-methods',
+            JSON.stringify(response.methods ?? ['totp']),
+          );
           router.push('/login/two-factor');
           return;
         }

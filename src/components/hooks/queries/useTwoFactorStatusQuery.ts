@@ -2,6 +2,7 @@ import { useApi } from '../useApi';
 
 export interface TwoFactorStatusData {
   isEnabled: boolean;
+  hasSecurityKeys: boolean;
   isRequired: boolean;
   isConfigured: boolean;
   globalRequired: boolean;

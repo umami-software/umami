@@ -12,7 +12,7 @@ const operation1 = defineOperation({
     operationId: 'deleteAdminUsersUserId2fa',
     summary: "Reset a user's two-factor authentication",
     description:
-      "Removes the specified user's authenticator setup, backup codes, used-code history, and failed-attempt limits so they can set up authentication again.",
+      "Removes the specified user's authenticator setup, backup codes, security keys, used-code history, and failed-attempt limits so they can set up authentication again.",
     tags: ['Administration'],
     parameters: [
       {
@@ -50,8 +50,15 @@ const operation1 = defineOperation({
                     },
                     otpUsed: {},
                     rateLimit: {},
+                    securityKeys: {},
                   },
-                  required: ['twoFactorAuth', 'backupCodes', 'otpUsed', 'rateLimit'],
+                  required: [
+                    'twoFactorAuth',
+                    'backupCodes',
+                    'otpUsed',
+                    'rateLimit',
+                    'securityKeys',
+                  ],
                 },
               },
               required: ['ok', 'userId', 'reset'],
@@ -105,7 +112,8 @@ const operation2 = defineOperation({
   operation: {
     operationId: 'getAdminUsersUserId2fa',
     summary: "Get a user's two-factor status",
-    description: 'Returns whether two-factor authentication is enabled for the specified user.',
+    description:
+      'Returns whether two-factor authentication is enabled for the specified user and how many security keys they have registered.',
     tags: ['Administration'],
     parameters: [
       {
@@ -130,8 +138,12 @@ const operation2 = defineOperation({
                   type: 'boolean',
                   description: 'Whether two-factor authentication is enabled.',
                 },
+                securityKeyCount: {
+                  type: 'number',
+                  description: 'Number of security keys registered to the user.',
+                },
               },
-              required: ['isEnabled'],
+              required: ['isEnabled', 'securityKeyCount'],
             },
           },
         },

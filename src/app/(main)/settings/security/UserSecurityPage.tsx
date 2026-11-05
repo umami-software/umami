@@ -10,6 +10,7 @@ import { useConfig, useMessages, useTwoFactorStatusQuery } from '@/components/ho
 import { TwoFactorDisableModal } from '@/components/modals/TwoFactorDisableModal';
 import { TwoFactorSetupModal } from '@/components/modals/TwoFactorSetupModal';
 import { PasswordChangeButton } from './PasswordChangeButton';
+import { SecurityKeysPanel } from './SecurityKeysPanel';
 
 export function UserSecurityPage() {
   const { t, labels, messages } = useMessages();
@@ -122,6 +123,7 @@ export function UserSecurityPage() {
             )}
           </Column>
         </Panel>
+        {!cloudMode && <SecurityKeysPanel />}
       </Column>
 
       {showSetup && <TwoFactorSetupModal required={false} onClose={handleSetupClose} />}

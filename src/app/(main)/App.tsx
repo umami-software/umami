@@ -29,7 +29,11 @@ export function App({ children }) {
     enabled: !!teamId && (!config.cloudMode || (!isSubscriptionLoading && !isBlockedTeam)),
   });
   const { data: twoFactorStatus } = useTwoFactorStatusQuery(!!user && !config.cloudMode);
-  const needsTwoFactorSetup = !!(twoFactorStatus?.isRequired && !twoFactorStatus?.isEnabled);
+  const needsTwoFactorSetup = !!(
+    twoFactorStatus?.isRequired &&
+    !twoFactorStatus?.isEnabled &&
+    !twoFactorStatus?.hasSecurityKeys
+  );
 
   useEffect(() => {
     if (teamId) {
