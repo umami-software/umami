@@ -98,6 +98,7 @@ const payloadSchema = z.object({
   userAgent: z.string().optional(),
   timestamp: unixTimestampParam.optional(),
   id: z.string().optional(),
+  salt: z.string().max(100).optional(),
   browser: z.string().optional(),
   os: z.string().optional(),
   device: z.string().optional(),

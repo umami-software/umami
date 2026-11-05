@@ -14,6 +14,7 @@ export function resolveCollectionSession({
   ip,
   userAgent,
   distinctId,
+  salt,
   createdAt,
   cache,
   historical = false,
@@ -22,12 +23,16 @@ export function resolveCollectionSession({
   ip: string;
   userAgent: string;
   distinctId?: string;
+  salt?: string;
   createdAt: Date;
   cache?: CollectionCache | null;
   historical?: boolean;
 }) {
   const now = Math.floor(Date.now() / 1000);
-  const sessionSalt = getSalt(process.env.SALT_ROTATION, createdAt);
+  const baseSalt = getSalt(process.env.SALT_ROTATION, createdAt);
+  // A client salt is mixed into the server salt, never a replacement for it, so
+  // it can only split sessions further. Ignored unless ENABLE_CLIENT_SALT is set.
+  const sessionSalt = process.env.ENABLE_CLIENT_SALT && salt ? hash(baseSalt, salt) : baseSalt;
   const visitSalt = hash(startOfHour(createdAt).toUTCString());
   const sessionId = uuid(sourceId, ip, userAgent, sessionSalt, distinctId ?? '');
   const sessionDrift = !!cache?.sessionId && cache.sessionId !== sessionId;

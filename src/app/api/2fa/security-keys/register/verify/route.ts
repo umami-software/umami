@@ -22,7 +22,8 @@ export async function POST(request: Request) {
     }),
   });
 
-  const { auth, body, error } = await parseRequest(request, schema);
+  // Reachable during required 2FA setup: a security key can be the user's second factor.
+  const { auth, body, error } = await parseRequest(request, schema, { allowTwoFactorSetup: true });
 
   if (error) {
     return error();

@@ -11,7 +11,7 @@ import { addTeamBillingStatus } from '@/lib/load';
 import redis from '@/lib/redis';
 import { parseRequest } from '@/lib/request';
 import { badRequest, json, notFound, unauthorized } from '@/lib/response';
-import { checkRateLimit, recordFailedAttempt, resetRateLimit } from '@/lib/two-factor/rate-limit';
+import { reserveAttempt, resetRateLimit } from '@/lib/two-factor/rate-limit';
 import { consumeChallenge, getPartialAuthUserId, getRelyingParty } from '@/lib/two-factor/webauthn';
 import { getAllUserTeams, getUser } from '@/queries/prisma';
 import { getSecurityKeyByCredentialId, updateSecurityKeyUsage } from '@/queries/prisma/securityKey';
@@ -50,7 +50,8 @@ export async function POST(request: Request) {
     return unauthorized();
   }
 
-  const rateCheck = await checkRateLimit(userId);
+  // Counted before the assertion is checked, so concurrent attempts cannot slip past the lockout.
+  const rateCheck = await reserveAttempt(userId);
   if (!rateCheck.allowed) {
     return Response.json(
       {
@@ -96,7 +97,7 @@ export async function POST(request: Request) {
       : null;
 
   if (!verification?.verified) {
-    const { lockedUntil } = await recordFailedAttempt(userId);
+    const { lockedUntil } = rateCheck;
     return badRequest({
       code: 'security-key-error-verification-failed',
       message: 'Security key verification failed',

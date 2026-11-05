@@ -9,8 +9,7 @@ const mocks = vi.hoisted(() => ({
   getAllUserTeams: vi.fn(),
   getSecurityKeyByCredentialId: vi.fn(),
   updateSecurityKeyUsage: vi.fn(),
-  checkRateLimit: vi.fn(),
-  recordFailedAttempt: vi.fn(),
+  reserveAttempt: vi.fn(),
   resetRateLimit: vi.fn(),
   createSecureToken: vi.fn(),
   saveAuth: vi.fn(),
@@ -35,8 +34,7 @@ vi.mock('@/lib/two-factor/webauthn', () => ({
 }));
 
 vi.mock('@/lib/two-factor/rate-limit', () => ({
-  checkRateLimit: mocks.checkRateLimit,
-  recordFailedAttempt: mocks.recordFailedAttempt,
+  reserveAttempt: mocks.reserveAttempt,
   resetRateLimit: mocks.resetRateLimit,
 }));
 
@@ -109,8 +107,7 @@ beforeEach(() => {
     createdAt: new Date('2026-08-01T00:00:00.000Z'),
   });
   mocks.getAllUserTeams.mockResolvedValue([]);
-  mocks.checkRateLimit.mockResolvedValue({ allowed: true });
-  mocks.recordFailedAttempt.mockResolvedValue({});
+  mocks.reserveAttempt.mockResolvedValue({ allowed: true });
   mocks.consumeChallenge.mockResolvedValue('challenge-1');
   mocks.getSecurityKeyByCredentialId.mockResolvedValue({
     id: 'key-1',
@@ -179,13 +176,17 @@ test('POST rejects an assertion from a key registered to another user', async ()
 
   expect(response.status).toBe(400);
   expect(mocks.verifyAuthenticationResponse).not.toHaveBeenCalled();
-  expect(mocks.recordFailedAttempt).toHaveBeenCalledWith('user-1');
+  expect(mocks.reserveAttempt).toHaveBeenCalledWith('user-1');
+  expect(mocks.resetRateLimit).not.toHaveBeenCalled();
   expect(mocks.createSecureToken).not.toHaveBeenCalled();
 });
 
-test('POST records a failed attempt when verification fails', async () => {
+test('POST keeps the counted attempt and reports a lockout when verification fails', async () => {
   mocks.verifyAuthenticationResponse.mockRejectedValue(new Error('Signature mismatch'));
-  mocks.recordFailedAttempt.mockResolvedValue({ lockedUntil: '2026-10-30T12:00:00.000Z' });
+  mocks.reserveAttempt.mockResolvedValue({
+    allowed: true,
+    lockedUntil: '2026-10-30T12:00:00.000Z',
+  });
 
   const response = await postRequest();
 
@@ -197,6 +198,7 @@ test('POST records a failed attempt when verification fails', async () => {
     },
   });
   expect(mocks.updateSecurityKeyUsage).not.toHaveBeenCalled();
+  expect(mocks.resetRateLimit).not.toHaveBeenCalled();
   expect(mocks.createSecureToken).not.toHaveBeenCalled();
 });
 
@@ -213,7 +215,7 @@ test('POST rejects an assertion without a pending challenge', async () => {
 });
 
 test('POST returns 429 while the user is locked out', async () => {
-  mocks.checkRateLimit.mockResolvedValue({
+  mocks.reserveAttempt.mockResolvedValue({
     allowed: false,
     lockedUntil: '2026-10-30T12:00:00.000Z',
   });

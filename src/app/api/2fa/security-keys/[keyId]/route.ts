@@ -2,7 +2,7 @@ import prisma from '@/lib/prisma';
 import { parseRequest } from '@/lib/request';
 import { forbidden, notFound, ok } from '@/lib/response';
 import { isTwoFactorConfigured } from '@/lib/two-factor/crypto';
-import { isTwoFactorRequired } from '@/lib/two-factor/requirement';
+import { getTwoFactorRequiredReason } from '@/lib/two-factor/policy';
 import { deleteSecurityKey } from '@/queries/prisma/securityKey';
 
 export async function DELETE(request: Request, { params }: { params: Promise<{ keyId: string }> }) {
@@ -22,7 +22,7 @@ export async function DELETE(request: Request, { params }: { params: Promise<{ k
   // Keep at least one second factor while two-factor authentication is required
   let keepLastKey = false;
 
-  if (isTwoFactorConfigured() && (await isTwoFactorRequired(userId))) {
+  if (isTwoFactorConfigured() && (await getTwoFactorRequiredReason(userId))) {
     const twoFactor = await prisma.client.twoFactorAuth.findUnique({ where: { userId } });
 
     keepLastKey = !twoFactor?.isEnabled;

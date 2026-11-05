@@ -9,7 +9,8 @@ export async function POST(request: Request) {
     return notFound();
   }
 
-  const { auth, error } = await parseRequest(request);
+  // Reachable during required 2FA setup: a security key can be the user's second factor.
+  const { auth, error } = await parseRequest(request, null, { allowTwoFactorSetup: true });
 
   if (error) {
     return error();

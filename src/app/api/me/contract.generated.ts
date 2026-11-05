@@ -73,6 +73,9 @@ const operation1 = defineOperation({
                     },
                   ],
                 },
+                twoFactorSetupPending: {
+                  type: 'boolean',
+                },
                 shareToken: {
                   type: 'object',
                   properties: {

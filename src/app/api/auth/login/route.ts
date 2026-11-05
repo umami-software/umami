@@ -9,6 +9,7 @@ import redis from '@/lib/redis';
 import { parseRequest } from '@/lib/request';
 import { json, serviceUnavailable, unauthorized } from '@/lib/response';
 import { getTwoFactorConfigurationError, isTwoFactorConfigured } from '@/lib/two-factor/crypto';
+import { getTwoFactorRequiredReason } from '@/lib/two-factor/policy';
 import { getAllUserTeams, getUserByUsername, getUserSecurityKeyCount } from '@/queries/prisma';
 import { loginRequestSchema } from './schema';
 
@@ -61,15 +62,20 @@ export async function POST(request: Request) {
     );
     return json({ requiresTwoFactor: true, partialToken, methods });
   }
+  // 2FA is required but not set up yet: the session is limited to the setup routes until it is.
+  const twoFactorSetup =
+    !cloudMode && isTwoFactorConfigured() && !!(await getTwoFactorRequiredReason(id));
+
   // Bind token to password hash so a password change invalidates old tokens.
   const pwd = hash(user.password);
+  const session = { userId: id, role, pwd, ...(twoFactorSetup && { twoFactorSetup }) };
 
   let token: string;
 
   if (redis.enabled) {
-    token = await saveAuth({ userId: id, role, pwd });
+    token = await saveAuth(session);
   } else {
-    token = createSecureToken({ userId: user.id, role, pwd }, secret());
+    token = createSecureToken(session, secret());
   }
 
   const teams = await addTeamBillingStatus(await getAllUserTeams(id));

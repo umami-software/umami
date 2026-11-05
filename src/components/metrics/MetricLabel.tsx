@@ -9,6 +9,7 @@ import {
   useMessages,
   useRegionNames,
 } from '@/components/hooks';
+import { Share2 } from '@/components/icons';
 import { GROUPED_DOMAINS } from '@/lib/constants';
 import { decodePunycodeDomain } from '@/lib/format';
 
@@ -69,13 +70,16 @@ function BrowserOsMetricLabel({
   data: MetricLabelProps['data'];
 }) {
   const { formatValue } = useFormat();
+  const { t, labels } = useMessages();
   const { label } = data;
+  const formattedLabel = formatValue(label, type);
+  const unknown = isUnknownValue(label) || formattedLabel === t(labels.unknown);
 
   return (
     <FilterLink
       type={type}
-      value={label}
-      label={formatValue(label, type)}
+      value={unknown ? undefined : label}
+      label={unknown ? t(labels.unknown) : formattedLabel}
       icon={<TypeIcon type={type} value={label} />}
     />
   );
@@ -90,36 +94,33 @@ function ChannelMetricLabel({ data }: Pick<MetricLabelProps, 'data'>) {
 
 function CityMetricLabel({ data }: Pick<MetricLabelProps, 'data'>) {
   const { formatCity } = useFormat();
+  const { t, labels } = useMessages();
   const { label, country } = data;
+  const unknown = isUnknownValue(label);
 
   return (
     <FilterLink
       type="city"
-      value={label}
-      label={formatCity(label, country)}
-      icon={
-        country && (
-          <img
-            src={`${process.env.basePath || ''}/images/country/${country?.toLowerCase() || 'xx'}.png`}
-            alt={country}
-          />
-        )
-      }
+      value={unknown ? undefined : label}
+      label={unknown ? t(labels.unknown) : formatCity(label, country)}
+      icon={<TypeIcon type="country" value={country} unknown={unknown} />}
     />
   );
 }
 
 function RegionMetricLabel({ data }: Pick<MetricLabelProps, 'data'>) {
   const { locale } = useLocale();
+  const { t, labels } = useMessages();
   const { getRegionName } = useRegionNames(locale);
   const { label, country } = data;
+  const unknown = isUnknownValue(label);
 
   return (
     <FilterLink
       type="region"
-      value={label}
-      label={getRegionName(label, country)}
-      icon={<TypeIcon type="country" value={country} />}
+      value={unknown ? undefined : label}
+      label={unknown ? t(labels.unknown) : getRegionName(label, country)}
+      icon={<TypeIcon type="country" value={country} unknown={unknown} />}
     />
   );
 }
@@ -127,14 +128,16 @@ function RegionMetricLabel({ data }: Pick<MetricLabelProps, 'data'>) {
 function CountryMetricLabel({ data }: Pick<MetricLabelProps, 'data'>) {
   const { formatValue } = useFormat();
   const { locale } = useLocale();
+  const { t, labels } = useMessages();
   const { countryNames } = useCountryNames(locale);
   const { label } = data;
+  const unknown = isUnknownValue(label);
 
   return (
     <FilterLink
       type="country"
-      value={(countryNames[label] && label) || label}
-      label={formatValue(label, 'country')}
+      value={unknown ? undefined : (countryNames[label] && label) || label}
+      label={unknown ? t(labels.unknown) : formatValue(label, 'country')}
       icon={<TypeIcon type="country" value={label} />}
     />
   );
@@ -148,30 +151,33 @@ function PathMetricLabel({ type, data }: MetricLabelProps) {
     <FilterLink
       type={type === 'entry' || type === 'exit' ? 'path' : type}
       value={label}
-      label={!label && t(labels.none)}
-      externalUrl={domain ? `${domain?.startsWith('http') ? domain : `https://${domain}`}${label}` : null}
+      label={!label && t(labels.unknown)}
+      externalUrl={
+        domain ? `${domain?.startsWith('http') ? domain : `https://${domain}`}${label}` : null
+      }
     />
   );
 }
 
-function FullPathMetricLabel({ data }: Pick<MetricLabelProps, "data">) {
+function FullPathMetricLabel({ data }: Pick<MetricLabelProps, 'data'>) {
   const { t, labels } = useMessages();
   const { label } = data;
-  const text = label || `(${t(labels.none)})`;
+  const text = label || `(${t(labels.unknown)})`;
 
   return <Text title={text}>{text}</Text>;
 }
 
 function DeviceMetricLabel({ data }: Pick<MetricLabelProps, 'data'>) {
   const { formatValue } = useFormat();
-  const { labels } = useMessages();
+  const { t, labels } = useMessages();
   const { label } = data;
+  const unknown = isUnknownValue(label);
 
   return (
     <FilterLink
       type="device"
-      value={labels[label] && label}
-      label={formatValue(label, 'device')}
+      value={unknown ? undefined : label}
+      label={unknown ? t(labels.unknown) : formatValue(label, 'device')}
       icon={<TypeIcon type="device" value={label} />}
     />
   );
@@ -185,9 +191,10 @@ function ReferrerMetricLabel({ data }: Pick<MetricLabelProps, 'data'>) {
     <FilterLink
       type="referrer"
       value={label}
-      externalUrl={`https://${label}`}
-      label={!label ? t(labels.none) : decodePunycodeDomain(label)}
-      icon={<Favicon domain={label} />}
+      externalUrl={label ? `https://${label}` : null}
+      label={!label ? t(labels.direct) : decodePunycodeDomain(label)}
+      wrapEmptyLabel={false}
+      icon={label ? <Favicon domain={label} /> : <Share2 size={16} />}
     />
   );
 }
@@ -216,13 +223,20 @@ function DomainMetricLabel({ data }: Pick<MetricLabelProps, 'data'>) {
 
 function LanguageMetricLabel({ data }: Pick<MetricLabelProps, 'data'>) {
   const { formatValue } = useFormat();
+  const { t, labels } = useMessages();
   const { label } = data;
 
-  return formatValue(label, 'language');
+  return isUnknownValue(label)
+    ? `(${t(labels.unknown)})`
+    : formatValue(label, 'language') || `(${t(labels.unknown)})`;
 }
 
 function DefaultMetricLabel({ type, data }: MetricLabelProps) {
   const { label } = data;
 
   return <FilterLink type={type} value={label} />;
+}
+
+function isUnknownValue(value: unknown) {
+  return !value || (typeof value === 'string' && value.toLowerCase() === 'unknown');
 }

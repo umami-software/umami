@@ -12,6 +12,8 @@ const mocks = vi.hoisted(() => ({
   getUserSecurityKeyCount: vi.fn(),
   saveAuth: vi.fn(),
   isTwoFactorConfigured: vi.fn(),
+  getTwoFactorRequiredReason: vi.fn(),
+  addTeamBillingStatus: vi.fn(),
 }));
 
 vi.mock('@/lib/request', () => ({
@@ -65,6 +67,14 @@ vi.mock('@/lib/two-factor/crypto', () => ({
   isTwoFactorConfigured: mocks.isTwoFactorConfigured,
 }));
 
+vi.mock('@/lib/two-factor/policy', () => ({
+  getTwoFactorRequiredReason: mocks.getTwoFactorRequiredReason,
+}));
+
+vi.mock('@/lib/load', () => ({
+  addTeamBillingStatus: mocks.addTeamBillingStatus,
+}));
+
 import { POST } from './route';
 
 beforeEach(() => {
@@ -79,6 +89,8 @@ beforeEach(() => {
   mocks.getUserSecurityKeyCount.mockReset();
   mocks.saveAuth.mockReset();
   mocks.isTwoFactorConfigured.mockReset();
+  mocks.getTwoFactorRequiredReason.mockReset();
+  mocks.addTeamBillingStatus.mockReset();
 
   mocks.parseRequest.mockResolvedValue({
     body: { username: 'alice', password: 'secret' },
@@ -95,7 +107,11 @@ beforeEach(() => {
   mocks.findTwoFactorAuth.mockResolvedValue({ userId: 'user-1', isEnabled: true });
   mocks.isTwoFactorConfigured.mockReturnValue(true);
   mocks.getUserSecurityKeyCount.mockResolvedValue(0);
-  mocks.createSecureToken.mockReturnValue('partial-token');
+  mocks.getTwoFactorRequiredReason.mockResolvedValue(null);
+  mocks.addTeamBillingStatus.mockResolvedValue([]);
+  mocks.hash.mockReturnValue('pwd-fingerprint');
+  mocks.secret.mockReturnValue('app-secret');
+  mocks.createSecureToken.mockReturnValue('full-auth-token');
 });
 
 test('POST returns a configuration error instead of partial auth when 2FA is enabled but unavailable', async () => {
@@ -113,6 +129,8 @@ test('POST returns a configuration error instead of partial auth when 2FA is ena
 });
 
 test('POST returns a partial token with the totp method when 2FA is enabled', async () => {
+  mocks.createSecureToken.mockReturnValue('partial-token');
+
   const response = await POST(new Request('http://localhost/api/auth/login', { method: 'POST' }));
 
   expect(response.status).toBe(200);
@@ -126,6 +144,7 @@ test('POST returns a partial token with the totp method when 2FA is enabled', as
 test('POST requires a security key when the user has one registered', async () => {
   mocks.findTwoFactorAuth.mockResolvedValue(null);
   mocks.getUserSecurityKeyCount.mockResolvedValue(1);
+  mocks.createSecureToken.mockReturnValue('partial-token');
 
   const response = await POST(new Request('http://localhost/api/auth/login', { method: 'POST' }));
 
@@ -156,4 +175,44 @@ test('POST still allows security keys when the 2FA encryption key is missing', a
   await expect(response.json()).resolves.toMatchObject({
     methods: ['security-key'],
   });
+});
+
+test('POST limits the session to 2FA setup when 2FA is required but not set up', async () => {
+  // Required 2FA must hold for direct API logins too, not only in the UI's setup modal.
+  mocks.findTwoFactorAuth.mockResolvedValue(null);
+  mocks.getTwoFactorRequiredReason.mockResolvedValue('team');
+
+  const response = await POST(new Request('http://localhost/api/auth/login', { method: 'POST' }));
+
+  expect(mocks.getTwoFactorRequiredReason).toHaveBeenCalledWith('user-1');
+  expect(mocks.createSecureToken).toHaveBeenCalledWith(
+    { userId: 'user-1', role: 'admin', pwd: 'pwd-fingerprint', twoFactorSetup: true },
+    'app-secret',
+  );
+  expect(response.status).toBe(200);
+});
+
+test('POST issues an unrestricted session when 2FA is not required', async () => {
+  mocks.findTwoFactorAuth.mockResolvedValue(null);
+
+  await POST(new Request('http://localhost/api/auth/login', { method: 'POST' }));
+
+  expect(mocks.createSecureToken).toHaveBeenCalledWith(
+    { userId: 'user-1', role: 'admin', pwd: 'pwd-fingerprint' },
+    'app-secret',
+  );
+});
+
+test('POST does not restrict the session when 2FA cannot be configured', async () => {
+  // Without an encryption key users cannot set up 2FA, so restricting them would lock them out.
+  mocks.findTwoFactorAuth.mockResolvedValue(null);
+  mocks.isTwoFactorConfigured.mockReturnValue(false);
+  mocks.getTwoFactorRequiredReason.mockResolvedValue('global');
+
+  await POST(new Request('http://localhost/api/auth/login', { method: 'POST' }));
+
+  expect(mocks.createSecureToken).toHaveBeenCalledWith(
+    { userId: 'user-1', role: 'admin', pwd: 'pwd-fingerprint' },
+    'app-secret',
+  );
 });

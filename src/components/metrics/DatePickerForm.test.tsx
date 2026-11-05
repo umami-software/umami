@@ -92,6 +92,96 @@ describe('DatePickerForm', () => {
     expect(emitted).not.toContain('NaN');
   });
 
+  test('two clicks inside an existing range select a new range from the first to the second', () => {
+    const onChange = vi.fn();
+    const onClose = vi.fn();
+
+    const { container } = render(
+      <DatePickerForm
+        startDate={new Date(2026, 0, 10)}
+        endDate={new Date(2026, 0, 20)}
+        onChange={onChange}
+        onClose={onClose}
+      />,
+    );
+
+    const clickDay = (day: string) =>
+      fireEvent.click(container.querySelector(`[data-day="${day}"] button`));
+
+    clickDay('2026-01-15');
+    clickDay('2026-01-18');
+    fireEvent.click(screen.getByRole('button', { name: /apply/i }));
+
+    expect(onChange).toHaveBeenCalledWith(
+      `range:${new Date(2026, 0, 15).getTime()}:${new Date(2026, 0, 18, 23, 59, 59, 999).getTime()}`,
+    );
+  });
+
+  test('applying after a single click selects just that day', () => {
+    const onChange = vi.fn();
+    const onClose = vi.fn();
+
+    const { container } = render(
+      <DatePickerForm
+        startDate={new Date(2026, 0, 10)}
+        endDate={new Date(2026, 0, 20)}
+        onChange={onChange}
+        onClose={onClose}
+      />,
+    );
+
+    fireEvent.click(container.querySelector('[data-day="2026-01-15"] button'));
+    fireEvent.click(screen.getByRole('button', { name: /apply/i }));
+
+    expect(onChange).toHaveBeenCalledWith(
+      `range:${new Date(2026, 0, 15).getTime()}:${new Date(2026, 0, 15, 23, 59, 59, 999).getTime()}`,
+    );
+  });
+
+  test('highlights each day of a range crossing a month boundary only once', () => {
+    const { container } = render(
+      <DatePickerForm
+        startDate={new Date(2025, 11, 29)}
+        endDate={new Date(2026, 0, 2)}
+        onChange={vi.fn()}
+        onClose={vi.fn()}
+      />,
+    );
+
+    const selectedDays = [
+      ...container.querySelectorAll('[aria-selected="true"]:not([data-hidden])'),
+    ].map(cell => cell.getAttribute('data-day'));
+
+    expect(selectedDays).toEqual([
+      '2025-12-29',
+      '2025-12-30',
+      '2025-12-31',
+      '2026-01-01',
+      '2026-01-02',
+    ]);
+  });
+
+  test('opens on the current month when the range ends in the future', () => {
+    vi.useFakeTimers({ toFake: ['Date'] });
+    vi.setSystemTime(new Date(2026, 1, 15));
+
+    const { container } = render(
+      <DatePickerForm
+        startDate={new Date(2026, 0, 1)}
+        endDate={new Date(2026, 11, 31)}
+        onChange={vi.fn()}
+        onClose={vi.fn()}
+      />,
+    );
+
+    const captions = [...container.querySelectorAll('.rdp-caption_label')].map(
+      caption => caption.textContent,
+    );
+    vi.useRealTimers();
+
+    expect(captions).toEqual(['January 2026', 'February 2026']);
+  });
+
   test('does not disable Apply button when endDate matches maxDate calendar day', () => {
     const onChange = vi.fn();
     const onClose = vi.fn();

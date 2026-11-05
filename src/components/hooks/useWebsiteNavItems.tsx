@@ -5,6 +5,7 @@ import {
   Clock,
   Eye,
   Flame,
+  Megaphone,
   Search,
   Sheet,
   Tag,
@@ -70,7 +71,7 @@ export function useWebsiteNavItems(websiteId: string) {
           icon: <Sheet />,
           path: renderPath('/breakdown'),
         },
-        // Google Search Console is a Cloud integration.
+        // Google Search Console and Google Ads are Cloud integrations.
         ...(config?.cloudMode
           ? [
               {
@@ -78,6 +79,12 @@ export function useWebsiteNavItems(websiteId: string) {
                 label: t('searchConsole.searches'),
                 icon: <Search />,
                 path: renderPath('/search-console'),
+              },
+              {
+                id: 'google-ads',
+                label: t('googleAds.ads'),
+                icon: <Megaphone />,
+                path: renderPath('/google-ads'),
               },
             ]
           : []),

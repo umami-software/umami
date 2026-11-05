@@ -5,7 +5,7 @@ import { DELETE } from './route';
 const mocks = vi.hoisted(() => ({
   deleteSecurityKey: vi.fn(),
   isTwoFactorConfigured: vi.fn(),
-  isTwoFactorRequired: vi.fn(),
+  getTwoFactorRequiredReason: vi.fn(),
   findTwoFactorAuth: vi.fn(),
 }));
 
@@ -21,8 +21,8 @@ vi.mock('@/lib/two-factor/crypto', () => ({
   isTwoFactorConfigured: mocks.isTwoFactorConfigured,
 }));
 
-vi.mock('@/lib/two-factor/requirement', () => ({
-  isTwoFactorRequired: mocks.isTwoFactorRequired,
+vi.mock('@/lib/two-factor/policy', () => ({
+  getTwoFactorRequiredReason: mocks.getTwoFactorRequiredReason,
 }));
 
 vi.mock('@/lib/prisma', () => ({
@@ -57,7 +57,7 @@ beforeEach(() => {
     error: undefined,
   });
   mocks.isTwoFactorConfigured.mockReturnValue(true);
-  mocks.isTwoFactorRequired.mockResolvedValue(false);
+  mocks.getTwoFactorRequiredReason.mockResolvedValue(null);
   mocks.findTwoFactorAuth.mockResolvedValue(null);
   mocks.deleteSecurityKey.mockResolvedValue('deleted');
 });
@@ -78,7 +78,7 @@ test('DELETE returns 404 when the key does not belong to the user', async () => 
 });
 
 test('DELETE refuses to remove the last second factor while 2FA is required', async () => {
-  mocks.isTwoFactorRequired.mockResolvedValue(true);
+  mocks.getTwoFactorRequiredReason.mockResolvedValue('user');
   mocks.deleteSecurityKey.mockResolvedValue('last-key');
 
   const response = await deleteRequest();
@@ -91,7 +91,7 @@ test('DELETE refuses to remove the last second factor while 2FA is required', as
 });
 
 test('DELETE allows removing a key while 2FA is required if another factor remains', async () => {
-  mocks.isTwoFactorRequired.mockResolvedValue(true);
+  mocks.getTwoFactorRequiredReason.mockResolvedValue('user');
   mocks.findTwoFactorAuth.mockResolvedValue({ isEnabled: true });
 
   const response = await deleteRequest();

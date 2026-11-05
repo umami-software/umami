@@ -164,3 +164,22 @@ test('POST accepts only absolute link urls, matching the link form', async () =>
   expect(schema.safeParse(body('/relative/path')).success).toBe(false);
   expect(schema.safeParse(body('')).success).toBe(false);
 });
+
+// Pasted urls often carry surrounding spaces; store the url the redirect will actually use.
+test('POST trims surrounding whitespace from link urls', async () => {
+  parseRequestMock.mockResolvedValue({ error: () => new Response(null, { status: 400 }) } as any);
+
+  await POST(new Request('http://localhost/api/links', { method: 'POST' }));
+
+  const schema = parseRequestMock.mock.calls[0][1] as {
+    safeParse: (value: unknown) => { success: boolean; data?: { url: string } };
+  };
+  const result = schema.safeParse({
+    name: 'Docs',
+    url: ' https://example.com/docs ',
+    slug: 'abcdefgh',
+  });
+
+  expect(result.data?.url).toBe('https://example.com/docs');
+  expect(schema.safeParse({ name: 'Docs', url: '   ', slug: 'abcdefgh' }).success).toBe(false);
+});

@@ -60,7 +60,7 @@ export function SessionInfo({ data }) {
         label={t(labels.country)}
         icon={data?.country ? <TypeIcon type="country" value={data.country} /> : <Earth />}
       >
-        {formatValue(data?.country, 'country')}
+        {data?.country && formatValue(data.country, 'country')}
       </Info>
 
       <Info label={t(labels.region)} icon={<MapPin />}>
@@ -75,7 +75,7 @@ export function SessionInfo({ data }) {
         label={t(labels.browser)}
         icon={data?.browser ? <TypeIcon type="browser" value={data.browser} /> : <AppWindow />}
       >
-        {formatValue(data?.browser, 'browser')}
+        {data?.browser && formatValue(data.browser, 'browser')}
       </Info>
 
       <Info
@@ -88,7 +88,7 @@ export function SessionInfo({ data }) {
           )
         }
       >
-        {formatValue(data?.os, 'os')}
+        {data?.os && formatValue(data.os, 'os')}
       </Info>
 
       <Info

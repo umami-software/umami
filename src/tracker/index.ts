@@ -16,6 +16,13 @@ export type TrackedProperties = {
   id?: string;
 
   /**
+   * Value mixed into the server's session salt. Only used when the server sets ENABLE_CLIENT_SALT.
+   *
+   * @example '2026-10-30' (rotates sessions daily)
+   */
+  salt?: string;
+
+  /**
    * Browser language
    *
    * @description extracted from `window.navigator.language`
@@ -213,6 +220,9 @@ export type UmamiConfig = {
   domains?: string | string[];
   tag?: string;
   distinctId?: string;
+  salt?: string;
+  /** Generates the salt from the current UTC time. Ignored when `salt` is set. */
+  saltRotation?: 'hourly' | 'daily' | 'weekly' | 'monthly';
   beforeSend?: BeforeSend | string;
   errors?: boolean;
   release?: string;
@@ -232,6 +242,7 @@ type TrackerWindow = Window &
   };
 type TrackerDocument = Document & {
   currentScript: HTMLScriptElement | null;
+  prerendering?: boolean;
 };
 type MetricEntry = PerformanceEntry & {
   activationStart: number;
@@ -292,6 +303,8 @@ type MetricEntry = PerformanceEntry & {
   const hostUrl = config('host-url');
   const distinctId = config('distinct-id') || undefined;
   const tag = config('tag') || undefined;
+  const salt = config('salt') || undefined;
+  const saltRotation = config('salt-rotation');
   const autoTrack = config('auto-track') !== _false;
   const dnt = config('do-not-track') === _true;
   const excludeSearch = config('exclude-search') === _true;
@@ -334,6 +347,16 @@ type MetricEntry = PerformanceEntry & {
   const stripOrigin = (url: string): string =>
     url === origin || url?.startsWith(`${origin}/`) ? url.slice(origin.length) : url;
 
+  // Evaluated per payload so a long-lived page still rotates.
+  const getSalt = () => {
+    if (salt) return salt;
+    const length = { hourly: 13, daily: 10, weekly: 10, monthly: 7 }[saltRotation as string];
+    if (!length) return undefined;
+    const now = new Date();
+    if (saltRotation === 'weekly') now.setUTCDate(now.getUTCDate() - now.getUTCDay());
+    return now.toISOString().slice(0, length);
+  };
+
   const getPayload = () => ({
     website,
     screen,
@@ -344,6 +367,7 @@ type MetricEntry = PerformanceEntry & {
     referrer: stripOrigin(currentRef),
     tag,
     id: identity ? identity : undefined,
+    salt: getSalt(),
   });
 
   const hasDoNotTrack = () => {
@@ -519,6 +543,29 @@ type MetricEntry = PerformanceEntry & {
     let activationStart = 0;
     let pageStartTime = 0;
 
+    const getEntriesByType = (type: string): MetricEntry[] => {
+      try {
+        return (window.performance?.getEntriesByType?.(type) as MetricEntry[]) || [];
+      } catch {
+        return [];
+      }
+    };
+
+    const getFirstHiddenTime = () => {
+      const doc = document as TrackerDocument;
+      if (doc.prerendering) {
+        return Infinity;
+      }
+      const navEntry = getEntriesByType('navigation')?.[0];
+      const navActivationStart = navEntry?.activationStart || 0;
+      const hiddenEntry = getEntriesByType('visibility-state')?.find(
+        entry => entry.name === 'hidden' && entry.startTime >= navActivationStart,
+      );
+      return hiddenEntry?.startTime ?? (document.visibilityState === 'hidden' ? 0 : Infinity);
+    };
+
+    let firstHiddenTime = getFirstHiddenTime();
+
     const observe = (type: string, callback: (entry: MetricEntry) => void) => {
       try {
         const observer = new PerformanceObserver(list => {
@@ -538,14 +585,20 @@ type MetricEntry = PerformanceEntry & {
 
     // FCP
     observe('paint', entry => {
-      if (entry.name === 'first-contentful-paint') {
+      if (
+        isInitialLoad &&
+        entry.name === 'first-contentful-paint' &&
+        entry.startTime < firstHiddenTime
+      ) {
         metrics.fcp = Math.max(entry.startTime - activationStart, 0);
       }
     });
 
     // LCP
     observe('largest-contentful-paint', entry => {
-      metrics.lcp = Math.max(entry.startTime - activationStart, 0);
+      if (isInitialLoad && entry.startTime < firstHiddenTime) {
+        metrics.lcp = Math.max(entry.startTime - activationStart, 0);
+      }
     });
 
     // CLS - session windows algorithm (gap < 1s, max 5s duration; report worst window)
@@ -605,14 +658,6 @@ type MetricEntry = PerformanceEntry & {
       }
     };
 
-    const getEntriesByType = (type: string): MetricEntry[] => {
-      try {
-        return (window.performance?.getEntriesByType?.(type) as MetricEntry[]) || [];
-      } catch {
-        return [];
-      }
-    };
-
     const applyFallbackMetrics = () => {
       if (!isInitialLoad) return;
 
@@ -627,7 +672,7 @@ type MetricEntry = PerformanceEntry & {
         const fcpEntry = getEntriesByType('paint')?.find(
           entry => entry.name === 'first-contentful-paint',
         );
-        if (fcpEntry) {
+        if (fcpEntry && fcpEntry.startTime < firstHiddenTime) {
           metrics.fcp = Math.max(fcpEntry.startTime - activationStart, 0);
         }
       }
@@ -635,7 +680,7 @@ type MetricEntry = PerformanceEntry & {
       if (metrics.lcp === undefined) {
         const lcpEntries = getEntriesByType('largest-contentful-paint');
         const lcpEntry = lcpEntries?.[lcpEntries.length - 1];
-        if (lcpEntry) {
+        if (lcpEntry && lcpEntry.startTime < firstHiddenTime) {
           metrics.lcp = Math.max(lcpEntry.startTime - activationStart, 0);
         }
       }
@@ -670,9 +715,17 @@ type MetricEntry = PerformanceEntry & {
     };
     timeoutId = setTimeout(sendPerformance, 10000);
 
-    document.addEventListener('visibilitychange', () => {
-      if (document.visibilityState === 'hidden') sendPerformance();
-    });
+    const onVisibilityChange = (event: Event) => {
+      if (document.visibilityState === 'hidden') {
+        if (firstHiddenTime === Infinity) {
+          firstHiddenTime = event.timeStamp || performance.now();
+        }
+        sendPerformance();
+      }
+    };
+
+    document.addEventListener('visibilitychange', onVisibilityChange, true);
+    document.addEventListener('prerenderingchange', onVisibilityChange, true);
     window.addEventListener('pagehide', sendPerformance);
   };
 

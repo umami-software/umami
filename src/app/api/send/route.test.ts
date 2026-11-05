@@ -113,6 +113,7 @@ beforeEach(() => {
   delete process.env.DISABLE_BOT_CHECK;
   delete process.env.REMOVE_TRAILING_SLASH;
   delete process.env.SALT_ROTATION;
+  delete process.env.ENABLE_CLIENT_SALT;
 
   isbotMock.mockReturnValue(false);
   hasBlockedIpMock.mockReturnValue(false);
@@ -1006,5 +1007,66 @@ describe('error handling', () => {
       error: { code: 'server-error', status: 500 },
     });
     consoleLog.mockRestore();
+  });
+});
+
+describe('client salt', () => {
+  test('the schema accepts salt and rejects values over 100 characters', async () => {
+    await callPOST({ type: 'event', payload: { website: WEBSITE_ID, url: '/' } });
+    const schema = parseRequestMock.mock.calls[0][1] as {
+      safeParse: (value: unknown) => { success: boolean };
+    };
+    const payload = (salt: string) => ({ type: 'event', payload: { website: WEBSITE_ID, salt } });
+
+    expect(schema.safeParse(payload('2026-10-30')).success).toBe(true);
+    expect(schema.safeParse(payload('x'.repeat(101))).success).toBe(false);
+  });
+
+  test('is ignored when ENABLE_CLIENT_SALT is not set', async () => {
+    const response = await callPOST({
+      type: 'event',
+      payload: { website: WEBSITE_ID, url: '/', salt: '2026-10-30' },
+    });
+    const body = (await response.json()) as Record<string, any>;
+
+    expect(body.sessionId).toBe(makeComputedSessionId(WEBSITE_ID));
+  });
+
+  test('separates sessions by salt when ENABLE_CLIENT_SALT is set', async () => {
+    process.env.ENABLE_CLIENT_SALT = '1';
+
+    const first = await callPOST({
+      type: 'event',
+      payload: { website: WEBSITE_ID, url: '/', salt: '2026-10-30' },
+    });
+    const second = await callPOST({
+      type: 'event',
+      payload: { website: WEBSITE_ID, url: '/', salt: '2026-10-31' },
+    });
+    const firstBody = (await first.json()) as Record<string, any>;
+    const secondBody = (await second.json()) as Record<string, any>;
+
+    expect(firstBody.sessionId).not.toBe(makeComputedSessionId(WEBSITE_ID));
+    expect(firstBody.sessionId).not.toBe(secondBody.sessionId);
+  });
+
+  test('reuses the salted anonymous session when the visitor identifies', async () => {
+    process.env.ENABLE_CLIENT_SALT = '1';
+    const salt = '2026-10-30';
+
+    const anon = await callPOST({
+      type: 'event',
+      payload: { website: WEBSITE_ID, url: '/', salt },
+    });
+    const anonBody = (await anon.json()) as Record<string, any>;
+
+    const response = await callPOST(
+      { type: 'identify', payload: { website: WEBSITE_ID, id: 'user-42', salt } },
+      { headers: { 'x-umami-cache': anonBody.cache } },
+    );
+    const body = (await response.json()) as Record<string, any>;
+
+    expect(body.sessionId).toBe(anonBody.sessionId);
+    expect(saveSessionLinkMock.mock.calls[0][0]).toMatchObject({ sessionId: anonBody.sessionId });
   });
 });

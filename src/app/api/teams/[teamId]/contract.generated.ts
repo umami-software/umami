@@ -90,53 +90,102 @@ const operation2 = defineOperation({
         content: {
           'application/json': {
             schema: {
-              type: 'object',
-              properties: {
-                id: {
-                  type: 'string',
-                  description: 'Unique identifier of the resource.',
+              anyOf: [
+                {
+                  type: 'object',
+                  properties: {
+                    id: {
+                      type: 'string',
+                      description: 'Unique identifier of the resource.',
+                    },
+                    createdAt: {
+                      type: 'string',
+                      format: 'date-time',
+                      description: 'Date and time the record was created.',
+                    },
+                    updatedAt: {
+                      type: 'string',
+                      format: 'date-time',
+                      description: 'Date and time the record was last updated.',
+                    },
+                    logoUrl: {
+                      type: 'string',
+                      description: 'URL of the logo image.',
+                    },
+                    twoFactorRequired: {
+                      type: 'boolean',
+                      description: 'Whether two-factor authentication is required.',
+                    },
+                    deletedAt: {
+                      type: 'string',
+                      format: 'date-time',
+                      description: 'Date and time the record was deleted, if applicable.',
+                    },
+                    name: {
+                      type: 'string',
+                      description: 'Display name of the resource.',
+                    },
+                  },
+                  required: [
+                    'id',
+                    'createdAt',
+                    'updatedAt',
+                    'logoUrl',
+                    'twoFactorRequired',
+                    'deletedAt',
+                    'name',
+                  ],
                 },
-                createdAt: {
-                  type: 'string',
-                  format: 'date-time',
-                  description: 'Date and time the record was created.',
+                {
+                  type: 'object',
+                  properties: {
+                    id: {
+                      type: 'string',
+                      description: 'Unique identifier of the resource.',
+                    },
+                    createdAt: {
+                      type: 'string',
+                      format: 'date-time',
+                      description: 'Date and time the record was created.',
+                    },
+                    updatedAt: {
+                      type: 'string',
+                      format: 'date-time',
+                      description: 'Date and time the record was last updated.',
+                    },
+                    logoUrl: {
+                      type: 'string',
+                      description: 'URL of the logo image.',
+                    },
+                    twoFactorRequired: {
+                      type: 'boolean',
+                      description: 'Whether two-factor authentication is required.',
+                    },
+                    deletedAt: {
+                      type: 'string',
+                      format: 'date-time',
+                      description: 'Date and time the record was deleted, if applicable.',
+                    },
+                    name: {
+                      type: 'string',
+                      description: 'Display name of the resource.',
+                    },
+                    accessCode: {
+                      type: 'string',
+                      description: 'Code used to join the team.',
+                    },
+                  },
+                  required: [
+                    'id',
+                    'createdAt',
+                    'updatedAt',
+                    'logoUrl',
+                    'twoFactorRequired',
+                    'deletedAt',
+                    'name',
+                    'accessCode',
+                  ],
                 },
-                updatedAt: {
-                  type: 'string',
-                  format: 'date-time',
-                  description: 'Date and time the record was last updated.',
-                },
-                logoUrl: {
-                  type: 'string',
-                  description: 'URL of the logo image.',
-                },
-                twoFactorRequired: {
-                  type: 'boolean',
-                  description: 'Whether two-factor authentication is required.',
-                },
-                deletedAt: {
-                  type: 'string',
-                  format: 'date-time',
-                  description: 'Date and time the record was deleted, if applicable.',
-                },
-                name: {
-                  type: 'string',
-                  description: 'Display name of the resource.',
-                },
-                accessCode: {
-                  type: 'string',
-                  description: 'Code used to join the team.',
-                },
-              },
-              required: [
-                'id',
-                'createdAt',
-                'updatedAt',
-                'logoUrl',
-                'twoFactorRequired',
-                'deletedAt',
-                'name',
-                'accessCode',
               ],
             },
           },

@@ -35,6 +35,7 @@ export function useLocale() {
         ...data.label,
       },
       errorTracking: { ...enUS.errorTracking, ...data.errorTracking },
+      googleAds: { ...enUS.googleAds, ...data.googleAds },
     };
   }
 

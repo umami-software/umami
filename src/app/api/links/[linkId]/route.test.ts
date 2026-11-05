@@ -40,3 +40,17 @@ test('POST accepts only absolute link urls and keeps url optional', async () => 
   expect(schema.safeParse({ url: 'https://example.com' }).success).toBe(true);
   expect(schema.safeParse({ url: 'foo' }).success).toBe(false);
 });
+
+test('POST trims surrounding whitespace from link urls', async () => {
+  parseRequestMock.mockResolvedValue({ error: () => new Response(null, { status: 400 }) } as any);
+
+  await POST(new Request('http://localhost/api/links/link-1', { method: 'POST' }), {
+    params: Promise.resolve({ linkId: 'link-1' }),
+  });
+
+  const schema = parseRequestMock.mock.calls[0][1] as {
+    safeParse: (value: unknown) => { data?: { url?: string } };
+  };
+
+  expect(schema.safeParse({ url: ' https://example.com ' }).data?.url).toBe('https://example.com');
+});

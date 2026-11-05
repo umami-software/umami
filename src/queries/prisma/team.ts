@@ -1,5 +1,5 @@
 import { Prisma, type Team, type TeamUser } from '@/generated/prisma/client';
-import { ROLES } from '@/lib/constants';
+import { PERMISSIONS, ROLE_PERMISSIONS, ROLES } from '@/lib/constants';
 import { uuid } from '@/lib/crypto';
 import prisma from '@/lib/prisma';
 import redis from '@/lib/redis';
@@ -53,7 +53,7 @@ export async function getTeams(
 }
 
 export async function getUserTeams(userId: string, filters: QueryFilters = {}) {
-  return getTeams(
+  const teams = await getTeams(
     {
       where: {
         deletedAt: null,
@@ -88,6 +88,23 @@ export async function getUserTeams(userId: string, filters: QueryFilters = {}) {
     },
     filters,
   );
+
+  // The access code lets anyone join the team as a member, so only roles that can edit the
+  // team (owners and managers) receive it.
+  return {
+    ...teams,
+    data: teams.data.map((team): Omit<Team, 'accessCode'> & { accessCode?: Team['accessCode'] } => {
+      const role = (team as any).members?.find(member => member.userId === userId)?.role;
+
+      if (ROLE_PERMISSIONS[role]?.includes(PERMISSIONS.teamUpdate)) {
+        return team;
+      }
+
+      const { accessCode: _accessCode, ...rest } = team;
+
+      return rest;
+    }),
+  };
 }
 
 export async function getAllUserTeams(userId: string) {

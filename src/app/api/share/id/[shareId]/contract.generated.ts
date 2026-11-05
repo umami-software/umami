@@ -60,6 +60,23 @@ const operation1 = defineOperation({
           },
         },
       },
+      '404': {
+        description: 'Not found.',
+        content: {
+          'application/json': {
+            example: {
+              error: {
+                message: 'Not found.',
+                code: 'not-found',
+                status: 404,
+              },
+            },
+            schema: {
+              $ref: '#/components/schemas/ApiError',
+            },
+          },
+        },
+      },
     },
   } as ZodOpenApiOperationObject,
 });
@@ -204,6 +221,23 @@ const operation2 = defineOperation({
                 message: 'Unauthorized.',
                 code: 'unauthorized',
                 status: 401,
+              },
+            },
+            schema: {
+              $ref: '#/components/schemas/ApiError',
+            },
+          },
+        },
+      },
+      '404': {
+        description: 'Not found.',
+        content: {
+          'application/json': {
+            example: {
+              error: {
+                message: 'Not found.',
+                code: 'not-found',
+                status: 404,
               },
             },
             schema: {
@@ -417,6 +451,23 @@ const operation3 = defineOperation({
                 message: 'Not found.',
                 code: 'not-found',
                 status: 404,
+              },
+            },
+            schema: {
+              $ref: '#/components/schemas/ApiError',
+            },
+          },
+        },
+      },
+      '500': {
+        description: 'Server error.',
+        content: {
+          'application/json': {
+            example: {
+              error: {
+                message: 'Server error.',
+                code: 'server-error',
+                status: 500,
               },
             },
             schema: {
