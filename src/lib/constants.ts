@@ -749,11 +749,16 @@ export const CURRENCIES = [
 ];
 
 export const TIMEZONE_LEGACY: Record<string, string> = {
+  'America/Buenos_Aires': 'America/Argentina/Buenos_Aires',
+  'America/Catamarca': 'America/Argentina/Catamarca',
+  'America/Cordoba': 'America/Argentina/Cordoba',
+  'America/Jujuy': 'America/Argentina/Jujuy',
+  'America/Mendoza': 'America/Argentina/Mendoza',
+  'America/Rosario': 'America/Argentina/Cordoba',
   'Asia/Batavia': 'Asia/Jakarta',
   'Asia/Calcutta': 'Asia/Kolkata',
   'Asia/Chongqing': 'Asia/Shanghai',
   'Asia/Harbin': 'Asia/Shanghai',
-  'Asia/Jayapura': 'Asia/Pontianak',
   'Asia/Katmandu': 'Asia/Kathmandu',
   'Asia/Macao': 'Asia/Macau',
   'Asia/Rangoon': 'Asia/Yangon',
