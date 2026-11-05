@@ -27,7 +27,36 @@ describe('getRecorderConfig', () => {
   test('only accepts known mask levels', () => {
     expect(getRecorderConfig({ maskLevel: 'strict' })).toEqual({ maskLevel: 'strict' });
     expect(getRecorderConfig({ maskLevel: 'moderate' })).toEqual({ maskLevel: 'moderate' });
+    expect(getRecorderConfig({ maskLevel: 'lax' })).toEqual({ maskLevel: 'lax' });
     expect(getRecorderConfig({ maskLevel: 'loose' })).toEqual({});
+  });
+
+  test('only accepts known console levels', () => {
+    expect(getRecorderConfig({ consoleLevel: 'warn' })).toEqual({ consoleLevel: 'warn' });
+    expect(getRecorderConfig({ consoleLevel: 'all' })).toEqual({ consoleLevel: 'all' });
+    expect(getRecorderConfig({ consoleLevel: 'verbose' })).toEqual({});
+  });
+
+  test('keeps an explicit canvas recording setting', () => {
+    expect(getRecorderConfig({ recordCanvas: true })).toEqual({ recordCanvas: true });
+    expect(getRecorderConfig({ recordCanvas: false })).toEqual({ recordCanvas: false });
+    expect(getRecorderConfig({ recordCanvas: 'true' })).toEqual({});
+  });
+
+  test('clamps canvas fps and quality', () => {
+    expect(getRecorderConfig({ canvasFps: 12.4, canvasQuality: 0.5 })).toEqual({
+      canvasFps: 12,
+      canvasQuality: 0.5,
+    });
+    expect(getRecorderConfig({ canvasFps: 0, canvasQuality: -1 })).toEqual({
+      canvasFps: 1,
+      canvasQuality: 0,
+    });
+    expect(getRecorderConfig({ canvasFps: 120, canvasQuality: 2 })).toEqual({
+      canvasFps: 60,
+      canvasQuality: 1,
+    });
+    expect(getRecorderConfig({ canvasFps: NaN, canvasQuality: '0.5' })).toEqual({});
   });
 
   test('rounds finite maxDuration and rejects non-finite values', () => {
