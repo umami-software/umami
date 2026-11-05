@@ -3,8 +3,21 @@ import { endOfDay, isAfter, isBefore, isSameDay, startOfDay } from 'date-fns';
 import { useState } from 'react';
 import { useMessages } from '@/components/hooks';
 
+export interface DatePickerFormProps {
+  startDate: Date;
+  endDate: Date;
+  minDate: Date;
+  maxDate: Date;
+  onChange: (value: string) => void;
+  onClose: () => void;
+}
+
 const FILTER_DAY = 'filter-day';
 const FILTER_RANGE = 'filter-range';
+
+function toRangeString(startDate: Date, endDate: Date): string {
+  return `range:${startOfDay(startDate).getTime()}:${endOfDay(endDate).getTime()}`;
+}
 
 export function DatePickerForm({
   startDate: defaultStartDate,
@@ -13,24 +26,40 @@ export function DatePickerForm({
   maxDate,
   onChange,
   onClose,
-}) {
-  const [selected, setSelected] = useState<any>([
+}: DatePickerFormProps) {
+  const [selected, setSelected] = useState<string>([
     isSameDay(defaultStartDate, defaultEndDate) ? FILTER_DAY : FILTER_RANGE,
-  ]);
-  const [date, setDate] = useState(defaultStartDate || new Date());
-  const [startDate, setStartDate] = useState(defaultStartDate || new Date());
-  const [endDate, setEndDate] = useState(defaultEndDate || new Date());
+  ][0]);
+  const [date, setDate] = useState(defaultStartDate);
+  const [startDate, setStartDate] = useState(defaultStartDate);
+  const [endDate, setEndDate] = useState(defaultEndDate);
   const { t, labels } = useMessages();
 
-  const disabled = selected.includes(FILTER_DAY)
-    ? isAfter(minDate, date) && isBefore(maxDate, date)
-    : isAfter(startDate, endDate);
+  // Keep the end date at/after the selected start date so the two calendars
+  // never drift out of sync. When the user picks a start date, we move the
+  // end date forward to the day after the start (if it was earlier).
+  const handleStartDateChange = (next: Date) => {
+    setStartDate(next);
+
+    if (isBefore(next, endDate)) {
+      setEndDate(endDate > next ? endDate : endOfDay(next));
+    }
+  };
+
+  const handleEndDateChange = (next: Date) => {
+    setEndDate(next);
+  };
+
+  const disabled =
+    selected === FILTER_DAY
+      ? isAfter(minDate, date) && isBefore(maxDate, date)
+      : isAfter(startDate, endDate);
 
   const handleSave = () => {
-    if (selected.includes(FILTER_DAY)) {
+    if (selected === FILTER_DAY) {
       onChange(`range:${startOfDay(date).getTime()}:${endOfDay(date).getTime()}`);
     } else {
-      onChange(`range:${startOfDay(startDate).getTime()}:${endOfDay(endDate).getTime()}`);
+      onChange(toRangeString(startDate, endDate));
     }
   };
 
@@ -43,24 +72,33 @@ export function DatePickerForm({
         </ToggleGroup>
       </Row>
       <Column>
-        {selected.includes(FILTER_DAY) && (
-          <Calendar value={date} minValue={minDate} maxValue={maxDate} onChange={setDate} />
+        {selected === FILTER_DAY && (
+          <Calendar
+            value={date}
+            minValue={minDate}
+            maxValue={maxDate}
+            onChange={setDate}
+          />
         )}
-        {selected.includes(FILTER_RANGE) && (
-          <Row gap wrap="wrap" style={{ margin: '0 auto' }}>
-            <Calendar
-              value={startDate}
-              minValue={minDate}
-              maxValue={endDate}
-              onChange={setStartDate}
-            />
-            <Calendar
-              value={endDate}
-              minValue={startDate}
-              maxValue={maxDate}
-              onChange={setEndDate}
-            />
-          </Row>
+        {selected === FILTER_RANGE && (
+          <Calendar
+            mode="range"
+            selected={{ from: startDate, to: endDate }}
+            minValue={minDate}
+            maxValue={maxDate}
+            value={startDate}
+            onChange={(start) => {
+              if (!start) return;
+              handleStartDateChange(start);
+            }}
+            onSelect={(range) => {
+              if (range?.to) {
+                // The end date can be picked on either month panel; snap it to
+                // the end of that day so we keep time-less date values.
+                handleEndDateChange(range.to);
+              }
+            }}
+          />
         )}
       </Column>
       <Row justifyContent="end" gap>
