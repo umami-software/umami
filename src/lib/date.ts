@@ -130,6 +130,16 @@ export function normalizeTimezone(timezone: string): string {
   return TIMEZONE_LEGACY[timezone] || timezone;
 }
 
+// The window of the visitor sparklines on the website list, as absolute dates
+export function getWebsiteListDateRange(timezone: string, now = new Date()) {
+  const { startDate, endDate } = parseDateRange('7day', undefined, undefined, timezone, now);
+
+  return {
+    startDate: fromZonedTime(startDate, timezone),
+    endDate: fromZonedTime(endDate, timezone),
+  };
+}
+
 export function getMaxSelectableDate(now = new Date()) {
   return max([endOfYear(now), addMonths(now, 6)]);
 }

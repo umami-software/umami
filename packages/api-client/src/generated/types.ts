@@ -12394,6 +12394,8 @@ export interface operations {
         search?: string;
         /** @description Whether to sort results in descending order. */
         sortDescending?: 'true' | 'false';
+        /** @description IANA time zone used to interpret dates and group results, for example America/New_York. */
+        timezone?: string;
       };
       header?: never;
       path?: never;
