@@ -1,12 +1,16 @@
 import { z } from 'zod';
 import type { Prisma, Website } from '@/generated/prisma/client';
 import { BOARD_TYPES } from '@/lib/boards';
+import { DEFAULT_PAGE_SIZE } from '@/lib/constants';
+import { getWebsiteListDateRange } from '@/lib/date';
 import prisma, { getSchema } from '@/lib/prisma';
 import redis from '@/lib/redis';
 import { sanitizeSortFilters } from '@/lib/sort';
 import type { PageResult, QueryFilters } from '@/lib/types';
+import { getWebsiteVisitorTotals } from '@/queries/sql/getWebsiteVisitorTotals';
 
-const WEBSITE_SORT_FIELDS = ['name', 'domain', 'createdAt'] as const;
+const WEBSITE_VISITORS_SORT = 'visitors';
+const WEBSITE_SORT_FIELDS = ['name', 'domain', 'createdAt', WEBSITE_VISITORS_SORT] as const;
 
 export type WebsiteListItem = Website & {
   shareId: string | null;
@@ -126,9 +130,53 @@ export async function getWebsites(
     deletedAt: null,
   };
 
-  const websites = await pagedQuery('website', { ...criteria, where }, sortFilters);
+  const websites =
+    sortFilters.orderBy === WEBSITE_VISITORS_SORT
+      ? await pagedWebsitesByVisitors({ ...criteria, where }, sortFilters)
+      : await pagedQuery('website', { ...criteria, where }, sortFilters);
 
   return attachShareIdToWebsites(websites);
+}
+
+// Visitors live in the analytics database, which can be separate from the websites table, so the
+// sort can't be pushed into the website query. Rank all matching websites, then load one page.
+async function pagedWebsitesByVisitors(
+  criteria: Prisma.WebsiteFindManyArgs,
+  filters: QueryFilters,
+): Promise<PageResult<Website[]>> {
+  const { page = 1, pageSize, orderBy, sortDescending = false, search, timezone } = filters;
+  const size = +pageSize || DEFAULT_PAGE_SIZE;
+
+  const matches = await prisma.client.website.findMany({
+    where: criteria.where,
+    select: { id: true },
+    orderBy: { name: 'asc' },
+  });
+  const websiteIds = matches.map(({ id }) => id);
+  const visitors = await getWebsiteVisitorTotals(
+    websiteIds,
+    getWebsiteListDateRange(timezone || 'UTC'),
+  );
+  const direction = sortDescending ? -1 : 1;
+  // The sort is stable, so websites with the same count stay in name order across pages
+  const pageIds = websiteIds
+    .toSorted((a, b) => direction * ((visitors[a] ?? 0) - (visitors[b] ?? 0)))
+    .slice(size * (+page - 1), size * +page);
+
+  const websites = await prisma.client.website.findMany({
+    ...criteria,
+    where: { id: { in: pageIds } },
+  });
+  const websiteById = new Map(websites.map(website => [website.id, website]));
+
+  return {
+    data: pageIds.map(id => websiteById.get(id)).filter(Boolean),
+    count: websiteIds.length,
+    page: +page,
+    pageSize: size,
+    orderBy,
+    search,
+  };
 }
 
 export async function getAllUserWebsitesIncludingTeamAccess(

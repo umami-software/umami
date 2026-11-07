@@ -1,7 +1,12 @@
 import { Icon, Row, Text } from '@umami/react-zen';
 import { DataGrid } from '@/components/common/DataGrid';
 import Link from '@/components/common/Link';
-import { useLoginQuery, useNavigation, useUserWebsitesQuery } from '@/components/hooks';
+import {
+  useLoginQuery,
+  useNavigation,
+  useTimezone,
+  useUserWebsitesQuery,
+} from '@/components/hooks';
 import { Favicon } from '@/index';
 import { WebsitesTable } from './WebsitesTable';
 
@@ -15,7 +20,11 @@ export function WebsitesDataTable({
   showActions?: boolean;
 }) {
   const { user } = useLoginQuery();
-  const queryResult = useUserWebsitesQuery({ userId: userId || user?.id, teamId });
+  const { timezone, canonicalizeTimezone } = useTimezone();
+  const queryResult = useUserWebsitesQuery(
+    { userId: userId || user?.id, teamId },
+    { timezone: canonicalizeTimezone(timezone) },
+  );
   const { renderUrl } = useNavigation();
 
   const renderLink = (row: any) => (

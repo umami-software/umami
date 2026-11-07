@@ -2,6 +2,8 @@ import { beforeEach, describe, expect, test, vi } from 'vitest';
 import {
   deleteWebsite,
   getAllUserWebsitesIncludingTeamAccess,
+  getTeamWebsites,
+  getUserWebsites,
   resetWebsite,
   transferWebsite,
   updateWebsite,
@@ -15,6 +17,9 @@ const {
   redisState,
   getSearchParametersMock,
   pagedQueryMock,
+  websiteFindManyMock,
+  shareFindManyMock,
+  getWebsiteVisitorTotalsMock,
 } = vi.hoisted(() => ({
   transactionMock: vi.fn(),
   websiteUpdateMock: vi.fn(),
@@ -23,6 +28,9 @@ const {
   redisState: { enabled: false },
   getSearchParametersMock: vi.fn(),
   pagedQueryMock: vi.fn(),
+  websiteFindManyMock: vi.fn(),
+  shareFindManyMock: vi.fn(),
+  getWebsiteVisitorTotalsMock: vi.fn(),
 }));
 
 vi.mock('@/lib/prisma', () => ({
@@ -30,6 +38,10 @@ vi.mock('@/lib/prisma', () => ({
     client: {
       website: {
         update: websiteUpdateMock,
+        findMany: websiteFindManyMock,
+      },
+      share: {
+        findMany: shareFindManyMock,
       },
     },
     transaction: transactionMock,
@@ -50,6 +62,113 @@ vi.mock('@/lib/redis', () => ({
     },
   },
 }));
+
+vi.mock('@/queries/sql/getWebsiteVisitorTotals', () => ({
+  getWebsiteVisitorTotals: getWebsiteVisitorTotalsMock,
+}));
+
+describe('sorting websites by visitors', () => {
+  // The ranking query returns websites by name; a page has no order of its own, so the mock
+  // returns it reversed
+  const websites = ['Alpha', 'Bravo', 'Charlie', 'Delta'].map(name => ({
+    id: name.toLowerCase(),
+    name,
+  }));
+
+  beforeEach(() => {
+    getSearchParametersMock.mockReset();
+    getSearchParametersMock.mockReturnValue({});
+    pagedQueryMock.mockReset();
+    shareFindManyMock.mockReset();
+    shareFindManyMock.mockResolvedValue([]);
+    websiteFindManyMock.mockReset();
+    websiteFindManyMock.mockImplementation(async ({ where, select }) =>
+      select
+        ? websites.map(({ id }) => ({ id }))
+        : websites.filter(({ id }) => where.id.in.includes(id)).reverse(),
+    );
+    getWebsiteVisitorTotalsMock.mockReset();
+    getWebsiteVisitorTotalsMock.mockResolvedValue({ bravo: 5, charlie: 40, delta: 5 });
+  });
+
+  const getNames = (result: { data: { name: string }[] }) => result.data.map(({ name }) => name);
+
+  test('orders by visitors with ties and websites without traffic in name order', async () => {
+    const descending = await getUserWebsites('user-1', {
+      orderBy: 'visitors',
+      sortDescending: true,
+    });
+    const ascending = await getUserWebsites('user-1', { orderBy: 'visitors' });
+
+    expect(getNames(descending)).toEqual(['Charlie', 'Bravo', 'Delta', 'Alpha']);
+    expect(getNames(ascending)).toEqual(['Alpha', 'Bravo', 'Delta', 'Charlie']);
+    expect(pagedQueryMock).not.toHaveBeenCalled();
+  });
+
+  test('pages through the ranked websites and counts all of them', async () => {
+    const result = await getTeamWebsites('team-1', {
+      orderBy: 'visitors',
+      sortDescending: true,
+      page: 2,
+      pageSize: 3,
+    });
+
+    expect(getNames(result)).toEqual(['Alpha']);
+    expect(result).toMatchObject({ count: 4, page: 2, pageSize: 3, orderBy: 'visitors' });
+    expect(websiteFindManyMock).toHaveBeenLastCalledWith(
+      expect.objectContaining({
+        where: { id: { in: ['alpha'] } },
+        include: { createUser: { select: { id: true, username: true } } },
+      }),
+    );
+  });
+
+  test('ranks only the websites that match the list criteria', async () => {
+    getSearchParametersMock.mockReturnValue({ OR: [{ name: { contains: 'al' } }] });
+
+    await getUserWebsites('user-1', { orderBy: 'visitors', search: 'al' });
+
+    expect(websiteFindManyMock).toHaveBeenCalledWith(
+      expect.objectContaining({
+        where: expect.objectContaining({
+          userId: 'user-1',
+          deletedAt: null,
+          OR: [{ name: { contains: 'al' } }],
+        }),
+        select: { id: true },
+      }),
+    );
+  });
+
+  test('counts visitors over the sparkline window of the requested timezone', async () => {
+    vi.useFakeTimers({ now: new Date('2026-11-07T20:00:00.000Z'), toFake: ['Date'] });
+
+    await getUserWebsites('user-1', { orderBy: 'visitors', timezone: 'Asia/Tokyo' });
+
+    vi.useRealTimers();
+
+    expect(getWebsiteVisitorTotalsMock).toHaveBeenCalledWith(
+      ['alpha', 'bravo', 'charlie', 'delta'],
+      {
+        startDate: new Date('2026-10-31T15:00:00.000Z'),
+        endDate: new Date('2026-11-08T14:59:59.999Z'),
+      },
+    );
+  });
+
+  test('keeps other sorts on the paged website query', async () => {
+    pagedQueryMock.mockResolvedValue({ data: [] });
+
+    await getUserWebsites('user-1', { orderBy: 'createdAt' });
+
+    expect(pagedQueryMock).toHaveBeenCalledWith(
+      'website',
+      expect.anything(),
+      expect.objectContaining({ orderBy: 'createdAt' }),
+    );
+    expect(getWebsiteVisitorTotalsMock).not.toHaveBeenCalled();
+  });
+});
 
 describe('team website access', () => {
   beforeEach(() => {
