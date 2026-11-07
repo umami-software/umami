@@ -15,6 +15,7 @@ import {
 import { colord } from 'colord';
 import { useCallback, useMemo, useState } from 'react';
 import { BarChart } from '@/components/charts/BarChart';
+import { Badge } from '@/components/common/Badge';
 import { GridRow } from '@/components/common/GridRow';
 import { LoadingPanel } from '@/components/common/LoadingPanel';
 import { Panel } from '@/components/common/Panel';
@@ -26,10 +27,11 @@ import {
   usePerformanceStatsQuery,
 } from '@/components/hooks';
 import { ListTable } from '@/components/metrics/ListTable';
+import { MetricCard } from '@/components/metrics/MetricCard';
 import { MetricLabel } from '@/components/metrics/MetricLabel';
-import { PerformanceCard } from '@/components/metrics/PerformanceCard';
+import { MetricsBar } from '@/components/metrics/MetricsBar';
 import { renderDateLabels } from '@/lib/charts';
-import { CHART_COLORS } from '@/lib/constants';
+import { CHART_COLORS, WEB_VITALS_THRESHOLDS } from '@/lib/constants';
 import { generateTimeSeries } from '@/lib/date';
 import { formatLongNumber } from '@/lib/format';
 import styles from './Performance.module.css';
@@ -57,6 +59,34 @@ function formatMetricValue(metric: string, value: number): string {
   return `${Math.round(value)} ms`;
 }
 
+const RATING_VARIANTS = {
+  good: 'good',
+  'needs-improvement': 'warning',
+  poor: 'danger',
+} as const;
+
+function getRating(metric: string, value: number): keyof typeof RATING_VARIANTS {
+  const threshold = WEB_VITALS_THRESHOLDS[metric as keyof typeof WEB_VITALS_THRESHOLDS];
+  if (!threshold || value <= 0) return 'good';
+  if (value <= threshold.good) return 'good';
+  if (value <= threshold.poor) return 'needs-improvement';
+  return 'poor';
+}
+
+function formatListCount(metric: string, value: number): string {
+  return metric === 'cls' ? value.toFixed(3) : `${(value / 1000).toFixed(2)} s`;
+}
+
+/**
+ * The metric whose data is on screen. While a newly selected metric loads, the previous
+ * metric's data stays visible, so labels and formatting must follow it until the new data arrives.
+ */
+function useShownMetric(metric: string, isPlaceholderData: boolean) {
+  const [shown, setShown] = useState(metric);
+  if (!isPlaceholderData && shown !== metric) setShown(metric);
+  return isPlaceholderData ? shown : metric;
+}
+
 const PERCENTILES = [
   { id: 'p50', label: 'p50 — Median' },
   { id: 'p75', label: 'p75 — 75th Percentile' },
@@ -73,6 +103,7 @@ export function Performance({ websiteId, startDate, endDate, unit }: Performance
   const stats = usePerformanceStatsQuery(queryParams);
   const chart = usePerformanceChartQuery({ ...queryParams, metric: selectedMetric });
   const data = chart.data;
+  const chartMetric = useShownMetric(selectedMetric, chart.isPlaceholderData);
 
   const chartData: any = useMemo(() => {
     if (!data?.chart) return { datasets: [] };
@@ -140,12 +171,6 @@ export function Performance({ websiteId, startDate, endDate, unit }: Performance
 
   const renderXLabel = useCallback(renderDateLabels(unit, locale), [unit, locale]);
 
-  const isCls = selectedMetric === 'cls';
-  const metricLabel = t(labels[selectedMetric]) || selectedMetric.toUpperCase();
-  const formatListCount = isCls
-    ? (n: number) => n.toFixed(3)
-    : (n: number) => `${(n / 1000).toFixed(2)} s`;
-
   return (
     <Column gap>
       <Grid columns="280px" gap>
@@ -163,25 +188,34 @@ export function Performance({ websiteId, startDate, endDate, unit }: Performance
       </Grid>
       <Column gap>
         <LoadingPanel data={stats.data} isLoading={stats.isLoading} error={stats.error}>
-          <Grid columns={{ base: '1fr 1fr', lg: 'repeat(5, 1fr)' }} gap>
-            {METRICS.map(metric => (
-              <PerformanceCard
-                key={metric}
-                metric={metric}
-                value={Number(stats.data?.[metric]?.[selectedPercentile] || 0)}
-                label={t(labels[metric]) || metric.toUpperCase()}
-                formatValue={(n: number) => formatMetricValue(metric, n)}
-                onClick={() => setSelectedMetric(metric)}
-                selected={selectedMetric === metric}
-              />
-            ))}
-          </Grid>
+          <MetricsBar>
+            {METRICS.map(metric => {
+              const value = Number(stats.data?.[metric]?.[selectedPercentile] || 0);
+              const rating = getRating(metric, value);
+
+              return (
+                <MetricCard
+                  key={metric}
+                  value={value}
+                  label={t(labels[metric]) || metric.toUpperCase()}
+                  formatValue={(n: number) => formatMetricValue(metric, n)}
+                  footer={
+                    <Badge variant={RATING_VARIANTS[rating]}>
+                      {t(labels[rating === 'needs-improvement' ? 'needsImprovement' : rating])}
+                    </Badge>
+                  }
+                  onClick={() => setSelectedMetric(metric)}
+                  selected={selectedMetric === metric}
+                />
+              );
+            })}
+          </MetricsBar>
         </LoadingPanel>
         <LoadingPanel data={chart.data} isLoading={chart.isLoading} error={chart.error}>
           <Panel>
             <Column gap="4" padding="4">
               <Row justifyContent="space-between" alignItems="center">
-                <Text weight="bold">{METRIC_LABELS[selectedMetric]}</Text>
+                <Text weight="bold">{METRIC_LABELS[chartMetric]}</Text>
                 <Row gap="4">
                   <Text size="sm" className={styles.sampleCount}>
                     {t(labels.sampleSize)}: {formatLongNumber(stats.data?.count || 0)}
@@ -196,7 +230,7 @@ export function Performance({ websiteId, startDate, endDate, unit }: Performance
                 renderXLabel={renderXLabel}
                 renderYLabel={(label: string) => {
                   const val = Number(label);
-                  if (selectedMetric === 'cls') return val.toFixed(2);
+                  if (chartMetric === 'cls') return val.toFixed(2);
                   if (val >= 1000) return `${(val / 1000).toFixed(2)} s`;
                   return `${Math.round(val)} ms`;
                 }}
@@ -217,8 +251,6 @@ export function Performance({ websiteId, startDate, endDate, unit }: Performance
                 <PerformanceMetricsTable
                   params={{ ...queryParams, metric: selectedMetric, type: 'path' }}
                   percentile={selectedPercentile}
-                  metricLabel={metricLabel}
-                  formatCount={formatListCount}
                   renderLabel={({ label }: { label: string }) => <Text>{label}</Text>}
                 />
               </TabPanel>
@@ -226,8 +258,6 @@ export function Performance({ websiteId, startDate, endDate, unit }: Performance
                 <PerformanceMetricsTable
                   params={{ ...queryParams, metric: selectedMetric, type: 'title' }}
                   percentile={selectedPercentile}
-                  metricLabel={metricLabel}
-                  formatCount={formatListCount}
                   renderLabel={(row: any) => <MetricLabel type="title" data={row} />}
                 />
               </TabPanel>
@@ -244,8 +274,6 @@ export function Performance({ websiteId, startDate, endDate, unit }: Performance
                 <PerformanceMetricsTable
                   params={{ ...queryParams, metric: selectedMetric, type: 'device' }}
                   percentile={selectedPercentile}
-                  metricLabel={metricLabel}
-                  formatCount={formatListCount}
                   renderLabel={(row: any) => <MetricLabel type="device" data={row} />}
                 />
               </TabPanel>
@@ -253,8 +281,6 @@ export function Performance({ websiteId, startDate, endDate, unit }: Performance
                 <PerformanceMetricsTable
                   params={{ ...queryParams, metric: selectedMetric, type: 'browser' }}
                   percentile={selectedPercentile}
-                  metricLabel={metricLabel}
-                  formatCount={formatListCount}
                   renderLabel={(row: any) => <MetricLabel type="browser" data={row} />}
                 />
               </TabPanel>
@@ -269,23 +295,21 @@ export function Performance({ websiteId, startDate, endDate, unit }: Performance
 function PerformanceMetricsTable({
   params,
   percentile,
-  metricLabel,
-  formatCount,
   renderLabel,
 }: {
   params: Parameters<typeof usePerformanceMetricsQuery>[0];
   percentile: 'p50' | 'p75' | 'p95';
-  metricLabel: string;
-  formatCount: (value: number) => string;
   renderLabel: (row: any) => React.ReactNode;
 }) {
-  const { data, isLoading, error } = usePerformanceMetricsQuery(params);
+  const { t, labels } = useMessages();
+  const { data, isLoading, isPlaceholderData, error } = usePerformanceMetricsQuery(params);
+  const metric = useShownMetric(params.metric, isPlaceholderData);
   return (
     <LoadingPanel data={data} isLoading={isLoading} error={error}>
       <ListTable
-        metric={metricLabel}
+        metric={t(labels[metric]) || metric.toUpperCase()}
         showPercentage={false}
-        formatCount={formatCount}
+        formatCount={(n: number) => formatListCount(metric, n)}
         data={(data ?? [])
           .filter(row => Number(row[percentile]) > 0)
           .slice(0, 20)

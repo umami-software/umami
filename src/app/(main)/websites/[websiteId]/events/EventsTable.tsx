@@ -43,7 +43,7 @@ export function EventsTable(props: DataTableProps) {
       <DataColumn id="event" label={t(labels.event)} width="2fr">
         {(row: any) => {
           return (
-            <Row alignItems="center" gap="2" flexWrap="nowrap" style={{ minWidth: 0 }}>
+            <Row alignItems="center" gap="2" wrap="nowrap" style={{ minWidth: 0 }}>
               <Row style={{ flexShrink: 0 }}>
                 <IconLabel
                   icon={row.eventName ? <Lightning /> : <Eye />}
@@ -51,7 +51,7 @@ export function EventsTable(props: DataTableProps) {
                   labelProps={{ wrap: 'nowrap' }}
                 />
               </Row>
-              <Row alignItems="center" gap flexWrap="nowrap" style={{ minWidth: 0 }}>
+              <Row alignItems="center" gap wrap="nowrap" style={{ minWidth: 0 }}>
                 <Text
                   weight="bold"
                   style={{ maxWidth: '300px' }}

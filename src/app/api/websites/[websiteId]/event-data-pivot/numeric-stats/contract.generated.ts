@@ -10,7 +10,7 @@ const operation1 = defineOperation({
   auth: 'bearer-or-share',
   operation: {
     operationId: 'getEventDataNumericStats',
-    summary: 'Get websites website id event data pivot numeric stats',
+    summary: 'Get numeric event property statistics',
     description:
       'Returns the total, average, median, minimum, and maximum of the specified numeric event property for the selected date range and filters.',
     tags: ['Websites'],

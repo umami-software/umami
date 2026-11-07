@@ -1,15 +1,15 @@
-import { lorelei } from '@dicebear/collection';
-import { createAvatar } from '@dicebear/core';
+import { Avatar as DiceAvatar, Style } from '@dicebear/core';
+import lorelei from '@dicebear/styles/lorelei.json';
 import { useMemo } from 'react';
 import { getColor, getPastel } from '@/lib/colors';
 
-const lib = lorelei;
+const style = new Style(lorelei);
 
 export function Avatar({ seed, size = 128, ...props }: { seed: string; size?: number }) {
   const backgroundColor = getPastel(getColor(seed), 4);
 
   const avatar = useMemo(() => {
-    return createAvatar(lib, {
+    return new DiceAvatar(style, {
       ...props,
       seed,
       size,

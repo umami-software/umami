@@ -51,7 +51,7 @@ const page = <T extends z.ZodType>(item: T) =>
 export const errorResponses = {
   issues: page(issue),
   stats: totals,
-  issue: issue.extend(totals.shape),
+  issue: issue.extend(totals.shape).extend({ canUpdate: z.boolean() }),
   events: page(event),
   event: event.extend({
     stack: z.string(),
@@ -67,7 +67,6 @@ export const errorResponses = {
     replayId: z.uuid().nullable(),
   }),
   values: z.array(z.object({ value: z.string(), count: z.number() })),
-  settings: z.object({ enabled: z.boolean(), retentionDays: z.number(), canManage: z.boolean() }),
   ok: okSchema,
 };
 

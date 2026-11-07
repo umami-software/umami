@@ -12,9 +12,11 @@ const messages = {
 };
 
 const selector = (state: { locale: string }) => state.locale;
+const timeFormatSelector = (state: { timeFormat: string }) => state.timeFormat;
 
 export function useLocale() {
   const locale = useApp(selector);
+  const timeFormat = useApp(timeFormatSelector);
   const forceUpdate = useForceUpdate();
   const dir = getTextDirection(locale);
   const dateLocale = getDateLocale(locale);
@@ -24,8 +26,16 @@ export function useLocale() {
 
     messages[locale] = {
       ...data,
-      label: { monitoring: enUS.label.monitoring, ...data.label },
+      label: {
+        monitoring: enUS.label.monitoring,
+        'language-default': enUS.label['language-default'],
+        '12-hour': enUS.label['12-hour'],
+        '24-hour': enUS.label['24-hour'],
+        'time-format': enUS.label['time-format'],
+        ...data.label,
+      },
       errorTracking: { ...enUS.errorTracking, ...data.errorTracking },
+      googleAds: { ...enUS.googleAds, ...data.googleAds },
     };
   }
 
@@ -63,5 +73,5 @@ export function useLocale() {
     }
   }, []);
 
-  return { locale, saveLocale, messages, dir, dateLocale };
+  return { locale, saveLocale, messages, dir, dateLocale, timeFormat };
 }

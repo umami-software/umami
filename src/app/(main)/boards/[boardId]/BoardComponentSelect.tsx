@@ -261,9 +261,9 @@ export function BoardComponentSelect({
     () =>
       allDefinitions.filter(
         def =>
-          isBoardComponentSupported(def.type, activeEntityType) || def.type === selectedDef?.type,
+          def.type === selectedDef?.type || isBoardComponentSupported(def.type, activeEntityType),
       ),
-    [activeEntityType, allDefinitions, selectedDef?.type],
+    [allDefinitions, selectedDef?.type, activeEntityType],
   );
   const groupedDefinitions = useMemo(() => {
     const order = new Map(COMPONENT_GROUP_ORDER.map((group, index) => [group, index]));

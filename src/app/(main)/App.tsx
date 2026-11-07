@@ -15,6 +15,7 @@ import {
   useCommandPalette,
 } from '@/components/hooks';
 import { CommandPalette } from '@/components/common/CommandPalette';
+import { PasswordChangeRequiredModal } from '@/components/modals/PasswordChangeRequiredModal';
 import { TwoFactorSetupModal } from '@/components/modals/TwoFactorSetupModal';
 import { LAST_TEAM_CONFIG } from '@/lib/constants';
 import { removeItem, setItem } from '@/lib/storage';
@@ -33,6 +34,8 @@ export function App({ children }) {
   });
   const { data: twoFactorStatus } = useTwoFactorStatusQuery(!!user && !config.cloudMode);
   const needsTwoFactorSetup = !!(twoFactorStatus?.isRequired && !twoFactorStatus?.isEnabled);
+  const passwordChangeRequired = !!user?.passwordChangeRequired && !config.cloudMode;
+  const accessBlocked = needsTwoFactorSetup || passwordChangeRequired;
 
   useEffect(() => {
     if (teamId) {
@@ -115,13 +118,14 @@ export function App({ children }) {
         <TopNav />
         <Column
           alignItems="center"
-          aria-hidden={needsTwoFactorSetup || undefined}
-          style={needsTwoFactorSetup ? { pointerEvents: 'none' } : undefined}
+          aria-hidden={accessBlocked || undefined}
+          style={accessBlocked ? { pointerEvents: 'none' } : undefined}
         >
           {children}
         </Column>
       </Column>
       {needsTwoFactorSetup && <TwoFactorSetupModal required={true} />}
+      {passwordChangeRequired && !needsTwoFactorSetup && <PasswordChangeRequiredModal />}
       <UpdateNotice user={user} config={config} />
       {process.env.NODE_ENV === 'production' && !pathname.includes('/share/') && (
         <Script src={`${process.env.basePath || ''}/telemetry.js`} />

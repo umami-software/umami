@@ -73,6 +73,8 @@ test.describe('Replays', () => {
       browser: 'chrome',
       os: expect.any(String),
       device: expect.any(String),
+      // The replay is recorded by the first identified persona (see seed/dataset.ts).
+      distinctIds: [seed.data.distinctIds[0]],
       // Unresolved geo is null on Postgres but '' on ClickHouse (non-nullable String columns).
       country: seed.db === 'clickhouse' ? '' : null,
       city: seed.db === 'clickhouse' ? '' : null,

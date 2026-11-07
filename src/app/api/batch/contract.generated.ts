@@ -10,7 +10,9 @@ const operation1 = defineOperation({
   auth: 'none',
   operation: {
     operationId: 'batch',
-    summary: 'Create or update batch',
+    summary: 'Send a batch of tracking requests',
+    description:
+      'Processes up to 500 tracking payloads and returns processed and failed counts, individual error details, and a tracking cache token.',
     tags: ['Collection'],
     requestBody: {
       required: true,

@@ -1,6 +1,7 @@
 import clickhouse from '@/lib/clickhouse';
 import { CLICKHOUSE, PRISMA, runQuery } from '@/lib/db';
 import prisma from '@/lib/prisma';
+import { getWildcardMatch } from '@/lib/search';
 import type { QueryFilters } from '@/lib/types';
 
 export interface FunnelStepFilter {
@@ -110,13 +111,7 @@ async function relationalQuery(
         const isURL = cv.type === 'path';
         const column = isURL ? 'url_path' : 'event_name';
 
-        let operator = '=';
-        let paramValue = cv.value;
-
-        if (cv.value.startsWith('*') || cv.value.endsWith('*')) {
-          operator = 'like';
-          paramValue = cv.value.replace(/^\*|\*$/g, '%');
-        }
+        const { operator, value: paramValue } = getWildcardMatch(cv.value);
 
         const existsClause =
           !isURL && cv.filters?.length
@@ -265,13 +260,7 @@ async function clickhouseQuery(
         const isURL = cv.type === 'path';
         const column = isURL ? 'url_path' : 'event_name';
 
-        let operator = '=';
-        let paramValue = cv.value;
-
-        if (cv.value.startsWith('*') || cv.value.endsWith('*')) {
-          operator = 'like';
-          paramValue = cv.value.replace(/^\*|\*$/g, '%');
-        }
+        const { operator, value: paramValue } = getWildcardMatch(cv.value);
 
         const eventAlias = levelNumber === 1 ? 'level0' : 'y';
         const eventDataClause =

@@ -24,6 +24,9 @@ const websiteSessionDetailsSchema = z.looseObject({
   country: z.string().nullable(),
   region: z.string().nullable(),
   city: z.string().nullable(),
+  referrerDomain: z.string().nullable().meta({
+    description: "Domain of the session's first external referrer.",
+  }),
   firstAt: z.iso.datetime(),
   lastAt: z.iso.datetime(),
   visits: z.number(),

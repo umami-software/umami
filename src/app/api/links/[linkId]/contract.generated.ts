@@ -10,7 +10,9 @@ const operation1 = defineOperation({
   auth: 'bearer',
   operation: {
     operationId: 'deleteLink',
-    summary: 'Delete links link id',
+    summary: 'Delete a tracked link',
+    description:
+      "Deletes the specified tracked link after checking the caller's permission to remove it.",
     tags: ['Links'],
     parameters: [
       {
@@ -20,6 +22,7 @@ const operation1 = defineOperation({
         schema: {
           type: 'string',
         },
+        description: 'ID of the tracked link.',
       },
     ],
     responses: {
@@ -32,6 +35,7 @@ const operation1 = defineOperation({
               properties: {
                 ok: {
                   const: true,
+                  description: 'Whether the operation succeeded.',
                 },
               },
               required: ['ok'],
@@ -67,7 +71,8 @@ const operation2 = defineOperation({
   auth: 'bearer-or-share',
   operation: {
     operationId: 'getLink',
-    summary: 'Get links link id',
+    summary: 'Get a tracked link',
+    description: 'Returns the specified tracked link, including its destination URL and slug.',
     tags: ['Links'],
     parameters: [
       {
@@ -77,6 +82,7 @@ const operation2 = defineOperation({
         schema: {
           type: 'string',
         },
+        description: 'ID of the tracked link.',
       },
     ],
     responses: {
@@ -89,33 +95,42 @@ const operation2 = defineOperation({
               properties: {
                 id: {
                   type: 'string',
+                  description: 'Unique identifier of the resource.',
                 },
                 userId: {
                   type: 'string',
+                  description: 'ID of the associated user.',
                 },
                 createdAt: {
                   type: 'string',
                   format: 'date-time',
+                  description: 'Date and time the record was created.',
                 },
                 updatedAt: {
                   type: 'string',
                   format: 'date-time',
+                  description: 'Date and time the record was last updated.',
                 },
                 deletedAt: {
                   type: 'string',
                   format: 'date-time',
+                  description: 'Date and time the record was deleted, if applicable.',
                 },
                 name: {
                   type: 'string',
+                  description: 'Display name of the resource.',
                 },
                 teamId: {
                   type: 'string',
+                  description: 'ID of the associated team.',
                 },
                 url: {
                   type: 'string',
+                  description: 'URL associated with the resource.',
                 },
                 slug: {
                   type: 'string',
+                  description: 'URL slug used to access the resource.',
                 },
               },
               required: [
@@ -161,7 +176,8 @@ const operation3 = defineOperation({
   auth: 'bearer',
   operation: {
     operationId: 'updateLink',
-    summary: 'Create or update links link id',
+    summary: 'Update a tracked link',
+    description: "Updates a tracked link's name, destination URL, or slug.",
     tags: ['Links'],
     parameters: [
       {
@@ -171,6 +187,7 @@ const operation3 = defineOperation({
         schema: {
           type: 'string',
         },
+        description: 'ID of the tracked link.',
       },
     ],
     requestBody: {
@@ -183,15 +200,18 @@ const operation3 = defineOperation({
               name: {
                 type: 'string',
                 maxLength: 100,
+                description: 'Display name of the resource.',
               },
               url: {
                 type: 'string',
                 maxLength: 500,
+                description: 'URL associated with the resource.',
               },
               slug: {
                 type: 'string',
                 minLength: 8,
                 maxLength: 100,
+                description: 'URL slug used to access the resource.',
               },
             },
           },
@@ -208,33 +228,42 @@ const operation3 = defineOperation({
               properties: {
                 id: {
                   type: 'string',
+                  description: 'Unique identifier of the resource.',
                 },
                 userId: {
                   type: 'string',
+                  description: 'ID of the associated user.',
                 },
                 createdAt: {
                   type: 'string',
                   format: 'date-time',
+                  description: 'Date and time the record was created.',
                 },
                 updatedAt: {
                   type: 'string',
                   format: 'date-time',
+                  description: 'Date and time the record was last updated.',
                 },
                 deletedAt: {
                   type: 'string',
                   format: 'date-time',
+                  description: 'Date and time the record was deleted, if applicable.',
                 },
                 name: {
                   type: 'string',
+                  description: 'Display name of the resource.',
                 },
                 teamId: {
                   type: 'string',
+                  description: 'ID of the associated team.',
                 },
                 url: {
                   type: 'string',
+                  description: 'URL associated with the resource.',
                 },
                 slug: {
                   type: 'string',
+                  description: 'URL slug used to access the resource.',
                 },
               },
               required: [

@@ -42,7 +42,13 @@ export function SessionModal({ websiteId, className, ...props }: SessionModalPro
         <Column height="100%">
           <Dialog className="h-full rounded-lg">
             {({ close }) => (
-              <Column padding={isMobile ? '6' : '10'} minWidth="0" width="100%">
+              <Column
+                paddingX={isMobile ? '6' : '10'}
+                paddingTop="6"
+                paddingBottom={isMobile ? '6' : '10'}
+                minWidth="0"
+                width="100%"
+              >
                 <SessionProfile
                   websiteId={websiteId}
                   sessionId={session}

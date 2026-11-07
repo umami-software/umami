@@ -10,7 +10,9 @@ const operation1 = defineOperation({
   auth: 'bearer',
   operation: {
     operationId: 'logout',
-    summary: 'Create or update auth logout',
+    summary: 'Log out',
+    description:
+      'Ends the current authentication session by removing its stored token when Redis-backed sessions are enabled.',
     tags: ['Authentication'],
     responses: {
       '200': {
@@ -22,6 +24,7 @@ const operation1 = defineOperation({
               properties: {
                 ok: {
                   const: true,
+                  description: 'Whether the operation succeeded.',
                 },
               },
               required: ['ok'],

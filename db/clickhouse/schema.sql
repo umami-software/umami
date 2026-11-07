@@ -288,25 +288,6 @@ ENGINE = MergeTree
     ORDER BY (website_id, session_id, created_at)
     SETTINGS index_granularity = 8192;
 
-
-CREATE MATERIALIZED VIEW umami.website_revenue_mv
-TO umami.website_revenue
-AS
-SELECT DISTINCT
-    ed.website_id,
-    ed.session_id,
-    ed.event_id,
-    ed.event_name,
-    c.currency,
-    coalesce(toDecimal64(ed.number_value, 2), toDecimal64(ed.string_value, 2)) revenue,
-    ed.created_at
-FROM umami.event_data ed
-JOIN (SELECT event_id, string_value as currency
-        FROM umami.event_data
-        WHERE positionCaseInsensitive(data_key, 'currency') > 0) c
-      ON c.event_id = ed.event_id
-WHERE positionCaseInsensitive(data_key, 'revenue') > 0;
-
 -- Create session_replay
 CREATE TABLE umami.session_replay
 (
@@ -438,50 +419,6 @@ ENGINE = ReplacingMergeTree
     ORDER BY (website_id, distinct_id, session_id)
     SETTINGS index_granularity = 8192;
 
-CREATE TABLE umami.commerce_event
-(
-    website_id UUID,
-    commerce_event_id UUID,
-    snapshot_id UUID,
-    session_id UUID,
-    visit_id UUID,
-    event_name String,
-    currency LowCardinality(String),
-    market String,
-    cart_id String,
-    checkout_id String,
-    order_id String,
-    subtotal Decimal(19, 4),
-    shipping Decimal(19, 4),
-    tax Decimal(19, 4),
-    total Decimal(19, 4),
-    created_at DateTime64(3, 'UTC'),
-    updated_at DateTime64(3, 'UTC')
-)
-ENGINE = ReplacingMergeTree(updated_at)
--- Stable partitions allow order retries to deduplicate across calendar boundaries.
-PARTITION BY cityHash64(website_id) % 16
-ORDER BY (website_id, commerce_event_id);
-
-CREATE TABLE umami.commerce_item
-(
-    website_id UUID,
-    commerce_event_id UUID,
-    snapshot_id UUID,
-    item_index UInt32,
-    product_id String,
-    name String,
-    variant String,
-    category String,
-    price Decimal(19, 4),
-    quantity UInt32,
-    total Decimal(19, 4),
-    created_at DateTime64(3, 'UTC')
-)
-ENGINE = ReplacingMergeTree
-PARTITION BY toYYYYMM(created_at)
-ORDER BY (website_id, commerce_event_id, snapshot_id, item_index);
-
 CREATE TABLE IF NOT EXISTS umami.error_event
 (
     website_id UUID,
@@ -507,5 +444,4 @@ CREATE TABLE IF NOT EXISTS umami.error_event
 ENGINE = ReplacingMergeTree
 -- A retry always reaches the same partition, including across month boundaries.
 PARTITION BY cityHash64(website_id) % 16
-ORDER BY (website_id, event_id)
-TTL toDateTime(received_at) + INTERVAL 90 DAY DELETE;
+ORDER BY (website_id, event_id);

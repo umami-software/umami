@@ -21,17 +21,6 @@ export async function deleteSession(
       return null;
     }
 
-    const commerceEvents = await tx.commerceEvent.findMany({
-      where: { websiteId, sessionId },
-      select: { id: true },
-    });
-    if (commerceEvents.length) {
-      await tx.commerceItem.deleteMany({
-        where: { websiteId, commerceEventId: { in: commerceEvents.map(({ id }) => id) } },
-      });
-      await tx.commerceEvent.deleteMany({ where: { websiteId, sessionId } });
-    }
-
     const websiteEvents = await tx.websiteEvent.findMany({
       where: {
         websiteId,

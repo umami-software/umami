@@ -10,7 +10,8 @@ const operation1 = defineOperation({
   auth: 'bearer-or-share',
   operation: {
     operationId: 'getWebsiteDateRange',
-    summary: 'Get websites website id daterange',
+    summary: "Get the website's available date range",
+    description: 'Returns the earliest and latest recorded event dates for the website.',
     tags: ['Websites'],
     parameters: [
       {
@@ -20,6 +21,7 @@ const operation1 = defineOperation({
         schema: {
           type: 'string',
         },
+        description: 'ID of the website.',
       },
     ],
     responses: {
@@ -33,10 +35,12 @@ const operation1 = defineOperation({
                 startDate: {
                   type: 'string',
                   format: 'date-time',
+                  description: 'Start of the date range as an ISO 8601 date or date-time.',
                 },
                 endDate: {
                   type: 'string',
                   format: 'date-time',
+                  description: 'End of the date range as an ISO 8601 date or date-time.',
                 },
               },
               required: ['startDate', 'endDate'],

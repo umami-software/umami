@@ -1,7 +1,3 @@
--- Browser error tracking is opt-in for existing websites.
-ALTER TABLE "website" ADD COLUMN "errors_enabled" BOOLEAN NOT NULL DEFAULT false,
-  ADD COLUMN "error_retention_days" INTEGER NOT NULL DEFAULT 30;
-
 CREATE TABLE "error_issue" (
   "issue_id" UUID NOT NULL PRIMARY KEY,
   "website_id" UUID NOT NULL,
@@ -40,7 +36,6 @@ CREATE TABLE "error_event" (
 );
 CREATE INDEX "error_event_website_id_created_at_idx" ON "error_event"("website_id", "created_at");
 CREATE INDEX "error_event_website_id_issue_id_created_at_idx" ON "error_event"("website_id", "issue_id", "created_at");
-CREATE INDEX "error_event_website_id_received_at_idx" ON "error_event"("website_id", "received_at");
 
 CREATE TABLE "error_rate_limit" (
   "website_id" UUID NOT NULL PRIMARY KEY,

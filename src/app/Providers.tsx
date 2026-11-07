@@ -6,6 +6,7 @@ import { type ReactNode, useEffect } from 'react';
 import { ErrorBoundary } from '@/components/common/ErrorBoundary';
 import { useLocale } from '@/components/hooks';
 import { type Config, ConfigContext } from '@/components/hooks/useConfig';
+import { FlagsContext, type FlagValues } from '@/components/hooks/useFlag';
 import 'chartjs-adapter-date-fns';
 
 const client = new QueryClient({
@@ -33,18 +34,28 @@ function MessagesProvider({ children }) {
   );
 }
 
-export function Providers({ config, children }: { config: Config; children: ReactNode }) {
+export function Providers({
+  config,
+  flags,
+  children,
+}: {
+  config: Config;
+  flags: FlagValues;
+  children: ReactNode;
+}) {
   return (
     <ConfigContext.Provider value={config}>
-      <ZenProvider>
-        <RouterProvider>
-          <MessagesProvider>
-            <QueryClientProvider client={client}>
-              <ErrorBoundary>{children}</ErrorBoundary>
-            </QueryClientProvider>
-          </MessagesProvider>
-        </RouterProvider>
-      </ZenProvider>
+      <FlagsContext.Provider value={flags}>
+        <ZenProvider>
+          <RouterProvider>
+            <MessagesProvider>
+              <QueryClientProvider client={client}>
+                <ErrorBoundary>{children}</ErrorBoundary>
+              </QueryClientProvider>
+            </MessagesProvider>
+          </RouterProvider>
+        </ZenProvider>
+      </FlagsContext.Provider>
     </ConfigContext.Provider>
   );
 }

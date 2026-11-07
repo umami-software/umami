@@ -1,10 +1,10 @@
 import { z } from 'zod';
 import type { Prisma, Website } from '@/generated/prisma/client';
+import { BOARD_TYPES } from '@/lib/boards';
 import prisma, { getSchema } from '@/lib/prisma';
 import redis from '@/lib/redis';
 import { sanitizeSortFilters } from '@/lib/sort';
 import type { PageResult, QueryFilters } from '@/lib/types';
-import { deleteClickHouseErrors } from '@/queries/sql/errors/store';
 
 const WEBSITE_SORT_FIELDS = ['name', 'domain', 'createdAt'] as const;
 
@@ -18,8 +18,6 @@ export type WebsiteListItem = Website & {
 };
 
 async function deleteWebsiteDependentData(tx: any, websiteId: string) {
-  await tx.commerceItem.deleteMany({ where: { websiteId } });
-  await tx.commerceEvent.deleteMany({ where: { websiteId } });
   await tx.sessionReplaySaved.deleteMany({
     where: { websiteId },
   });
@@ -33,6 +31,18 @@ async function deleteWebsiteDependentData(tx: any, websiteId: string) {
   });
 
   await tx.revenue.deleteMany({
+    where: { websiteId },
+  });
+
+  await tx.errorEvent.deleteMany({
+    where: { websiteId },
+  });
+
+  await tx.errorIssue.deleteMany({
+    where: { websiteId },
+  });
+
+  await tx.errorRateLimit.deleteMany({
     where: { websiteId },
   });
 
@@ -50,13 +60,6 @@ async function deleteWebsiteDependentData(tx: any, websiteId: string) {
 
   await tx.$executeRawUnsafe(
     `
-      with deleted_error_events as (
-        delete from error_event where website_id = $1
-      ), deleted_error_issues as (
-        delete from error_issue where website_id = $1
-      ), deleted_error_limits as (
-        delete from error_rate_limit where website_id = $1
-      )
       delete from event_data
       using website_event
       where event_data.website_event_id = website_event.event_id
@@ -204,18 +207,62 @@ export async function updateWebsite(
   websiteId: string,
   data: Prisma.WebsiteUpdateInput | Prisma.WebsiteUncheckedUpdateInput,
 ) {
-  return prisma.client.website.update({
+  const website = await prisma.client.website.update({
     where: {
       id: websiteId,
     },
     data,
   });
+
+  // Collection reads the website from Redis, so drop it after any change (e.g. a transfer).
+  if (redis.enabled) {
+    await redis.client.del(`website:${websiteId}`);
+  }
+
+  return website;
+}
+
+// Single-website boards only ever show their website, so they move with it to the new owner.
+// Their shares are keyed by board id and move with them.
+export async function transferWebsite(
+  websiteId: string,
+  owner: { userId: string; teamId: null } | { userId: null; teamId: string },
+) {
+  // prisma.transaction takes `any`, so TypeScript picks the batch overload and infers `any[]`
+  const website = await (prisma.transaction(async (tx: Prisma.TransactionClient) => {
+    const current = await tx.website.findUnique({
+      where: { id: websiteId },
+      select: { userId: true, teamId: true },
+    });
+
+    const updated = await tx.website.update({ where: { id: websiteId }, data: owner });
+
+    if (current?.teamId || current?.userId) {
+      await tx.board.updateMany({
+        where: {
+          type: BOARD_TYPES.website,
+          parameters: { path: ['websiteId'], equals: websiteId },
+          ...(current.teamId
+            ? { teamId: current.teamId }
+            : { userId: current.userId, teamId: null }),
+        },
+        data: owner,
+      });
+    }
+
+    return updated;
+  }) as unknown as Promise<Website>);
+
+  // Collection reads the website from Redis, so drop it after the transfer.
+  if (redis.enabled) {
+    await redis.client.del(`website:${websiteId}`);
+  }
+
+  return website;
 }
 
 export async function resetWebsite(websiteId: string) {
-  await deleteClickHouseErrors(websiteId);
   const { transaction } = prisma;
-  const cloudMode = !!process.env.CLOUD_MODE;
 
   return transaction(
     async tx => {
@@ -234,7 +281,7 @@ export async function resetWebsite(websiteId: string) {
       timeout: 30000,
     },
   ).then(async data => {
-    if (cloudMode) {
+    if (redis.enabled) {
       await redis.client.set(`website:${websiteId}`, data);
     }
 
@@ -243,7 +290,6 @@ export async function resetWebsite(websiteId: string) {
 }
 
 export async function deleteWebsite(websiteId: string) {
-  await deleteClickHouseErrors(websiteId);
   const { transaction } = prisma;
   const cloudMode = !!process.env.CLOUD_MODE;
 
@@ -284,7 +330,7 @@ export async function deleteWebsite(websiteId: string) {
       timeout: 30000,
     },
   ).then(async data => {
-    if (cloudMode) {
+    if (redis.enabled) {
       await redis.client.del(`website:${websiteId}`);
     }
 

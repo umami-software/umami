@@ -10,7 +10,9 @@ const operation1 = defineOperation({
   auth: 'bearer-or-share',
   operation: {
     operationId: 'getWebsiteSessionProperties',
-    summary: 'Get websites website id sessions session id properties',
+    summary: "Get a session's custom properties",
+    description:
+      'Returns custom property records, data types, and values for the specified website session.',
     tags: ['Websites'],
     parameters: [
       {
@@ -20,6 +22,7 @@ const operation1 = defineOperation({
         schema: {
           type: 'string',
         },
+        description: 'ID of the website.',
       },
       {
         name: 'sessionId',
@@ -28,6 +31,7 @@ const operation1 = defineOperation({
         schema: {
           type: 'string',
         },
+        description: 'ID of the visitor session.',
       },
     ],
     responses: {
@@ -42,21 +46,27 @@ const operation1 = defineOperation({
                 properties: {
                   websiteId: {
                     type: 'string',
+                    description: 'ID of the website.',
                   },
                   sessionId: {
                     type: 'string',
+                    description: 'ID of the visitor session.',
                   },
                   dataKey: {
                     type: 'string',
+                    description: 'Name of the custom property.',
                   },
                   dataType: {
                     type: 'number',
+                    description: 'Data type of the custom property.',
                   },
                   stringValue: {
                     type: 'string',
+                    description: 'Custom property value stored as a string.',
                   },
                   numberValue: {
                     type: 'number',
+                    description: 'Custom property value stored as a number.',
                   },
                   dateValue: {
                     anyOf: [
@@ -68,6 +78,7 @@ const operation1 = defineOperation({
                         format: 'date-time',
                       },
                     ],
+                    description: 'Custom property value stored as a date-time.',
                   },
                   createdAt: {
                     anyOf: [
@@ -79,6 +90,7 @@ const operation1 = defineOperation({
                         format: 'date-time',
                       },
                     ],
+                    description: 'Date and time the record was created.',
                   },
                 },
                 required: [

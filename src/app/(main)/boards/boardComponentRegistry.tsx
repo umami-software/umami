@@ -1,8 +1,8 @@
 import type { ComponentType } from 'react';
 import { TextBlock } from '@/app/(main)/boards/TextBlock';
-import { BoardFunnel } from '@/app/(main)/websites/[websiteId]/(reports)/funnels/BoardFunnel';
 import { LinkMetricsBar } from '@/app/(main)/links/[linkId]/LinkMetricsBar';
 import { PixelMetricsBar } from '@/app/(main)/pixels/[pixelId]/PixelMetricsBar';
+import { BoardFunnel } from '@/app/(main)/websites/[websiteId]/(reports)/funnels/BoardFunnel';
 import { BoardGoal } from '@/app/(main)/websites/[websiteId]/(reports)/goals/BoardGoal';
 import { BoardRevenueChart } from '@/app/(main)/websites/[websiteId]/(reports)/revenue/BoardRevenueChart';
 import { BoardRevenueMetricsBar } from '@/app/(main)/websites/[websiteId]/(reports)/revenue/BoardRevenueMetricsBar';
@@ -92,16 +92,7 @@ const METRIC_TYPES = [
 ];
 
 const PIXEL_LINK_METRIC_TYPES = METRIC_TYPES.filter(({ value }) =>
-  [
-    'referrer',
-    'channel',
-    'browser',
-    'os',
-    'device',
-    'country',
-    'region',
-    'city',
-  ].includes(value),
+  ['referrer', 'channel', 'browser', 'os', 'device', 'country', 'region', 'city'].includes(value),
 );
 
 const LIMIT_OPTIONS = [
@@ -323,7 +314,6 @@ const componentDefinitions: ComponentDefinition[] = [
     ],
   },
 
-  // Tables
   {
     type: 'MetricsTable',
     name: 'Metrics table',

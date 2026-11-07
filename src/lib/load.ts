@@ -54,7 +54,6 @@ export async function fetchTeam(teamId: string) {
 export type BillingScope = {
   accountId?: string | null;
   teamId?: string | null;
-  billingStatus?: string | null;
 };
 
 export async function getEntityBillingScope({
@@ -71,7 +70,7 @@ export async function getEntityBillingScope({
 
   const team = await fetchTeam(teamId);
 
-  return { accountId: team?.teamOwnerId, teamId, billingStatus: team?.billingStatus };
+  return { accountId: team?.teamOwnerId, teamId };
 }
 
 export const getWebsiteBillingScope = getEntityBillingScope;
@@ -83,7 +82,7 @@ export async function getTeamBillingScope(teamId: string): Promise<BillingScope>
 
   const team = await fetchTeam(teamId);
 
-  return { accountId: team?.teamOwnerId, teamId, billingStatus: team?.billingStatus };
+  return { accountId: team?.teamOwnerId, teamId };
 }
 
 export async function getBillingAccess(scope: BillingScope, userId?: string | null) {
@@ -91,8 +90,9 @@ export async function getBillingAccess(scope: BillingScope, userId?: string | nu
     return { isPastDue: false, isOwner: false };
   }
 
-  const billingStatus =
-    scope.billingStatus ?? (scope.accountId ? (await fetchAccount(scope.accountId))?.billingStatus : null);
+  const billingStatus = scope.accountId
+    ? (await fetchAccount(scope.accountId))?.billingStatus
+    : null;
 
   return {
     isPastDue: billingStatus === 'past_due',
@@ -106,15 +106,20 @@ export async function addTeamBillingStatus<T extends { id: string }>(teams: T[])
   }
 
   return Promise.all(
-    teams.map(async team => ({
-      ...team,
-      billingStatus: (await fetchTeam(team.id))?.billingStatus ?? null,
-    })),
+    teams.map(async team => {
+      const cachedTeam = await fetchTeam(team.id);
+      const account = cachedTeam?.teamOwnerId ? await fetchAccount(cachedTeam.teamOwnerId) : null;
+
+      return {
+        ...team,
+        billingStatus: account?.billingStatus ?? null,
+      };
+    }),
   );
 }
 
 export async function getCollectionBlockReason(accountId?: string | null) {
-  if (!redis.enabled || !accountId) {
+  if (!process.env.CLOUD_MODE || !redis.enabled || !accountId) {
     return null;
   }
 
@@ -126,6 +131,10 @@ export async function isCollectionBlocked(accountId?: string | null) {
 }
 
 export async function isWebsiteCollectionBlocked(website: Website) {
+  if (!process.env.CLOUD_MODE || !redis.enabled) {
+    return false;
+  }
+
   const accountId = website.teamId
     ? (await fetchTeam(website.teamId))?.teamOwnerId
     : website.userId;

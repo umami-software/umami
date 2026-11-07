@@ -33,7 +33,7 @@ export const operations = [
               issueId: z.uuid(),
               cache: z.string(),
             }),
-            z.object({ ok: z.literal(false), reason: z.enum(['errors_disabled', 'bot']) }),
+            z.object({ ok: z.literal(false), reason: z.enum(['bot']) }),
           ]),
         ),
         '400': jsonResponse(apiErrorSchema, 'Invalid collection payload or session token.'),

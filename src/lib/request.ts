@@ -2,21 +2,27 @@ import { startOfMonth, subMonths } from 'date-fns';
 import { z } from 'zod';
 import { checkAuth } from '@/lib/auth';
 import { DEFAULT_PAGE_SIZE, FILTER_COLUMNS, OPERATORS } from '@/lib/constants';
-import { getAllowedUnits, getMinimumUnit, getPeriodDateRange, maxDate, parseDateRange } from '@/lib/date';
-import { fetchWebsite } from '@/lib/load';
+import {
+  getAllowedUnits,
+  getMinimumUnit,
+  getPeriodDateRange,
+  maxDate,
+  parseDateRange,
+} from '@/lib/date';
+import { fetchAccount, fetchWebsite } from '@/lib/load';
 import {
   filtersArrayToObject,
   parseSessionPropertyFilters,
   parseUniversalEventPropertyFilters,
 } from '@/lib/params';
-import { badRequest, unauthorized } from '@/lib/response';
+import { badRequest, forbidden, unauthorized } from '@/lib/response';
 import type { QueryFilters } from '@/lib/types';
 import { getWebsiteSegment } from '@/queries/prisma';
 
 export async function parseRequest(
   request: Request,
   schema?: any,
-  options?: { skipAuth: boolean },
+  options?: { skipAuth?: boolean; allowTwoFactorSetup?: boolean },
 ): Promise<any> {
   const url = new URL(request.url);
   let query = Object.fromEntries(url.searchParams);
@@ -53,6 +59,13 @@ export async function parseRequest(
 
     if (!auth) {
       error = () => unauthorized();
+    } else if (auth.twoFactorSetupPending && !options?.allowTwoFactorSetup) {
+      // Users who must enroll in 2FA can only reach the routes needed to complete setup.
+      error = () =>
+        forbidden({
+          code: 'two-factor-error-setup-required',
+          message: 'Two-factor authentication setup is required',
+        });
     }
   }
 
@@ -149,7 +162,9 @@ export async function getQueryFilters(
       const segmentParams = (await getWebsiteSegment(websiteId, resolvedParams.segment))
         ?.parameters as Record<string, any>;
 
-      Object.assign(filters, filtersArrayToObject(segmentParams.filters));
+      // Stored filter names are free-form, so keep only real filter columns. Otherwise a filter
+      // named e.g. "timezone" would replace the validated request value on its way into SQL.
+      Object.assign(filters, getRequestFilters(filtersArrayToObject(segmentParams.filters)));
       sessionPropertyFilters.push(...(segmentParams.sessionPropertyFilters ?? []));
 
       if (segmentParams.match) {
@@ -168,6 +183,9 @@ export async function getQueryFilters(
         name: `cohort_${name}`,
       }));
 
+      if (!['path', 'event'].includes(cohortParams.action.type)) {
+        throw new Error('This cohort uses a retired action and must be updated.');
+      }
       cohortFilters.push({
         name: `cohort_${cohortParams.action.type}`,
         operator: OPERATORS.equals,

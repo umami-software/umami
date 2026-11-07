@@ -14,6 +14,7 @@ interface CollectorOptions {
   context: () => {
     website: string | null;
     id?: string;
+    salt?: string;
     url: string;
     screen: string;
     language: string;
@@ -41,7 +42,6 @@ export function createErrorCollector(options: CollectorOptions) {
   const queue: Array<{ payload: Record<string, unknown>; cache?: string }> = [];
   let sending = false;
   let preparing = false;
-  let stopped = false;
   let blockedUntil = 0;
   let bucket = 0;
   let count = 0;
@@ -50,7 +50,7 @@ export function createErrorCollector(options: CollectorOptions) {
     if (sending) return;
     sending = true;
     try {
-      while (queue.length && !stopped) {
+      while (queue.length) {
         const item = queue.shift();
         if (!item || options.disabled()) continue;
         // Freeze the payload and identity across retries.
@@ -70,8 +70,7 @@ export function createErrorCollector(options: CollectorOptions) {
               },
             });
             if (response.ok) {
-              const result = (await response.json()) as { cache?: string; reason?: string };
-              if (result.reason === 'errors_disabled') stopped = true;
+              const result = (await response.json()) as { cache?: string };
               if (
                 result.cache &&
                 options.cache() === item.cache &&
@@ -97,7 +96,6 @@ export function createErrorCollector(options: CollectorOptions) {
       }
     } finally {
       sending = false;
-      if (stopped) queue.length = 0;
     }
   }
 
@@ -107,8 +105,7 @@ export function createErrorCollector(options: CollectorOptions) {
     handled = true,
   ): Promise<void> {
     try {
-      if (!options.enabled || stopped || preparing || options.disabled() || queue.length >= 20)
-        return;
+      if (!options.enabled || preparing || options.disabled() || queue.length >= 20) return;
       const now = Date.now();
       if (now < blockedUntil) return;
       const minute = Math.floor(now / 60000);
@@ -147,6 +144,7 @@ export function createErrorCollector(options: CollectorOptions) {
         handled,
         url: errorPagePath(context.url),
         id: context.id,
+        salt: context.salt,
         screen: context.screen,
         language: context.language,
         release: scrubErrorText(config.release || options.release, 100),

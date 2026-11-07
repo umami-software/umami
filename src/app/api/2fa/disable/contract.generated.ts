@@ -10,7 +10,9 @@ const operation1 = defineOperation({
   auth: 'bearer',
   operation: {
     operationId: 'disableTwoFactor',
-    summary: 'Create or update 2fa disable',
+    summary: 'Disable two-factor authentication',
+    description:
+      'Disables two-factor authentication for the current user after verifying their password and authenticator code. Rejected when an administrator or team requires it.',
     tags: ['Two-factor authentication'],
     requestBody: {
       required: true,
@@ -21,6 +23,7 @@ const operation1 = defineOperation({
             properties: {
               password: {
                 type: 'string',
+                description: 'Password used to authenticate the account.',
               },
               token: {
                 type: 'string',
@@ -51,13 +54,17 @@ const operation1 = defineOperation({
                         },
                         message: {
                           type: 'string',
+                          description: 'Human-readable explanation of the result.',
                         },
                         lockedUntil: {
                           type: 'string',
                           format: 'date-time',
+                          description:
+                            'Time until which further authentication attempts are blocked.',
                         },
                       },
                       required: ['code', 'message', 'lockedUntil'],
+                      description: 'Error details returned when the operation fails.',
                     },
                   },
                   required: ['error'],
@@ -67,6 +74,7 @@ const operation1 = defineOperation({
                   properties: {
                     ok: {
                       type: 'boolean',
+                      description: 'Whether the operation succeeded.',
                     },
                   },
                   required: ['ok'],
@@ -159,13 +167,16 @@ const operation1 = defineOperation({
                     },
                     message: {
                       type: 'string',
+                      description: 'Human-readable explanation of the result.',
                     },
                     lockedUntil: {
                       type: 'string',
                       format: 'date-time',
+                      description: 'Time until which further authentication attempts are blocked.',
                     },
                   },
                   required: ['code', 'message', 'lockedUntil'],
+                  description: 'Error details returned when the operation fails.',
                 },
               },
               required: ['error'],

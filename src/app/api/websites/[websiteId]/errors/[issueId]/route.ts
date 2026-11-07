@@ -2,6 +2,7 @@ import { errorAccess } from '@/lib/errors/access';
 import { errorQuerySchema, errorUpdateSchema } from '@/lib/errors/schema';
 import prisma from '@/lib/prisma';
 import { json } from '@/lib/response';
+import { canUpdateWebsite } from '@/permissions';
 import { getErrorStats } from '@/queries/sql/errors/query';
 
 type Context = { params: Promise<{ websiteId: string; issueId: string }> };
@@ -11,6 +12,7 @@ export async function GET(request: Request, context: Context) {
   return json({
     ...access.issue,
     ...(await getErrorStats(access.scope, access.query, access.issue.id)),
+    canUpdate: !!(await canUpdateWebsite(access.auth, access.website.id)),
   });
 }
 export async function PATCH(request: Request, context: Context) {

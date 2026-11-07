@@ -10,7 +10,7 @@ const operation1 = defineOperation({
   auth: 'bearer-or-share',
   operation: {
     operationId: 'getSessionDataPivot',
-    summary: 'Get websites website id session data pivot',
+    summary: 'List session properties in table form',
     description:
       'Returns a page of sessions matching the selected property and filters, with the latest property keys and values grouped into one row per session.',
     tags: ['Websites'],

@@ -12,17 +12,21 @@ export function useDateRange(options: { ignoreOffset?: boolean; timezone?: strin
   } = useNavigation();
   const { locale } = useLocale();
   const dateRange = useMemo(() => {
-    const dateRangeObject = parseDateRange(
+    let dateRangeObject = parseDateRange(
       date || getItem(DATE_RANGE_CONFIG) || DEFAULT_DATE_RANGE_VALUE,
       unit,
       locale,
       options.timezone,
     );
 
+    if (!dateRangeObject) {
+      dateRangeObject = parseDateRange(DEFAULT_DATE_RANGE_VALUE, unit, locale, options.timezone);
+    }
+
     return !options.ignoreOffset && offset
       ? getOffsetDateRange(dateRangeObject, +offset)
       : dateRangeObject;
-  }, [date, unit, offset, options]);
+  }, [date, unit, offset, options, locale]);
 
   const now = new Date();
   const dateCompare = getCompareDate(

@@ -1,9 +1,11 @@
+import { FlagValues as FlagValuesScript } from 'flags/react';
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import { headers } from 'next/headers';
 import { connection } from 'next/server';
 import { Suspense } from 'react';
 import { getConfig } from '@/lib/config';
+import { getFlagValues } from '@/lib/flags';
 import { getBaseUrl } from '@/lib/get-base-url';
 import { Providers } from './Providers';
 import '@umami/react-zen/styles.full.css';
@@ -28,6 +30,7 @@ export default async function ({ children }) {
   await connection();
 
   const config = getConfig();
+  const flags = await getFlagValues();
 
   return (
     <html lang="en" className={`${inter.className} ${inter.variable}`}>
@@ -45,8 +48,11 @@ export default async function ({ children }) {
       </head>
       <body>
         <Suspense>
-          <Providers config={config}>{children}</Providers>
+          <Providers config={config} flags={flags}>
+            {children}
+          </Providers>
         </Suspense>
+        <FlagValuesScript values={flags} />
       </body>
     </html>
   );

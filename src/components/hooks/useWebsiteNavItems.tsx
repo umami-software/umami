@@ -5,6 +5,8 @@ import {
   Clock,
   Eye,
   Flame,
+  Megaphone,
+  Search,
   Sheet,
   Tag,
   User,
@@ -12,12 +14,14 @@ import {
   Video,
 } from '@/components/icons';
 import { Funnel, Gauge, Lightning, Magnet, Money, Network, Path, Target } from '@/components/svg';
+import { useConfig } from './useConfig';
 import { useMessages } from './useMessages';
 import { useNavigation } from './useNavigation';
 
 export function useWebsiteNavItems(websiteId: string) {
   const { t, labels } = useMessages();
   const { pathname, renderUrl } = useNavigation();
+  const config = useConfig();
   const resetParams = {
     search: undefined,
     page: undefined,
@@ -56,12 +60,6 @@ export function useWebsiteNavItems(websiteId: string) {
           path: renderPath('/sessions'),
         },
         {
-          id: 'realtime',
-          label: t(labels.realtime),
-          icon: <Clock />,
-          path: renderPath('/realtime'),
-        },
-        {
           id: 'compare',
           label: t(labels.compare),
           icon: <AlignEndHorizontal />,
@@ -73,6 +71,23 @@ export function useWebsiteNavItems(websiteId: string) {
           icon: <Sheet />,
           path: renderPath('/breakdown'),
         },
+        // Google Search Console and Google Ads are Cloud integrations.
+        ...(config?.cloudMode
+          ? [
+              {
+                id: 'search-console',
+                label: t('searchConsole.searches'),
+                icon: <Search />,
+                path: renderPath('/search-console'),
+              },
+              {
+                id: 'google-ads',
+                label: t('googleAds.ads'),
+                icon: <Megaphone />,
+                path: renderPath('/google-ads'),
+              },
+            ]
+          : []),
       ],
     },
     {
@@ -159,6 +174,12 @@ export function useWebsiteNavItems(websiteId: string) {
     {
       label: t(labels.monitoring),
       items: [
+        {
+          id: 'realtime',
+          label: t(labels.realtime),
+          icon: <Clock />,
+          path: renderPath('/realtime'),
+        },
         {
           id: 'performance',
           label: t(labels.performance),

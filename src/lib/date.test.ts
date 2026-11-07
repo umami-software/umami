@@ -37,9 +37,11 @@ import {
   maxDate,
   minDate,
   normalizeTimezone,
+  parseBackendDate,
   parseDateRange,
   parseDateValue,
 } from './date';
+import { setHour12 } from './lang';
 
 // A fixed instant used across timezone-sensitive tests. All expected date
 // values are recomputed with the same date-fns helpers the implementation
@@ -120,6 +122,21 @@ describe('parseDateRange', () => {
     expect(parseDateRange(null as any)).toBeNull();
     expect(parseDateRange(123 as any)).toBeNull();
     expect(parseDateRange(undefined as any)).toBeNull();
+  });
+
+  test('returns null for invalid or corrupted range strings', () => {
+    expect(parseDateRange('range:')).toBeNull();
+    expect(parseDateRange('range:NaN:NaN')).toBeNull();
+    expect(parseDateRange('range:undefined:undefined')).toBeNull();
+    expect(parseDateRange('range:12345:NaN')).toBeNull();
+    expect(parseDateRange('range:NaN:12345')).toBeNull();
+    expect(parseDateRange('range:abc:def')).toBeNull();
+    expect(parseDateRange('range:100000000000000000000000:0')).toBeNull();
+  });
+
+  test('returns null for unknown date values', () => {
+    expect(parseDateRange('invalid')).toBeNull();
+    expect(parseDateRange('7days')).toBeNull();
   });
 
   test('parses hour ranges', () => {
@@ -254,6 +271,21 @@ describe('getOffsetDateRange', () => {
     expect(shifted.offset).toBe(-1);
     expect(shifted.startDate).toEqual(addMonths(range.startDate, -1));
     expect(shifted.endDate).toEqual(addMonths(range.endDate, -1));
+  });
+
+  test.each([
+    ['2026-09-15T12:00:00', -1], // September (30 days) -> August (31 days)
+    ['2026-02-15T12:00:00', -1], // February (28 days) -> January (31 days)
+    ['2026-04-15T12:00:00', -1], // April (30 days) -> March (31 days)
+    ['2026-02-15T12:00:00', 1], // February (28 days) -> March (31 days)
+  ])('covers the whole target month when shifting a month range from %s by %i', (now, offset) => {
+    vi.setSystemTime(new Date(now));
+    const range = parseDateRange('0month');
+    const shifted = getOffsetDateRange(range, offset);
+    const target = addMonths(range.startDate, offset);
+
+    expect(shifted.startDate).toEqual(startOfMonth(target));
+    expect(shifted.endDate).toEqual(endOfMonth(target));
   });
 
   test('shifts year ranges (year rollover)', () => {
@@ -529,6 +561,43 @@ describe('formatDate', () => {
   });
 });
 
+describe('formatDate clock format', () => {
+  const date = new Date(2026, 9, 1, 13, 5, 9);
+
+  afterEach(() => {
+    setHour12(undefined);
+  });
+
+  test('follows the locale convention by default', () => {
+    expect(formatDate(date, 'p')).toBe('1:05 PM');
+    expect(formatDate(date, 'p', 'de-DE')).toBe('13:05');
+  });
+
+  test('forces 24-hour time regardless of locale', () => {
+    setHour12(false);
+    expect(formatDate(date, 'p')).toBe('13:05');
+    expect(formatDate(date, 'pp')).toBe('13:05:09');
+    expect(formatDate(date, 'ppp')).toMatch(/^13:05:09 /);
+    expect(formatDate(date, 'pppp')).toMatch(/^13:05:09 /);
+    expect(formatDate(date, 'p', 'de-DE')).toBe('13:05');
+    expect(formatDate(date, 'PPpp')).toBe('Oct 1, 2026, 13:05:09');
+  });
+
+  test('forces 12-hour time regardless of locale', () => {
+    setHour12(true);
+    expect(formatDate(date, 'p', 'de-DE')).toBe('1:05 nachm.');
+    expect(formatDate(date, 'pp', 'de-DE')).toBe('1:05:09 nachm.');
+    expect(formatDate(date, 'ppp', 'de-DE')).toMatch(/^1:05:09 nachm\. /);
+    expect(formatDate(date, 'p')).toBe('1:05 PM');
+  });
+
+  test('leaves date-only patterns untouched', () => {
+    setHour12(false);
+    expect(formatDate(date, 'PP')).toBe('Oct 1, 2026');
+    expect(formatDate(date, 'yyyy-MM-dd')).toBe('2026-10-01');
+  });
+});
+
 describe('generateTimeSeries', () => {
   test('fills gaps between min and max with null values (day unit)', () => {
     const min = new Date('2026-07-01T00:00:00');
@@ -637,12 +706,17 @@ describe('getMaxSelectableDate', () => {
 describe('timezone helpers', () => {
   test('normalizeTimezone maps deprecated aliases', () => {
     expect(normalizeTimezone('Asia/Calcutta')).toBe('Asia/Kolkata');
+    expect(normalizeTimezone('America/Buenos_Aires')).toBe('America/Argentina/Buenos_Aires');
+    expect(normalizeTimezone('America/Cordoba')).toBe('America/Argentina/Cordoba');
     expect(normalizeTimezone('America/New_York')).toBe('America/New_York');
+    expect(normalizeTimezone('Asia/Jayapura')).toBe('Asia/Jayapura');
   });
 
   test('isValidTimezone accepts real and aliased zones', () => {
     expect(isValidTimezone('America/New_York')).toBe(true);
     expect(isValidTimezone('Asia/Calcutta')).toBe(true);
+    expect(isValidTimezone('America/Buenos_Aires')).toBe(true);
+    expect(isValidTimezone('America/Cordoba')).toBe(true);
     expect(isValidTimezone('Not/AZone')).toBe(false);
   });
 
@@ -662,5 +736,27 @@ describe('isInvalidDate', () => {
     expect(isInvalidDate('2026-07-24')).toBe(false);
     expect(isInvalidDate(null)).toBe(false);
     expect(isInvalidDate(undefined)).toBe(false);
+  });
+});
+
+describe('parseBackendDate', () => {
+  test('converts zone-shifted backend timestamps ending with Z to local wall-clock dates', () => {
+    const parsed = parseBackendDate('2026-10-01T00:00:00Z');
+    expect(parsed.getFullYear()).toBe(2026);
+    expect(parsed.getMonth()).toBe(9);
+    expect(parsed.getDate()).toBe(1);
+    expect(formatDate(parsed, 'PP')).toBe('Oct 1, 2026');
+  });
+
+  test('returns Date instances as-is', () => {
+    const date = new Date(2026, 9, 1);
+    expect(parseBackendDate(date)).toEqual(date);
+  });
+
+  test('parses timestamps without trailing Z as standard Date', () => {
+    const parsed = parseBackendDate('2026-10-01T12:00:00');
+    expect(parsed.getFullYear()).toBe(2026);
+    expect(parsed.getMonth()).toBe(9);
+    expect(parsed.getDate()).toBe(1);
   });
 });

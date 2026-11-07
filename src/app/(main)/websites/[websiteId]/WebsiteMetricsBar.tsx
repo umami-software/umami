@@ -5,6 +5,15 @@ import { MetricCard } from '@/components/metrics/MetricCard';
 import { MetricsBar } from '@/components/metrics/MetricsBar';
 import { formatLongNumber, formatShortTime } from '@/lib/format';
 
+interface WebsiteMetric {
+  label: string;
+  value: number;
+  prev?: number;
+  change: number;
+  formatValue: (n: number) => string;
+  reverseColors?: boolean;
+}
+
 export function WebsiteMetricsBar({
   websiteId,
   compareMode,
@@ -23,7 +32,7 @@ export function WebsiteMetricsBar({
 
   const { pageviews, visitors, visits, bounces, totaltime, comparison } = data || {};
 
-  const metrics = data
+  const metrics: WebsiteMetric[] | null = data
     ? [
         {
           value: visitors,

@@ -10,7 +10,9 @@ const operation1 = defineOperation({
   auth: 'bearer-or-share',
   operation: {
     operationId: 'getSubscription',
-    summary: 'Get auth subscription',
+    summary: 'Get subscription details',
+    description:
+      'Returns subscription and feature availability for the current user or a specified team the user can access.',
     tags: ['Authentication'],
     parameters: [
       {
@@ -21,6 +23,7 @@ const operation1 = defineOperation({
           type: 'string',
           format: 'uuid',
         },
+        description: 'ID of the associated team.',
       },
     ],
     responses: {
@@ -38,6 +41,7 @@ const operation1 = defineOperation({
                       properties: {
                         message: {
                           type: 'string',
+                          description: 'Human-readable explanation of the result.',
                         },
                         code: {
                           type: 'string',
@@ -47,6 +51,7 @@ const operation1 = defineOperation({
                         },
                       },
                       required: ['message', 'code', 'status'],
+                      description: 'Error details returned when the operation fails.',
                     },
                   },
                   required: ['error'],
@@ -76,6 +81,41 @@ const operation1 = defineOperation({
                     'isNoBilling',
                     'hasSubscription',
                     'unlimitedWebsites',
+                  ],
+                },
+                {
+                  type: 'object',
+                  properties: {
+                    isOwner: {
+                      type: 'boolean',
+                    },
+                    isPro: {
+                      type: 'boolean',
+                    },
+                    isBusiness: {
+                      type: 'boolean',
+                    },
+                    isNoBilling: {
+                      type: 'boolean',
+                    },
+                    hasSubscription: {
+                      type: 'boolean',
+                    },
+                    unlimitedWebsites: {
+                      type: 'boolean',
+                    },
+                    billingStatus: {
+                      type: 'string',
+                    },
+                  },
+                  required: [
+                    'isOwner',
+                    'isPro',
+                    'isBusiness',
+                    'isNoBilling',
+                    'hasSubscription',
+                    'unlimitedWebsites',
+                    'billingStatus',
                   ],
                 },
               ],

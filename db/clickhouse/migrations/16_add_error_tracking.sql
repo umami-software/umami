@@ -23,5 +23,4 @@ CREATE TABLE IF NOT EXISTS umami.error_event
 ENGINE = ReplacingMergeTree
 -- A retry always reaches the same partition, including across month boundaries.
 PARTITION BY cityHash64(website_id) % 16
-ORDER BY (website_id, event_id)
-TTL toDateTime(received_at) + INTERVAL 90 DAY DELETE;
+ORDER BY (website_id, event_id);

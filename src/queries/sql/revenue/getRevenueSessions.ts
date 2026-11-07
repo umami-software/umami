@@ -3,6 +3,7 @@ import { EVENT_TYPE } from '@/lib/constants';
 import { CLICKHOUSE, PRISMA, runQuery } from '@/lib/db';
 import prisma from '@/lib/prisma';
 import type { PageResult, QueryFilters, WebsiteSession } from '@/lib/types';
+import { QUALIFIED_FILTER_COLUMNS } from '@/queries/sql/sessions/getWebsiteSessions';
 
 const FUNCTION_NAME = 'getRevenueSessions';
 
@@ -37,7 +38,7 @@ async function relationalQuery(websiteId: string, currency: string, filters: Que
     select
       session.session_id as "id",
       session.website_id as "websiteId",
-      website_event.hostname,
+      max(website_event.hostname) as hostname,
       session.browser,
       session.os,
       session.device,
@@ -72,7 +73,6 @@ async function relationalQuery(websiteId: string, currency: string, filters: Que
     group by
       session.session_id,
       session.website_id,
-      website_event.hostname,
       session.browser,
       session.os,
       session.device,
@@ -92,33 +92,42 @@ async function relationalQuery(websiteId: string, currency: string, filters: Que
 async function clickhouseQuery(websiteId: string, currency: string, filters: QueryFilters) {
   const { pagedRawQuery, parseFilters, getDateStringSQL } = clickhouse;
   const { search } = filters;
-  const { filterQuery, dateQuery, cohortQuery, queryParams } = parseFilters({
-    ...filters,
-    websiteId,
-    currency,
-  });
+  const { filterQuery, dateQuery, cohortQuery, queryParams } = parseFilters(
+    {
+      ...filters,
+      websiteId,
+      currency,
+    },
+    {
+      columns: QUALIFIED_FILTER_COLUMNS,
+    },
+  );
 
   const searchQuery = search
-    ? `and ((positionCaseInsensitive(browser, {search:String}) > 0)
-           or (positionCaseInsensitive(city, {search:String}) > 0)
-           or (positionCaseInsensitive(os, {search:String}) > 0)
-           or (positionCaseInsensitive(device, {search:String}) > 0))`
+    ? `and ((positionCaseInsensitive(website_event.browser, {search:String}) > 0)
+           or (positionCaseInsensitive(website_event.city, {search:String}) > 0)
+           or (positionCaseInsensitive(website_event.os, {search:String}) > 0)
+           or (positionCaseInsensitive(website_event.device, {search:String}) > 0))`
     : '';
+  const normalizedFilterQuery = filterQuery.replace(
+    /referrer_domain != hostname/g,
+    'website_event.referrer_domain != website_event.hostname',
+  );
 
   return pagedRawQuery(
     `
     select
       session_id as id,
       website_id as websiteId,
-      hostname,
-      browser,
-      os,
-      device,
-      screen,
-      language,
-      country,
-      region,
-      city,
+      argMax(hostname, created_at) as hostname,
+      argMax(browser, created_at) as browser,
+      argMax(os, created_at) as os,
+      argMax(device, created_at) as device,
+      argMax(screen, created_at) as screen,
+      argMax(language, created_at) as language,
+      argMax(country, created_at) as country,
+      argMax(region, created_at) as region,
+      argMax(city, created_at) as city,
       ${getDateStringSQL('min(created_at)')} as firstAt,
       ${getDateStringSQL('max(created_at)')} as lastAt,
       uniq(visit_id) as visits,
@@ -130,7 +139,7 @@ async function clickhouseQuery(websiteId: string, currency: string, filters: Que
     where website_id = {websiteId:UUID}
       and event_type != ${EVENT_TYPE.performance}
     ${dateQuery}
-    ${filterQuery}
+    ${normalizedFilterQuery}
     ${searchQuery}
       and session_id in (
         select distinct session_id
@@ -139,7 +148,8 @@ async function clickhouseQuery(websiteId: string, currency: string, filters: Que
         ${dateQuery}
           and upper(currency) = {currency:String}
       )
-    group by session_id, website_id, hostname, browser, os, device, screen, language, country, region, city
+    -- One row per session: imported payments (hostname = provider) share the session.
+    group by session_id, website_id
     order by max(created_at) desc
     `,
     queryParams,

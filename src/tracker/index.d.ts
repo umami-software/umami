@@ -12,6 +12,12 @@ export type TrackedProperties = {
   /** Distinct ID associated with the current visitor. */
   id?: string;
   /**
+   * Value mixed into the server's session salt. Only used when the server sets ENABLE_CLIENT_SALT.
+   *
+   * @example '2026-10-30' (rotates sessions daily)
+   */
+  salt?: string;
+  /**
    * Browser language
    *
    * @description extracted from `window.navigator.language`
@@ -58,14 +64,7 @@ export type TrackedProperties = {
 export type WithRequired<T, K extends keyof T> = T & {
   [P in K]-?: T[P];
 };
-export type EventDataValue =
-  | boolean
-  | number
-  | string
-  | null
-  | EventData
-  | CommerceData
-  | EventDataValue[];
+export type EventDataValue = boolean | number | string | null | EventData | EventDataValue[];
 /**
  *
  * Event Data can work with any JSON data. There are a few rules in place to maintain performance.
@@ -75,29 +74,7 @@ export type EventDataValue =
  * - Objects have a max of 50 properties. Arrays are considered 1 property.
  */
 export interface EventData {
-  /** Reserved structured commerce data for named website events. */
-  commerce?: CommerceData;
   [key: string]: EventDataValue | undefined;
-}
-export interface CommerceItem {
-  productId: string;
-  name?: string;
-  variant?: string;
-  category?: string;
-  /** Net unit price after discounts, excluding tax and shipping. */
-  price: number;
-  quantity: number;
-}
-export interface CommerceData {
-  currency: string;
-  market?: string;
-  cartId?: string;
-  checkoutId?: string;
-  /** Identifies a completed payment; unique within this website. Omit before payment. */
-  orderId?: string;
-  shipping?: number;
-  tax?: number;
-  items: CommerceItem[];
 }
 export type EventProperties = {
   /**
@@ -203,5 +180,36 @@ export type UmamiTracker = {
 declare global {
   interface Window {
     umami: UmamiTracker;
+    umamiConfig?: UmamiConfig;
   }
 }
+export type BeforeSend = (
+  type: string,
+  payload: Record<string, unknown>,
+) =>
+  | Record<string, unknown>
+  | null
+  | undefined
+  | Promise<Record<string, unknown> | null | undefined>;
+export type UmamiConfig = {
+  websiteId?: string;
+  hostUrl?: string;
+  autoTrack?: boolean;
+  autoPageview?: boolean;
+  doNotTrack?: boolean;
+  excludeSearch?: boolean;
+  excludeHash?: boolean;
+  domains?: string | string[];
+  tag?: string;
+  distinctId?: string;
+  salt?: string;
+  /** Generates the salt from the current UTC time. Ignored when `salt` is set. */
+  saltRotation?: 'hourly' | 'daily' | 'weekly' | 'monthly';
+  beforeSend?: BeforeSend | string;
+  errors?: boolean;
+  release?: string;
+  environment?: string;
+  performance?: boolean;
+  fetchCredentials?: RequestCredentials;
+  [key: string]: unknown;
+};

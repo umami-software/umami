@@ -18,7 +18,11 @@ export const filtersSchema = z
     tag: filterValue.optional().describe('Tracker tag.'),
     browser: filterValue.optional().describe('Browser name, e.g. "chrome".'),
     os: filterValue.optional().describe('Operating system, e.g. "Mac OS".'),
-    device: filterValue.optional().describe('Device type: desktop, laptop, tablet or mobile.'),
+    device: filterValue
+      .optional()
+      .describe(
+        'Device type: desktop, laptop, tablet, mobile, smarttv, console, wearable, xr or embedded.',
+      ),
     country: filterValue.optional().describe('ISO 3166-1 alpha-2 country code, e.g. "US".'),
     region: filterValue.optional().describe('Region code, e.g. "US-CA".'),
     city: filterValue.optional().describe('City name.'),

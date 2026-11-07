@@ -3,7 +3,6 @@ import debug from 'debug';
 const log = debug('umami:errors');
 const counts = {
   accepted: 0,
-  disabled: 0,
   blocked: 0,
   invalid: 0,
   oversized: 0,

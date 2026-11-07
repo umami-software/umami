@@ -5,7 +5,7 @@ import { LoadingPanel } from '@/components/common/LoadingPanel';
 import { Panel } from '@/components/common/Panel';
 import { useLocale, useMessages, useRetentionQuery } from '@/components/hooks';
 import { Users } from '@/components/icons';
-import { formatDate } from '@/lib/date';
+import { formatDate, parseBackendDate } from '@/lib/date';
 import { formatLongNumber } from '@/lib/format';
 
 const DAYS = [1, 2, 3, 4, 5, 6, 7, 14, 21, 28];
@@ -83,7 +83,8 @@ export function Retention({ websiteId, days = DAYS, startDate, endDate }: Retent
                 ))}
               </Grid>
               {rows.map(({ date, visitors, records }: any, rowIndex: number) => {
-                const maxDay = differenceInCalendarDays(endDate, new Date(date));
+                const parsedDate = parseBackendDate(date);
+                const maxDay = differenceInCalendarDays(endDate, parsedDate);
                 return (
                   <Grid
                     key={rowIndex}
@@ -94,7 +95,7 @@ export function Retention({ websiteId, days = DAYS, startDate, endDate }: Retent
                     minWidth="100%"
                   >
                     <Column justifyContent="center" gap="1">
-                      <Text weight="bold">{formatDate(date, 'PP', locale)}</Text>
+                      <Text weight="bold">{formatDate(parsedDate, 'PP', locale)}</Text>
                       <Row alignItems="center" gap>
                         <Icon>
                           <Users />

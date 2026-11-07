@@ -1,8 +1,7 @@
 import { beforeEach, expect, test, vi } from 'vitest';
-import { render, screen } from '@/test/render';
+import { render, screen, userEvent } from '@/test/render';
 import { ListTable } from './ListTable';
 import { MetricCard } from './MetricCard';
-import { PerformanceCard } from './PerformanceCard';
 
 const preference = { reduced: true };
 
@@ -29,15 +28,6 @@ test('shows the final metric and percentage immediately with reduced motion', ()
   rerender(<MetricCard value={180} change={60} showChange formatValue={n => `${n} visits`} />);
   expect(screen.getByText('180 visits')).toBeInTheDocument();
   expect(screen.getByText('50%')).toBeInTheDocument();
-});
-
-test('updates performance values without intermediate numbers', () => {
-  const { rerender } = render(
-    <PerformanceCard metric="lcp" value={1200} label="LCP" formatValue={n => `${n} ms`} />,
-  );
-  expect(screen.getByText('1200 ms')).toBeInTheDocument();
-  rerender(<PerformanceCard metric="lcp" value={1800} label="LCP" formatValue={n => `${n} ms`} />);
-  expect(screen.getByText('1800 ms')).toBeInTheDocument();
 });
 
 test('shows final list counts and percentages with reduced motion', () => {
@@ -76,4 +66,20 @@ test('still honors the explicit list animation opt-out', () => {
   );
   expect(screen.getByText('42 views')).toBeInTheDocument();
   expect(screen.getByText('75%')).toBeInTheDocument();
+});
+
+test('a clickable metric card is a toggle button that responds to the keyboard', async () => {
+  const user = userEvent.setup();
+  const onClick = vi.fn();
+  render(<MetricCard value={1} label="LCP" onClick={onClick} selected />);
+  const card = screen.getByRole('button', { pressed: true });
+  await user.click(card);
+  await user.keyboard('{Enter}');
+  await user.keyboard(' ');
+  expect(onClick).toHaveBeenCalledTimes(3);
+});
+
+test('a plain metric card is not interactive', () => {
+  render(<MetricCard value={1} label="Visitors" />);
+  expect(screen.queryByRole('button')).not.toBeInTheDocument();
 });

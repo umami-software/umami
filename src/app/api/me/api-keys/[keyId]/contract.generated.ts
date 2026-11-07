@@ -10,7 +10,9 @@ const operation1 = defineOperation({
   auth: 'bearer',
   operation: {
     operationId: 'deleteMyApiKey',
-    summary: 'Delete me api keys key id',
+    summary: 'Delete an API key',
+    description:
+      'Deletes an API key belonging to the current user, revoking its access. Available on self-hosted installations.',
     tags: ['Account'],
     parameters: [
       {
@@ -20,6 +22,7 @@ const operation1 = defineOperation({
         schema: {
           type: 'string',
         },
+        description: 'ID of the API key.',
       },
     ],
     responses: {
@@ -32,6 +35,7 @@ const operation1 = defineOperation({
               properties: {
                 ok: {
                   const: true,
+                  description: 'Whether the operation succeeded.',
                 },
               },
               required: ['ok'],

@@ -10,7 +10,9 @@ const operation1 = defineOperation({
   auth: 'bearer',
   operation: {
     operationId: 'cancelTwoFactorSetup',
-    summary: 'Create or update 2fa setup cancel',
+    summary: 'Cancel two-factor authentication setup',
+    description:
+      "Deletes the current user's pending setup without changing an already enabled authenticator.",
     tags: ['Two-factor authentication'],
     responses: {
       '200': {
@@ -22,6 +24,7 @@ const operation1 = defineOperation({
               properties: {
                 ok: {
                   type: 'boolean',
+                  description: 'Whether the operation succeeded.',
                 },
               },
               required: ['ok'],

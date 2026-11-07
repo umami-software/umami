@@ -5,6 +5,7 @@ import { TopNav } from './TopNav';
 const mockPush = vi.fn();
 const mockRenderUrl = vi.fn((path: string) => path);
 const mockUseNavigation = vi.fn();
+const mockWebsiteSelectProps = vi.fn();
 
 vi.mock('@/components/hooks', () => ({
   useNavigation: () => mockUseNavigation(),
@@ -15,16 +16,24 @@ vi.mock('@/components/input/TeamsButton', () => ({
 }));
 
 vi.mock('@/components/input/WebsiteSelect', () => ({
-  WebsiteSelect: ({ onChange }: { onChange: (value: string | number | null) => void }) => (
-    <>
-      <button type="button" onClick={() => onChange(null)}>
-        clear website
-      </button>
-      <button type="button" onClick={() => onChange('website-2')}>
-        select website
-      </button>
-    </>
-  ),
+  WebsiteSelect: (props: {
+    includeTeams?: boolean;
+    onChange: (value: string | number | null) => void;
+  }) => {
+    mockWebsiteSelectProps(props);
+    const { onChange } = props;
+
+    return (
+      <>
+        <button type="button" onClick={() => onChange(null)}>
+          clear website
+        </button>
+        <button type="button" onClick={() => onChange('website-2')}>
+          select website
+        </button>
+      </>
+    );
+  },
 }));
 
 vi.mock('@/components/input/LinkSelect', () => ({
@@ -42,6 +51,7 @@ vi.mock('@/components/input/BoardSelect', () => ({
 beforeEach(() => {
   mockPush.mockReset();
   mockRenderUrl.mockClear();
+  mockWebsiteSelectProps.mockClear();
   mockUseNavigation.mockReturnValue({
     websiteId: 'website-1',
     linkId: undefined,
@@ -71,4 +81,25 @@ test('navigates when the website select emits a website id', async () => {
 
   expect(mockRenderUrl).toHaveBeenCalledWith('/websites/website-2', false);
   expect(mockPush).toHaveBeenCalledWith('/websites/website-2');
+});
+
+test('lists websites from all teams when no team is selected', () => {
+  render(<TopNav />);
+
+  expect(mockWebsiteSelectProps).toHaveBeenLastCalledWith(
+    expect.objectContaining({ teamId: undefined, includeTeams: true }),
+  );
+});
+
+test('lists only the selected team websites inside a team', () => {
+  mockUseNavigation.mockReturnValue({
+    ...mockUseNavigation(),
+    teamId: 'team-1',
+  });
+
+  render(<TopNav />);
+
+  expect(mockWebsiteSelectProps).toHaveBeenLastCalledWith(
+    expect.objectContaining({ teamId: 'team-1', includeTeams: false }),
+  );
 });
