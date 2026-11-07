@@ -480,6 +480,7 @@
     "not-found": "Topilmadi",
     "nothing-selected": "Hech narsa tanlanmagan.",
     "page-not-found": "Sahifa topilmadi",
+    "password-change-required": "Keling, hisobingizni himoya qilamiz. Iltimos, standart parolni o‘zingizning parolingiz bilan almashtiring.",
     "reset-website": "Bu veb-saytni qayta tiklash uchun tasdiqlash uchun pastdagi qutiga **{confirmation}** yozing.",
     "reset-website-warning": "Bu veb-sayt uchun barcha statistik ma'lumotlar oʻchiriladi, lekin sozlamalaringiz saqlanib qoladi.",
     "saved": "Saqlandi.",

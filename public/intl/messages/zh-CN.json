@@ -480,6 +480,7 @@
     "not-found": "未找到",
     "nothing-selected": "未选择",
     "page-not-found": "页面未找到。",
+    "password-change-required": "让我们保护您的账户安全。请将默认密码更换为您自己的密码。",
     "reset-website": "如确定要重置该网站，请在下面输入 {confirmation} 以确认。",
     "reset-website-warning": "此网站的所有统计数据将被删除，但您的设置将保持不变。",
     "saved": "保存成功。",

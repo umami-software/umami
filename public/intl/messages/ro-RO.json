@@ -480,6 +480,7 @@
     "not-found": "Negăsit",
     "nothing-selected": "Nimic selectat.",
     "page-not-found": "Pagina nu a fost găsită.",
+    "password-change-required": "Hai să îți securizăm contul. Te rugăm să înlocuiești parola implicită cu una proprie.",
     "reset-website": "Pentru a reseta acest website, scrie {confirmation} În câmpul de mai jos pentru a confirma.",
     "reset-website-warning": "Toate statisticile pentru acest site web vor fi șterse, dar codul de urmărire va rămâne intact.",
     "saved": "Salvat cu succes.",

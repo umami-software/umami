@@ -7,16 +7,29 @@ import {
   PasswordField,
 } from '@umami/react-zen';
 import { useMessages, useUpdateQuery } from '@/components/hooks';
+import { setClientAuthToken } from '@/lib/client';
 
-export function PasswordEditForm({ onSave, onClose }) {
+export function PasswordEditForm({
+  onSave,
+  onClose,
+  required = false,
+}: {
+  onSave: () => void;
+  onClose?: () => void;
+  required?: boolean;
+}) {
   const { t, labels, messages, getErrorMessage } = useMessages();
   const { mutateAsync, error, isPending } = useUpdateQuery('/me/password');
 
   const handleSubmit = async (data: any) => {
     await mutateAsync(data, {
-      onSuccess: async () => {
+      onSuccess: async ({ token }) => {
+        // The old token stops working once the password changes. Older servers don't return a new one.
+        if (token) {
+          setClientAuthToken(token);
+        }
         onSave();
-        onClose();
+        onClose?.();
       },
     });
   };
@@ -59,7 +72,7 @@ export function PasswordEditForm({ onSave, onClose }) {
         <PasswordField autoComplete="confirm-password" />
       </FormField>
       <FormButtons>
-        <Button onPress={onClose}>{t(labels.cancel)}</Button>
+        {!required && <Button onPress={onClose}>{t(labels.cancel)}</Button>}
         <FormSubmitButton isDisabled={isPending}>{t(labels.save)}</FormSubmitButton>
       </FormButtons>
     </Form>

@@ -480,6 +480,7 @@
     "not-found": "לא נמצא",
     "nothing-selected": "לא נבחר דבר.",
     "page-not-found": "דף לא נמצא",
+    "password-change-required": "בואו נאבטח את החשבון שלך. יש להחליף את סיסמת ברירת המחדל בסיסמה משלך.",
     "reset-website": "לאיפוס אתר זה, הקלידו {confirmation} בתיבה למטה לאישור.",
     "reset-website-warning": "All statistics for this website will be deleted, but your tracking code will remain intact.",
     "saved": "נשמר בהצלחה",

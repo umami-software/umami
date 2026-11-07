@@ -480,6 +480,7 @@
     "not-found": "見つかりません",
     "nothing-selected": "何も選択されていません。",
     "page-not-found": "ページが見つかりません",
+    "password-change-required": "アカウントを保護しましょう。デフォルトのパスワードをご自身のパスワードに変更してください。",
     "reset-website": "このWebサイトをリセットするには、下のフォームに「{confirmation}」と入力してください。",
     "reset-website-warning": "このWebサイトの統計情報はすべて削除されますが、設定はそのまま残ります。",
     "saved": "保存されました。",

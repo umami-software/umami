@@ -3,7 +3,7 @@ import { PARTIAL_AUTH_TOKEN_TYPE, ROLES } from '@/lib/constants';
 import { hash, secret } from '@/lib/crypto';
 import { createSecureToken } from '@/lib/jwt';
 import { addTeamBillingStatus } from '@/lib/load';
-import { checkPassword } from '@/lib/password';
+import { checkPassword, hasDefaultPassword } from '@/lib/password';
 import prisma from '@/lib/prisma';
 import redis from '@/lib/redis';
 import { parseRequest } from '@/lib/request';
@@ -29,6 +29,7 @@ export async function POST(request: Request) {
   }
 
   const { id, role, createdAt } = user;
+  const passwordChangeRequired = hasDefaultPassword(user);
   const cloudMode = !!process.env.CLOUD_MODE;
 
   // Check if 2FA is enabled for this user
@@ -70,6 +71,14 @@ export async function POST(request: Request) {
 
   return json({
     token,
-    user: { id, username, role, createdAt, isAdmin: role === ROLES.admin, teams },
+    user: {
+      id,
+      username,
+      role,
+      createdAt,
+      isAdmin: role === ROLES.admin,
+      passwordChangeRequired,
+      teams,
+    },
   });
 }

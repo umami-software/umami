@@ -59,7 +59,7 @@ postgresql://username:mypassword@localhost:5432/mydb
 pnpm run build
 ```
 
-The build step will create tables in your database if you are installing for the first time. It will also create a login user with username **admin** and password **umami**.
+The build step will create tables in your database if you are installing for the first time. It will also create a login user with username **admin** and password **umami**. You will be required to change this password after signing in.
 
 ### Start the Application
 

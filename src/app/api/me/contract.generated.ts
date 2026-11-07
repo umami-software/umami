@@ -76,6 +76,9 @@ const operation1 = defineOperation({
                 twoFactorSetupPending: {
                   type: 'boolean',
                 },
+                passwordChangeRequired: {
+                  type: 'boolean',
+                },
                 shareToken: {
                   type: 'object',
                   properties: {

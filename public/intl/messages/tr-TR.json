@@ -480,6 +480,7 @@
     "not-found": "Bulunamadı",
     "nothing-selected": "Hiçbir şey seçilmedi.",
     "page-not-found": "Sayfa bulunamadı.",
+    "password-change-required": "Hesabınızı güvence altına alalım. Lütfen varsayılan parolayı kendi parolanızla değiştirin.",
     "reset-website": "Bu websitesini sıfılamak için aşağıdaki kutuya {confirmation} yazın.",
     "reset-website-warning": "Bu web sitesi için tüm istatistikler silinecek, ancak izleme kodunuz bozulmadan kalacaktır.",
     "saved": "Başarıyla kaydedildi.",

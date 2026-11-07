@@ -480,6 +480,7 @@
     "not-found": "Ei löytynyt",
     "nothing-selected": "Mitään ei ole valittu.",
     "page-not-found": "Sivua ei löydetty.",
+    "password-change-required": "Suojataan tilisi. Korvaa oletussalasana omalla salasanallasi.",
     "reset-website": "Nollaa verkkosivusto kirjoittamalla {confirmation} alla olevaan kenttään vahvistaaksesi.",
     "reset-website-warning": "Kaikki sivuston tilastot poistetaan, mutta seurantakoodi pysyy muuttumattomana.",
     "saved": "Tallennettu onnistuneesti.",

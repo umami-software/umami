@@ -480,6 +480,7 @@
     "not-found": "찾을 수 없음",
     "nothing-selected": "선택된 항목이 없습니다.",
     "page-not-found": "페이지를 찾을 수 없음",
+    "password-change-required": "계정을 안전하게 보호하세요. 기본 비밀번호를 본인만의 비밀번호로 변경해 주세요.",
     "reset-website": "이 웹사이트를 초기화하려면 아래 상자에 {confirmation}을(를) 입력하세요.",
     "reset-website-warning": "이 웹사이트의 모든 통계가 삭제되지만 설정은 그대로 유지됩니다.",
     "saved": "저장했습니다.",

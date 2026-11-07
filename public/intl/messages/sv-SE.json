@@ -480,6 +480,7 @@
     "not-found": "Hittades inte",
     "nothing-selected": "Inget valt.",
     "page-not-found": "Sidan kunde inte hittas.",
+    "password-change-required": "Låt oss skydda ditt konto. Ersätt standardlösenordet med ett eget.",
     "reset-website": "För att återställa webbplatsen, skriv {confirmation} i rutan nedan.",
     "reset-website-warning": "All statistik för webbplatsen tas bort, men spårningskoden förblir oförändrad.",
     "saved": "Sparat!",

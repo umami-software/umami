@@ -480,6 +480,7 @@
     "not-found": "Nenalezeno",
     "nothing-selected": "Nic není vybráno.",
     "page-not-found": "Stránka nenalezena.",
+    "password-change-required": "Zabezpečme váš účet. Nahraďte prosím výchozí heslo vlastním.",
     "reset-website": "Pro resetování tohoto webu zadejte {confirmation} do pole níže.",
     "reset-website-warning": "All statistics for this website will be deleted, but your tracking code will remain intact.",
     "saved": "Úspěšně uloženo.",

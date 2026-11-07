@@ -215,6 +215,17 @@ test('parseRequest lets a session pending required 2FA setup reach routes that o
   expect(auth.user.id).toBe('user-1');
 });
 
+test('parseRequest does not block an account that still uses the default password', async () => {
+  // The password prompt is UI only. Existing API and MCP integrations owned by the seeded admin
+  // must keep working after an upgrade.
+  checkAuthMock.mockResolvedValue({ user: { id: 'admin-1' }, passwordChangeRequired: true } as any);
+
+  const { auth, error } = await parseRequest(new Request('http://localhost/api/websites'));
+
+  expect(error).toBeUndefined();
+  expect(auth.user.id).toBe('admin-1');
+});
+
 test('parseRequest allows ordinary sessions on every route', async () => {
   checkAuthMock.mockResolvedValue({ user: { id: 'user-1' }, twoFactorSetupPending: false } as any);
 

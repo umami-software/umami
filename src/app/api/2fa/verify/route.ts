@@ -4,6 +4,7 @@ import { PARTIAL_AUTH_TOKEN_TYPE, ROLES } from '@/lib/constants';
 import { hash, secret } from '@/lib/crypto';
 import { createSecureToken, parseSecureToken } from '@/lib/jwt';
 import { addTeamBillingStatus } from '@/lib/load';
+import { hasDefaultPassword } from '@/lib/password';
 import prisma from '@/lib/prisma';
 import redis from '@/lib/redis';
 import { parseRequest } from '@/lib/request';
@@ -131,6 +132,7 @@ export async function POST(request: Request) {
   }
 
   const { id, role, createdAt, username } = user;
+  const passwordChangeRequired = hasDefaultPassword(user);
   // Bind token to password hash so a password change invalidates old tokens.
   const pwd = hash(user.password);
 
@@ -145,6 +147,14 @@ export async function POST(request: Request) {
 
   return json({
     token: fullToken,
-    user: { id, username, role, createdAt, isAdmin: role === ROLES.admin, teams },
+    user: {
+      id,
+      username,
+      role,
+      createdAt,
+      isAdmin: role === ROLES.admin,
+      passwordChangeRequired,
+      teams,
+    },
   });
 }

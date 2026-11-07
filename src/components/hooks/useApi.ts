@@ -22,16 +22,13 @@ export function useApi() {
   const shareHeaders =
     shareId && shareToken ? { [SHARE_TOKEN_HEADER]: shareToken, [SHARE_CONTEXT_HEADER]: '1' } : {};
 
-  const defaultHeaders = {
-    authorization: `Bearer ${getClientAuthToken()}`,
-    ...shareHeaders,
-  };
   const getUrl = (url: string) => {
     return getApiUrl(url);
   };
 
+  // Read the token per request: the callbacks below are memoized, and changing the password replaces it.
   const getHeaders = (headers: any = {}) => {
-    return { ...defaultHeaders, ...headers };
+    return { authorization: `Bearer ${getClientAuthToken()}`, ...shareHeaders, ...headers };
   };
 
   return {

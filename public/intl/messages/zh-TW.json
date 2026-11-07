@@ -480,6 +480,7 @@
     "not-found": "找不到",
     "nothing-selected": "尚未選取任何項目。",
     "page-not-found": "找不到網頁",
+    "password-change-required": "讓我們保護您的帳戶安全。請將預設密碼更換為您自己的密碼。",
     "reset-website": "要重設此網站的統計資料，請在下方欄位輸入 {confirmation} 以確認。",
     "reset-website-warning": "此網站的所有統計資料都將被刪除，但您的設定將保持不變。",
     "saved": "已儲存。",

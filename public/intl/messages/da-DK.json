@@ -480,6 +480,7 @@
     "not-found": "Ikke fundet",
     "nothing-selected": "Intet valgt.",
     "page-not-found": "Side ikke fundet.",
+    "password-change-required": "Lad os sikre din konto. Erstat venligst standardadgangskoden med din egen.",
     "reset-website": "For at nulstille denne website, skriv {confirmation} i feltet herunder for at bekræfte.",
     "reset-website-warning": "Alle statistikker for denne hjemmeside ville blive slettet, men sporingskode ville forblive intakt.",
     "saved": "Gemt!",

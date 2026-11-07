@@ -480,6 +480,7 @@
     "not-found": "Tidak ditemukan",
     "nothing-selected": "Tidak ada yang dipilih.",
     "page-not-found": "Halaman tidak ditemukan.",
+    "password-change-required": "Mari amankan akun Anda. Silakan ganti kata sandi bawaan dengan kata sandi Anda sendiri.",
     "reset-website": "Untuk mengatur ulang situs web ini, ketik {confirmation} pada kotak di bawah untuk mengonfirmasi.",
     "reset-website-warning": "Semua statistik pada situs web ini akan dihapus, tetapi kode lacak akan tetap terpasang",
     "saved": "Berhasil disimpan.",

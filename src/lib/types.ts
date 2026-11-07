@@ -29,6 +29,8 @@ export interface Auth {
   authType?: AuthType;
   /** Session issued while 2FA was required but not yet set up; limited to the setup routes. */
   twoFactorSetupPending?: boolean;
+  /** Session belongs to the seeded administrator; the app prompts for a new password. */
+  passwordChangeRequired?: boolean;
   shareToken?: {
     shareType?: number;
     websiteId?: string;

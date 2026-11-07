@@ -480,6 +480,7 @@
     "not-found": "Không tìm thấy",
     "nothing-selected": "Chưa chọn gì.",
     "page-not-found": "Không tìm thấy trang.",
+    "password-change-required": "Hãy bảo mật tài khoản của bạn. Vui lòng thay mật khẩu mặc định bằng mật khẩu của riêng bạn.",
     "reset-website": "Để đặt lại website này, nhập {confirmation} vào ô bên dưới để xác nhận.",
     "reset-website-warning": "Tất cả số liệu thống kê của website này sẽ bị xóa, nhưng mã theo dõi sẽ vẫn giữ nguyên.",
     "saved": "Đã lưu thành công.",
