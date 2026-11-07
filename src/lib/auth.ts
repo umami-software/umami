@@ -126,12 +126,15 @@ export async function checkAuth(request: Request) {
   }
 
   // A session issued while 2FA was required but not set up stays restricted until enrollment
-  // completes; after that the same token becomes a full session.
+  // completes (an authenticator app or a security key); after that the same token becomes a
+  // full session.
   let twoFactorSetupPending = false;
 
   if (user && twoFactorSetup) {
     const twoFactor = await prisma.client.twoFactorAuth.findUnique({ where: { userId: user.id } });
-    twoFactorSetupPending = !twoFactor?.isEnabled;
+    twoFactorSetupPending =
+      !twoFactor?.isEnabled &&
+      (await prisma.client.webAuthnCredential.count({ where: { userId: user.id } })) === 0;
   }
 
   log({

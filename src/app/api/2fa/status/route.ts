@@ -3,6 +3,7 @@ import { parseRequest } from '@/lib/request';
 import { json } from '@/lib/response';
 import { isTwoFactorConfigured } from '@/lib/two-factor/crypto';
 import { getTwoFactorRequiredReason } from '@/lib/two-factor/policy';
+import { getUserSecurityKeyCount } from '@/queries/prisma/securityKey';
 
 export async function GET(request: Request) {
   const { auth, error } = await parseRequest(request, null, { allowTwoFactorSetup: true });
@@ -14,6 +15,7 @@ export async function GET(request: Request) {
   if (process.env.CLOUD_MODE) {
     return json({
       isEnabled: false,
+      hasSecurityKeys: false,
       isRequired: false,
       requiredReason: null,
       isConfigured: false,
@@ -25,6 +27,7 @@ export async function GET(request: Request) {
 
   const twoFactor = await prisma.client.twoFactorAuth.findUnique({ where: { userId } });
   const isEnabled = twoFactor?.isEnabled ?? false;
+  const hasSecurityKeys = (await getUserSecurityKeyCount(userId)) > 0;
 
   const requiredReason = await getTwoFactorRequiredReason(userId);
   const globalRequired = requiredReason === 'global';
@@ -33,6 +36,7 @@ export async function GET(request: Request) {
   if (!isTwoFactorConfigured()) {
     return json({
       isEnabled,
+      hasSecurityKeys,
       isRequired: false,
       requiredReason: null,
       isConfigured: false,
@@ -42,6 +46,7 @@ export async function GET(request: Request) {
 
   return json({
     isEnabled,
+    hasSecurityKeys,
     isRequired: !!requiredReason,
     requiredReason,
     isConfigured: true,

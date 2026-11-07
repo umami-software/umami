@@ -174,15 +174,6 @@ const operation1 = defineOperation({
           },
         },
       },
-      'function toString() { [native code] }': {
-        description:
-          'Successful response. The response shape is inferred as free-form because the handler does not expose a reusable response schema.',
-        content: {
-          'application/json': {
-            schema: {},
-          },
-        },
-      },
     },
   } as ZodOpenApiOperationObject,
 });

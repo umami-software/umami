@@ -46,7 +46,8 @@ export function UserTwoFactorSettings({ userId }: { userId: string }) {
     error: resetError,
   } = useDeleteQuery(`/admin/users/${userId}/2fa`);
 
-  const twoFactorEnabled = !!(userTfaData as any)?.isEnabled;
+  const twoFactorEnabled =
+    !!(userTfaData as any)?.isEnabled || (userTfaData as any)?.securityKeyCount > 0;
   const twoFactorRequired = !!(userData as any)?.twoFactorRequired;
 
   const handleToggle = async (value: boolean) => {

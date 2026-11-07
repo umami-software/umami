@@ -4,6 +4,7 @@ export * from './board';
 export * from './link';
 export * from './pixel';
 export * from './report';
+export * from './securityKey';
 export * from './segment';
 export * from './session';
 export * from './sessionReplay';

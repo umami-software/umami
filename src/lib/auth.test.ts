@@ -33,12 +33,14 @@ vi.mock('@/queries/prisma/apiKey', () => ({
 
 const prismaMocks = vi.hoisted(() => ({
   findTwoFactorAuth: vi.fn(),
+  countSecurityKeys: vi.fn(),
 }));
 
 vi.mock('@/lib/prisma', () => ({
   default: {
     client: {
       twoFactorAuth: { findUnique: prismaMocks.findTwoFactorAuth },
+      webAuthnCredential: { count: prismaMocks.countSecurityKeys },
     },
   },
 }));
@@ -99,6 +101,8 @@ beforeEach(() => {
   redisMock.client.expire.mockReset();
   redisMock.client.expire.mockResolvedValue(true);
   prismaMocks.findTwoFactorAuth.mockReset();
+  prismaMocks.countSecurityKeys.mockReset();
+  prismaMocks.countSecurityKeys.mockResolvedValue(0);
 });
 
 describe('checkAuth api keys', () => {
@@ -482,6 +486,18 @@ describe('checkAuth required 2FA setup', () => {
 
     const result: any = await checkAuth(authedRequest());
 
+    expect(result?.twoFactorSetupPending).toBe(false);
+  });
+
+  test('lifts the restriction once a security key is registered instead', async () => {
+    parseSecureTokenMock.mockReturnValue({ userId: 'user-1', twoFactorSetup: true } as any);
+    mockUser();
+    prismaMocks.findTwoFactorAuth.mockResolvedValue(null);
+    prismaMocks.countSecurityKeys.mockResolvedValue(1);
+
+    const result: any = await checkAuth(authedRequest());
+
+    expect(prismaMocks.countSecurityKeys).toHaveBeenCalledWith({ where: { userId: 'user-1' } });
     expect(result?.twoFactorSetupPending).toBe(false);
   });
 
