@@ -3,7 +3,7 @@ import { PARTIAL_AUTH_TOKEN_TYPE, ROLES } from '@/lib/constants';
 import { hash, secret } from '@/lib/crypto';
 import { createSecureToken } from '@/lib/jwt';
 import { addTeamBillingStatus } from '@/lib/load';
-import { checkPassword } from '@/lib/password';
+import { checkUserPassword } from '@/lib/password';
 import prisma from '@/lib/prisma';
 import redis from '@/lib/redis';
 import { parseRequest } from '@/lib/request';
@@ -24,7 +24,7 @@ export async function POST(request: Request) {
 
   const user = await getUserByUsername(username, { includePassword: true });
 
-  if (!user || !checkPassword(password, user.password)) {
+  if (!checkUserPassword(password, user?.password) || !user) {
     return unauthorized({ code: 'incorrect-username-password' });
   }
 

@@ -3,7 +3,7 @@ import { beforeEach, expect, test, vi } from 'vitest';
 const mocks = vi.hoisted(() => ({
   parseRequest: vi.fn(),
   getUserByUsername: vi.fn(),
-  checkPassword: vi.fn(),
+  checkUserPassword: vi.fn(),
   findTwoFactorAuth: vi.fn(),
   createSecureToken: vi.fn(),
   secret: vi.fn(),
@@ -25,7 +25,7 @@ vi.mock('@/queries/prisma', () => ({
 }));
 
 vi.mock('@/lib/password', () => ({
-  checkPassword: mocks.checkPassword,
+  checkUserPassword: mocks.checkUserPassword,
 }));
 
 vi.mock('@/lib/prisma', () => ({
@@ -78,7 +78,7 @@ import { POST } from './route';
 beforeEach(() => {
   mocks.parseRequest.mockReset();
   mocks.getUserByUsername.mockReset();
-  mocks.checkPassword.mockReset();
+  mocks.checkUserPassword.mockReset();
   mocks.findTwoFactorAuth.mockReset();
   mocks.createSecureToken.mockReset();
   mocks.secret.mockReset();
@@ -100,7 +100,7 @@ beforeEach(() => {
     role: 'admin',
     createdAt: new Date('2026-08-01T00:00:00.000Z'),
   });
-  mocks.checkPassword.mockReturnValue(true);
+  mocks.checkUserPassword.mockReturnValue(true);
   mocks.findTwoFactorAuth.mockResolvedValue({ userId: 'user-1', isEnabled: true });
   mocks.isTwoFactorConfigured.mockReturnValue(true);
   mocks.getTwoFactorRequiredReason.mockResolvedValue(null);
@@ -162,4 +162,15 @@ test('POST does not restrict the session when 2FA cannot be configured', async (
     { userId: 'user-1', role: 'admin', pwd: 'pwd-fingerprint' },
     'app-secret',
   );
+});
+
+test('POST refuses an unknown username after comparing a password all the same', async () => {
+  mocks.getUserByUsername.mockResolvedValue(null);
+  mocks.checkUserPassword.mockReturnValue(false);
+
+  const response = await POST(new Request('http://localhost/api/auth/login', { method: 'POST' }));
+
+  expect(mocks.checkUserPassword).toHaveBeenCalledWith('secret', undefined);
+  expect(response.status).toBe(401);
+  expect(mocks.createSecureToken).not.toHaveBeenCalled();
 });

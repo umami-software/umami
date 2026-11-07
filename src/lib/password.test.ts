@@ -1,5 +1,6 @@
-import { describe, expect, test } from 'vitest';
-import { checkPassword, hashPassword } from './password';
+import bcrypt from 'bcryptjs';
+import { describe, expect, test, vi } from 'vitest';
+import { checkPassword, checkUserPassword, hashPassword } from './password';
 
 describe('hashPassword', () => {
   test('returns a bcrypt hash distinct from the plaintext', () => {
@@ -25,5 +26,23 @@ describe('checkPassword', () => {
     const hash = hashPassword('correct horse');
 
     expect(checkPassword('wrong horse', hash)).toBe(false);
+  });
+});
+
+describe('checkUserPassword', () => {
+  test('accepts the right password and refuses a wrong one', () => {
+    const hash = hashPassword('correct horse', 4);
+
+    expect(checkUserPassword('correct horse', hash)).toBe(true);
+    expect(checkUserPassword('wrong', hash)).toBe(false);
+  });
+
+  test('refuses when there is no user, after comparing all the same', () => {
+    const compare = vi.spyOn(bcrypt, 'compareSync');
+
+    expect(checkUserPassword('anything', undefined)).toBe(false);
+    expect(checkUserPassword('anything', null)).toBe(false);
+    expect(compare).toHaveBeenCalledTimes(2);
+    compare.mockRestore();
   });
 });
