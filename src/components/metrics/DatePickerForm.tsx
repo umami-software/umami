@@ -47,20 +47,17 @@ export function DatePickerForm({
           <Calendar value={date} minValue={minDate} maxValue={maxDate} onChange={setDate} />
         )}
         {selected.includes(FILTER_RANGE) && (
-          <Row gap wrap="wrap" style={{ margin: '0 auto' }}>
-            <Calendar
-              value={startDate}
-              minValue={minDate}
-              maxValue={endDate}
-              onChange={setStartDate}
-            />
-            <Calendar
-              value={endDate}
-              minValue={startDate}
-              maxValue={maxDate}
-              onChange={setEndDate}
-            />
-          </Row>
+          <Calendar
+            mode="range"
+            selected={{ from: startDate, to: endDate }}
+            onSelect={(range: { from?: Date; to?: Date }) => {
+              if (range?.from) setStartDate(range.from);
+              if (range?.to) setEndDate(range.to);
+            }}
+            minValue={minDate}
+            maxValue={maxDate}
+            numberOfMonths={2}
+          />
         )}
       </Column>
       <Row justifyContent="end" gap>

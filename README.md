@@ -141,3 +141,5 @@ docker compose up --force-recreate -d
 [linkedin-url]: https://linkedin.com/company/umami-software
 [discord-shield]: https://img.shields.io/badge/Discord--blue?style=social&logo=discord
 [discord-url]: https://discord.com/invite/4dz4zcXYrQ
+
+<!-- Just testing -->
