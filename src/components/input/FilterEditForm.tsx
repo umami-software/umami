@@ -5,6 +5,7 @@ import { FieldFilters } from '@/components/input/FieldFilters';
 import { PropertyFilters } from '@/components/property-data/PropertyFilters';
 import { SegmentFilters } from '@/components/input/SegmentFilters';
 import type { EventPropertyFilter, SessionPropertyFilter } from '@/lib/types';
+import { isPresenceOperator } from '@/lib/params';
 
 export interface FilterEditFormProps {
   websiteId?: string;
@@ -72,7 +73,7 @@ export function FilterEditForm({ websiteId, onChange, onClose }: FilterEditFormP
 
   const handleSave = () => {
     onChange?.({
-      filters: currentFilters.filter(f => f.value),
+      filters: currentFilters.filter(f => f.value || isPresenceOperator(f.operator)),
       eventPropertyFilters: currentEventPropertyFilters.filter(f => f.value),
       sessionPropertyFilters: currentSessionPropertyFilters.filter(f => f.value),
       segment: currentSegment,
