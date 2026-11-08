@@ -4,8 +4,8 @@ import { useFilters, useMessages, useMobile, useNavigation } from '@/components/
 import { FieldFilters } from '@/components/input/FieldFilters';
 import { PropertyFilters } from '@/components/property-data/PropertyFilters';
 import { SegmentFilters } from '@/components/input/SegmentFilters';
-import type { EventPropertyFilter, SessionPropertyFilter } from '@/lib/types';
 import { isPresenceOperator } from '@/lib/params';
+import type { EventPropertyFilter, SessionPropertyFilter } from '@/lib/types';
 
 export interface FilterEditFormProps {
   websiteId?: string;
