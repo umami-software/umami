@@ -287,10 +287,10 @@ describe('session property filters', () => {
   test('selects the matching sessions once per query', () => {
     const { filterQuery, queryParams } = parse([plan]);
 
-    expect(filterQuery).toContain('and coalesce(website_event.session_id in (');
+    expect(filterQuery).toMatch(/^and website_event\.session_id in \(/);
     expect(filterQuery).toContain('where website_id = {{websiteId::uuid}}');
     expect(filterQuery).toContain('group by session_id');
-    expect(filterQuery).toMatch(/\), false\)$/);
+    expect(filterQuery).toMatch(/\)$/);
     expect(queryParams).toMatchObject({
       websiteId: 'website-1',
       spf_key_0: 'plan',
@@ -298,14 +298,14 @@ describe('session property filters', () => {
     });
   });
 
-  // A correlated subquery runs once per event row, and a bare IN is pulled up into a
-  // semi-join that the planner misestimates when few sessions hold many events.
-  test('stays uncorrelated and is not pulled up into a join', () => {
+  // A correlated subquery runs once per event row. An `in` wrapped in an expression stays a
+  // subplan, which Postgres rescans for every event row when the sessions don't fit in work_mem.
+  test('stays uncorrelated and can be pulled up into a join', () => {
     const { filterQuery } = parse([plan]);
 
     expect(filterQuery).not.toContain('website_event.website_id');
     expect(filterQuery).not.toMatch(/session_id = website_event\.session_id/);
-    expect(filterQuery).not.toMatch(/and website_event\.session_id in \(/);
+    expect(filterQuery).not.toContain('coalesce(');
     expect(filterQuery).not.toMatch(/exists \(\s*select 1\s*from session_data/);
   });
 

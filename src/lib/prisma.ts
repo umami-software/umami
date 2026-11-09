@@ -711,18 +711,19 @@ function getSessionPropertyFilterQuery(
     return { sql: '', params: {} };
   }
 
-  // Uncorrelated so Postgres evaluates it once per query as a hashed subplan. A correlated
-  // `exists` runs once per candidate event row. The `coalesce` keeps the planner from pulling a
-  // bare `in` up into a semi-join, which it misestimates when few sessions hold many events.
+  // Uncorrelated so Postgres can pull it up into a semi-join and pick a hash or nested-loop join.
+  // A correlated `exists` runs once per candidate event row. Don't wrap the `in` in an expression
+  // (e.g. `coalesce`): it then stays a subplan, which is only hashed when the matching sessions fit
+  // in `work_mem`, and is otherwise rescanned for every event row.
   return {
-    sql: `and coalesce(website_event.session_id in (
+    sql: `and website_event.session_id in (
       select session_id
       from session_data
       where website_id = {{websiteId::uuid}}
         and data_key in (${keyRefs.join(', ')})
       group by session_id
       having ${clauses.join('\n        and ')}
-    ), false)`,
+    )`,
     params,
   };
 }
