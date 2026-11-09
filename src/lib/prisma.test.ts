@@ -1,4 +1,6 @@
 import { beforeAll, describe, expect, test, vi } from 'vitest';
+import { DATA_TYPE, OPERATORS } from './constants';
+import type { QueryFilters, SessionPropertyFilter } from './types';
 
 process.env.DATABASE_URL ??= 'postgresql://user:pass@localhost:5432/umami?schema=public';
 delete process.env.DATABASE_REPLICA_URL;
@@ -257,5 +259,67 @@ describe('paged query concurrency', () => {
     } finally {
       delete (prisma.client as any).thing;
     }
+  });
+});
+
+describe('session property filters', () => {
+  const plan: SessionPropertyFilter = {
+    propertyName: 'plan',
+    dataType: DATA_TYPE.string,
+    operator: OPERATORS.equals,
+    value: 'pro,enterprise',
+  };
+
+  const memberships: SessionPropertyFilter = {
+    propertyName: 'memberships',
+    dataType: DATA_TYPE.array,
+    operator: OPERATORS.contains,
+    value: 'beta',
+  };
+
+  function parse(sessionPropertyFilters: SessionPropertyFilter[]) {
+    return prisma.parseFilters({
+      websiteId: 'website-1',
+      sessionPropertyFilters,
+    } as QueryFilters & { websiteId: string });
+  }
+
+  test('selects the matching sessions once per query', () => {
+    const { filterQuery, queryParams } = parse([plan]);
+
+    expect(filterQuery).toContain('and coalesce(website_event.session_id in (');
+    expect(filterQuery).toContain('where website_id = {{websiteId::uuid}}');
+    expect(filterQuery).toContain('group by session_id');
+    expect(filterQuery).toMatch(/\), false\)$/);
+    expect(queryParams).toMatchObject({
+      websiteId: 'website-1',
+      spf_key_0: 'plan',
+      spf_val_0: ['pro', 'enterprise'],
+    });
+  });
+
+  // A correlated subquery runs once per event row, and a bare IN is pulled up into a
+  // semi-join that the planner misestimates when few sessions hold many events.
+  test('stays uncorrelated and is not pulled up into a join', () => {
+    const { filterQuery } = parse([plan]);
+
+    expect(filterQuery).not.toContain('website_event.website_id');
+    expect(filterQuery).not.toMatch(/session_id = website_event\.session_id/);
+    expect(filterQuery).not.toMatch(/and website_event\.session_id in \(/);
+    expect(filterQuery).not.toMatch(/exists \(\s*select 1\s*from session_data/);
+  });
+
+  test('requires every filter to match on the same session', () => {
+    const { filterQuery } = parse([memberships, plan]);
+
+    expect(filterQuery.match(/from session_data/g)).toHaveLength(1);
+    expect(filterQuery).toContain('data_key in ({{spf_key_0}}, {{spf_key_1}})');
+    expect(filterQuery).toMatch(
+      /having bool_or\(data_key = \{\{spf_key_0\}\}[\s\S]*\)\n\s+and bool_or\(data_key = \{\{spf_key_1\}\} and data_type = 1 and string_value = ANY\(\{\{spf_val_1\}\}\)\)/,
+    );
+  });
+
+  test('adds nothing without session property filters', () => {
+    expect(parse([]).filterQuery).not.toContain('session_data');
   });
 });
