@@ -1,9 +1,9 @@
 import { describe, expect, test } from 'vitest';
 import { DATA_TYPE, OPERATORS } from './constants';
 import {
+  filtersObjectToArray,
   isPresenceOperator,
   parseFilterValue,
-  filtersObjectToArray,
   parseSessionPropertyFilters,
   parseUniversalEventPropertyFilters,
   serializeSessionPropertyFilters,
