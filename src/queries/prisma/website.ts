@@ -150,7 +150,7 @@ async function pagedWebsitesByVisitors(
   const matches = await prisma.client.website.findMany({
     where: criteria.where,
     select: { id: true },
-    orderBy: { name: 'asc' },
+    orderBy: [{ name: 'asc' }, { id: 'asc' }],
   });
   const websiteIds = matches.map(({ id }) => id);
   const visitors = await getWebsiteVisitorTotals(

@@ -140,6 +140,17 @@ describe('sorting websites by visitors', () => {
     );
   });
 
+  test('breaks name ties by id so websites with the same name keep their page', async () => {
+    await getUserWebsites('user-1', { orderBy: 'visitors' });
+
+    expect(websiteFindManyMock).toHaveBeenCalledWith(
+      expect.objectContaining({
+        select: { id: true },
+        orderBy: [{ name: 'asc' }, { id: 'asc' }],
+      }),
+    );
+  });
+
   test('counts visitors over the sparkline window of the requested timezone', async () => {
     vi.useFakeTimers({ now: new Date('2026-11-07T20:00:00.000Z'), toFake: ['Date'] });
 
