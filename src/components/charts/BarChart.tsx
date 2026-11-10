@@ -1,11 +1,11 @@
 import { useTheme } from '@umami/react-zen';
-import { memo, useCallback, useMemo, useState } from 'react';
+import { memo, useCallback, useMemo, useRef, useState } from 'react';
 import { Chart, type ChartProps } from '@/components/charts/Chart';
 import { ChartTooltip } from '@/components/charts/ChartTooltip';
 import { useLocale } from '@/components/hooks';
 import { renderNumberLabels } from '@/lib/charts';
 import { getThemeColors } from '@/lib/colors';
-import { DATE_FORMATS, formatDate, parseBackendDate } from '@/lib/date';
+import { DATE_FORMATS, DATE_FUNCTIONS, formatDate, parseBackendDate } from '@/lib/date';
 import { formatLongCurrency, formatLongNumber } from '@/lib/format';
 
 const MemoChart = memo(Chart);
@@ -32,6 +32,8 @@ export interface BarChartProps extends ChartProps {
   YAxisType?: string;
   minDate?: Date;
   maxDate?: Date;
+  /** Called with the start of the clicked bar's time bucket. */
+  onBarClick?: (date: Date) => void;
 }
 
 interface TooltipState {
@@ -51,16 +53,39 @@ function BarChartComponent({
   minDate,
   maxDate,
   currency,
+  onBarClick,
   ...props
 }: BarChartProps) {
   const [tooltip, setTooltip] = useState<TooltipState | null>(null);
   const { theme } = useTheme();
   const { locale } = useLocale();
   const { colors } = useMemo(() => getThemeColors(theme), [theme]);
+  // Read through a ref so a new callback doesn't rebuild the chart options.
+  const onBarClickRef = useRef(onBarClick);
+  onBarClickRef.current = onBarClick;
+  const isClickable = !!onBarClick;
 
   const chartOptions: any = useMemo(() => {
     return {
       __id: Date.now(),
+      ...(isClickable && {
+        onClick: (event: { native?: { target?: HTMLElement } }, elements: { index: number }[]) => {
+          if (elements.length) {
+            // The canvas is reused, and the next view may not be clickable.
+            if (event.native?.target) {
+              event.native.target.style.cursor = 'default';
+            }
+            // Buckets are generated from minDate, so the index gives the bar's date.
+            const { add, start } = DATE_FUNCTIONS[unit];
+            onBarClickRef.current?.(add(start(minDate), elements[0].index));
+          }
+        },
+        onHover: (event: { native?: { target?: HTMLElement } }, elements: unknown[]) => {
+          if (event.native?.target) {
+            event.native.target.style.cursor = elements.length ? 'pointer' : 'default';
+          }
+        },
+      }),
       scales: {
         x: {
           type: XAxisType,
@@ -113,6 +138,7 @@ function BarChartComponent({
     locale,
     XAxisType,
     YAxisType,
+    isClickable,
   ]);
 
   const handleTooltip = useCallback(

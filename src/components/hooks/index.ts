@@ -100,6 +100,7 @@ export * from './queries/useWebsiteValuesQuery';
 export * from './queries/useWeeklyTrafficQuery';
 // Regular hooks
 export * from './useApi';
+export * from './useBarDrillDown';
 export * from './useConfig';
 export * from './useCountryNames';
 export * from './useDateParameters';
