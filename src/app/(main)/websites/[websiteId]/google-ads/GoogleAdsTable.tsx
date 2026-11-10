@@ -16,7 +16,7 @@ export interface GoogleAdsTableProps {
   websiteId: string;
   startDate: Date;
   endDate: Date;
-  dimension: Exclude<GoogleAdsDimension, 'date'>;
+  dimension: Exclude<GoogleAdsDimension, 'date' | 'conversion_action'>;
   limit?: number;
 }
 

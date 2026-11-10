@@ -23,6 +23,12 @@ vi.mock('@/app/(main)/websites/[websiteId]/search-console/SearchConsoleChart', (
   SearchConsoleChart: ({ rows }: { rows: unknown[] }) => <div>chart: {rows.length} days</div>,
 }));
 
+vi.mock('./GoogleAdsConversionsChart', () => ({
+  GoogleAdsConversionsChart: ({ rows }: { rows: unknown[] }) => (
+    <div>conversions chart: {rows.length} days</div>
+  ),
+}));
+
 function row(overrides = {}) {
   return {
     key: 'key',
@@ -34,6 +40,8 @@ function row(overrides = {}) {
     impressions: 0,
     conversions: 0,
     conversionsValue: 0,
+    allConversions: 0,
+    allConversionsValue: 0,
     ...overrides,
   };
 }
@@ -137,6 +145,65 @@ test('totals the daily rows in the account currency', async () => {
   expect(screen.getByText('€30.00')).toBeInTheDocument(); // cost
   expect(screen.getByText('5.0%')).toBeInTheDocument(); // CTR: 10 / 200
   expect(screen.getByText('2.5')).toBeInTheDocument(); // fractional conversions
+});
+
+test('derives conversion ratios from the summed totals', async () => {
+  respondWith({
+    date: [
+      row({ key: '2026-01-01', cost: 10, clicks: 4, conversions: 1.5, conversionsValue: 40 }),
+      row({ key: '2026-01-02', cost: 20, clicks: 6, conversions: 1, conversionsValue: 56 }),
+    ],
+  });
+
+  render(<GoogleAdsPage websiteId="site-1" />);
+
+  expect(await screen.findByText('conversions chart: 2 days')).toBeInTheDocument();
+  expect(screen.getByText('€96.00')).toBeInTheDocument(); // conversion value
+  expect(screen.getByText('€12.00')).toBeInTheDocument(); // cost per conversion: 30 / 2.5
+  expect(screen.getByText('25.0%')).toBeInTheDocument(); // conversion rate: 2.5 / 10
+  expect(screen.getByText('3.20x')).toBeInTheDocument(); // ROAS: 96 / 30
+});
+
+test('shows no ratio where there is nothing to divide by', async () => {
+  respondWith({ date: [row({ key: '2026-01-01', impressions: 50 })] });
+
+  render(<GoogleAdsPage websiteId="site-1" />);
+
+  expect(await screen.findByText('conversions chart: 1 days')).toBeInTheDocument();
+  // Cost per conversion, conversion rate and ROAS.
+  expect(screen.getAllByText('–')).toHaveLength(3);
+});
+
+test('lists conversion actions with their category and all conversions', async () => {
+  respondWith({
+    conversion_action: [
+      row({
+        key: 'customers/1/conversionActions/2',
+        name: 'Website visit',
+        parent: 'PAGE_VIEW',
+        conversions: 4100.5,
+        conversionsValue: 4050,
+        allConversions: 4192.24,
+        allConversionsValue: 4127.33,
+      }),
+      row({
+        key: 'customers/1/conversionActions/3',
+        name: 'Purchase',
+        parent: 'PURCHASE',
+        allConversions: 9,
+        allConversionsValue: 9,
+      }),
+    ],
+  });
+
+  render(<GoogleAdsPage websiteId="site-1" />);
+
+  expect(await screen.findByText('Website visit')).toBeInTheDocument();
+  expect(screen.getByText('Page view')).toBeInTheDocument();
+  expect(screen.getByText('4.19k')).toBeInTheDocument(); // all conversions
+  expect(screen.getByText('€4.13k')).toBeInTheDocument(); // all conversions value
+  expect(screen.getByText('Purchase', { selector: '[title="Purchase"]' })).toBeInTheDocument();
+  expect(screen.getByText('€9.00')).toBeInTheDocument();
 });
 
 test('does not name a currency the account did not report', async () => {

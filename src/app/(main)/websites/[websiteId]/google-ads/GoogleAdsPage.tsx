@@ -23,7 +23,9 @@ import { Megaphone } from '@/components/icons';
 import { MetricCard } from '@/components/metrics/MetricCard';
 import { MetricsBar } from '@/components/metrics/MetricsBar';
 import { formatLongNumber } from '@/lib/format';
-import { formatConversions, formatMoney, formatPercent, getCtr } from './format';
+import { formatConversions, formatMoney, formatPercent, formatRoas, getCtr } from './format';
+import { GoogleAdsConversionsChart } from './GoogleAdsConversionsChart';
+import { GoogleAdsConversionsTable } from './GoogleAdsConversionsTable';
 import { GoogleAdsTable } from './GoogleAdsTable';
 
 const INTEGRATIONS_URL = `${process.env.cloudUrl || ''}/settings/integrations`;
@@ -151,9 +153,47 @@ function GoogleAdsReport({ websiteId }: { websiteId: string }) {
               )}
             </LoadingPanel>
           </Panel>
+          <Heading size="2xl">{t('conversions')}</Heading>
+          <LoadingPanel
+            data={daily.data}
+            isLoading={daily.isLoading}
+            error={daily.error}
+            minHeight="120px"
+          >
+            {daily.data && (
+              <GoogleAdsConversionMetrics
+                rows={daily.data.rows}
+                currency={daily.data.currencyCode}
+              />
+            )}
+          </LoadingPanel>
+          <Panel>
+            <LoadingPanel
+              data={daily.data}
+              isLoading={daily.isLoading}
+              error={daily.error}
+              minHeight="300px"
+            >
+              {daily.data && (
+                <GoogleAdsConversionsChart
+                  rows={daily.data.rows}
+                  minDate={startDate}
+                  maxDate={endDate}
+                  unit={unit}
+                />
+              )}
+            </LoadingPanel>
+          </Panel>
+          <Panel>
+            <GoogleAdsConversionsTable
+              websiteId={websiteId}
+              startDate={startDate}
+              endDate={endDate}
+            />
+          </Panel>
+          <Heading size="2xl">{t('ads')}</Heading>
           <Panel>
             <Tabs>
-              <Heading size="2xl">{t('ads')}</Heading>
               <TabList>
                 <Tab id="campaign">{t('campaigns')}</Tab>
                 <Tab id="ad_group">{t('adGroups')}</Tab>
@@ -194,7 +234,7 @@ function GoogleAdsReport({ websiteId }: { websiteId: string }) {
 function GoogleAdsMetrics({ rows, currency }: { rows: GoogleAdsRow[]; currency: string | null }) {
   const t = useTranslations('googleAds');
   const { locale } = useLocale();
-  const sum = (metric: 'cost' | 'clicks' | 'impressions' | 'conversions') =>
+  const sum = (metric: 'cost' | 'clicks' | 'impressions') =>
     rows.reduce((total, row) => total + row[metric], 0);
   const clicks = sum('clicks');
   const impressions = sum('impressions');
@@ -213,10 +253,61 @@ function GoogleAdsMetrics({ rows, currency }: { rows: GoogleAdsRow[]; currency: 
         label={t('ctr')}
         formatValue={formatPercent}
       />
+    </MetricsBar>
+  );
+}
+
+const NO_VALUE = '–';
+
+/**
+ * A ratio card's value and formatter. With nothing to divide by there is no ratio, and a
+ * zero would read as "free conversions" or "no return" rather than "not measured".
+ */
+function ratio(numerator: number, denominator: number, formatValue: (n: number) => string) {
+  return denominator
+    ? { value: numerator / denominator, formatValue }
+    : { value: 0, formatValue: () => NO_VALUE };
+}
+
+function GoogleAdsConversionMetrics({
+  rows,
+  currency,
+}: {
+  rows: GoogleAdsRow[];
+  currency: string | null;
+}) {
+  const t = useTranslations('googleAds');
+  const { locale } = useLocale();
+  const sum = (metric: 'cost' | 'clicks' | 'conversions' | 'conversionsValue') =>
+    rows.reduce((total, row) => total + row[metric], 0);
+  const cost = sum('cost');
+  const conversions = sum('conversions');
+  const conversionsValue = sum('conversionsValue');
+  const formatCurrency = (n: number) => formatMoney(n, currency, locale);
+
+  // Ratios come from the summed totals: per-day ratios cannot be added up.
+  return (
+    <MetricsBar>
       <MetricCard
-        value={sum('conversions')}
+        value={conversions}
         label={t('conversions')}
+        tooltip={t('conversionsTooltip')}
         formatValue={formatConversions}
+      />
+      <MetricCard
+        value={conversionsValue}
+        label={t('conversionValue')}
+        formatValue={formatCurrency}
+      />
+      <MetricCard label={t('costPerConversion')} {...ratio(cost, conversions, formatCurrency)} />
+      <MetricCard
+        label={t('conversionRate')}
+        {...ratio(conversions, sum('clicks'), formatPercent)}
+      />
+      <MetricCard
+        label={t('roas')}
+        tooltip={t('roasTooltip')}
+        {...ratio(conversionsValue, cost, formatRoas)}
       />
     </MetricsBar>
   );
