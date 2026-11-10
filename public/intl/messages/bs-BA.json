@@ -480,6 +480,7 @@
     "not-found": "Nije pronađeno",
     "nothing-selected": "Ništa nije odabrano.",
     "page-not-found": "Stranica nije pronađena",
+    "password-change-required": "Zaštitimo vaš račun. Molimo zamijenite zadanu šifru vlastitom.",
     "reset-website": "Da resetujete ovu web stranicu, upišite {confirmation} dole da potvrdite.",
     "reset-website-warning": "Sve statistike o ovoj web stranici će biti obrisane, ali vaše postavke neće biti dirane.",
     "saved": "Sačuvano.",

@@ -110,6 +110,9 @@ const operation1 = defineOperation({
                           type: 'boolean',
                           description: 'Whether the user has administrator privileges.',
                         },
+                        passwordChangeRequired: {
+                          type: 'boolean',
+                        },
                         teams: {
                           type: 'array',
                           items: {
@@ -133,7 +136,15 @@ const operation1 = defineOperation({
                           description: 'Teams associated with the user.',
                         },
                       },
-                      required: ['id', 'username', 'role', 'createdAt', 'isAdmin', 'teams'],
+                      required: [
+                        'id',
+                        'username',
+                        'role',
+                        'createdAt',
+                        'isAdmin',
+                        'passwordChangeRequired',
+                        'teams',
+                      ],
                       description: 'User associated with the resource.',
                     },
                   },

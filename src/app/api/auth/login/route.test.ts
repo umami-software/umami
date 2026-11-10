@@ -4,6 +4,7 @@ const mocks = vi.hoisted(() => ({
   parseRequest: vi.fn(),
   getUserByUsername: vi.fn(),
   checkPassword: vi.fn(),
+  hasDefaultPassword: vi.fn(),
   findTwoFactorAuth: vi.fn(),
   createSecureToken: vi.fn(),
   secret: vi.fn(),
@@ -26,6 +27,7 @@ vi.mock('@/queries/prisma', () => ({
 
 vi.mock('@/lib/password', () => ({
   checkPassword: mocks.checkPassword,
+  hasDefaultPassword: mocks.hasDefaultPassword,
 }));
 
 vi.mock('@/lib/prisma', () => ({
@@ -79,6 +81,8 @@ beforeEach(() => {
   mocks.parseRequest.mockReset();
   mocks.getUserByUsername.mockReset();
   mocks.checkPassword.mockReset();
+  mocks.hasDefaultPassword.mockReset();
+  mocks.hasDefaultPassword.mockReturnValue(false);
   mocks.findTwoFactorAuth.mockReset();
   mocks.createSecureToken.mockReset();
   mocks.secret.mockReset();
@@ -148,6 +152,31 @@ test('POST issues an unrestricted session when 2FA is not required', async () =>
     { userId: 'user-1', role: 'admin', pwd: 'pwd-fingerprint' },
     'app-secret',
   );
+});
+
+test('POST tells the seeded administrator to change its initial password', async () => {
+  // The app relies on this flag to show the password dialog right after login.
+  mocks.findTwoFactorAuth.mockResolvedValue(null);
+  mocks.hasDefaultPassword.mockReturnValue(true);
+
+  const response = await POST(new Request('http://localhost/api/auth/login', { method: 'POST' }));
+
+  expect(mocks.hasDefaultPassword).toHaveBeenCalledWith(
+    expect.objectContaining({ id: 'user-1', password: 'hashed-password' }),
+  );
+  await expect(response.json()).resolves.toMatchObject({
+    user: { passwordChangeRequired: true },
+  });
+});
+
+test('POST does not flag users whose password has been changed', async () => {
+  mocks.findTwoFactorAuth.mockResolvedValue(null);
+
+  const response = await POST(new Request('http://localhost/api/auth/login', { method: 'POST' }));
+
+  await expect(response.json()).resolves.toMatchObject({
+    user: { passwordChangeRequired: false },
+  });
 });
 
 test('POST does not restrict the session when 2FA cannot be configured', async () => {

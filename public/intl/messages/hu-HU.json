@@ -480,6 +480,7 @@
     "not-found": "Nem található",
     "nothing-selected": "Semmi nincs kijelölve.",
     "page-not-found": "Oldal nem található.",
+    "password-change-required": "Tegyük biztonságossá a fiókját. Kérjük, cserélje le az alapértelmezett jelszót a sajátjára.",
     "reset-website": "A weboldal visszaállításához írja be a(z) {confirmation} szót az alábbi mezőbe.",
     "reset-website-warning": "All statistics for this website will be deleted, but your tracking code will remain intact.",
     "saved": "Sikeres mentés.",

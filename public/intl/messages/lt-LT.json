@@ -480,6 +480,7 @@
     "not-found": "Nerasta",
     "nothing-selected": "Nieko nepasirinkta.",
     "page-not-found": "Puslapis nerastas.",
+    "password-change-required": "Apsaugokime jūsų paskyrą. Pakeiskite numatytąjį slaptažodį savo slaptažodžiu.",
     "reset-website": "Kad atstatyti šią svetainę, įrašykite {confirmation} žemiau, kad patvirtintumėte.",
     "reset-website-warning": "Visi šios svetainės statistikos duomenys bus ištrinti, bet sekimo kodas išliks nepaliestas.",
     "saved": "Sėkmingai išsaugota.",

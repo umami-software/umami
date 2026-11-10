@@ -480,6 +480,7 @@
     "not-found": "Δεν βρέθηκε",
     "nothing-selected": "Τίποτα δεν έχει επιλεγεί.",
     "page-not-found": "Η σελίδα δεν βρέθηκε.",
+    "password-change-required": "Ας ασφαλίσουμε τον λογαριασμό σας. Αντικαταστήστε τον προεπιλεγμένο κωδικό πρόσβασης με έναν δικό σας.",
     "reset-website": "Για να επαναφέρετε αυτόν τον ιστότοπο, πληκτρολογήστε {confirmation} στο παρακάτω πεδίο.",
     "reset-website-warning": "All statistics for this website will be deleted, but your tracking code will remain intact.",
     "saved": "Αποθηκεύτηκε επιτυχώς.",

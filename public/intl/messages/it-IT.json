@@ -480,6 +480,7 @@
     "not-found": "Non trovato",
     "nothing-selected": "Nessuna selezione.",
     "page-not-found": "Pagina non trovata",
+    "password-change-required": "Proteggiamo il tuo account. Sostituisci la password predefinita con una tua.",
     "reset-website": "Per reimpostare questo sito web, digita {confirmation} nella casella sottostante per confermare.",
     "reset-website-warning": "Tutte le statistiche verranno cancellate per questo sito, ma il tuo codice di tracciamento rimarrà invariato.",
     "saved": "Salvato!",

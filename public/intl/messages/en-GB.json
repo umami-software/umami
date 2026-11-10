@@ -480,6 +480,7 @@
     "not-found": "Not found",
     "nothing-selected": "Nothing selected.",
     "page-not-found": "Page not found.",
+    "password-change-required": "Let's secure your account. Please replace the default password with one of your own.",
     "reset-website": "To reset this website, type {confirmation} in the box below to confirm.",
     "reset-website-warning": "All statistics for this website will be deleted, but your tracking code will remain intact.",
     "saved": "Saved successfully.",

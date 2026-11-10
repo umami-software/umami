@@ -480,6 +480,7 @@
     "not-found": "Niet gevonden",
     "nothing-selected": "Niets geselecteerd.",
     "page-not-found": "Pagina niet gevonden.",
+    "password-change-required": "Laten we je account beveiligen. Vervang het standaardwachtwoord door je eigen wachtwoord.",
     "reset-website": "Typ {confirmation} in het veld hieronder om te bevestigen dat je de website wilt resetten.",
     "reset-website-warning": "Alle bijhorende statistieken van deze website worden verwijderd, maar jouw volgcode blijft gelden.",
     "saved": "Opslaan succesvol.",

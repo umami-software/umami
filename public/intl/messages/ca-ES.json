@@ -480,6 +480,7 @@
     "not-found": "No trobat",
     "nothing-selected": "Res seleccionat.",
     "page-not-found": "No s'ha trobat la pàgina.",
+    "password-change-required": "Protegim el vostre compte. Substituïu la contrasenya predeterminada per una de pròpia.",
     "reset-website": "Per restablir aquest lloc web, escrigui {confirmation} al cuadre inferior per confirmar.",
     "reset-website-warning": "S'esborraran totes les estadístiques per aquest lloc web, però el codi de seguiment es mantindrà.",
     "saved": "S'ha desat amb èxit.",

@@ -480,6 +480,7 @@
     "not-found": "Tapılmadı",
     "nothing-selected": "Heç nə seçilməyib.",
     "page-not-found": "Səhifə tapılmadı",
+    "password-change-required": "Gəlin hesabınızı qoruyaq. Zəhmət olmasa, standart parolu öz parolunuzla əvəz edin.",
     "reset-website": "Bu veb saytı sıfırlamaq üçün təsdiqləmək məqsədilə aşağıdakı xanaya {confirmation} yazın.",
     "reset-website-warning": "Bu veb saytın bütün statistikası silinəcək, lakin parametrləriniz qalacaq.",
     "saved": "Yadda saxlanıldı.",

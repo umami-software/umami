@@ -22,11 +22,14 @@ const operation1 = defineOperation({
             schema: {
               type: 'object',
               properties: {
+                passwordChangeRequired: {
+                  type: 'boolean',
+                },
                 teams: {
                   description: 'Teams associated with the user.',
                 },
               },
-              required: ['teams'],
+              required: ['passwordChangeRequired', 'teams'],
             },
           },
         },

@@ -480,6 +480,7 @@
     "not-found": "Nicht gefunden",
     "nothing-selected": "Nichts ausgewählt.",
     "page-not-found": "Seite nicht gefunden.",
+    "password-change-required": "Lass uns dein Konto absichern. Bitte ersetze das Standardpasswort durch ein eigenes.",
     "reset-website": "Um diese Website zurückzusetzen, geben Sie zur Bestätigung {confirmation} in das Feld unten ein.",
     "reset-website-warning": "Alle Daten für diese Website werden gelöscht, jedoch bleibt der Tracking Code bestehen.",
     "saved": "Erfolgreich gespeichert.",

@@ -6,9 +6,12 @@ export type Auth = {
   authorization: string;
 };
 
+/** Password the migration seeds; admin.setup.ts replaces it with umamiUser.password. */
+export const DEFAULT_ADMIN_PASSWORD = 'umami';
+
 export const umamiUser = {
   username: process.env.UMAMI_USER ?? 'admin',
-  password: process.env.UMAMI_PASSWORD ?? 'umami',
+  password: process.env.UMAMI_PASSWORD ?? 'umami-e2e-password',
   id: process.env.UMAMI_USER_ID ?? '41e2b680-648e-4b09-bcd7-3e2b10c06264',
 };
 

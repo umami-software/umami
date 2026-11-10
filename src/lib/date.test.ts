@@ -706,12 +706,17 @@ describe('getMaxSelectableDate', () => {
 describe('timezone helpers', () => {
   test('normalizeTimezone maps deprecated aliases', () => {
     expect(normalizeTimezone('Asia/Calcutta')).toBe('Asia/Kolkata');
+    expect(normalizeTimezone('America/Buenos_Aires')).toBe('America/Argentina/Buenos_Aires');
+    expect(normalizeTimezone('America/Cordoba')).toBe('America/Argentina/Cordoba');
     expect(normalizeTimezone('America/New_York')).toBe('America/New_York');
+    expect(normalizeTimezone('Asia/Jayapura')).toBe('Asia/Jayapura');
   });
 
   test('isValidTimezone accepts real and aliased zones', () => {
     expect(isValidTimezone('America/New_York')).toBe(true);
     expect(isValidTimezone('Asia/Calcutta')).toBe(true);
+    expect(isValidTimezone('America/Buenos_Aires')).toBe(true);
+    expect(isValidTimezone('America/Cordoba')).toBe(true);
     expect(isValidTimezone('Not/AZone')).toBe(false);
   });
 

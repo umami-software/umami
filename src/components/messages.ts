@@ -484,6 +484,7 @@ export const messages: Record<string, string> = {
   selectBoardEntityFirst: 'message.select-board-entity-first',
   teamWebsitesInfo: 'message.team-websites-info',
   noMatchPassword: 'message.no-match-password',
+  passwordChangeRequired: 'message.password-change-required',
   goToSettings: 'message.go-to-settings',
   activeUsers: 'message.active-users',
   teamNotFound: 'message.team-not-found',

@@ -4083,6 +4083,7 @@ export interface operations {
                   id: string;
                   /** @description Whether the user has administrator privileges. */
                   isAdmin: boolean;
+                  passwordChangeRequired: boolean;
                   /** @description Permission role assigned to the user. */
                   role: string;
                   /** @description Teams associated with the user. */
@@ -5311,6 +5312,7 @@ export interface operations {
         };
         content: {
           'application/json': {
+            passwordChangeRequired: boolean;
             /** @description Teams associated with the user. */
             teams: unknown;
           };
@@ -7361,6 +7363,7 @@ export interface operations {
               name: string;
             };
             authType?: 'session' | 'share' | 'api-key';
+            passwordChangeRequired?: boolean;
             shareToken?: {
               /** @description ID of the board. */
               boardId?: string;
@@ -7684,6 +7687,7 @@ export interface operations {
             id: string;
             /** @description Permission role assigned to the user. */
             role: string;
+            token: string;
             /** @description Username of the account. */
             username: string;
           };

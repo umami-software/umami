@@ -779,6 +779,13 @@ function inferExpression(
     return inferCallExpression(expression, source, declarations, seen);
   }
 
+  if (
+    ts.isPrefixUnaryExpression(expression) &&
+    expression.operator === ts.SyntaxKind.ExclamationToken
+  ) {
+    return required(booleanSchema());
+  }
+
   const literal = getLiteralValue(expression);
 
   if (literal !== undefined) {

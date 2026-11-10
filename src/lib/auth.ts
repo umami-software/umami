@@ -17,6 +17,7 @@ import {
 } from '@/lib/constants';
 import { createAuthKey, hash, secret } from '@/lib/crypto';
 import { createSecureToken, parseSecureToken, parseToken } from '@/lib/jwt';
+import { hasDefaultPassword } from '@/lib/password';
 import prisma from '@/lib/prisma';
 import redis from '@/lib/redis';
 import { ensureArray } from '@/lib/utils';
@@ -155,6 +156,8 @@ export async function checkAuth(request: Request) {
     }
   }
 
+  const passwordChangeRequired = hasDefaultPassword(user);
+
   if (user) {
     delete user.password;
     user.isAdmin = user.role === ROLES.admin;
@@ -167,6 +170,7 @@ export async function checkAuth(request: Request) {
     user,
     authType: user ? ('session' as const) : ('share' as const),
     twoFactorSetupPending,
+    passwordChangeRequired,
   };
 }
 
@@ -181,6 +185,13 @@ export async function saveAuth(data: any, expire = AUTH_SESSION_TTL) {
   }
 
   return createSecureToken({ authKey }, secret());
+}
+
+export async function createSessionToken(user: { id: string; role: string; password: string }) {
+  // Bind token to password hash so a password change invalidates old tokens.
+  const session = { userId: user.id, role: user.role, pwd: hash(user.password) };
+
+  return redis.enabled ? saveAuth(session) : createSecureToken(session, secret());
 }
 
 export async function hasPermission(role: string, permission: string | string[]) {

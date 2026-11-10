@@ -44,7 +44,7 @@ export function EventsPage({ websiteId }) {
           <TabPanel id="chart" style={{ minWidth: 0, width: '100%' }}>
             <Column gap="6">
               <Column border="bottom" paddingBottom="6">
-                <EventsChart websiteId={websiteId} limit={50} />
+                <EventsChart websiteId={websiteId} limit={50} allowBarDrill={true} />
               </Column>
               <MetricsTable
                 websiteId={websiteId}

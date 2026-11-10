@@ -480,6 +480,7 @@
     "not-found": "नहीं मिला",
     "nothing-selected": "कुछ भी चयनित नहीं है।",
     "page-not-found": "पृष्ठ नहीं मिला।",
+    "password-change-required": "आइए आपके खाते को सुरक्षित करें। कृपया डिफ़ॉल्ट पासवर्ड को अपने स्वयं के पासवर्ड से बदलें।",
     "reset-website": "इस वेबसाइट को रीसेट करने के लिए, नीचे बॉक्स में {confirmation} टाइप करें।",
     "reset-website-warning": "All statistics for this website will be deleted, but your tracking code will remain intact.",
     "saved": "सफलतापूर्वक संचित कर लिया गया है।",

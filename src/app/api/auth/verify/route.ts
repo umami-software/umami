@@ -12,5 +12,5 @@ export async function POST(request: Request) {
 
   const teams = await addTeamBillingStatus(await getAllUserTeams(auth.user.id));
 
-  return json({ ...auth.user, teams });
+  return json({ ...auth.user, passwordChangeRequired: !!auth.passwordChangeRequired, teams });
 }
