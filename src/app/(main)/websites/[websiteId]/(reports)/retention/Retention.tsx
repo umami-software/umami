@@ -46,6 +46,18 @@ export function Retention({ websiteId, days = DAYS, startDate, endDate }: Retent
       return arr;
     }, []) || [];
 
+  // No fixed scale fits every website, so shade relative to the best visible cell.
+  const maxPercentage = Math.max(
+    0,
+    ...rows.flatMap(({ date, records }) => {
+      const maxDay = differenceInCalendarDays(endDate, parseBackendDate(date));
+
+      return records
+        .filter(({ day }) => day <= maxDay)
+        .map(({ percentage }) => Number(percentage) || 0);
+    }),
+  );
+
   return (
     <LoadingPanel data={data} isLoading={isLoading} error={error}>
       {data && (
@@ -107,7 +119,15 @@ export function Retention({ websiteId, days = DAYS, startDate, endDate }: Retent
                       if (day > maxDay) return null;
                       const percentage = records.find(a => a.day === day)?.percentage;
                       return (
-                        <Cell key={day}>
+                        <Cell
+                          key={day}
+                          // Square root keeps later days visible next to Day 1.
+                          intensity={
+                            percentage && maxPercentage
+                              ? Math.sqrt(Number(percentage) / maxPercentage)
+                              : 0
+                          }
+                        >
                           {percentage ? `${Number(percentage).toFixed(2)}%` : ''}
                         </Cell>
                       );
@@ -123,7 +143,14 @@ export function Retention({ websiteId, days = DAYS, startDate, endDate }: Retent
   );
 }
 
-const Cell = ({ children }: { children: ReactNode }) => {
+const Cell = ({ intensity = 0, children }: { intensity?: number; children: ReactNode }) => {
+  // Capped at 60% so the normal text color stays readable.
+  const style = intensity
+    ? {
+        backgroundColor: `color-mix(in srgb, var(--zen-primary) ${Math.round(intensity * 60)}%, var(--zen-surface-raised))`,
+      }
+    : undefined;
+
   return (
     <Column
       justifyContent="center"
@@ -132,6 +159,7 @@ const Cell = ({ children }: { children: ReactNode }) => {
       height="100px"
       backgroundColor="surface-raised"
       borderRadius
+      style={style}
     >
       {children}
     </Column>
