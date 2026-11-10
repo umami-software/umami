@@ -90,10 +90,13 @@ export function DataGrid({
 
   useEffect(() => {
     const currentSearch = queryParams?.search || '';
+    const isOwnPush = currentSearch === pushedSearch.current;
+
+    // Clear on every URL change so a push that never landed can't hide a later one.
+    pushedSearch.current = null;
 
     // The URL is catching up with our own debounced push: keep anything typed since then.
-    if (currentSearch === pushedSearch.current) {
-      pushedSearch.current = null;
+    if (isOwnPush) {
       return;
     }
 
