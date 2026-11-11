@@ -1,5 +1,5 @@
 import { afterEach, describe, expect, test, vi } from 'vitest';
-import { resolveCollectionSession } from './collection-session';
+import { resolveCollectionSession, resolveIdentifiedSession } from './collection-session';
 
 vi.hoisted(() => {
   process.env.APP_SECRET ??= 'test-app-secret';
@@ -49,5 +49,45 @@ describe('client salt', () => {
         sessionId({ salt, createdAt: new Date('2026-11-15T12:00:00Z') }),
       );
     });
+  });
+});
+
+describe('resolveIdentifiedSession', () => {
+  const anonymous = resolveCollectionSession(base);
+  const cache = {
+    websiteId: base.sourceId,
+    sessionId: anonymous.sessionId,
+    visitId: anonymous.visitId,
+    iat: Math.floor(Date.now() / 1000),
+  };
+  const identified = (claimSession: () => Promise<boolean>) =>
+    resolveIdentifiedSession({
+      ...base,
+      websiteId: base.sourceId,
+      distinctId: 'user-1',
+      cache,
+      claimSession,
+    });
+
+  test('reuses the anonymous session once the identity claims it', async () => {
+    const session = await identified(async () => true);
+
+    expect(session.sessionId).toBe(anonymous.sessionId);
+    expect(session.visitId).toBe(anonymous.visitId);
+    expect(session.sessionDrift).toBe(false);
+  });
+
+  test('starts an identified session when the claim is refused', async () => {
+    const session = await identified(async () => false);
+
+    expect(session.sessionId).toBe(sessionId({ distinctId: 'user-1' }));
+  });
+
+  test('starts an identified session when the claim fails', async () => {
+    const session = await identified(async () => {
+      throw new Error('unavailable');
+    });
+
+    expect(session.sessionId).toBe(sessionId({ distinctId: 'user-1' }));
   });
 });
