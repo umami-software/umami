@@ -7,6 +7,12 @@ const subscription = vi.hoisted(() => ({
   current: { cloudMode: true, isLoading: false, hasFeature: (): boolean => true },
 }));
 const dateRange = vi.hoisted(() => ({ startDate: new Date(), endDate: new Date() }));
+const comparison = vi.hoisted(() => ({
+  startDate: new Date(),
+  endDate: new Date(),
+  hasComparison: true,
+  isAllTime: false,
+}));
 
 vi.mock('@/lib/fetch', () => ({ httpGet: vi.fn() }));
 vi.mock('@/components/hooks', async importOriginal => ({
@@ -14,18 +20,21 @@ vi.mock('@/components/hooks', async importOriginal => ({
   useWebsite: () => ({ teamId: null }),
   useSubscription: () => subscription.current,
   useTimezone: () => ({ timezone: 'UTC' }),
-  useDateRange: () => ({ dateRange: { ...dateRange, unit: 'day' } }),
+  useDateRange: () => ({
+    dateRange: { ...dateRange, unit: 'day' },
+    dateCompare: { startDate: comparison.startDate, endDate: comparison.endDate },
+    hasComparison: comparison.hasComparison,
+    isAllTime: comparison.isAllTime,
+  }),
 }));
 vi.mock('@/app/(main)/websites/[websiteId]/WebsiteControls', () => ({
   WebsiteControls: () => <div data-test="controls" />,
 }));
-vi.mock('@/app/(main)/websites/[websiteId]/search-console/SearchConsoleChart', () => ({
-  SearchConsoleChart: ({ rows }: { rows: unknown[] }) => <div>chart: {rows.length} days</div>,
-}));
-
-vi.mock('./GoogleAdsConversionsChart', () => ({
-  GoogleAdsConversionsChart: ({ rows }: { rows: unknown[] }) => (
-    <div>conversions chart: {rows.length} days</div>
+vi.mock('./GoogleAdsChart', () => ({
+  GoogleAdsChart: ({ rows, metric }: { rows: unknown[]; metric: string }) => (
+    <div>
+      {metric} chart: {rows.length} days
+    </div>
   ),
 }));
 
@@ -46,14 +55,16 @@ function row(overrides = {}) {
   };
 }
 
+/** Rows by dimension for the selected range; `previous` holds the comparison period's days. */
 function respondWith(byDimension: Record<string, unknown[]>, currencyCode: string | null = 'EUR') {
   vi.mocked(httpGet).mockImplementation(async (_url, params) => {
-    const { dimension } = params as { dimension: string };
+    const { dimension, startDate } = params as { dimension: string; startDate: string };
+    const key = startDate === '2025-12-25' ? 'previous' : dimension;
 
     return {
       ok: true,
       status: 200,
-      data: { dimension, currencyCode, rows: byDimension[dimension] ?? [] },
+      data: { dimension, currencyCode, rows: byDimension[key] ?? [] },
     };
   });
 }
@@ -71,6 +82,10 @@ beforeEach(() => {
   subscription.current = { cloudMode: true, isLoading: false, hasFeature: () => true };
   dateRange.startDate = new Date('2026-01-01T00:00:00');
   dateRange.endDate = new Date('2026-01-07T23:59:59');
+  comparison.startDate = new Date('2025-12-25T00:00:00');
+  comparison.endDate = new Date('2025-12-31T23:59:59');
+  comparison.hasComparison = true;
+  comparison.isAllTime = false;
   // MetricCard animates up to its value unless motion is reduced.
   vi.spyOn(window, 'matchMedia').mockImplementation(
     query =>
@@ -141,7 +156,7 @@ test('totals the daily rows in the account currency', async () => {
 
   render(<GoogleAdsPage websiteId="site-1" />);
 
-  expect(await screen.findByText('chart: 2 days')).toBeInTheDocument();
+  expect(await screen.findByText('cost chart: 2 days')).toBeInTheDocument();
   expect(screen.getByText('€30.00')).toBeInTheDocument(); // cost
   expect(screen.getByText('5.0%')).toBeInTheDocument(); // CTR: 10 / 200
   expect(screen.getByText('2.5')).toBeInTheDocument(); // fractional conversions
@@ -170,8 +185,8 @@ test('shows no ratio where there is nothing to divide by', async () => {
   render(<GoogleAdsPage websiteId="site-1" />);
 
   expect(await screen.findByText('conversions chart: 1 days')).toBeInTheDocument();
-  // Cost per conversion, conversion rate and ROAS.
-  expect(screen.getAllByText('–')).toHaveLength(3);
+  // Avg. CPC, cost per conversion, conversion rate and ROAS.
+  expect(screen.getAllByText('–')).toHaveLength(4);
 });
 
 test('lists conversion actions with their category and all conversions', async () => {
@@ -206,8 +221,53 @@ test('lists conversion actions with their category and all conversions', async (
   expect(screen.getByText('€9.00')).toBeInTheDocument();
 });
 
+test('charts the metric of the card that was clicked', async () => {
+  respondWith({ date: [row({ key: '2026-01-01', cost: 10, clicks: 4, impressions: 100 })] });
+  const user = userEvent.setup();
+
+  render(<GoogleAdsPage websiteId="site-1" />);
+
+  expect(await screen.findByText('cost chart: 1 days')).toBeInTheDocument();
+
+  await user.click(screen.getByRole('button', { name: /CTR/ }));
+  expect(screen.getByText('ctr chart: 1 days')).toBeInTheDocument();
+  expect(screen.getByText('conversions chart: 1 days')).toBeInTheDocument();
+
+  await user.click(screen.getByRole('button', { name: /ROAS/ }));
+  expect(screen.getByText('roas chart: 1 days')).toBeInTheDocument();
+});
+
+test('shows the change from the comparison period', async () => {
+  respondWith({
+    date: [row({ key: '2026-01-01', cost: 30, clicks: 10, impressions: 100 })],
+    previous: [row({ key: '2025-12-25', cost: 20, clicks: 10, impressions: 100 })],
+  });
+
+  render(<GoogleAdsPage websiteId="site-1" />);
+
+  // Cost and Avg. CPC both rose by half; clicks, impressions and CTR did not move.
+  await waitFor(() => expect(screen.getAllByText('50%')).toHaveLength(2));
+  expect(httpGet).toHaveBeenCalledWith(
+    expect.any(String),
+    expect.objectContaining({ startDate: '2025-12-25', endDate: '2025-12-31', dimension: 'date' }),
+  );
+});
+
+test('does not compare when the range is all time', async () => {
+  comparison.isAllTime = true;
+  respondWith({ date: [row({ key: '2026-01-01', cost: 30, clicks: 10 })] });
+
+  render(<GoogleAdsPage websiteId="site-1" />);
+
+  expect(await screen.findByText('cost chart: 1 days')).toBeInTheDocument();
+  expect(httpGet).not.toHaveBeenCalledWith(
+    expect.any(String),
+    expect.objectContaining({ startDate: '2025-12-25' }),
+  );
+});
+
 test('does not name a currency the account did not report', async () => {
-  respondWith({ date: [row({ key: '2026-01-01', cost: 30, clicks: 1 })] }, null);
+  respondWith({ date: [row({ key: '2026-01-01', cost: 30, clicks: 2 })] }, null);
 
   render(<GoogleAdsPage websiteId="site-1" />);
 

@@ -26,6 +26,8 @@ export interface BarChartProps extends ChartProps {
   unit?: string;
   stacked?: boolean;
   currency?: string;
+  /** Formats a bar's value in the tooltip, for values that are not plain counts. */
+  formatValue?: (value: number) => string;
   renderXLabel?: (label: string, index: number, values: any[]) => string;
   renderYLabel?: (label: string, index: number, values: any[]) => string;
   XAxisType?: string;
@@ -53,6 +55,7 @@ function BarChartComponent({
   minDate,
   maxDate,
   currency,
+  formatValue,
   onBarClick,
   ...props
 }: BarChartProps) {
@@ -154,7 +157,7 @@ function BarChartComponent({
             color: labelColors?.[0]?.borderColor || labelColors?.[0]?.backgroundColor,
             value: currency
               ? formatLongCurrency(dataPoints[0].raw.y, currency)
-              : `${formatLongNumber(dataPoints[0].raw.y)} ${dataPoints[0].dataset.label}`,
+              : `${(formatValue ?? formatLongNumber)(dataPoints[0].raw.y)} ${dataPoints[0].dataset.label}`,
           }
         : null;
 
@@ -170,7 +173,7 @@ function BarChartComponent({
         return nextTooltip;
       });
     },
-    [currency, locale, unit],
+    [currency, formatValue, locale, unit],
   );
 
   return (

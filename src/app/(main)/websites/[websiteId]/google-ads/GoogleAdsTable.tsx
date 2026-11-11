@@ -10,7 +10,7 @@ import {
   useMobile,
 } from '@/components/hooks';
 import { formatLongNumber } from '@/lib/format';
-import { formatConversions, formatMoney, formatPercent, getCtr } from './format';
+import { formatConversions, formatMoney, formatPercent, getCtr, NO_VALUE } from './format';
 
 export interface GoogleAdsTableProps {
   websiteId: string;
@@ -55,7 +55,7 @@ export function GoogleAdsTable({
     <LoadingPanel data={data} isLoading={isLoading} error={error} minHeight="300px">
       {data?.rows?.length === 0 && <Empty />}
       {data?.rows?.length > 0 && (
-        // Seven columns do not fit a phone, and the page clips rather than scrolls sideways.
+        // Eight columns do not fit a phone, and the page clips rather than scrolls sideways.
         <DataTable data={data.rows} displayMode={isPhone ? 'cards' : 'table'}>
           {/* The header and each row are separate grids, so every column needs a size that does not
               depend on its contents, or the columns drift out of line. */}
@@ -76,6 +76,16 @@ export function GoogleAdsTable({
           </DataColumn>
           <DataColumn id="conversions" label={t('conversions')} align="end" width="110px">
             {(row: GoogleAdsRow) => formatConversions(row.conversions)}
+          </DataColumn>
+          <DataColumn
+            id="costPerConversion"
+            label={t('costPerConversion')}
+            align="end"
+            width="110px"
+          >
+            {(row: GoogleAdsRow) =>
+              row.conversions ? formatMoney(row.cost / row.conversions, currency, locale) : NO_VALUE
+            }
           </DataColumn>
           <DataColumn id="conversionsValue" label={t('conversionValue')} align="end" width="140px">
             {(row: GoogleAdsRow) => formatMoney(row.conversionsValue, currency, locale)}

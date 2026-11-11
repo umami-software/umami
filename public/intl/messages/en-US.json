@@ -620,6 +620,7 @@
     "clicks": "Clicks",
     "impressions": "Impressions",
     "ctr": "CTR",
+    "cpc": "Avg. CPC",
     "conversions": "Conversions",
     "conversionValue": "Conversion value",
     "conversionAction": "Conversion action",
