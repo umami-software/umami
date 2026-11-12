@@ -10,7 +10,9 @@ const operation1 = defineOperation({
   auth: 'none',
   operation: {
     operationId: 'getScriptsTelemetry',
-    summary: 'Get scripts telemetry',
+    summary: 'Get the installation telemetry script',
+    description:
+      'Returns JavaScript that sends the application version through a telemetry pixel, or an inactive script when telemetry is disabled.',
     tags: ['Scripts'],
     responses: {
       '200': {

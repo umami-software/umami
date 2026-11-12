@@ -9,16 +9,18 @@ import { renderDateLabels } from '@/lib/charts';
 import { getThemeColors } from '@/lib/colors';
 import { DATE_FUNCTIONS, generateTimeSeries } from '@/lib/date';
 
+type DailyRow = Pick<SearchConsoleRow, 'key' | 'clicks' | 'impressions'>;
+
 export interface SearchConsoleChartProps {
   /** One row per day, keyed by YYYY-MM-DD. */
-  rows: SearchConsoleRow[];
+  rows: DailyRow[];
   minDate: Date;
   maxDate: Date;
   unit: string;
 }
 
 /** Sums daily rows into the chart's unit. Google has no data finer than a day. */
-function bucket(rows: SearchConsoleRow[], unit: string, metric: 'clicks' | 'impressions') {
+function bucket(rows: DailyRow[], unit: string, metric: 'clicks' | 'impressions') {
   const start = DATE_FUNCTIONS[unit].start;
   const totals = new Map<string, number>();
 

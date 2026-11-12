@@ -5,17 +5,15 @@ const mocks = vi.hoisted(() => ({
   findUnique: vi.fn(),
   getClientInfo: vi.fn(),
   recordErrorIngestion: vi.fn(),
+  resolveIdentifiedSession: vi.fn(),
   saveError: vi.fn(),
+  tryClaimAnonymousSession: vi.fn(),
 }));
 
 vi.mock('isbot', () => ({ isbot: () => false }));
 vi.mock('@/lib/clickhouse', () => ({ default: { enabled: false } }));
 vi.mock('@/lib/collection-session', () => ({
-  resolveCollectionSession: () => ({
-    sessionId: '00000000-0000-4000-8000-000000000002',
-    visitId: '00000000-0000-4000-8000-000000000003',
-    iat: 1,
-  }),
+  resolveIdentifiedSession: mocks.resolveIdentifiedSession,
 }));
 vi.mock('@/lib/cors', () => ({ withCorsHeaders: (response: Response) => response }));
 vi.mock('@/lib/crypto', () => ({ secret: () => 'secret' }));
@@ -33,6 +31,9 @@ vi.mock('@/queries/sql/errors/store', () => ({
   saveError: mocks.saveError,
 }));
 vi.mock('@/queries/sql/sessions/createSession', () => ({ createSession: mocks.createSession }));
+vi.mock('@/queries/sql/sessions/tryClaimAnonymousSession', () => ({
+  tryClaimAnonymousSession: mocks.tryClaimAnonymousSession,
+}));
 
 import { collectError } from './collect';
 
@@ -44,6 +45,11 @@ beforeEach(() => {
     resetAt: null,
   });
   mocks.getClientInfo.mockResolvedValue({ ip: '127.0.0.1', userAgent: 'Mozilla/5.0' });
+  mocks.resolveIdentifiedSession.mockResolvedValue({
+    sessionId: '00000000-0000-4000-8000-000000000002',
+    visitId: '00000000-0000-4000-8000-000000000003',
+    iat: 1,
+  });
   mocks.saveError.mockResolvedValue({
     eventId: '00000000-0000-4000-8000-000000000004',
     issueId: '00000000-0000-4000-8000-000000000005',
@@ -80,6 +86,21 @@ test('accepts browser errors for any existing website', async () => {
   expect(mocks.saveError).toHaveBeenCalledWith(
     payload,
     expect.objectContaining({ sessionId: '00000000-0000-4000-8000-000000000002' }),
+  );
+});
+
+// After identify reuses the anonymous session, errors must land in that same session.
+test('resolves the session with the same identity rules as tracked events', async () => {
+  const identified = { ...payload, id: 'user-1' };
+
+  await collectError(createRequest(identified), identified);
+
+  expect(mocks.resolveIdentifiedSession).toHaveBeenCalledWith(
+    expect.objectContaining({
+      websiteId: payload.website,
+      distinctId: 'user-1',
+      claimSession: mocks.tryClaimAnonymousSession,
+    }),
   );
 });
 

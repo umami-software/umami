@@ -1,6 +1,6 @@
 {
   "name": "umami",
-  "version": "3.4.0",
+  "version": "3.5.0",
   "description": "An open-source web and product analytics platform.",
   "author": "Umami Software, Inc. <hello@umami.is>",
   "license": "MIT",
@@ -58,6 +58,8 @@
     "test:watch": "vitest",
     "test:e2e": "playwright test",
     "test:e2e:ui": "playwright test --ui",
+    "test:e2e:docker": "tsx scripts/test-api.ts --e2e",
+    "test:e2e:docker:clickhouse": "tsx scripts/test-api.ts --e2e --clickhouse",
     "test:api": "tsx scripts/test-api.ts",
     "test:api:clickhouse": "tsx scripts/test-api.ts --clickhouse",
     "test:api:run": "playwright test -c playwright.api.config.ts",
@@ -134,7 +136,7 @@
     "thenby": "^1.4.1",
     "ua-parser-js": "^2.0.10",
     "uuid": "^14.0.2",
-    "zod": "^4.6.5",
+    "zod": "^4.6.6",
     "zustand": "^5.0.15"
   },
   "devDependencies": {

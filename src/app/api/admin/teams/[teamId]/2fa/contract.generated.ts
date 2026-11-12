@@ -10,7 +10,9 @@ const operation1 = defineOperation({
   auth: 'bearer',
   operation: {
     operationId: 'postAdminTeamsTeamId2fa',
-    summary: 'Create or update admin teams team id 2fa',
+    summary: "Set a team's two-factor requirement",
+    description:
+      'Enables or disables the requirement for members of the specified team to use two-factor authentication.',
     tags: ['Administration'],
     parameters: [
       {
@@ -20,6 +22,7 @@ const operation1 = defineOperation({
         schema: {
           type: 'string',
         },
+        description: 'ID of the associated team.',
       },
     ],
     requestBody: {
@@ -48,11 +51,15 @@ const operation1 = defineOperation({
               properties: {
                 ok: {
                   type: 'boolean',
+                  description: 'Whether the operation succeeded.',
                 },
                 teamId: {
                   type: 'string',
+                  description: 'ID of the associated team.',
                 },
-                twoFactorRequired: {},
+                twoFactorRequired: {
+                  description: 'Whether two-factor authentication is required.',
+                },
               },
               required: ['ok', 'teamId', 'twoFactorRequired'],
             },

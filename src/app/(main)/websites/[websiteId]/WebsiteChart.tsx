@@ -3,6 +3,7 @@ import { type ReactNode, useCallback, useMemo } from 'react';
 import type { ChartAnnotation } from '@/components/charts/ChartAnnotationMarkers';
 import { LoadingPanel } from '@/components/common/LoadingPanel';
 import {
+  useBarDrillDown,
   useDateParameters,
   useDateRange,
   useNavigation,
@@ -18,12 +19,14 @@ export function WebsiteChart({
   websiteId,
   compareMode,
   showAnnotations,
+  allowBarDrill,
   onAnnotationMoreClick,
   legendActions,
 }: {
   websiteId: string;
   compareMode?: boolean;
   showAnnotations?: boolean;
+  allowBarDrill?: boolean;
   onAnnotationMoreClick?: (range: AnnotationRange) => void;
   legendActions?: ReactNode;
 }) {
@@ -126,6 +129,8 @@ export function WebsiteChart({
     [router, updateParams],
   );
 
+  const handleBarClick = useBarDrillDown(unit, allowBarDrill);
+
   const handleAnnotationMoreClick = useCallback(
     (annotations: ChartAnnotation[]) => {
       const markerDate = annotations[0].markerDate || annotations[0].date;
@@ -151,6 +156,7 @@ export function WebsiteChart({
         annotations={annotations}
         onAnnotationClick={handleAnnotationClick}
         onAnnotationMoreClick={onAnnotationMoreClick ? handleAnnotationMoreClick : undefined}
+        onBarClick={handleBarClick}
       />
     </LoadingPanel>
   );

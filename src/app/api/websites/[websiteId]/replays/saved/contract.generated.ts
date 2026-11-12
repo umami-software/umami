@@ -10,7 +10,8 @@ const operation1 = defineOperation({
   auth: 'bearer-or-share',
   operation: {
     operationId: 'getWebsiteSavedReplays',
-    summary: 'Get websites website id replays saved',
+    summary: 'List saved session replays',
+    description: 'Returns a paginated, searchable list of replays saved for the website.',
     tags: ['Websites'],
     parameters: [
       {
@@ -20,6 +21,7 @@ const operation1 = defineOperation({
         schema: {
           type: 'string',
         },
+        description: 'ID of the website.',
       },
       {
         name: 'page',
@@ -29,6 +31,7 @@ const operation1 = defineOperation({
           type: 'integer',
           minimum: 1,
         },
+        description: 'Page number, starting at 1.',
       },
       {
         name: 'pageSize',
@@ -38,6 +41,7 @@ const operation1 = defineOperation({
           type: 'integer',
           minimum: 1,
         },
+        description: 'Number of results per page.',
       },
       {
         name: 'maxResults',
@@ -47,6 +51,7 @@ const operation1 = defineOperation({
           type: 'integer',
           minimum: 1,
         },
+        description: 'Maximum number of results to include.',
       },
       {
         name: 'search',
@@ -55,6 +60,7 @@ const operation1 = defineOperation({
         schema: {
           type: 'string',
         },
+        description: 'Search text used to filter results.',
       },
     ],
     responses: {
@@ -78,23 +84,29 @@ const operation1 = defineOperation({
                       },
                       id: {
                         type: 'string',
+                        description: 'Unique identifier of the resource.',
                       },
                       createdAt: {
                         type: 'string',
                         format: 'date-time',
+                        description: 'Date and time the record was created.',
                       },
                       updatedAt: {
                         type: 'string',
                         format: 'date-time',
+                        description: 'Date and time the record was last updated.',
                       },
                       name: {
                         type: 'string',
+                        description: 'Display name of the resource.',
                       },
                       websiteId: {
                         type: 'string',
+                        description: 'ID of the website.',
                       },
                       visitId: {
                         type: 'string',
+                        description: 'ID of the visit.',
                       },
                     },
                     required: [
@@ -107,27 +119,35 @@ const operation1 = defineOperation({
                       'visitId',
                     ],
                   },
+                  description: 'Data returned by the operation.',
                 },
                 count: {
                   type: 'number',
+                  description: 'Number of matching records.',
                 },
                 page: {
                   type: 'number',
+                  description: 'Page number, starting at 1.',
                 },
                 pageSize: {
                   type: 'number',
+                  description: 'Number of results per page.',
                 },
                 orderBy: {
                   type: 'string',
+                  description: 'Field to sort the results by.',
                 },
                 sortDescending: {
                   type: 'boolean',
+                  description: 'Whether to sort results in descending order.',
                 },
                 search: {
                   type: 'string',
+                  description: 'Search text used to filter results.',
                 },
                 isCapped: {
                   type: 'boolean',
+                  description: 'Whether the results were truncated by the maximum result limit.',
                 },
               },
               required: ['data', 'count', 'page', 'pageSize'],

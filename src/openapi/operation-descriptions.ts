@@ -452,9 +452,58 @@ export const operationDescriptions: Record<string, OperationDescription> = {
     summary: 'Update a website annotation',
     description: 'Changes the date, all-day setting, and note for a website annotation.',
   },
+  'GET /api/websites/{websiteId}/attribution': {
+    summary: 'Get website attribution',
+    description:
+      'Attributes conversions for a page path or custom event to referrers, paid ads, and UTM parameters using a first-click or last-click model.',
+  },
+  'GET /api/websites/{websiteId}/breakdown': {
+    summary: 'Get website breakdown',
+    description:
+      'Returns pageviews, visitors, visits, bounces, and total time for the website, grouped by the requested fields, over the date range.',
+  },
   'GET /api/websites/{websiteId}/daterange': {
     summary: "Get the website's available date range",
     description: 'Returns the earliest and latest recorded event dates for the website.',
+  },
+  'GET /api/websites/{websiteId}/errors': {
+    summary: 'List error issues',
+    description:
+      'Returns a paginated list of error issues for the website, with occurrence and affected visit counts for the selected date range.',
+  },
+  'GET /api/websites/{websiteId}/errors/{issueId}': {
+    summary: 'Get an error issue',
+    description:
+      'Returns an error issue with its status, occurrence counts, and first and last seen times for the selected date range.',
+  },
+  'PATCH /api/websites/{websiteId}/errors/{issueId}': {
+    summary: 'Update an error issue status',
+    description:
+      'Changes the status of an error issue to unresolved, resolved, or ignored. Changing the status does not discard new occurrences.',
+  },
+  'GET /api/websites/{websiteId}/errors/{issueId}/events': {
+    summary: 'List error occurrences',
+    description: 'Returns a paginated list of occurrences for an error issue, newest first.',
+  },
+  'GET /api/websites/{websiteId}/errors/{issueId}/events/{eventId}': {
+    summary: 'Get an error occurrence',
+    description:
+      'Returns a single occurrence of an error issue, including its stack trace, tags, and session details.',
+  },
+  'GET /api/websites/{websiteId}/errors/{issueId}/values': {
+    summary: 'Get error issue filter values',
+    description:
+      'Returns the distinct values and occurrence counts of an error field, such as release or browser, for one issue.',
+  },
+  'GET /api/websites/{websiteId}/errors/stats': {
+    summary: 'Get error stats',
+    description:
+      'Returns the total number of error occurrences, issues, and affected visits for the selected date range, with a daily trend in UTC.',
+  },
+  'GET /api/websites/{websiteId}/errors/values': {
+    summary: 'Get error filter values',
+    description:
+      'Returns the distinct values and occurrence counts of an error field, such as release or browser, across all issues.',
   },
   'GET /api/websites/{websiteId}/event-data': {
     summary: 'List events with custom properties',
@@ -541,6 +590,86 @@ export const operationDescriptions: Record<string, OperationDescription> = {
     description:
       'Returns a base64-encoded ZIP archive containing CSV exports of events, pages, referrers, browsers, operating systems, devices, and countries.',
   },
+  'GET /api/websites/{websiteId}/funnels': {
+    summary: 'Get website funnels',
+    description:
+      'Returns a paginated list of the saved funnels for the website, optionally filtered by search text.',
+  },
+  'POST /api/websites/{websiteId}/funnels': {
+    summary: 'Create a website funnel',
+    description:
+      'Saves a named funnel for the website with an optional description, its ordered steps, and the conversion window.',
+  },
+  'DELETE /api/websites/{websiteId}/funnels/{funnelId}': {
+    summary: 'Delete a website funnel',
+    description:
+      "Deletes the specified saved funnel from the website after checking the caller's permissions.",
+  },
+  'GET /api/websites/{websiteId}/funnels/{funnelId}': {
+    summary: 'Get a website funnel',
+    description:
+      'Returns a saved funnel for the website, including its name, description, steps, and conversion window.',
+  },
+  'POST /api/websites/{websiteId}/funnels/{funnelId}': {
+    summary: 'Update a website funnel',
+    description:
+      'Updates the name, description, steps, or conversion window of a saved funnel for the website.',
+  },
+  'GET /api/websites/{websiteId}/funnels/{funnelId}/stats': {
+    summary: 'Get website saved funnel stats',
+    description:
+      'Returns visitor counts and drop-off for each step of a saved funnel over the selected date range, with optional filters.',
+  },
+  'GET /api/websites/{websiteId}/funnels/stats': {
+    summary: 'Get website funnel stats',
+    description:
+      'Returns visitor counts and drop-off for each step of an ad-hoc funnel, given its steps and conversion window, over the date range.',
+  },
+  'GET /api/websites/{websiteId}/goals': {
+    summary: 'Get website goals',
+    description:
+      'Returns a paginated list of the saved goals for the website, optionally filtered by search text.',
+  },
+  'POST /api/websites/{websiteId}/goals': {
+    summary: 'Create a website goal',
+    description:
+      'Saves a named goal for the website with an optional description and the goal type and value to track.',
+  },
+  'DELETE /api/websites/{websiteId}/goals/{goalId}': {
+    summary: 'Delete a website goal',
+    description:
+      "Deletes the specified saved goal from the website after checking the caller's permissions.",
+  },
+  'GET /api/websites/{websiteId}/goals/{goalId}': {
+    summary: 'Get a website goal',
+    description:
+      'Returns a saved goal for the website, including its name, description, and the type and value it tracks.',
+  },
+  'POST /api/websites/{websiteId}/goals/{goalId}': {
+    summary: 'Update a website goal',
+    description:
+      'Updates the name, description, or the type and value tracked by a saved goal for the website.',
+  },
+  'GET /api/websites/{websiteId}/goals/{goalId}/stats': {
+    summary: 'Get website saved goal stats',
+    description:
+      'Returns the number of conversions and the total for a saved goal over the selected date range, with optional filters.',
+  },
+  'GET /api/websites/{websiteId}/goals/stats': {
+    summary: 'Get website goal stats',
+    description:
+      'Returns the number of conversions and the total for an ad-hoc goal, given its type and value, over the selected date range.',
+  },
+  'GET /api/websites/{websiteId}/heatmaps': {
+    summary: 'Get website heatmaps',
+    description:
+      'Returns click or scroll heatmap data for the website, optionally for a single page path, along with the pages that have recorded data.',
+  },
+  'GET /api/websites/{websiteId}/journeys': {
+    summary: 'Get website journeys',
+    description:
+      'Returns the most common paths visitors take through the website, between 2 and 7 steps long, with optional start and end steps.',
+  },
   'GET /api/websites/{websiteId}/metrics': {
     summary: 'Get ranked website metrics',
     description:
@@ -555,6 +684,21 @@ export const operationDescriptions: Record<string, OperationDescription> = {
     summary: 'Get pageviews and sessions over time',
     description:
       'Returns pageviews and sessions grouped by the requested time interval and timezone, including a comparison period when requested.',
+  },
+  'GET /api/websites/{websiteId}/performance/chart': {
+    summary: 'Get website performance chart',
+    description:
+      'Returns p50, p75, and p95 values over time for a Core Web Vitals metric such as LCP, INP, CLS, FCP, or TTFB.',
+  },
+  'GET /api/websites/{websiteId}/performance/metrics': {
+    summary: 'Get website performance metrics',
+    description:
+      'Ranks pages, titles, devices, or browsers by a Core Web Vitals metric, with p50, p75, and p95 values and a measurement count.',
+  },
+  'GET /api/websites/{websiteId}/performance/stats': {
+    summary: 'Get website performance stats',
+    description:
+      'Returns p50, p75, and p95 values for LCP, INP, CLS, FCP, and TTFB and the number of measurements in the date range.',
   },
   'GET /api/websites/{websiteId}/recorder': {
     summary: 'Get website recording settings',
@@ -588,6 +732,11 @@ export const operationDescriptions: Record<string, OperationDescription> = {
     summary: 'Reset website analytics',
     description:
       "Clears the website's collected analytics data while keeping the website configuration.",
+  },
+  'GET /api/websites/{websiteId}/retention': {
+    summary: 'Get website retention',
+    description:
+      'Returns daily retention for the website: for each first-visit date, how many visitors returned on later days and the percentage.',
   },
   'GET /api/websites/{websiteId}/revenue/chart': {
     summary: 'Get website revenue over time',
@@ -733,6 +882,11 @@ export const operationDescriptions: Record<string, OperationDescription> = {
     summary: 'Transfer website ownership',
     description:
       'Transfers the specified website to another user or team after checking permission for the destination.',
+  },
+  'GET /api/websites/{websiteId}/utm/metrics': {
+    summary: 'Get website UTM metrics',
+    description:
+      'Returns pageview counts grouped by a UTM parameter, such as source, medium, campaign, term, or content, for the selected date range.',
   },
   'GET /api/websites/{websiteId}/values': {
     summary: 'List website filter values',

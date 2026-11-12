@@ -3,6 +3,7 @@ import { EVENT_TYPE } from '@/lib/constants';
 import { CLICKHOUSE, PRISMA, runQuery } from '@/lib/db';
 import prisma from '@/lib/prisma';
 import type { PageResult, QueryFilters, WebsiteSession } from '@/lib/types';
+import { QUALIFIED_FILTER_COLUMNS } from '@/queries/sql/sessions/getWebsiteSessions';
 
 const FUNCTION_NAME = 'getRevenueSessions';
 
@@ -91,18 +92,27 @@ async function relationalQuery(websiteId: string, currency: string, filters: Que
 async function clickhouseQuery(websiteId: string, currency: string, filters: QueryFilters) {
   const { pagedRawQuery, parseFilters, getDateStringSQL } = clickhouse;
   const { search } = filters;
-  const { filterQuery, dateQuery, cohortQuery, queryParams } = parseFilters({
-    ...filters,
-    websiteId,
-    currency,
-  });
+  const { filterQuery, dateQuery, cohortQuery, queryParams } = parseFilters(
+    {
+      ...filters,
+      websiteId,
+      currency,
+    },
+    {
+      columns: QUALIFIED_FILTER_COLUMNS,
+    },
+  );
 
   const searchQuery = search
-    ? `and ((positionCaseInsensitive(browser, {search:String}) > 0)
-           or (positionCaseInsensitive(city, {search:String}) > 0)
-           or (positionCaseInsensitive(os, {search:String}) > 0)
-           or (positionCaseInsensitive(device, {search:String}) > 0))`
+    ? `and ((positionCaseInsensitive(website_event.browser, {search:String}) > 0)
+           or (positionCaseInsensitive(website_event.city, {search:String}) > 0)
+           or (positionCaseInsensitive(website_event.os, {search:String}) > 0)
+           or (positionCaseInsensitive(website_event.device, {search:String}) > 0))`
     : '';
+  const normalizedFilterQuery = filterQuery.replace(
+    /referrer_domain != hostname/g,
+    'website_event.referrer_domain != website_event.hostname',
+  );
 
   return pagedRawQuery(
     `
@@ -129,7 +139,7 @@ async function clickhouseQuery(websiteId: string, currency: string, filters: Que
     where website_id = {websiteId:UUID}
       and event_type != ${EVENT_TYPE.performance}
     ${dateQuery}
-    ${filterQuery}
+    ${normalizedFilterQuery}
     ${searchQuery}
       and session_id in (
         select distinct session_id

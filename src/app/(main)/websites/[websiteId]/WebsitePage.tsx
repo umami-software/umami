@@ -27,6 +27,7 @@ export function WebsitePage({ websiteId }: { websiteId: string }) {
         <WebsiteChart
           websiteId={websiteId}
           showAnnotations
+          allowBarDrill
           onAnnotationMoreClick={setAnnotationRange}
           legendActions={<AnnotationsButton websiteId={websiteId} />}
         />

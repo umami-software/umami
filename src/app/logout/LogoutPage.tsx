@@ -11,13 +11,18 @@ export function LogoutPage() {
 
   useEffect(() => {
     async function logout() {
-      await post('/auth/logout');
-
-      window.location.href = `${process.env.basePath || ''}/login`;
+      try {
+        // Sent before the token is removed: the server ends the session it authenticates.
+        await post('/auth/logout');
+      } catch {
+        // The local logout below must still happen if the server call fails.
+      } finally {
+        removeClientAuthToken();
+        setUser(null);
+        window.location.href = `${process.env.basePath || ''}/login`;
+      }
     }
 
-    removeClientAuthToken();
-    setUser(null);
     logout();
   }, [router, post]);
 

@@ -33,8 +33,28 @@ export function isApiKey(token?: string | null): token is string {
   return typeof token === 'string' && token.startsWith(API_KEY_PREFIX);
 }
 
+// next.config.ts rewrites /teams/:teamId/:path* and a relative API_URL onto the API routes, but
+// request.url keeps the path the client sent. Undo those rewrites (Next matches them
+// case-insensitively) so the check sees the route that handles the request.
+function getRewrittenPath(pathname: string) {
+  const path = pathname.replace(/^\/teams\/[^/]+(?=\/)/i, '');
+  const apiUrl = process.env.API_URL || '';
+
+  if (apiUrl && !/^https?:\/\//i.test(apiUrl)) {
+    const prefix = `/${apiUrl.replace(/^\/+|\/+$/g, '')}`.toLowerCase();
+
+    if (prefix !== '/' && prefix !== '/api' && path.toLowerCase().startsWith(`${prefix}/`)) {
+      return `/api${path.slice(prefix.length)}`;
+    }
+  }
+
+  return path;
+}
+
 export function isApiKeyBlockedPath(pathname: string) {
-  return API_KEY_BLOCKED_PATHS.some(path => pathname === path || pathname.startsWith(`${path}/`));
+  const path = getRewrittenPath(pathname);
+
+  return API_KEY_BLOCKED_PATHS.some(blocked => path === blocked || path.startsWith(`${blocked}/`));
 }
 
 export function isApiKeyEnabled() {

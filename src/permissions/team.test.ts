@@ -193,6 +193,23 @@ describe('canCreateTeamWebsite', () => {
     vi.mocked(getTeamUser).mockResolvedValue({ role: 'team-view-only' } as any);
     await expect(canCreateTeamWebsite({ user: normalUser }, 'team-1')).resolves.toBe(false);
   });
+
+  // Global view-only users must not create anything, even in a team they own.
+  test('denies a globally view-only user who owns the team', async () => {
+    vi.mocked(getTeamUser).mockResolvedValue({ role: 'team-owner' } as any);
+    await expect(canCreateTeamWebsite({ user: viewOnlyUser }, 'team-1')).resolves.toBe(false);
+  });
+
+  // Team resources are billed to the team, so a past-due personal account must not block them.
+  test('allows a member whose personal account is past due when the team is current', async () => {
+    vi.mocked(getTeamUser).mockResolvedValue({ role: 'team-member' } as any);
+    vi.mocked(getBillingAccess).mockImplementation(async scope => ({
+      isPastDue: scope.accountId === normalUser.id,
+      isOwner: false,
+    }));
+
+    await expect(canCreateTeamWebsite({ user: normalUser }, 'team-1')).resolves.toBe(true);
+  });
 });
 
 describe('canViewAllTeams', () => {

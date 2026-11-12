@@ -37,6 +37,7 @@ import {
   maxDate,
   minDate,
   normalizeTimezone,
+  parseBackendDate,
   parseDateRange,
   parseDateValue,
 } from './date';
@@ -121,6 +122,21 @@ describe('parseDateRange', () => {
     expect(parseDateRange(null as any)).toBeNull();
     expect(parseDateRange(123 as any)).toBeNull();
     expect(parseDateRange(undefined as any)).toBeNull();
+  });
+
+  test('returns null for invalid or corrupted range strings', () => {
+    expect(parseDateRange('range:')).toBeNull();
+    expect(parseDateRange('range:NaN:NaN')).toBeNull();
+    expect(parseDateRange('range:undefined:undefined')).toBeNull();
+    expect(parseDateRange('range:12345:NaN')).toBeNull();
+    expect(parseDateRange('range:NaN:12345')).toBeNull();
+    expect(parseDateRange('range:abc:def')).toBeNull();
+    expect(parseDateRange('range:100000000000000000000000:0')).toBeNull();
+  });
+
+  test('returns null for unknown date values', () => {
+    expect(parseDateRange('invalid')).toBeNull();
+    expect(parseDateRange('7days')).toBeNull();
   });
 
   test('parses hour ranges', () => {
@@ -690,12 +706,17 @@ describe('getMaxSelectableDate', () => {
 describe('timezone helpers', () => {
   test('normalizeTimezone maps deprecated aliases', () => {
     expect(normalizeTimezone('Asia/Calcutta')).toBe('Asia/Kolkata');
+    expect(normalizeTimezone('America/Buenos_Aires')).toBe('America/Argentina/Buenos_Aires');
+    expect(normalizeTimezone('America/Cordoba')).toBe('America/Argentina/Cordoba');
     expect(normalizeTimezone('America/New_York')).toBe('America/New_York');
+    expect(normalizeTimezone('Asia/Jayapura')).toBe('Asia/Jayapura');
   });
 
   test('isValidTimezone accepts real and aliased zones', () => {
     expect(isValidTimezone('America/New_York')).toBe(true);
     expect(isValidTimezone('Asia/Calcutta')).toBe(true);
+    expect(isValidTimezone('America/Buenos_Aires')).toBe(true);
+    expect(isValidTimezone('America/Cordoba')).toBe(true);
     expect(isValidTimezone('Not/AZone')).toBe(false);
   });
 
@@ -715,5 +736,27 @@ describe('isInvalidDate', () => {
     expect(isInvalidDate('2026-07-24')).toBe(false);
     expect(isInvalidDate(null)).toBe(false);
     expect(isInvalidDate(undefined)).toBe(false);
+  });
+});
+
+describe('parseBackendDate', () => {
+  test('converts zone-shifted backend timestamps ending with Z to local wall-clock dates', () => {
+    const parsed = parseBackendDate('2026-10-01T00:00:00Z');
+    expect(parsed.getFullYear()).toBe(2026);
+    expect(parsed.getMonth()).toBe(9);
+    expect(parsed.getDate()).toBe(1);
+    expect(formatDate(parsed, 'PP')).toBe('Oct 1, 2026');
+  });
+
+  test('returns Date instances as-is', () => {
+    const date = new Date(2026, 9, 1);
+    expect(parseBackendDate(date)).toEqual(date);
+  });
+
+  test('parses timestamps without trailing Z as standard Date', () => {
+    const parsed = parseBackendDate('2026-10-01T12:00:00');
+    expect(parsed.getFullYear()).toBe(2026);
+    expect(parsed.getMonth()).toBe(9);
+    expect(parsed.getDate()).toBe(1);
   });
 });

@@ -17,6 +17,8 @@ import {
 } from '@/lib/constants';
 import { createAuthKey, hash, secret } from '@/lib/crypto';
 import { createSecureToken, parseSecureToken, parseToken } from '@/lib/jwt';
+import { hasDefaultPassword } from '@/lib/password';
+import prisma from '@/lib/prisma';
 import redis from '@/lib/redis';
 import { ensureArray } from '@/lib/utils';
 import { getApiKeyByHash, updateApiKeyLastUsed } from '@/queries/prisma/apiKey';
@@ -90,10 +92,12 @@ export async function checkAuth(request: Request) {
   const shareToken = await parseShareToken(request);
 
   let user = null;
+  let twoFactorSetup = false;
   const { userId, authKey } = payload || {};
 
   if (userId) {
     user = await getUser(userId, { includePassword: true });
+    twoFactorSetup = !!payload.twoFactorSetup;
 
     // Reject tokens issued before the current password.
     // Allow legacy stateless tokens that were minted without a password fingerprint.
@@ -105,6 +109,7 @@ export async function checkAuth(request: Request) {
 
     if (key?.userId) {
       user = await getUser(key.userId, { includePassword: true });
+      twoFactorSetup = !!key.twoFactorSetup;
 
       // Only enforce password-change invalidation for sessions that include a password fingerprint.
       if (user && key.pwd && hash(user.password) !== key.pwd) {
@@ -119,6 +124,15 @@ export async function checkAuth(request: Request) {
         await redis.client.expire(authKey, key.ttl).catch(e => log(e));
       }
     }
+  }
+
+  // A session issued while 2FA was required but not set up stays restricted until enrollment
+  // completes; after that the same token becomes a full session.
+  let twoFactorSetupPending = false;
+
+  if (user && twoFactorSetup) {
+    const twoFactor = await prisma.client.twoFactorAuth.findUnique({ where: { userId: user.id } });
+    twoFactorSetupPending = !twoFactor?.isEnabled;
   }
 
   log({
@@ -142,6 +156,8 @@ export async function checkAuth(request: Request) {
     }
   }
 
+  const passwordChangeRequired = hasDefaultPassword(user);
+
   if (user) {
     delete user.password;
     user.isAdmin = user.role === ROLES.admin;
@@ -153,6 +169,8 @@ export async function checkAuth(request: Request) {
     shareToken,
     user,
     authType: user ? ('session' as const) : ('share' as const),
+    twoFactorSetupPending,
+    passwordChangeRequired,
   };
 }
 
@@ -167,6 +185,13 @@ export async function saveAuth(data: any, expire = AUTH_SESSION_TTL) {
   }
 
   return createSecureToken({ authKey }, secret());
+}
+
+export async function createSessionToken(user: { id: string; role: string; password: string }) {
+  // Bind token to password hash so a password change invalidates old tokens.
+  const session = { userId: user.id, role: user.role, pwd: hash(user.password) };
+
+  return redis.enabled ? saveAuth(session) : createSecureToken(session, secret());
 }
 
 export async function hasPermission(role: string, permission: string | string[]) {

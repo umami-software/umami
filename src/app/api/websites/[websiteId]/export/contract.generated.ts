@@ -10,7 +10,9 @@ const operation1 = defineOperation({
   auth: 'bearer-or-share',
   operation: {
     operationId: 'exportWebsite',
-    summary: 'Get websites website id export',
+    summary: 'Export website analytics',
+    description:
+      'Returns a base64-encoded ZIP archive containing CSV exports of events, pages, referrers, browsers, operating systems, devices, and countries.',
     tags: ['Websites'],
     parameters: [
       {
@@ -20,6 +22,7 @@ const operation1 = defineOperation({
         schema: {
           type: 'string',
         },
+        description: 'ID of the website.',
       },
       {
         name: 'startAt',
@@ -28,6 +31,7 @@ const operation1 = defineOperation({
         schema: {
           type: 'number',
         },
+        description: 'Start of the date range as a Unix timestamp in milliseconds.',
       },
       {
         name: 'endAt',
@@ -36,6 +40,7 @@ const operation1 = defineOperation({
         schema: {
           type: 'number',
         },
+        description: 'End of the date range as a Unix timestamp in milliseconds.',
       },
       {
         name: 'startDate',
@@ -45,6 +50,7 @@ const operation1 = defineOperation({
           type: 'string',
           format: 'date-time',
         },
+        description: 'Start of the date range as an ISO 8601 date or date-time.',
       },
       {
         name: 'endDate',
@@ -54,6 +60,7 @@ const operation1 = defineOperation({
           type: 'string',
           format: 'date-time',
         },
+        description: 'End of the date range as an ISO 8601 date or date-time.',
       },
       {
         name: 'timezone',
@@ -62,6 +69,8 @@ const operation1 = defineOperation({
         schema: {
           type: 'string',
         },
+        description:
+          'IANA time zone used to interpret dates and group results, for example America/New_York.',
       },
       {
         name: 'unit',
@@ -70,6 +79,7 @@ const operation1 = defineOperation({
         schema: {
           type: 'string',
         },
+        description: 'Time interval used to group results: minute, hour, day, month, or year.',
       },
       {
         name: 'compare',
@@ -79,6 +89,8 @@ const operation1 = defineOperation({
           type: 'string',
           enum: ['prev', 'yoy'],
         },
+        description:
+          'Comparison period: prev for the previous period or yoy for the same period last year.',
       },
       {
         name: 'page',
@@ -88,6 +100,7 @@ const operation1 = defineOperation({
           type: 'integer',
           minimum: 1,
         },
+        description: 'Page number, starting at 1.',
       },
       {
         name: 'pageSize',
@@ -97,6 +110,7 @@ const operation1 = defineOperation({
           type: 'integer',
           minimum: 1,
         },
+        description: 'Number of results per page.',
       },
       {
         name: 'maxResults',
@@ -106,6 +120,7 @@ const operation1 = defineOperation({
           type: 'integer',
           minimum: 1,
         },
+        description: 'Maximum number of results to include.',
       },
     ],
     responses: {

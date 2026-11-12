@@ -10,7 +10,7 @@ const operation1 = defineOperation({
   auth: 'bearer-or-share',
   operation: {
     operationId: 'getWebsiteSessionsWeekly',
-    summary: 'Get websites website id sessions weekly',
+    summary: 'Get traffic by weekday and hour',
     description:
       'Returns distinct visitor counts grouped by day of the week and hour in the selected timezone and date range.',
     tags: ['Websites'],

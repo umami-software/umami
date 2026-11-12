@@ -1,4 +1,5 @@
 import { beforeEach, expect, test, vi } from 'vitest';
+import { checkAuth } from '@/lib/auth';
 import { fetchWebsite } from '@/lib/load';
 import { getWebsiteSegment } from '@/queries/prisma';
 import { getQueryFilters, resolvePeriodDateRange, parseRequest } from './request';
@@ -8,6 +9,10 @@ vi.hoisted(() => {
   process.env.DATABASE_URL ??= 'postgresql://user:pass@localhost:5432/umami?schema=public';
   delete process.env.DATABASE_REPLICA_URL;
 });
+
+vi.mock('@/lib/auth', () => ({
+  checkAuth: vi.fn(),
+}));
 
 vi.mock('@/lib/load', () => ({
   fetchAccount: vi.fn(),
@@ -22,11 +27,13 @@ vi.mock('@/queries/prisma', () => ({
   getWebsiteSegment: vi.fn(),
 }));
 
+const checkAuthMock = vi.mocked(checkAuth);
 const fetchWebsiteMock = vi.mocked(fetchWebsite);
 const getWebsiteSegmentMock = vi.mocked(getWebsiteSegment);
 const checkAuthMock = vi.mocked(checkAuth);
 
 beforeEach(() => {
+  checkAuthMock.mockReset();
   fetchWebsiteMock.mockReset();
   getWebsiteSegmentMock.mockReset();
   checkAuthMock.mockReset();
@@ -108,6 +115,35 @@ test("combines a saved segment's session property filters with active filters", 
   expect(filters.endDate).toEqual(new Date('2026-09-02T00:00:00.000Z'));
 });
 
+// Segment filter names are stored as free-form strings. A stored filter named after a query
+// option (e.g. timezone, which is interpolated into SQL) must not replace the validated value.
+test('ignores saved segment filters that are not filter columns', async () => {
+  getWebsiteSegmentMock.mockResolvedValue({
+    parameters: {
+      filters: [
+        { name: 'timezone', operator: 'eq', value: "UTC'; select 1; --" },
+        { name: 'unit', operator: 'eq', value: 'x' },
+        { name: 'browser', operator: 'eq', value: 'chrome' },
+      ],
+    },
+  } as any);
+
+  const filters = await getQueryFilters(
+    {
+      startAt: String(+new Date('2026-09-01T00:00:00.000Z')),
+      endAt: String(+new Date('2026-09-02T00:00:00.000Z')),
+      timezone: 'America/New_York',
+      unit: 'day',
+      segment: 'segment-1',
+    },
+    'website-1',
+  );
+
+  expect(filters.timezone).toBe('America/New_York');
+  expect(filters.unit).toBe('day');
+  expect(filters.browser).toBe('eq.chrome');
+});
+
 // The API accepts segments and cohorts without `filters` (e.g. created through the API or by
 // older versions), so applying one must not throw.
 test('applies a saved segment that has no filters array', async () => {
@@ -188,4 +224,49 @@ test('applies a saved cohort that has no filters array', async () => {
 
   expect(filters).toMatchObject({ cohort_path: 'eq./signup' });
   expect(filters).toHaveProperty('cohort_startDate');
+});
+
+test('parseRequest blocks a session pending required 2FA setup', async () => {
+  // A password alone must not unlock the API for accounts that are required to use 2FA.
+  checkAuthMock.mockResolvedValue({ user: { id: 'user-1' }, twoFactorSetupPending: true } as any);
+
+  const { error } = await parseRequest(new Request('http://localhost/api/websites'));
+  const response = error();
+
+  expect(response.status).toBe(403);
+  await expect(response.json()).resolves.toMatchObject({
+    error: { code: 'two-factor-error-setup-required' },
+  });
+});
+
+test('parseRequest lets a session pending required 2FA setup reach routes that opt in', async () => {
+  checkAuthMock.mockResolvedValue({ user: { id: 'user-1' }, twoFactorSetupPending: true } as any);
+
+  const { auth, error } = await parseRequest(
+    new Request('http://localhost/api/2fa/setup/initiate'),
+    null,
+    { allowTwoFactorSetup: true },
+  );
+
+  expect(error).toBeUndefined();
+  expect(auth.user.id).toBe('user-1');
+});
+
+test('parseRequest does not block an account that still uses the default password', async () => {
+  // The password prompt is UI only. Existing API and MCP integrations owned by the seeded admin
+  // must keep working after an upgrade.
+  checkAuthMock.mockResolvedValue({ user: { id: 'admin-1' }, passwordChangeRequired: true } as any);
+
+  const { auth, error } = await parseRequest(new Request('http://localhost/api/websites'));
+
+  expect(error).toBeUndefined();
+  expect(auth.user.id).toBe('admin-1');
+});
+
+test('parseRequest allows ordinary sessions on every route', async () => {
+  checkAuthMock.mockResolvedValue({ user: { id: 'user-1' }, twoFactorSetupPending: false } as any);
+
+  const { error } = await parseRequest(new Request('http://localhost/api/websites'));
+
+  expect(error).toBeUndefined();
 });

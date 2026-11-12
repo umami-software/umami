@@ -1,6 +1,27 @@
 import { describe, expect, test } from 'vitest';
 import { DATA_TYPE, FIELD_LENGTH } from './constants';
-import { getDisplayValue, getStoredStringValue } from './data';
+import { flattenJSON, getDisplayValue, getStoredStringValue, isValidDateValue } from './data';
+
+// An impossible date classified as a date makes toISOString throw after the event row is written.
+describe('isValidDateValue', () => {
+  test('accepts real ISO datetimes', () => {
+    expect(isValidDateValue('2026-05-18T10:30:00Z')).toBe(true);
+    expect(isValidDateValue('2026-05-18T10:30:00.123+02:00')).toBe(true);
+  });
+
+  test('rejects regex-valid but impossible datetimes', () => {
+    expect(isValidDateValue('2026-13-01T00:00:00Z')).toBe(false);
+    expect(isValidDateValue('2026-01-32T00:00:00Z')).toBe(false);
+    expect(isValidDateValue('2026-01-01T25:00:00Z')).toBe(false);
+  });
+
+  test('impossible datetimes are stored as strings instead of throwing', () => {
+    const [entry] = flattenJSON({ when: '2026-13-01T00:00:00Z' });
+
+    expect(entry.dataType).toBe(DATA_TYPE.string);
+    expect(getStoredStringValue(entry.value, entry.dataType)).toBe('2026-13-01T00:00:00Z');
+  });
+});
 
 describe('getStoredStringValue', () => {
   test('truncates oversized string values to the storage limit', () => {

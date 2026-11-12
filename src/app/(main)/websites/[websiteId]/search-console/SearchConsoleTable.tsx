@@ -100,7 +100,7 @@ function DimensionLabel({
       const code = toAlpha2(value);
 
       return (
-        <TypeIcon type="country" value={code || 'xx'}>
+        <TypeIcon type="country" value={code || 'unknown'}>
           <Text truncate>{code ? formatValue(code, 'country') : t(labels.unknown)}</Text>
         </TypeIcon>
       );

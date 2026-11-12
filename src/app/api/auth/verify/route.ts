@@ -4,7 +4,7 @@ import { json } from '@/lib/response';
 import { getAllUserTeams } from '@/queries/prisma';
 
 export async function POST(request: Request) {
-  const { auth, error } = await parseRequest(request);
+  const { auth, error } = await parseRequest(request, null, { allowTwoFactorSetup: true });
 
   if (error) {
     return error();
@@ -12,5 +12,5 @@ export async function POST(request: Request) {
 
   const teams = await addTeamBillingStatus(await getAllUserTeams(auth.user.id));
 
-  return json({ ...auth.user, teams });
+  return json({ ...auth.user, passwordChangeRequired: !!auth.passwordChangeRequired, teams });
 }

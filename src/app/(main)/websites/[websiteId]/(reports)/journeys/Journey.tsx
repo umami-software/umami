@@ -84,7 +84,7 @@ export function Journey({ websiteId, steps, startStep, endStep, view }: JourneyP
       });
 
       columns.push({
-        nodes: objectToArray(nodes).sort(firstBy('total', -1)),
+        nodes: objectToArray(nodes).sort(firstBy('totalCount', -1).thenBy('name')),
       });
     }
 

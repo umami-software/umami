@@ -10,7 +10,9 @@ const operation1 = defineOperation({
   auth: 'bearer',
   operation: {
     operationId: 'deleteAdminUsersUserId2fa',
-    summary: 'Delete admin users user id 2fa',
+    summary: "Reset a user's two-factor authentication",
+    description:
+      "Removes the specified user's authenticator setup, backup codes, used-code history, and failed-attempt limits so they can set up authentication again.",
     tags: ['Administration'],
     parameters: [
       {
@@ -20,6 +22,7 @@ const operation1 = defineOperation({
         schema: {
           type: 'string',
         },
+        description: 'ID of the associated user.',
       },
     ],
     responses: {
@@ -32,15 +35,19 @@ const operation1 = defineOperation({
               properties: {
                 ok: {
                   type: 'boolean',
+                  description: 'Whether the operation succeeded.',
                 },
                 userId: {
                   type: 'string',
+                  description: 'ID of the associated user.',
                 },
                 reset: {
                   type: 'object',
                   properties: {
                     twoFactorAuth: {},
-                    backupCodes: {},
+                    backupCodes: {
+                      description: 'Single-use backup codes for two-factor authentication.',
+                    },
                     otpUsed: {},
                     rateLimit: {},
                   },
@@ -97,7 +104,8 @@ const operation2 = defineOperation({
   auth: 'bearer',
   operation: {
     operationId: 'getAdminUsersUserId2fa',
-    summary: 'Get admin users user id 2fa',
+    summary: "Get a user's two-factor status",
+    description: 'Returns whether two-factor authentication is enabled for the specified user.',
     tags: ['Administration'],
     parameters: [
       {
@@ -107,6 +115,7 @@ const operation2 = defineOperation({
         schema: {
           type: 'string',
         },
+        description: 'ID of the associated user.',
       },
     ],
     responses: {
@@ -119,6 +128,7 @@ const operation2 = defineOperation({
               properties: {
                 isEnabled: {
                   type: 'boolean',
+                  description: 'Whether two-factor authentication is enabled.',
                 },
               },
               required: ['isEnabled'],
@@ -171,7 +181,9 @@ const operation3 = defineOperation({
   auth: 'bearer',
   operation: {
     operationId: 'postAdminUsersUserId2fa',
-    summary: 'Create or update admin users user id 2fa',
+    summary: "Set a user's two-factor requirement",
+    description:
+      'Enables or disables the requirement for the specified user to set up two-factor authentication.',
     tags: ['Administration'],
     parameters: [
       {
@@ -181,6 +193,7 @@ const operation3 = defineOperation({
         schema: {
           type: 'string',
         },
+        description: 'ID of the associated user.',
       },
     ],
     requestBody: {
@@ -209,11 +222,15 @@ const operation3 = defineOperation({
               properties: {
                 ok: {
                   type: 'boolean',
+                  description: 'Whether the operation succeeded.',
                 },
                 userId: {
                   type: 'string',
+                  description: 'ID of the associated user.',
                 },
-                twoFactorRequired: {},
+                twoFactorRequired: {
+                  description: 'Whether two-factor authentication is required.',
+                },
               },
               required: ['ok', 'userId', 'twoFactorRequired'],
             },

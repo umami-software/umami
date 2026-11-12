@@ -1,5 +1,4 @@
 import { type ErrorCaptureOptions } from './errors';
-
 export type { ErrorCaptureOptions } from './errors';
 /** Public types for the browser tracker. */
 export type TrackedProperties = {
@@ -12,6 +11,12 @@ export type TrackedProperties = {
   hostname?: string;
   /** Distinct ID associated with the current visitor. */
   id?: string;
+  /**
+   * Value mixed into the server's session salt. Only used when the server sets ENABLE_CLIENT_SALT.
+   *
+   * @example '2026-10-30' (rotates sessions daily)
+   */
+  salt?: string;
   /**
    * Browser language
    *
@@ -197,6 +202,9 @@ export type UmamiConfig = {
   domains?: string | string[];
   tag?: string;
   distinctId?: string;
+  salt?: string;
+  /** Generates the salt from the current UTC time. Ignored when `salt` is set. */
+  saltRotation?: 'hourly' | 'daily' | 'weekly' | 'monthly';
   beforeSend?: BeforeSend | string;
   errors?: boolean;
   release?: string;

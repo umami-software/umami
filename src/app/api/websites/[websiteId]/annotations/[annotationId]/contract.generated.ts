@@ -10,7 +10,8 @@ const operation1 = defineOperation({
   auth: 'bearer',
   operation: {
     operationId: 'deleteWebsiteAnnotation',
-    summary: 'Delete websites website id annotations annotation id',
+    summary: 'Delete a website annotation',
+    description: 'Deletes the specified dated note from the website.',
     tags: ['Websites'],
     parameters: [
       {
@@ -20,6 +21,7 @@ const operation1 = defineOperation({
         schema: {
           type: 'string',
         },
+        description: 'ID of the website.',
       },
       {
         name: 'annotationId',
@@ -28,6 +30,7 @@ const operation1 = defineOperation({
         schema: {
           type: 'string',
         },
+        description: 'ID of the annotation.',
       },
     ],
     responses: {
@@ -40,6 +43,7 @@ const operation1 = defineOperation({
               properties: {
                 ok: {
                   const: true,
+                  description: 'Whether the operation succeeded.',
                 },
               },
               required: ['ok'],
@@ -92,7 +96,8 @@ const operation2 = defineOperation({
   auth: 'bearer-or-share',
   operation: {
     operationId: 'getWebsiteAnnotation',
-    summary: 'Get websites website id annotations annotation id',
+    summary: 'Get a website annotation',
+    description: 'Returns the date, all-day setting, and note for a specific website annotation.',
     tags: ['Websites'],
     parameters: [
       {
@@ -102,6 +107,7 @@ const operation2 = defineOperation({
         schema: {
           type: 'string',
         },
+        description: 'ID of the website.',
       },
       {
         name: 'annotationId',
@@ -110,6 +116,7 @@ const operation2 = defineOperation({
         schema: {
           type: 'string',
         },
+        description: 'ID of the annotation.',
       },
     ],
     responses: {
@@ -122,20 +129,25 @@ const operation2 = defineOperation({
               properties: {
                 id: {
                   type: 'string',
+                  description: 'Unique identifier of the resource.',
                 },
                 userId: {
                   type: 'string',
+                  description: 'ID of the associated user.',
                 },
                 createdAt: {
                   type: 'string',
                   format: 'date-time',
+                  description: 'Date and time the record was created.',
                 },
                 updatedAt: {
                   type: 'string',
                   format: 'date-time',
+                  description: 'Date and time the record was last updated.',
                 },
                 websiteId: {
                   type: 'string',
+                  description: 'ID of the website.',
                 },
                 date: {
                   type: 'string',
@@ -143,9 +155,11 @@ const operation2 = defineOperation({
                 },
                 allDay: {
                   type: 'boolean',
+                  description: 'Whether the annotation applies to the entire day.',
                 },
                 note: {
                   type: 'string',
+                  description: 'Text of the annotation.',
                 },
               },
               required: [
@@ -207,7 +221,8 @@ const operation3 = defineOperation({
   auth: 'bearer',
   operation: {
     operationId: 'updateWebsiteAnnotation',
-    summary: 'Create or update websites website id annotations annotation id',
+    summary: 'Update a website annotation',
+    description: 'Changes the date, all-day setting, and note for a website annotation.',
     tags: ['Websites'],
     parameters: [
       {
@@ -217,6 +232,7 @@ const operation3 = defineOperation({
         schema: {
           type: 'string',
         },
+        description: 'ID of the website.',
       },
       {
         name: 'annotationId',
@@ -225,6 +241,7 @@ const operation3 = defineOperation({
         schema: {
           type: 'string',
         },
+        description: 'ID of the annotation.',
       },
     ],
     requestBody: {
@@ -240,11 +257,13 @@ const operation3 = defineOperation({
               },
               allDay: {
                 type: 'boolean',
+                description: 'Whether the annotation applies to the entire day.',
               },
               note: {
                 type: 'string',
                 minLength: 1,
                 maxLength: 500,
+                description: 'Text of the annotation.',
               },
             },
             required: ['date', 'note'],
@@ -262,20 +281,25 @@ const operation3 = defineOperation({
               properties: {
                 id: {
                   type: 'string',
+                  description: 'Unique identifier of the resource.',
                 },
                 userId: {
                   type: 'string',
+                  description: 'ID of the associated user.',
                 },
                 createdAt: {
                   type: 'string',
                   format: 'date-time',
+                  description: 'Date and time the record was created.',
                 },
                 updatedAt: {
                   type: 'string',
                   format: 'date-time',
+                  description: 'Date and time the record was last updated.',
                 },
                 websiteId: {
                   type: 'string',
+                  description: 'ID of the website.',
                 },
                 date: {
                   type: 'string',
@@ -283,9 +307,11 @@ const operation3 = defineOperation({
                 },
                 allDay: {
                   type: 'boolean',
+                  description: 'Whether the annotation applies to the entire day.',
                 },
                 note: {
                   type: 'string',
+                  description: 'Text of the annotation.',
                 },
               },
               required: [

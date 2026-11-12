@@ -24,7 +24,7 @@ export function WebsitesPage() {
     <PageBody>
       <Column gap="6" margin="2">
         <PageHeader title={t(labels.websites)}>
-          {showActions && <WebsiteAddButton teamId={teamId} />}
+          {showActions && user.role !== ROLES.viewOnly && <WebsiteAddButton teamId={teamId} />}
         </PageHeader>
         <Panel>
           <WebsitesDataTable teamId={teamId} showActions={showActions} />

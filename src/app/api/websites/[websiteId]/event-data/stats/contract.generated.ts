@@ -10,7 +10,7 @@ const operation1 = defineOperation({
   auth: 'bearer-or-share',
   operation: {
     operationId: 'getEventDataStats',
-    summary: 'Get websites website id event data stats',
+    summary: 'Get event property totals',
     description:
       'Returns counts of events with custom data, distinct property names, and property records for the selected date range and filters.',
     tags: ['Websites'],

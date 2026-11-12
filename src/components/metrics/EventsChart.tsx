@@ -3,6 +3,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import { BarChart, type BarChartProps } from '@/components/charts/BarChart';
 import { LoadingPanel } from '@/components/common/LoadingPanel';
 import {
+  useBarDrillDown,
   useDateRange,
   useLocale,
   useTimezone,
@@ -17,13 +18,15 @@ export interface EventsChartProps extends BarChartProps {
   websiteId: string;
   focusLabel?: string;
   limit?: number;
+  allowBarDrill?: boolean;
 }
 
-export function EventsChart({ websiteId, focusLabel, limit }: EventsChartProps) {
+export function EventsChart({ websiteId, focusLabel, limit, allowBarDrill }: EventsChartProps) {
   const { timezone } = useTimezone();
   const {
     dateRange: { startDate, endDate, unit },
   } = useDateRange({ timezone: timezone });
+  const handleBarClick = useBarDrillDown(unit, allowBarDrill);
   const { locale, dateLocale } = useLocale();
   const { data, isLoading, error } = useWebsiteEventsSeriesQuery(websiteId, { limit });
   const [label, setLabel] = useState<string>(focusLabel);
@@ -120,6 +123,7 @@ export function EventsChart({ websiteId, focusLabel, limit }: EventsChartProps) 
           height="400px"
           hiddenLabels={hiddenLabels}
           onLegendClick={handleLegendClick}
+          onBarClick={handleBarClick}
         />
       )}
     </LoadingPanel>

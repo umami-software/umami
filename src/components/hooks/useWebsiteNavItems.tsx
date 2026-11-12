@@ -5,6 +5,7 @@ import {
   Clock,
   Eye,
   Flame,
+  Megaphone,
   Search,
   Sheet,
   Tag,
@@ -144,6 +145,17 @@ export function useWebsiteNavItems(websiteId: string) {
     {
       label: t(labels.growth),
       items: [
+        // Google Ads is a Cloud integration.
+        ...(config?.cloudMode
+          ? [
+              {
+                id: 'google-ads',
+                label: t('googleAds.ads'),
+                icon: <Megaphone />,
+                path: renderPath('/google-ads'),
+              },
+            ]
+          : []),
         {
           id: 'utm',
           label: t(labels.utm),

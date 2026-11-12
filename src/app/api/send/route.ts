@@ -1,12 +1,12 @@
 import { isbot } from 'isbot';
 import clickhouse from '@/lib/clickhouse';
-import { type CollectionCache, resolveCollectionSession } from '@/lib/collection-session';
+import { type CollectionCache, resolveIdentifiedSession } from '@/lib/collection-session';
 import { CACHE_TOKEN_TYPE, COLLECTION_TYPE, EVENT_TYPE, FIELD_LENGTH } from '@/lib/constants';
 import { hash, secret } from '@/lib/crypto';
 import { getClientInfo, hasBlockedIp } from '@/lib/detect';
 import { truncateString } from '@/lib/format';
 import { createToken, parseToken } from '@/lib/jwt';
-import { fetchWebsite, isWebsiteCollectionBlocked } from '@/lib/load';
+import { fetchWebsite } from '@/lib/load';
 import { parseRequest } from '@/lib/request';
 import { badRequest, forbidden, json, serverError } from '@/lib/response';
 import { safeDecodeURI, safeDecodeURIComponent } from '@/lib/url';
@@ -50,6 +50,7 @@ export async function POST(request: Request) {
       tag,
       timestamp,
       id,
+      salt,
       lcp,
       inp,
       cls,
@@ -73,16 +74,13 @@ export async function POST(request: Request) {
         }
       }
 
-      // Fetch even when the client supplied a cache token so account blocks
-      // take effect immediately for existing visitors.
-      const website = await fetchWebsite(websiteId);
+      // Find website. Account collection blocks are enforced by the cloud gateway.
+      if (!cache?.websiteId) {
+        const website = await fetchWebsite(websiteId);
 
-      if (!website) {
-        return badRequest({ message: 'Website not found.' });
-      }
-
-      if (process.env.CLOUD_MODE && (await isWebsiteCollectionBlocked(website))) {
-        return forbidden({ message: 'Collection blocked.' });
+        if (!website) {
+          return badRequest({ message: 'Website not found.' });
+        }
       }
     }
 
@@ -108,66 +106,19 @@ export async function POST(request: Request) {
     const createdAt = timestamp !== undefined ? new Date(timestamp * 1000) : new Date();
     const distinctId = truncateString(id, FIELD_LENGTH.distinctId);
 
-    let { sessionId, visitId, iat, sessionDrift } = resolveCollectionSession({
+    const { sessionId, visitId, iat, sessionDrift } = await resolveIdentifiedSession({
+      websiteId,
       sourceId,
       ip,
       userAgent,
       distinctId,
+      salt,
       createdAt,
       cache,
       historical: timestamp !== undefined,
+      claimSession: tryClaimAnonymousSession,
     });
 
-    // Reuse the anonymous session when the same visitor identifies, but only if:
-    //  - the client fingerprint (IP/UA) has not genuinely changed
-    //  - the session is not already claimed by a different identity
-    // sessionDrift is true whenever cache.sessionId !== computed sessionId.
-    // That includes the normal identify transition (distinctId changes the hash).
-    // To tell apart "same client, new identity" from "different client", we
-    // recompute the session ID without distinctId and compare to the cached one.
-    if (distinctId && cache?.sessionId && sessionDrift) {
-      // Resolved without distinctId, so its visit state has not been reset by
-      // the identity drift: it keeps the cached visit and applies the normal
-      // 30-minute expiry.
-      const fingerprint = resolveCollectionSession({
-        sourceId,
-        ip,
-        userAgent,
-        createdAt,
-        cache,
-        historical: timestamp !== undefined,
-      });
-      // If the fingerprint-only ID still doesn't match the cache, the client
-      // itself changed (IP or UA rotation) — do not reuse.
-      const clientChanged = fingerprint.sessionId !== cache.sessionId;
-
-      if (!clientChanged) {
-        let canReuse = false;
-
-        if (cache.sessionLinkId === hash(cache.sessionId, distinctId)) {
-          // Fast path: the cache token already proves this user owns the session
-          canReuse = true;
-        } else {
-          // Slow path: atomically check-and-claim the session in the DB so
-          // concurrent identities cannot both claim the same anonymous session.
-          try {
-            canReuse = await tryClaimAnonymousSession({
-              websiteId,
-              sessionId: cache.sessionId,
-              distinctId,
-              createdAt,
-            });
-          } catch {
-            // Best-effort: if the lookup fails, fall through to the new session
-            // so collection is never blocked by an identity-link read failure.
-          }
-        }
-
-        if (canReuse) {
-          ({ sessionId, visitId, iat, sessionDrift } = fingerprint);
-        }
-      }
-    }
     const shouldEnsureSession = !clickhouse.enabled && sessionDrift;
 
     // Create a session if not found

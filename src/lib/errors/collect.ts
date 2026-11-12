@@ -1,6 +1,6 @@
 import { isbot } from 'isbot';
 import clickhouse from '@/lib/clickhouse';
-import { type CollectionCache, resolveCollectionSession } from '@/lib/collection-session';
+import { type CollectionCache, resolveIdentifiedSession } from '@/lib/collection-session';
 import { CACHE_TOKEN_TYPE } from '@/lib/constants';
 import { withCorsHeaders } from '@/lib/cors';
 import { secret } from '@/lib/crypto';
@@ -12,6 +12,7 @@ import prisma from '@/lib/prisma';
 import { badRequest, forbidden, json, payloadTooLarge, serverError } from '@/lib/response';
 import { consumeErrorQuota, saveError } from '@/queries/sql/errors/store';
 import { createSession } from '@/queries/sql/sessions/createSession';
+import { tryClaimAnonymousSession } from '@/queries/sql/sessions/tryClaimAnonymousSession';
 
 const MAX_BYTES = 48000;
 
@@ -77,13 +78,17 @@ export async function collectError(request: Request, payload: ErrorPayload) {
         ),
       );
     }
-    const session = resolveCollectionSession({
+    // Same session rules as /api/send, so errors stay in the visitor's (possibly reused) session.
+    const session = await resolveIdentifiedSession({
+      websiteId: payload.website,
       sourceId: payload.website,
       ip: info.ip,
       userAgent: info.userAgent,
       distinctId: payload.id,
+      salt: payload.salt,
       createdAt: new Date(payload.timestamp),
       cache,
+      claimSession: tryClaimAnonymousSession,
     });
     if (!clickhouse.enabled) {
       await createSession({
@@ -94,6 +99,7 @@ export async function collectError(request: Request, payload: ErrorPayload) {
         device: info.device,
         screen: payload.screen,
         language: payload.language,
+        distinctId: payload.id,
         createdAt: new Date(payload.timestamp),
       });
     }
@@ -104,6 +110,7 @@ export async function collectError(request: Request, payload: ErrorPayload) {
         sessionId: session.sessionId,
         visitId: session.visitId,
         iat: session.iat,
+        sessionLinkId: cache?.sessionLinkId,
         type: CACHE_TOKEN_TYPE,
       },
       secret(),

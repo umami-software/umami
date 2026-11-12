@@ -288,25 +288,6 @@ ENGINE = MergeTree
     ORDER BY (website_id, session_id, created_at)
     SETTINGS index_granularity = 8192;
 
-
-CREATE MATERIALIZED VIEW umami.website_revenue_mv
-TO umami.website_revenue
-AS
-SELECT DISTINCT
-    ed.website_id,
-    ed.session_id,
-    ed.event_id,
-    ed.event_name,
-    c.currency,
-    coalesce(toDecimal64(ed.number_value, 2), toDecimal64(ed.string_value, 2)) revenue,
-    ed.created_at
-FROM umami.event_data ed
-JOIN (SELECT event_id, string_value as currency
-        FROM umami.event_data
-        WHERE positionCaseInsensitive(data_key, 'currency') > 0) c
-      ON c.event_id = ed.event_id
-WHERE positionCaseInsensitive(data_key, 'revenue') > 0;
-
 -- Create session_replay
 CREATE TABLE umami.session_replay
 (

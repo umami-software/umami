@@ -53,6 +53,7 @@ export * from './queries/useRevenueChartQuery';
 export * from './queries/useRevenueMetricsQuery';
 export * from './queries/useRevenueSessionsQuery';
 export * from './queries/useRevenueStatsQuery';
+export * from './queries/useGoogleAdsQuery';
 export * from './queries/useSearchConsoleQuery';
 export * from './queries/useSavedDefinitionsQuery';
 export * from './queries/useSavedReplaysQuery';
@@ -99,6 +100,7 @@ export * from './queries/useWebsiteValuesQuery';
 export * from './queries/useWeeklyTrafficQuery';
 // Regular hooks
 export * from './useApi';
+export * from './useBarDrillDown';
 export * from './useConfig';
 export * from './useCountryNames';
 export * from './useDateParameters';

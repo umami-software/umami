@@ -235,6 +235,7 @@ const knownSchemas: Record<string, () => InferredSchema> = {
     required({ type: 'string', enum: ['team-member', 'team-view-only', 'team-manager'] }),
   anyObjectParam: () => required({ type: 'object', additionalProperties: true }),
   urlOrPathParam: () => required(stringSchema()),
+  unixTimestampParam: () => required({ type: 'integer', minimum: 0, maximum: 2147483647 }),
   fieldsParam: () => required(stringSchema()),
   reportTypeParam: () => required(stringSchema()),
   operatorParam: () => required(stringSchema()),
@@ -595,6 +596,7 @@ function inferCallExpression(
       'meta',
       'brand',
       'readonly',
+      'trim',
     ].includes(method) &&
     base
   ) {
@@ -775,6 +777,13 @@ function inferExpression(
 
   if (ts.isCallExpression(expression)) {
     return inferCallExpression(expression, source, declarations, seen);
+  }
+
+  if (
+    ts.isPrefixUnaryExpression(expression) &&
+    expression.operator === ts.SyntaxKind.ExclamationToken
+  ) {
+    return required(booleanSchema());
   }
 
   const literal = getLiteralValue(expression);
