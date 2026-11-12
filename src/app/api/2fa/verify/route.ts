@@ -3,6 +3,8 @@ import { getBearerToken, saveAuth } from '@/lib/auth';
 import { PARTIAL_AUTH_TOKEN_TYPE, ROLES } from '@/lib/constants';
 import { hash, secret } from '@/lib/crypto';
 import { createSecureToken, parseSecureToken } from '@/lib/jwt';
+import { addTeamBillingStatus } from '@/lib/load';
+import { hasDefaultPassword } from '@/lib/password';
 import prisma from '@/lib/prisma';
 import redis from '@/lib/redis';
 import { parseRequest } from '@/lib/request';
@@ -13,8 +15,8 @@ import {
   getTwoFactorConfigurationError,
   isTwoFactorConfigured,
 } from '@/lib/two-factor/crypto';
-import { checkRateLimit, recordFailedAttempt, resetRateLimit } from '@/lib/two-factor/rate-limit';
-import { isOtpReplayed, markOtpUsed } from '@/lib/two-factor/replay-prevention';
+import { reserveAttempt, resetRateLimit } from '@/lib/two-factor/rate-limit';
+import { claimOtp } from '@/lib/two-factor/replay-prevention';
 import { verifyTotp } from '@/lib/two-factor/totp';
 import { getAllUserTeams, getUser } from '@/queries/prisma';
 
@@ -63,7 +65,7 @@ export async function POST(request: Request) {
     });
   }
 
-  const rateCheck = await checkRateLimit(userId);
+  const rateCheck = await reserveAttempt(userId);
   if (!rateCheck.allowed) {
     return Response.json(
       {
@@ -85,7 +87,7 @@ export async function POST(request: Request) {
     const matchIndex = await verifyBackupCode(body.backupCode, hashes);
 
     if (matchIndex === null) {
-      const { lockedUntil } = await recordFailedAttempt(userId);
+      const { lockedUntil } = rateCheck;
       return badRequest({
         code: 'two-factor-error-invalid-backup-code',
         message: 'Invalid backup code',
@@ -99,7 +101,7 @@ export async function POST(request: Request) {
     });
 
     if (consumed.count === 0) {
-      const { lockedUntil } = await recordFailedAttempt(userId);
+      const { lockedUntil } = rateCheck;
       return badRequest({
         code: 'two-factor-error-invalid-backup-code',
         message: 'Invalid backup code',
@@ -111,14 +113,10 @@ export async function POST(request: Request) {
   } else {
     const { token } = body;
 
-    if (await isOtpReplayed(userId, token)) {
-      return badRequest({ code: 'two-factor-error-code-used', message: 'Code already used' });
-    }
-
     const decryptedSecret = decryptSecret(twoFactor.secret);
 
     if (!(await verifyTotp(token, decryptedSecret))) {
-      const { lockedUntil } = await recordFailedAttempt(userId);
+      const { lockedUntil } = rateCheck;
       return badRequest({
         code: 'two-factor-error-invalid-code',
         message: 'Invalid verification code',
@@ -126,11 +124,15 @@ export async function POST(request: Request) {
       });
     }
 
-    await markOtpUsed(userId, token);
+    if (!(await claimOtp(userId, token))) {
+      return badRequest({ code: 'two-factor-error-code-used', message: 'Code already used' });
+    }
+
     await resetRateLimit(userId);
   }
 
   const { id, role, createdAt, username } = user;
+  const passwordChangeRequired = hasDefaultPassword(user);
   // Bind token to password hash so a password change invalidates old tokens.
   const pwd = hash(user.password);
 
@@ -141,10 +143,18 @@ export async function POST(request: Request) {
     fullToken = createSecureToken({ userId: id, role, pwd }, secret());
   }
 
-  const teams = await getAllUserTeams(id);
+  const teams = await addTeamBillingStatus(await getAllUserTeams(id));
 
   return json({
     token: fullToken,
-    user: { id, username, role, createdAt, isAdmin: role === ROLES.admin, teams },
+    user: {
+      id,
+      username,
+      role,
+      createdAt,
+      isAdmin: role === ROLES.admin,
+      passwordChangeRequired,
+      teams,
+    },
   });
 }

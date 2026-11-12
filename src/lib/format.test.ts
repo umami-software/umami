@@ -35,6 +35,20 @@ test('formatLongNumber', () => {
   expect(format.formatLongNumber(1200)).toBe('1.20k');
 });
 
+test('formatLongNumber moves values that round up to the next format', () => {
+  expect(format.formatLongNumber(999999999)).toBe('1.0b');
+  expect(format.formatLongNumber(999999)).toBe('1.0m');
+  expect(format.formatLongNumber(99999)).toBe('100k');
+  expect(format.formatLongNumber(9999)).toBe('10.0k');
+  expect(format.formatLongNumber(999.6)).toBe('1.00k');
+
+  expect(format.formatLongNumber(999949999)).toBe('999.9m');
+  expect(format.formatLongNumber(999499)).toBe('999k');
+  expect(format.formatLongNumber(99949)).toBe('99.9k');
+  expect(format.formatLongNumber(9994)).toBe('9.99k');
+  expect(format.formatLongNumber(999)).toBe('999');
+});
+
 test('stringToColor', () => {
   expect(format.stringToColor('hello')).toBe('#d218e9');
   expect(format.stringToColor('goodbye')).toBe('#11e956');

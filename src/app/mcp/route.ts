@@ -1,5 +1,5 @@
 import { UmamiClient } from '@umami/api-client';
-import type { McpLogger } from '@umami/mcp';
+import type { CreateUmamiMcpHttpHandlerOptions, McpLogger } from '@umami/mcp';
 import { createUmamiMcpHttpHandler } from '@umami/mcp';
 import debug from 'debug';
 import { uuid } from '@/lib/crypto';
@@ -29,11 +29,14 @@ const handler = createUmamiMcpHttpHandler({
     const baseUrl = getBaseUrl(ctx.requestInfo?.headers).toString().replace(/\/+$/, '');
     const basePath = (process.env.BASE_PATH ?? '').replace(/\/+$/, '');
 
+    // @umami/mcp resolves its declared api-client dependency independently.
+    // Both copies use the same public client API, but TypeScript treats their
+    // private fetch implementation fields as incompatible.
     return new UmamiClient({
       baseUrl: `${baseUrl}${basePath}/api`,
       token: authInfo.token,
       fetch: createInProcessFetch(),
-    });
+    }) as unknown as Awaited<ReturnType<CreateUmamiMcpHttpHandlerOptions['createClient']>>;
   },
 });
 

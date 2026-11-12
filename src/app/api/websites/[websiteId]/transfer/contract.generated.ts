@@ -10,7 +10,9 @@ const operation1 = defineOperation({
   auth: 'bearer',
   operation: {
     operationId: 'transferWebsite',
-    summary: 'Create or update websites website id transfer',
+    summary: 'Transfer website ownership',
+    description:
+      'Transfers the specified website to another user or team after checking permission for the destination.',
     tags: ['Websites'],
     parameters: [
       {
@@ -20,6 +22,7 @@ const operation1 = defineOperation({
         schema: {
           type: 'string',
         },
+        description: 'ID of the website.',
       },
     ],
     requestBody: {
@@ -32,10 +35,12 @@ const operation1 = defineOperation({
               userId: {
                 type: 'string',
                 format: 'uuid',
+                description: 'ID of the associated user.',
               },
               teamId: {
                 type: 'string',
                 format: 'uuid',
+                description: 'ID of the associated team.',
               },
             },
           },
@@ -52,40 +57,51 @@ const operation1 = defineOperation({
               properties: {
                 id: {
                   type: 'string',
+                  description: 'Unique identifier of the resource.',
                 },
                 userId: {
                   type: 'string',
+                  description: 'ID of the associated user.',
                 },
                 createdAt: {
                   type: 'string',
                   format: 'date-time',
+                  description: 'Date and time the record was created.',
                 },
                 updatedAt: {
                   type: 'string',
                   format: 'date-time',
+                  description: 'Date and time the record was last updated.',
                 },
                 deletedAt: {
                   type: 'string',
                   format: 'date-time',
+                  description: 'Date and time the record was deleted, if applicable.',
                 },
                 createdBy: {
                   type: 'string',
+                  description: 'ID of the user who created the resource.',
                 },
                 name: {
                   type: 'string',
+                  description: 'Display name of the resource.',
                 },
                 domain: {
                   type: 'string',
+                  description: 'Domain name associated with the resource.',
                 },
                 resetAt: {
                   type: 'string',
                   format: 'date-time',
+                  description: 'Date and time the website analytics were last reset.',
                 },
                 teamId: {
                   type: 'string',
+                  description: 'ID of the associated team.',
                 },
                 recorderEnabled: {
                   type: 'boolean',
+                  description: 'Whether recording is enabled for the website.',
                 },
                 replayConfig: {
                   anyOf: [
@@ -141,6 +157,7 @@ const operation1 = defineOperation({
                       required: ['length'],
                     },
                   ],
+                  description: 'Session replay and heatmap recording configuration.',
                 },
               },
               required: [

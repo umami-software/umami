@@ -18,7 +18,11 @@ export const filtersSchema = z
     tag: filterValue.optional().describe('Tracker tag.'),
     browser: filterValue.optional().describe('Browser name, e.g. "chrome".'),
     os: filterValue.optional().describe('Operating system, e.g. "Mac OS".'),
-    device: filterValue.optional().describe('Device type: desktop, laptop, tablet or mobile.'),
+    device: filterValue
+      .optional()
+      .describe(
+        'Device type: desktop, laptop, tablet, mobile, smarttv, console, wearable, xr or embedded.',
+      ),
     country: filterValue.optional().describe('ISO 3166-1 alpha-2 country code, e.g. "US".'),
     region: filterValue.optional().describe('Region code, e.g. "US-CA".'),
     city: filterValue.optional().describe('City name.'),
@@ -42,6 +46,14 @@ export const filtersSchema = z
   })
   .strict()
   .describe('Optional analytics filters. Only include keys you want to filter on.');
+
+// Pageview and performance queries never match a custom event name (#3886),
+// so their tools reject the event filter instead of returning zeros.
+export const pageviewFiltersSchema = filtersSchema
+  .omit({ event: true })
+  .describe(
+    'Optional analytics filters. Only include keys you want to filter on. To filter by custom event, use the event tools.',
+  );
 
 export type Filters = z.infer<typeof filtersSchema>;
 

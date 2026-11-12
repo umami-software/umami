@@ -288,25 +288,6 @@ ENGINE = MergeTree
     ORDER BY (website_id, session_id, created_at)
     SETTINGS index_granularity = 8192;
 
-
-CREATE MATERIALIZED VIEW umami.website_revenue_mv
-TO umami.website_revenue
-AS
-SELECT DISTINCT
-    ed.website_id,
-    ed.session_id,
-    ed.event_id,
-    ed.event_name,
-    c.currency,
-    coalesce(toDecimal64(ed.number_value, 2), toDecimal64(ed.string_value, 2)) revenue,
-    ed.created_at
-FROM umami.event_data ed
-JOIN (SELECT event_id, string_value as currency
-        FROM umami.event_data
-        WHERE positionCaseInsensitive(data_key, 'currency') > 0) c
-      ON c.event_id = ed.event_id
-WHERE positionCaseInsensitive(data_key, 'revenue') > 0;
-
 -- Create session_replay
 CREATE TABLE umami.session_replay
 (
@@ -437,3 +418,30 @@ CREATE TABLE umami.session_link
 ENGINE = ReplacingMergeTree
     ORDER BY (website_id, distinct_id, session_id)
     SETTINGS index_granularity = 8192;
+
+CREATE TABLE IF NOT EXISTS umami.error_event
+(
+    website_id UUID,
+    event_id UUID,
+    issue_id UUID,
+    session_id UUID,
+    visit_id UUID,
+    created_at DateTime64(3, 'UTC'),
+    received_at DateTime64(3, 'UTC'),
+    name String,
+    message String,
+    stack String CODEC(ZSTD(3)),
+    frames String CODEC(ZSTD(3)),
+    tags String,
+    handled Bool,
+    url_path String,
+    release String,
+    environment LowCardinality(String),
+    browser LowCardinality(String),
+    os LowCardinality(String),
+    device LowCardinality(String)
+)
+ENGINE = ReplacingMergeTree
+-- A retry always reaches the same partition, including across month boundaries.
+PARTITION BY cityHash64(website_id) % 16
+ORDER BY (website_id, event_id);

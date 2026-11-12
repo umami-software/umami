@@ -2,14 +2,15 @@ import { Column, Grid, Heading, ListItem, Row, Select } from '@umami/react-zen';
 import { useState } from 'react';
 import { DateDisplay } from '@/components/common/DateDisplay';
 import { Panel } from '@/components/common/Panel';
-import { useDateRange, useMessages, useNavigation } from '@/components/hooks';
+import { useDateRange, useMessages, useNavigation, useTimezone } from '@/components/hooks';
 import { ChangeLabel } from '@/components/metrics/ChangeLabel';
 import { MetricsTable } from '@/components/metrics/MetricsTable';
 import { formatNumber } from '@/lib/format';
 
 export function CompareTables({ websiteId }: { websiteId: string }) {
   const [data, setData] = useState([]);
-  const { dateRange, dateCompare } = useDateRange();
+  const { timezone, toUtc } = useTimezone();
+  const { dateRange, dateCompare } = useDateRange({ timezone });
   const { t, labels } = useMessages();
   const {
     router,
@@ -19,8 +20,8 @@ export function CompareTables({ websiteId }: { websiteId: string }) {
   const { startDate, endDate } = dateCompare;
 
   const params = {
-    startAt: startDate.getTime(),
-    endAt: endDate.getTime(),
+    startAt: +toUtc(startDate),
+    endAt: +toUtc(endDate),
   };
 
   const renderPath = (view: string) => {

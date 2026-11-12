@@ -10,7 +10,8 @@ const operation1 = defineOperation({
   auth: 'bearer-or-share',
   operation: {
     operationId: 'getWebsiteReplaySaved',
-    summary: 'Get websites website id replays saved replay id',
+    summary: 'Check whether a replay is saved',
+    description: "Returns whether the specified replay is in the website's saved replays.",
     tags: ['Websites'],
     parameters: [
       {
@@ -20,6 +21,7 @@ const operation1 = defineOperation({
         schema: {
           type: 'string',
         },
+        description: 'ID of the website.',
       },
       {
         name: 'replayId',
@@ -28,6 +30,7 @@ const operation1 = defineOperation({
         schema: {
           type: 'string',
         },
+        description: 'ID of the session replay.',
       },
     ],
     responses: {
@@ -40,6 +43,7 @@ const operation1 = defineOperation({
               properties: {
                 isSaved: {
                   type: 'boolean',
+                  description: 'Whether the replay has been saved.',
                 },
               },
               required: ['isSaved'],
@@ -75,7 +79,9 @@ const operation2 = defineOperation({
   auth: 'bearer',
   operation: {
     operationId: 'saveWebsiteReplay',
-    summary: 'Create or update websites website id replays saved replay id',
+    summary: 'Save or unsave a session replay',
+    description:
+      "Adds a replay to the website's saved replays with an optional name, or removes it when isSaved is false.",
     tags: ['Websites'],
     parameters: [
       {
@@ -85,6 +91,7 @@ const operation2 = defineOperation({
         schema: {
           type: 'string',
         },
+        description: 'ID of the website.',
       },
       {
         name: 'replayId',
@@ -93,6 +100,7 @@ const operation2 = defineOperation({
         schema: {
           type: 'string',
         },
+        description: 'ID of the session replay.',
       },
     ],
     requestBody: {
@@ -104,10 +112,12 @@ const operation2 = defineOperation({
             properties: {
               isSaved: {
                 type: 'boolean',
+                description: 'Whether the replay has been saved.',
               },
               name: {
                 type: 'string',
                 maxLength: 100,
+                description: 'Display name of the resource.',
               },
             },
             required: ['isSaved'],
@@ -125,6 +135,7 @@ const operation2 = defineOperation({
               properties: {
                 ok: {
                   type: 'boolean',
+                  description: 'Whether the operation succeeded.',
                 },
               },
               required: ['ok'],

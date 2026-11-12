@@ -2,6 +2,7 @@ import clickhouse from '@/lib/clickhouse';
 import { EVENT_TYPE } from '@/lib/constants';
 import { CLICKHOUSE, PRISMA, runQuery } from '@/lib/db';
 import prisma from '@/lib/prisma';
+import { getWildcardMatch } from '@/lib/search';
 import type { QueryFilters } from '@/lib/types';
 
 export interface GoalParameters {
@@ -35,12 +36,7 @@ async function relationalQuery(
   const eventType = type === 'path' ? EVENT_TYPE.pageView : EVENT_TYPE.customEvent;
   const column = type === 'path' ? 'url_path' : 'event_name';
 
-  let operator = '=';
-  let paramValue = value;
-  if (value.startsWith('*') || value.endsWith('*')) {
-    operator = 'like';
-    paramValue = value.replace(/^\*|\*$/g, '%');
-  }
+  const { operator, value: paramValue } = getWildcardMatch(value);
 
   const { filterQuery, dateQuery, joinSessionQuery, cohortQuery, queryParams } = parseFilters({
     ...filters,
@@ -91,12 +87,7 @@ async function clickhouseQuery(
   const eventType = type === 'path' ? EVENT_TYPE.pageView : EVENT_TYPE.customEvent;
   const column = type === 'path' ? 'url_path' : 'event_name';
 
-  let operator = '=';
-  let paramValue = value;
-  if (value.startsWith('*') || value.endsWith('*')) {
-    operator = 'like';
-    paramValue = value.replace(/^\*|\*$/g, '%');
-  }
+  const { operator, value: paramValue } = getWildcardMatch(value);
 
   const { filterQuery, dateQuery, cohortQuery, queryParams } = parseFilters({
     ...filters,

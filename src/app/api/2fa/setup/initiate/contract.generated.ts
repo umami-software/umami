@@ -10,7 +10,9 @@ const operation1 = defineOperation({
   auth: 'bearer',
   operation: {
     operationId: 'initiateTwoFactorSetup',
-    summary: 'Create or update 2fa setup initiate',
+    summary: 'Set up two-factor authentication',
+    description:
+      "Starts or replaces the current user's pending setup and returns a QR code and manual setup key for an authenticator app.",
     tags: ['Two-factor authentication'],
     responses: {
       '200': {
@@ -22,9 +24,11 @@ const operation1 = defineOperation({
               properties: {
                 qrCodeDataUrl: {
                   type: 'string',
+                  description: 'Data URL of the QR code for authenticator setup.',
                 },
                 manualKey: {
                   type: 'string',
+                  description: 'Secret key for manually configuring an authenticator app.',
                 },
               },
               required: ['qrCodeDataUrl', 'manualKey'],

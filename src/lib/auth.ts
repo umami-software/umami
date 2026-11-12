@@ -7,6 +7,7 @@ import {
   isApiKeyEnabled,
 } from '@/lib/api-key';
 import {
+  AUTH_SESSION_TTL,
   PARTIAL_AUTH_TOKEN_TYPE,
   ROLE_PERMISSIONS,
   ROLES,
@@ -16,9 +17,12 @@ import {
 } from '@/lib/constants';
 import { createAuthKey, hash, secret } from '@/lib/crypto';
 import { createSecureToken, parseSecureToken, parseToken } from '@/lib/jwt';
+import { hasDefaultPassword } from '@/lib/password';
+import prisma from '@/lib/prisma';
 import redis from '@/lib/redis';
 import { ensureArray } from '@/lib/utils';
 import { getApiKeyByHash, updateApiKeyLastUsed } from '@/queries/prisma/apiKey';
+import { getShare } from '@/queries/prisma/share';
 import { getUser } from '@/queries/prisma/user';
 
 const log = debug('umami:auth');
@@ -88,10 +92,12 @@ export async function checkAuth(request: Request) {
   const shareToken = await parseShareToken(request);
 
   let user = null;
+  let twoFactorSetup = false;
   const { userId, authKey } = payload || {};
 
   if (userId) {
     user = await getUser(userId, { includePassword: true });
+    twoFactorSetup = !!payload.twoFactorSetup;
 
     // Reject tokens issued before the current password.
     // Allow legacy stateless tokens that were minted without a password fingerprint.
@@ -103,12 +109,30 @@ export async function checkAuth(request: Request) {
 
     if (key?.userId) {
       user = await getUser(key.userId, { includePassword: true });
+      twoFactorSetup = !!key.twoFactorSetup;
 
       // Only enforce password-change invalidation for sessions that include a password fingerprint.
       if (user && key.pwd && hash(user.password) !== key.pwd) {
         user = null;
       }
+
+      // Keep an in-use session alive rather than expiring it a fixed time after
+      // login, reusing the window it was created with. Sessions stored before
+      // this was recorded are left alone: their intended lifetime is unknown,
+      // and defaulting would extend the shorter ones past it.
+      if (user && key.ttl) {
+        await redis.client.expire(authKey, key.ttl).catch(e => log(e));
+      }
     }
+  }
+
+  // A session issued while 2FA was required but not set up stays restricted until enrollment
+  // completes; after that the same token becomes a full session.
+  let twoFactorSetupPending = false;
+
+  if (user && twoFactorSetup) {
+    const twoFactor = await prisma.client.twoFactorAuth.findUnique({ where: { userId: user.id } });
+    twoFactorSetupPending = !twoFactor?.isEnabled;
   }
 
   log({
@@ -132,6 +156,8 @@ export async function checkAuth(request: Request) {
     }
   }
 
+  const passwordChangeRequired = hasDefaultPassword(user);
+
   if (user) {
     delete user.password;
     user.isAdmin = user.role === ROLES.admin;
@@ -143,28 +169,36 @@ export async function checkAuth(request: Request) {
     shareToken,
     user,
     authType: user ? ('session' as const) : ('share' as const),
+    twoFactorSetupPending,
+    passwordChangeRequired,
   };
 }
 
-export async function saveAuth(data: any, expire = 0) {
+export async function saveAuth(data: any, expire = AUTH_SESSION_TTL) {
   const authKey = `auth:${createAuthKey()}`;
 
   if (redis.enabled) {
-    await redis.client.set(authKey, data);
-
-    if (expire) {
-      await redis.client.expire(authKey, expire);
-    }
+    // The TTL must be passed to set(): the client falls back to its own short
+    // DEFAULT_TTL when called without one, which would expire the session.
+    // It is stored alongside the session so refreshes can reuse the same window.
+    await redis.client.set(authKey, { ...data, ttl: expire }, expire);
   }
 
   return createSecureToken({ authKey }, secret());
+}
+
+export async function createSessionToken(user: { id: string; role: string; password: string }) {
+  // Bind token to password hash so a password change invalidates old tokens.
+  const session = { userId: user.id, role: user.role, pwd: hash(user.password) };
+
+  return redis.enabled ? saveAuth(session) : createSecureToken(session, secret());
 }
 
 export async function hasPermission(role: string, permission: string | string[]) {
   return ensureArray(permission).some(e => ROLE_PERMISSIONS[role]?.includes(e));
 }
 
-export function parseShareToken(request: Request) {
+export async function parseShareToken(request: Request) {
   try {
     const token: any = parseToken(request.headers.get(SHARE_TOKEN_HEADER), secret());
 
@@ -175,7 +209,23 @@ export function parseShareToken(request: Request) {
       return null;
     }
 
-    return token;
+    // Share tokens are stateless and never expire, so the share they were minted
+    // from is re-checked on every request. Deleting a share revokes its tokens.
+    if (!token.shareId) {
+      return null;
+    }
+
+    const share = await getShare(token.shareId);
+    const entityId = token.boardId ?? token.websiteId;
+
+    if (!share || share.shareType !== token.shareType || share.entityId !== entityId) {
+      log('Share token rejected: share not found');
+      return null;
+    }
+
+    // Use the current parameters rather than the ones captured at mint time, so
+    // turning a section off takes effect for tokens that are already issued.
+    return { ...token, parameters: share.parameters };
   } catch (e) {
     log(e);
     return null;

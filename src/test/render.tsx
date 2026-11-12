@@ -10,10 +10,14 @@ import userEvent from '@testing-library/user-event';
 import { RouterProvider, ZenProvider } from '@umami/react-zen';
 import { NextIntlClientProvider } from 'next-intl';
 import type { ReactElement, ReactNode } from 'react';
+import { FlagsContext } from '@/components/hooks/useFlag';
+import { type FlagValues, getDefaultFlagValues } from '@/lib/flags';
 import enUS from '../../public/intl/messages/en-US.json';
 import { setTestUrl } from './navigation';
 
 type TestRenderOptions = Omit<RenderOptions, 'wrapper'> & {
+  /** Feature flag values, merged over the declared defaults. */
+  flags?: Partial<FlagValues>;
   locale?: string;
   messages?: Record<string, unknown>;
   queryClient?: QueryClient;
@@ -34,29 +38,34 @@ export function createTestQueryClient() {
 
 function TestProviders({
   children,
+  flags,
   locale = 'en-US',
   messages = enUS,
   queryClient = createTestQueryClient(),
 }: {
   children: ReactNode;
+  flags?: Partial<FlagValues>;
   locale?: string;
   messages?: Record<string, unknown>;
   queryClient?: QueryClient;
 }) {
   return (
-    <ZenProvider>
-      <RouterProvider>
-        <NextIntlClientProvider locale={locale} messages={messages} onError={() => null}>
-          <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
-        </NextIntlClientProvider>
-      </RouterProvider>
-    </ZenProvider>
+    <FlagsContext.Provider value={{ ...getDefaultFlagValues(), ...flags }}>
+      <ZenProvider>
+        <RouterProvider>
+          <NextIntlClientProvider locale={locale} messages={messages} onError={() => null}>
+            <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
+          </NextIntlClientProvider>
+        </RouterProvider>
+      </ZenProvider>
+    </FlagsContext.Provider>
   );
 }
 
 export function render(
   ui: ReactElement,
   {
+    flags,
     locale = 'en-US',
     messages = enUS,
     queryClient = createTestQueryClient(),
@@ -71,7 +80,7 @@ export function render(
     user: userEvent.setup(),
     ...testingLibraryRender(ui, {
       wrapper: ({ children }) => (
-        <TestProviders locale={locale} messages={messages} queryClient={queryClient}>
+        <TestProviders flags={flags} locale={locale} messages={messages} queryClient={queryClient}>
           {children}
         </TestProviders>
       ),

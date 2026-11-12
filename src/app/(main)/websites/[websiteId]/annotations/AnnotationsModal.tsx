@@ -46,7 +46,7 @@ export function AnnotationsModal({
 }) {
   const { t, labels } = useMessages();
   const { locale } = useLocale();
-  const { localFromUtc } = useTimezone();
+  const { fromUtc } = useTimezone();
   const { isMobile } = useMobile();
   const share = useShare();
   const { router, updateParams } = useNavigation();
@@ -61,7 +61,7 @@ export function AnnotationsModal({
 
   const showList = () => setView({ mode: 'list' });
 
-  const toLocalDate = (annotation: Annotation) => localFromUtc(new Date(annotation.date));
+  const toLocalDate = (annotation: Annotation) => fromUtc(new Date(annotation.date));
 
   const handleFilterChange = (value: string) => {
     setFilter(value);

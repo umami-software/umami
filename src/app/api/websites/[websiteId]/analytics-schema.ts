@@ -6,7 +6,7 @@ import { filterParams, pagingParams, searchParams, withDateRange } from '@/lib/s
 export const analyticsQuerySchema = withDateRange({ ...filterParams }).meta({
   id: 'AnalyticsQuery',
   description:
-    'Date range (startAt/endAt in milliseconds or startDate/endDate ISO) plus optional filters. Filter values match exactly unless prefixed with an operator such as `neq.`, `c.` (contains) or `re.`.',
+    'Date range (startAt/endAt in milliseconds, startDate/endDate ISO, or a period preset) plus optional filters. Period supports today, 24h, 7d, 30d, and the DateFilter presets (0day, 24hour, 0week, 7day, 0month, 30day, 90day, 0year, 6month, 12month). Calendar presets use timezone or UTC when omitted. Filter values match exactly unless prefixed with an operator such as `neq.`, `c.` (contains) or `re.`.',
 });
 
 export const pagedAnalyticsQuerySchema = withDateRange({

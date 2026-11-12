@@ -27,6 +27,10 @@ export interface Auth {
   };
   /** How the request was authenticated. Undefined for legacy callers that build Auth manually. */
   authType?: AuthType;
+  /** Session issued while 2FA was required but not yet set up; limited to the setup routes. */
+  twoFactorSetupPending?: boolean;
+  /** Session belongs to the seeded administrator; the app prompts for a new password. */
+  passwordChangeRequired?: boolean;
   shareToken?: {
     shareType?: number;
     websiteId?: string;
@@ -235,6 +239,7 @@ export interface WebsiteSession {
   country: string;
   region: string;
   city: string;
+  referrerDomain: string;
   firstAt: Date | string;
   lastAt: Date | string;
   visits: number;

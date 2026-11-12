@@ -59,10 +59,10 @@ beforeEach(() => {
 });
 
 describe('getAttribution postgres branch', () => {
-  test('runs eight rawQuery calls covering referrer, paid ads, utm columns and totals', async () => {
+  test('runs one rawQuery call covering referrer, paid ads, utm columns and totals', async () => {
     await getAttribution('website-1', parameters, {});
 
-    expect(prismaRawQuery).toHaveBeenCalledTimes(8);
+    expect(prismaRawQuery).toHaveBeenCalledTimes(1);
     expect(clickhouseRawQuery).not.toHaveBeenCalled();
 
     const queries = prismaRawQuery.mock.calls.map(c => c[0] as string);
@@ -119,15 +119,20 @@ describe('getAttribution postgres branch', () => {
   });
 
   test('returns the shaped attribution result object', async () => {
-    prismaRawQuery
-      .mockResolvedValueOnce([{ name: 'a', value: 1 }]) // referrer
-      .mockResolvedValueOnce([{ name: 'Google Ads', value: 2 }]) // paidAds
-      .mockResolvedValueOnce([{ name: 's', value: 3 }]) // source
-      .mockResolvedValueOnce([{ name: 'm', value: 4 }]) // medium
-      .mockResolvedValueOnce([{ name: 'c', value: 5 }]) // campaign
-      .mockResolvedValueOnce([{ name: 'ct', value: 6 }]) // content
-      .mockResolvedValueOnce([{ name: 't', value: 7 }]) // term
-      .mockResolvedValueOnce([{ pageviews: 10, visitors: 8, visits: 9 }]); // total
+    prismaRawQuery.mockResolvedValueOnce([
+      {
+        result: {
+          referrer: [{ name: 'a', value: 1 }],
+          paidAds: [{ name: 'Google Ads', value: 2 }],
+          utm_source: [{ name: 's', value: 3 }],
+          utm_medium: [{ name: 'm', value: 4 }],
+          utm_campaign: [{ name: 'c', value: 5 }],
+          utm_content: [{ name: 'ct', value: 6 }],
+          utm_term: [{ name: 't', value: 7 }],
+          total: { pageviews: 10, visitors: 8, visits: 9 },
+        },
+      },
+    ]);
 
     const result = await getAttribution('website-1', parameters, {});
 

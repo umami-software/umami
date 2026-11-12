@@ -10,7 +10,9 @@ const operation1 = defineOperation({
   auth: 'none',
   operation: {
     operationId: 'record',
-    summary: 'Create or update record',
+    summary: 'Send session recordings or heatmap data',
+    description:
+      'Stores session replay events or heatmap clicks and scrolls for a website, using a valid tracking cache token to identify the session and visit.',
     tags: ['Collection'],
     requestBody: {
       required: true,
@@ -38,6 +40,8 @@ const operation1 = defineOperation({
                       },
                       timestamp: {
                         type: 'integer',
+                        minimum: 0,
+                        maximum: 2147483647,
                       },
                     },
                     required: ['website', 'events'],
@@ -70,6 +74,7 @@ const operation1 = defineOperation({
                                 },
                                 url: {
                                   type: 'string',
+                                  description: 'URL associated with the resource.',
                                 },
                                 x: {
                                   type: 'number',
@@ -79,21 +84,27 @@ const operation1 = defineOperation({
                                 },
                                 pageX: {
                                   type: 'number',
+                                  description: 'Horizontal position on the page in pixels.',
                                 },
                                 pageY: {
                                   type: 'number',
+                                  description: 'Vertical position on the page in pixels.',
                                 },
                                 pageW: {
                                   type: 'number',
+                                  description: 'Page width in pixels.',
                                 },
                                 pageH: {
                                   type: 'number',
+                                  description: 'Page height in pixels.',
                                 },
                                 viewportW: {
                                   type: 'number',
+                                  description: 'Viewport width in pixels.',
                                 },
                                 viewportH: {
                                   type: 'number',
+                                  description: 'Viewport height in pixels.',
                                 },
                                 timestamp: {
                                   type: 'integer',
@@ -109,21 +120,26 @@ const operation1 = defineOperation({
                                 },
                                 url: {
                                   type: 'string',
+                                  description: 'URL associated with the resource.',
                                 },
                                 scrollPct: {
                                   type: 'number',
                                 },
                                 pageW: {
                                   type: 'number',
+                                  description: 'Page width in pixels.',
                                 },
                                 pageH: {
                                   type: 'number',
+                                  description: 'Page height in pixels.',
                                 },
                                 viewportW: {
                                   type: 'number',
+                                  description: 'Viewport width in pixels.',
                                 },
                                 viewportH: {
                                   type: 'number',
+                                  description: 'Viewport height in pixels.',
                                 },
                                 timestamp: {
                                   type: 'integer',
@@ -137,6 +153,8 @@ const operation1 = defineOperation({
                       },
                       timestamp: {
                         type: 'integer',
+                        minimum: 0,
+                        maximum: 2147483647,
                       },
                     },
                     required: ['website', 'events'],
@@ -161,6 +179,7 @@ const operation1 = defineOperation({
                   properties: {
                     ok: {
                       type: 'boolean',
+                      description: 'Whether the operation succeeded.',
                     },
                   },
                   required: ['ok'],
@@ -170,6 +189,7 @@ const operation1 = defineOperation({
                   properties: {
                     ok: {
                       type: 'boolean',
+                      description: 'Whether the operation succeeded.',
                     },
                     reason: {
                       type: 'string',

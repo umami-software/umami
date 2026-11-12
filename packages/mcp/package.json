@@ -34,13 +34,13 @@
   "dependencies": {
     "@modelcontextprotocol/server": "^2.3.1",
     "@umami/api-client": "^0.81.0",
-    "zod": "^4.4.3"
+    "zod": "^4.6.6"
   },
   "devDependencies": {
     "@modelcontextprotocol/client": "^2.3.1",
     "@types/node": "^26.4.0",
     "tsup": "^8.5.0",
     "typescript": "^6.0.3",
-    "vitest": "^4.1.11"
+    "vitest": "^5.0.3"
   }
 }

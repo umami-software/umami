@@ -5,7 +5,7 @@ import { LoadingPanel } from '@/components/common/LoadingPanel';
 import { Panel } from '@/components/common/Panel';
 import { useLocale, useMessages, useRetentionQuery } from '@/components/hooks';
 import { Users } from '@/components/icons';
-import { formatDate } from '@/lib/date';
+import { formatDate, parseBackendDate } from '@/lib/date';
 import { formatLongNumber } from '@/lib/format';
 
 const DAYS = [1, 2, 3, 4, 5, 6, 7, 14, 21, 28];
@@ -46,6 +46,18 @@ export function Retention({ websiteId, days = DAYS, startDate, endDate }: Retent
       return arr;
     }, []) || [];
 
+  // No fixed scale fits every website, so shade relative to the best visible cell.
+  const maxPercentage = Math.max(
+    0,
+    ...rows.flatMap(({ date, records }) => {
+      const maxDay = differenceInCalendarDays(endDate, parseBackendDate(date));
+
+      return records
+        .filter(({ day }) => day <= maxDay)
+        .map(({ percentage }) => Number(percentage) || 0);
+    }),
+  );
+
   return (
     <LoadingPanel data={data} isLoading={isLoading} error={error}>
       {data && (
@@ -83,7 +95,8 @@ export function Retention({ websiteId, days = DAYS, startDate, endDate }: Retent
                 ))}
               </Grid>
               {rows.map(({ date, visitors, records }: any, rowIndex: number) => {
-                const maxDay = differenceInCalendarDays(endDate, new Date(date));
+                const parsedDate = parseBackendDate(date);
+                const maxDay = differenceInCalendarDays(endDate, parsedDate);
                 return (
                   <Grid
                     key={rowIndex}
@@ -94,7 +107,7 @@ export function Retention({ websiteId, days = DAYS, startDate, endDate }: Retent
                     minWidth="100%"
                   >
                     <Column justifyContent="center" gap="1">
-                      <Text weight="bold">{formatDate(date, 'PP', locale)}</Text>
+                      <Text weight="bold">{formatDate(parsedDate, 'PP', locale)}</Text>
                       <Row alignItems="center" gap>
                         <Icon>
                           <Users />
@@ -106,7 +119,15 @@ export function Retention({ websiteId, days = DAYS, startDate, endDate }: Retent
                       if (day > maxDay) return null;
                       const percentage = records.find(a => a.day === day)?.percentage;
                       return (
-                        <Cell key={day}>
+                        <Cell
+                          key={day}
+                          // Square root keeps later days visible next to Day 1.
+                          intensity={
+                            percentage && maxPercentage
+                              ? Math.sqrt(Number(percentage) / maxPercentage)
+                              : 0
+                          }
+                        >
                           {percentage ? `${Number(percentage).toFixed(2)}%` : ''}
                         </Cell>
                       );
@@ -122,7 +143,14 @@ export function Retention({ websiteId, days = DAYS, startDate, endDate }: Retent
   );
 }
 
-const Cell = ({ children }: { children: ReactNode }) => {
+const Cell = ({ intensity = 0, children }: { intensity?: number; children: ReactNode }) => {
+  // Capped at 60% so the normal text color stays readable.
+  const style = intensity
+    ? {
+        backgroundColor: `color-mix(in srgb, var(--zen-primary) ${Math.round(intensity * 60)}%, var(--zen-surface-raised))`,
+      }
+    : undefined;
+
   return (
     <Column
       justifyContent="center"
@@ -131,6 +159,7 @@ const Cell = ({ children }: { children: ReactNode }) => {
       height="100px"
       backgroundColor="surface-raised"
       borderRadius
+      style={style}
     >
       {children}
     </Column>

@@ -9,6 +9,7 @@ import {
   serializeSessionPropertyFilters,
   serializeUniversalEventPropertyFilters,
 } from '@/lib/params';
+import styles from './WebsiteFilterButton.module.css';
 
 export function WebsiteFilterButton({
   websiteId,
@@ -73,7 +74,7 @@ export function WebsiteFilterButton({
       icon={<ListFilter />}
       label={t(labels.filter)}
       variant="outline"
-      height="min(80dvh, calc(100dvh - 40px))"
+      dialogClassName={styles.dialog}
     >
       {({ close }) => {
         return (

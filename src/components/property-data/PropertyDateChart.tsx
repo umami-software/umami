@@ -24,7 +24,7 @@ import {
 } from '@/components/hooks';
 import type { PropertyDataSource } from '@/components/hooks/queries/usePropertyFieldsQuery';
 import { ListTable } from '@/components/metrics/ListTable';
-import { MetricsBar } from '@/components/metrics/MetricsBar';
+import { MetricsBar, useMetricsBarJoined } from '@/components/metrics/MetricsBar';
 import { renderDateLabels } from '@/lib/charts';
 import { getThemeColors } from '@/lib/colors';
 import { CHART_COLORS } from '@/lib/constants';
@@ -49,14 +49,16 @@ function parseDateValue(value: string) {
 }
 
 function InsightCard({ label, value, hint }: { label: string; value: string; hint?: ReactNode }) {
+  const joined = useMetricsBarJoined();
+
   return (
     <Column
       justifyContent="center"
       paddingX="6"
       paddingY="4"
-      borderRadius
-      backgroundColor="surface"
-      border
+      borderRadius={joined ? undefined : true}
+      backgroundColor={joined ? undefined : 'surface'}
+      border={joined ? undefined : true}
       gap="2"
       height="100%"
       style={{ minWidth: 0 }}
@@ -287,7 +289,7 @@ export function PropertyDateChart({
         error={query.error}
         minHeight="100px"
       >
-        <MetricsBar padding="2">
+        <MetricsBar>
           <InsightCard
             label="Top weekday"
             value={topWeekday?.label ?? 'None'}

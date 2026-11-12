@@ -1,6 +1,6 @@
 import { z } from 'zod';
 import { dateRangeInput, parseDateRange, timeUnit, timezone } from '../lib/dates';
-import { filtersSchema, toFilterParams } from '../lib/filters';
+import { pageviewFiltersSchema, toFilterParams } from '../lib/filters';
 import { clamp, DEFAULT_METRIC_LIMIT, MAX_METRIC_LIMIT } from '../lib/limits';
 import { defineTool } from '../lib/tool';
 
@@ -70,7 +70,7 @@ export const getPerformance = defineTool({
       ),
     unit: timeUnit.optional(),
     timezone: timezone.optional(),
-    filters: filtersSchema.optional(),
+    filters: pageviewFiltersSchema.optional(),
   }),
   async handler(input, { client }) {
     const range = parseDateRange(input);

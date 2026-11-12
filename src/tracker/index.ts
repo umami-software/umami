@@ -1,3 +1,7 @@
+import { createErrorCollector, type ErrorCaptureOptions } from './errors';
+
+export type { ErrorCaptureOptions } from './errors';
+
 /** Public types for the browser tracker. */
 export type TrackedProperties = {
   /**
@@ -10,6 +14,13 @@ export type TrackedProperties = {
 
   /** Distinct ID associated with the current visitor. */
   id?: string;
+
+  /**
+   * Value mixed into the server's session salt. Only used when the server sets ENABLE_CLIENT_SALT.
+   *
+   * @example '2026-10-30' (rotates sessions daily)
+   */
+  salt?: string;
 
   /**
    * Browser language
@@ -75,7 +86,7 @@ export type EventDataValue = boolean | number | string | null | EventData | Even
  * - Objects have a max of 50 properties. Arrays are considered 1 property.
  */
 export interface EventData {
-  [key: string]: EventDataValue;
+  [key: string]: EventDataValue | undefined;
 }
 
 export type EventProperties = {
@@ -91,6 +102,8 @@ export type CustomEventFunction = (
 ) => EventProperties | PageViewProperties;
 
 export type UmamiTracker = {
+  /** Capture an exception when data-errors is enabled. Never throws. */
+  captureException: (error: unknown, options?: ErrorCaptureOptions) => Promise<void>;
   track: {
     /**
      * Track a page view
@@ -183,14 +196,43 @@ export type UmamiTracker = {
 declare global {
   interface Window {
     umami: UmamiTracker;
+    umamiConfig?: UmamiConfig;
   }
 }
 
-type Payload = Record<string, unknown>;
-type BeforeSend = (
+export type BeforeSend = (
   type: string,
-  payload: Payload,
-) => Payload | null | undefined | Promise<Payload | null | undefined>;
+  payload: Record<string, unknown>,
+) =>
+  | Record<string, unknown>
+  | null
+  | undefined
+  | Promise<Record<string, unknown> | null | undefined>;
+
+export type UmamiConfig = {
+  websiteId?: string;
+  hostUrl?: string;
+  autoTrack?: boolean;
+  autoPageview?: boolean;
+  doNotTrack?: boolean;
+  excludeSearch?: boolean;
+  excludeHash?: boolean;
+  domains?: string | string[];
+  tag?: string;
+  distinctId?: string;
+  salt?: string;
+  /** Generates the salt from the current UTC time. Ignored when `salt` is set. */
+  saltRotation?: 'hourly' | 'daily' | 'weekly' | 'monthly';
+  beforeSend?: BeforeSend | string;
+  errors?: boolean;
+  release?: string;
+  environment?: string;
+  performance?: boolean;
+  fetchCredentials?: RequestCredentials;
+  [key: string]: unknown;
+};
+
+type Payload = Record<string, unknown>;
 type TrackerWindow = Window &
   typeof globalThis & {
     doNotTrack?: string | number | null;
@@ -200,6 +242,7 @@ type TrackerWindow = Window &
   };
 type TrackerDocument = Document & {
   currentScript: HTMLScriptElement | null;
+  prerendering?: boolean;
 };
 type MetricEntry = PerformanceEntry & {
   activationStart: number;
@@ -221,7 +264,8 @@ type MetricEntry = PerformanceEntry & {
     doNotTrack,
   } = window;
   const { currentScript, referrer } = document as TrackerDocument;
-  if (!currentScript) return;
+  const globalConfig = window.umamiConfig || {};
+  if (!currentScript && !globalConfig.websiteId) return;
 
   const { hostname, href, origin } = location;
 
@@ -235,14 +279,32 @@ type MetricEntry = PerformanceEntry & {
   const _data = 'data-';
   const _false = 'false';
   const _true = 'true';
-  const attr = currentScript.getAttribute.bind(currentScript);
-  const config = (value: string) => attr(`${_data}${value}`);
+  const attr = currentScript ? currentScript.getAttribute.bind(currentScript) : () => null;
+  const toCamelCase = (value: string) =>
+    value.replace(/-([a-z])/g, match => match[1].toUpperCase());
+  const config = (value: string): string | null => {
+    const fromAttr = attr(`${_data}${value}`);
+    if (fromAttr != null) return fromAttr;
+
+    const fromGlobal = (globalConfig as Record<string, unknown>)[toCamelCase(value)];
+    if (fromGlobal == null || typeof fromGlobal === 'function') return null;
+    return Array.isArray(fromGlobal) ? fromGlobal.join(',') : String(fromGlobal);
+  };
+
+  const getBeforeSend = (): BeforeSend | undefined => {
+    const name = config('before-send');
+    const callback = name
+      ? (window as unknown as Record<string, unknown>)[name]
+      : (globalConfig as Record<string, unknown>).beforeSend;
+    return typeof callback === 'function' ? (callback as BeforeSend) : undefined;
+  };
 
   const website = config('website-id');
   const hostUrl = config('host-url');
-  const beforeSend = config('before-send');
   const distinctId = config('distinct-id') || undefined;
   const tag = config('tag') || undefined;
+  const salt = config('salt') || undefined;
+  const saltRotation = config('salt-rotation');
   const autoTrack = config('auto-track') !== _false;
   const dnt = config('do-not-track') === _true;
   const excludeSearch = config('exclude-search') === _true;
@@ -254,7 +316,12 @@ type MetricEntry = PerformanceEntry & {
 
   const domains = domain.split(',').map(n => n.trim());
   const host =
-    hostUrl || '__COLLECT_API_HOST__' || currentScript.src.split('/').slice(0, -1).join('/');
+    hostUrl ||
+    '__COLLECT_API_HOST__' ||
+    (currentScript ? currentScript.src.split('/').slice(0, -1).join('/') : '');
+
+  if (!currentScript && !host) return;
+
   const endpoint = `${host.replace(/\/$/, '')}__COLLECT_API_ENDPOINT__`;
   const screen = `${width}x${height}`;
   const eventRegex = /data-umami-event-([\w-_]+)/;
@@ -278,7 +345,17 @@ type MetricEntry = PerformanceEntry & {
   // Strip the origin from same-origin referrers so the referrer domain
   // is never saved when it matches the current hostname
   const stripOrigin = (url: string): string =>
-    url === origin || url?.startsWith(origin + '/') ? url.slice(origin.length) : url;
+    url === origin || url?.startsWith(`${origin}/`) ? url.slice(origin.length) : url;
+
+  // Evaluated per payload so a long-lived page still rotates.
+  const getSalt = () => {
+    if (salt) return salt;
+    const length = { hourly: 13, daily: 10, weekly: 10, monthly: 7 }[saltRotation as string];
+    if (!length) return undefined;
+    const now = new Date();
+    if (saltRotation === 'weekly') now.setUTCDate(now.getUTCDate() - now.getUTCDay());
+    return now.toISOString().slice(0, length);
+  };
 
   const getPayload = () => ({
     website,
@@ -290,6 +367,7 @@ type MetricEntry = PerformanceEntry & {
     referrer: stripOrigin(currentRef),
     tag,
     id: identity ? identity : undefined,
+    salt: getSalt(),
   });
 
   const hasDoNotTrack = () => {
@@ -347,7 +425,8 @@ type MetricEntry = PerformanceEntry & {
       }
     };
     const onClick = (e: MouseEvent) => {
-      const el = e.target as Element;
+      const el = e.target as Element | null;
+      if (!el || typeof el.closest !== 'function') return;
       const eventEl = el.closest(`[${eventNameAttribute}]`);
       if (!eventEl) return;
 
@@ -378,15 +457,14 @@ type MetricEntry = PerformanceEntry & {
     disabled ||
     !website ||
     localStorage?.getItem('umami.disabled') ||
+    (window.name === 'umami.disabled' && top !== window) ||
     (domain && !domains.includes(hostname)) ||
     (dnt && hasDoNotTrack());
 
   const send = async (payload: Payload | null | undefined, type = 'event'): Promise<void> => {
     if (trackingDisabled()) return;
 
-    const callback = (window as unknown as Record<string, unknown>)[beforeSend as string] as
-      | BeforeSend
-      | undefined;
+    const callback = getBeforeSend();
 
     if (typeof callback === 'function') {
       payload = await Promise.resolve(callback(type, payload as Payload));
@@ -413,10 +491,7 @@ type MetricEntry = PerformanceEntry & {
         disabled = !!data.disabled;
         cache = data.cache;
       }
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    } catch (_e) {
-      /* no-op */
-    }
+    } catch {}
   };
 
   const init = () => {
@@ -449,7 +524,6 @@ type MetricEntry = PerformanceEntry & {
       identity = nextIdentity;
     }
 
-    cache = '';
     return send(
       {
         ...getPayload(),
@@ -468,6 +542,29 @@ type MetricEntry = PerformanceEntry & {
     let isInitialLoad = true;
     let activationStart = 0;
     let pageStartTime = 0;
+
+    const getEntriesByType = (type: string): MetricEntry[] => {
+      try {
+        return (window.performance?.getEntriesByType?.(type) as MetricEntry[]) || [];
+      } catch {
+        return [];
+      }
+    };
+
+    const getFirstHiddenTime = () => {
+      const doc = document as TrackerDocument;
+      if (doc.prerendering) {
+        return Infinity;
+      }
+      const navEntry = getEntriesByType('navigation')?.[0];
+      const navActivationStart = navEntry?.activationStart || 0;
+      const hiddenEntry = getEntriesByType('visibility-state')?.find(
+        entry => entry.name === 'hidden' && entry.startTime >= navActivationStart,
+      );
+      return hiddenEntry?.startTime ?? (document.visibilityState === 'hidden' ? 0 : Infinity);
+    };
+
+    let firstHiddenTime = getFirstHiddenTime();
 
     const observe = (type: string, callback: (entry: MetricEntry) => void) => {
       try {
@@ -488,14 +585,20 @@ type MetricEntry = PerformanceEntry & {
 
     // FCP
     observe('paint', entry => {
-      if (entry.name === 'first-contentful-paint') {
+      if (
+        isInitialLoad &&
+        entry.name === 'first-contentful-paint' &&
+        entry.startTime < firstHiddenTime
+      ) {
         metrics.fcp = Math.max(entry.startTime - activationStart, 0);
       }
     });
 
     // LCP
     observe('largest-contentful-paint', entry => {
-      metrics.lcp = Math.max(entry.startTime - activationStart, 0);
+      if (isInitialLoad && entry.startTime < firstHiddenTime) {
+        metrics.lcp = Math.max(entry.startTime - activationStart, 0);
+      }
     });
 
     // CLS - session windows algorithm (gap < 1s, max 5s duration; report worst window)
@@ -555,14 +658,6 @@ type MetricEntry = PerformanceEntry & {
       }
     };
 
-    const getEntriesByType = (type: string): MetricEntry[] => {
-      try {
-        return (window.performance?.getEntriesByType?.(type) as MetricEntry[]) || [];
-      } catch {
-        return [];
-      }
-    };
-
     const applyFallbackMetrics = () => {
       if (!isInitialLoad) return;
 
@@ -577,7 +672,7 @@ type MetricEntry = PerformanceEntry & {
         const fcpEntry = getEntriesByType('paint')?.find(
           entry => entry.name === 'first-contentful-paint',
         );
-        if (fcpEntry) {
+        if (fcpEntry && fcpEntry.startTime < firstHiddenTime) {
           metrics.fcp = Math.max(fcpEntry.startTime - activationStart, 0);
         }
       }
@@ -585,7 +680,7 @@ type MetricEntry = PerformanceEntry & {
       if (metrics.lcp === undefined) {
         const lcpEntries = getEntriesByType('largest-contentful-paint');
         const lcpEntry = lcpEntries?.[lcpEntries.length - 1];
-        if (lcpEntry) {
+        if (lcpEntry && lcpEntry.startTime < firstHiddenTime) {
           metrics.lcp = Math.max(lcpEntry.startTime - activationStart, 0);
         }
       }
@@ -620,21 +715,21 @@ type MetricEntry = PerformanceEntry & {
     };
     timeoutId = setTimeout(sendPerformance, 10000);
 
-    document.addEventListener('visibilitychange', () => {
-      if (document.visibilityState === 'hidden') sendPerformance();
-    });
+    const onVisibilityChange = (event: Event) => {
+      if (document.visibilityState === 'hidden') {
+        if (firstHiddenTime === Infinity) {
+          firstHiddenTime = event.timeStamp || performance.now();
+        }
+        sendPerformance();
+      }
+    };
+
+    document.addEventListener('visibilitychange', onVisibilityChange, true);
+    document.addEventListener('prerenderingchange', onVisibilityChange, true);
     window.addEventListener('pagehide', sendPerformance);
   };
 
   /* Start */
-
-  if (!window.umami) {
-    window.umami = {
-      track,
-      identify,
-      getSession: () => ({ cache, website }),
-    } as UmamiTracker;
-  }
 
   let currentUrl = normalize(href);
   let currentRef = normalize(referrer);
@@ -644,6 +739,31 @@ type MetricEntry = PerformanceEntry & {
   let cache: string | undefined;
   let identity = distinctId;
   let flushPerformance: (() => void) | undefined;
+
+  if (!window.umami) {
+    const errors = createErrorCollector({
+      endpoint,
+      enabled: config('errors') === _true,
+      disabled: () => !!trackingDisabled(),
+      context: getPayload,
+      cache: () => cache,
+      updateCache: token => {
+        cache = token;
+      },
+      release: config('release') || '',
+      environment: config('environment') || 'production',
+      beforeSend: async payload => {
+        const callback = getBeforeSend();
+        return typeof callback === 'function' ? callback('error', payload) : payload;
+      },
+    });
+    window.umami = {
+      track,
+      identify,
+      getSession: () => ({ cache, website }),
+      ...errors,
+    } as UmamiTracker;
+  }
 
   if (distinctId) {
     void identify(distinctId);

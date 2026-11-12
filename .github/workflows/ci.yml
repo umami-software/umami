@@ -6,6 +6,7 @@ permissions:
   contents: read
 
 env:
+  APP_SECRET: "test-app-secret-not-for-production"
   DATABASE_URL: "postgresql://user:pass@localhost:5432/dummy"
   SKIP_DB_CHECK: 1
 
@@ -28,6 +29,7 @@ jobs:
           node-version: 22
           cache: "pnpm"
       - run: pnpm install
+      - run: pnpm lint:i18n
       - run: pnpm openapi:generate
       - run: pnpm openapi:check --explicit
       - run: pnpm check:api:client

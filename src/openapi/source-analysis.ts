@@ -1,5 +1,5 @@
-import ts from 'typescript';
 import type { ApiAuth, ApiHttpMethod } from '@/openapi/operation';
+import ts from 'typescript';
 
 export interface InferredOpenApiSchema {
   type?: string;
@@ -235,6 +235,7 @@ const knownSchemas: Record<string, () => InferredSchema> = {
     required({ type: 'string', enum: ['team-member', 'team-view-only', 'team-manager'] }),
   anyObjectParam: () => required({ type: 'object', additionalProperties: true }),
   urlOrPathParam: () => required(stringSchema()),
+  unixTimestampParam: () => required({ type: 'integer', minimum: 0, maximum: 2147483647 }),
   fieldsParam: () => required(stringSchema()),
   reportTypeParam: () => required(stringSchema()),
   operatorParam: () => required(stringSchema()),
@@ -513,6 +514,49 @@ function inferCallExpression(
     return required(schema);
   }
 
+  if (method === 'withPeriodDateRange') {
+    const schema = expression.arguments[0]
+      ? inferExpression(expression.arguments[0], source, declarations, seen).schema
+      : objectSchema({}, []);
+    if (!schema.properties) {
+      schema.properties = {};
+    }
+    const properties = schema.properties;
+    const requiredProperties = new Set(
+      (schema.required ?? []).filter(name => name !== 'startAt' && name !== 'endAt'),
+    );
+
+    properties.startAt = { type: 'integer' };
+    properties.endAt = { type: 'integer' };
+    properties.period = {
+      type: 'string',
+      enum: [
+        'today',
+        '24h',
+        '7d',
+        '30d',
+        '0day',
+        '24hour',
+        '0week',
+        '7day',
+        '0month',
+        '30day',
+        '90day',
+        '0year',
+        '6month',
+        '12month',
+      ],
+    };
+
+    if (requiredProperties.size) {
+      schema.required = [...requiredProperties];
+    } else {
+      delete schema.required;
+    }
+
+    return required(schema);
+  }
+
   if (['optional', 'nullish', 'default', 'catch'].includes(method) && base) {
     const inferred = inferExpression(base, source, declarations, seen);
 
@@ -552,6 +596,7 @@ function inferCallExpression(
       'meta',
       'brand',
       'readonly',
+      'trim',
     ].includes(method) &&
     base
   ) {
@@ -732,6 +777,13 @@ function inferExpression(
 
   if (ts.isCallExpression(expression)) {
     return inferCallExpression(expression, source, declarations, seen);
+  }
+
+  if (
+    ts.isPrefixUnaryExpression(expression) &&
+    expression.operator === ts.SyntaxKind.ExclamationToken
+  ) {
+    return required(booleanSchema());
   }
 
   const literal = getLiteralValue(expression);

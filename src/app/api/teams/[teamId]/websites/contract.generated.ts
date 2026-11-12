@@ -10,7 +10,9 @@ const operation1 = defineOperation({
   auth: 'bearer-or-share',
   operation: {
     operationId: 'getTeamWebsites',
-    summary: 'Get teams team id websites',
+    summary: "List a team's websites",
+    description:
+      'Returns a paginated list of websites belonging to the specified team, with search and sorting options.',
     tags: ['Teams'],
     parameters: [
       {
@@ -20,6 +22,7 @@ const operation1 = defineOperation({
         schema: {
           type: 'string',
         },
+        description: 'ID of the associated team.',
       },
       {
         name: 'page',
@@ -29,6 +32,7 @@ const operation1 = defineOperation({
           type: 'integer',
           minimum: 1,
         },
+        description: 'Page number, starting at 1.',
       },
       {
         name: 'pageSize',
@@ -38,6 +42,7 @@ const operation1 = defineOperation({
           type: 'integer',
           minimum: 1,
         },
+        description: 'Number of results per page.',
       },
       {
         name: 'maxResults',
@@ -47,6 +52,7 @@ const operation1 = defineOperation({
           type: 'integer',
           minimum: 1,
         },
+        description: 'Maximum number of results to include.',
       },
       {
         name: 'search',
@@ -55,6 +61,7 @@ const operation1 = defineOperation({
         schema: {
           type: 'string',
         },
+        description: 'Search text used to filter results.',
       },
       {
         name: 'orderBy',
@@ -63,6 +70,7 @@ const operation1 = defineOperation({
         schema: {
           type: 'string',
         },
+        description: 'Field to sort the results by.',
       },
       {
         name: 'sortDescending',
@@ -72,6 +80,7 @@ const operation1 = defineOperation({
           type: 'string',
           enum: ['true', 'false'],
         },
+        description: 'Whether to sort results in descending order.',
       },
     ],
     responses: {
@@ -91,40 +100,51 @@ const operation1 = defineOperation({
                         properties: {
                           id: {
                             type: 'string',
+                            description: 'Unique identifier of the resource.',
                           },
                           userId: {
                             type: 'string',
+                            description: 'ID of the associated user.',
                           },
                           createdAt: {
                             type: 'string',
                             format: 'date-time',
+                            description: 'Date and time the record was created.',
                           },
                           updatedAt: {
                             type: 'string',
                             format: 'date-time',
+                            description: 'Date and time the record was last updated.',
                           },
                           deletedAt: {
                             type: 'string',
                             format: 'date-time',
+                            description: 'Date and time the record was deleted, if applicable.',
                           },
                           createdBy: {
                             type: 'string',
+                            description: 'ID of the user who created the resource.',
                           },
                           name: {
                             type: 'string',
+                            description: 'Display name of the resource.',
                           },
                           domain: {
                             type: 'string',
+                            description: 'Domain name associated with the resource.',
                           },
                           resetAt: {
                             type: 'string',
                             format: 'date-time',
+                            description: 'Date and time the website analytics were last reset.',
                           },
                           teamId: {
                             type: 'string',
+                            description: 'ID of the associated team.',
                           },
                           recorderEnabled: {
                             type: 'boolean',
+                            description: 'Whether recording is enabled for the website.',
                           },
                           replayConfig: {
                             anyOf: [
@@ -180,6 +200,7 @@ const operation1 = defineOperation({
                                 required: ['length'],
                               },
                             ],
+                            description: 'Session replay and heatmap recording configuration.',
                           },
                         },
                         required: [
@@ -202,30 +223,37 @@ const operation1 = defineOperation({
                         properties: {
                           shareId: {
                             type: 'string',
+                            description: 'Identifier used to access a shared resource.',
                           },
                           user: {
                             type: 'object',
                             properties: {
                               id: {
                                 type: 'string',
+                                description: 'Unique identifier of the resource.',
                               },
                               username: {
                                 type: 'string',
+                                description: 'Username of the account.',
                               },
                             },
                             required: ['id', 'username'],
+                            description: 'User associated with the resource.',
                           },
                           createUser: {
                             type: 'object',
                             properties: {
                               id: {
                                 type: 'string',
+                                description: 'Unique identifier of the resource.',
                               },
                               username: {
                                 type: 'string',
+                                description: 'Username of the account.',
                               },
                             },
                             required: ['id', 'username'],
+                            description: 'User who created the resource.',
                           },
                           team: {
                             type: 'object',
@@ -237,43 +265,55 @@ const operation1 = defineOperation({
                                   properties: {
                                     userId: {
                                       type: 'string',
+                                      description: 'ID of the associated user.',
                                     },
                                     role: {
                                       type: 'string',
+                                      description: 'Permission role assigned to the user.',
                                     },
                                   },
                                   required: ['userId', 'role'],
                                 },
+                                description: 'Members of the team.',
                               },
                             },
                             required: ['members'],
+                            description: 'Team associated with the resource.',
                           },
                         },
                         required: ['shareId'],
                       },
                     ],
                   },
+                  description: 'Data returned by the operation.',
                 },
                 count: {
                   type: 'number',
+                  description: 'Number of matching records.',
                 },
                 page: {
                   type: 'number',
+                  description: 'Page number, starting at 1.',
                 },
                 pageSize: {
                   type: 'number',
+                  description: 'Number of results per page.',
                 },
                 orderBy: {
                   type: 'string',
+                  description: 'Field to sort the results by.',
                 },
                 sortDescending: {
                   type: 'boolean',
+                  description: 'Whether to sort results in descending order.',
                 },
                 search: {
                   type: 'string',
+                  description: 'Search text used to filter results.',
                 },
                 isCapped: {
                   type: 'boolean',
+                  description: 'Whether the results were truncated by the maximum result limit.',
                 },
               },
               required: ['data', 'count', 'page', 'pageSize'],

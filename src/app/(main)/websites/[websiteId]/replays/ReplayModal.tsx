@@ -5,14 +5,16 @@ import { ReplayPlayback } from '@/app/(main)/websites/[websiteId]/replays/[repla
 import { ControlledDialog } from '@/components/common/ControlledDialog';
 import { useNavigation } from '@/components/hooks';
 import { buildPath } from '@/lib/url';
+import type { ReplaySource } from '@/store/replays';
 import styles from './ReplayModal.module.css';
 
 export interface ReplayModalProps extends ModalProps {
   websiteId: string;
   replayId?: string;
+  replaySource?: ReplaySource;
 }
 
-export function ReplayModal({ websiteId, replayId, className, ...props }: ReplayModalProps) {
+export function ReplayModal({ websiteId, replayId, replaySource, className, ...props }: ReplayModalProps) {
   const {
     router,
     query: { replay },
@@ -65,6 +67,7 @@ export function ReplayModal({ websiteId, replayId, className, ...props }: Replay
                   <ReplayPlayback
                     websiteId={websiteId}
                     replayId={activeReplayId}
+                    replaySource={replaySource}
                     onClose={close}
                     onReplayStateChange={setReplayOrientation}
                   />

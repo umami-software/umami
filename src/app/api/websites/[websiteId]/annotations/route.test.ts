@@ -6,6 +6,7 @@ import { GET, POST } from './route';
 
 vi.mock('@/lib/request', () => ({
   parseRequest: vi.fn(),
+  resolvePeriodDateRange: (params: any) => params,
 }));
 
 vi.mock('@/permissions', () => ({

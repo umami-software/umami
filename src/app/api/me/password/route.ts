@@ -1,7 +1,9 @@
 import { z } from 'zod';
+import { createSessionToken } from '@/lib/auth';
 import { checkPassword, hashPassword } from '@/lib/password';
+import redis from '@/lib/redis';
 import { parseRequest } from '@/lib/request';
-import { badRequest, json } from '@/lib/response';
+import { badRequest, json, notFound } from '@/lib/response';
 import { getUser, updateUser } from '@/queries/prisma/user';
 
 export async function POST(request: Request) {
@@ -21,6 +23,10 @@ export async function POST(request: Request) {
 
   const user = await getUser(userId, { includePassword: true });
 
+  if (!user) {
+    return notFound();
+  }
+
   if (!checkPassword(currentPassword, user.password)) {
     return badRequest({ message: 'Current password is incorrect' });
   }
@@ -29,5 +35,12 @@ export async function POST(request: Request) {
 
   const updated = await updateUser(userId, { password });
 
-  return json(updated);
+  // The new password invalidates every existing session, so keep this user signed in with a new one.
+  const token = await createSessionToken({ id: userId, role: user.role, password });
+
+  if (redis.enabled && auth.authKey) {
+    await redis.client.del(auth.authKey);
+  }
+
+  return json({ ...updated, token });
 }

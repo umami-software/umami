@@ -79,11 +79,14 @@ export function filtersObjectToArray(filters: QueryFilters, options: QueryOption
     const baseName = key.replace(/\d+$/, '');
     const paramName = key !== baseName ? key : undefined;
 
+    // Object filters come from request bodies. Derive name and paramName from the
+    // validated key; they become SQL placeholder names and must not be client-controlled.
     if (filter?.name && filter?.value !== undefined) {
       return arr.concat({
         ...filter,
+        name: baseName,
         column: options?.columns?.[baseName] ?? FILTER_COLUMNS[baseName],
-        paramName: paramName ?? filter.paramName,
+        paramName,
       });
     }
 
@@ -100,9 +103,9 @@ export function filtersObjectToArray(filters: QueryFilters, options: QueryOption
   }, []);
 }
 
-export function filtersArrayToObject(filters: Filter[]) {
+export function filtersArrayToObject(filters: Filter[] | null | undefined) {
   const nameCounts: Record<string, number> = {};
-  return filters.reduce((obj, filter: Filter) => {
+  return (filters ?? []).reduce((obj, filter: Filter) => {
     const { name, operator, value } = filter;
     const count = nameCounts[name] ?? 0;
     const key = count === 0 ? name : `${name}${count}`;

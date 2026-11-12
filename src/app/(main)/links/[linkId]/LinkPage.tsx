@@ -28,7 +28,7 @@ export function LinkPage({
             <LinkControls linkId={linkId} />
             <LinkMetricsBar linkId={linkId} showChange={true} />
             <Panel>
-              <WebsiteChart websiteId={linkId} />
+              <WebsiteChart websiteId={linkId} allowBarDrill={true} />
             </Panel>
             <LinkPanels linkId={linkId} />
           </PageBody>

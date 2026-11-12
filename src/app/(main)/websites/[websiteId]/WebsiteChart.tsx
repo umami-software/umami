@@ -3,6 +3,7 @@ import { type ReactNode, useCallback, useMemo } from 'react';
 import type { ChartAnnotation } from '@/components/charts/ChartAnnotationMarkers';
 import { LoadingPanel } from '@/components/common/LoadingPanel';
 import {
+  useBarDrillDown,
   useDateParameters,
   useDateRange,
   useNavigation,
@@ -12,22 +13,24 @@ import {
 import { useWebsitePageviewsQuery } from '@/components/hooks/queries/useWebsitePageviewsQuery';
 import { PageviewsChart } from '@/components/metrics/PageviewsChart';
 import { type AnnotationRange, getAnnotationDateRangeValue } from '@/lib/annotations';
-import { DATE_FUNCTIONS } from '@/lib/date';
+import { alignCompareSeries, DATE_FUNCTIONS, minDate } from '@/lib/date';
 
 export function WebsiteChart({
   websiteId,
   compareMode,
   showAnnotations,
+  allowBarDrill,
   onAnnotationMoreClick,
   legendActions,
 }: {
   websiteId: string;
   compareMode?: boolean;
   showAnnotations?: boolean;
+  allowBarDrill?: boolean;
   onAnnotationMoreClick?: (range: AnnotationRange) => void;
   legendActions?: ReactNode;
 }) {
-  const { timezone, localFromUtc, localToUtc } = useTimezone();
+  const { timezone, fromUtc, toUtc } = useTimezone();
   const { dateRange, dateCompare } = useDateRange({ timezone: timezone });
   const { startDate, endDate, unit, value } = dateRange;
   const { startAt, endAt } = useDateParameters();
@@ -50,25 +53,32 @@ export function WebsiteChart({
       return { pageviews: [], sessions: [] };
     }
 
+    // The comparison stops at the current bucket; later buckets have nothing to compare against.
+    const compareEndDate = minDate(fromUtc(new Date()), endDate);
+
     return {
       pageviews,
       sessions,
       ...(compare && {
         compare: {
-          pageviews: pageviews.map(({ x }, i) => ({
-            x,
-            y: compare.pageviews[i]?.y,
-            d: compare.pageviews[i]?.x,
-          })),
-          sessions: sessions.map(({ x }, i) => ({
-            x,
-            y: compare.sessions[i]?.y,
-            d: compare.sessions[i]?.x,
-          })),
+          pageviews: alignCompareSeries(
+            compare.pageviews,
+            fromUtc(compare.startDate),
+            startDate,
+            compareEndDate,
+            unit,
+          ),
+          sessions: alignCompareSeries(
+            compare.sessions,
+            fromUtc(compare.startDate),
+            startDate,
+            compareEndDate,
+            unit,
+          ),
         },
       }),
     };
-  }, [data, startDate, endDate, unit]);
+  }, [data, startDate, endDate, unit, timezone]);
 
   const annotations = useMemo<ChartAnnotation[]>(() => {
     const isSubDayUnit = unit === 'hour' || unit === 'minute';
@@ -76,7 +86,7 @@ export function WebsiteChart({
     return (annotationData?.data || [])
       .filter(({ allDay }) => !isSubDayUnit || allDay === false)
       .map(({ id, date, note, allDay }) => {
-        const annotationDate = localFromUtc(new Date(date));
+        const annotationDate = fromUtc(new Date(date));
 
         return {
           id,
@@ -119,17 +129,19 @@ export function WebsiteChart({
     [router, updateParams],
   );
 
+  const handleBarClick = useBarDrillDown(unit, allowBarDrill);
+
   const handleAnnotationMoreClick = useCallback(
     (annotations: ChartAnnotation[]) => {
       const markerDate = annotations[0].markerDate || annotations[0].date;
       const { start, end } = DATE_FUNCTIONS[unit];
 
       onAnnotationMoreClick?.({
-        startAt: +localToUtc(start(markerDate)),
-        endAt: +localToUtc(end(markerDate)),
+        startAt: +toUtc(start(markerDate)),
+        endAt: +toUtc(end(markerDate)),
       });
     },
-    [localToUtc, onAnnotationMoreClick, unit],
+    [toUtc, onAnnotationMoreClick, unit],
   );
 
   return (
@@ -144,6 +156,7 @@ export function WebsiteChart({
         annotations={annotations}
         onAnnotationClick={handleAnnotationClick}
         onAnnotationMoreClick={onAnnotationMoreClick ? handleAnnotationMoreClick : undefined}
+        onBarClick={handleBarClick}
       />
     </LoadingPanel>
   );

@@ -77,8 +77,13 @@ export function TeamsButton() {
         </MenuSection>
         <MenuSeparator />
         <MenuSection title={t(labels.teams)}>
-          {user?.teams?.map(({ id, name }) => (
-            <MenuItem key={id} id={id} onAction={() => handleNavigate(getUrl(`/teams/${id}`))}>
+          {user?.teams?.map(({ id, name, billingStatus }) => (
+            <MenuItem
+              key={id}
+              id={id}
+              onAction={() => handleNavigate(getUrl(`/teams/${id}`))}
+              style={billingStatus === 'past_due' ? { opacity: 0.5 } : undefined}
+            >
               <IconLabel icon={<Users />}>
                 <Text wrap="nowrap">{name}</Text>
               </IconLabel>

@@ -1,27 +1,89 @@
 import { beforeEach, describe, expect, test, vi } from 'vitest';
-import { deleteWebsite, resetWebsite } from './website';
+import {
+  deleteWebsite,
+  getAllUserWebsitesIncludingTeamAccess,
+  resetWebsite,
+  transferWebsite,
+  updateWebsite,
+} from './website';
 
-const { transactionMock, redisDelMock, redisSetMock } = vi.hoisted(() => ({
+const {
+  transactionMock,
+  websiteUpdateMock,
+  redisDelMock,
+  redisSetMock,
+  redisState,
+  getSearchParametersMock,
+  pagedQueryMock,
+} = vi.hoisted(() => ({
   transactionMock: vi.fn(),
+  websiteUpdateMock: vi.fn(),
   redisDelMock: vi.fn(),
   redisSetMock: vi.fn(),
+  redisState: { enabled: false },
+  getSearchParametersMock: vi.fn(),
+  pagedQueryMock: vi.fn(),
 }));
 
 vi.mock('@/lib/prisma', () => ({
   default: {
+    client: {
+      website: {
+        update: websiteUpdateMock,
+      },
+    },
     transaction: transactionMock,
+    getSearchParameters: getSearchParametersMock,
+    pagedQuery: pagedQueryMock,
   },
   getSchema: () => new URL(process.env.DATABASE_URL || '').searchParams.get('schema'),
 }));
 
 vi.mock('@/lib/redis', () => ({
   default: {
+    get enabled() {
+      return redisState.enabled;
+    },
     client: {
       del: redisDelMock,
       set: redisSetMock,
     },
   },
 }));
+
+describe('team website access', () => {
+  beforeEach(() => {
+    getSearchParametersMock.mockReset();
+    getSearchParametersMock.mockReturnValue({});
+    pagedQueryMock.mockReset();
+    pagedQueryMock.mockResolvedValue({ data: [] });
+  });
+
+  test('includes websites for a team member because membership grants view access', async () => {
+    await getAllUserWebsitesIncludingTeamAccess('team-user');
+
+    expect(pagedQueryMock).toHaveBeenCalledWith(
+      'website',
+      expect.objectContaining({
+        where: {
+          OR: [
+            { userId: 'team-user' },
+            {
+              team: {
+                deletedAt: null,
+                members: {
+                  some: { userId: 'team-user' },
+                },
+              },
+            },
+          ],
+          deletedAt: null,
+        },
+      }),
+      expect.any(Object),
+    );
+  });
+});
 
 function createDeleteTx(calls: string[]) {
   return {
@@ -43,6 +105,21 @@ function createDeleteTx(calls: string[]) {
     revenue: {
       deleteMany: vi.fn(async () => {
         calls.push('revenue');
+      }),
+    },
+    errorEvent: {
+      deleteMany: vi.fn(async () => {
+        calls.push('errorEvent');
+      }),
+    },
+    errorIssue: {
+      deleteMany: vi.fn(async () => {
+        calls.push('errorIssue');
+      }),
+    },
+    errorRateLimit: {
+      deleteMany: vi.fn(async () => {
+        calls.push('errorRateLimit');
       }),
     },
     eventData: {
@@ -145,6 +222,9 @@ describe('website delete dependencies', () => {
       'sessionReplay',
       'heatmapEvent',
       'revenue',
+      'errorEvent',
+      'errorIssue',
+      'errorRateLimit',
       'eventData',
       'rawSql',
       'rawSql',
@@ -185,6 +265,9 @@ describe('website delete dependencies', () => {
       'sessionReplay',
       'heatmapEvent',
       'revenue',
+      'errorEvent',
+      'errorIssue',
+      'errorRateLimit',
       'eventData',
       'rawSql',
       'rawSql',
@@ -194,5 +277,134 @@ describe('website delete dependencies', () => {
       'session',
       'websiteUpdate',
     ]);
+  });
+});
+
+// /api/send reads the website from Redis for 24h, so self-hosted installs with Redis
+// must invalidate it too, not only cloud.
+describe('website cache invalidation', () => {
+  beforeEach(() => {
+    transactionMock.mockReset();
+    transactionMock.mockImplementation(async callback => callback(createDeleteTx([])));
+    websiteUpdateMock.mockReset();
+    websiteUpdateMock.mockResolvedValue({ id: 'website-1' });
+    redisDelMock.mockReset();
+    redisSetMock.mockReset();
+    redisState.enabled = true;
+    delete process.env.CLOUD_MODE;
+    process.env.DATABASE_URL = 'postgresql://user:pass@localhost:5432/umami?schema=public';
+  });
+
+  test('deleteWebsite drops the cached website on a self-hosted install', async () => {
+    await deleteWebsite('website-1');
+
+    expect(redisDelMock).toHaveBeenCalledWith('website:website-1');
+  });
+
+  test('resetWebsite caches the reset website so resetAt applies right away', async () => {
+    await resetWebsite('website-1');
+
+    expect(redisSetMock).toHaveBeenCalledWith('website:website-1', { id: 'website-1' });
+  });
+
+  test('updateWebsite drops the cached website so owner and team changes apply', async () => {
+    await updateWebsite('website-1', { teamId: 'team-2' });
+
+    expect(redisDelMock).toHaveBeenCalledWith('website:website-1');
+  });
+
+  test('nothing is touched in Redis when it is not enabled', async () => {
+    redisState.enabled = false;
+
+    await deleteWebsite('website-1');
+    await resetWebsite('website-1');
+    await updateWebsite('website-1', { name: 'Site' });
+
+    expect(redisDelMock).not.toHaveBeenCalled();
+    expect(redisSetMock).not.toHaveBeenCalled();
+  });
+});
+
+describe('transferWebsite', () => {
+  const tx = {
+    website: { findUnique: vi.fn(), update: vi.fn() },
+    board: { updateMany: vi.fn() },
+  };
+
+  beforeEach(() => {
+    vi.clearAllMocks();
+    redisState.enabled = false;
+    transactionMock.mockImplementation(fn => fn(tx));
+    tx.website.update.mockResolvedValue({ id: 'website-1' });
+  });
+
+  // A single-website board only shows its own website; left behind it is broken for everyone
+  // but the new owner, so it follows the website. Shares are keyed by board id and move with it.
+  test('moves the team single-website boards to the user receiving the website', async () => {
+    tx.website.findUnique.mockResolvedValue({ userId: null, teamId: 'team-1' });
+
+    await transferWebsite('website-1', { userId: 'user-1', teamId: null });
+
+    expect(tx.website.update).toHaveBeenCalledWith({
+      where: { id: 'website-1' },
+      data: { userId: 'user-1', teamId: null },
+    });
+    expect(tx.board.updateMany).toHaveBeenCalledWith({
+      where: {
+        type: 'website',
+        parameters: { path: ['websiteId'], equals: 'website-1' },
+        teamId: 'team-1',
+      },
+      data: { userId: 'user-1', teamId: null },
+    });
+  });
+
+  test("moves the user's single-website boards to the team receiving the website", async () => {
+    tx.website.findUnique.mockResolvedValue({ userId: 'user-1', teamId: null });
+
+    await transferWebsite('website-1', { userId: null, teamId: 'team-1' });
+
+    expect(tx.board.updateMany).toHaveBeenCalledWith({
+      where: {
+        type: 'website',
+        parameters: { path: ['websiteId'], equals: 'website-1' },
+        userId: 'user-1',
+        teamId: null,
+      },
+      data: { userId: null, teamId: 'team-1' },
+    });
+  });
+
+  test('moves boards between teams when the website moves to another team', async () => {
+    tx.website.findUnique.mockResolvedValue({ userId: null, teamId: 'team-1' });
+
+    await transferWebsite('website-1', { userId: null, teamId: 'team-2' });
+
+    expect(tx.board.updateMany).toHaveBeenCalledWith(
+      expect.objectContaining({
+        where: expect.objectContaining({ teamId: 'team-1' }),
+        data: { userId: null, teamId: 'team-2' },
+      }),
+    );
+  });
+
+  test('only moves single-website boards owned by the previous owner', async () => {
+    // Mixed boards and other owners' boards that reference the website are left alone.
+    tx.website.findUnique.mockResolvedValue({ userId: null, teamId: 'team-1' });
+
+    await transferWebsite('website-1', { userId: 'user-1', teamId: null });
+
+    const { where } = tx.board.updateMany.mock.calls[0][0];
+    expect(where.type).toBe('website');
+    expect(where.teamId).toBe('team-1');
+  });
+
+  test('drops the cached website after the transfer', async () => {
+    redisState.enabled = true;
+    tx.website.findUnique.mockResolvedValue({ userId: null, teamId: 'team-1' });
+
+    await transferWebsite('website-1', { userId: 'user-1', teamId: null });
+
+    expect(redisDelMock).toHaveBeenCalledWith('website:website-1');
   });
 });

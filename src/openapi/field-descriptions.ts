@@ -21,6 +21,7 @@ const fieldDescriptions: Record<string, string> = {
   reportId: 'ID of the saved report.',
   sessionId: 'ID of the visitor session.',
   eventId: 'ID of the event.',
+  issueId: 'ID of the error issue.',
   websiteEventId: 'ID of the website event.',
   annotationId: 'ID of the annotation.',
   segmentId: 'ID of the saved segment or cohort.',
@@ -65,6 +66,8 @@ const fieldDescriptions: Record<string, string> = {
   endAt: 'End of the date range as a Unix timestamp in milliseconds.',
   startDate: 'Start of the date range as an ISO 8601 date or date-time.',
   endDate: 'End of the date range as an ISO 8601 date or date-time.',
+  period:
+    'Relative date range, for example 7d or 30day, used instead of an explicit startAt/endAt range.',
   timezone:
     'IANA time zone used to interpret dates and group results, for example America/New_York.',
   unit: 'Time interval used to group results: minute, hour, day, month, or year.',
@@ -181,6 +184,10 @@ const queryDescriptions: Record<string, string> = {
   title: 'Filter by page title.',
   query: 'Filter by page URL query string.',
   event: 'Filter by custom event name.',
+  productId: "Only orders containing this product. Amounts become the product's net line totals.",
+  category: "Only orders containing this category. Amounts become the category's net line totals.",
+  groupBy: 'Group products by product, variant or category.',
+  sort: 'Order products by revenue, units or orders.',
 };
 
 const dashboardDescriptions: Record<string, string> = {

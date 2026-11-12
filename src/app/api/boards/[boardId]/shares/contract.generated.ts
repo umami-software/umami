@@ -10,7 +10,8 @@ const operation1 = defineOperation({
   auth: 'bearer-or-share',
   operation: {
     operationId: 'getBoardShares',
-    summary: 'Get boards board id shares',
+    summary: 'List shares for a board',
+    description: 'Returns a paginated list of shares for the specified board.',
     tags: ['Boards'],
     parameters: [
       {
@@ -20,6 +21,7 @@ const operation1 = defineOperation({
         schema: {
           type: 'string',
         },
+        description: 'ID of the board.',
       },
       {
         name: 'path',
@@ -28,6 +30,7 @@ const operation1 = defineOperation({
         schema: {
           type: 'string',
         },
+        description: 'Filter by page URL path.',
       },
       {
         name: 'referrer',
@@ -36,6 +39,7 @@ const operation1 = defineOperation({
         schema: {
           type: 'string',
         },
+        description: 'Filter by referring URL.',
       },
       {
         name: 'title',
@@ -44,6 +48,7 @@ const operation1 = defineOperation({
         schema: {
           type: 'string',
         },
+        description: 'Filter by page title.',
       },
       {
         name: 'query',
@@ -52,6 +57,7 @@ const operation1 = defineOperation({
         schema: {
           type: 'string',
         },
+        description: 'Filter by page URL query string.',
       },
       {
         name: 'os',
@@ -60,6 +66,7 @@ const operation1 = defineOperation({
         schema: {
           type: 'string',
         },
+        description: 'Operating system used by the visitor.',
       },
       {
         name: 'browser',
@@ -68,6 +75,7 @@ const operation1 = defineOperation({
         schema: {
           type: 'string',
         },
+        description: 'Browser used by the visitor.',
       },
       {
         name: 'device',
@@ -76,6 +84,7 @@ const operation1 = defineOperation({
         schema: {
           type: 'string',
         },
+        description: 'Device category used by the visitor.',
       },
       {
         name: 'country',
@@ -84,6 +93,7 @@ const operation1 = defineOperation({
         schema: {
           type: 'string',
         },
+        description: 'Country code of the visitor.',
       },
       {
         name: 'region',
@@ -92,6 +102,7 @@ const operation1 = defineOperation({
         schema: {
           type: 'string',
         },
+        description: 'Region or subdivision of the visitor.',
       },
       {
         name: 'city',
@@ -100,6 +111,7 @@ const operation1 = defineOperation({
         schema: {
           type: 'string',
         },
+        description: 'City of the visitor.',
       },
       {
         name: 'tag',
@@ -108,6 +120,7 @@ const operation1 = defineOperation({
         schema: {
           type: 'string',
         },
+        description: 'Tag attached to the tracked activity.',
       },
       {
         name: 'hostname',
@@ -116,6 +129,7 @@ const operation1 = defineOperation({
         schema: {
           type: 'string',
         },
+        description: 'Hostname on which the activity occurred.',
       },
       {
         name: 'distinctId',
@@ -124,6 +138,7 @@ const operation1 = defineOperation({
         schema: {
           type: 'string',
         },
+        description: 'Custom identifier assigned to the visitor.',
       },
       {
         name: 'language',
@@ -132,6 +147,7 @@ const operation1 = defineOperation({
         schema: {
           type: 'string',
         },
+        description: 'Preferred language reported by the visitor browser.',
       },
       {
         name: 'event',
@@ -140,6 +156,7 @@ const operation1 = defineOperation({
         schema: {
           type: 'string',
         },
+        description: 'Filter by custom event name.',
       },
       {
         name: 'utmSource',
@@ -148,6 +165,7 @@ const operation1 = defineOperation({
         schema: {
           type: 'string',
         },
+        description: 'UTM campaign source.',
       },
       {
         name: 'utmMedium',
@@ -156,6 +174,7 @@ const operation1 = defineOperation({
         schema: {
           type: 'string',
         },
+        description: 'UTM campaign medium.',
       },
       {
         name: 'utmCampaign',
@@ -164,6 +183,7 @@ const operation1 = defineOperation({
         schema: {
           type: 'string',
         },
+        description: 'UTM campaign name.',
       },
       {
         name: 'utmContent',
@@ -172,6 +192,7 @@ const operation1 = defineOperation({
         schema: {
           type: 'string',
         },
+        description: 'UTM campaign content.',
       },
       {
         name: 'utmTerm',
@@ -180,6 +201,7 @@ const operation1 = defineOperation({
         schema: {
           type: 'string',
         },
+        description: 'UTM campaign search term.',
       },
       {
         name: 'excludeBounce',
@@ -188,6 +210,7 @@ const operation1 = defineOperation({
         schema: {
           type: 'string',
         },
+        description: 'Set a non-empty value to exclude visits with only one pageview.',
       },
       {
         name: 'segment',
@@ -197,6 +220,7 @@ const operation1 = defineOperation({
           type: 'string',
           format: 'uuid',
         },
+        description: 'ID of a saved segment used to filter results.',
       },
       {
         name: 'cohort',
@@ -206,6 +230,7 @@ const operation1 = defineOperation({
           type: 'string',
           format: 'uuid',
         },
+        description: 'ID of a saved cohort used to filter visitors.',
       },
       {
         name: 'eventType',
@@ -215,6 +240,7 @@ const operation1 = defineOperation({
           type: 'integer',
           minimum: 1,
         },
+        description: 'Event type: 1 for a pageview or 2 for a custom event.',
       },
       {
         name: 'match',
@@ -224,6 +250,7 @@ const operation1 = defineOperation({
           type: 'string',
           enum: ['all', 'any'],
         },
+        description: 'Whether records must match all filters or any filter.',
       },
       {
         name: 'page',
@@ -233,6 +260,7 @@ const operation1 = defineOperation({
           type: 'integer',
           minimum: 1,
         },
+        description: 'Page number, starting at 1.',
       },
       {
         name: 'pageSize',
@@ -242,6 +270,7 @@ const operation1 = defineOperation({
           type: 'integer',
           minimum: 1,
         },
+        description: 'Number of results per page.',
       },
       {
         name: 'maxResults',
@@ -251,6 +280,7 @@ const operation1 = defineOperation({
           type: 'integer',
           minimum: 1,
         },
+        description: 'Maximum number of results to include.',
       },
     ],
     responses: {
@@ -268,20 +298,25 @@ const operation1 = defineOperation({
                     properties: {
                       id: {
                         type: 'string',
+                        description: 'Unique identifier of the resource.',
                       },
                       createdAt: {
                         type: 'string',
                         format: 'date-time',
+                        description: 'Date and time the record was created.',
                       },
                       updatedAt: {
                         type: 'string',
                         format: 'date-time',
+                        description: 'Date and time the record was last updated.',
                       },
                       name: {
                         type: 'string',
+                        description: 'Display name of the resource.',
                       },
                       slug: {
                         type: 'string',
+                        description: 'URL slug used to access the resource.',
                       },
                       parameters: {
                         anyOf: [
@@ -337,12 +372,15 @@ const operation1 = defineOperation({
                             required: ['length'],
                           },
                         ],
+                        description: 'Configuration parameters for the resource.',
                       },
                       entityId: {
                         type: 'string',
+                        description: 'ID of the resource being shared.',
                       },
                       shareType: {
                         type: 'number',
+                        description: 'Type of resource made available by the share.',
                       },
                     },
                     required: [
@@ -356,27 +394,35 @@ const operation1 = defineOperation({
                       'shareType',
                     ],
                   },
+                  description: 'Data returned by the operation.',
                 },
                 count: {
                   type: 'number',
+                  description: 'Number of matching records.',
                 },
                 page: {
                   type: 'number',
+                  description: 'Page number, starting at 1.',
                 },
                 pageSize: {
                   type: 'number',
+                  description: 'Number of results per page.',
                 },
                 orderBy: {
                   type: 'string',
+                  description: 'Field to sort the results by.',
                 },
                 sortDescending: {
                   type: 'boolean',
+                  description: 'Whether to sort results in descending order.',
                 },
                 search: {
                   type: 'string',
+                  description: 'Search text used to filter results.',
                 },
                 isCapped: {
                   type: 'boolean',
+                  description: 'Whether the results were truncated by the maximum result limit.',
                 },
               },
               required: ['data', 'count', 'page', 'pageSize'],
@@ -429,7 +475,8 @@ const operation2 = defineOperation({
   auth: 'bearer',
   operation: {
     operationId: 'createBoardShare',
-    summary: 'Create or update boards board id shares',
+    summary: 'Create a share for a board',
+    description: 'Creates a named share for the specified board with optional parameters.',
     tags: ['Boards'],
     parameters: [
       {
@@ -439,6 +486,7 @@ const operation2 = defineOperation({
         schema: {
           type: 'string',
         },
+        description: 'ID of the board.',
       },
     ],
     requestBody: {
@@ -451,10 +499,12 @@ const operation2 = defineOperation({
               name: {
                 type: 'string',
                 maxLength: 200,
+                description: 'Display name of the resource.',
               },
               parameters: {
                 type: 'object',
                 additionalProperties: true,
+                description: 'Configuration parameters for the resource.',
               },
             },
             required: ['name'],
@@ -472,20 +522,25 @@ const operation2 = defineOperation({
               properties: {
                 id: {
                   type: 'string',
+                  description: 'Unique identifier of the resource.',
                 },
                 createdAt: {
                   type: 'string',
                   format: 'date-time',
+                  description: 'Date and time the record was created.',
                 },
                 updatedAt: {
                   type: 'string',
                   format: 'date-time',
+                  description: 'Date and time the record was last updated.',
                 },
                 name: {
                   type: 'string',
+                  description: 'Display name of the resource.',
                 },
                 slug: {
                   type: 'string',
+                  description: 'URL slug used to access the resource.',
                 },
                 parameters: {
                   anyOf: [
@@ -541,12 +596,15 @@ const operation2 = defineOperation({
                       required: ['length'],
                     },
                   ],
+                  description: 'Configuration parameters for the resource.',
                 },
                 entityId: {
                   type: 'string',
+                  description: 'ID of the resource being shared.',
                 },
                 shareType: {
                   type: 'number',
+                  description: 'Type of resource made available by the share.',
                 },
               },
               required: [

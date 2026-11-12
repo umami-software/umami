@@ -10,7 +10,9 @@ const operation1 = defineOperation({
   auth: 'bearer-or-share',
   operation: {
     operationId: 'getEventDataById',
-    summary: 'Get websites website id event data event id',
+    summary: "Get an event's custom properties",
+    description:
+      'Returns the custom property records, data types, and values attached to a specific event.',
     tags: ['Websites'],
     parameters: [
       {
@@ -20,6 +22,7 @@ const operation1 = defineOperation({
         schema: {
           type: 'string',
         },
+        description: 'ID of the website.',
       },
       {
         name: 'eventId',
@@ -28,6 +31,7 @@ const operation1 = defineOperation({
         schema: {
           type: 'string',
         },
+        description: 'ID of the event.',
       },
     ],
     responses: {
@@ -42,22 +46,28 @@ const operation1 = defineOperation({
                 properties: {
                   id: {
                     type: 'string',
+                    description: 'Unique identifier of the resource.',
                   },
                   createdAt: {
                     type: 'string',
                     format: 'date-time',
+                    description: 'Date and time the record was created.',
                   },
                   websiteId: {
                     type: 'string',
+                    description: 'ID of the website.',
                   },
                   websiteEventId: {
                     type: 'string',
+                    description: 'ID of the website event.',
                   },
                   dataKey: {
                     type: 'string',
+                    description: 'Name of the custom property.',
                   },
                   stringValue: {
                     type: 'string',
+                    description: 'Custom property value stored as a string.',
                   },
                   numberValue: {
                     type: 'object',
@@ -76,13 +86,16 @@ const operation1 = defineOperation({
                       },
                     },
                     required: ['d', 'e', 's'],
+                    description: 'Custom property value stored as a number.',
                   },
                   dateValue: {
                     type: 'string',
                     format: 'date-time',
+                    description: 'Custom property value stored as a date-time.',
                   },
                   dataType: {
                     type: 'number',
+                    description: 'Data type of the custom property.',
                   },
                 },
                 required: [

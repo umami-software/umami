@@ -57,9 +57,14 @@ export function SessionProfile({
       loadingPlacement="absolute"
     >
       {data && (
-        <Column gap width="100%" minWidth="0">
+        <Column gap width="100%" minWidth="0" position="relative">
           {onClose && (
-            <Row justifyContent="flex-end" gap="1">
+            // Overlaid in the corner so the actions don't push the profile down.
+            <Row
+              justifyContent="flex-end"
+              gap="1"
+              style={{ position: 'absolute', top: 0, right: 0, zIndex: 1 }}
+            >
               {showDeleteButton && (
                 <SessionDeleteButton
                   websiteId={websiteId}

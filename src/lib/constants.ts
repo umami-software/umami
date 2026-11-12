@@ -3,6 +3,7 @@ export const AUTH_TOKEN = 'umami.auth';
 export const LOCALE_CONFIG = 'umami.locale';
 export const TIMEZONE_CONFIG = 'umami.timezone';
 export const DATE_RANGE_CONFIG = 'umami.date-range';
+export const TIME_FORMAT_CONFIG = 'umami.timeFormat';
 export const THEME_CONFIG = 'umami.theme';
 export const CURRENCY_CONFIG = 'umami.currency';
 export const DASHBOARD_CONFIG = 'umami.dashboard';
@@ -13,6 +14,9 @@ export const SHARE_CONTEXT_HEADER = 'x-umami-share-context';
 export const SHARE_TOKEN_TYPE = 'share';
 export const CACHE_TOKEN_TYPE = 'cache';
 export const PARTIAL_AUTH_TOKEN_TYPE = 'partial-auth';
+// Lifetime of a Redis-backed auth session, refreshed on every authenticated
+// request so an active user is never signed out.
+export const AUTH_SESSION_TTL = 60 * 60 * 24 * 30;
 export const HOMEPAGE_URL = 'https://umami.is';
 export const DOCS_URL = 'https://umami.is/docs';
 export const REPO_URL = 'https://github.com/umami-software/umami';
@@ -24,6 +28,8 @@ export const PIXELS_URL = `${globalThis?.location?.origin}/p`;
 
 export const DEFAULT_LOCALE = 'en-US';
 export const DEFAULT_THEME = 'light';
+export const DEFAULT_TIME_FORMAT = 'auto';
+export const TIME_FORMATS = { auto: 'auto', h12: '12h', h24: '24h' };
 export const DEFAULT_ANIMATION_DURATION = 300;
 export const DEFAULT_DATE_RANGE_VALUE = '24hour';
 export const DEFAULT_WEBSITE_LIMIT = 10;
@@ -305,7 +311,6 @@ export const BROWSERS = {
   aol: 'AOL',
   bb10: 'BlackBerry 10',
   beaker: 'Beaker',
-  browser: 'Unknown',
   chrome: 'Chrome',
   'chromium-webview': 'Chrome (webview)',
   crios: 'Chrome (iOS)',
@@ -322,9 +327,11 @@ export const BROWSERS = {
   'ios-webview': 'iOS (webview)',
   kakaotalk: 'KakaoTalk',
   miui: 'MIUI',
+  netfront: 'NetFront',
   opera: 'Opera',
   'opera-mini': 'Opera Mini',
   phantomjs: 'PhantomJS',
+  pie: 'Pocket IE',
   safari: 'Safari',
   samsung: 'Samsung',
   searchbot: 'Searchbot',
@@ -448,6 +455,7 @@ export const ISO_COUNTRIES = {
   ARG: 'AR',
   ARM: 'AM',
   ASM: 'AS',
+  ATA: 'AQ',
   ATF: 'TF',
   ATG: 'AG',
   AUS: 'AU',
@@ -638,6 +646,7 @@ export const ISO_COUNTRIES = {
   SOM: 'SO',
   SPM: 'PM',
   SRB: 'RS',
+  SSD: 'SS',
   SUR: 'SR',
   STP: 'ST',
   SVK: 'SK',
@@ -740,11 +749,16 @@ export const CURRENCIES = [
 ];
 
 export const TIMEZONE_LEGACY: Record<string, string> = {
+  'America/Buenos_Aires': 'America/Argentina/Buenos_Aires',
+  'America/Catamarca': 'America/Argentina/Catamarca',
+  'America/Cordoba': 'America/Argentina/Cordoba',
+  'America/Jujuy': 'America/Argentina/Jujuy',
+  'America/Mendoza': 'America/Argentina/Mendoza',
+  'America/Rosario': 'America/Argentina/Cordoba',
   'Asia/Batavia': 'Asia/Jakarta',
   'Asia/Calcutta': 'Asia/Kolkata',
   'Asia/Chongqing': 'Asia/Shanghai',
   'Asia/Harbin': 'Asia/Shanghai',
-  'Asia/Jayapura': 'Asia/Pontianak',
   'Asia/Katmandu': 'Asia/Kathmandu',
   'Asia/Macao': 'Asia/Macau',
   'Asia/Rangoon': 'Asia/Yangon',

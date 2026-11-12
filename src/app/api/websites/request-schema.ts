@@ -20,7 +20,7 @@ export const listWebsitesQuerySchema = z
     ...searchParams,
     ...sortingParams,
     includeTeams: z.string().optional().meta({
-      description: 'When present, include websites accessible through owned or managed teams.',
+      description: 'When present, include websites accessible through team membership.',
     }),
   })
   .meta({ id: 'ListWebsitesQuery' });

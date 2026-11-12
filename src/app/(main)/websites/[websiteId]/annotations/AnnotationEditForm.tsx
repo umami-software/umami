@@ -34,10 +34,10 @@ export function AnnotationEditForm({
 }) {
   const { t, labels, messages, getErrorMessage } = useMessages();
   const { locale } = useLocale();
-  const { localToUtc, localFromUtc } = useTimezone();
+  const { toUtc, fromUtc } = useTimezone();
 
   const initialDate = useMemo(
-    () => (annotation ? localFromUtc(new Date(annotation.date)) : new Date()),
+    () => (annotation ? fromUtc(new Date(annotation.date)) : new Date()),
     [annotation],
   );
   const [date, setDate] = useState<Date>(startOfDay(initialDate));
@@ -49,7 +49,7 @@ export function AnnotationEditForm({
   const handleSubmit = async ({ note }: { note: string }) => {
     await mutateAsync(
       {
-        date: localToUtc(startOfDay(date)).toISOString(),
+        date: toUtc(startOfDay(date)).toISOString(),
         allDay: true,
         note,
       },

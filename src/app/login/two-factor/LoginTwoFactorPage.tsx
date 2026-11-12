@@ -70,6 +70,7 @@ export function LoginTwoFactorPage() {
       if (err.lockedUntil) {
         setLockUntil(new Date(err.lockedUntil));
       }
+      setOtpValue('');
       setError(getErrorMessage(err));
     }
   };
@@ -117,12 +118,14 @@ export function LoginTwoFactorPage() {
                   if (error) setError(null);
                 }}
                 onComplete={val => submitVerification(val)}
-                disabled={!!lockUntil || isPending}
+                disabled={!!lockUntil}
+                readOnly={isPending}
+                autoFocus
               />
             </Column>
           ) : (
             <FormField label={t(labels.twoFactorBackupCode)} name="backupCode">
-              <TextField autoComplete="off" />
+              <TextField autoComplete="off" autoFocus />
             </FormField>
           )}
 
