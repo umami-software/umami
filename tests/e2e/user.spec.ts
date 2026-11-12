@@ -29,8 +29,8 @@ test.describe('User tests', () => {
 
     const dialog = page.getByRole('dialog');
     await expect(dialog.getByText(/Create user/i)).toBeVisible();
-    await dialog.getByLabel(/Username/i).fill('Test-user');
-    await dialog.getByLabel(/Password/i).fill('testPasswordPlaywright');
+    await dialog.getByRole('textbox', { name: 'Username' }).fill('Test-user');
+    await dialog.getByTestId('input-password').fill('testPasswordPlaywright');
     await selectRole(page, 'user');
     await dialog.getByTestId('button-submit').click();
 
@@ -41,7 +41,7 @@ test.describe('User tests', () => {
     await openRowAction(page, 'edit');
     await expect(page).toHaveURL(/\/admin\/users\/[^/]+$/);
 
-    await page.getByLabel(/Password/i).fill('newPassword');
+    await page.getByTestId('input-password').fill('newPassword');
     await selectRole(page, 'viewOnly');
     await page.getByTestId('button-submit').click();
     await expect(page.getByText(/Saved/i).first()).toBeVisible();
