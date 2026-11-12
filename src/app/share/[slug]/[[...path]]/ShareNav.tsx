@@ -48,6 +48,8 @@ export function ShareNav({
       view: undefined,
       unit: undefined,
       excludeBounce: undefined,
+      minVisitDuration: undefined,
+      maxVisitDuration: undefined,
     });
 
   const allItems = [

@@ -61,12 +61,14 @@ describe('useFilterParameters', () => {
     expect(params.path12).toBe('x');
   });
 
-  test('passes through search, segment, cohort, excludeBounce and match when allowed', () => {
+  test('passes through search, segment, cohort, excludeBounce, visit duration and match when allowed', () => {
     nav.query = {
       search: 's',
       segment: 'seg',
       cohort: 'co',
       excludeBounce: '1',
+      minVisitDuration: '60',
+      maxVisitDuration: '600',
       match: 'all',
     };
     const params = setup();
@@ -76,6 +78,8 @@ describe('useFilterParameters', () => {
       segment: 'seg',
       cohort: 'co',
       excludeBounce: '1',
+      minVisitDuration: '60',
+      maxVisitDuration: '600',
       match: 'all',
     });
   });
@@ -105,6 +109,7 @@ describe('useFilterParameters', () => {
       segment: 'seg',
       cohort: 'co',
       excludeBounce: '1',
+      minVisitDuration: '60',
       match: 'all',
     };
     const params = setup();
@@ -116,6 +121,7 @@ describe('useFilterParameters', () => {
     expect(params.segment).toBeUndefined();
     expect(params.cohort).toBeUndefined();
     expect(params.excludeBounce).toBeUndefined();
+    expect(params.minVisitDuration).toBeUndefined();
     expect(params.match).toBeUndefined();
     // search is always passed through
     expect(params.search).toBe('s');

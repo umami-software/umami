@@ -172,6 +172,8 @@ export interface FilterParams {
   cohort?: string;
   compare?: string;
   excludeBounce?: boolean;
+  minVisitDuration?: number;
+  maxVisitDuration?: number;
   match?: 'all' | 'any';
 }
 

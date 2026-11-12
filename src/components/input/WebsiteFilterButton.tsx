@@ -1,9 +1,10 @@
-import { Checkbox, Row } from '@umami/react-zen';
+import { Checkbox, Column, Row } from '@umami/react-zen';
 import { useState } from 'react';
 import { useFilters, useMessages, useNavigation } from '@/components/hooks';
 import { ListFilter } from '@/components/icons';
 import { DialogButton } from '@/components/input/DialogButton';
 import { FilterEditForm } from '@/components/input/FilterEditForm';
+import { VisitDurationFilter } from '@/components/input/VisitDurationFilter';
 import {
   filtersArrayToObject,
   serializeSessionPropertyFilters,
@@ -25,6 +26,9 @@ export function WebsiteFilterButton({
   const { filters: currentFilters } = useFilters();
   const isEventsPath = pathname.endsWith('/events');
   const [excludeBounce, setExcludeBounce] = useState(!!query.excludeBounce);
+  const [minVisitDuration, setMinVisitDuration] = useState<string | undefined>(
+    query.minVisitDuration,
+  );
   const isOverview =
     /^\/teams\/[^/]+\/websites\/[^/]+$/.test(pathname) || /^\/share\/[^/]+$/.test(pathname);
 
@@ -64,6 +68,7 @@ export function WebsiteFilterButton({
       cohort,
       match,
       excludeBounce: excludeBounce ? 'true' : undefined,
+      minVisitDuration,
     });
 
     router.push(url);
@@ -80,15 +85,18 @@ export function WebsiteFilterButton({
         return (
           <>
             {(isOverview || allowBounceFilter) && (
-              <Row position="absolute" top="30px" right="30px">
-                <Checkbox
-                  value={excludeBounce ? 'true' : ''}
-                  onChange={setExcludeBounce}
-                  style={{ marginTop: '3px' }}
-                >
-                  {t(labels.excludeBounce)}
-                </Checkbox>
-              </Row>
+              <Column position="absolute" top="30px" right="30px" gap alignItems="flex-end">
+                <Row>
+                  <Checkbox
+                    value={excludeBounce ? 'true' : ''}
+                    onChange={setExcludeBounce}
+                    style={{ marginTop: '3px' }}
+                  >
+                    {t(labels.excludeBounce)}
+                  </Checkbox>
+                </Row>
+                <VisitDurationFilter value={minVisitDuration} onChange={setMinVisitDuration} />
+              </Column>
             )}
             <FilterEditForm websiteId={websiteId} onChange={handleChange} onClose={close} />
           </>

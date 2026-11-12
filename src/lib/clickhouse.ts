@@ -202,8 +202,44 @@ function getCohortQuery(filters: Record<string, any>) {
     `;
 }
 
+/**
+ * Visit-level filters (exclude bounces, visit duration) are applied by joining to the visits
+ * that satisfy all of them.
+ */
 function getExcludeBounceQuery(filters: Record<string, any>) {
-  if (filters.excludeBounce !== true) {
+  const havingClauses: string[] = [];
+  // Same definition as the visit time shown in the website stats: from the first to the last
+  // event of the visit, ignoring custom (2) and performance (5) events.
+  const visitDuration =
+    'maxIf(max_time, event_type NOT IN (2, 5)) - minIf(min_time, event_type NOT IN (2, 5))';
+  const hasDurationFilter =
+    filters.minVisitDuration !== undefined || filters.maxVisitDuration !== undefined;
+
+  if (filters.excludeBounce === true) {
+    havingClauses.push(`(
+      sum(views) > 1
+      or (
+        sum(views) = 1
+        and sumIf(length(event_name), event_type = 2) > 0
+      )
+    )`);
+  }
+
+  if (hasDurationFilter) {
+    // minIf/maxIf fall back to the epoch for a visit with no page events, so exclude those
+    // explicitly rather than reading their duration as 0.
+    havingClauses.push('countIf(event_type NOT IN (2, 5)) > 0');
+  }
+
+  if (filters.minVisitDuration !== undefined) {
+    havingClauses.push(`${visitDuration} >= {minVisitDuration:UInt32}`);
+  }
+
+  if (filters.maxVisitDuration !== undefined) {
+    havingClauses.push(`${visitDuration} <= {maxVisitDuration:UInt32}`);
+  }
+
+  if (havingClauses.length === 0) {
     return '';
   }
 
@@ -214,11 +250,7 @@ function getExcludeBounceQuery(filters: Record<string, any>) {
       and created_at between {startDate:DateTime64} and {endDate:DateTime64}
       and event_type != 5
     group by session_id, visit_id
-    having sum(views) > 1
-      or (
-        sum(views) = 1
-        and sumIf(length(event_name), event_type = 2) > 0
-      )
+    having ${havingClauses.join('\n      and ')}
     ) excludeBounce
     on excludeBounce.exclude_session_id = website_event.session_id
       and excludeBounce.exclude_visit_id = website_event.visit_id

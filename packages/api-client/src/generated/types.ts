@@ -6066,6 +6066,10 @@ export interface operations {
         match?: 'all' | 'any';
         /** @description Maximum number of results to include. */
         maxResults?: number;
+        /** @description Only include visits that lasted at most this many seconds. */
+        maxVisitDuration?: number;
+        /** @description Only include visits that lasted at least this many seconds. */
+        minVisitDuration?: number;
         /** @description Operating system used by the visitor. */
         os?: string;
         /** @description Page number, starting at 1. */
@@ -7010,6 +7014,10 @@ export interface operations {
         match?: 'all' | 'any';
         /** @description Maximum number of results to include. */
         maxResults?: number;
+        /** @description Only include visits that lasted at most this many seconds. */
+        maxVisitDuration?: number;
+        /** @description Only include visits that lasted at least this many seconds. */
+        minVisitDuration?: number;
         /** @description Operating system used by the visitor. */
         os?: string;
         /** @description Page number, starting at 1. */
@@ -8490,6 +8498,10 @@ export interface operations {
         match?: 'all' | 'any';
         /** @description Maximum number of results to include. */
         maxResults?: number;
+        /** @description Only include visits that lasted at most this many seconds. */
+        maxVisitDuration?: number;
+        /** @description Only include visits that lasted at least this many seconds. */
+        minVisitDuration?: number;
         /** @description Operating system used by the visitor. */
         os?: string;
         /** @description Page number, starting at 1. */
@@ -8846,6 +8858,10 @@ export interface operations {
         language?: string;
         /** @description Whether records must match all filters or any filter. */
         match?: 'all' | 'any';
+        /** @description Only include visits that lasted at most this many seconds. */
+        maxVisitDuration?: number;
+        /** @description Only include visits that lasted at least this many seconds. */
+        minVisitDuration?: number;
         /** @description Operating system used by the visitor. */
         os?: string;
         /** @description Filter by page URL path. */
@@ -13228,6 +13244,10 @@ export interface operations {
         language?: string;
         /** @description Whether records must match all filters or any filter. */
         match?: 'all' | 'any';
+        /** @description Only include visits that lasted at most this many seconds. */
+        maxVisitDuration?: number;
+        /** @description Only include visits that lasted at least this many seconds. */
+        minVisitDuration?: number;
         model: 'first-click' | 'last-click';
         /** @description Operating system used by the visitor. */
         os?: string;
@@ -13414,6 +13434,10 @@ export interface operations {
         language?: string;
         /** @description Whether records must match all filters or any filter. */
         match?: 'all' | 'any';
+        /** @description Only include visits that lasted at most this many seconds. */
+        maxVisitDuration?: number;
+        /** @description Only include visits that lasted at least this many seconds. */
+        minVisitDuration?: number;
         /** @description Operating system used by the visitor. */
         os?: string;
         /** @description Filter by page URL path. */
@@ -14336,6 +14360,10 @@ export interface operations {
         match?: 'all' | 'any';
         /** @description Maximum number of results to include. */
         maxResults?: number;
+        /** @description Only include visits that lasted at most this many seconds. */
+        maxVisitDuration?: number;
+        /** @description Only include visits that lasted at least this many seconds. */
+        minVisitDuration?: number;
         /** @description Operating system used by the visitor. */
         os?: string;
         /** @description Page number, starting at 1. */
@@ -14505,6 +14533,10 @@ export interface operations {
         match?: 'all' | 'any';
         /** @description Maximum number of results to include. */
         maxResults?: number;
+        /** @description Only include visits that lasted at most this many seconds. */
+        maxVisitDuration?: number;
+        /** @description Only include visits that lasted at least this many seconds. */
+        minVisitDuration?: number;
         /** @description Operating system used by the visitor. */
         os?: string;
         /** @description Page number, starting at 1. */
@@ -14677,6 +14709,10 @@ export interface operations {
         language?: string;
         /** @description Whether records must match all filters or any filter. */
         match?: 'all' | 'any';
+        /** @description Only include visits that lasted at most this many seconds. */
+        maxVisitDuration?: number;
+        /** @description Only include visits that lasted at least this many seconds. */
+        minVisitDuration?: number;
         /** @description Operating system used by the visitor. */
         os?: string;
         /** @description Filter by page URL path. */
@@ -14819,6 +14855,10 @@ export interface operations {
         language?: string;
         /** @description Whether records must match all filters or any filter. */
         match?: 'all' | 'any';
+        /** @description Only include visits that lasted at most this many seconds. */
+        maxVisitDuration?: number;
+        /** @description Only include visits that lasted at least this many seconds. */
+        minVisitDuration?: number;
         /** @description Operating system used by the visitor. */
         os?: string;
         /** @description Filter by page URL path. */
@@ -14958,8 +14998,12 @@ export interface operations {
         language?: string;
         /** @description Whether records must match all filters or any filter. */
         match?: 'all' | 'any';
+        /** @description Only include visits that lasted at most this many seconds. */
+        maxVisitDuration?: number;
         /** @description Numeric aggregation to calculate for the selected property. */
         metric?: 'sum' | 'avg' | 'count';
+        /** @description Only include visits that lasted at least this many seconds. */
+        minVisitDuration?: number;
         /** @description Operating system used by the visitor. */
         os?: string;
         /** @description Filter by page URL path. */
@@ -15101,6 +15145,10 @@ export interface operations {
         language?: string;
         /** @description Whether records must match all filters or any filter. */
         match?: 'all' | 'any';
+        /** @description Only include visits that lasted at most this many seconds. */
+        maxVisitDuration?: number;
+        /** @description Only include visits that lasted at least this many seconds. */
+        minVisitDuration?: number;
         /** @description Operating system used by the visitor. */
         os?: string;
         /** @description Filter by page URL path. */
@@ -15245,6 +15293,10 @@ export interface operations {
         language?: string;
         /** @description Whether records must match all filters or any filter. */
         match?: 'all' | 'any';
+        /** @description Only include visits that lasted at most this many seconds. */
+        maxVisitDuration?: number;
+        /** @description Only include visits that lasted at least this many seconds. */
+        minVisitDuration?: number;
         /** @description Operating system used by the visitor. */
         os?: string;
         /** @description Filter by page URL path. */
@@ -15457,6 +15509,10 @@ export interface operations {
         language?: string;
         /** @description Whether records must match all filters or any filter. */
         match?: 'all' | 'any';
+        /** @description Only include visits that lasted at most this many seconds. */
+        maxVisitDuration?: number;
+        /** @description Only include visits that lasted at least this many seconds. */
+        minVisitDuration?: number;
         /** @description Operating system used by the visitor. */
         os?: string;
         /** @description Filter by page URL path. */
@@ -15599,6 +15655,10 @@ export interface operations {
         language?: string;
         /** @description Whether records must match all filters or any filter. */
         match?: 'all' | 'any';
+        /** @description Only include visits that lasted at most this many seconds. */
+        maxVisitDuration?: number;
+        /** @description Only include visits that lasted at least this many seconds. */
+        minVisitDuration?: number;
         /** @description Operating system used by the visitor. */
         os?: string;
         /** @description Filter by page URL path. */
@@ -15735,6 +15795,10 @@ export interface operations {
         language?: string;
         /** @description Whether records must match all filters or any filter. */
         match?: 'all' | 'any';
+        /** @description Only include visits that lasted at most this many seconds. */
+        maxVisitDuration?: number;
+        /** @description Only include visits that lasted at least this many seconds. */
+        minVisitDuration?: number;
         /** @description Operating system used by the visitor. */
         os?: string;
         /** @description Filter by page URL path. */
@@ -15873,6 +15937,10 @@ export interface operations {
         language?: string;
         /** @description Whether records must match all filters or any filter. */
         match?: 'all' | 'any';
+        /** @description Only include visits that lasted at most this many seconds. */
+        maxVisitDuration?: number;
+        /** @description Only include visits that lasted at least this many seconds. */
+        minVisitDuration?: number;
         /** @description Operating system used by the visitor. */
         os?: string;
         /** @description Filter by page URL path. */
@@ -16011,6 +16079,10 @@ export interface operations {
         language?: string;
         /** @description Whether records must match all filters or any filter. */
         match?: 'all' | 'any';
+        /** @description Only include visits that lasted at most this many seconds. */
+        maxVisitDuration?: number;
+        /** @description Only include visits that lasted at least this many seconds. */
+        minVisitDuration?: number;
         /** @description Operating system used by the visitor. */
         os?: string;
         /** @description Filter by page URL path. */
@@ -16152,6 +16224,10 @@ export interface operations {
         match?: 'all' | 'any';
         /** @description Maximum number of results to include. */
         maxResults?: number;
+        /** @description Only include visits that lasted at most this many seconds. */
+        maxVisitDuration?: number;
+        /** @description Only include visits that lasted at least this many seconds. */
+        minVisitDuration?: number;
         /** @description Operating system used by the visitor. */
         os?: string;
         /** @description Page number, starting at 1. */
@@ -16296,6 +16372,10 @@ export interface operations {
         limit?: number;
         /** @description Whether records must match all filters or any filter. */
         match?: 'all' | 'any';
+        /** @description Only include visits that lasted at most this many seconds. */
+        maxVisitDuration?: number;
+        /** @description Only include visits that lasted at least this many seconds. */
+        minVisitDuration?: number;
         /** @description Operating system used by the visitor. */
         os?: string;
         /** @description Filter by page URL path. */
@@ -16438,6 +16518,10 @@ export interface operations {
         language?: string;
         /** @description Whether records must match all filters or any filter. */
         match?: 'all' | 'any';
+        /** @description Only include visits that lasted at most this many seconds. */
+        maxVisitDuration?: number;
+        /** @description Only include visits that lasted at least this many seconds. */
+        minVisitDuration?: number;
         /** @description Operating system used by the visitor. */
         os?: string;
         /** @description Filter by page URL path. */
@@ -17195,6 +17279,10 @@ export interface operations {
         language?: string;
         /** @description Whether records must match all filters or any filter. */
         match?: 'all' | 'any';
+        /** @description Only include visits that lasted at most this many seconds. */
+        maxVisitDuration?: number;
+        /** @description Only include visits that lasted at least this many seconds. */
+        minVisitDuration?: number;
         /** @description Operating system used by the visitor. */
         os?: string;
         /** @description Filter by page URL path. */
@@ -17347,6 +17435,10 @@ export interface operations {
         language?: string;
         /** @description Whether records must match all filters or any filter. */
         match?: 'all' | 'any';
+        /** @description Only include visits that lasted at most this many seconds. */
+        maxVisitDuration?: number;
+        /** @description Only include visits that lasted at least this many seconds. */
+        minVisitDuration?: number;
         /** @description Operating system used by the visitor. */
         os?: string;
         /** @description Filter by page URL path. */
@@ -18011,6 +18103,10 @@ export interface operations {
         language?: string;
         /** @description Whether records must match all filters or any filter. */
         match?: 'all' | 'any';
+        /** @description Only include visits that lasted at most this many seconds. */
+        maxVisitDuration?: number;
+        /** @description Only include visits that lasted at least this many seconds. */
+        minVisitDuration?: number;
         /** @description Operating system used by the visitor. */
         os?: string;
         /** @description Filter by page URL path. */
@@ -18151,6 +18247,10 @@ export interface operations {
         language?: string;
         /** @description Whether records must match all filters or any filter. */
         match?: 'all' | 'any';
+        /** @description Only include visits that lasted at most this many seconds. */
+        maxVisitDuration?: number;
+        /** @description Only include visits that lasted at least this many seconds. */
+        minVisitDuration?: number;
         /** @description Operating system used by the visitor. */
         os?: string;
         /** @description Filter by page URL path. */
@@ -18293,6 +18393,10 @@ export interface operations {
         language?: string;
         /** @description Whether records must match all filters or any filter. */
         match?: 'all' | 'any';
+        /** @description Only include visits that lasted at most this many seconds. */
+        maxVisitDuration?: number;
+        /** @description Only include visits that lasted at least this many seconds. */
+        minVisitDuration?: number;
         mode?: 'click' | 'scroll';
         /** @description Operating system used by the visitor. */
         os?: string;
@@ -18499,6 +18603,10 @@ export interface operations {
         language?: string;
         /** @description Whether records must match all filters or any filter. */
         match?: 'all' | 'any';
+        /** @description Only include visits that lasted at most this many seconds. */
+        maxVisitDuration?: number;
+        /** @description Only include visits that lasted at least this many seconds. */
+        minVisitDuration?: number;
         /** @description Operating system used by the visitor. */
         os?: string;
         /** @description Filter by page URL path. */
@@ -18647,6 +18755,10 @@ export interface operations {
         limit?: number;
         /** @description Whether records must match all filters or any filter. */
         match?: 'all' | 'any';
+        /** @description Only include visits that lasted at most this many seconds. */
+        maxVisitDuration?: number;
+        /** @description Only include visits that lasted at least this many seconds. */
+        minVisitDuration?: number;
         /** @description Number of rows to skip before returning results. */
         offset?: number;
         /** @description Operating system used by the visitor. */
@@ -18795,6 +18907,10 @@ export interface operations {
         limit?: number;
         /** @description Whether records must match all filters or any filter. */
         match?: 'all' | 'any';
+        /** @description Only include visits that lasted at most this many seconds. */
+        maxVisitDuration?: number;
+        /** @description Only include visits that lasted at least this many seconds. */
+        minVisitDuration?: number;
         /** @description Number of rows to skip before returning results. */
         offset?: number;
         /** @description Operating system used by the visitor. */
@@ -18938,6 +19054,10 @@ export interface operations {
         language?: string;
         /** @description Whether records must match all filters or any filter. */
         match?: 'all' | 'any';
+        /** @description Only include visits that lasted at most this many seconds. */
+        maxVisitDuration?: number;
+        /** @description Only include visits that lasted at least this many seconds. */
+        minVisitDuration?: number;
         /** @description Operating system used by the visitor. */
         os?: string;
         /** @description Filter by page URL path. */
@@ -19074,8 +19194,12 @@ export interface operations {
         language?: string;
         /** @description Whether records must match all filters or any filter. */
         match?: 'all' | 'any';
+        /** @description Only include visits that lasted at most this many seconds. */
+        maxVisitDuration?: number;
         /** @description Numeric aggregation to calculate for the selected property. */
         metric?: 'lcp' | 'inp' | 'cls' | 'fcp' | 'ttfb';
+        /** @description Only include visits that lasted at least this many seconds. */
+        minVisitDuration?: number;
         /** @description Operating system used by the visitor. */
         os?: string;
         /** @description Filter by page URL path. */
@@ -19221,8 +19345,12 @@ export interface operations {
         limit?: number;
         /** @description Whether records must match all filters or any filter. */
         match?: 'all' | 'any';
+        /** @description Only include visits that lasted at most this many seconds. */
+        maxVisitDuration?: number;
         /** @description Numeric aggregation to calculate for the selected property. */
         metric?: 'lcp' | 'inp' | 'cls' | 'fcp' | 'ttfb';
+        /** @description Only include visits that lasted at least this many seconds. */
+        minVisitDuration?: number;
         /** @description Operating system used by the visitor. */
         os?: string;
         /** @description Filter by page URL path. */
@@ -19369,6 +19497,10 @@ export interface operations {
         language?: string;
         /** @description Whether records must match all filters or any filter. */
         match?: 'all' | 'any';
+        /** @description Only include visits that lasted at most this many seconds. */
+        maxVisitDuration?: number;
+        /** @description Only include visits that lasted at least this many seconds. */
+        minVisitDuration?: number;
         /** @description Operating system used by the visitor. */
         os?: string;
         /** @description Filter by page URL path. */
@@ -19581,8 +19713,12 @@ export interface operations {
         match?: 'all' | 'any';
         /** @description Maximum number of results to include. */
         maxResults?: number;
+        /** @description Only include visits that lasted at most this many seconds. */
+        maxVisitDuration?: number;
         /** @description Minimum replay duration in seconds. */
         minDuration?: number;
+        /** @description Only include visits that lasted at least this many seconds. */
+        minVisitDuration?: number;
         /** @description Operating system used by the visitor. */
         os?: string;
         /** @description Page number, starting at 1. */
@@ -20088,6 +20224,10 @@ export interface operations {
         language?: string;
         /** @description Whether records must match all filters or any filter. */
         match?: 'all' | 'any';
+        /** @description Only include visits that lasted at most this many seconds. */
+        maxVisitDuration?: number;
+        /** @description Only include visits that lasted at least this many seconds. */
+        minVisitDuration?: number;
         /** @description Operating system used by the visitor. */
         os?: string;
         /** @description Filter by page URL path. */
@@ -20237,6 +20377,10 @@ export interface operations {
         language?: string;
         /** @description Whether records must match all filters or any filter. */
         match?: 'all' | 'any';
+        /** @description Only include visits that lasted at most this many seconds. */
+        maxVisitDuration?: number;
+        /** @description Only include visits that lasted at least this many seconds. */
+        minVisitDuration?: number;
         /** @description Operating system used by the visitor. */
         os?: string;
         /** @description Filter by page URL path. */
@@ -20371,6 +20515,10 @@ export interface operations {
         language?: string;
         /** @description Whether records must match all filters or any filter. */
         match?: 'all' | 'any';
+        /** @description Only include visits that lasted at most this many seconds. */
+        maxVisitDuration?: number;
+        /** @description Only include visits that lasted at least this many seconds. */
+        minVisitDuration?: number;
         /** @description Operating system used by the visitor. */
         os?: string;
         /** @description Filter by page URL path. */
@@ -20513,6 +20661,10 @@ export interface operations {
         match?: 'all' | 'any';
         /** @description Maximum number of results to include. */
         maxResults?: number;
+        /** @description Only include visits that lasted at most this many seconds. */
+        maxVisitDuration?: number;
+        /** @description Only include visits that lasted at least this many seconds. */
+        minVisitDuration?: number;
         /** @description Operating system used by the visitor. */
         os?: string;
         /** @description Page number, starting at 1. */
@@ -20698,6 +20850,10 @@ export interface operations {
         language?: string;
         /** @description Whether records must match all filters or any filter. */
         match?: 'all' | 'any';
+        /** @description Only include visits that lasted at most this many seconds. */
+        maxVisitDuration?: number;
+        /** @description Only include visits that lasted at least this many seconds. */
+        minVisitDuration?: number;
         /** @description Operating system used by the visitor. */
         os?: string;
         /** @description Filter by page URL path. */
@@ -21374,6 +21530,10 @@ export interface operations {
         match?: 'all' | 'any';
         /** @description Maximum number of results to include. */
         maxResults?: number;
+        /** @description Only include visits that lasted at most this many seconds. */
+        maxVisitDuration?: number;
+        /** @description Only include visits that lasted at least this many seconds. */
+        minVisitDuration?: number;
         /** @description Operating system used by the visitor. */
         os?: string;
         /** @description Page number, starting at 1. */
@@ -21542,6 +21702,10 @@ export interface operations {
         language?: string;
         /** @description Whether records must match all filters or any filter. */
         match?: 'all' | 'any';
+        /** @description Only include visits that lasted at most this many seconds. */
+        maxVisitDuration?: number;
+        /** @description Only include visits that lasted at least this many seconds. */
+        minVisitDuration?: number;
         /** @description Operating system used by the visitor. */
         os?: string;
         /** @description Filter by page URL path. */
@@ -21682,6 +21846,10 @@ export interface operations {
         language?: string;
         /** @description Whether records must match all filters or any filter. */
         match?: 'all' | 'any';
+        /** @description Only include visits that lasted at most this many seconds. */
+        maxVisitDuration?: number;
+        /** @description Only include visits that lasted at least this many seconds. */
+        minVisitDuration?: number;
         /** @description Operating system used by the visitor. */
         os?: string;
         /** @description Filter by page URL path. */
@@ -21819,8 +21987,12 @@ export interface operations {
         language?: string;
         /** @description Whether records must match all filters or any filter. */
         match?: 'all' | 'any';
+        /** @description Only include visits that lasted at most this many seconds. */
+        maxVisitDuration?: number;
         /** @description Numeric aggregation to calculate for the selected property. */
         metric?: 'sum' | 'avg' | 'count';
+        /** @description Only include visits that lasted at least this many seconds. */
+        minVisitDuration?: number;
         /** @description Operating system used by the visitor. */
         os?: string;
         /** @description Filter by page URL path. */
@@ -21960,6 +22132,10 @@ export interface operations {
         language?: string;
         /** @description Whether records must match all filters or any filter. */
         match?: 'all' | 'any';
+        /** @description Only include visits that lasted at most this many seconds. */
+        maxVisitDuration?: number;
+        /** @description Only include visits that lasted at least this many seconds. */
+        minVisitDuration?: number;
         /** @description Operating system used by the visitor. */
         os?: string;
         /** @description Filter by page URL path. */
@@ -22104,6 +22280,10 @@ export interface operations {
         language?: string;
         /** @description Whether records must match all filters or any filter. */
         match?: 'all' | 'any';
+        /** @description Only include visits that lasted at most this many seconds. */
+        maxVisitDuration?: number;
+        /** @description Only include visits that lasted at least this many seconds. */
+        minVisitDuration?: number;
         /** @description Operating system used by the visitor. */
         os?: string;
         /** @description Filter by page URL path. */
@@ -22242,6 +22422,10 @@ export interface operations {
         language?: string;
         /** @description Whether records must match all filters or any filter. */
         match?: 'all' | 'any';
+        /** @description Only include visits that lasted at most this many seconds. */
+        maxVisitDuration?: number;
+        /** @description Only include visits that lasted at least this many seconds. */
+        minVisitDuration?: number;
         /** @description Operating system used by the visitor. */
         os?: string;
         /** @description Filter by page URL path. */
@@ -22382,6 +22566,10 @@ export interface operations {
         language?: string;
         /** @description Whether records must match all filters or any filter. */
         match?: 'all' | 'any';
+        /** @description Only include visits that lasted at most this many seconds. */
+        maxVisitDuration?: number;
+        /** @description Only include visits that lasted at least this many seconds. */
+        minVisitDuration?: number;
         /** @description Operating system used by the visitor. */
         os?: string;
         /** @description Filter by page URL path. */
@@ -22529,6 +22717,10 @@ export interface operations {
         language?: string;
         /** @description Whether records must match all filters or any filter. */
         match?: 'all' | 'any';
+        /** @description Only include visits that lasted at most this many seconds. */
+        maxVisitDuration?: number;
+        /** @description Only include visits that lasted at least this many seconds. */
+        minVisitDuration?: number;
         /** @description Operating system used by the visitor. */
         os?: string;
         /** @description Filter by page URL path. */
@@ -22670,6 +22862,10 @@ export interface operations {
         match?: 'all' | 'any';
         /** @description Maximum number of results to include. */
         maxResults?: number;
+        /** @description Only include visits that lasted at most this many seconds. */
+        maxVisitDuration?: number;
+        /** @description Only include visits that lasted at least this many seconds. */
+        minVisitDuration?: number;
         /** @description Operating system used by the visitor. */
         os?: string;
         /** @description Page number, starting at 1. */
@@ -23302,6 +23498,10 @@ export interface operations {
         language?: string;
         /** @description Whether records must match all filters or any filter. */
         match?: 'all' | 'any';
+        /** @description Only include visits that lasted at most this many seconds. */
+        maxVisitDuration?: number;
+        /** @description Only include visits that lasted at least this many seconds. */
+        minVisitDuration?: number;
         /** @description Operating system used by the visitor. */
         os?: string;
         /** @description Filter by page URL path. */
@@ -23432,6 +23632,10 @@ export interface operations {
         language?: string;
         /** @description Whether records must match all filters or any filter. */
         match?: 'all' | 'any';
+        /** @description Only include visits that lasted at most this many seconds. */
+        maxVisitDuration?: number;
+        /** @description Only include visits that lasted at least this many seconds. */
+        minVisitDuration?: number;
         /** @description Operating system used by the visitor. */
         os?: string;
         /** @description Filter by page URL path. */
@@ -23564,6 +23768,10 @@ export interface operations {
         match?: 'all' | 'any';
         /** @description Maximum number of results to include. */
         maxResults?: number;
+        /** @description Only include visits that lasted at most this many seconds. */
+        maxVisitDuration?: number;
+        /** @description Only include visits that lasted at least this many seconds. */
+        minVisitDuration?: number;
         /** @description Operating system used by the visitor. */
         os?: string;
         /** @description Page number, starting at 1. */
@@ -23853,6 +24061,10 @@ export interface operations {
         language?: string;
         /** @description Whether records must match all filters or any filter. */
         match?: 'all' | 'any';
+        /** @description Only include visits that lasted at most this many seconds. */
+        maxVisitDuration?: number;
+        /** @description Only include visits that lasted at least this many seconds. */
+        minVisitDuration?: number;
         /** @description Operating system used by the visitor. */
         os?: string;
         /** @description Filter by page URL path. */
@@ -24118,6 +24330,10 @@ export interface operations {
         language?: string;
         /** @description Whether records must match all filters or any filter. */
         match?: 'all' | 'any';
+        /** @description Only include visits that lasted at most this many seconds. */
+        maxVisitDuration?: number;
+        /** @description Only include visits that lasted at least this many seconds. */
+        minVisitDuration?: number;
         /** @description Operating system used by the visitor. */
         os?: string;
         /** @description Filter by page URL path. */

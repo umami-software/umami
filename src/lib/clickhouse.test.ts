@@ -39,3 +39,38 @@ describe('getDateSQL bucket formatting', () => {
     );
   });
 });
+
+describe('parseFilters visit filters', () => {
+  test('adds no visit join without visit-level filters', () => {
+    expect(clickhouse.parseFilters({ websiteId: 'website-1' }).excludeBounceQuery).toBe('');
+  });
+
+  test('keeps visits at least minVisitDuration seconds long, ignoring visits without page events', () => {
+    const { excludeBounceQuery, queryParams } = clickhouse.parseFilters({
+      websiteId: 'website-1',
+      minVisitDuration: 60,
+    });
+
+    expect(excludeBounceQuery).toContain('from website_event_stats_hourly');
+    expect(excludeBounceQuery).toContain('countIf(event_type NOT IN (2, 5)) > 0');
+    expect(excludeBounceQuery).toContain(
+      'maxIf(max_time, event_type NOT IN (2, 5)) - minIf(min_time, event_type NOT IN (2, 5)) >= {minVisitDuration:UInt32}',
+    );
+    expect(excludeBounceQuery).not.toContain('sum(views) > 1');
+    expect(queryParams.minVisitDuration).toBe(60);
+  });
+
+  test('combines a duration range with exclude bounce in a single visit join', () => {
+    const { excludeBounceQuery } = clickhouse.parseFilters({
+      websiteId: 'website-1',
+      excludeBounce: true,
+      minVisitDuration: 10,
+      maxVisitDuration: 600,
+    });
+
+    expect(excludeBounceQuery.match(/\bjoin\b/g)).toHaveLength(1);
+    expect(excludeBounceQuery).toContain('sum(views) > 1');
+    expect(excludeBounceQuery).toContain('>= {minVisitDuration:UInt32}');
+    expect(excludeBounceQuery).toContain('<= {maxVisitDuration:UInt32}');
+  });
+});

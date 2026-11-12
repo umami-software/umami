@@ -259,3 +259,47 @@ describe('paged query concurrency', () => {
     }
   });
 });
+
+describe('parseFilters visit filters', () => {
+  test('adds no visit join without visit-level filters', () => {
+    expect(prisma.parseFilters({ websiteId: 'website-1' }).excludeBounceQuery).toBe('');
+  });
+
+  test('keeps visits at least minVisitDuration seconds long', () => {
+    const { excludeBounceQuery, queryParams } = prisma.parseFilters({
+      websiteId: 'website-1',
+      minVisitDuration: 60,
+    });
+
+    expect(excludeBounceQuery).toContain('group by session_id, visit_id');
+    expect(excludeBounceQuery).toContain(
+      'floor(extract(epoch from (max(case when event_type NOT IN (2, 5) then created_at end) - min(case when event_type NOT IN (2, 5) then created_at end)))) >= {{minVisitDuration::integer}}',
+    );
+    expect(excludeBounceQuery).not.toContain('maxVisitDuration');
+    expect(excludeBounceQuery).not.toContain('sum(case when event_type = 2');
+    expect(queryParams.minVisitDuration).toBe(60);
+  });
+
+  test('combines a duration range with exclude bounce in a single visit join', () => {
+    const { excludeBounceQuery } = prisma.parseFilters({
+      websiteId: 'website-1',
+      excludeBounce: true,
+      minVisitDuration: 10,
+      maxVisitDuration: 600,
+    });
+
+    expect(excludeBounceQuery.match(/\bjoin\b/g)).toHaveLength(1);
+    expect(excludeBounceQuery).toContain('sum(case when event_type = 2 then 1 else 0 end) > 0');
+    expect(excludeBounceQuery).toContain('>= {{minVisitDuration::integer}}');
+    expect(excludeBounceQuery).toContain('<= {{maxVisitDuration::integer}}');
+    expect(excludeBounceQuery).toMatch(
+      /\)\n\s+and floor[^\n]+>= \{\{minVisitDuration::integer\}\}\n\s+and floor/,
+    );
+  });
+
+  test('applies a zero-second minimum instead of treating it as unset', () => {
+    expect(
+      prisma.parseFilters({ websiteId: 'website-1', minVisitDuration: 0 }).excludeBounceQuery,
+    ).toContain('>= {{minVisitDuration::integer}}');
+  });
+});

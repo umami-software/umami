@@ -123,6 +123,9 @@ export const filterParams = {
   cohort: z.uuid().optional(),
   eventType: z.coerce.number().int().positive().optional(),
   excludeBounce: z.string().optional(),
+  // Visit duration bounds, in seconds
+  minVisitDuration: z.coerce.number().int().nonnegative().optional(),
+  maxVisitDuration: z.coerce.number().int().nonnegative().optional(),
   match: z.enum(['all', 'any']).optional(),
 };
 
