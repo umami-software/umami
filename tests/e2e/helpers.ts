@@ -51,7 +51,7 @@ export async function loginPage(page: Page, request: APIRequestContext): Promise
 
 export async function logout(page: Page) {
   await page.getByTestId('button-profile').click();
-  await page.getByTestId('item-logout').click();
+  await page.getByRole('menuitem', { name: /Logout/i }).click();
   await expect(page).toHaveURL(/\/login$/);
 }
 

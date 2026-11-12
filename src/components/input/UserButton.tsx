@@ -113,6 +113,7 @@ export function UserButton({ showText = true, onClose }: UserButtonProps) {
 
   const trigger = (
     <Button
+      data-test="button-profile"
       variant="zero"
       aria-label={showText ? undefined : user.username}
       style={{
