@@ -3,7 +3,6 @@ import { checkAuth } from '@/lib/auth';
 import { fetchWebsite } from '@/lib/load';
 import { getWebsiteSegment } from '@/queries/prisma';
 import { getQueryFilters, resolvePeriodDateRange, parseRequest } from './request';
-import { checkAuth } from '@/lib/auth';
 
 vi.hoisted(() => {
   process.env.DATABASE_URL ??= 'postgresql://user:pass@localhost:5432/umami?schema=public';
