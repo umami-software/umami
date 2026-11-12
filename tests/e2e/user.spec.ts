@@ -5,9 +5,9 @@ function userRow(page: Page) {
   return page.getByRole('row').filter({ hasText: 'Test-user' });
 }
 
-async function selectRole(page: Page, role: 'user' | 'viewOnly') {
-  await page.getByRole('button', { name: /Role/i }).click();
-  await page.getByTestId(`dropdown-item-${role}`).click();
+async function selectRole(page: Page, role: 'User' | 'View only') {
+  await page.getByRole('combobox', { name: 'Role' }).click();
+  await page.getByRole('option', { name: role, exact: true }).click();
 }
 
 async function openRowAction(page: Page, action: 'edit' | 'delete') {
@@ -31,7 +31,7 @@ test.describe('User tests', () => {
     await expect(dialog.getByText(/Create user/i)).toBeVisible();
     await dialog.getByRole('textbox', { name: 'Username' }).fill('Test-user');
     await dialog.getByTestId('input-password').fill('testPasswordPlaywright');
-    await selectRole(page, 'user');
+    await selectRole(page, 'User');
     await dialog.getByTestId('button-submit').click();
 
     await expect(userRow(page)).toContainText('User');
@@ -42,7 +42,7 @@ test.describe('User tests', () => {
     await expect(page).toHaveURL(/\/admin\/users\/[^/]+$/);
 
     await page.getByTestId('input-password').fill('newPassword');
-    await selectRole(page, 'viewOnly');
+    await selectRole(page, 'View only');
     await page.getByTestId('button-submit').click();
     await expect(page.getByText(/Saved/i).first()).toBeVisible();
 
