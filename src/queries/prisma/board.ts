@@ -1,8 +1,8 @@
-import type { Prisma } from '@/generated/prisma/client';
+import type { Board, Prisma } from '@/generated/prisma/client';
 import { BOARD_TYPES } from '@/lib/boards';
 import prisma from '@/lib/prisma';
 import { sanitizeSortFilters } from '@/lib/sort';
-import type { QueryFilters } from '@/lib/types';
+import type { PageResult, QueryFilters } from '@/lib/types';
 
 const BOARD_SORT_FIELDS = ['name', 'description', 'type', 'createdAt'] as const;
 
@@ -18,7 +18,10 @@ export async function getBoard(boardId: string) {
   });
 }
 
-export async function getBoards(criteria: Prisma.BoardFindManyArgs, filters: QueryFilters = {}) {
+export async function getBoards(
+  criteria: Prisma.BoardFindManyArgs,
+  filters: QueryFilters = {},
+): Promise<PageResult<Board[]>> {
   const sortFilters = sanitizeSortFilters(filters, BOARD_SORT_FIELDS);
   const { search } = sortFilters;
   const { getSearchParameters, pagedQuery } = prisma;

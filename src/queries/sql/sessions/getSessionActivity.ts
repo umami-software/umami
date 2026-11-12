@@ -31,11 +31,12 @@ async function relationalQuery(websiteId: string, sessionIds: string[], filters:
       event_name as "eventName",
       visit_id as "visitId",
       hostname,
-      event_id IN (select website_event_id 
-                   from event_data
-                   where website_id = {{websiteId::uuid}}
-                      and created_at between {{startDate}} and {{endDate}}) AS "hasData"
-    from website_event
+      EXISTS (select 1
+              from event_data d
+              where d.website_event_id = e.event_id
+                and d.website_id = {{websiteId::uuid}}
+                and d.created_at between {{startDate}} and {{endDate}}) AS "hasData"
+    from website_event e
     where website_id = {{websiteId::uuid}}
       and session_id = any({{sessionIds}}::uuid[])
       and event_type != ${EVENT_TYPE.performance}

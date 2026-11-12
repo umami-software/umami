@@ -8,7 +8,7 @@
   grid-template-columns: 1fr 1fr;
   gap: 8px;
   padding: 12px;
-  background: var(--surface-sunken);
+  background: var(--zen-surface-sunken);
   border-radius: 8px;
 }
 

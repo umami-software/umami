@@ -10,11 +10,14 @@ export default defineConfig({
   forbidOnly: !!process.env.CI,
   retries: process.env.CI ? 2 : 0,
   workers: process.env.CI ? 1 : undefined,
-  reporter: process.env.CI ? [['list'], ['html', { open: 'never' }]] : 'list',
+  // The HTML report (playwright-report/) collects each failure's error, screenshot and trace.
+  // Open it with `pnpm exec playwright show-report`.
+  reporter: [['list'], ['html', { open: 'never' }]],
   use: {
     baseURL,
     testIdAttribute: 'data-test',
-    trace: 'on-first-retry',
+    screenshot: 'only-on-failure',
+    trace: 'retain-on-failure',
   },
   webServer: process.env.PLAYWRIGHT_SKIP_WEB_SERVER
     ? undefined
@@ -26,8 +29,13 @@ export default defineConfig({
       },
   projects: [
     {
+      name: 'setup',
+      testMatch: /.*.setup.ts/,
+    },
+    {
       name: 'chromium',
       use: { ...devices['Desktop Chrome'] },
+      dependencies: ['setup'],
     },
   ],
 });

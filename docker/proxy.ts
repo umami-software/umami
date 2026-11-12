@@ -15,7 +15,7 @@ const BASE_PATH = process.env.BASE_PATH || '';
 const apiHeaders = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Headers': '*',
-  'Access-Control-Allow-Methods': 'GET, DELETE, POST, PUT',
+  'Access-Control-Allow-Methods': 'GET, DELETE, POST, PUT, PATCH, OPTIONS',
   'Access-Control-Max-Age': process.env.CORS_MAX_AGE || '86400',
   'Cache-Control': 'no-cache',
 };

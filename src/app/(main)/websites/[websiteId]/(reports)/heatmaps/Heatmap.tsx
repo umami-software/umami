@@ -18,7 +18,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { ControlledDialog } from '@/components/common/ControlledDialog';
 import { IconLabel } from '@/components/common/IconLabel';
 import { LoadingPanel } from '@/components/common/LoadingPanel';
-import { useMobile, useResultQuery } from '@/components/hooks';
+import { useHeatmapQuery, useMobile } from '@/components/hooks';
 import { ListCheck } from '@/components/icons';
 import { formatLongNumber } from '@/lib/format';
 import type { HeatmapMode, HeatmapPoint, HeatmapResult, HeatmapSnapshot } from '@/queries/sql';
@@ -65,7 +65,7 @@ export function Heatmap({ websiteId, urlPath, onUrlPathChange, mode, search }: H
     data: pagesData,
     error,
     isLoading,
-  } = useResultQuery<HeatmapResult>('heatmap', {
+  } = useHeatmapQuery({
     websiteId,
     mode,
   });
@@ -74,8 +74,7 @@ export function Heatmap({ websiteId, urlPath, onUrlPathChange, mode, search }: H
     data: detailData,
     isLoading: isDetailLoading,
     isFetching: isDetailFetching,
-  } = useResultQuery<HeatmapResult>(
-    'heatmap',
+  } = useHeatmapQuery(
     {
       websiteId,
       urlPath: urlPath || undefined,
@@ -134,7 +133,12 @@ export function Heatmap({ websiteId, urlPath, onUrlPathChange, mode, search }: H
       {isPhone ? (
         <Column gap="4" minHeight="900px">
           <Column gap="2" className={styles.mobilePageSection}>
-            <Row alignItems="center" justifyContent="space-between" gap className={styles.mobilePageHeader}>
+            <Row
+              alignItems="center"
+              justifyContent="space-between"
+              gap
+              className={styles.mobilePageHeader}
+            >
               <Text color="muted" className={styles.mobileSectionLabel}>
                 Selected page
               </Text>
@@ -938,10 +942,16 @@ function ScrollHeatmapView({
                 transform: `scale(${fit.scale})`,
               }}
             >
-              {shouldRenderSnapshot && !snapshotReady && <CanvasLoading />}
-              {shouldRenderSnapshot && snapshot && (
-                <SnapshotPreview snapshot={snapshot} onReady={handleSnapshotReady} />
-              )}
+              {/* Same snapshotClip wrapper as the click view: it carries the
+                  Safari compositing isolation (z-index 0 + isolation) so the
+                  iframe snapshot cannot paint above the overlay while
+                  scrolling .canvasWrapper. See issue #4624. */}
+              <div className={styles.snapshotClip}>
+                {shouldRenderSnapshot && !snapshotReady && <CanvasLoading />}
+                {shouldRenderSnapshot && snapshot && (
+                  <SnapshotPreview snapshot={snapshot} onReady={handleSnapshotReady} />
+                )}
+              </div>
               {showOverlay && (
                 <div className={styles.overlay}>
                   {bands.map(band => {
@@ -1005,13 +1015,7 @@ function SnapshotPreview({
   return <IframeSnapshot snapshot={snapshot} onReady={onReady} />;
 }
 
-function IframeSnapshot({
-  snapshot,
-  onReady,
-}: {
-  snapshot: HeatmapSnapshot;
-  onReady: () => void;
-}) {
+function IframeSnapshot({ snapshot, onReady }: { snapshot: HeatmapSnapshot; onReady: () => void }) {
   const [available, setAvailable] = useState(true);
   const iframeUrl = snapshot.url;
   const frameHeight = getSnapshotFrameHeight(snapshot);
@@ -1045,6 +1049,7 @@ function IframeSnapshot({
         className={`${styles.snapshotIframe} rr-block`}
         src={iframeUrl}
         title={iframeUrl}
+        name="umami.disabled"
         tabIndex={-1}
         loading="lazy"
         scrolling="no"

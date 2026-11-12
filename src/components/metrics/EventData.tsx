@@ -1,6 +1,7 @@
 import { Column, Grid, Label, Text } from '@umami/react-zen';
 import { LoadingPanel } from '@/components/common/LoadingPanel';
 import { useEventDataQuery } from '@/components/hooks';
+import { getDisplayValue } from '@/lib/data';
 
 export function EventData({ websiteId, eventId }: { websiteId: string; eventId: string }) {
   const { data, isLoading, error } = useEventDataQuery(websiteId, eventId);
@@ -8,11 +9,11 @@ export function EventData({ websiteId, eventId }: { websiteId: string; eventId: 
   return (
     <LoadingPanel isLoading={isLoading} error={error}>
       <Grid columns="1fr 1fr" gap="5">
-        {data?.map(({ dataKey, stringValue }) => {
+        {data?.map(row => {
           return (
-            <Column key={dataKey}>
-              <Label>{dataKey}</Label>
-              <Text>{stringValue}</Text>
+            <Column key={row.dataKey}>
+              <Label>{row.dataKey}</Label>
+              <Text>{getDisplayValue(row)}</Text>
             </Column>
           );
         })}

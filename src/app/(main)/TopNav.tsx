@@ -1,7 +1,7 @@
 'use client';
 import { Icon, Row } from '@umami/react-zen';
 import { useNavigation } from '@/components/hooks';
-import { Slash } from '@/components/icons';
+import { Minus } from '@/components/icons';
 import { BoardSelect } from '@/components/input/BoardSelect';
 import { LinkSelect } from '@/components/input/LinkSelect';
 import { PixelSelect } from '@/components/input/PixelSelect';
@@ -52,17 +52,17 @@ export function TopNav() {
         <TeamsButton />
         {(websiteId || linkId || pixelId || boardId) && (
           <>
-            <Icon size="sm" color="muted" style={{ opacity: 0.7, margin: '0 6px' }}>
-              <Slash />
+            <Icon size="sm" color="muted" rotate={90} style={{ opacity: 0.7, margin: '0 6px' }}>
+              <Minus />
             </Icon>
             {websiteId && (
               <WebsiteSelect
                 websiteId={websiteId}
                 teamId={teamId}
+                includeTeams={!teamId}
                 onChange={handleWebsiteChange}
                 buttonProps={{
-                  variant: 'quiet',
-                  style: { minHeight: 40, minWidth: 200, maxWidth: 200 },
+                  style: { minWidth: 200, maxWidth: 200 },
                 }}
               />
             )}
@@ -72,7 +72,8 @@ export function TopNav() {
                 teamId={teamId}
                 onChange={handleLinkChange}
                 buttonProps={{
-                  variant: 'quiet',
+                  className:
+                    'border-transparent bg-transparent shadow-none hover:border-transparent hover:bg-interactive active:bg-interactive-hover',
                   style: { minHeight: 40, minWidth: 200, maxWidth: 200 },
                 }}
               />
@@ -83,7 +84,8 @@ export function TopNav() {
                 teamId={teamId}
                 onChange={handlePixelChange}
                 buttonProps={{
-                  variant: 'quiet',
+                  className:
+                    'border-transparent bg-transparent shadow-none hover:border-transparent hover:bg-interactive active:bg-interactive-hover',
                   style: { minHeight: 40, minWidth: 200, maxWidth: 200 },
                 }}
               />
@@ -94,7 +96,8 @@ export function TopNav() {
                 teamId={teamId}
                 onChange={handleBoardChange}
                 buttonProps={{
-                  variant: 'quiet',
+                  className:
+                    'border-transparent bg-transparent shadow-none hover:border-transparent hover:bg-interactive active:bg-interactive-hover',
                   style: { minHeight: 40, minWidth: 200, maxWidth: 200 },
                 }}
               />
@@ -109,7 +112,7 @@ export function TopNav() {
           left: 0,
           right: 0,
           height: 16,
-          background: 'linear-gradient(to bottom, var(--surface-raised), transparent)',
+          background: 'linear-gradient(to bottom, var(--zen-surface-raised), transparent)',
           pointerEvents: 'none',
         }}
       />

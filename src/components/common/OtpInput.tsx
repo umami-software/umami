@@ -1,21 +1,44 @@
 'use client';
 import { Row, TextField } from '@umami/react-zen';
-import { type ClipboardEvent, type KeyboardEvent, useRef } from 'react';
+import { type ClipboardEvent, type KeyboardEvent, useEffect, useRef } from 'react';
 
 interface OtpInputProps {
   value: string;
   onChange: (value: string) => void;
   onComplete?: (value: string) => void;
   disabled?: boolean;
+  readOnly?: boolean;
+  autoFocus?: boolean;
 }
 
 const LENGTH = 6;
 
 const focusInput = (el: HTMLDivElement | null) => el?.querySelector('input')?.focus();
 
-export function OtpInput({ value, onChange, onComplete, disabled }: OtpInputProps) {
+export function OtpInput({
+  value,
+  onChange,
+  onComplete,
+  disabled,
+  readOnly,
+  autoFocus,
+}: OtpInputProps) {
   const digits = Array.from({ length: LENGTH }, (_, i) => value?.[i] ?? '');
   const refs = useRef<(HTMLDivElement | null)[]>([]);
+
+  // Disabling the inputs drops focus, so focus the first digit again once they are enabled.
+  useEffect(() => {
+    if (autoFocus && !disabled) {
+      focusInput(refs.current[0]);
+    }
+  }, [autoFocus, disabled]);
+
+  // Start over at the first digit when the value is cleared, e.g. after a rejected code.
+  useEffect(() => {
+    if (!value && refs.current.some(el => el?.contains(document.activeElement))) {
+      focusInput(refs.current[0]);
+    }
+  }, [value]);
 
   const update = (index: number, char: string) => {
     const next = digits.slice();
@@ -27,8 +50,28 @@ export function OtpInput({ value, onChange, onComplete, disabled }: OtpInputProp
     }
   };
 
+  const applyPastedValue = (digitsStr: string) => {
+    const pasted = digitsStr.replace(/\D/g, '').slice(0, LENGTH);
+    const next = Array.from({ length: LENGTH }, (_, i) => pasted[i] ?? '');
+    const newVal = next.join('');
+    onChange(newVal);
+    if (newVal.length === LENGTH) {
+      onComplete?.(newVal);
+      focusInput(refs.current[LENGTH - 1]);
+    } else {
+      focusInput(refs.current[pasted.length]);
+    }
+  };
+
   const handleInput = (index: number, raw: string) => {
-    const char = raw.replace(/\D/g, '').slice(-1);
+    const digitsOnly = raw.replace(/\D/g, '');
+
+    if (digitsOnly.length > 1) {
+      applyPastedValue(digitsOnly);
+      return;
+    }
+
+    const char = digitsOnly;
     if (!char) return;
     update(index, char);
     if (index < LENGTH - 1) {
@@ -40,7 +83,7 @@ export function OtpInput({ value, onChange, onComplete, disabled }: OtpInputProp
     index: number,
     e: KeyboardEvent<HTMLInputElement & HTMLTextAreaElement>,
   ) => {
-    if (e.key === 'Backspace') {
+    if (e.key === 'Backspace' && !readOnly) {
       if (digits[index]) {
         update(index, '');
       } else if (index > 0) {
@@ -56,15 +99,8 @@ export function OtpInput({ value, onChange, onComplete, disabled }: OtpInputProp
 
   const handlePaste = (e: ClipboardEvent<HTMLInputElement & HTMLTextAreaElement>) => {
     e.preventDefault();
-    const pasted = e.clipboardData.getData('text').replace(/\D/g, '').slice(0, LENGTH);
-    const next = Array.from({ length: LENGTH }, (_, i) => pasted[i] ?? '');
-    const newVal = next.join('');
-    onChange(newVal);
-    if (newVal.length === LENGTH) {
-      onComplete?.(newVal);
-      focusInput(refs.current[LENGTH - 1]);
-    } else {
-      focusInput(refs.current[pasted.length]);
+    if (!readOnly) {
+      applyPastedValue(e.clipboardData.getData('text'));
     }
   };
 
@@ -83,6 +119,7 @@ export function OtpInput({ value, onChange, onComplete, disabled }: OtpInputProp
             onKeyDown={e => handleKeyDown(i, e)}
             onPaste={handlePaste}
             isDisabled={disabled}
+            isReadOnly={readOnly}
             inputMode="numeric"
             maxLength={1}
             autoComplete="one-time-code"

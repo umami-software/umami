@@ -18,6 +18,17 @@ export const CLICKHOUSE_DATE_FORMATS = {
   year: '%Y-01-01',
 };
 
+// Always Z-suffixed so JS parses the already-shifted local value as an unambiguous
+// instant instead of re-interpreting it in the runtime's own timezone. Matches
+// Postgres's getDateSQL convention - see prisma.ts's DATE_FORMATS.
+const CLICKHOUSE_BUCKET_FORMATS = {
+  minute: '%Y-%m-%dT%R:00Z',
+  hour: '%Y-%m-%dT%H:00:00Z',
+  day: '%Y-%m-%dT00:00:00Z',
+  month: '%Y-%m-01T00:00:00Z',
+  year: '%Y-01-01T00:00:00Z',
+};
+
 const log = debug('umami:clickhouse');
 
 const EQUALITY_OPERATORS: Operator[] = [OPERATORS.equals, OPERATORS.notEquals];
@@ -62,19 +73,39 @@ function getUTCString(date?: Date | string | number) {
   return formatInTimeZone(date || new Date(), 'UTC', 'yyyy-MM-dd HH:mm:ss');
 }
 
+// ClickHouse time zone names are case-sensitive: several callers default to the
+// lowercase "utc" that Postgres accepts but ClickHouse rejects. Intl accepts any
+// casing and returns the canonical IANA name.
+function normalizeTimezone(timezone?: string) {
+  if (!timezone) {
+    return timezone;
+  }
+
+  try {
+    return Intl.DateTimeFormat(undefined, { timeZone: timezone }).resolvedOptions().timeZone;
+  } catch {
+    return timezone;
+  }
+}
+
 function getDateStringSQL(data: any, unit: string = 'utc', timezone?: string) {
-  if (timezone) {
-    return `formatDateTime(${data}, '${CLICKHOUSE_DATE_FORMATS[unit]}', '${timezone}')`;
+  const tz = normalizeTimezone(timezone);
+
+  if (tz) {
+    return `formatDateTime(${data}, '${CLICKHOUSE_DATE_FORMATS[unit]}', '${tz}')`;
   }
 
   return `formatDateTime(${data}, '${CLICKHOUSE_DATE_FORMATS[unit]}')`;
 }
 
 function getDateSQL(field: string, unit: string, timezone?: string) {
-  if (timezone) {
-    return `toDateTime(date_trunc('${unit}', ${field}, '${timezone}'), '${timezone}')`;
+  const tz = normalizeTimezone(timezone);
+  const format = CLICKHOUSE_BUCKET_FORMATS[unit];
+
+  if (tz) {
+    return `formatDateTime(date_trunc('${unit}', ${field}, '${tz}'), '${format}', '${tz}')`;
   }
-  return `toDateTime(date_trunc('${unit}', ${field}))`;
+  return `formatDateTime(date_trunc('${unit}', ${field}), '${format}')`;
 }
 
 function getSearchSQL(column: string, param: string = 'search'): string {
@@ -236,21 +267,27 @@ function getQueryParams(filters: Record<string, any>) {
   };
 }
 
-function parseFilters(filters: Record<string, any>, options?: QueryOptions) {
+function parseFilters(rawFilters: Record<string, any>, options?: QueryOptions) {
+  const filters = rawFilters.timezone
+    ? { ...rawFilters, timezone: normalizeTimezone(rawFilters.timezone) }
+    : rawFilters;
   const cohortFilters = Object.fromEntries(
     Object.entries(filters).filter(([key]) => key.startsWith('cohort_')),
   );
-  const {
-    sql: eventPropertyFilterQuery,
-    params: eventPropertyFilterParams,
-  } = getEventPropertyFilterQuery((filters as QueryFilters).eventPropertyFilters, filters.timezone);
-  const {
-    sql: sessionPropertyFilterQuery,
-    params: sessionPropertyFilterParams,
-  } = getSessionPropertyFilterQuery((filters as QueryFilters).sessionPropertyFilters, filters.timezone);
+  const { sql: eventPropertyFilterQuery, params: eventPropertyFilterParams } =
+    getEventPropertyFilterQuery((filters as QueryFilters).eventPropertyFilters, filters.timezone);
+  const { sql: sessionPropertyFilterQuery, params: sessionPropertyFilterParams } =
+    getSessionPropertyFilterQuery(
+      (filters as QueryFilters).sessionPropertyFilters,
+      filters.timezone,
+    );
 
   return {
-    filterQuery: [getFilterQuery(filters, options), eventPropertyFilterQuery, sessionPropertyFilterQuery]
+    filterQuery: [
+      getFilterQuery(filters, options),
+      eventPropertyFilterQuery,
+      sessionPropertyFilterQuery,
+    ]
       .filter(Boolean)
       .join('\n'),
     dateQuery: getDateQuery(filters),

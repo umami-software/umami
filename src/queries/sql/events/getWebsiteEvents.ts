@@ -1,13 +1,14 @@
 import clickhouse from '@/lib/clickhouse';
-import { DEFAULT_PAGE_SIZE } from '@/lib/constants';
-import { EVENT_TYPE } from '@/lib/constants';
+import { DEFAULT_PAGE_SIZE, EVENT_TYPE } from '@/lib/constants';
 import { CLICKHOUSE, PRISMA, runQuery } from '@/lib/db';
 import prisma from '@/lib/prisma';
-import type { QueryFilters } from '@/lib/types';
+import type { PageResult, QueryFilters, WebsiteEvent } from '@/lib/types';
 
 const FUNCTION_NAME = 'getWebsiteEvents';
 
-export function getWebsiteEvents(...args: [websiteId: string, filters: QueryFilters]) {
+export function getWebsiteEvents(
+  ...args: [websiteId: string, filters: QueryFilters]
+): Promise<PageResult<WebsiteEvent[]>> {
   return runQuery({
     [PRISMA]: () => relationalQuery(...args),
     [CLICKHOUSE]: () => clickhouseQuery(...args),
@@ -82,6 +83,7 @@ async function relationalQuery(websiteId: string, filters: QueryFilters) {
       website_event.event_id as "id",
       website_event.website_id as "websiteId", 
       website_event.session_id as "sessionId",
+      website_event.visit_id as "visitId",
       website_event.created_at as "createdAt",
       website_event.hostname,
       website_event.url_path as "urlPath",
@@ -171,6 +173,7 @@ async function clickhouseQuery(websiteId: string, filters: QueryFilters) {
         event_id as id,
         website_id as websiteId,
         session_id as sessionId,
+        visit_id as visitId,
         created_at as createdAt,
         hostname,
         url_path as urlPath,

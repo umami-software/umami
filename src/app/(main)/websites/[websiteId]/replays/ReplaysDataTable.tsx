@@ -21,7 +21,7 @@ export function ReplaysDataTable({ websiteId }: { websiteId: string }) {
       renderActions={() => <ReplayFilterButton />}
     >
       {({ data }) => {
-        return <ReplaysTable data={data} />;
+        return <ReplaysTable websiteId={websiteId} data={data} />;
       }}
     </DataGrid>
   );

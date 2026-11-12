@@ -1,0 +1,14 @@
+/*
+ * Joined cells: every cell draws its right and bottom border, and the grid is pushed
+ * out right and down by 1px so the outer container clips the last column's right edge
+ * and the last row's bottom edge. A partially filled last row then reads as a table
+ * with empty cells instead of leaving half-length dividers.
+ */
+.joined {
+  margin: 0 -1px -1px 0;
+}
+
+.joined > * {
+  border-right: 1px solid var(--zen-border);
+  border-bottom: 1px solid var(--zen-border);
+}

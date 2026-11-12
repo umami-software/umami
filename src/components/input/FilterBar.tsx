@@ -1,15 +1,7 @@
-import {
-  Button,
-  Dialog,
-  DialogTrigger,
-  Icon,
-  Modal,
-  Row,
-  Text,
-  Tooltip,
-  TooltipTrigger,
-} from '@umami/react-zen';
+import { Button, Dialog, Icon, Modal, Row, Text, Tooltip, TooltipTrigger } from '@umami/react-zen';
+import { useState } from 'react';
 import { SegmentEditForm } from '@/app/(main)/websites/[websiteId]/segments/SegmentEditForm';
+import { ControlledDialog } from '@/components/common/ControlledDialog';
 import {
   useFilters,
   useFormat,
@@ -33,11 +25,11 @@ export function FilterBar({ websiteId }: { websiteId?: string }) {
   const { segment, cohort } = query;
   const { filters, eventPropertyFilters, sessionPropertyFilters, operatorLabels } = useFilters();
   const { data, isLoading } = useWebsiteSegmentQuery(websiteId, segment || cohort);
+  const [showSaveSegment, setShowSaveSegment] = useState(false);
   const canSaveSegment =
     !!websiteId &&
-    filters.length > 0 &&
+    (filters.length > 0 || sessionPropertyFilters.length > 0) &&
     eventPropertyFilters.length === 0 &&
-    sessionPropertyFilters.length === 0 &&
     !segment &&
     !cohort &&
     !pathname.includes('/share');
@@ -166,20 +158,29 @@ export function FilterBar({ websiteId }: { websiteId?: string }) {
         ))}
       </Row>
       <Row alignItems="center">
-        <DialogTrigger>
-          {canSaveSegment && (
-            <TooltipTrigger delay={0}>
-              <Button variant="zero">
-                <Icon>
-                  <Bookmark />
-                </Icon>
-              </Button>
-              <Tooltip>
-                <Text>{t(labels.saveSegment)}</Text>
-              </Tooltip>
-            </TooltipTrigger>
-          )}
-          <Modal placement={isMobile ? 'fullscreen' : 'center'}>
+        {canSaveSegment && (
+          <TooltipTrigger delay={0}>
+            <Button
+              variant="zero"
+              aria-label={t(labels.saveSegment)}
+              onPress={() => setShowSaveSegment(true)}
+            >
+              <Icon>
+                <Bookmark />
+              </Icon>
+            </Button>
+            <Tooltip>
+              <Text>{t(labels.saveSegment)}</Text>
+            </Tooltip>
+          </TooltipTrigger>
+        )}
+        {/* Controlled rather than a DialogTrigger: TooltipTrigger does not forward the trigger's click handler. */}
+        <ControlledDialog>
+          <Modal
+            placement={isMobile ? 'fullscreen' : 'center'}
+            isOpen={showSaveSegment}
+            onOpenChange={setShowSaveSegment}
+          >
             <Dialog
               title={t(labels.segment)}
               style={{
@@ -192,11 +193,18 @@ export function FilterBar({ websiteId }: { websiteId?: string }) {
               }}
             >
               {({ close }) => {
-                return <SegmentEditForm websiteId={websiteId} onClose={close} filters={filters} />;
+                return (
+                  <SegmentEditForm
+                    websiteId={websiteId}
+                    onClose={close}
+                    filters={filters}
+                    sessionPropertyFilters={sessionPropertyFilters}
+                  />
+                );
               }}
             </Dialog>
           </Modal>
-        </DialogTrigger>
+        </ControlledDialog>
         <TooltipTrigger delay={0}>
           <Button variant="zero" onPress={handleResetFilter}>
             <Icon>

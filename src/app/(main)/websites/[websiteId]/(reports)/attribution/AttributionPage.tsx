@@ -3,7 +3,7 @@ import { Column, Grid, ListItem, Select } from '@umami/react-zen';
 import { useState } from 'react';
 import { WebsiteControls } from '@/app/(main)/websites/[websiteId]/WebsiteControls';
 import { Empty } from '@/components/common/Empty';
-import { useDateRange, useMessages } from '@/components/hooks';
+import { useDateRange, useMessages, useTimezone } from '@/components/hooks';
 import { WebsiteValueComboBox } from '@/components/input/WebsiteValueComboBox';
 import { Attribution } from './Attribution';
 
@@ -12,9 +12,10 @@ export function AttributionPage({ websiteId }: { websiteId: string }) {
   const [type, setType] = useState('path');
   const [step, setStep] = useState('');
   const { t, labels } = useMessages();
+  const { timezone } = useTimezone();
   const {
     dateRange: { startDate, endDate },
-  } = useDateRange();
+  } = useDateRange({ timezone });
   const handleTypeChange = (value: any) => {
     setType(value as string);
     setStep('');

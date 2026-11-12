@@ -25,14 +25,12 @@ vi.mock('@/lib/two-factor/crypto', () => ({
 }));
 
 vi.mock('@/lib/two-factor/rate-limit', () => ({
-  checkRateLimit: vi.fn(),
-  recordFailedAttempt: vi.fn(),
+  reserveAttempt: vi.fn(),
   resetRateLimit: vi.fn(),
 }));
 
 vi.mock('@/lib/two-factor/replay-prevention', () => ({
-  isOtpReplayed: vi.fn(),
-  markOtpUsed: vi.fn(),
+  claimOtp: vi.fn().mockResolvedValue(true),
 }));
 
 vi.mock('@/lib/two-factor/totp', () => ({

@@ -59,8 +59,8 @@ export function LinkEditForm({
     });
   };
 
-  const checkUrl = (url: string) => {
-    if (!isValidUrl(url)) {
+  const checkUrl = (url: string, formValues: any) => {
+    if (!isValidUrl(url) || (url === `${hostUrl}/${formValues.slug}`)) {
       return t(labels.invalidUrl);
     }
     return true;
@@ -125,7 +125,7 @@ export function LinkEditForm({
               </Grid>
             )}
 
-            <Column>
+            <Column gap="1">
               <Label>{t(labels.link)}</Label>
               <Row alignItems="center" gap>
                 <TextField

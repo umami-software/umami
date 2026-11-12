@@ -35,6 +35,10 @@ describe('rgb2Hex', () => {
     expect(rgb2Hex(0xff, 0xff, 0xff, '#')).toBe('#ffffff');
   });
 
+  test('zero-pads channels below 0x10', () => {
+    expect(rgb2Hex(0x05, 0x00, 0x0a)).toBe('05000a');
+  });
+
   test('round-trips with hex2RGB for full-byte channels', () => {
     const hex = '2680eb';
     const { r, g, b } = hex2RGB(hex);

@@ -6,9 +6,12 @@ export type Auth = {
   authorization: string;
 };
 
+/** Password the migration seeds; admin.setup.ts replaces it with umamiUser.password. */
+export const DEFAULT_ADMIN_PASSWORD = 'umami';
+
 export const umamiUser = {
   username: process.env.UMAMI_USER ?? 'admin',
-  password: process.env.UMAMI_PASSWORD ?? 'umami',
+  password: process.env.UMAMI_PASSWORD ?? 'umami-e2e-password',
   id: process.env.UMAMI_USER_ID ?? '41e2b680-648e-4b09-bcd7-3e2b10c06264',
 };
 
@@ -39,8 +42,13 @@ export async function loginViaApi(
 export async function loginPage(page: Page, request: APIRequestContext): Promise<Auth> {
   const auth = await loginViaApi(request);
 
+  // Init scripts run on every page load. Inject the token only on the first one, so a
+  // logout (which reloads /login) is not immediately undone.
   await page.addInitScript(token => {
-    window.localStorage.setItem('umami.auth', JSON.stringify(token));
+    if (!window.sessionStorage.getItem('e2e.auth-injected')) {
+      window.localStorage.setItem('umami.auth', JSON.stringify(token));
+      window.sessionStorage.setItem('e2e.auth-injected', '1');
+    }
   }, auth.token);
 
   return auth;
@@ -48,7 +56,7 @@ export async function loginPage(page: Page, request: APIRequestContext): Promise
 
 export async function logout(page: Page) {
   await page.getByTestId('button-profile').click();
-  await page.getByTestId('item-logout').click();
+  await page.getByRole('menuitem', { name: /Logout/i }).click();
   await expect(page).toHaveURL(/\/login$/);
 }
 

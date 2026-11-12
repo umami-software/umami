@@ -1,8 +1,8 @@
 import { Column, Grid, Icon, ProgressBar, Row, Text } from '@umami/react-zen';
 import { LoadingPanel } from '@/components/common/LoadingPanel';
-import { useMessages, useNavigation, useResultQuery } from '@/components/hooks';
+import { useGoalQuery, useMessages, useNavigation } from '@/components/hooks';
 import { File, User } from '@/components/icons';
-import { ReportEditButton } from '@/components/input/ReportEditButton';
+import { SavedDefinitionEditButton } from '@/components/input/SavedDefinitionEditButton';
 import { Lightning } from '@/components/svg';
 import { formatLongNumber } from '@/lib/format';
 import { GoalEditForm } from './GoalEditForm';
@@ -37,8 +37,9 @@ export function Goal({
   const { t, labels } = useMessages();
   const { pathname } = useNavigation();
   const isSharePage = pathname.includes('/share/');
-  const { data, error, isLoading, isFetching } = useResultQuery<GoalData>(type, {
+  const { data, error, isLoading, isFetching } = useGoalQuery({
     websiteId,
+    id,
     startDate,
     endDate,
     ...parameters,
@@ -57,7 +58,8 @@ export function Goal({
         </Column>
         {allowEdit && !isSharePage && (
           <Column>
-            <ReportEditButton
+            <SavedDefinitionEditButton
+              websiteId={websiteId}
               id={id}
               name={name}
               type={type}
@@ -66,7 +68,7 @@ export function Goal({
               minHeight="300px"
             >
               {({ close }) => <GoalEditForm id={id} websiteId={websiteId} onClose={close} />}
-            </ReportEditButton>
+            </SavedDefinitionEditButton>
           </Column>
         )}
       </Grid>

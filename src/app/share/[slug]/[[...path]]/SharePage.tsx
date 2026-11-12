@@ -86,7 +86,8 @@ export function SharePage() {
 
   // Check if the requested path is allowed
   const pageKey = path || '';
-  const isAllowed = pageKey === '' || parameters[pageKey] === true;
+  const isAllowed =
+    pageKey === '' || (Object.hasOwn(PAGE_COMPONENTS, pageKey) && parameters[pageKey] === true);
 
   const entityPage =
     shareType === ENTITY_TYPE.board && boardId ? (

@@ -1,0 +1,9 @@
+{
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "types": ["node"],
+    "rootDir": "../.."
+  },
+  "include": ["./**/*.ts", "../../playwright.api.config.ts", "../../scripts/test-api.ts"],
+  "exclude": [".runtime"]
+}

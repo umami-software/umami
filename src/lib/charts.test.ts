@@ -1,5 +1,5 @@
 import { describe, expect, test } from 'vitest';
-import { renderNumberLabels } from './charts';
+import { getChartBucketIndex, renderNumberLabels } from './charts';
 
 // test for renderNumberLabels
 
@@ -36,5 +36,13 @@ describe('renderNumberLabels', () => {
     ['-5000', '-5000'],
   ])('handles edge cases correctly (%s → %s)', (input, expected) => {
     expect(renderNumberLabels(input)).toBe(expected);
+  });
+});
+
+describe('getChartBucketIndex', () => {
+  test('places an annotation in its monthly data bucket', () => {
+    const data = [{ x: '2026-08' }, { x: '2026-09' }];
+
+    expect(getChartBucketIndex(data, new Date('2026-08-27T07:00:00.000Z'))).toBe(0);
   });
 });

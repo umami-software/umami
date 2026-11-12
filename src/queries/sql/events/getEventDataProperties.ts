@@ -3,11 +3,18 @@ import { CLICKHOUSE, PRISMA, runQuery } from '@/lib/db';
 import prisma from '@/lib/prisma';
 import type { QueryFilters } from '@/lib/types';
 
+export interface EventDataProperty {
+  eventName: string;
+  propertyName: string;
+  dataType: number;
+  total: number;
+}
+
 const FUNCTION_NAME = 'getEventDataProperties';
 
 export async function getEventDataProperties(
   ...args: [websiteId: string, filters: QueryFilters & { propertyName?: string }]
-) {
+): Promise<EventDataProperty[]> {
   return runQuery({
     [PRISMA]: () => relationalQuery(...args),
     [CLICKHOUSE]: () => clickhouseQuery(...args),

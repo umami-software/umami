@@ -85,6 +85,7 @@ export async function POST(request: Request) {
         isNoBilling: account.isNoBilling || false,
         hasSubscription: account.hasSubscription || false,
         unlimitedWebsites: account.unlimitedWebsites || false,
+        billingStatus: account.billingStatus || null,
       },
       60 * 60 * 24 * 90,
     );
