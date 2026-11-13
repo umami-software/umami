@@ -23,6 +23,7 @@ export * from './queries/useDeleteQuery';
 export * from './queries/useEventDataPivotQuery';
 export * from './queries/useEventDataPropertiesQuery';
 export * from './queries/useEventDataQuery';
+export * from './queries/useFeatureAdoptionQuery';
 export * from './queries/useFunnelQuery';
 export * from './queries/useGoalQuery';
 export * from './queries/useHeatmapQuery';
