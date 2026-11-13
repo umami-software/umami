@@ -37,8 +37,25 @@ function getMessages(message: KafkaMessage | KafkaMessage[]) {
   });
 }
 
+function decodeCredential(value: string) {
+  try {
+    return decodeURIComponent(value);
+  } catch {
+    return value;
+  }
+}
+
+function getCredentials(url: string) {
+  const { username, password } = new URL(url);
+
+  return {
+    username: decodeCredential(username),
+    password: decodeCredential(password),
+  };
+}
+
 function getClient() {
-  const { username, password } = new URL(process.env.KAFKA_URL);
+  const { username, password } = getCredentials(process.env.KAFKA_URL);
   const brokers = process.env.KAFKA_BROKER.split(',');
   const mechanism =
     (process.env.KAFKA_SASL_MECHANISM as 'plain' | 'scram-sha-256' | 'scram-sha-512') || 'plain';
@@ -162,4 +179,5 @@ export default {
   log,
   connect,
   sendMessage,
+  getCredentials,
 };
