@@ -1,0 +1,16 @@
+-- =========================================================================
+-- One-time historical backfill. Rewinds the watermark, then repeatedly call
+-- refresh_website_rollups() until caught up. Run during off-peak hours:
+-- each call scans max_hours of raw events via the covering indexes.
+--
+--   -- 1. rewind to the start of retained history (adjust date):
+--   UPDATE rollup_watermark SET processed_until = '2026-04-01 00:00:00+00'
+--   WHERE name = 'website_rollups';
+--   -- (or INSERT if the watermark row does not exist yet)
+--
+--   -- 2. loop until caught up (psql):
+--   SELECT * FROM refresh_website_rollups(grace => '10 minutes', max_hours => 12);
+--   \watch 5
+--
+-- Stop the \watch when event_rows/visit_rows come back empty. The regular
+-- scheduled job then keeps it current.
