@@ -71,6 +71,31 @@ const operation1 = defineOperation({
                         {
                           const: 'moderate',
                         },
+                        {
+                          const: 'lax',
+                        },
+                      ],
+                    },
+                    consoleLevel: {
+                      anyOf: [
+                        {
+                          const: 'none',
+                        },
+                        {
+                          const: 'error',
+                        },
+                        {
+                          const: 'warn',
+                        },
+                        {
+                          const: 'info',
+                        },
+                        {
+                          const: 'debug',
+                        },
+                        {
+                          const: 'all',
+                        },
                       ],
                       description:
                         'Privacy masking level used by the recorder: strict or moderate.',
@@ -82,6 +107,15 @@ const operation1 = defineOperation({
                       type: 'string',
                       description: 'CSS selector for elements excluded from recordings.',
                     },
+                    recordCanvas: {
+                      type: 'boolean',
+                    },
+                    canvasFps: {
+                      type: 'number',
+                    },
+                    canvasQuality: {
+                      type: 'number',
+                    },
                   },
                   required: [
                     'enabled',
@@ -90,8 +124,12 @@ const operation1 = defineOperation({
                     'sampleRate',
                     'heatmapSampleRate',
                     'maskLevel',
+                    'consoleLevel',
                     'maxDuration',
                     'blockSelector',
+                    'recordCanvas',
+                    'canvasFps',
+                    'canvasQuality',
                   ],
                 },
               ],
