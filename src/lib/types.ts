@@ -230,6 +230,7 @@ export interface TimeSeriesValue {
 export interface WebsiteSession {
   id: string;
   websiteId: string;
+  distinctId?: string;
   hostname: string;
   browser: string;
   os: string;

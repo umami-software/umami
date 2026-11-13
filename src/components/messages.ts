@@ -309,6 +309,7 @@ export const labels: Record<string, string> = {
   heatmapDescription: 'label.heatmap-description',
   compareDates: 'label.compare-dates',
   compare: 'label.compare',
+  columns: 'label.columns',
   current: 'label.current',
   previous: 'label.previous',
   previousPeriod: 'label.previous-period',
