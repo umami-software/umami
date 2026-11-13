@@ -45,19 +45,32 @@ describe('parseFilters visit filters', () => {
     expect(clickhouse.parseFilters({ websiteId: 'website-1' }).excludeBounceQuery).toBe('');
   });
 
-  test('keeps visits at least minVisitDuration seconds long, ignoring visits without page events', () => {
+  test('keeps exclude bounce alone on the hourly stats table', () => {
+    const { excludeBounceQuery } = clickhouse.parseFilters({
+      websiteId: 'website-1',
+      excludeBounce: true,
+    });
+
+    expect(excludeBounceQuery).toContain('from website_event_stats_hourly');
+    expect(excludeBounceQuery).toContain('sum(views) > 1');
+  });
+
+  test('measures visit duration from event timestamps, not hourly rows', () => {
     const { excludeBounceQuery, queryParams } = clickhouse.parseFilters({
       websiteId: 'website-1',
       minVisitDuration: 60,
     });
 
-    expect(excludeBounceQuery).toContain('from website_event_stats_hourly');
+    // The hourly table stores the hour start in created_at, so a range starting mid-hour
+    // would drop that hour's visits.
+    expect(excludeBounceQuery).not.toContain('website_event_stats_hourly');
+    expect(excludeBounceQuery).toMatch(/from website_event\n/);
     expect(excludeBounceQuery).toContain('countIf(event_type NOT IN (2, 5)) > 0');
     expect(excludeBounceQuery).toContain(
-      'maxIf(max_time, event_type NOT IN (2, 5)) - minIf(min_time, event_type NOT IN (2, 5)) >= {minVisitDuration:UInt32}',
+      "dateDiff('second', minIf(created_at, event_type NOT IN (2, 5)), maxIf(created_at, event_type NOT IN (2, 5))) >= {minVisitDuration:UInt32}",
     );
-    expect(excludeBounceQuery).not.toContain('sum(views) > 1');
-    expect(queryParams.minVisitDuration).toBe(60);
+    expect(excludeBounceQuery).not.toContain('countIf(event_type = 2)');
+    expect(queryParams).toMatchObject({ minVisitDuration: 60 });
   });
 
   test('combines a duration range with exclude bounce in a single visit join', () => {
@@ -69,7 +82,8 @@ describe('parseFilters visit filters', () => {
     });
 
     expect(excludeBounceQuery.match(/\bjoin\b/g)).toHaveLength(1);
-    expect(excludeBounceQuery).toContain('sum(views) > 1');
+    expect(excludeBounceQuery).not.toContain('website_event_stats_hourly');
+    expect(excludeBounceQuery).toContain('countIf(event_type = 2) > 0');
     expect(excludeBounceQuery).toContain('>= {minVisitDuration:UInt32}');
     expect(excludeBounceQuery).toContain('<= {maxVisitDuration:UInt32}');
   });

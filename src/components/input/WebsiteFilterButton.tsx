@@ -25,14 +25,12 @@ export function WebsiteFilterButton({
   const { updateParams, pathname, router, query } = useNavigation();
   const { filters: currentFilters } = useFilters();
   const isEventsPath = pathname.endsWith('/events');
-  const [excludeBounce, setExcludeBounce] = useState(!!query.excludeBounce);
-  const [minVisitDuration, setMinVisitDuration] = useState<string | undefined>(
-    query.minVisitDuration,
-  );
   const isOverview =
     /^\/teams\/[^/]+\/websites\/[^/]+$/.test(pathname) || /^\/share\/[^/]+$/.test(pathname);
 
   const handleChange = ({
+    excludeBounce,
+    minVisitDuration,
     filters,
     eventPropertyFilters = [],
     sessionPropertyFilters = [],
@@ -81,27 +79,66 @@ export function WebsiteFilterButton({
       variant="outline"
       dialogClassName={styles.dialog}
     >
-      {({ close }) => {
-        return (
-          <>
-            {(isOverview || allowBounceFilter) && (
-              <Column position="absolute" top="30px" right="30px" gap alignItems="flex-end">
-                <Row>
-                  <Checkbox
-                    value={excludeBounce ? 'true' : ''}
-                    onChange={setExcludeBounce}
-                    style={{ marginTop: '3px' }}
-                  >
-                    {t(labels.excludeBounce)}
-                  </Checkbox>
-                </Row>
-                <VisitDurationFilter value={minVisitDuration} onChange={setMinVisitDuration} />
-              </Column>
-            )}
-            <FilterEditForm websiteId={websiteId} onChange={handleChange} onClose={close} />
-          </>
-        );
-      }}
+      {({ close }) => (
+        <WebsiteFilterDialogContent
+          websiteId={websiteId}
+          showVisitFilters={isOverview || allowBounceFilter}
+          initialExcludeBounce={!!query.excludeBounce}
+          initialMinVisitDuration={query.minVisitDuration}
+          onChange={handleChange}
+          onClose={close}
+        />
+      )}
     </DialogButton>
+  );
+}
+
+/**
+ * Holds the dialog's draft visit filters. The dialog content unmounts when it closes, so each
+ * opening starts again from the current URL and a canceled change is discarded.
+ */
+function WebsiteFilterDialogContent({
+  websiteId,
+  showVisitFilters,
+  initialExcludeBounce,
+  initialMinVisitDuration,
+  onChange,
+  onClose,
+}: {
+  websiteId?: string;
+  showVisitFilters?: boolean;
+  initialExcludeBounce: boolean;
+  initialMinVisitDuration?: string;
+  onChange: (data: any) => void;
+  onClose: () => void;
+}) {
+  const { t, labels } = useMessages();
+  const [excludeBounce, setExcludeBounce] = useState(initialExcludeBounce);
+  const [minVisitDuration, setMinVisitDuration] = useState<string | undefined>(
+    initialMinVisitDuration,
+  );
+
+  return (
+    <>
+      {showVisitFilters && (
+        <Column position="absolute" top="30px" right="30px" gap alignItems="flex-end">
+          <Row>
+            <Checkbox
+              value={excludeBounce ? 'true' : ''}
+              onChange={setExcludeBounce}
+              style={{ marginTop: '3px' }}
+            >
+              {t(labels.excludeBounce)}
+            </Checkbox>
+          </Row>
+          <VisitDurationFilter value={minVisitDuration} onChange={setMinVisitDuration} />
+        </Column>
+      )}
+      <FilterEditForm
+        websiteId={websiteId}
+        onChange={data => onChange({ ...data, excludeBounce, minVisitDuration })}
+        onClose={onClose}
+      />
+    </>
   );
 }

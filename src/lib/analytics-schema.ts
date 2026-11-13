@@ -8,6 +8,7 @@ import {
   heatmapReportSchema,
   journeyReportSchema,
   pagingParams,
+  visitFilterParams,
   timezoneParam,
   unitParam,
 } from './schema';
@@ -50,13 +51,15 @@ export const journeyQuerySchema = analyticsSchema(
 export const retentionQuerySchema = analyticsSchema({});
 export const breakdownQuerySchema = analyticsSchema({
   fields: jsonQuery(breakdownReportSchema.shape.parameters.shape.fields),
+  ...visitFilterParams,
 });
 export const attributionQuerySchema = analyticsSchema(
   attributionReportSchema.shape.parameters.omit({ startDate: true, endDate: true }).shape,
 );
-export const heatmapQuerySchema = analyticsSchema(
-  heatmapReportSchema.shape.parameters.omit({ startDate: true, endDate: true }).shape,
-);
+export const heatmapQuerySchema = analyticsSchema({
+  ...heatmapReportSchema.shape.parameters.omit({ startDate: true, endDate: true }).shape,
+  ...visitFilterParams,
+});
 
 export const funnelParametersSchema = funnelReportSchema.shape.parameters.omit({
   startDate: true,

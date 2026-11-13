@@ -123,10 +123,16 @@ export const filterParams = {
   cohort: z.uuid().optional(),
   eventType: z.coerce.number().int().positive().optional(),
   excludeBounce: z.string().optional(),
-  // Visit duration bounds, in seconds
+  match: z.enum(['all', 'any']).optional(),
+};
+
+/**
+ * Visit duration bounds, in seconds. Only for reports whose queries apply the visit-level
+ * join (`excludeBounceQuery`), so they are not accepted where they would be ignored.
+ */
+export const visitFilterParams = {
   minVisitDuration: z.coerce.number().int().nonnegative().optional(),
   maxVisitDuration: z.coerce.number().int().nonnegative().optional(),
-  match: z.enum(['all', 'any']).optional(),
 };
 
 export const searchParams = {

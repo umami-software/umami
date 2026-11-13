@@ -260,26 +260,6 @@ const operation1 = defineOperation({
         description: 'Set a non-empty value to exclude visits with only one pageview.',
       },
       {
-        name: 'minVisitDuration',
-        in: 'query',
-        required: false,
-        schema: {
-          type: 'integer',
-          minimum: 0,
-        },
-        description: 'Only include visits that lasted at least this many seconds.',
-      },
-      {
-        name: 'maxVisitDuration',
-        in: 'query',
-        required: false,
-        schema: {
-          type: 'integer',
-          minimum: 0,
-        },
-        description: 'Only include visits that lasted at most this many seconds.',
-      },
-      {
         name: 'segment',
         in: 'query',
         required: false,

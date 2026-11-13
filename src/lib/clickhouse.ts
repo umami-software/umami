@@ -207,28 +207,57 @@ function getCohortQuery(filters: Record<string, any>) {
  * that satisfy all of them.
  */
 function getExcludeBounceQuery(filters: Record<string, any>) {
-  const havingClauses: string[] = [];
-  // Same definition as the visit time shown in the website stats: from the first to the last
-  // event of the visit, ignoring custom (2) and performance (5) events.
-  const visitDuration =
-    'maxIf(max_time, event_type NOT IN (2, 5)) - minIf(min_time, event_type NOT IN (2, 5))';
   const hasDurationFilter =
     filters.minVisitDuration !== undefined || filters.maxVisitDuration !== undefined;
 
-  if (filters.excludeBounce === true) {
-    havingClauses.push(`(
-      sum(views) > 1
+  if (hasDurationFilter) {
+    return getVisitDurationJoin(filters);
+  }
+
+  if (filters.excludeBounce !== true) {
+    return '';
+  }
+
+  return `join
+    (select session_id as exclude_session_id, visit_id as exclude_visit_id
+    from website_event_stats_hourly
+    where website_id = {websiteId:UUID}
+      and created_at between {startDate:DateTime64} and {endDate:DateTime64}
+      and event_type != 5
+    group by session_id, visit_id
+    having sum(views) > 1
       or (
         sum(views) = 1
         and sumIf(length(event_name), event_type = 2) > 0
       )
-    )`);
-  }
+    ) excludeBounce
+    on excludeBounce.exclude_session_id = website_event.session_id
+      and excludeBounce.exclude_visit_id = website_event.visit_id
+    `;
+}
 
-  if (hasDurationFilter) {
-    // minIf/maxIf fall back to the epoch for a visit with no page events, so exclude those
-    // explicitly rather than reading their duration as 0.
-    havingClauses.push('countIf(event_type NOT IN (2, 5)) > 0');
+/**
+ * Visit duration needs the events' own timestamps: the hourly table stores the start of the
+ * hour in created_at, so a range that starts partway through an hour would drop that hour's
+ * visits. Exclude bounce, when also set, is evaluated on the same events.
+ */
+function getVisitDurationJoin(filters: Record<string, any>) {
+  const pageEvents = 'event_type NOT IN (2, 5)';
+  // Same definition as the visit time shown in the website stats: from the first to the last
+  // event of the visit, ignoring custom (2) and performance (5) events.
+  const visitDuration = `dateDiff('second', minIf(created_at, ${pageEvents}), maxIf(created_at, ${pageEvents}))`;
+  // minIf/maxIf fall back to the epoch for a visit with no page events, so exclude those
+  // explicitly rather than reading their duration as 0.
+  const havingClauses = [`countIf(${pageEvents}) > 0`];
+
+  if (filters.excludeBounce === true) {
+    havingClauses.push(`(
+      countIf(${pageEvents}) > 1
+      or (
+        countIf(${pageEvents}) = 1
+        and countIf(event_type = 2) > 0
+      )
+    )`);
   }
 
   if (filters.minVisitDuration !== undefined) {
@@ -239,13 +268,9 @@ function getExcludeBounceQuery(filters: Record<string, any>) {
     havingClauses.push(`${visitDuration} <= {maxVisitDuration:UInt32}`);
   }
 
-  if (havingClauses.length === 0) {
-    return '';
-  }
-
   return `join
     (select session_id as exclude_session_id, visit_id as exclude_visit_id
-    from website_event_stats_hourly
+    from website_event
     where website_id = {websiteId:UUID}
       and created_at between {startDate:DateTime64} and {endDate:DateTime64}
       and event_type != 5

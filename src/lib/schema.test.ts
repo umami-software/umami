@@ -16,6 +16,7 @@ import {
   urlOrPathParam,
   userRoleParam,
   withDateRange,
+  visitFilterParams,
   withPeriodDateRange,
 } from './schema';
 
@@ -324,5 +325,13 @@ describe('reportBaseSchema', () => {
     expect(() =>
       reportBaseSchema.parse({ websiteId: 'nope', type: 'goal', name: 'r', parameters: {} }),
     ).toThrow();
+  });
+});
+
+describe('visitFilterParams', () => {
+  test('are not part of the shared filterParams', () => {
+    expect(filterParams).not.toHaveProperty('minVisitDuration');
+    expect(filterParams).not.toHaveProperty('maxVisitDuration');
+    expect(Object.keys(visitFilterParams)).toEqual(['minVisitDuration', 'maxVisitDuration']);
   });
 });

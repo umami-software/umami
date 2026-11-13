@@ -277,7 +277,7 @@ describe('parseFilters visit filters', () => {
     );
     expect(excludeBounceQuery).not.toContain('maxVisitDuration');
     expect(excludeBounceQuery).not.toContain('sum(case when event_type = 2');
-    expect(queryParams.minVisitDuration).toBe(60);
+    expect(queryParams).toMatchObject({ minVisitDuration: 60 });
   });
 
   test('combines a duration range with exclude bounce in a single visit join', () => {
