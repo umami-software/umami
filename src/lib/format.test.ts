@@ -49,6 +49,29 @@ test('formatLongNumber moves values that round up to the next format', () => {
   expect(format.formatLongNumber(999)).toBe('999');
 });
 
+test('formatLongCurrency', () => {
+  expect(format.formatLongCurrency(1000000000, 'USD')).toBe('$1.00b');
+  expect(format.formatLongCurrency(2500000000, 'USD')).toBe('$2.50b');
+  expect(format.formatLongCurrency(1200000, 'USD')).toBe('$1.20m');
+  expect(format.formatLongCurrency(575000, 'USD')).toBe('$575.00k');
+  expect(format.formatLongCurrency(1200, 'USD')).toBe('$1.20k');
+  expect(format.formatLongCurrency(42.5, 'USD')).toBe('$42.50');
+});
+
+test('formatLongCurrency moves values that round up to the next format', () => {
+  // Currency uses 2 fraction digits, so values that round to 1000 of a unit
+  // must move to the next unit instead of showing $1,000.00k / $1,000.00m.
+  expect(format.formatLongCurrency(999999999, 'USD')).toBe('$1.00b');
+  expect(format.formatLongCurrency(999995000, 'USD')).toBe('$1.00b');
+  expect(format.formatLongCurrency(999999, 'USD')).toBe('$1.00m');
+  expect(format.formatLongCurrency(999995, 'USD')).toBe('$1.00m');
+  expect(format.formatLongCurrency(999.995, 'USD')).toBe('$1.00k');
+
+  expect(format.formatLongCurrency(999994999, 'USD')).toBe('$999.99m');
+  expect(format.formatLongCurrency(999994, 'USD')).toBe('$999.99k');
+  expect(format.formatLongCurrency(999.994, 'USD')).toBe('$999.99');
+});
+
 test('stringToColor', () => {
   expect(format.stringToColor('hello')).toBe('#d218e9');
   expect(format.stringToColor('goodbye')).toBe('#11e956');

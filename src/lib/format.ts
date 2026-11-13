@@ -109,13 +109,16 @@ export function formatCurrency(value: number, currency: string, locale = 'en-US'
 export function formatLongCurrency(value: number, currency: string, locale = 'en-US') {
   const n = Number(value);
 
-  if (n >= 1000000000) {
+  // Currency formatting uses 2 fraction digits. Lower each threshold by half of
+  // that last digit so values that round up to 1000 of a unit move to the next
+  // format instead of showing as $1,000.00k or $1,000.00m.
+  if (n >= 999995000) {
     return `${formatCurrency(n / 1000000000, currency, locale)}b`;
   }
-  if (n >= 1000000) {
+  if (n >= 999995) {
     return `${formatCurrency(n / 1000000, currency, locale)}m`;
   }
-  if (n >= 1000) {
+  if (n >= 999.995) {
     return `${formatCurrency(n / 1000, currency, locale)}k`;
   }
 
