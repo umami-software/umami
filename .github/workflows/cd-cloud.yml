@@ -6,6 +6,9 @@ on:
       - analytics
       - cloud
 
+permissions:
+  contents: read
+
 jobs:
   build:
     name: Build, push, and deploy
