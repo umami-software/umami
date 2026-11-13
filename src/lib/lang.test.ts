@@ -1,3 +1,4 @@
+import { format } from 'date-fns';
 import { enUS, fr } from 'date-fns/locale';
 import { describe, expect, test } from 'vitest';
 import { getDateLocale, getTextDirection } from './lang';
@@ -5,6 +6,14 @@ import { getDateLocale, getTextDirection } from './lang';
 describe('getDateLocale', () => {
   test('returns the configured date-fns locale', () => {
     expect(getDateLocale('fr-FR')).toBe(fr);
+  });
+
+  test('formats Galician dates with Galician weekday and month names', () => {
+    expect(
+      format(new Date(2024, 0, 1), 'EEEE, d MMMM yyyy', {
+        locale: getDateLocale('ga-ES'),
+      }),
+    ).toBe('luns, 1 xaneiro 2024');
   });
 
   test('falls back to en-US for unknown locales', () => {
