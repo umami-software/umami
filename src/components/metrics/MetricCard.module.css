@@ -18,11 +18,11 @@
 
 /* Inside a joined MetricsBar the bar clips outer rings, so highlight the cell instead. */
 .clickable:not(.bordered):hover {
-  background-color: var(--zen-interactive-bg-hover);
+  background-color: var(--zen-interactive-bg);
 }
 
 .clickable:not(.bordered).selected {
-  box-shadow: inset 0 -2px 0 var(--zen-fg);
+  box-shadow: inset 0 -2px 0 var(--zen-primary);
 }
 
 /* Keep the info button from making the label row taller than cards without one. */
