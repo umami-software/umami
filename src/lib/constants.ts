@@ -749,6 +749,14 @@ export const CURRENCIES = [
 ];
 
 export const TIMEZONE_LEGACY: Record<string, string> = {
+  'Africa/Asmera': 'Africa/Asmara',
+  'America/Godthab': 'America/Nuuk',
+  'America/Indianapolis': 'America/Indiana/Indianapolis',
+  'America/Louisville': 'America/Kentucky/Louisville',
+  'Atlantic/Faeroe': 'Atlantic/Faroe',
+  'Pacific/Enderbury': 'Pacific/Kanton',
+  'Pacific/Ponape': 'Pacific/Pohnpei',
+  'Pacific/Truk': 'Pacific/Chuuk',
   'America/Buenos_Aires': 'America/Argentina/Buenos_Aires',
   'America/Catamarca': 'America/Argentina/Catamarca',
   'America/Cordoba': 'America/Argentina/Cordoba',
