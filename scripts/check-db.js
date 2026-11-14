@@ -96,4 +96,7 @@ async function applyMigration() {
       }
     }
   }
+
+  // Close the connection pool, or its idle connections keep the process alive until they time out (10s).
+  await prisma.$disconnect();
 })();
