@@ -2,7 +2,7 @@ import { z } from 'zod';
 import { EVENT_COLUMNS, EVENT_TYPE, SESSION_COLUMNS } from '@/lib/constants';
 import { getQueryFilters, parseRequest } from '@/lib/request';
 import { badRequest, json, unauthorized } from '@/lib/response';
-import { filterParams, searchParams, withDateRange } from '@/lib/schema';
+import { filterParams, searchParams, visitFilterParams, withDateRange } from '@/lib/schema';
 import { canViewWebsiteSection } from '@/permissions';
 import {
   getChannelExpandedMetrics,
@@ -21,6 +21,7 @@ export async function GET(
     offset: z.coerce.number().optional(),
     ...searchParams,
     ...filterParams,
+    ...visitFilterParams,
   });
 
   const { auth, query, error } = await parseRequest(request, schema);

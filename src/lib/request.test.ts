@@ -233,3 +233,46 @@ test('parseRequest allows ordinary sessions on every route', async () => {
 
   expect(error).toBeUndefined();
 });
+
+test('passes visit duration bounds through as seconds', async () => {
+  const filters = await getQueryFilters(
+    {
+      startAt: String(+new Date('2026-09-01T00:00:00.000Z')),
+      endAt: String(+new Date('2026-09-02T00:00:00.000Z')),
+      minVisitDuration: '60',
+      maxVisitDuration: 600,
+    },
+    'website-1',
+  );
+
+  expect(filters.minVisitDuration).toBe(60);
+  expect(filters.maxVisitDuration).toBe(600);
+});
+
+test('ignores visit duration bounds that are not whole non-negative seconds', async () => {
+  const filters = await getQueryFilters(
+    {
+      startAt: String(+new Date('2026-09-01T00:00:00.000Z')),
+      endAt: String(+new Date('2026-09-02T00:00:00.000Z')),
+      minVisitDuration: '-5',
+      maxVisitDuration: 'abc',
+    },
+    'website-1',
+  );
+
+  expect(filters.minVisitDuration).toBeUndefined();
+  expect(filters.maxVisitDuration).toBeUndefined();
+});
+
+test('does not treat the replay minDuration parameter as a visit duration filter', async () => {
+  const filters = await getQueryFilters(
+    {
+      startAt: String(+new Date('2026-09-01T00:00:00.000Z')),
+      endAt: String(+new Date('2026-09-02T00:00:00.000Z')),
+      minDuration: 30,
+    },
+    'website-1',
+  );
+
+  expect(filters.minVisitDuration).toBeUndefined();
+});

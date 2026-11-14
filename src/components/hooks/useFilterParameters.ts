@@ -35,6 +35,8 @@ export function useFilterParameters({
       segment: allowFilter ? query.segment : undefined,
       cohort: allowFilter ? query.cohort : undefined,
       excludeBounce: allowFilter ? query.excludeBounce : undefined,
+      minVisitDuration: allowFilter ? query.minVisitDuration : undefined,
+      maxVisitDuration: allowFilter ? query.maxVisitDuration : undefined,
       match: allowFilter ? query.match : undefined,
     } as Record<string, any>;
 

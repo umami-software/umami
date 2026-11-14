@@ -1,5 +1,10 @@
 import { describe, expect, test } from 'vitest';
-import { breakdownQuerySchema, journeyQuerySchema, retentionQuerySchema } from './analytics-schema';
+import {
+  breakdownQuerySchema,
+  heatmapQuerySchema,
+  journeyQuerySchema,
+  retentionQuerySchema,
+} from './analytics-schema';
 
 const range = { startAt: '1000', endAt: '2000' };
 
@@ -31,5 +36,30 @@ describe('analytics GET schemas', () => {
       steps: 3,
       eventType: 2,
     });
+  });
+});
+
+describe('visit duration params', () => {
+  const visitParams = { ...range, minVisitDuration: '60', maxVisitDuration: '600' };
+
+  test('are accepted by reports that apply the visit-level join', () => {
+    expect(breakdownQuerySchema.parse({ ...visitParams, fields: '["path"]' })).toMatchObject({
+      minVisitDuration: 60,
+      maxVisitDuration: 600,
+    });
+    expect(heatmapQuerySchema.parse(visitParams)).toMatchObject({ minVisitDuration: 60 });
+  });
+
+  test('are dropped by reports that would ignore them', () => {
+    // journeys and retention never join to visits, so the bounds must not reach their filters
+    expect(journeyQuerySchema.parse({ ...visitParams, steps: '3' })).not.toHaveProperty(
+      'minVisitDuration',
+    );
+    expect(retentionQuerySchema.parse(visitParams)).not.toHaveProperty('maxVisitDuration');
+  });
+
+  test('reject negative or fractional seconds', () => {
+    expect(heatmapQuerySchema.safeParse({ ...range, minVisitDuration: '-1' }).success).toBe(false);
+    expect(heatmapQuerySchema.safeParse({ ...range, minVisitDuration: '1.5' }).success).toBe(false);
   });
 });

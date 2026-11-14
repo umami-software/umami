@@ -1,7 +1,7 @@
 import { z } from 'zod';
 import { getQueryFilters, parseRequest } from '@/lib/request';
 import { json, unauthorized } from '@/lib/response';
-import { filterParams, timezoneParam, withPeriodDateRange } from '@/lib/schema';
+import { filterParams, timezoneParam, visitFilterParams, withPeriodDateRange } from '@/lib/schema';
 import { canViewWebsiteSection } from '@/permissions';
 import { getWeeklyTraffic } from '@/queries/sql';
 
@@ -14,6 +14,7 @@ export async function GET(
     endAt: z.coerce.number().int(),
     timezone: timezoneParam,
     ...filterParams,
+    ...visitFilterParams,
   });
 
   const { auth, query, error } = await parseRequest(request, schema);
