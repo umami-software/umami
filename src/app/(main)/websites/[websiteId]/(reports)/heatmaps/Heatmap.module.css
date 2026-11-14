@@ -170,6 +170,9 @@
   overflow-x: hidden;
   overflow-y: auto;
   overscroll-behavior: contain;
+  /* The canvas scale is derived from clientWidth; without a stable gutter the
+     scrollbar toggling changes it and the preview oscillates. */
+  scrollbar-gutter: stable;
 }
 
 .canvas {
