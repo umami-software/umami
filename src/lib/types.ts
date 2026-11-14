@@ -49,7 +49,8 @@ export type ShareTheme = 'light' | 'dark';
 export interface ShareParameters {
   allowFilter?: boolean;
   theme?: ShareTheme;
-  [key: string]: boolean | ShareTheme | undefined;
+  presetFilters?: Record<string, string>;
+  [key: string]: boolean | ShareTheme | Record<string, string> | undefined;
 }
 
 export interface PropertyFilter {

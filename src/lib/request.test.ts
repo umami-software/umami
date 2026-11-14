@@ -2,7 +2,7 @@ import { beforeEach, expect, test, vi } from 'vitest';
 import { checkAuth } from '@/lib/auth';
 import { fetchWebsite } from '@/lib/load';
 import { getWebsiteSegment } from '@/queries/prisma';
-import { getQueryFilters, parseRequest, resolvePeriodDateRange } from './request';
+import { getQueryFilters, resolvePeriodDateRange, parseRequest } from './request';
 
 vi.hoisted(() => {
   process.env.DATABASE_URL ??= 'postgresql://user:pass@localhost:5432/umami?schema=public';
@@ -18,6 +18,10 @@ vi.mock('@/lib/load', () => ({
   fetchWebsite: vi.fn(),
 }));
 
+vi.mock('@/lib/auth', () => ({
+  checkAuth: vi.fn(),
+}));
+
 vi.mock('@/queries/prisma', () => ({
   getWebsiteSegment: vi.fn(),
 }));
@@ -25,12 +29,44 @@ vi.mock('@/queries/prisma', () => ({
 const checkAuthMock = vi.mocked(checkAuth);
 const fetchWebsiteMock = vi.mocked(fetchWebsite);
 const getWebsiteSegmentMock = vi.mocked(getWebsiteSegment);
+const checkAuthMock = vi.mocked(checkAuth);
 
 beforeEach(() => {
   checkAuthMock.mockReset();
   fetchWebsiteMock.mockReset();
   getWebsiteSegmentMock.mockReset();
+  checkAuthMock.mockReset();
   fetchWebsiteMock.mockResolvedValue({ id: 'website-1' } as any);
+});
+
+test('applies share preset filters to website API requests', async () => {
+  checkAuthMock.mockResolvedValue({
+    shareToken: {
+      websiteId: 'website-1',
+      parameters: { presetFilters: { country: 'eq.US' } },
+    },
+  } as any);
+
+  const { query } = await parseRequest(
+    new Request('http://localhost/api/websites/website-1/stats?country=eq.CA&search=landing'),
+  );
+
+  expect(query).toEqual({ country: 'eq.US', search: 'landing' });
+});
+
+test('does not apply share preset filters to another website', async () => {
+  checkAuthMock.mockResolvedValue({
+    shareToken: {
+      websiteId: 'website-1',
+      parameters: { presetFilters: { country: 'eq.US' } },
+    },
+  } as any);
+
+  const { query } = await parseRequest(
+    new Request('http://localhost/api/websites/website-2/stats?country=eq.CA'),
+  );
+
+  expect(query).toEqual({ country: 'eq.CA' });
 });
 
 test('leaves explicit date parameters unchanged when period is omitted', () => {

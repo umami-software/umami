@@ -18,6 +18,14 @@ import { useEffect, useState } from 'react';
 import { useApi, useConfig, useMessages, useModified } from '@/components/hooks';
 import { ThemeModeSelector } from '@/components/input/ThemeModeSelector';
 import { SHARE_NAV_ITEMS } from './constants';
+import { ListFilter } from '@/components/icons';
+import { DialogButton } from '@/components/input/DialogButton';
+import { FilterEditForm } from '@/components/input/FilterEditForm';
+import {
+  filtersArrayToObject,
+  serializeSessionPropertyFilters,
+  serializeUniversalEventPropertyFilters,
+} from '@/lib/params';
 
 export function ShareEditForm({
   shareId,
@@ -39,7 +47,8 @@ export function ShareEditForm({
   const [isLoading, setIsLoading] = useState(!!shareId);
   const [isPending, setIsPending] = useState(false);
   const [error, setError] = useState<any>(null);
-
+  const [presetFilters, setPresetFilters] = useState<Record<string, string>>({});
+  
   const isEditing = !!shareId;
 
   const getUrl = (slug: string) => {
@@ -54,6 +63,7 @@ export function ShareEditForm({
       try {
         const data = await get(`/share/id/${shareId}`);
         setShare(data);
+        setPresetFilters(data.parameters?.presetFilters ?? {});
       } finally {
         setIsLoading(false);
       }
@@ -68,9 +78,10 @@ export function ShareEditForm({
         parameters[item.id] = data[item.id] ?? false;
       });
     });
-    parameters.allowFilter = data.allowFilter ?? true;
+    parameters.allowFilter = Object.keys(presetFilters).length ? false : (data.allowFilter ?? true);
     parameters.theme = data.theme === 'system' ? undefined : data.theme;
-
+    parameters.presetFilters = Object.keys(presetFilters).length ? presetFilters : undefined;
+    
     setIsPending(true);
     setError(null);
 
@@ -106,7 +117,10 @@ export function ShareEditForm({
   // Build default values from share parameters
   const defaultValues: Record<string, any> = {
     name: share?.name || '',
-    allowFilter: share?.parameters?.allowFilter ?? true,
+    allowFilter:
+      Object.keys(share?.parameters?.presetFilters ?? {}).length > 0
+        ? false
+        : (share?.parameters?.allowFilter ?? true),
     theme: share?.parameters?.theme || 'system',
   };
   SHARE_NAV_ITEMS.forEach(section => {
@@ -140,6 +154,7 @@ export function ShareEditForm({
               <FormField label={t(labels.filters)} name="allowFilter">
                 <Switch
                   isSelected={watch('allowFilter')}
+                  isDisabled={Object.keys(presetFilters).length > 0}
                   onChange={value => setValue('allowFilter', value, { shouldDirty: true })}
                 >
                   {t(labels.filtersEnabled)}
@@ -153,6 +168,53 @@ export function ShareEditForm({
                 />
               </FormField>
             </Grid>
+            <DialogButton
+              icon={<ListFilter size={16} />}
+              label={t(labels.filter)}
+              title={t(labels.filters)}
+              type="button"
+              variant="outline"
+              width="900px"
+            >
+              {({ close }) => (
+                <FilterEditForm
+                  websiteId={websiteId}
+                  initialFilters={presetFilters}
+                  onClose={close}
+                  onChange={({
+                    filters,
+                    eventPropertyFilters,
+                    sessionPropertyFilters,
+                    segment,
+                    cohort,
+                    match,
+                  }) => {
+                    const hasFilters =
+                      filters.length > 0 ||
+                      eventPropertyFilters.length > 0 ||
+                      sessionPropertyFilters.length > 0 ||
+                      !!segment ||
+                      !!cohort;
+                    const nextFilters = {
+                      ...filtersArrayToObject(filters),
+                      ...serializeUniversalEventPropertyFilters(eventPropertyFilters),
+                      ...serializeSessionPropertyFilters(sessionPropertyFilters),
+                      ...(segment ? { segment } : {}),
+                      ...(cohort ? { cohort } : {}),
+                      ...(hasFilters ? { match: match || 'all' } : {}),
+                    };
+                    setPresetFilters(
+                      Object.fromEntries(
+                        Object.entries(nextFilters).filter(
+                          ([, value]) => value !== undefined && value !== '',
+                        ),
+                      ),
+                    );
+                    setValue('allowFilter', false, { shouldDirty: true });
+                  }}
+                />
+              )}
+            </DialogButton>
             <ListSeparator />
             <Grid columns={{ base: 'repeat(2, 1fr)', lg: 'repeat(3, 1fr)' }} gap="3">
               {SHARE_NAV_ITEMS.map(section => (
