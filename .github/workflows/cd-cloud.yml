@@ -12,13 +12,13 @@ jobs:
     runs-on: blacksmith-4vcpu-ubuntu-2404
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@a37ce9120846195fa4ece8f58b268e6043cb2f26 # v3.7.0
 
       - name: Generate random hash
         id: random_hash
         run: echo "hash=$(openssl rand -hex 4)" >> $GITHUB_OUTPUT
 
-      - uses: mr-smithers-excellent/docker-build-push@v6
+      - uses: mr-smithers-excellent/docker-build-push@05b44e1dd9e03f78e8689bd1a61c750f17907ffe # v6.11
         name: Build & push Docker image to docker.io
         with:
           image: umamisoftware/umami
