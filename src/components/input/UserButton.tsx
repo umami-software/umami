@@ -15,7 +15,7 @@ import {
   useTheme,
 } from '@umami/react-zen';
 import { useRouter } from 'next/navigation';
-import { useConfig, useLocale, useLoginQuery, useMessages, useMobile } from '@/components/hooks';
+import { useConfig, useLoginQuery, useMessages, useMobile } from '@/components/hooks';
 import {
   BookText,
   ExternalLink,
@@ -29,8 +29,8 @@ import {
   SunMoon,
   UserCircle,
 } from '@/components/icons';
+import { LanguageMenu } from '@/components/input/LanguageMenu';
 import { DOCS_URL } from '@/lib/constants';
-import { languages } from '@/lib/lang';
 
 export interface UserButtonProps {
   showText?: boolean;
@@ -41,7 +41,6 @@ export function UserButton({ showText = true, onClose }: UserButtonProps) {
   const { user } = useLoginQuery();
   const { cloudMode } = useConfig();
   const { t, labels } = useMessages();
-  const { locale, saveLocale } = useLocale();
   const { theme, setTheme } = useTheme();
   const { isMobile } = useMobile();
   const router = useRouter();
@@ -62,20 +61,10 @@ export function UserButton({ showText = true, onClose }: UserButtonProps) {
     }
   };
 
-  const handleSelectLocale = (key: string) => {
-    saveLocale(key);
-    onClose?.();
-  };
-
   const handleSelectTheme = (key: 'light' | 'dark') => {
     setTheme(key);
     onClose?.();
   };
-
-  const languageItems = Object.keys(languages).map(key => ({
-    value: key,
-    label: languages[key].label,
-  }));
 
   const items = [
     cloudMode && {
@@ -171,17 +160,7 @@ export function UserButton({ showText = true, onClose }: UserButtonProps) {
                 align={isMobile ? 'start' : 'end'}
                 isNonModal
               >
-                <Menu
-                  selectionMode="single"
-                  selectedKeys={new Set([locale])}
-                  style={{ maxHeight: 300, overflow: 'auto' }}
-                >
-                  {languageItems.map(({ value, label }) => (
-                    <MenuItem key={value} id={value} onAction={() => handleSelectLocale(value)}>
-                      <Text weight={value === locale ? 'bold' : undefined}>{label}</Text>
-                    </MenuItem>
-                  ))}
-                </Menu>
+                <LanguageMenu onSelect={() => onClose?.()} />
               </Popover>
             </SubmenuTrigger>
             <SubmenuTrigger>
