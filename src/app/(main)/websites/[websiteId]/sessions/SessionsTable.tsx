@@ -93,8 +93,16 @@ export function useSessionColumns(): Record<string, SessionColumnDef> {
       },
       hostname: { label: t(labels.hostname), width: '180px' },
       screen: { label: t(labels.screen), width: '120px' },
-      language: { label: t(labels.language), width: '140px' },
-      region: { label: t(labels.region), width: '140px' },
+      language: {
+        label: t(labels.language),
+        width: '140px',
+        render: (row: any) => formatValue(row.language, 'language'),
+      },
+      region: {
+        label: t(labels.region),
+        width: '140px',
+        render: (row: any) => formatValue(row.region, 'region'),
+      },
       firstAt: {
         label: t(labels.firstSeen),
         width: '140px',
