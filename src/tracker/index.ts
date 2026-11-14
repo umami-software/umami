@@ -215,6 +215,7 @@ export type UmamiConfig = {
   autoTrack?: boolean;
   autoPageview?: boolean;
   doNotTrack?: boolean;
+  globalPrivacyControl?: boolean;
   excludeSearch?: boolean;
   excludeHash?: boolean;
   domains?: string | string[];

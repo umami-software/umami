@@ -9290,6 +9290,10 @@ export interface operations {
                 beep: string;
               }
             | {
+                /** @constant */
+                disabled: true;
+              }
+            | {
                 cache: string;
                 /** @description ID of the visitor session. */
                 sessionId: string;
