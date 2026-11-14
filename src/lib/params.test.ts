@@ -2,6 +2,8 @@ import { describe, expect, test } from 'vitest';
 import { DATA_TYPE, OPERATORS } from './constants';
 import {
   filtersObjectToArray,
+  isPresenceOperator,
+  parseFilterValue,
   parseSessionPropertyFilters,
   parseUniversalEventPropertyFilters,
   serializeSessionPropertyFilters,
@@ -105,5 +107,18 @@ describe('filtersObjectToArray', () => {
     expect(filter.name).toBe('path');
     expect(filter.paramName).toBe('path1');
     expect(filter.value).toBe('/a');
+  });
+});
+
+describe('presence operators', () => {
+  test('parse with an empty value', () => {
+    expect(parseFilterValue('ns.')).toEqual({ operator: OPERATORS.notSet, value: '' });
+    expect(parseFilterValue('s.')).toEqual({ operator: OPERATORS.set, value: '' });
+  });
+
+  test('are the only operators that take no value', () => {
+    expect(isPresenceOperator(OPERATORS.set)).toBe(true);
+    expect(isPresenceOperator(OPERATORS.notSet)).toBe(true);
+    expect(isPresenceOperator(OPERATORS.notEquals)).toBe(false);
   });
 });

@@ -135,6 +135,10 @@ function mapFilter(
       return `match(${column}, concat('(?i)', ${value}))`;
     case OPERATORS.notRegex:
       return `not match(${column}, concat('(?i)', ${value}))`;
+    case OPERATORS.set:
+      return `coalesce(${column}, '') != ''`;
+    case OPERATORS.notSet:
+      return `coalesce(${column}, '') = ''`;
     default:
       return '';
   }
