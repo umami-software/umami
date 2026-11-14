@@ -87,35 +87,41 @@ export function stringToColor(str: string) {
   return color;
 }
 
-export function formatCurrency(value: number, currency: string, locale = 'en-US') {
-  let formattedValue: Intl.NumberFormat;
-
+function getCurrencyFormatter(currency: string, locale = 'en-US') {
   try {
-    formattedValue = new Intl.NumberFormat(locale, {
+    return new Intl.NumberFormat(locale, {
       style: 'currency',
       currency: currency,
     });
   } catch {
     // Fallback to default currency format if an error occurs
-    formattedValue = new Intl.NumberFormat(locale, {
+    return new Intl.NumberFormat(locale, {
       style: 'currency',
       currency: DEFAULT_CURRENCY,
     });
   }
+}
 
-  return formattedValue.format(value);
+export function formatCurrency(value: number, currency: string, locale = 'en-US') {
+  return getCurrencyFormatter(currency, locale).format(value);
 }
 
 export function formatLongCurrency(value: number, currency: string, locale = 'en-US') {
   const n = Number(value);
+  // Derive the rounding boundary from the currency's fraction digits so a value
+  // moves to the next unit exactly when the displayed amount would round to 1000
+  // of the current unit (e.g. 0 digits for JPY, 2 for USD, 3 for KWD).
+  const fractionDigits =
+    getCurrencyFormatter(currency, locale).resolvedOptions().maximumFractionDigits ?? 2;
+  const half = 0.5 * 10 ** -fractionDigits;
 
-  if (n >= 1000000000) {
+  if (n >= 1e9 - half * 1e6) {
     return `${formatCurrency(n / 1000000000, currency, locale)}b`;
   }
-  if (n >= 1000000) {
+  if (n >= 1e6 - half * 1e3) {
     return `${formatCurrency(n / 1000000, currency, locale)}m`;
   }
-  if (n >= 1000) {
+  if (n >= 1e3 - half) {
     return `${formatCurrency(n / 1000, currency, locale)}k`;
   }
 
