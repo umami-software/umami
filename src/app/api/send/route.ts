@@ -12,7 +12,13 @@ import { parseRequest } from '@/lib/request';
 import { badRequest, forbidden, json, serverError } from '@/lib/response';
 import { anyObjectParam, urlOrPathParam } from '@/lib/schema';
 import { safeDecodeURI, safeDecodeURIComponent } from '@/lib/url';
-import { createSession, saveEvent, saveSessionData, saveSessionLink, updateSession } from '@/queries/sql';
+import {
+  createSession,
+  saveEvent,
+  saveSessionData,
+  saveSessionLink,
+  updateSession,
+} from '@/queries/sql';
 
 interface Cache {
   websiteId: string;

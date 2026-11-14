@@ -13,7 +13,11 @@ export interface LinksTableProps extends DataTableProps {
   showActions?: boolean;
 }
 
-export function LinksTable({ showActions, data = [], ...props }: LinksTableProps & { data?: any[] }) {
+export function LinksTable({
+  showActions,
+  data = [],
+  ...props
+}: LinksTableProps & { data?: any[] }) {
   const { t, labels } = useMessages();
   const { websiteId, renderUrl } = useNavigation();
   const { getSlugUrl } = useSlug('link');

@@ -137,9 +137,7 @@ async function clickhouseQuery(
   const hasEventFilters =
     EVENT_COLUMNS.some(item => Object.keys(filters).includes(item)) ||
     !!filters.eventPropertyFilters?.length;
-  const bounceQuery = excludeBounce
-    ? '0'
-    : 'sumIf(1, t.c = 1 and t.has_custom_event = 0)';
+  const bounceQuery = excludeBounce ? '0' : 'sumIf(1, t.c = 1 and t.has_custom_event = 0)';
 
   if (hasEventFilters) {
     sql = `
@@ -165,14 +163,18 @@ async function clickhouseQuery(
         ${filterQuery}
       group by session_id, visit_id
     ) as t
-    ${excludeBounce ? '' : `left join (
+    ${
+      excludeBounce
+        ? ''
+        : `left join (
       select session_id, visit_id, toUInt8(1) as has_custom_event
       from website_event
       where website_id = {websiteId:UUID}
         and created_at between {startDate:DateTime64} and {endDate:DateTime64}
         and event_type = ${EVENT_TYPE.customEvent}
       group by session_id, visit_id
-    ) as e using (session_id, visit_id)`};
+    ) as e using (session_id, visit_id)`
+    };
     `;
   } else {
     sql = `

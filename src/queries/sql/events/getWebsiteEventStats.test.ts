@@ -7,11 +7,7 @@ const parseFiltersResult = {
   cohortQuery: 'join cohort on cohort.session_id = website_event.session_id',
 };
 
-async function loadModule({
-  mode,
-}: {
-  mode: 'prisma' | 'clickhouse';
-}) {
+async function loadModule({ mode }: { mode: 'prisma' | 'clickhouse' }) {
   vi.resetModules();
 
   const state = { mode };

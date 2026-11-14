@@ -27,8 +27,7 @@ vi.mock('../useFilterParameters', () => ({
   }),
 }));
 
-import { DATA_TYPE } from '@/lib/constants';
-import { OPERATORS } from '@/lib/constants';
+import { DATA_TYPE, OPERATORS } from '@/lib/constants';
 import { usePropertyFieldsQuery } from './usePropertyFieldsQuery';
 import { usePropertyValuesQuery } from './usePropertyValuesQuery';
 
@@ -45,7 +44,14 @@ describe('event property query params', () => {
         'website-1',
         'plan',
         DATA_TYPE.string,
-        [{ propertyName: 'tier', dataType: DATA_TYPE.string, operator: OPERATORS.equals, value: 'pro' }],
+        [
+          {
+            propertyName: 'tier',
+            dataType: DATA_TYPE.string,
+            operator: OPERATORS.equals,
+            value: 'pro',
+          },
+        ],
         'signup',
       ),
     );

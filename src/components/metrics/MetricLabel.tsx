@@ -149,12 +149,14 @@ function PathMetricLabel({ type, data }: MetricLabelProps) {
       type={type === 'entry' || type === 'exit' ? 'path' : type}
       value={label}
       label={!label && t(labels.none)}
-      externalUrl={domain ? `${domain?.startsWith('http') ? domain : `https://${domain}`}${label}` : null}
+      externalUrl={
+        domain ? `${domain?.startsWith('http') ? domain : `https://${domain}`}${label}` : null
+      }
     />
   );
 }
 
-function FullPathMetricLabel({ data }: Pick<MetricLabelProps, "data">) {
+function FullPathMetricLabel({ data }: Pick<MetricLabelProps, 'data'>) {
   const { t, labels } = useMessages();
   const { label } = data;
   const text = label || `(${t(labels.none)})`;

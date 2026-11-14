@@ -86,17 +86,14 @@ async function filterBoardEntityIdsForShare(
     const teamUserIds = await getTeamUserIds(entity.teamId);
 
     return {
-      websiteIds: await filterEntityIds(
-        ids.websiteIds,
-        async id => isOwnedByTeam(await getWebsite(id), entity.teamId, teamUserIds),
+      websiteIds: await filterEntityIds(ids.websiteIds, async id =>
+        isOwnedByTeam(await getWebsite(id), entity.teamId, teamUserIds),
       ),
-      pixelIds: await filterEntityIds(
-        ids.pixelIds,
-        async id => isOwnedByTeam(await getPixel(id), entity.teamId, teamUserIds),
+      pixelIds: await filterEntityIds(ids.pixelIds, async id =>
+        isOwnedByTeam(await getPixel(id), entity.teamId, teamUserIds),
       ),
-      linkIds: await filterEntityIds(
-        ids.linkIds,
-        async id => isOwnedByTeam(await getLink(id), entity.teamId, teamUserIds),
+      linkIds: await filterEntityIds(ids.linkIds, async id =>
+        isOwnedByTeam(await getLink(id), entity.teamId, teamUserIds),
       ),
     };
   }

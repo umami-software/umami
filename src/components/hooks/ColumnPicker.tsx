@@ -30,10 +30,9 @@ export function ColumnPicker({
 
   return (
     <MenuTrigger>
-      <Button size="sm" variant="link">
-        <Icon size={16}>
-          {/* Column icon - using more-vert for now, will be replaced with appropriate icon */}
-        </Icon>
+      <Button size="sm" variant="link" aria-label={t('column-picker')}>
+        <Icon size={16} aria-hidden="true" />
+        <span className="sr-only">{t('column-picker')}</span>
       </Button>
       <Popover side="bottom" align="start">
         <Menu style={{ maxHeight: 'calc(100vh - 3rem)', overflowY: 'auto' }}>

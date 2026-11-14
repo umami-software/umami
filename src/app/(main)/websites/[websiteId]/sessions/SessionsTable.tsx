@@ -3,30 +3,89 @@ import { Avatar } from '@/components/common/Avatar';
 import { DateDistance } from '@/components/common/DateDistance';
 import Link from '@/components/common/Link';
 import { TypeIcon } from '@/components/common/TypeIcon';
-import { useFormat, useMessages, useSessionColumns } from '@/components/hooks';
+import { useFormat, useMessages } from '@/components/hooks';
+
+const ALL_COLUMN_IDS = [
+  'id',
+  'visits',
+  'views',
+  'events',
+  'location',
+  'browser',
+  'os',
+  'device',
+  'lastAt',
+];
+
+const ALL_COLUMNS: Record<string, { label: string; width: string; render: (row: any) => any }> = {
+  id: {
+    label: 'Session',
+    width: '100px',
+    render: (row: any) => <span>{row.id}</span>,
+  },
+  visits: {
+    label: 'Visits',
+    width: '80px',
+    render: (row: any) => <span>{row.visits}</span>,
+  },
+  views: {
+    label: 'Views',
+    width: '80px',
+    render: (row: any) => <span>{row.views}</span>,
+  },
+  events: {
+    label: 'Events',
+    width: '80px',
+    render: (row: any) => <span>{row.events}</span>,
+  },
+  location: {
+    label: 'Location',
+    width: '200px',
+    render: (row: any) => (
+      <span>
+        {row.country ? <span>{row.country}</span> : ''}
+        {row.city ? `<span>, ${row.city}</span>` : ''}
+      </span>
+    ),
+  },
+  browser: {
+    label: 'Browser',
+    width: '140px',
+    render: (row: any) => <span>{row.browser}</span>,
+  },
+  os: {
+    label: 'OS',
+    width: '140px',
+    render: (row: any) => <span>{row.os}</span>,
+  },
+  device: {
+    label: 'Device',
+    width: '140px',
+    render: (row: any) => <span>{row.device}</span>,
+  },
+  lastAt: {
+    label: 'Last Seen',
+    width: '140px',
+    render: (row: any) => <span>{row.lastAt}</span>,
+  },
+};
 
 export function SessionsTable({
   websiteId,
   getSessionHref,
   visibleColumns,
   ...props
-}: DataTableProps & {
-  websiteId: string;
-  getSessionHref?: (row: any) => string;
-  visibleColumns?: string[];
-}) {
+}: DataTableProps & { websiteId: string; getSessionHref?: (row: any) => string; visibleColumns?: string[] }) {
   const { t, labels } = useMessages();
   const { formatValue } = useFormat();
 
-  const allColumns = useSessionColumns();
-  const columnIds = Object.keys(allColumns);
-  const visibleColumnIds = visibleColumns ? visibleColumns.split(',') : columnIds;
-  const visibleColumnConfigs = columnIds
-    .filter(id => visibleColumnIds.includes(id))
-    .reduce((acc, id) => {
-      acc[id] = allColumns[id];
-      return acc;
-    }, {});
+  const visibleColumnIds = visibleColumns ? visibleColumns.split(',') : ALL_COLUMN_IDS;
+  // Filter saved order against registry, keeping their relative order
+  const effectiveVisibleColumnIds = ALL_COLUMN_IDS.filter(id => visibleColumnIds.includes(id));
+  const visibleColumnConfigs = effectiveVisibleColumnIds.reduce((acc, id) => {
+    acc[id] = ALL_COLUMNS[id];
+    return acc;
+  }, {} as Record<string, { label: string; width: string; render: (row: any) => any }>);
 
   return (
     <DataTable {...props}>
@@ -36,48 +95,5 @@ export function SessionsTable({
         </DataColumn>
       ))}
     </DataTable>
-  );
-}
-
-export function SessionsDataTable({ websiteId }: { websiteId: string }) {
-  const queryResult = useWebsiteSessionsQuery(websiteId);
-  const { visibleColumns, setVisibleColumns } = useColumnSelection(
-    'umami.sessions.columns',
-    Object.keys(useSessionColumns()),
-    Object.keys(useSessionColumns()),
-  );
-
-  return (
-    <DataGrid
-      query={queryResult}
-      allowPaging
-      allowSearch
-      renderActions={() => (
-        <ColumnPicker
-          columns={Object.entries(useSessionColumns()).map(([id, config]) => ({
-            id,
-            label: config.label,
-            width: config.width,
-          }))}
-          selectedColumns={visibleColumns}
-          onColumnToggle={(id: string, checked: boolean) =>
-            setVisibleColumns(
-              visibleColumns.includes(id)
-                ? visibleColumns.filter(cid => cid !== id)
-                : [...visibleColumns, id],
-            )
-          }
-        />
-      )}
-    >
-      {({ data }) => (
-        <SessionsTable
-          data={data}
-          websiteId={websiteId}
-          getSessionHref={row => ({ session: row.id })}
-          visibleColumns={visibleColumns}
-        />
-      )}
-    </DataGrid>
   );
 }

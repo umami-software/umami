@@ -12,13 +12,12 @@ const ALL_COLUMN_IDS = [
   'browser',
   'os',
   'device',
-  'distinctId',
   'lastAt',
 ];
 
 const ALL_COLUMNS: Record<string, { label: string; width: string; render: (row: any) => any }> = {
   id: {
-    label: '',
+    label: 'Session',
     width: '100px',
     render: (row: any) => <span>{row.id}</span>,
   },
@@ -62,11 +61,6 @@ const ALL_COLUMNS: Record<string, { label: string; width: string; render: (row: 
     width: '140px',
     render: (row: any) => <span>{row.device}</span>,
   },
-  distinctId: {
-    label: 'Distinct ID',
-    width: '180px',
-    render: (row: any) => <span>{row.distinctId}</span>,
-  },
   lastAt: {
     label: 'Last Seen',
     width: '140px',
@@ -78,23 +72,41 @@ export function SessionsDataTable({ websiteId }: { websiteId: string }) {
   const queryResult = useWebsiteSessionsQuery(websiteId);
   const { updateParams } = useNavigation();
 
-  const [visibleColumns, setVisibleColumns] = useState<typeof ALL_COLUMN_IDS>(ALL_COLUMN_IDS);
+  // Default to first 9 columns (without distinctId) so new columns are opt-in
+  const defaultVisibleColumns = ALL_COLUMN_IDS.slice(0, -1);
+
+  const [visibleColumns, setVisibleColumns] = useState<string[]>(defaultVisibleColumns);
 
   useEffect(() => {
-    const stored =
-      typeof window !== 'undefined' ? localStorage.getItem('umami.sessions.columns') : null;
+    let stored: string | null;
+    try {
+      stored = typeof window !== 'undefined' ? localStorage.getItem('umami.sessions.columns') : null;
+    } catch {
+      stored = null;
+    }
     if (stored) {
-      const parsed = JSON.parse(stored);
-      const valid = ALL_COLUMN_IDS.filter((id: string) => parsed.includes(id));
-      if (valid.length > 0) {
-        setVisibleColumns(valid);
+      let parsed: string[];
+      try {
+        parsed = JSON.parse(stored);
+      } catch {
+        parsed = [];
+      }
+      // Require an array of strings, fall back to defaults on error
+      if (Array.isArray(parsed) && parsed.every((id: string) => ALL_COLUMN_IDS.includes(id))) {
+        // Keep order from saved preference but only include valid columns
+        const savedValid = ALL_COLUMN_IDS.filter(id => parsed.includes(id));
+        if (savedValid.length > 0) {
+          setVisibleColumns(savedValid);
+        }
       }
     }
   }, []);
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
-      localStorage.setItem('umami.sessions.columns', JSON.stringify(visibleColumns));
+      // Require at least one column visible
+      const toSave = visibleColumns.length > 0 ? visibleColumns : defaultVisibleColumns;
+      localStorage.setItem('umami.sessions.columns', JSON.stringify(toSave));
     }
   }, [visibleColumns]);
 
@@ -113,9 +125,12 @@ export function SessionsDataTable({ websiteId }: { websiteId: string }) {
           selectedColumns={visibleColumns}
           onColumnToggle={(id: string, checked: boolean) =>
             setVisibleColumns(
-              visibleColumns.includes(id)
-                ? visibleColumns.filter((cid: string) => cid !== id)
-                : [...visibleColumns, id],
+              // P2: Reject changes that remove the final column
+              visibleColumns.length <= 1 && !checked
+                ? visibleColumns
+                : visibleColumns.includes(id)
+                  ? visibleColumns.filter((cid: string) => cid !== id)
+                  : [...visibleColumns, id],
             )
           }
         />

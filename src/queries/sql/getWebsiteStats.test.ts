@@ -8,11 +8,7 @@ const parseFiltersResult = {
   excludeBounceQuery: 'join excludeBounce on excludeBounce.visit_id = website_event.visit_id',
 };
 
-async function loadModule({
-  mode,
-}: {
-  mode: 'prisma' | 'clickhouse';
-}) {
+async function loadModule({ mode }: { mode: 'prisma' | 'clickhouse' }) {
   vi.resetModules();
 
   const state = { mode };
@@ -66,7 +62,9 @@ describe('getWebsiteStats default bounce path', () => {
     const [query] = prismaRawQuery.mock.calls[0];
 
     expect(query).toContain('t.c = 1 and t.has_custom_event = 0');
-    expect(query).toContain('max(case when website_event.event_type = 2 then 1 else 0 end) as "has_custom_event"');
+    expect(query).toContain(
+      'max(case when website_event.event_type = 2 then 1 else 0 end) as "has_custom_event"',
+    );
     expect(query).not.toContain('left join (');
   });
 

@@ -1,10 +1,10 @@
-import type { Prisma } from '@/generated/prisma/client';
 import { z } from 'zod';
+import type { Prisma } from '@/generated/prisma/client';
 import { BOARD_TYPES, normalizeBoardType } from '@/lib/boards';
-import type { BoardParameters } from '@/lib/types';
 import { uuid } from '@/lib/crypto';
 import { parseRequest } from '@/lib/request';
 import { badRequest, json, unauthorized } from '@/lib/response';
+import type { BoardParameters } from '@/lib/types';
 import {
   canCreateTeamWebsite,
   canCreateWebsite,
@@ -72,7 +72,7 @@ export async function POST(request: Request, { params }: { params: Promise<{ boa
     description: body.description ?? sourceBoard.description,
     parameters: sanitizedParameters as Prisma.InputJsonValue,
     teamId: sourceBoard.teamId,
-    userId: sourceBoard.teamId ? undefined : sourceBoard.userId ?? auth.user.id,
+    userId: sourceBoard.teamId ? undefined : (sourceBoard.userId ?? auth.user.id),
   });
 
   return json(result);

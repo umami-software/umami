@@ -1,10 +1,6 @@
 import { expect, test, vi } from 'vitest';
 import { ENTITY_TYPE } from '@/lib/constants';
-import {
-  canViewSharedWebsite,
-  canViewSharedWebsiteFilters,
-  canViewWebsiteSection,
-} from './share';
+import { canViewSharedWebsite, canViewSharedWebsiteFilters, canViewWebsiteSection } from './share';
 
 vi.mock('./website', () => ({
   canViewWebsite: vi.fn(),

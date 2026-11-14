@@ -83,7 +83,9 @@ describe('getChannelExpandedMetrics postgres branch', () => {
     expect(query).toContain('sum(visit_stats.c) as "pageviews"');
     expect(query).toContain('count(distinct visit_stats.session_id) as "visitors"');
     expect(query).toContain('count(distinct visit_stats.visit_id) as "visits"');
-    expect(query).toContain('sum(case when visit_stats.c = 1 and coalesce(visit_events.has_custom_event, 0) = 0 then 1 else 0 end) as "bounces"');
+    expect(query).toContain(
+      'sum(case when visit_stats.c = 1 and coalesce(visit_events.has_custom_event, 0) = 0 then 1 else 0 end) as "bounces"',
+    );
     expect(query).toContain('visit_events as');
     expect(query).toContain('left join visit_events');
     // getTimestampDiffSQL output is injected into the totaltime column

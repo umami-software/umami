@@ -1,16 +1,21 @@
-import { z } from 'zod';
 import { fromZonedTime } from 'date-fns-tz';
+import { z } from 'zod';
 import { parseDateRange } from '@/lib/date';
-import { canViewBatchWebsites } from '@/permissions/website';
 import { parseRequest } from '@/lib/request';
 import { json } from '@/lib/response';
 import { timezoneParam } from '@/lib/schema';
+import { canViewBatchWebsites } from '@/permissions/website';
 import { getWebsiteListCharts } from '@/queries/sql';
 
 const schema = z.object({
   ids: z
     .string()
-    .transform(value => value.split(',').map(item => item.trim()).filter(Boolean))
+    .transform(value =>
+      value
+        .split(',')
+        .map(item => item.trim())
+        .filter(Boolean),
+    )
     .pipe(z.array(z.uuid()).min(1).max(20)),
   startAt: z.coerce.number().int().optional(),
   endAt: z.coerce.number().int().optional(),
@@ -30,7 +35,9 @@ export async function GET(request: Request) {
   const startDate = hasDateRange
     ? new Date(query.startAt)
     : fromZonedTime(defaultRange.startDate, timezone);
-  const endDate = hasDateRange ? new Date(query.endAt) : fromZonedTime(defaultRange.endDate, timezone);
+  const endDate = hasDateRange
+    ? new Date(query.endAt)
+    : fromZonedTime(defaultRange.endDate, timezone);
 
   const websiteIds = await canViewBatchWebsites(auth, query.ids);
 

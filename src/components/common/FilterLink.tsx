@@ -28,7 +28,9 @@ export function FilterLink({ type, value, label, externalUrl, icon }: FilterLink
       onMouseOut={() => setShowLink(false)}
     >
       {icon}
-      {!value && <Text weight={active && selected ? 'bold' : undefined}>({label || t(labels.unknown)})</Text>}
+      {!value && (
+        <Text weight={active && selected ? 'bold' : undefined}>({label || t(labels.unknown)})</Text>
+      )}
       {value && (
         <Text title={label || value} truncate weight={active && selected ? 'bold' : undefined}>
           <Link href={updateParams({ [type]: `eq.${value}` })} replace>

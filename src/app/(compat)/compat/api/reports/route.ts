@@ -4,10 +4,10 @@ import { parseRequest } from '@/lib/request';
 import { json, unauthorized } from '@/lib/response';
 import { pagingParams, reportSchema, reportTypeParam } from '@/lib/schema';
 import {
-  getReportSection,
   canUpdateWebsite,
   canViewAuthenticatedWebsite,
   canViewWebsiteSection,
+  getReportSection,
 } from '@/permissions';
 import { createReport, getReports } from '@/queries/prisma';
 

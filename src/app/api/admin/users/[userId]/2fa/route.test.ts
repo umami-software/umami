@@ -1,8 +1,8 @@
 import { beforeEach, expect, test, vi } from 'vitest';
-import { canEnforceTwoFactorAuthForUser } from '@/permissions';
 import prisma from '@/lib/prisma';
 import { parseRequest } from '@/lib/request';
 import { isTwoFactorConfigured } from '@/lib/two-factor/crypto';
+import { canEnforceTwoFactorAuthForUser } from '@/permissions';
 import { updateUser } from '@/queries/prisma/user';
 import { DELETE, GET, POST } from './route';
 
@@ -107,9 +107,12 @@ test('POST updates the user-level 2FA requirement flag', async () => {
   });
   updateUserMock.mockResolvedValue({ id: 'user-1' } as any);
 
-  const response = await POST(new Request('http://localhost/api/admin/users/user-1/2fa', { method: 'POST' }), {
-    params: Promise.resolve({ userId: 'user-1' }),
-  });
+  const response = await POST(
+    new Request('http://localhost/api/admin/users/user-1/2fa', { method: 'POST' }),
+    {
+      params: Promise.resolve({ userId: 'user-1' }),
+    },
+  );
 
   expect(updateUserMock).toHaveBeenCalledWith('user-1', { twoFactorRequired: true });
   await expect(response.json()).resolves.toEqual({
@@ -135,9 +138,12 @@ test('POST rejects enabling a user-level 2FA requirement when the encryption key
   });
   isTwoFactorConfiguredMock.mockReturnValue(false);
 
-  const response = await POST(new Request('http://localhost/api/admin/users/user-1/2fa', { method: 'POST' }), {
-    params: Promise.resolve({ userId: 'user-1' }),
-  });
+  const response = await POST(
+    new Request('http://localhost/api/admin/users/user-1/2fa', { method: 'POST' }),
+    {
+      params: Promise.resolve({ userId: 'user-1' }),
+    },
+  );
 
   expect(updateUserMock).not.toHaveBeenCalled();
   await expect(response.json()).resolves.toMatchObject({
@@ -162,7 +168,9 @@ test('DELETE clears the user 2FA configuration and related support tables', asyn
     },
   );
 
-  expect(prismaMock.client.twoFactorAuth.deleteMany).toHaveBeenCalledWith({ where: { userId: 'user-1' } });
+  expect(prismaMock.client.twoFactorAuth.deleteMany).toHaveBeenCalledWith({
+    where: { userId: 'user-1' },
+  });
   expect(prismaMock.client.twoFactorBackupCode.deleteMany).toHaveBeenCalledWith({
     where: { userId: 'user-1' },
   });

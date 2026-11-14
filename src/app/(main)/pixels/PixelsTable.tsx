@@ -33,7 +33,11 @@ export function PixelsTable({
           return <Link href={renderUrl(`/pixels/${id}`)}>{name}</Link>;
         }}
       </DataColumn>
-      <DataColumn id="url" label={<SortableLabel label="URL" sortKey="slug" />} style={{ minWidth: 0 }}>
+      <DataColumn
+        id="url"
+        label={<SortableLabel label="URL" sortKey="slug" />}
+        style={{ minWidth: 0 }}
+      >
         {({ slug }: any) => {
           const url = getSlugUrl(slug);
           return (

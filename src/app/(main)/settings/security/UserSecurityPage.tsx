@@ -75,7 +75,7 @@ export function UserSecurityPage() {
                   />
                   <Text>{t(labels.twoFactorEnable)}</Text>
                 </Row>
-                  <Tooltip>{t(messages.twoFactorRequiredMessage)}</Tooltip>
+                <Tooltip>{t(messages.twoFactorRequiredMessage)}</Tooltip>
               </TooltipTrigger>
             ) : null}
 

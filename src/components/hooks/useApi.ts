@@ -20,9 +20,7 @@ export function useApi() {
   const shareToken = useApp(state => state.shareToken?.token);
 
   const shareHeaders =
-    shareId && shareToken
-      ? { [SHARE_TOKEN_HEADER]: shareToken, [SHARE_CONTEXT_HEADER]: '1' }
-      : {};
+    shareId && shareToken ? { [SHARE_TOKEN_HEADER]: shareToken, [SHARE_CONTEXT_HEADER]: '1' } : {};
 
   const defaultHeaders = {
     authorization: `Bearer ${getClientAuthToken()}`,

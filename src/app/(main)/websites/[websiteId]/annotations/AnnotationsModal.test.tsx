@@ -42,7 +42,10 @@ vi.mock('@/components/input/FilterButtons', () => ({
 
 beforeEach(() => {
   mockUseWebsiteAnnotationsQuery.mockClear();
-  mockUseWebsiteAnnotationsQuery.mockReturnValue({ data: { data: [], count: 0 }, isLoading: false });
+  mockUseWebsiteAnnotationsQuery.mockReturnValue({
+    data: { data: [], count: 0 },
+    isLoading: false,
+  });
 });
 
 test('defaults to the supplied date range and can show all notes', async () => {

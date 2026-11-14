@@ -1,9 +1,5 @@
 import clickhouse from '@/lib/clickhouse';
-import {
-  FILTER_COLUMNS,
-  GROUPED_DOMAINS,
-  SESSION_COLUMNS,
-} from '@/lib/constants';
+import { FILTER_COLUMNS, GROUPED_DOMAINS, SESSION_COLUMNS } from '@/lib/constants';
 import { CLICKHOUSE, PRISMA, runQuery } from '@/lib/db';
 import prisma from '@/lib/prisma';
 import type { QueryFilters } from '@/lib/types';

@@ -1,8 +1,8 @@
 import { z } from 'zod';
 import { BOARD_TYPES, normalizeBoardType } from '@/lib/boards';
-import type { BoardParameters } from '@/lib/types';
 import { parseRequest } from '@/lib/request';
 import { badRequest, json, ok, serverError, unauthorized } from '@/lib/response';
+import type { BoardParameters } from '@/lib/types';
 import {
   canDeleteBoard,
   canUpdateBoard,

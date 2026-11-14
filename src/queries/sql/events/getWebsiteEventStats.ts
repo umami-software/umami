@@ -61,8 +61,9 @@ async function clickhouseQuery(
     websiteId,
   });
 
-  const sql = filterQuery || cohortQuery
-    ? `
+  const sql =
+    filterQuery || cohortQuery
+      ? `
       select
         count(*) as "events",
         uniq(session_id) as "visitors",
@@ -75,7 +76,7 @@ async function clickhouseQuery(
         and event_type = 2
         ${filterQuery};
       `
-    : `
+      : `
       select
         sum(length(event_name)) as "events",
         uniq(session_id) as "visitors",

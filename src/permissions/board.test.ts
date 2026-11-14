@@ -1,11 +1,7 @@
 import { beforeEach, expect, test, vi } from 'vitest';
 import { BOARD_TYPES } from '@/lib/boards';
 import { getReport } from '@/queries/prisma';
-import {
-  canViewBoardEntities,
-  hasValidBoardReports,
-  stripInvalidBoardReports,
-} from './board';
+import { canViewBoardEntities, hasValidBoardReports, stripInvalidBoardReports } from './board';
 import { canViewLink } from './link';
 import { canViewPixel } from './pixel';
 import { canViewWebsite } from './website';

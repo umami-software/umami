@@ -17,7 +17,11 @@
       "require": "./dist/index.cjs"
     }
   },
-  "files": ["bin", "dist", "README.md"],
+  "files": [
+    "bin",
+    "dist",
+    "README.md"
+  ],
   "engines": {
     "node": ">=20"
   },

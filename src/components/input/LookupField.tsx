@@ -71,7 +71,7 @@ export function LookupField({
           <Empty message={t(messages.noResultsFound)} />
         )
       }
-      >
+    >
       {options.map(item => (
         <ListItem key={item} id={item}>
           {item}

@@ -60,9 +60,12 @@ test('POST rejects a manager modifying the team owner role', async () => {
       role: ROLES.teamManager,
     } as any);
 
-  const response = await POST(new Request('http://localhost/api/teams/team-1/users/owner-id', { method: 'POST' }), {
-    params: Promise.resolve({ teamId: 'team-1', userId: 'owner-id' }),
-  });
+  const response = await POST(
+    new Request('http://localhost/api/teams/team-1/users/owner-id', { method: 'POST' }),
+    {
+      params: Promise.resolve({ teamId: 'team-1', userId: 'owner-id' }),
+    },
+  );
 
   expect(response.status).toBe(401);
   expect(updateTeamUserMock).not.toHaveBeenCalled();

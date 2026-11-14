@@ -1,11 +1,11 @@
 import { DATA_TYPE, FILTER_COLUMNS, OPERATORS } from '@/lib/constants';
 import type {
+  EventPropertyFilter,
   Filter,
   Operator,
   PropertyFilter,
   QueryFilters,
   QueryOptions,
-  EventPropertyFilter,
   SessionPropertyFilter,
 } from '@/lib/types';
 
@@ -150,10 +150,7 @@ export function parsePropertyFilters(
     const rawOperator = prefixedDotMatch ? prefixedDotMatch[2] : untypedDotMatch?.[1];
     const operator = resolveOperator(rawOperator);
 
-    if (
-      !operator ||
-      (explicitDataType !== undefined && !isValidEventDataType(explicitDataType))
-    ) {
+    if (!operator || (explicitDataType !== undefined && !isValidEventDataType(explicitDataType))) {
       return [];
     }
 

@@ -143,21 +143,19 @@ async function clickhouseQuery(
   );
 }
 
-function formatResults(
-  {
-    points,
-    websiteIds,
-    startDate,
-    endDate,
-    timezone,
-  }: {
-    points: WebsiteListChartPoint[];
-    websiteIds: string[];
-    startDate: Date;
-    endDate: Date;
-    timezone: string;
-  },
-) {
+function formatResults({
+  points,
+  websiteIds,
+  startDate,
+  endDate,
+  timezone,
+}: {
+  points: WebsiteListChartPoint[];
+  websiteIds: string[];
+  startDate: Date;
+  endDate: Date;
+  timezone: string;
+}) {
   const buckets: string[] = [];
 
   for (

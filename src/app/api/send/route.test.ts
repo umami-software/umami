@@ -101,7 +101,13 @@ function makeComputedSessionId(
   const createdAt = new Date(timestamp * 1000);
   const sessionSalt = getSalt(process.env.SALT_ROTATION || 'month', createdAt);
 
-  return uuid(sourceId, defaultClientInfo.ip, defaultClientInfo.userAgent, sessionSalt, distinctId ?? '');
+  return uuid(
+    sourceId,
+    defaultClientInfo.ip,
+    defaultClientInfo.userAgent,
+    sessionSalt,
+    distinctId ?? '',
+  );
 }
 
 beforeEach(() => {

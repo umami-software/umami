@@ -48,7 +48,10 @@ export function WebsiteAddButton({ teamId, onSave }: { teamId: string; onSave?: 
       >
         {({ close }) =>
           createdWebsite ? (
-            <TrackingCodeStep websiteId={createdWebsite.id} onClose={() => handleOpenChange(false)} />
+            <TrackingCodeStep
+              websiteId={createdWebsite.id}
+              onClose={() => handleOpenChange(false)}
+            />
           ) : (
             <WebsiteAddForm
               teamId={teamId}

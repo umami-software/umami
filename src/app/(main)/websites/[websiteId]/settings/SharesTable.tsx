@@ -1,15 +1,9 @@
-import {
-  Button,
-  Dialog,
-  Icon,
-  Modal,
-  Row,
-} from '@umami/react-zen';
-import { useState } from 'react';
-import { ControlledDialog } from '@/components/common/ControlledDialog';
-import { ConfirmationForm } from '@/components/common/ConfirmationForm';
-import { useDeleteQuery, useMessages, useMobile, useModified } from '@/components/hooks';
+import { Button, Dialog, Icon, Modal, Row } from '@umami/react-zen';
 import { Edit, Trash } from 'lucide-react';
+import { useState } from 'react';
+import { ConfirmationForm } from '@/components/common/ConfirmationForm';
+import { ControlledDialog } from '@/components/common/ControlledDialog';
+import { useDeleteQuery, useMessages, useMobile, useModified } from '@/components/hooks';
 import { SharedSharesTable } from '@/components/share/SharedSharesTable';
 import { ShareEditForm } from './ShareEditForm';
 

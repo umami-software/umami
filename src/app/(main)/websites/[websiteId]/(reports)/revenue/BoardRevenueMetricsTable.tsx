@@ -5,7 +5,11 @@ import { useRevenueStatsQuery } from '@/components/hooks/queries/useRevenueStats
 import { RevenueMetricsTable } from './RevenueMetricsTable';
 import { useBoardRevenueCurrency } from './useBoardRevenueCurrency';
 
-function getRevenueTableTitle(type: RevenueMetricType, labels: Record<string, string>, t: (key: string) => string) {
+function getRevenueTableTitle(
+  type: RevenueMetricType,
+  labels: Record<string, string>,
+  t: (key: string) => string,
+) {
   switch (type) {
     case 'referrer':
       return t(labels.referrer);

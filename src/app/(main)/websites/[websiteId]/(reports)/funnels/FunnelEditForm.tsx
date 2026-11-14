@@ -27,8 +27,6 @@ import { ActionSelect } from '@/components/input/ActionSelect';
 import { LookupField } from '@/components/input/LookupField';
 import { EventDataFilterRow, getEventDataDateRange } from './EventDataFilterRow';
 
-const FUNNEL_STEPS_MAX = 8;
-
 function StepRow({
   index,
   websiteId,
@@ -246,10 +244,7 @@ export function FunnelEditForm({
               )}
               <ListSeparator />
               <Row>
-                <Button
-                  onPress={() => append({ type: 'path', value: '', filters: [] })}
-                  isDisabled={fields.length >= FUNNEL_STEPS_MAX}
-                >
+                <Button onPress={() => append({ type: 'path', value: '', filters: [] })}>
                   <Icon>
                     <Plus />
                   </Icon>

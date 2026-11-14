@@ -3,8 +3,8 @@ import prisma from '@/lib/prisma';
 import { parseRequest } from '@/lib/request';
 import { json, notFound, serviceUnavailable, unauthorized } from '@/lib/response';
 import { getTwoFactorConfigurationError, isTwoFactorConfigured } from '@/lib/two-factor/crypto';
-import { updateUser } from '@/queries/prisma/user';
 import { canEnforceTwoFactorAuthForUser } from '@/permissions';
+import { updateUser } from '@/queries/prisma/user';
 
 export async function GET(request: Request, { params }: { params: Promise<{ userId: string }> }) {
   if (process.env.CLOUD_MODE) {
@@ -57,7 +57,10 @@ export async function POST(request: Request, { params }: { params: Promise<{ use
   return json({ ok: true, userId: user.id, twoFactorRequired: required });
 }
 
-export async function DELETE(request: Request, { params }: { params: Promise<{ userId: string }> }) {
+export async function DELETE(
+  request: Request,
+  { params }: { params: Promise<{ userId: string }> },
+) {
   if (process.env.CLOUD_MODE) {
     return notFound();
   }

@@ -2,8 +2,8 @@ import { Button, Column, Row, Tab, TabList, TabPanel, Tabs } from '@umami/react-
 import { useState } from 'react';
 import { useFilters, useMessages, useMobile, useNavigation } from '@/components/hooks';
 import { FieldFilters } from '@/components/input/FieldFilters';
-import { PropertyFilters } from '@/components/property-data/PropertyFilters';
 import { SegmentFilters } from '@/components/input/SegmentFilters';
+import { PropertyFilters } from '@/components/property-data/PropertyFilters';
 import type { EventPropertyFilter, SessionPropertyFilter } from '@/lib/types';
 
 export interface FilterEditFormProps {
@@ -27,7 +27,8 @@ export function FilterEditForm({ websiteId, onChange, onClose }: FilterEditFormP
   const { filters, eventPropertyFilters, sessionPropertyFilters } = useFilters();
   const { t, labels } = useMessages();
   const [currentFilters, setCurrentFilters] = useState(filters);
-  const [currentEventPropertyFilters, setCurrentEventPropertyFilters] = useState(eventPropertyFilters);
+  const [currentEventPropertyFilters, setCurrentEventPropertyFilters] =
+    useState(eventPropertyFilters);
   const [currentSessionPropertyFilters, setCurrentSessionPropertyFilters] =
     useState(sessionPropertyFilters);
   const [currentSegment, setCurrentSegment] = useState(segment);
@@ -97,7 +98,9 @@ export function FilterEditForm({ websiteId, onChange, onClose }: FilterEditFormP
         WebkitOverflowScrolling: 'touch',
       } as const)
     : undefined;
-  const mobileTabStyle = isMobile ? ({ flex: '0 0 auto', whiteSpace: 'nowrap' } as const) : undefined;
+  const mobileTabStyle = isMobile
+    ? ({ flex: '0 0 auto', whiteSpace: 'nowrap' } as const)
+    : undefined;
 
   return (
     <Column width={isMobile ? 'auto' : '800px'} gap="6" style={{ flex: 1, minHeight: 0 }}>

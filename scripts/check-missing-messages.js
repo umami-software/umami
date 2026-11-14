@@ -77,7 +77,9 @@ for (const fname of files) {
   const data = JSON.parse(raw);
   const flat = flatten(data);
   const missing = enKeys.filter(k => !(k in flat));
-  const extra = Object.keys(flat).filter(k => !enKeySet.has(k)).sort();
+  const extra = Object.keys(flat)
+    .filter(k => !enKeySet.has(k))
+    .sort();
 
   if (missing.length) {
     allMissing[fname] = missing;
@@ -128,7 +130,9 @@ for (const extra of Object.values(allExtra)) {
     extraKeyCounts[k] = (extraKeyCounts[k] || 0) + 1;
   }
 }
-const sortedExtra = Object.entries(extraKeyCounts).sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]));
+const sortedExtra = Object.entries(extraKeyCounts).sort(
+  (a, b) => b[1] - a[1] || a[0].localeCompare(b[0]),
+);
 if (sortedExtra.length) {
   console.log('\nMost commonly extra keys:');
   for (const [k, count] of sortedExtra) {

@@ -1,3 +1,4 @@
+import prisma from '@/lib/prisma';
 import { parseRequest } from '@/lib/request';
 import { badRequest, json, notFound, serviceUnavailable } from '@/lib/response';
 import {
@@ -10,7 +11,6 @@ import {
   generateQrCodeDataUrl,
   generateTotpSecret,
 } from '@/lib/two-factor/totp';
-import prisma from '@/lib/prisma';
 import { getUser } from '@/queries/prisma/user';
 
 export async function POST(request: Request) {

@@ -1,7 +1,7 @@
 import { z } from 'zod';
-import { hasValidBoardReports } from '@/permissions';
 import { parseRequest } from '@/lib/request';
 import { badRequest, json, unauthorized } from '@/lib/response';
+import { hasValidBoardReports } from '@/permissions';
 import { createBoard, getBoard, updateBoard } from '@/queries/prisma';
 
 export async function GET(request: Request) {

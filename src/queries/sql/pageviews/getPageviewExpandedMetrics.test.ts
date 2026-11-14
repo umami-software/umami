@@ -8,11 +8,7 @@ const parseFiltersResult = {
   excludeBounceQuery: 'join excludeBounce on excludeBounce.visit_id = website_event.visit_id',
 };
 
-async function loadModule({
-  mode,
-}: {
-  mode: 'prisma' | 'clickhouse';
-}) {
+async function loadModule({ mode }: { mode: 'prisma' | 'clickhouse' }) {
   vi.resetModules();
 
   const state = { mode };
@@ -64,7 +60,9 @@ describe('getPageviewExpandedMetrics postgres branch', () => {
       mode: 'prisma',
     });
 
-    await getPageviewExpandedMetrics('website-1', { type: 'referrer' }, { path: '/pricing' } as any);
+    await getPageviewExpandedMetrics('website-1', { type: 'referrer' }, {
+      path: '/pricing',
+    } as any);
 
     const [query] = prismaRawQuery.mock.calls[0];
 
@@ -84,7 +82,9 @@ describe('getPageviewExpandedMetrics clickhouse branch', () => {
       mode: 'clickhouse',
     });
 
-    await getPageviewExpandedMetrics('website-1', { type: 'referrer' }, { path: '/pricing' } as any);
+    await getPageviewExpandedMetrics('website-1', { type: 'referrer' }, {
+      path: '/pricing',
+    } as any);
 
     const [query] = clickhouseRawQuery.mock.calls[0];
 

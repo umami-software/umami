@@ -3,7 +3,11 @@ import prisma from '@/lib/prisma';
 import { parseRequest } from '@/lib/request';
 import { badRequest, json, notFound, serviceUnavailable } from '@/lib/response';
 import { generateBackupCodes } from '@/lib/two-factor/backup-codes';
-import { decryptSecret, getTwoFactorConfigurationError, isTwoFactorConfigured } from '@/lib/two-factor/crypto';
+import {
+  decryptSecret,
+  getTwoFactorConfigurationError,
+  isTwoFactorConfigured,
+} from '@/lib/two-factor/crypto';
 import { checkRateLimit, recordFailedAttempt, resetRateLimit } from '@/lib/two-factor/rate-limit';
 import { isOtpReplayed, markOtpUsed } from '@/lib/two-factor/replay-prevention';
 import { verifyTotp } from '@/lib/two-factor/totp';

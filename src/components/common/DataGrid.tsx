@@ -133,7 +133,9 @@ export function DataGrid({
         <Row
           alignItems="center"
           gap
-          style={isMobile ? { width: '100%', justifyContent: 'flex-start' } : { marginLeft: 'auto' }}
+          style={
+            isMobile ? { width: '100%', justifyContent: 'flex-start' } : { marginLeft: 'auto' }
+          }
         >
           {renderActions?.()}
           {!isMobile && viewToggleButton}

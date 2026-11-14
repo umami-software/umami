@@ -256,6 +256,7 @@ export const labels: Record<string, string> = {
   segment: 'label.segment',
   cohort: 'label.cohort',
   columns: 'label.columns',
+  columnPicker: 'label.column-picker',
   minute: 'label.minute',
   hour: 'label.hour',
   day: 'label.day',

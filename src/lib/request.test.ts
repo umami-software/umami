@@ -26,13 +26,11 @@ beforeEach(() => {
   fetchWebsiteMock.mockResolvedValue({ id: 'website-1' } as any);
 });
 
-test('combines a saved segment\'s session property filters with active filters', async () => {
+test("combines a saved segment's session property filters with active filters", async () => {
   getWebsiteSegmentMock.mockResolvedValue({
     parameters: {
       filters: [],
-      sessionPropertyFilters: [
-        { propertyName: 'plan', dataType: 1, operator: 'eq', value: 'pro' },
-      ],
+      sessionPropertyFilters: [{ propertyName: 'plan', dataType: 1, operator: 'eq', value: 'pro' }],
     },
   } as any);
 

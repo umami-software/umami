@@ -12,10 +12,7 @@ export function useShareTokenQuery(slug: string) {
   });
 
   useEffect(() => {
-    if (
-      query.data?.token &&
-      (shareId !== query.data.shareId || shareToken !== query.data.token)
-    ) {
+    if (query.data?.token && (shareId !== query.data.shareId || shareToken !== query.data.token)) {
       setShareData(query.data, { token: query.data.token });
     }
   }, [query.data, shareId, shareToken]);

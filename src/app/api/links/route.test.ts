@@ -53,12 +53,12 @@ test('POST requires link slugs to be at least 8 characters so create matches edi
     safeParse: (value: unknown) => { success: boolean };
   };
 
-  expect(schema.safeParse({ name: 'Docs', url: 'https://example.com', slug: '1234567' }).success).toBe(
-    false,
-  );
-  expect(schema.safeParse({ name: 'Docs', url: 'https://example.com', slug: '12345678' }).success).toBe(
-    true,
-  );
+  expect(
+    schema.safeParse({ name: 'Docs', url: 'https://example.com', slug: '1234567' }).success,
+  ).toBe(false);
+  expect(
+    schema.safeParse({ name: 'Docs', url: 'https://example.com', slug: '12345678' }).success,
+  ).toBe(true);
   expect(createLinkMock).toHaveBeenCalledWith({
     id: expect.any(String),
     name: 'Docs',

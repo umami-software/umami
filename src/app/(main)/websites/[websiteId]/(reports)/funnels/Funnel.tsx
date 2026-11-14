@@ -1,10 +1,6 @@
-import { Box, Column, Grid, Icon, ProgressBar, Row, Text } from '@umami/react-zen';
+import { Box, Grid, Row, Text } from '@umami/react-zen';
 import { LoadingPanel } from '@/components/common/LoadingPanel';
-import { useFunnelQuery, useMessages, useNavigation, useOperatorLabels } from '@/components/hooks';
-import { File, User } from '@/components/icons';
-import { SavedDefinitionEditButton } from '@/components/input/SavedDefinitionEditButton';
-import { ChangeLabel } from '@/components/metrics/ChangeLabel';
-import { Lightning } from '@/components/svg';
+import { useFunnelQuery, useMessages, useNavigation } from '@/components/hooks';
 import { formatLongNumber } from '@/lib/format';
 import type { FunnelResult } from '@/queries/sql/funnels/getFunnel';
 import { FunnelEditForm } from './FunnelEditForm';
@@ -27,8 +23,6 @@ export function Funnel({ id, name, type, parameters, websiteId, allowEdit = true
     id,
     ...parameters,
   });
-
-  const operatorLabels = useOperatorLabels();
 
   return (
     <Grid gap>
@@ -64,83 +58,71 @@ export function Funnel({ id, name, type, parameters, websiteId, allowEdit = true
           ) => {
             const isPage = type === 'path';
             return (
-              <Grid key={index} columns="auto 1fr" gap="6">
-                <Column alignItems="center" position="relative">
-                  <Row
-                    borderRadius="full"
-                    backgroundColor="surface-sunken"
-                    width="40px"
-                    height="40px"
-                    justifyContent="center"
-                    alignItems="center"
-                    style={{ zIndex: 1 }}
-                  >
+              <Row
+                key={index}
+                alignItems="center"
+                justifyContent="space-between"
+                borderBottom="1px solid var(--border-color)"
+                paddingBottom={index < data?.length - 1 ? 12 : 0}
+                style={{
+                  display: 'flex',
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                  gap: 16,
+                }}
+              >
+                <Column alignItems="center" width="120px">
+                  <Row gap={2}>
                     <Text weight="bold" size="base">
                       {index + 1}
                     </Text>
+                    <Text color="muted" size="sm">
+                      {isPage ? labels.viewedPage : labels.triggeredEvent}
+                    </Text>
                   </Row>
-                  {index > 0 && (
-                    <Box
-                      position="absolute"
-                      backgroundColor="surface-sunken"
-                      width="2px"
-                      height="120px"
-                      top="-100%"
-                    />
-                  )}
+                  <Row gap={1}>
+                    <Text color="muted">{value}</Text>
+                  </Row>
+                  {filters?.map((f, i) => (
+                    <Row key={i} gap="1" style={{ paddingLeft: 28, marginTop: 2 }}>
+                      <Text color="muted">{f.property}</Text>
+                      <Text color="muted" transform="lowercase">
+                        {operatorLabels[f.operator] ?? f.operator}
+                      </Text>
+                      <Text color="muted">{f.value}</Text>
+                    </Row>
+                  ))}
                 </Column>
                 <Column gap>
-                  <Row alignItems="center" justifyContent="space-between" gap>
-                    <Text color="muted">
-                      {t(isPage ? labels.viewedPage : labels.triggeredEvent)}
+                  <Row alignItems="center" justifyContent="flex-end" gap>
+                    <Text weight="bold" size="xl">
+                      {Math.round(remaining * 100)}%
                     </Text>
-                    <Text color="muted">{t(labels.conversionRate)}</Text>
+                    <Text color="muted" size="sm">
+                      {t(labels.remaining)}
+                    </Text>
                   </Row>
-                  <Row alignItems="center" justifyContent="space-between" gap>
-                    <Column gap="1">
-                      <Row alignItems="center" gap>
-                        <Icon>{type === 'path' ? <File /> : <Lightning />}</Icon>
-                        <Text>{value}</Text>
-                      </Row>
-                      {filters?.map((f, i) => (
-                        <Row key={i} gap="1" style={{ paddingLeft: 28 }}>
-                          <Text color="muted">{f.property}</Text>
-                          <Text color="muted" transform="lowercase">
-                            {operatorLabels[f.operator] ?? f.operator}
-                          </Text>
-                          <Text color="muted">{f.value}</Text>
-                        </Row>
-                      ))}
-                    </Column>
-                    <Row alignItems="center" gap>
-                      {index > 0 && (
-                        <ChangeLabel value={-dropped} title={`${-Math.round(dropoff * 100)}%`}>
-                          {formatLongNumber(dropped)}
-                        </ChangeLabel>
-                      )}
-                      <Icon>
-                        <User />
-                      </Icon>
-                      <Text title={visitors.toString()} transform="lowercase">
-                        {`${formatLongNumber(visitors)} ${t(labels.visitors)}`}
-                      </Text>
-                    </Row>
+                  <Row alignItems="center" gap>
+                    {index > 0 && (
+                      <ChangeLabel value={-dropped} title={`${-Math.round(dropoff * 100)}%`}>
+                        {formatLongNumber(dropped)}
+                      </ChangeLabel>
+                    )}
+                    <Icon>
+                      <User />
+                    </Icon>
+                    <Text title={visitors.toString()} transform="lowercase">
+                      {`${formatLongNumber(visitors)} ${t(labels.visitors)}`}
+                    </Text>
                   </Row>
-                  <Row alignItems="center" gap="6">
-                    <ProgressBar
-                      value={visitors || 0}
-                      min={0}
-                      max={previous || 1}
-                      style={{ width: '100%' }}
-                    />
-                    <Row minWidth="90px" justifyContent="end">
-                      <Text weight="bold" size="4xl">
-                        {Math.round(remaining * 100)}%
-                      </Text>
-                    </Row>
-                  </Row>
+                  <ProgressBar
+                    value={visitors || 0}
+                    min={0}
+                    max={previous || 1}
+                    style={{ width: '100%' }}
+                  />
                 </Column>
-              </Grid>
+              </Row>
             );
           },
         )}

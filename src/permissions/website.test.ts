@@ -161,9 +161,7 @@ describe('canViewBatchWebsites', () => {
   });
 
   test('excludes team websites when the user is not a team member', async () => {
-    websiteFindManyMock.mockResolvedValue([
-      { id: 'team', userId: null, teamId: 'team-1' },
-    ] as any);
+    websiteFindManyMock.mockResolvedValue([{ id: 'team', userId: null, teamId: 'team-1' }] as any);
     teamUserFindManyMock.mockResolvedValue([] as any);
 
     await expect(canViewBatchWebsites({ user: normalUser }, ['team'])).resolves.toEqual([]);
