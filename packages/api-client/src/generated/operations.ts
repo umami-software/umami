@@ -3070,6 +3070,7 @@ export const operations = {
       'search',
       'orderBy',
       'sortDescending',
+      'timezone',
       'includeTeams',
     ],
     hasBody: false,

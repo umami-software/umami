@@ -32,6 +32,7 @@ import {
   getOffsetDateRange,
   getPeriodDateRange,
   getTimezone,
+  getWebsiteListDateRange,
   isInvalidDate,
   isValidTimezone,
   maxDate,
@@ -700,6 +701,25 @@ describe('getMaxSelectableDate', () => {
     // Early January: end of this year is far beyond +6 months.
     const january = new Date('2026-01-02T00:00:00');
     expect(getMaxSelectableDate(january)).toEqual(endOfYear(january));
+  });
+});
+
+describe('getWebsiteListDateRange', () => {
+  const now = new Date('2026-11-07T20:00:00.000Z');
+
+  test('runs from 7 local days ago to the end of today as absolute dates', () => {
+    expect(getWebsiteListDateRange('UTC', now)).toEqual({
+      startDate: new Date('2026-10-31T00:00:00.000Z'),
+      endDate: new Date('2026-11-07T23:59:59.999Z'),
+    });
+  });
+
+  test('follows the local day of the timezone', () => {
+    // It is already 8 November in Tokyo, which is UTC+9
+    expect(getWebsiteListDateRange('Asia/Tokyo', now)).toEqual({
+      startDate: new Date('2026-10-31T15:00:00.000Z'),
+      endDate: new Date('2026-11-08T14:59:59.999Z'),
+    });
   });
 });
 

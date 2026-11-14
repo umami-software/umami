@@ -52,7 +52,13 @@ export function WebsitesTable({
       </DataColumn>
       <DataColumn
         id="chart"
-        label={<span style={{ whiteSpace: 'normal' }}>{`${t(labels.visitors)} (7d)`}</span>}
+        label={
+          <SortableLabel
+            label={<span style={{ whiteSpace: 'normal' }}>{`${t(labels.visitors)} (7d)`}</span>}
+            sortKey="visitors"
+            defaultDirection="desc"
+          />
+        }
         style={{ minWidth: 0 }}
       >
         {(row: any) => {
