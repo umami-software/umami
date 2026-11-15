@@ -68,6 +68,14 @@ describe('useFormat', () => {
       const { formatBrowser } = setup();
       expect(formatBrowser('mystery')).toBe('mystery');
     });
+
+    // The generic "browser" value is not a brand name, so it must use the translated unknown label
+    test('labels the generic browser value with the translated unknown label', () => {
+      labels.unknown = 'Inconnu';
+      const { formatBrowser } = setup();
+      expect(formatBrowser('browser')).toBe('Inconnu');
+      labels.unknown = 'Unknown';
+    });
   });
 
   describe('formatDevice', () => {
@@ -76,9 +84,25 @@ describe('useFormat', () => {
       expect(formatDevice('mobile')).toBe('Mobile');
     });
 
-    test('falls back to the unknown label for missing devices', () => {
+    test('falls back to the unknown label only for empty devices', () => {
       const { formatDevice } = setup();
-      expect(formatDevice('foo')).toBe('Unknown');
+      expect(formatDevice('')).toBe('Unknown');
+      expect(formatDevice(undefined)).toBe('Unknown');
+    });
+
+    // A real but untranslated device type must stay distinguishable, not collapse into "Unknown"
+    test('returns the raw value for untranslated device types', () => {
+      const { formatDevice } = setup();
+      expect(formatDevice('foo')).toBe('foo');
+    });
+  });
+
+  // Tables and cards must agree: an empty environment value reads as "Unknown", never blank
+  describe('empty environment values', () => {
+    test.each(['os', 'browser', 'device', 'country'])('labels an empty %s as unknown', type => {
+      const { formatValue } = setup();
+      expect(formatValue('', type)).toBe('Unknown');
+      expect(formatValue(undefined, type)).toBe('Unknown');
     });
   });
 

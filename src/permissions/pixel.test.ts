@@ -1,10 +1,16 @@
 import { beforeEach, describe, expect, test, vi } from 'vitest';
+import { getBillingAccess, getEntityBillingScope } from '@/lib/load';
 import { getPixel, getTeamUser } from '@/queries/prisma';
 import { canDeletePixel, canUpdatePixel, canViewPixel } from './pixel';
 
 vi.mock('@/queries/prisma', () => ({
   getPixel: vi.fn(),
   getTeamUser: vi.fn(),
+}));
+
+vi.mock('@/lib/load', () => ({
+  getBillingAccess: vi.fn(),
+  getEntityBillingScope: vi.fn(),
 }));
 
 vi.mock('@/lib/auth', async () => {
@@ -24,6 +30,8 @@ const normalUser = { id: 'user-1', username: 'user', role: 'user', isAdmin: fals
 beforeEach(() => {
   vi.mocked(getPixel).mockReset();
   vi.mocked(getTeamUser).mockReset();
+  vi.mocked(getBillingAccess).mockResolvedValue({ isPastDue: false, isOwner: false });
+  vi.mocked(getEntityBillingScope).mockResolvedValue({ accountId: 'user-1' });
 });
 
 describe('canViewPixel', () => {

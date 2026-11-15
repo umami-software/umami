@@ -8,6 +8,13 @@ export const users = {
     username: 'playwright1',
     role: 'view-only',
   },
+  // Separate from userCreate: spec files run in parallel locally, and two specs creating the
+  // same username race on the unique constraint.
+  teamMemberCreate: {
+    username: 'playwright-team-member',
+    password: 'password',
+    role: 'user',
+  },
 };
 
 export const teams = {

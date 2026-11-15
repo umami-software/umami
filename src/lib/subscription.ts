@@ -4,6 +4,7 @@ export interface SubscriptionAccount {
   isNoBilling?: boolean | null;
   hasSubscription?: boolean | null;
   unlimitedWebsites?: boolean | null;
+  billingStatus?: string | null;
 }
 
 export interface Subscription {
@@ -12,6 +13,8 @@ export interface Subscription {
   isNoBilling: boolean;
   hasSubscription: boolean;
   unlimitedWebsites: boolean;
+  billingStatus: string | null;
+  isOwner: boolean;
 }
 
 export const DEFAULT_SUBSCRIPTION: Subscription = {
@@ -20,6 +23,8 @@ export const DEFAULT_SUBSCRIPTION: Subscription = {
   isNoBilling: false,
   hasSubscription: false,
   unlimitedWebsites: false,
+  billingStatus: null,
+  isOwner: false,
 };
 
 export const CLOUD_FREE_WEBSITE_LIMIT = 1;
@@ -35,6 +40,8 @@ export function normalizeSubscription(account?: SubscriptionAccount | null): Sub
     isNoBilling: account?.isNoBilling || false,
     hasSubscription: account?.hasSubscription || false,
     unlimitedWebsites: account?.unlimitedWebsites || false,
+    billingStatus: account?.billingStatus || null,
+    isOwner: false,
   };
 }
 

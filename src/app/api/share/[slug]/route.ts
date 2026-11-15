@@ -65,17 +65,11 @@ async function filterEntityIds(
   return results.filter((id): id is string => !!id);
 }
 
-async function getTeamUserIds(teamId: string) {
-  const teamUsers = await prisma.client.teamUser.findMany({
-    where: { teamId },
-    select: { userId: true },
-  });
-
-  return new Set(teamUsers.map(({ userId }) => userId));
-}
-
-function isOwnedByTeam(entity: OwnedEntity, teamId: string, teamUserIds: Set<string>) {
-  return entity?.teamId === teamId || !!(entity?.userId && teamUserIds.has(entity.userId));
+// A team board share only exposes entities the team itself owns. Entities owned by individual
+// members are excluded: any member who can edit the board can create a share, including members
+// who are not allowed to view a teammate's personal website.
+function isOwnedByTeam(entity: OwnedEntity, teamId: string) {
+  return entity?.teamId === teamId;
 }
 
 async function filterBoardEntityIdsForShare(
@@ -83,20 +77,15 @@ async function filterBoardEntityIdsForShare(
   ids: BoardEntityIds,
 ): Promise<BoardEntityIds> {
   if (entity.teamId) {
-    const teamUserIds = await getTeamUserIds(entity.teamId);
-
     return {
-      websiteIds: await filterEntityIds(
-        ids.websiteIds,
-        async id => isOwnedByTeam(await getWebsite(id), entity.teamId, teamUserIds),
+      websiteIds: await filterEntityIds(ids.websiteIds, async id =>
+        isOwnedByTeam(await getWebsite(id), entity.teamId),
       ),
-      pixelIds: await filterEntityIds(
-        ids.pixelIds,
-        async id => isOwnedByTeam(await getPixel(id), entity.teamId, teamUserIds),
+      pixelIds: await filterEntityIds(ids.pixelIds, async id =>
+        isOwnedByTeam(await getPixel(id), entity.teamId),
       ),
-      linkIds: await filterEntityIds(
-        ids.linkIds,
-        async id => isOwnedByTeam(await getLink(id), entity.teamId, teamUserIds),
+      linkIds: await filterEntityIds(ids.linkIds, async id =>
+        isOwnedByTeam(await getLink(id), entity.teamId),
       ),
     };
   }

@@ -35,7 +35,8 @@ test.describe('User API tests', () => {
     expect(response.status()).toBe(200);
     expect(body.data[0]).toHaveProperty('id');
     expect(body.data[0]).toHaveProperty('username');
-    expect(body.data[0]).toHaveProperty('password');
+    // Password hashes must never leave the server.
+    expect(body.data[0]).not.toHaveProperty('password');
     expect(body.data[0]).toHaveProperty('role');
   });
 

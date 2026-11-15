@@ -2,6 +2,7 @@ import { Dialog, Modal } from '@umami/react-zen';
 import { WebsiteExpandedView } from '@/app/(main)/websites/[websiteId]/WebsiteExpandedView';
 import { ControlledDialog } from '@/components/common/ControlledDialog';
 import { useMobile, useNavigation } from '@/components/hooks';
+import styles from './ExpandedViewModal.module.css';
 
 export function ExpandedViewModal({
   websiteId,
@@ -32,10 +33,12 @@ export function ExpandedViewModal({
     <ControlledDialog>
       <Modal isOpen={!!view} onOpenChange={handleOpenChange}>
         <Dialog
+          className={styles.dialog}
           style={{
             maxWidth: 1320,
             width: '100vw',
-            height: isMobile ? '100dvh' : 'calc(100dvh - 40px)',
+            height: isMobile ? '100dvh' : undefined,
+            maxHeight: isMobile ? undefined : 'calc(100dvh - 40px)',
             overflow: 'hidden',
           }}
         >

@@ -28,6 +28,16 @@ async function relationalQuery(websiteId: string, sessionId: string) {
       country,
       region,
       city,
+      (select first_event.referrer_domain
+       from website_event first_event
+       where first_event.website_id = {{websiteId::uuid}}
+         and first_event.session_id = {{sessionId::uuid}}
+         and first_event.event_type != ${EVENT_TYPE.performance}
+         and first_event.referrer_domain is not null
+         and first_event.referrer_domain != ''
+         and first_event.referrer_domain != regexp_replace(first_event.hostname, '^www.', '')
+       order by first_event.created_at, first_event.event_id
+       limit 1) as "referrerDomain",
       min(min_time) as "firstAt",
       max(max_time) as "lastAt",
       count(distinct visit_id) as visits,
@@ -80,6 +90,13 @@ async function clickhouseQuery(websiteId: string, sessionId: string) {
       argMax(country, max_time) as country,
       argMax(region, max_time) as region,
       argMax(city, max_time) as city,
+      (select nullIf(argMin(first_event.referrer_domain, (first_event.created_at, first_event.event_id)), '')
+       from website_event first_event
+       where first_event.website_id = {websiteId:UUID}
+         and first_event.session_id = {sessionId:UUID}
+         and first_event.event_type != ${EVENT_TYPE.performance}
+         and first_event.referrer_domain != ''
+         and first_event.referrer_domain != first_event.hostname) as referrerDomain,
       ${getDateStringSQL('min(min_time)')} as firstAt,
       ${getDateStringSQL('max(max_time)')} as lastAt,
       uniq(visit_id) visits,

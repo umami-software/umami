@@ -1,0 +1,7 @@
+.geography {
+  outline: none;
+}
+
+.geography:hover {
+  fill: var(--map-hover-color);
+}

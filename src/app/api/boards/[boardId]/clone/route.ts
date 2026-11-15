@@ -46,10 +46,11 @@ export async function POST(request: Request, { params }: { params: Promise<{ boa
     return badRequest({ message: 'Board cannot be cloned.' });
   }
 
-  if (
-    (sourceBoard.teamId && !(await canCreateTeamWebsite(auth, sourceBoard.teamId))) ||
-    !(await canCreateWebsite(auth))
-  ) {
+  const canCreate = sourceBoard.teamId
+    ? await canCreateTeamWebsite(auth, sourceBoard.teamId)
+    : await canCreateWebsite(auth);
+
+  if (!canCreate) {
     return unauthorized();
   }
 

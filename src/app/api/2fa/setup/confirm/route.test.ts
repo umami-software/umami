@@ -20,11 +20,9 @@ const mocks = vi.hoisted(() => {
     generateBackupCodes: vi.fn(),
     decryptSecret: vi.fn(),
     isTwoFactorConfigured: vi.fn(),
-    checkRateLimit: vi.fn(),
-    recordFailedAttempt: vi.fn(),
+    reserveAttempt: vi.fn(),
     resetRateLimit: vi.fn(),
-    isOtpReplayed: vi.fn(),
-    markOtpUsed: vi.fn(),
+    claimOtp: vi.fn(),
     verifyTotp: vi.fn(),
   };
 });
@@ -58,14 +56,12 @@ vi.mock('@/lib/two-factor/crypto', () => ({
 }));
 
 vi.mock('@/lib/two-factor/rate-limit', () => ({
-  checkRateLimit: mocks.checkRateLimit,
-  recordFailedAttempt: mocks.recordFailedAttempt,
+  reserveAttempt: mocks.reserveAttempt,
   resetRateLimit: mocks.resetRateLimit,
 }));
 
 vi.mock('@/lib/two-factor/replay-prevention', () => ({
-  isOtpReplayed: mocks.isOtpReplayed,
-  markOtpUsed: mocks.markOtpUsed,
+  claimOtp: mocks.claimOtp,
 }));
 
 vi.mock('@/lib/two-factor/totp', () => ({
@@ -82,11 +78,9 @@ beforeEach(() => {
   mocks.generateBackupCodes.mockReset();
   mocks.decryptSecret.mockReset();
   mocks.isTwoFactorConfigured.mockReset();
-  mocks.checkRateLimit.mockReset();
-  mocks.recordFailedAttempt.mockReset();
+  mocks.reserveAttempt.mockReset();
   mocks.resetRateLimit.mockReset();
-  mocks.isOtpReplayed.mockReset();
-  mocks.markOtpUsed.mockReset();
+  mocks.claimOtp.mockReset();
   mocks.verifyTotp.mockReset();
 
   mocks.parseRequest.mockResolvedValue({
@@ -102,11 +96,9 @@ beforeEach(() => {
   });
   mocks.decryptSecret.mockReturnValue('plain-secret');
   mocks.isTwoFactorConfigured.mockReturnValue(true);
-  mocks.checkRateLimit.mockResolvedValue({ allowed: true });
-  mocks.recordFailedAttempt.mockResolvedValue({ lockedUntil: undefined });
+  mocks.reserveAttempt.mockResolvedValue({ allowed: true });
   mocks.resetRateLimit.mockResolvedValue(undefined);
-  mocks.isOtpReplayed.mockResolvedValue(false);
-  mocks.markOtpUsed.mockResolvedValue(undefined);
+  mocks.claimOtp.mockResolvedValue(true);
   mocks.verifyTotp.mockResolvedValue(true);
   mocks.tx.twoFactorAuth.update.mockResolvedValue(undefined);
   mocks.tx.twoFactorBackupCode.deleteMany.mockResolvedValue(undefined);
@@ -118,7 +110,7 @@ test('POST confirms setup, enables 2FA, stores backup codes, and resets the rate
     new Request('http://localhost/api/2fa/setup/confirm', { method: 'POST' }),
   );
 
-  expect(mocks.checkRateLimit).toHaveBeenCalledWith('user-1');
+  expect(mocks.reserveAttempt).toHaveBeenCalledWith('user-1');
   expect(mocks.decryptSecret).toHaveBeenCalledWith('encrypted');
   expect(mocks.verifyTotp).toHaveBeenCalledWith('123456', 'plain-secret');
   expect(mocks.tx.twoFactorAuth.update).toHaveBeenCalledWith({
@@ -134,7 +126,7 @@ test('POST confirms setup, enables 2FA, stores backup codes, and resets the rate
       { userId: 'user-1', codeHash: 'hash-2' },
     ],
   });
-  expect(mocks.markOtpUsed).toHaveBeenCalledWith('user-1', '123456', mocks.tx);
+  expect(mocks.claimOtp).toHaveBeenCalledWith('user-1', '123456');
   expect(mocks.resetRateLimit).toHaveBeenCalledWith('user-1');
   await expect(response.json()).resolves.toEqual({
     backupCodes: ['code-1', 'code-2'],
@@ -149,7 +141,7 @@ test('POST reports a configuration error when the encryption key is missing', as
     new Request('http://localhost/api/2fa/setup/confirm', { method: 'POST' }),
   );
 
-  expect(mocks.checkRateLimit).not.toHaveBeenCalled();
+  expect(mocks.reserveAttempt).not.toHaveBeenCalled();
   expect(mocks.decryptSecret).not.toHaveBeenCalled();
   await expect(response.json()).resolves.toMatchObject({
     error: {
@@ -159,14 +151,14 @@ test('POST reports a configuration error when the encryption key is missing', as
   expect(response.status).toBe(503);
 });
 
-test('POST records a failed attempt and skips writes when the token is invalid', async () => {
+test('POST counts the attempt and skips writes when the token is invalid', async () => {
   mocks.verifyTotp.mockResolvedValue(false);
 
   const response = await POST(
     new Request('http://localhost/api/2fa/setup/confirm', { method: 'POST' }),
   );
 
-  expect(mocks.recordFailedAttempt).toHaveBeenCalledWith('user-1');
+  expect(mocks.reserveAttempt).toHaveBeenCalledWith('user-1');
   expect(mocks.transaction).not.toHaveBeenCalled();
   expect(mocks.resetRateLimit).not.toHaveBeenCalled();
   await expect(response.json()).resolves.toMatchObject({

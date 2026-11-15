@@ -1,6 +1,14 @@
 import { beforeEach, describe, expect, test, vi } from 'vitest';
+import { getClientInfo, hasBlockedIp } from '@/lib/detect';
+import { parseToken } from '@/lib/jwt';
 import { parseRequest } from '@/lib/request';
+import { getWebsite } from '@/queries/prisma';
+import { saveRecording } from '@/queries/sql';
 import { OPTIONS, POST } from './route';
+
+vi.hoisted(() => {
+  process.env.APP_SECRET ??= 'test-app-secret';
+});
 
 vi.mock('@/lib/detect', () => ({
   getClientInfo: vi.fn(),
@@ -63,5 +71,111 @@ describe('record route CORS', () => {
 
     expect(response.status).toBe(200);
     expect(response.headers.get('Access-Control-Allow-Origin')).toBe('*');
+  });
+});
+
+describe('record route schema', () => {
+  // The payload timestamp becomes chunkIndex, a Postgres integer column.
+  test('rejects payload timestamps outside the storable range', async () => {
+    parseRequestMock.mockResolvedValue({
+      body: { type: 'record', payload: { website: 'w', events: [] } },
+      error: undefined,
+    });
+
+    await POST(new Request('http://localhost/api/record', { method: 'POST' }));
+
+    const schema = parseRequestMock.mock.calls[0][1] as {
+      safeParse: (value: unknown) => { success: boolean };
+    };
+    const payload = (timestamp: number) => ({
+      type: 'record',
+      payload: { website: '11111111-1111-4111-8111-111111111111', events: [], timestamp },
+    });
+
+    expect(schema.safeParse(payload(1767225600)).success).toBe(true);
+    expect(schema.safeParse(payload(2147483648)).success).toBe(false);
+    expect(schema.safeParse(payload(-1)).success).toBe(false);
+  });
+});
+
+describe('record route cache token binding', () => {
+  const websiteId = '11111111-1111-4111-8111-111111111111';
+  const otherWebsiteId = '22222222-2222-4222-8222-222222222222';
+  const sessionId = '33333333-3333-4333-8333-333333333333';
+  const visitId = '44444444-4444-4444-8444-444444444444';
+
+  function post(website: string) {
+    parseRequestMock.mockResolvedValue({
+      body: {
+        type: 'record',
+        payload: { website, events: [{ type: 3, timestamp: 1_700_000_000_000 }] },
+      },
+      error: undefined,
+    } as any);
+
+    return POST(
+      new Request('http://localhost/api/record', {
+        method: 'POST',
+        headers: { 'x-umami-cache': 'token' },
+      }),
+    );
+  }
+
+  beforeEach(() => {
+    vi.mocked(getWebsite).mockResolvedValue({
+      id: websiteId,
+      recorderEnabled: true,
+      replayConfig: { replayEnabled: true },
+    } as any);
+    vi.mocked(getClientInfo).mockResolvedValue({
+      ip: '127.0.0.1',
+      userAgent:
+        'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36',
+    } as any);
+    vi.mocked(hasBlockedIp).mockReturnValue(false);
+  });
+
+  test('rejects a cache token issued for a different website', async () => {
+    vi.mocked(parseToken).mockResolvedValue({
+      type: 'cache',
+      websiteId: otherWebsiteId,
+      sessionId,
+      visitId,
+    });
+
+    const response = await post(websiteId);
+
+    expect(response.status).toBe(400);
+    expect(getWebsite).not.toHaveBeenCalled();
+    expect(saveRecording).not.toHaveBeenCalled();
+  });
+
+  test('rejects a token without a websiteId', async () => {
+    vi.mocked(parseToken).mockResolvedValue({ type: 'cache', sessionId, visitId });
+
+    const response = await post(websiteId);
+
+    expect(response.status).toBe(400);
+    expect(saveRecording).not.toHaveBeenCalled();
+  });
+
+  test('rejects a non-cache token type', async () => {
+    vi.mocked(parseToken).mockResolvedValue({ type: 'share', websiteId, sessionId, visitId });
+
+    const response = await post(websiteId);
+
+    expect(response.status).toBe(400);
+    expect(saveRecording).not.toHaveBeenCalled();
+  });
+
+  test('accepts a cache token bound to the same website', async () => {
+    vi.mocked(parseToken).mockResolvedValue({ type: 'cache', websiteId, sessionId, visitId });
+
+    const response = await post(websiteId);
+
+    expect(response.status).toBe(200);
+    expect(saveRecording).toHaveBeenCalledWith(
+      expect.objectContaining({ websiteId, sessionId, visitId }),
+    );
   });
 });

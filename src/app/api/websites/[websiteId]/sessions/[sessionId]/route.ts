@@ -18,9 +18,7 @@ export async function GET(
   const { websiteId, sessionId } = await params;
   const canDelete = isRelationalOnly() && (await canDeleteWebsite(auth, websiteId));
 
-  if (
-    !(await canViewWebsiteSection(auth, websiteId, ['sessions', 'events', 'realtime', 'revenue']))
-  ) {
+  if (!(await canViewWebsiteSection(auth, websiteId, 'sessions'))) {
     return unauthorized();
   }
 
@@ -31,19 +29,20 @@ export async function GET(
   }
 
   let sessionIds = [sessionId];
-  const distinctIds = data.distinctId
-    ? [data.distinctId]
-    : await getLinkedDistinctIds(websiteId, sessionId);
+  const linkedDistinctIds = await getLinkedDistinctIds(websiteId, sessionId);
+  const distinctIds = linkedDistinctIds.length
+    ? linkedDistinctIds
+    : data.distinctId
+      ? [data.distinctId]
+      : [];
+  const distinctId = distinctIds.length === 1 ? distinctIds[0] : undefined;
 
-  if (!data.distinctId && distinctIds.length === 1) {
-    data.distinctId = distinctIds[0];
-  }
+  // A collided legacy session cannot be safely attributed to one identity.
+  data.distinctId = distinctId;
 
-  if (distinctIds.length) {
-    const links = await Promise.all(
-      distinctIds.map(distinctId => getLinkedSessionIds(websiteId, distinctId)),
-    );
-    const linkedIds = links.flatMap(group => group.map(link => link.sessionId));
+  if (distinctId) {
+    const links = await getLinkedSessionIds(websiteId, distinctId);
+    const linkedIds = links.map(link => link.sessionId);
 
     sessionIds = Array.from(new Set([sessionId, ...linkedIds]));
   }
@@ -53,6 +52,7 @@ export async function GET(
   return json({
     ...data,
     canDelete,
+    distinctIds,
     stitchedSessionCount,
   });
 }

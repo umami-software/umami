@@ -33,12 +33,14 @@ export interface FieldFiltersProps {
 
 export function FieldFilters({
   websiteId,
-  value,
+  value: valueProp,
   exclude = [],
   match = 'all',
   onChange,
   onMatchChange,
 }: FieldFiltersProps) {
+  // Segments saved through the API, or by older versions, may have no filters.
+  const value = valueProp ?? [];
   const { t, labels, messages } = useMessages();
   const { fields, groupLabels } = useFields();
   const startDate = subMonths(endOfDay(new Date()), 6);

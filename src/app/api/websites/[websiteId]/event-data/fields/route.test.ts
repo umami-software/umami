@@ -41,7 +41,9 @@ test('uses eventName as the explicit event selector for property fields', async 
   parseRequestMock.mockResolvedValue({ auth: {}, query, error: undefined });
   canViewWebsiteSectionMock.mockResolvedValue(true);
   getQueryFiltersMock.mockResolvedValue(filters as any);
-  getEventDataFieldsMock.mockResolvedValue([{ propertyName: 'currency', dataType: 1, total: 1 }] as any);
+  getEventDataFieldsMock.mockResolvedValue([
+    { propertyName: 'currency', dataType: 1, total: 1 },
+  ] as any);
 
   const response = await GET(
     new Request(

@@ -1,10 +1,16 @@
 import { beforeEach, describe, expect, test, vi } from 'vitest';
 import { getEntity } from '@/lib/entity';
+import { getBillingAccess, getEntityBillingScope } from '@/lib/load';
 import { getTeamUser } from '@/queries/prisma';
 import { canDeleteEntity, canUpdateEntity, canViewEntity } from './entity';
 
 vi.mock('@/lib/entity', () => ({
   getEntity: vi.fn(),
+}));
+
+vi.mock('@/lib/load', () => ({
+  getBillingAccess: vi.fn(),
+  getEntityBillingScope: vi.fn(),
 }));
 
 vi.mock('@/queries/prisma', () => ({
@@ -28,6 +34,8 @@ const normalUser = { id: 'user-1', username: 'user', role: 'user', isAdmin: fals
 beforeEach(() => {
   vi.mocked(getEntity).mockReset();
   vi.mocked(getTeamUser).mockReset();
+  vi.mocked(getBillingAccess).mockResolvedValue({ isPastDue: false, isOwner: false });
+  vi.mocked(getEntityBillingScope).mockResolvedValue({ accountId: 'user-1' });
 });
 
 describe('canViewEntity', () => {

@@ -2,7 +2,6 @@
 import { useQueryClient } from '@tanstack/react-query';
 import {
   Alert,
-  AlertDescription,
   AlertTitle,
   Box,
   Button,
@@ -92,6 +91,7 @@ export function TwoFactorSetupModal({ required, onClose }: TwoFactorSetupModalPr
       const data: any = await confirm({ token });
       setBackupCodes(data.backupCodes);
     } catch (err: any) {
+      setOtpValue('');
       setError(getErrorMessage(err) || t(messages.error));
     }
   };
@@ -186,15 +186,14 @@ export function TwoFactorSetupModal({ required, onClose }: TwoFactorSetupModalPr
                       if (error) setError(null);
                     }}
                     onComplete={handleConfirm}
-                    disabled={isConfirming}
+                    readOnly={isConfirming}
                   />
                 </Column>
               </Step>
 
               {error && (
                 <Alert variant="danger">
-                  <AlertTitle>{t(messages.error)}</AlertTitle>
-                  <AlertDescription>{error}</AlertDescription>
+                  <AlertTitle>{error}</AlertTitle>
                 </Alert>
               )}
 

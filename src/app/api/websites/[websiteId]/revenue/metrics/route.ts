@@ -3,8 +3,8 @@ import { getQueryFilters, parseRequest } from '@/lib/request';
 import { badRequest, json, unauthorized } from '@/lib/response';
 import { filterParams, withDateRange } from '@/lib/schema';
 import { canViewWebsiteSection } from '@/permissions';
-import type { RevenuParameters } from '@/queries/sql/reports/getRevenueChart';
-import { getRevenueMetrics, type RevenueMetricType } from '@/queries/sql/reports/getRevenueMetrics';
+import type { RevenuParameters } from '@/queries/sql/revenue/getRevenueChart';
+import { getRevenueMetrics, type RevenueMetricType } from '@/queries/sql/revenue/getRevenueMetrics';
 
 const revenueMetricType = z.enum(['country', 'region', 'referrer', 'channel']);
 

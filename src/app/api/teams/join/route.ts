@@ -20,6 +20,7 @@ export async function POST(request: Request) {
   const team = await findTeam({
     where: {
       accessCode,
+      deletedAt: null,
     },
   });
 

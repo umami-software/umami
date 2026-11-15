@@ -11,14 +11,15 @@ test.describe('Login tests', () => {
     await page.getByTestId('input-password').locator('input').fill(umamiUser.password);
     await page.getByTestId('button-submit').click();
 
-    await expect(page).toHaveURL(/\/dashboard$/);
+    await expect(page).toHaveURL(/\/websites$/);
 
     await logout(page);
   });
 
   test('shows validation for blank inputs or incorrect credentials', async ({ page }) => {
     await page.getByTestId('button-submit').click();
-    await expect(page.getByText(/Required/i)).toBeVisible();
+    await expect(page.getByTestId('input-username').getByText(/Required/i)).toBeVisible();
+    await expect(page.getByTestId('input-password').getByText(/Required/i)).toBeVisible();
 
     await page.getByTestId('input-username').locator('input').fill(umamiUser.username);
     await page.getByTestId('input-password').locator('input').fill('wrongpassword');

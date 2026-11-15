@@ -7,6 +7,15 @@ vi.mock('./website', () => ({
   canViewWebsite: vi.fn(),
 }));
 
+vi.mock('@/lib/load', () => ({
+  getBillingAccess: vi.fn(),
+  getWebsiteBillingScope: vi.fn(),
+}));
+
+vi.mock('@/queries/prisma', () => ({
+  getWebsite: vi.fn(),
+}));
+
 test('getReportSection maps saved report types to share sections', () => {
   expect(getReportSection('goal')).toBe('goals');
   expect(getReportSection('funnel')).toBe('funnels');

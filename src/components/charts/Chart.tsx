@@ -5,8 +5,14 @@ import ChartJS, {
   type LegendItem,
   type UpdateMode,
 } from 'chart.js/auto';
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { type ReactNode, useEffect, useMemo, useRef, useState } from 'react';
+import {
+  type AnnotationMarker,
+  type ChartAnnotation,
+  ChartAnnotationMarkers,
+} from '@/components/charts/ChartAnnotationMarkers';
 import { Legend } from '@/components/metrics/Legend';
+import { getChartBucketIndex } from '@/lib/charts';
 import { DEFAULT_ANIMATION_DURATION } from '@/lib/constants';
 
 ChartJS.defaults.font.family = 'Inter';
@@ -20,6 +26,23 @@ export interface ChartProps extends BoxProps {
   onTooltip?: (model: any) => void;
   hiddenLabels?: Set<string>;
   onLegendClick?: (label: string, willBeHidden: boolean) => void;
+  legendActions?: ReactNode;
+  annotations?: ChartAnnotation[];
+  onAnnotationClick?: (annotations: ChartAnnotation[]) => void;
+  onAnnotationMoreClick?: (annotations: ChartAnnotation[]) => void;
+}
+
+function isSameMarkers(a: AnnotationMarker[], b: AnnotationMarker[]) {
+  return (
+    a.length === b.length &&
+    a.every(
+      (m, i) =>
+        m.x === b[i].x &&
+        m.y === b[i].y &&
+        m.annotations.length === b[i].annotations.length &&
+        m.annotations.every((annotation, j) => annotation === b[i].annotations[j]),
+    )
+  );
 }
 
 export function Chart({
@@ -31,11 +54,64 @@ export function Chart({
   chartOptions,
   hiddenLabels,
   onLegendClick,
+  legendActions,
+  annotations,
+  onAnnotationClick,
+  onAnnotationMoreClick,
   ...props
 }: ChartProps) {
   const canvas = useRef(null);
   const chart = useRef(null);
   const [legendItems, setLegendItems] = useState([]);
+  const [markers, setMarkers] = useState<AnnotationMarker[]>([]);
+  const annotationsRef = useRef<ChartAnnotation[]>(annotations);
+  annotationsRef.current = annotations;
+
+  // Computes pixel positions for annotation markers whenever the chart lays out (update / resize)
+  const annotationPlugin = useMemo(
+    () => ({
+      id: 'annotationMarkers',
+      afterLayout: (instance: any) => {
+        const list = annotationsRef.current;
+        const { chartArea, scales } = instance;
+
+        if (!list?.length || !chartArea || !scales?.x) {
+          setMarkers(prev => (prev.length ? [] : prev));
+          return;
+        }
+
+        // Group annotations that land on the same pixel column into a single marker
+        const groups = new Map<number, AnnotationMarker>();
+
+        for (const annotation of list) {
+          const markerDate = annotation.markerDate || annotation.date;
+          const bucketIndex = getChartBucketIndex(
+            instance.data.datasets[0]?.data || [],
+            markerDate,
+          );
+          const bucket = instance.getDatasetMeta(0)?.data[bucketIndex];
+          const x = Math.round(bucket?.x ?? scales.x.getPixelForValue(markerDate.getTime()));
+
+          if (!Number.isFinite(x) || x < chartArea.left || x > chartArea.right) {
+            continue;
+          }
+
+          const group = groups.get(x);
+
+          if (group) {
+            group.annotations.push(annotation);
+          } else {
+            groups.set(x, { annotations: [annotation], x, y: chartArea.bottom });
+          }
+        }
+
+        const next = [...groups.values()];
+
+        setMarkers(prev => (isSameMarkers(prev, next) ? prev : next));
+      },
+    }),
+    [],
+  );
 
   const options = useMemo(() => {
     return {
@@ -99,6 +175,7 @@ export function Chart({
         type,
         data: chartData,
         options,
+        plugins: [annotationPlugin],
       });
 
       setLegendItems(chart.current.legend.legendItems);
@@ -140,14 +217,42 @@ export function Chart({
     }
   }, [chartData, options, updateMode, hiddenLabels]);
 
+  // Re-run layout when annotations change so marker positions are recalculated
+  useEffect(() => {
+    chart.current?.update('none');
+  }, [annotations]);
+
   return (
     <Column gap="6">
       <Box {...props}>
         <div style={{ position: 'relative', width: '100%', height: '100%', overflow: 'hidden' }}>
           <canvas ref={canvas} style={{ position: 'absolute', top: 0, left: 0 }} />
+          {markers.length > 0 && (
+            <ChartAnnotationMarkers
+              markers={markers}
+              onClick={onAnnotationClick}
+              onMoreClick={onAnnotationMoreClick}
+            />
+          )}
         </div>
       </Box>
-      <Legend items={legendItems} onClick={handleLegendClick} />
+      {legendActions ? (
+        <div
+          style={{
+            display: 'grid',
+            gridTemplateColumns: '1fr auto 1fr',
+            alignItems: 'center',
+            gap: 8,
+          }}
+        >
+          <div style={{ gridColumn: 2 }}>
+            <Legend items={legendItems} onClick={handleLegendClick} />
+          </div>
+          <div style={{ justifySelf: 'end' }}>{legendActions}</div>
+        </div>
+      ) : (
+        <Legend items={legendItems} onClick={handleLegendClick} />
+      )}
     </Column>
   );
 }

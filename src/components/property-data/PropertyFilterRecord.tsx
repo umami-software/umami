@@ -148,7 +148,7 @@ export function PropertyFilterRecord({
   };
 
   return (
-    <Column minWidth="0">
+    <Column minWidth="0" gap="1">
       <Label
         title={filter.propertyName}
         style={{

@@ -1,5 +1,5 @@
 import { describe, expect, test, vi } from 'vitest';
-import { decrypt, encrypt, hash, md5, uuid } from './crypto';
+import { decrypt, encrypt, getSalt, hash, md5, uuid } from './crypto';
 
 describe('encrypt/decrypt', () => {
   test('round-trips a value with the same secret', () => {
@@ -57,6 +57,49 @@ describe('md5', () => {
 
   test('returns a 32-char hex string', () => {
     expect(md5('umami')).toMatch(/^[0-9a-f]{32}$/);
+  });
+});
+
+describe('getSalt', () => {
+  const date = new Date('2026-09-17T15:30:00Z');
+  const sameDay = new Date('2026-09-17T18:00:00Z');
+  const nextDay = new Date('2026-09-18T15:30:00Z');
+  const nextMonth = new Date('2026-10-17T15:30:00Z');
+
+  test('defaults to monthly rotation when unset or empty', () => {
+    const monthly = getSalt('monthly', date);
+
+    expect(getSalt(undefined, date)).toBe(monthly);
+    expect(getSalt('', date)).toBe(monthly);
+    expect(getSalt('   ', date)).toBe(monthly);
+    expect(getSalt(undefined, nextDay)).toBe(monthly);
+    expect(getSalt(undefined, nextMonth)).not.toBe(monthly);
+  });
+
+  test('accepts both short and long period names', () => {
+    expect(getSalt('day', date)).toBe(getSalt('daily', date));
+    expect(getSalt('week', date)).toBe(getSalt('weekly', date));
+    expect(getSalt('month', date)).toBe(getSalt('monthly', date));
+    expect(getSalt('Daily', date)).toBe(getSalt('daily', date));
+  });
+
+  test('daily rotation changes each day', () => {
+    expect(getSalt('daily', date)).toBe(getSalt('daily', sameDay));
+    expect(getSalt('daily', date)).not.toBe(getSalt('daily', nextDay));
+  });
+
+  test('monthly rotation changes each month', () => {
+    expect(getSalt('monthly', date)).toBe(getSalt('monthly', nextDay));
+    expect(getSalt('monthly', date)).not.toBe(getSalt('monthly', nextMonth));
+  });
+
+  test('uses the hash of any other string as a fixed salt', () => {
+    const salt = getSalt('my-custom-salt', date);
+
+    expect(salt).toBe(hash('my-custom-salt'));
+    expect(salt).not.toContain('my-custom-salt');
+    expect(getSalt('my-custom-salt', nextMonth)).toBe(salt);
+    expect(getSalt('other-salt', date)).not.toBe(salt);
   });
 });
 

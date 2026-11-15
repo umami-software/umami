@@ -1,7 +1,7 @@
 import clickhouse from '@/lib/clickhouse';
 import { CLICKHOUSE, PRISMA, runQuery } from '@/lib/db';
 import prisma from '@/lib/prisma';
-import type { EventPropertyFilter, QueryFilters } from '@/lib/types';
+import type { EventDataPivotRow, EventPropertyFilter, PageResult, QueryFilters } from '@/lib/types';
 
 const FUNCTION_NAME = 'getEventDataPivot';
 
@@ -12,7 +12,7 @@ export async function getEventDataPivot(
     filters: QueryFilters,
     eventFilters?: EventPropertyFilter[],
   ]
-) {
+): Promise<PageResult<EventDataPivotRow[]>> {
   return runQuery({
     [PRISMA]: () => relationalQuery(...args),
     [CLICKHOUSE]: () => clickhouseQuery(...args),

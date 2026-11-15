@@ -50,19 +50,21 @@ export function formatNumber(n: string | number) {
 export function formatLongNumber(value: number) {
   const n = Number(value);
 
-  if (n >= 1000000000) {
+  // Each threshold is lowered by half of the smaller format's last digit, so values
+  // that round up move to the larger format instead of showing as 1000k or 100.0k.
+  if (n >= 999950000) {
     return `${(n / 1000000000).toFixed(1)}b`;
   }
-  if (n >= 1000000) {
+  if (n >= 999500) {
     return `${(n / 1000000).toFixed(1)}m`;
   }
-  if (n >= 100000) {
+  if (n >= 99950) {
     return `${(n / 1000).toFixed(0)}k`;
   }
-  if (n >= 10000) {
+  if (n >= 9995) {
     return `${(n / 1000).toFixed(1)}k`;
   }
-  if (n >= 1000) {
+  if (n >= 999.5) {
     return `${(n / 1000).toFixed(2)}k`;
   }
 

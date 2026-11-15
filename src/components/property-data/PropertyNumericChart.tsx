@@ -139,7 +139,7 @@ export function PropertyNumericChart({
         error={sumQuery.error || avgQuery.error || statsQuery.error}
         minHeight="100px"
       >
-        <MetricsBar padding="2">
+        <MetricsBar>
           <MetricCard
             label={t(labels.total)}
             value={stats?.total ?? 0}

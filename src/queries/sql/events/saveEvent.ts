@@ -105,41 +105,40 @@ async function relationalQuery({
 }: SaveEventArgs) {
   const websiteEventId = uuid();
 
-  await prisma.client.websiteEvent.create({
-    data: {
-      id: websiteEventId,
-      websiteId,
-      sessionId,
-      visitId,
-      urlPath: truncateString(urlPath, FIELD_LENGTH.url),
-      urlQuery: truncateString(urlQuery, FIELD_LENGTH.url),
-      utmSource: truncateString(utmSource, FIELD_LENGTH.fieldValue),
-      utmMedium: truncateString(utmMedium, FIELD_LENGTH.fieldValue),
-      utmCampaign: truncateString(utmCampaign, FIELD_LENGTH.fieldValue),
-      utmContent: truncateString(utmContent, FIELD_LENGTH.fieldValue),
-      utmTerm: truncateString(utmTerm, FIELD_LENGTH.fieldValue),
-      referrerPath: truncateString(referrerPath, FIELD_LENGTH.url),
-      referrerQuery: truncateString(referrerQuery, FIELD_LENGTH.url),
-      referrerDomain: truncateString(referrerDomain, FIELD_LENGTH.url),
-      pageTitle: truncateString(pageTitle, FIELD_LENGTH.pageTitle),
-      gclid: truncateString(gclid, FIELD_LENGTH.fieldValue),
-      fbclid: truncateString(fbclid, FIELD_LENGTH.fieldValue),
-      msclkid: truncateString(msclkid, FIELD_LENGTH.fieldValue),
-      ttclid: truncateString(ttclid, FIELD_LENGTH.fieldValue),
-      lifatid: truncateString(lifatid, FIELD_LENGTH.fieldValue),
-      twclid: truncateString(twclid, FIELD_LENGTH.fieldValue),
-      eventType,
-      eventName: truncateString(eventName, FIELD_LENGTH.eventName) ?? null,
-      tag: truncateString(tag, FIELD_LENGTH.tag),
-      hostname: truncateString(hostname, FIELD_LENGTH.hostname),
-      lcp,
-      inp,
-      cls,
-      fcp,
-      ttfb,
-      createdAt,
-    },
-  });
+  const row = {
+    id: websiteEventId,
+    websiteId,
+    sessionId,
+    visitId,
+    urlPath: truncateString(urlPath, FIELD_LENGTH.url),
+    urlQuery: truncateString(urlQuery, FIELD_LENGTH.url),
+    utmSource: truncateString(utmSource, FIELD_LENGTH.fieldValue),
+    utmMedium: truncateString(utmMedium, FIELD_LENGTH.fieldValue),
+    utmCampaign: truncateString(utmCampaign, FIELD_LENGTH.fieldValue),
+    utmContent: truncateString(utmContent, FIELD_LENGTH.fieldValue),
+    utmTerm: truncateString(utmTerm, FIELD_LENGTH.fieldValue),
+    referrerPath: truncateString(referrerPath, FIELD_LENGTH.url),
+    referrerQuery: truncateString(referrerQuery, FIELD_LENGTH.url),
+    referrerDomain: truncateString(referrerDomain, FIELD_LENGTH.url),
+    pageTitle: truncateString(pageTitle, FIELD_LENGTH.pageTitle),
+    gclid: truncateString(gclid, FIELD_LENGTH.fieldValue),
+    fbclid: truncateString(fbclid, FIELD_LENGTH.fieldValue),
+    msclkid: truncateString(msclkid, FIELD_LENGTH.fieldValue),
+    ttclid: truncateString(ttclid, FIELD_LENGTH.fieldValue),
+    lifatid: truncateString(lifatid, FIELD_LENGTH.fieldValue),
+    twclid: truncateString(twclid, FIELD_LENGTH.fieldValue),
+    eventType,
+    eventName: truncateString(eventName, FIELD_LENGTH.eventName) ?? null,
+    tag: truncateString(tag, FIELD_LENGTH.tag),
+    hostname: truncateString(hostname, FIELD_LENGTH.hostname),
+    lcp,
+    inp,
+    cls,
+    fcp,
+    ttfb,
+    createdAt,
+  };
+  await prisma.client.websiteEvent.create({ data: row });
 
   if (eventData) {
     await saveEventData({
@@ -152,9 +151,16 @@ async function relationalQuery({
       createdAt,
     });
 
-    const { revenue, currency } = eventData;
+    const { revenue: revenueValue, currency: currencyValue } = eventData;
+    const revenue = Number(revenueValue);
+    const currency = typeof currencyValue === 'string' ? currencyValue.trim() : '';
 
-    if (revenue > 0 && currency) {
+    if (
+      (typeof revenueValue === 'number' || typeof revenueValue === 'string') &&
+      Number.isFinite(revenue) &&
+      revenue > 0 &&
+      currency
+    ) {
       await saveRevenue({
         websiteId,
         sessionId,
@@ -276,5 +282,26 @@ async function clickhouseQuery({
       eventData,
       createdAt,
     });
+
+    const { revenue: revenueValue, currency: currencyValue } = eventData;
+    const revenue = Number(revenueValue);
+    const currency = typeof currencyValue === 'string' ? currencyValue.trim() : '';
+
+    if (
+      (typeof revenueValue === 'number' || typeof revenueValue === 'string') &&
+      Number.isFinite(revenue) &&
+      revenue > 0 &&
+      currency
+    ) {
+      await saveRevenue({
+        websiteId,
+        sessionId,
+        eventId,
+        eventName: truncateString(eventName, FIELD_LENGTH.eventName),
+        currency,
+        revenue,
+        createdAt,
+      });
+    }
   }
 }

@@ -1,6 +1,7 @@
+import clickhouse from '@/lib/clickhouse';
 import { FIELD_LENGTH } from '@/lib/constants';
 import { uuid } from '@/lib/crypto';
-import { PRISMA, runQuery } from '@/lib/db';
+import { CLICKHOUSE, PRISMA, runQuery } from '@/lib/db';
 import { truncateString } from '@/lib/format';
 import prisma from '@/lib/prisma';
 
@@ -17,6 +18,7 @@ export interface SaveRevenueArgs {
 export async function saveRevenue(data: SaveRevenueArgs) {
   return runQuery({
     [PRISMA]: () => relationalQuery(data),
+    [CLICKHOUSE]: () => clickhouseQuery(data),
   });
 }
 
@@ -35,4 +37,21 @@ async function relationalQuery(data: SaveRevenueArgs) {
       createdAt,
     },
   });
+}
+
+export async function clickhouseQuery(data: SaveRevenueArgs) {
+  const { websiteId, sessionId, eventId, eventName, currency, revenue, createdAt } = data;
+  const { insert, getUTCString } = clickhouse;
+
+  await insert('website_revenue', [
+    {
+      website_id: websiteId,
+      session_id: sessionId,
+      event_id: eventId,
+      event_name: truncateString(eventName, FIELD_LENGTH.eventName) ?? '',
+      currency: truncateString(currency, FIELD_LENGTH.currency) ?? '',
+      revenue,
+      created_at: getUTCString(createdAt),
+    },
+  ]);
 }

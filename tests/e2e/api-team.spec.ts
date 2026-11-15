@@ -14,14 +14,14 @@ test.describe('Team API tests', () => {
 
     const response = await request.post('/api/users', {
       headers: authHeaders(auth),
-      data: users.userCreate,
+      data: users.teamMemberCreate,
     });
     const body = await response.json();
 
     userId = body.id;
 
     expect(response.status()).toBe(200);
-    expect(body).toHaveProperty('username', 'playwright1');
+    expect(body).toHaveProperty('username', 'playwright-team-member');
     expect(body).toHaveProperty('role', 'user');
   });
 

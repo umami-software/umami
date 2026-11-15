@@ -9,6 +9,7 @@ export interface LookupFieldProps extends Omit<ComboBoxProps, 'onChange'> {
   websiteId: string;
   type: string;
   value: string;
+  allowCustomValue?: boolean;
   onChange: (value: string) => void;
   onValueChange?: (value: string) => void;
 }
@@ -17,6 +18,7 @@ export function LookupField({
   websiteId,
   type,
   value,
+  allowCustomValue,
   onChange,
   onValueChange,
   ...props
@@ -39,6 +41,14 @@ export function LookupField({
     return data?.map(({ value }) => value) || [];
   }, [data]);
 
+  const options = useMemo(() => {
+    if (allowCustomValue && value && !items.includes(value)) {
+      return [value, ...items];
+    }
+
+    return items;
+  }, [allowCustomValue, items, value]);
+
   const handleSearch = (value: SetStateAction<string>) => {
     setSearch(value);
   };
@@ -47,8 +57,15 @@ export function LookupField({
     <ComboBox
       aria-label="LookupField"
       {...props}
-      items={items}
-      inputValue={value}
+      items={options}
+      value={value ?? ''}
+      inputValue={value ?? ''}
+      onChange={value => {
+        const next = value ?? '';
+        handleSearch(next);
+        onChange?.(next);
+        onValueChange?.(next);
+      }}
       onInputValueChange={value => {
         handleSearch(value);
         onChange?.(value);
@@ -62,7 +79,7 @@ export function LookupField({
         )
       }
     >
-      {items.map(item => (
+      {options.map(item => (
         <ListItem key={item} id={item}>
           {item}
         </ListItem>

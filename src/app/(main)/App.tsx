@@ -1,5 +1,5 @@
 'use client';
-import { Column, Grid, Loading, Row } from '@umami/react-zen';
+import { Column, Grid, Loading, Row, Text } from '@umami/react-zen';
 import Script from 'next/script';
 import { useEffect } from 'react';
 import { MobileNav } from '@/app/(main)/MobileNav';
@@ -9,9 +9,11 @@ import {
   useConfig,
   useLoginQuery,
   useNavigation,
+  useSubscription,
   useTeamQuery,
   useTwoFactorStatusQuery,
 } from '@/components/hooks';
+import { PasswordChangeRequiredModal } from '@/components/modals/PasswordChangeRequiredModal';
 import { TwoFactorSetupModal } from '@/components/modals/TwoFactorSetupModal';
 import { LAST_TEAM_CONFIG } from '@/lib/constants';
 import { removeItem, setItem } from '@/lib/storage';
@@ -21,9 +23,16 @@ export function App({ children }) {
   const { user, isLoading, error } = useLoginQuery();
   const config = useConfig();
   const { pathname, router, teamId } = useNavigation();
-  const { isLoading: isTeamLoading, error: teamError } = useTeamQuery(teamId);
-  const { data: twoFactorStatus } = useTwoFactorStatusQuery(!!user && !config?.cloudMode);
+  const { billingStatus, isOwner, isLoading: isSubscriptionLoading } = useSubscription(teamId);
+  const isBillingPastDue = config.cloudMode && billingStatus === 'past_due';
+  const isBlockedTeam = !!teamId && isBillingPastDue;
+  const { isLoading: isTeamLoading, error: teamError } = useTeamQuery(teamId, {
+    enabled: !!teamId && (!config.cloudMode || (!isSubscriptionLoading && !isBlockedTeam)),
+  });
+  const { data: twoFactorStatus } = useTwoFactorStatusQuery(!!user && !config.cloudMode);
   const needsTwoFactorSetup = !!(twoFactorStatus?.isRequired && !twoFactorStatus?.isEnabled);
+  const passwordChangeRequired = !!user?.passwordChangeRequired && !config.cloudMode;
+  const accessBlocked = needsTwoFactorSetup || passwordChangeRequired;
 
   useEffect(() => {
     if (teamId) {
@@ -40,7 +49,13 @@ export function App({ children }) {
     }
   }, [teamId, teamError, router]);
 
-  if (isLoading || !config || (teamId && isTeamLoading)) {
+  useEffect(() => {
+    if (isBillingPastDue && (!teamId || isOwner)) {
+      window.location.href = `${process.env.cloudUrl}/settings/billing`;
+    }
+  }, [isBillingPastDue, isOwner, teamId]);
+
+  if (isLoading || (config.cloudMode && isSubscriptionLoading) || (teamId && isTeamLoading)) {
     return <Loading placement="absolute" />;
   }
 
@@ -51,12 +66,37 @@ export function App({ children }) {
     return null;
   }
 
-  if (!user || !config) {
+  if (!user) {
     return null;
   }
 
   if (teamId && teamError) {
     return null;
+  }
+
+  if (isBlockedTeam) {
+    return (
+      <Grid
+        columns={{ base: '1fr', lg: 'auto 1fr' }}
+        rows={{ base: 'auto 1fr', lg: '1fr' }}
+        height="screen"
+      >
+        <Row display={{ base: 'flex', lg: 'none' }} alignItems="center" gap padding="3">
+          <MobileNav />
+        </Row>
+        <Column display={{ base: 'none', lg: 'flex' }} minHeight="0" style={{ overflow: 'hidden' }}>
+          <SideNav />
+        </Column>
+        <Column alignItems="center" justifyContent="center" padding="6" textAlign="center" gap="2">
+          <Text size="lg" weight="bold">
+            This team is temporarily unavailable.
+          </Text>
+          <Text color="muted">
+            This team&apos;s subscription payment is overdue. Please contact the team owner to restore access.
+          </Text>
+        </Column>
+      </Grid>
+    );
   }
 
   return (
@@ -75,13 +115,14 @@ export function App({ children }) {
         <TopNav />
         <Column
           alignItems="center"
-          aria-hidden={needsTwoFactorSetup || undefined}
-          style={needsTwoFactorSetup ? { pointerEvents: 'none' } : undefined}
+          aria-hidden={accessBlocked || undefined}
+          style={accessBlocked ? { pointerEvents: 'none' } : undefined}
         >
           {children}
         </Column>
       </Column>
       {needsTwoFactorSetup && <TwoFactorSetupModal required={true} />}
+      {passwordChangeRequired && !needsTwoFactorSetup && <PasswordChangeRequiredModal />}
       <UpdateNotice user={user} config={config} />
       {process.env.NODE_ENV === 'production' && !pathname.includes('/share/') && (
         <Script src={`${process.env.basePath || ''}/telemetry.js`} />
@@ -93,6 +134,7 @@ export function App({ children }) {
           src={`${process.env.basePath || ''}/script.js`}
           data-cache="true"
           data-performance="true"
+          data-errors="true"
         />
       )}
       {process.env.selfRecord && (

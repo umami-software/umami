@@ -2,8 +2,8 @@ import { z } from 'zod';
 import { getQueryFilters, parseRequest } from '@/lib/request';
 import { json, unauthorized } from '@/lib/response';
 import { filterParams, pagingParams, searchParams, withDateRange } from '@/lib/schema';
-import { canViewWebsiteSection } from '@/permissions';
-import { getRevenueSessions } from '@/queries/sql/reports/getRevenueSessions';
+import { canViewWebsiteSectionRows } from '@/permissions';
+import { getRevenueSessions } from '@/queries/sql/revenue/getRevenueSessions';
 
 export async function GET(
   request: Request,
@@ -24,7 +24,7 @@ export async function GET(
 
   const { websiteId } = await params;
 
-  if (!(await canViewWebsiteSection(auth, websiteId, 'revenue'))) {
+  if (!(await canViewWebsiteSectionRows(auth, websiteId, 'revenue'))) {
     return unauthorized();
   }
 

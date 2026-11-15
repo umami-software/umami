@@ -5,18 +5,14 @@ const MAX_ATTEMPTS = 5;
 const LOCKOUT_MINUTES = 15;
 const MAX_RETRIES = 3;
 
-export async function checkRateLimit(
+/**
+ * Counts an attempt before the code is checked, so concurrent guesses cannot all pass the lockout
+ * gate before any failure is recorded. The attempt that reaches the limit is allowed but returns
+ * `lockedUntil`; a successful verification clears it via resetRateLimit.
+ */
+export async function reserveAttempt(
   userId: string,
 ): Promise<{ allowed: boolean; lockedUntil?: Date }> {
-  const record = await prisma.client.twoFactorRateLimit.findUnique({ where: { userId } });
-  if (!record) return { allowed: true };
-  if (record.lockedUntil && record.lockedUntil > new Date()) {
-    return { allowed: false, lockedUntil: record.lockedUntil };
-  }
-  return { allowed: true };
-}
-
-export async function recordFailedAttempt(userId: string): Promise<{ lockedUntil?: Date }> {
   let retries = 0;
   while (retries < MAX_RETRIES) {
     try {
@@ -26,7 +22,12 @@ export async function recordFailedAttempt(userId: string): Promise<{ lockedUntil
       the callback form always returns the callback's return type.
        */
       return await (prisma.transaction(
-        async (tx: Prisma.TransactionClient): Promise<{ lockedUntil?: Date }> => {
+        async (tx: Prisma.TransactionClient): Promise<{ allowed: boolean; lockedUntil?: Date }> => {
+          const existing = await tx.twoFactorRateLimit.findUnique({ where: { userId } });
+          if (existing?.lockedUntil && existing.lockedUntil > new Date()) {
+            return { allowed: false, lockedUntil: existing.lockedUntil };
+          }
+
           const record = await tx.twoFactorRateLimit.upsert({
             where: { userId },
             update: { attempts: { increment: 1 } },
@@ -35,21 +36,23 @@ export async function recordFailedAttempt(userId: string): Promise<{ lockedUntil
           if (record.attempts >= MAX_ATTEMPTS) {
             const lockedUntil = new Date(Date.now() + LOCKOUT_MINUTES * 60 * 1000);
             await tx.twoFactorRateLimit.update({ where: { userId }, data: { lockedUntil } });
-            return { lockedUntil };
+            return { allowed: true, lockedUntil };
           }
-          return {};
+          return { allowed: true };
         },
         { isolationLevel: Prisma.TransactionIsolationLevel.Serializable },
-      ) as Promise<{ lockedUntil?: Date }>);
+      ) as unknown as Promise<{ allowed: boolean; lockedUntil?: Date }>);
     } catch (err: any) {
-      if (err.code === 'P2034') {
+      // P2034: serialization conflict. P2002: concurrent first attempts racing the create.
+      if (err.code === 'P2034' || err.code === 'P2002') {
         retries++;
         continue;
       }
       throw err;
     }
   }
-  throw new Error('recordFailedAttempt: max retries exceeded');
+  // Fail closed: under heavy contention, deny the attempt rather than check the code uncounted.
+  return { allowed: false };
 }
 
 export async function resetRateLimit(userId: string): Promise<void> {

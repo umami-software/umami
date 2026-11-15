@@ -11,12 +11,14 @@ import {
 } from '@umami/react-zen';
 import { useMemo, useState } from 'react';
 import { ControlledDialog } from '@/components/common/ControlledDialog';
+import { Empty } from '@/components/common/Empty';
 import { Panel } from '@/components/common/Panel';
 import { useBoard, useMessages, useNavigation } from '@/components/hooks';
 import { Pencil, Plus, X } from '@/components/icons';
 import { getBoardEntity, getBoardType, getResolvedComponentEntity } from '@/lib/boards';
 import type { BoardComponentConfig } from '@/lib/types';
 import { getComponentDefinition } from '../boardComponentRegistry';
+import { useBoardEntityAvailability } from '../useBoardEntityAvailability';
 import { BoardComponentRenderer } from './BoardComponentRenderer';
 import { BoardComponentSelect } from './BoardComponentSelect';
 
@@ -44,15 +46,21 @@ export function BoardEditColumn({
   const { entityType: boardEntityType, entityId: boardEntityId } = getBoardEntity(board);
   const definition = component ? getComponentDefinition(component.type) : undefined;
   const { entityType, entityId } = getResolvedComponentEntity(board, component);
+  const { isLoading, isUnavailable } = useBoardEntityAvailability(entityType, entityId);
   const renderedComponent = useMemo(() => {
-    if (!component || (!entityId && definition?.requiresWebsite !== false)) {
+    if (
+      !component ||
+      (!entityId && definition?.requiresWebsite !== false) ||
+      isLoading ||
+      isUnavailable
+    ) {
       return null;
     }
 
     return (
       <BoardComponentRenderer config={component} websiteId={entityId} entityType={entityType} />
     );
-  }, [component, definition?.requiresWebsite, entityId, entityType]);
+  }, [component, definition?.requiresWebsite, entityId, entityType, isLoading, isUnavailable]);
 
   const handleSelect = (config: BoardComponentConfig) => {
     onSetComponent(id, config);
@@ -121,6 +129,9 @@ export function BoardEditColumn({
             {renderedComponent}
           </Box>
         </Column>
+      )}
+      {!isLoading && component && entityId && isUnavailable && (
+        <Empty message="Selected item is no longer available." />
       )}
       <ControlledDialog>
         <Modal isOpen={showSelect} onOpenChange={setShowSelect}>

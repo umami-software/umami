@@ -1,13 +1,14 @@
 import { LoadingPanel } from '@/components/common/LoadingPanel';
 import { OverlayScrollArea } from '@/components/common/OverlayScrollArea';
+import { Pager } from '@/components/common/Pager';
 import { useMessages, useWebsiteExpandedMetricsQuery } from '@/components/hooks';
 import { X } from '@/components/icons';
 import { DownloadButton } from '@/components/input/DownloadButton';
 import { MetricLabel } from '@/components/metrics/MetricLabel';
-import { SESSION_COLUMNS } from '@/lib/constants';
+import { DEFAULT_PAGE_SIZE, SESSION_COLUMNS } from '@/lib/constants';
 import { formatShortTime } from '@/lib/format';
 import { Button, Column, DataColumn, DataTable, Icon, Row, SearchField } from '@umami/react-zen';
-import { type ReactNode, useState } from 'react';
+import { type ReactNode, useEffect, useState } from 'react';
 
 export interface MetricsExpandedTableProps {
   websiteId: string;
@@ -34,6 +35,7 @@ export function MetricsExpandedTable({
   children,
 }: MetricsExpandedTableProps) {
   const [search, setSearch] = useState('');
+  const [page, setPage] = useState(1);
   const { t, labels } = useMessages();
   const isType = ['browser', 'country', 'device', 'os'].includes(type);
   const showBounceDuration = SESSION_COLUMNS.includes(type);
@@ -44,7 +46,12 @@ export function MetricsExpandedTable({
     ...params,
   });
 
+  useEffect(() => {
+    setPage(1);
+  }, [type, search]);
+
   const items = data?.map(({ name, ...props }) => ({ label: name, ...props }));
+  const pageItems = items?.slice((page - 1) * DEFAULT_PAGE_SIZE, page * DEFAULT_PAGE_SIZE);
 
   return (
     <>
@@ -87,8 +94,8 @@ export function MetricsExpandedTable({
           }}
         >
           <Column paddingRight="3">
-            {items && (
-              <DataTable data={items}>
+            {pageItems && (
+              <DataTable data={pageItems}>
                 <DataColumn id="label" label={title} width="minmax(200px, 2fr)" align="start">
                   {row => (
                     <Row overflow="hidden">
@@ -137,6 +144,16 @@ export function MetricsExpandedTable({
           </Column>
         </OverlayScrollArea>
       </LoadingPanel>
+      {items && items.length > 0 && (
+        <Row paddingTop="3">
+          <Pager
+            page={page}
+            pageSize={DEFAULT_PAGE_SIZE}
+            count={items.length}
+            onPageChange={setPage}
+          />
+        </Row>
+      )}
     </>
   );
 }

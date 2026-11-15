@@ -1,7 +1,7 @@
 import { colord } from 'colord';
 import { useCallback, useMemo } from 'react';
 import { BarChart } from '@/components/charts/BarChart';
-import { useLocale, useMessages } from '@/components/hooks';
+import { useBarDrillDown, useLocale, useMessages } from '@/components/hooks';
 import { renderDateLabels } from '@/lib/charts';
 import { CHART_COLORS } from '@/lib/constants';
 import { DATE_FORMATS, DATE_FUNCTIONS, formatDate, generateTimeSeries } from '@/lib/date';
@@ -13,6 +13,7 @@ export interface RevenueChartProps {
   minDate: Date;
   maxDate: Date;
   currency: string;
+  allowBarDrill?: boolean;
 }
 
 export function RevenueChart({
@@ -22,8 +23,10 @@ export function RevenueChart({
   minDate,
   maxDate,
   currency,
+  allowBarDrill,
 }: RevenueChartProps) {
   const { t, labels } = useMessages();
+  const handleBarClick = useBarDrillDown(unit, allowBarDrill);
   const { locale, dateLocale } = useLocale();
   const isCumulative = mode === 'cumulative';
 
@@ -136,6 +139,7 @@ export function RevenueChart({
       stacked={!isCumulative}
       renderXLabel={renderXLabel}
       height="400px"
+      onBarClick={handleBarClick}
     />
   );
 }

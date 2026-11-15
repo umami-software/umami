@@ -2,12 +2,12 @@ import { z } from 'zod';
 import { fromZonedTime } from 'date-fns-tz';
 import { parseDateRange } from '@/lib/date';
 import { canViewBatchWebsites } from '@/permissions/website';
-import { parseRequest } from '@/lib/request';
+import { parseRequest, resolvePeriodDateRange } from '@/lib/request';
 import { json } from '@/lib/response';
-import { timezoneParam } from '@/lib/schema';
+import { timezoneParam, withPeriodDateRange } from '@/lib/schema';
 import { getWebsiteListCharts } from '@/queries/sql';
 
-const schema = z.object({
+const schema = withPeriodDateRange({
   ids: z
     .string()
     .transform(value => value.split(',').map(item => item.trim()).filter(Boolean))
@@ -15,7 +15,7 @@ const schema = z.object({
   startAt: z.coerce.number().int().optional(),
   endAt: z.coerce.number().int().optional(),
   timezone: timezoneParam.optional(),
-});
+}, false);
 
 export async function GET(request: Request) {
   const { auth, query, error } = await parseRequest(request, schema);
@@ -24,13 +24,16 @@ export async function GET(request: Request) {
     return error();
   }
 
-  const timezone = query.timezone || 'UTC';
+  const resolvedQuery = resolvePeriodDateRange(query);
+  const timezone = resolvedQuery.timezone || 'UTC';
   const defaultRange = parseDateRange('7day', undefined, undefined, timezone);
-  const hasDateRange = query.startAt != null && query.endAt != null;
+  const hasDateRange = resolvedQuery.startAt != null && resolvedQuery.endAt != null;
   const startDate = hasDateRange
-    ? new Date(query.startAt)
+    ? new Date(resolvedQuery.startAt)
     : fromZonedTime(defaultRange.startDate, timezone);
-  const endDate = hasDateRange ? new Date(query.endAt) : fromZonedTime(defaultRange.endDate, timezone);
+  const endDate = hasDateRange
+    ? new Date(resolvedQuery.endAt)
+    : fromZonedTime(defaultRange.endDate, timezone);
 
   const websiteIds = await canViewBatchWebsites(auth, query.ids);
 

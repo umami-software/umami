@@ -6,7 +6,9 @@ import type { QueryFilters } from '@/lib/types';
 
 const FUNCTION_NAME = 'getWeeklyTraffic';
 
-export async function getWeeklyTraffic(...args: [websiteId: string, filters: QueryFilters]) {
+export async function getWeeklyTraffic(
+  ...args: [websiteId: string, filters: QueryFilters]
+): Promise<number[][]> {
   return runQuery({
     [PRISMA]: () => relationalQuery(...args),
     [CLICKHOUSE]: () => clickhouseQuery(...args),
@@ -88,8 +90,8 @@ async function clickhouseQuery(websiteId: string, filters: QueryFilters) {
   return rawQuery(sql, queryParams, FUNCTION_NAME).then(formatResults);
 }
 
-function formatResults(data: any) {
-  const days = [];
+function formatResults(data: any): number[][] {
+  const days: number[][] = [];
 
   for (let i = 0; i < 7; i++) {
     days.push([]);

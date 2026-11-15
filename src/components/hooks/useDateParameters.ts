@@ -10,13 +10,13 @@ function safeToISOString(date: Date, fallback: Date): string {
 }
 
 export function useDateParameters() {
+  const { timezone, toUtc, canonicalizeTimezone } = useTimezone();
   const {
     dateRange: { startDate, endDate, unit },
-  } = useDateRange();
-  const { timezone, localToUtc, canonicalizeTimezone } = useTimezone();
+  } = useDateRange({ timezone });
 
-  const utcStart = localToUtc(startDate);
-  const utcEnd = localToUtc(endDate);
+  const utcStart = toUtc(startDate);
+  const utcEnd = toUtc(endDate);
   const startAtValue = +utcStart;
   const endAtValue = +utcEnd;
   const isStartValid = Number.isFinite(startAtValue);

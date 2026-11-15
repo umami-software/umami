@@ -2,7 +2,13 @@ import { PrismaPg } from '@prisma/adapter-pg';
 import { readReplicas } from '@prisma/extension-read-replicas';
 import debug from 'debug';
 import { PrismaClient } from '@/generated/prisma/client';
-import { DATA_TYPE, DEFAULT_PAGE_SIZE, FILTER_COLUMNS, OPERATORS, SESSION_COLUMNS } from './constants';
+import {
+  DATA_TYPE,
+  DEFAULT_PAGE_SIZE,
+  FILTER_COLUMNS,
+  OPERATORS,
+  SESSION_COLUMNS,
+} from './constants';
 import { filtersObjectToArray } from './params';
 import type { Operator, PropertyFilter, QueryFilters, QueryOptions } from './types';
 
@@ -34,7 +40,12 @@ export interface RawQueryClient extends RawQueryExecutor {
 }
 
 function isRawQueryExecutor(value: unknown): value is RawQueryExecutor {
-  return !!value && typeof value === 'object' && '$executeRawUnsafe' in value && '$queryRawUnsafe' in value;
+  return (
+    !!value &&
+    typeof value === 'object' &&
+    '$executeRawUnsafe' in value &&
+    '$queryRawUnsafe' in value
+  );
 }
 
 export function getRawQueryClient(
@@ -63,15 +74,9 @@ export function getRawQueryClient(
   return client;
 }
 
+// Always Z-suffixed so JS parses the already-shifted local value as an unambiguous
+// instant instead of re-interpreting it in the runtime's own timezone.
 const DATE_FORMATS = {
-  minute: 'YYYY-MM-DD HH24:MI:00',
-  hour: 'YYYY-MM-DD HH24:00:00',
-  day: 'YYYY-MM-DD HH24:00:00',
-  month: 'YYYY-MM-01 HH24:00:00',
-  year: 'YYYY-01-01 HH24:00:00',
-};
-
-const DATE_FORMATS_UTC = {
   minute: 'YYYY-MM-DD"T"HH24:MI:00"Z"',
   hour: 'YYYY-MM-DD"T"HH24:00:00"Z"',
   day: 'YYYY-MM-DD"T"HH24:00:00"Z"',
@@ -81,7 +86,7 @@ const DATE_FORMATS_UTC = {
 
 const DATE_STRING_FORMATS = {
   utc: 'YYYY-MM-DD"T"HH24:MI:SS"Z"',
-  second: 'YYYY-MM-DD"T"HH24:MI:SS',
+  second: 'YYYY-MM-DD"T"HH24:MI:SS"Z"',
 };
 
 function isUtcTimezone(timezone?: string) {
@@ -101,11 +106,11 @@ function getCastColumnQuery(field: string, type: string): string {
 }
 
 function getDateSQL(field: string, unit: string, timezone?: string): string {
-  if (timezone && !isUtcTimezone(timezone)) {
-    return `to_char(date_trunc('${unit}', ${field} at time zone '${timezone}'), '${DATE_FORMATS[unit]}')`;
-  }
+  // Explicit `at time zone` even for UTC — `date_trunc` without one falls back to the
+  // DB session's ambient TimeZone setting, which this app never pins.
+  const tz = timezone && !isUtcTimezone(timezone) ? timezone : 'UTC';
 
-  return `to_char(date_trunc('${unit}', ${field}), '${DATE_FORMATS_UTC[unit]}')`;
+  return `to_char(date_trunc('${unit}', ${field} at time zone '${tz}'), '${DATE_FORMATS[unit]}')`;
 }
 
 function getDateStringSQL(
@@ -113,15 +118,17 @@ function getDateStringSQL(
   unit: keyof typeof DATE_STRING_FORMATS = 'utc',
   timezone?: string,
 ): string {
-  if (timezone && !isUtcTimezone(timezone)) {
-    return `to_char(${field} at time zone '${timezone}', '${DATE_STRING_FORMATS[unit]}')`;
-  }
+  const isUtc = !timezone || isUtcTimezone(timezone);
+  const tz = isUtc ? 'UTC' : timezone;
+  const format = isUtc ? DATE_STRING_FORMATS.utc : DATE_STRING_FORMATS[unit];
 
-  return `to_char(${field}, '${DATE_STRING_FORMATS.utc}')`;
+  return `to_char(${field} at time zone '${tz}', '${format}')`;
 }
 
 function getDateWeeklySQL(field: string, timezone?: string) {
-  return `concat(extract(dow from (${field} at time zone '${timezone}')), ':', to_char((${field} at time zone '${timezone}'), 'HH24'))`;
+  const tz = timezone && !isUtcTimezone(timezone) ? timezone : 'UTC';
+
+  return `concat(extract(dow from (${field} at time zone '${tz}')), ':', to_char((${field} at time zone '${tz}'), 'HH24'))`;
 }
 
 export function getTimestampSQL(field: string) {
@@ -152,19 +159,20 @@ function mapFilter(
 
   const table = SESSION_COLUMNS.includes(name) ? 'session' : 'website_event';
 
+  // Negative operators read NULL as '' to match ClickHouse, which stores missing values as ''.
   switch (operator) {
     case OPERATORS.equals:
       return `${table}.${column} = ANY(${value})`;
     case OPERATORS.notEquals:
-      return `${table}.${column} != ALL(${value})`;
+      return `coalesce(${table}.${column}, '') != ALL(${value})`;
     case OPERATORS.contains:
       return `${table}.${column} ilike ${value}`;
     case OPERATORS.doesNotContain:
-      return `${table}.${column} not ilike ${value}`;
+      return `coalesce(${table}.${column}, '') not ilike ${value}`;
     case OPERATORS.regex:
       return `${table}.${column} ~* ${value}`;
     case OPERATORS.notRegex:
-      return `${table}.${column} !~* ${value}`;
+      return `coalesce(${table}.${column}, '') !~* ${value}`;
     default:
       return '';
   }
@@ -307,14 +315,13 @@ function parseFilters(filters: Record<string, any>, options?: QueryOptions) {
   const cohortFilters = Object.fromEntries(
     Object.entries(filters).filter(([key]) => key.startsWith('cohort_')),
   );
-  const {
-    sql: eventPropertyFilterQuery,
-    params: eventPropertyFilterParams,
-  } = getEventPropertyFilterQuery((filters as QueryFilters).eventPropertyFilters, filters.timezone);
-  const {
-    sql: sessionPropertyFilterQuery,
-    params: sessionPropertyFilterParams,
-  } = getSessionPropertyFilterQuery((filters as QueryFilters).sessionPropertyFilters, filters.timezone);
+  const { sql: eventPropertyFilterQuery, params: eventPropertyFilterParams } =
+    getEventPropertyFilterQuery((filters as QueryFilters).eventPropertyFilters, filters.timezone);
+  const { sql: sessionPropertyFilterQuery, params: sessionPropertyFilterParams } =
+    getSessionPropertyFilterQuery(
+      (filters as QueryFilters).sessionPropertyFilters,
+      filters.timezone,
+    );
 
   return {
     joinSessionQuery:
@@ -322,7 +329,11 @@ function parseFilters(filters: Record<string, any>, options?: QueryOptions) {
         ? `inner join session on website_event.session_id = session.session_id and website_event.website_id = session.website_id`
         : '',
     dateQuery: getDateQuery(filters),
-    filterQuery: [getFilterQuery(filters, options), eventPropertyFilterQuery, sessionPropertyFilterQuery]
+    filterQuery: [
+      getFilterQuery(filters, options),
+      eventPropertyFilterQuery,
+      sessionPropertyFilterQuery,
+    ]
       .filter(Boolean)
       .join('\n'),
     queryParams: {
@@ -762,7 +773,9 @@ async function pagedQuery<T>(model: string, criteria: T, filters?: QueryFilters)
   const { page = 1, pageSize, orderBy, sortDescending = false, search } = filters || {};
   const size = +pageSize || DEFAULT_PAGE_SIZE;
 
-  const data = await client[model].findMany({
+  // Independent queries; run concurrently (mirrors pagedRawQuery).
+  const [data, count] = await Promise.all([
+    client[model].findMany({
     ...criteria,
     ...{
       ...(size > 0 && { take: +size, skip: +size * (+page - 1) }),
@@ -774,9 +787,9 @@ async function pagedQuery<T>(model: string, criteria: T, filters?: QueryFilters)
         ],
       }),
     },
-  });
-
-  const count = await client[model].count({ where: (criteria as any).where });
+  }),
+    client[model].count({ where: (criteria as any).where }),
+  ]);
 
   return { data, count, page: +page, pageSize: size, orderBy, search };
 }
@@ -786,6 +799,7 @@ async function pagedRawQuery(
   queryParams: Record<string, any>,
   filters: QueryFilters,
   name?: string,
+  defaultOrderBy?: string,
 ) {
   const { page = 1, pageSize, orderBy, sortDescending = false } = filters;
   const size = +pageSize || DEFAULT_PAGE_SIZE;
@@ -793,7 +807,7 @@ async function pagedRawQuery(
   const direction = sortDescending ? 'desc' : 'asc';
 
   const statements = [
-    orderBy && `order by ${orderBy} ${direction}`,
+    orderBy ? `order by ${orderBy} ${direction}` : defaultOrderBy && `order by ${defaultOrderBy}`,
     +size > 0 && `limit ${+size} offset ${offset}`,
   ]
     .filter(n => n)
@@ -804,8 +818,12 @@ async function pagedRawQuery(
     ? `select count(*) as num from (select 1 from (${query}) t limit ${+maxResults}) t2`
     : `select count(*) as num from (${query}) t`;
 
-  const count = await rawQuery(countQuery, queryParams).then(res => Number(res[0].num));
-  const data = await rawQuery(`${query}${statements}`, queryParams, name);
+  // The count and page queries are independent; on large tables each can be
+  // an expensive aggregation, so running them concurrently halves wall time.
+  const [count, data] = await Promise.all([
+    rawQuery(countQuery, queryParams).then(res => Number(res[0].num)),
+    rawQuery(`${query}${statements}`, queryParams, name),
+  ]);
 
   return {
     data,

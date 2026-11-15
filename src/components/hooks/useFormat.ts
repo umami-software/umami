@@ -12,18 +12,34 @@ export function useFormat() {
   const { languageNames } = useLanguageNames(locale);
 
   const formatOS = (value: string): string => {
+    if (!value) {
+      return t(labels.unknown);
+    }
+
     return OS_NAMES[value] || value;
   };
 
   const formatBrowser = (value: string): string => {
+    if (!value || value === 'browser') {
+      return t(labels.unknown);
+    }
+
     return BROWSERS[value] || value;
   };
 
   const formatDevice = (value: string): string => {
-    return t(labels[value] || labels.unknown);
+    if (!value) {
+      return t(labels.unknown);
+    }
+
+    return labels[value] ? t(labels[value]) : value;
   };
 
   const formatCountry = (value: string): string => {
+    if (!value) {
+      return t(labels.unknown);
+    }
+
     return countryNames[value] || value;
   };
 

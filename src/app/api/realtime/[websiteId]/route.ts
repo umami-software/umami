@@ -4,7 +4,7 @@ import { REALTIME_RANGE } from '@/lib/constants';
 import { getQueryFilters, parseRequest } from '@/lib/request';
 import { json, unauthorized } from '@/lib/response';
 import { filterParams, timezoneParam, unitParam } from '@/lib/schema';
-import { canViewWebsiteSection } from '@/permissions';
+import { canViewWebsiteSection, canViewWebsiteSectionRows } from '@/permissions';
 import { getRealtimeData } from '@/queries/sql';
 
 export async function GET(
@@ -25,7 +25,10 @@ export async function GET(
 
   const { websiteId } = await params;
 
-  if (!(await canViewWebsiteSection(auth, websiteId, 'realtime'))) {
+  // Board shares can read realtime aggregates but not the per-visitor event log.
+  const canViewRows = await canViewWebsiteSectionRows(auth, websiteId, 'realtime');
+
+  if (!canViewRows && !(await canViewWebsiteSection(auth, websiteId, 'realtime'))) {
     return unauthorized();
   }
 
@@ -40,5 +43,5 @@ export async function GET(
 
   const data = await getRealtimeData(websiteId, filters);
 
-  return json(data);
+  return json(canViewRows ? data : { ...data, events: [] });
 }

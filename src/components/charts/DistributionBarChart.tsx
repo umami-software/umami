@@ -88,7 +88,7 @@ function DistributionBarChartComponent({
           beginAtZero: horizontal ? true : undefined,
           stacked,
           grid: {
-            display: horizontal ? true : false,
+            display: horizontal,
             color: colors.chart.line,
           },
           border: {
@@ -109,7 +109,7 @@ function DistributionBarChartComponent({
           beginAtZero: horizontal ? undefined : true,
           stacked,
           grid: {
-            display: horizontal ? false : true,
+            display: !horizontal,
             color: colors.chart.line,
           },
           border: {
