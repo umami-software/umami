@@ -1,10 +1,12 @@
 /* eslint-disable no-console */
 /**
- * Orchestrates the API integration suite:
+ * Orchestrates a Playwright suite against a disposable Compose stack:
  *
  *   1. docker compose up (builds the umami image, starts Postgres [+ ClickHouse])
  *   2. waits for /api/heartbeat
- *   3. runs Playwright against the container (tests/api, playwright.api.config.ts)
+ *   3. runs Playwright against the container: the API suite (tests/api,
+ *      playwright.api.config.ts), or with --e2e the browser suite (tests/e2e,
+ *      playwright.config.ts)
  *   4. dumps container logs on failure
  *   5. tears the stack down (unless --keep)
  *
@@ -20,13 +22,21 @@ import { assertDisposableTarget } from '../tests/api/paths';
 
 const ROOT_DIR = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const COMPOSE_FILE = 'docker-compose.test.yml';
-const PROJECT_NAME = process.env.COMPOSE_PROJECT_NAME || 'umami-api-test';
-const PORT = process.env.UMAMI_TEST_PORT || '3100';
+// Read before parseArgs because the stack identity below depends on it. The e2e
+// suite gets its own project and port: it replaces the admin password, which
+// would break the API suite (it logs in with the default) on a shared stack.
+const E2E = process.argv.slice(2).includes('--e2e');
+const PROJECT_NAME =
+  process.env.COMPOSE_PROJECT_NAME || (E2E ? 'umami-e2e-test' : 'umami-api-test');
+const PORT = process.env.UMAMI_TEST_PORT || (E2E ? '3200' : '3100');
+// docker-compose.test.yml publishes the app on UMAMI_TEST_PORT.
+process.env.UMAMI_TEST_PORT = PORT;
 const BASE_URL = process.env.PLAYWRIGHT_BASE_URL || `http://localhost:${PORT}`;
 // PLAYWRIGHT_BASE_URL selects an already-running server: no Compose stack is
 // built, started, or torn down for it.
 const EXTERNAL_TARGET = !!process.env.PLAYWRIGHT_BASE_URL;
 const HEARTBEAT_TIMEOUT_MS = 180_000;
+const DOWN_COMMAND = E2E ? 'pnpm test:e2e:docker --down' : 'pnpm test:api:down';
 // Mirrors RUNTIME_DIR in tests/api/paths.ts (one state dir per target host).
 const LOG_FILE = path.join(
   ROOT_DIR,
@@ -37,21 +47,24 @@ const LOG_FILE = path.join(
 
 const HELP = `
 Usage: pnpm test:api [options] [-- playwright args]
+       pnpm test:e2e:docker [options] [-- playwright args]
 
 Options:
+  --e2e               Run the browser suite (tests/e2e) instead of the API suite.
+                      Uses its own stack (project umami-e2e-test, port 3200)
   --clickhouse        Run against Postgres + ClickHouse (analytics stored in ClickHouse)
   --keep              Leave the containers running after the tests finish
   --no-build          Skip the image build (use the existing UMAMI_TEST_IMAGE)
   --up-only           Start the stack, wait for readiness, and exit (see --keep)
   --down              Tear down the stack and exit
   --grep <expr>       Only run matching tests (implies --coverage-report)
-  --coverage-report   Print endpoint coverage without failing the run
+  --coverage-report   Print endpoint coverage without failing the run (API suite only)
   -h, --help          Show this help
 
 Environment:
-  UMAMI_TEST_PORT     Host port for the app (default 3100)
+  UMAMI_TEST_PORT     Host port for the app (default 3100, or 3200 with --e2e)
   UMAMI_TEST_IMAGE    Image tag to build/run (default umami-test:local)
-  COMPOSE_PROJECT_NAME  Compose project name (default umami-api-test)
+  COMPOSE_PROJECT_NAME  Compose project name (default umami-api-test, or umami-e2e-test)
   PLAYWRIGHT_BASE_URL  Test an already-running server instead of starting the
                       Compose stack (pass --clickhouse if it stores analytics there)
   API_ALLOW_DESTRUCTIVE=1  Required for non-loopback PLAYWRIGHT_BASE_URL targets: the suite
@@ -61,6 +74,7 @@ Environment:
 `;
 
 interface Options {
+  e2e: boolean;
   clickhouse: boolean;
   keep: boolean;
   build: boolean;
@@ -73,6 +87,7 @@ interface Options {
 
 function parseArgs(argv: string[]): Options {
   const options: Options = {
+    e2e: false,
     clickhouse: false,
     keep: false,
     build: true,
@@ -96,6 +111,9 @@ function parseArgs(argv: string[]): Options {
     }
 
     switch (arg) {
+      case '--e2e':
+        options.e2e = true;
+        break;
       case '--clickhouse':
         options.clickhouse = true;
         break;
@@ -313,9 +331,12 @@ async function main() {
     if (options.upOnly) {
       options.keep = true;
       console.log(
-        `\nRun tests with: PLAYWRIGHT_BASE_URL=${BASE_URL} UMAMI_TEST_DB=${profile} pnpm test:api:run` +
-          '\nRe-running against the same stack? Add API_SKIP_SEED=1 (seeding is additive).' +
-          '\nStop the stack with: pnpm test:api:down',
+        options.e2e
+          ? `\nRun tests with: PLAYWRIGHT_BASE_URL=${BASE_URL} PLAYWRIGHT_SKIP_WEB_SERVER=1 pnpm test:e2e` +
+              `\nStop the stack with: ${DOWN_COMMAND}`
+          : `\nRun tests with: PLAYWRIGHT_BASE_URL=${BASE_URL} UMAMI_TEST_DB=${profile} pnpm test:api:run` +
+              '\nRe-running against the same stack? Add API_SKIP_SEED=1 (seeding is additive).' +
+              `\nStop the stack with: ${DOWN_COMMAND}`,
       );
       return 0;
     }
@@ -327,7 +348,12 @@ async function main() {
       path.dirname(createRequire(import.meta.url).resolve('@playwright/test/package.json')),
       'cli.js',
     );
-    const playwrightArgs = [playwrightCli, 'test', '-c', 'playwright.api.config.ts'];
+    const playwrightArgs = [
+      playwrightCli,
+      'test',
+      '-c',
+      options.e2e ? 'playwright.config.ts' : 'playwright.api.config.ts',
+    ];
 
     if (options.grep) {
       playwrightArgs.push('--grep', options.grep);
@@ -335,16 +361,32 @@ async function main() {
 
     playwrightArgs.push(...options.passthrough);
 
-    exitCode = run(process.execPath, playwrightArgs, {
-      PLAYWRIGHT_BASE_URL: BASE_URL,
-      PLAYWRIGHT_SKIP_WEB_SERVER: '1',
-      UMAMI_TEST_DB: profile,
-      API_COVERAGE:
-        process.env.API_COVERAGE ?? (options.grep || options.coverageReport ? 'report' : 'enforce'),
-    });
+    // The container is the server under test, so Playwright must not start `pnpm dev`.
+    const target = { PLAYWRIGHT_BASE_URL: BASE_URL, PLAYWRIGHT_SKIP_WEB_SERVER: '1' };
+
+    exitCode = run(
+      process.execPath,
+      playwrightArgs,
+      options.e2e
+        ? target
+        : {
+            ...target,
+            UMAMI_TEST_DB: profile,
+            API_COVERAGE:
+              process.env.API_COVERAGE ??
+              (options.grep || options.coverageReport ? 'report' : 'enforce'),
+          },
+    );
 
     if (exitCode !== 0 && started) {
       dumpLogs();
+    }
+
+    if (exitCode !== 0 && options.e2e) {
+      console.log(
+        'Failure screenshots and traces are in test-results/.' +
+          '\nOpen the report with: pnpm exec playwright show-report',
+      );
     }
 
     return exitCode;
@@ -355,7 +397,7 @@ async function main() {
     if (started && !options.keep) {
       teardown();
     } else if (started) {
-      console.log(`\nStack left running (${BASE_URL}). Stop it with: pnpm test:api:down`);
+      console.log(`\nStack left running (${BASE_URL}). Stop it with: ${DOWN_COMMAND}`);
     }
   }
 }

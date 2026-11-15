@@ -52,6 +52,13 @@ describe('getValues postgres branch', () => {
     expect(params.search).toBe('%my\\_page\\%%');
   });
 
+  // Filter dropdowns load their initial choices with no search term.
+  test.each(['url_path', 'browser'])('loads %s choices without a search term', async column => {
+    await expect(getValues('website-1', column, filters)).resolves.toEqual([]);
+
+    expect(prismaRawQuery.mock.calls[0][1].search).toBe('%%');
+  });
+
   test('plain single search term is unchanged', async () => {
     await getValues('website-1', 'url_path', { ...filters, search: 'blog' });
 

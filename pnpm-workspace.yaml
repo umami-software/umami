@@ -25,7 +25,7 @@ overrides:
   'd3-color@<3.1.0': 3.1.0
   'deepmerge-ts@<8.0.0': 8.0.2
   'esbuild@>=0.27.3 <0.28.1': 0.28.2
-  'fast-uri@>=3.0.0 <3.1.8': 3.1.8
+  'fast-uri@>=3.0.0 <3.1.9': 3.1.9
   'fflate@>=0.4.5 <0.4.9': 0.4.9
   'js-yaml@>=4.0.0 <4.3.2': 4.3.2
   'minimatch@<3.1.4': 3.1.4
@@ -35,11 +35,16 @@ overrides:
   'picomatch@>=4.0.0 <4.0.4': ^4.0.4
   'postcss-selector-parser@>=7.0.0 <7.1.6': 7.1.6
   'sharp@>=0.35.0 <0.35.5': 0.35.5
+  'serialize-javascript@<7.1.3': 7.1.4
   'shell-quote@<1.11.0': 1.11.0
   'source-map-js@>=1.0.0 <1.2.2': 1.2.2
+  # sucrase 3.35.1 replaces glob (and its minimatch) with tinyglobby.
+  'sucrase@<3.35.1': 3.35.1
   'svgo@>=3.0.0 <3.3.5': 3.3.5
-  'undici@>=8.0.0 <8.10.2': 8.11.2
+  'undici@>=7.0.0 <7.30.1': 7.30.2
+  'undici@>=8.0.0 <8.12.2': 8.12.4
   'vite@>=8.0.0 <8.1.6': 8.1.6
+  'zod@>=4.0.0 <4.6.6': 4.6.7
   # react-simple-maps 5 uses d3-selection 3. Keep d3-zoom's selection/transition/drag on v3 too,
   # otherwise selection.interrupt is patched onto a different d3-selection copy and zooming throws.
   'd3-zoom>d3-dispatch': ^3.0.1

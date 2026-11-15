@@ -2,13 +2,13 @@ import { keepPreviousData, useQuery } from '@tanstack/react-query';
 import { format } from 'date-fns';
 import { httpGet } from '@/lib/fetch';
 
-export type GoogleAdsDimension = 'campaign' | 'ad_group' | 'keyword' | 'date';
+export type GoogleAdsDimension = 'campaign' | 'ad_group' | 'keyword' | 'date' | 'conversion_action';
 
 export interface GoogleAdsRow {
   /** A stable ID, or YYYY-MM-DD for the date dimension. */
   key: string;
   name: string;
-  /** The campaign of an ad group, or the ad group of a keyword. */
+  /** The campaign of an ad group, the ad group of a keyword, or the category of a conversion action. */
   parent: string | null;
   /** Keyword match type, e.g. EXACT. */
   matchType: string | null;
@@ -19,6 +19,9 @@ export interface GoogleAdsRow {
   /** Google attributes conversions fractionally, so this may not be a whole number. */
   conversions: number;
   conversionsValue: number;
+  /** Every recorded conversion, including actions that are not account goals. */
+  allConversions: number;
+  allConversionsValue: number;
 }
 
 export interface GoogleAdsData {

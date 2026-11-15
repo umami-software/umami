@@ -1,10 +1,10 @@
 import clickhouse from '@/lib/clickhouse';
+import { FIELD_LENGTH } from '@/lib/constants';
+import { CLICKHOUSE, PRISMA, runQuery } from '@/lib/db';
+import { truncateString } from '@/lib/format';
 import kafka from '@/lib/kafka';
 import prisma, { getSchema } from '@/lib/prisma';
 import redis from '@/lib/redis';
-import { truncateString } from '@/lib/format';
-import { FIELD_LENGTH } from '@/lib/constants';
-import { CLICKHOUSE, PRISMA, runQuery } from '@/lib/db';
 
 const FUNCTION_NAME = 'tryClaimAnonymousSession';
 
@@ -72,7 +72,8 @@ async function relationalQuery({
     ];
 
     // If no other identity has claimed it, or if all claims are by this exact identity, we can reuse it.
-    const canReuse = existingIds.length === 0 || existingIds.every(id => id === truncatedDistinctId);
+    const canReuse =
+      existingIds.length === 0 || existingIds.every(id => id === truncatedDistinctId);
 
     // 4. If it's safe to reuse, claim it by inserting the link.
     if (canReuse) {
@@ -93,82 +94,79 @@ async function relationalQuery({
   }) as unknown as Promise<boolean>;
 }
 
+// Long enough to outlive any queued (Kafka) session_link write, after which the
+// ClickHouse check below also sees the claim.
+const CLAIM_TTL_SECONDS = 86400;
+
 async function clickhouseQuery({
   websiteId,
   sessionId,
   distinctId,
   createdAt,
 }: TryClaimAnonymousSessionArgs): Promise<boolean> {
+  // ClickHouse cannot check-and-insert atomically, and Kafka writes land later still.
+  // Without Redis there is nowhere to make the claim atomically, so decline reuse
+  // rather than risk two identities sharing one session.
+  if (!redis.enabled) {
+    return false;
+  }
+
   const { rawQuery, insert, getUTCString } = clickhouse;
   const { sendMessage } = kafka;
 
   const truncatedDistinctId = truncateString(distinctId, FIELD_LENGTH.distinctId);
-  const lockKey = `lock:session_claim:${sessionId}`;
-  let hasLock = false;
 
-  // FIX: Use Redis distributed lock for ClickHouse concurrency if available.
-  // ClickHouse is eventually consistent, so concurrent identities need an external mutex.
-  if (redis.enabled) {
-    try {
-      await redis.client.connect();
-      // Set NX with a 5000ms expiry
-      const lockRes = await redis.client.client.set(lockKey, '1', { NX: true, PX: 5000 });
-      if (!lockRes) {
-        // If we can't acquire the lock, another identity is concurrently claiming it.
-        // We refuse to reuse it to prevent mixing activity.
-        return false;
-      }
-      hasLock = true;
-    } catch (e) {
-      // Ignore lock errors, fallback to best-effort
+  // Claims already persisted in ClickHouse (including any older than the Redis claim).
+  const existing = (await rawQuery(
+    `
+    select distinct distinct_id as distinctId
+    from session_link
+    where website_id = {websiteId:UUID}
+      and session_id = {sessionId:UUID}
+    `,
+    { websiteId, sessionId },
+    FUNCTION_NAME,
+  )) as { distinctId: string }[];
+
+  if (existing.some(r => r.distinctId !== truncatedDistinctId)) {
+    return false;
+  }
+
+  // The Redis key is the claim itself: SET NX checks and saves in one step, so
+  // only one identity can ever own the session, even before its ClickHouse row lands.
+  await redis.client.connect();
+
+  const claimKey = `session:claim:${websiteId}:${sessionId}`;
+  const claimed = await redis.client.client.set(claimKey, truncatedDistinctId, {
+    NX: true,
+    EX: CLAIM_TTL_SECONDS,
+  });
+
+  if (!claimed) {
+    const owner = await redis.client.client.get(claimKey);
+
+    if (owner !== truncatedDistinctId) {
+      return false;
     }
   }
 
-  try {
-    const existing = (await rawQuery(
-      `
-      select distinct distinct_id as distinctId
-      from session_link
-      where website_id = {websiteId:UUID}
-        and session_id = {sessionId:UUID}
-      `,
-      { websiteId, sessionId },
-      FUNCTION_NAME,
-    )) as { distinctId: string }[];
+  const message = {
+    website_id: websiteId,
+    session_id: sessionId,
+    distinct_id: truncatedDistinctId,
+    created_at: getUTCString(createdAt),
+  };
 
-    const existingIds = existing.map(r => r.distinctId);
-    const canReuse = existingIds.length === 0 || existingIds.every(id => id === truncatedDistinctId);
-
-    if (canReuse) {
-      const message = {
-        website_id: websiteId,
-        session_id: sessionId,
-        distinct_id: truncatedDistinctId,
-        created_at: getUTCString(createdAt),
-      };
-
-      if (kafka.enabled) {
-        await sendMessage('session_link', [message]);
-      } else {
-        await insert('session_link', [message]);
-      }
-    }
-
-    return canReuse;
-  } finally {
-    if (hasLock && redis.enabled) {
-      try {
-        await redis.client.del(lockKey);
-      } catch (e) {
-        // Best effort cleanup
-      }
-    }
+  if (kafka.enabled) {
+    await sendMessage('session_link', [message]);
+  } else {
+    await insert('session_link', [message]);
   }
+
+  return true;
 }
 
-export function tryClaimAnonymousSession(
-  args: TryClaimAnonymousSessionArgs,
-): Promise<boolean> {
+export function tryClaimAnonymousSession(args: TryClaimAnonymousSessionArgs): Promise<boolean> {
   return runQuery({
     [PRISMA]: () => relationalQuery(args),
     [CLICKHOUSE]: () => clickhouseQuery(args),

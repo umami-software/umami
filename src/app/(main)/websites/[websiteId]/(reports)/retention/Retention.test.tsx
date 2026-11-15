@@ -74,3 +74,24 @@ test('renders cohort dates and respects maxDay in timezones west of UTC', () => 
   expect(screen.getByText('15.00%')).toBeInTheDocument();
   expect(screen.queryByText('5.00%')).not.toBeInTheDocument();
 });
+
+test('shades cells relative to the best retention shown, not a fixed scale', () => {
+  // Good retention differs by website. Hidden partial days must not set the scale.
+  mockData.push({ date: '2026-10-30T00:00:00Z', day: 3, percentage: 50.0 });
+
+  render(
+    <Retention
+      websiteId="website-1"
+      startDate={new Date(2026, 9, 1)}
+      endDate={new Date(2026, 9, 31)}
+    />,
+  );
+
+  mockData.pop();
+
+  const background = (text: string) => screen.getByText(text).style.backgroundColor;
+
+  expect(background('15.00%')).toContain('var(--zen-primary) 60%');
+  // sqrt(9.02 / 15) * 60
+  expect(background('9.02%')).toContain('var(--zen-primary) 47%');
+});

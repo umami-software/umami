@@ -9,6 +9,80 @@ export interface CollectionCache {
   sessionLinkId?: string;
 }
 
+type ResolveCollectionSessionArgs = Parameters<typeof resolveCollectionSession>[0];
+
+export type ClaimAnonymousSession = (args: {
+  websiteId: string;
+  sessionId: string;
+  distinctId: string;
+  createdAt: Date;
+}) => Promise<boolean>;
+
+/**
+ * Resolves the session for a tracked request, reusing the visitor's anonymous
+ * session after they identify, but only if:
+ *  - the client fingerprint (IP/UA) has not genuinely changed
+ *  - the session is not already claimed by a different identity
+ *
+ * Every collection path (events, identify, errors) must use this so the same
+ * visitor always lands in the same session.
+ */
+export async function resolveIdentifiedSession({
+  websiteId,
+  claimSession,
+  ...args
+}: ResolveCollectionSessionArgs & {
+  websiteId?: string;
+  claimSession: ClaimAnonymousSession;
+}) {
+  const session = resolveCollectionSession(args);
+  const { distinctId, cache } = args;
+
+  // sessionDrift is true whenever cache.sessionId !== computed sessionId.
+  // That includes the normal identify transition (distinctId changes the hash).
+  // To tell apart "same client, new identity" from "different client", we
+  // recompute the session ID without distinctId and compare to the cached one.
+  if (!websiteId || !distinctId || !cache?.sessionId || !session.sessionDrift) {
+    return session;
+  }
+
+  // Resolved without distinctId, so its visit state has not been reset by
+  // the identity drift: it keeps the cached visit and applies the normal
+  // 30-minute expiry.
+  const fingerprint = resolveCollectionSession({ ...args, distinctId: undefined });
+
+  // If the fingerprint-only ID still doesn't match the cache, the client
+  // itself changed (IP or UA rotation) — do not reuse.
+  if (fingerprint.sessionId !== cache.sessionId) {
+    return session;
+  }
+
+  // Fast path: the cache token already proves this user owns the session
+  if (cache.sessionLinkId === hash(cache.sessionId, distinctId)) {
+    return fingerprint;
+  }
+
+  // Slow path: atomically check-and-claim the session so concurrent
+  // identities cannot both claim the same anonymous session.
+  try {
+    if (
+      await claimSession({
+        websiteId,
+        sessionId: cache.sessionId,
+        distinctId,
+        createdAt: args.createdAt,
+      })
+    ) {
+      return fingerprint;
+    }
+  } catch {
+    // Best-effort: if the claim fails, fall through to the new session
+    // so collection is never blocked by an identity-link read failure.
+  }
+
+  return session;
+}
+
 export function resolveCollectionSession({
   sourceId,
   ip,

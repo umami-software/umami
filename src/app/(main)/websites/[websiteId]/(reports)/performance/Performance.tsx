@@ -20,6 +20,7 @@ import { GridRow } from '@/components/common/GridRow';
 import { LoadingPanel } from '@/components/common/LoadingPanel';
 import { Panel } from '@/components/common/Panel';
 import {
+  useBarDrillDown,
   useLocale,
   useMessages,
   usePerformanceChartQuery,
@@ -98,6 +99,7 @@ export function Performance({ websiteId, startDate, endDate, unit }: Performance
   const [selectedPercentile, setSelectedPercentile] = useState<'p50' | 'p75' | 'p95'>('p75');
   const { t, labels } = useMessages();
   const { locale, dateLocale } = useLocale();
+  const handleBarClick = useBarDrillDown(unit, true);
 
   const queryParams = { websiteId, startDate, endDate, unit };
   const stats = usePerformanceStatsQuery(queryParams);
@@ -235,6 +237,7 @@ export function Performance({ websiteId, startDate, endDate, unit }: Performance
                   return `${Math.round(val)} ms`;
                 }}
                 height="400px"
+                onBarClick={handleBarClick}
               />
             </Column>
           </Panel>

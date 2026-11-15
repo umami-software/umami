@@ -2,8 +2,7 @@
 import { Button, Column, Heading, Loading, Tab, TabList, TabPanel, Tabs } from '@umami/react-zen';
 import { differenceInCalendarDays, format } from 'date-fns';
 import { useTranslations } from 'next-intl';
-import { useMemo } from 'react';
-import { SearchConsoleChart } from '@/app/(main)/websites/[websiteId]/search-console/SearchConsoleChart';
+import { useMemo, useState } from 'react';
 import { WebsiteControls } from '@/app/(main)/websites/[websiteId]/WebsiteControls';
 import { EmptyPlaceholder } from '@/components/common/EmptyPlaceholder';
 import { LoadingPanel } from '@/components/common/LoadingPanel';
@@ -22,8 +21,16 @@ import {
 import { Megaphone } from '@/components/icons';
 import { MetricCard } from '@/components/metrics/MetricCard';
 import { MetricsBar } from '@/components/metrics/MetricsBar';
-import { formatLongNumber } from '@/lib/format';
-import { formatConversions, formatMoney, formatPercent, getCtr } from './format';
+import {
+  formatMetric,
+  GOOGLE_ADS_METRICS,
+  type GoogleAdsMetric,
+  isLowerBetter,
+  NO_VALUE,
+  sumRows,
+} from './format';
+import { GoogleAdsChart } from './GoogleAdsChart';
+import { GoogleAdsConversionsTable } from './GoogleAdsConversionsTable';
 import { GoogleAdsTable } from './GoogleAdsTable';
 
 const INTEGRATIONS_URL = `${process.env.cloudUrl || ''}/settings/integrations`;
@@ -31,6 +38,15 @@ const INTEGRATIONS_URL = `${process.env.cloudUrl || ''}/settings/integrations`;
 // Cloud rejects longer ranges. Narrowing the range here instead would show a lower total
 // spend under a date filter that still says "All time".
 const MAX_RANGE_DAYS = 731;
+
+const PERFORMANCE_METRICS: GoogleAdsMetric[] = ['cost', 'clicks', 'impressions', 'ctr', 'cpc'];
+const CONVERSION_METRICS: GoogleAdsMetric[] = [
+  'conversions',
+  'conversionsValue',
+  'costPerConversion',
+  'conversionRate',
+  'roas',
+];
 
 export function GoogleAdsPage({ websiteId }: { websiteId: string }) {
   const website = useWebsite();
@@ -75,7 +91,12 @@ function GoogleAdsReport({ websiteId }: { websiteId: string }) {
   const { timezone } = useTimezone();
   const {
     dateRange: { startDate: rangeStart, endDate: rangeEnd, unit },
+    dateCompare,
+    hasComparison,
+    isAllTime,
   } = useDateRange({ timezone });
+  const [performanceMetric, setPerformanceMetric] = useState<GoogleAdsMetric>('cost');
+  const [conversionMetric, setConversionMetric] = useState<GoogleAdsMetric>('conversions');
 
   // Google reports whole days, so the page works in calendar days. useDateRange returns new
   // Date objects on every render (and relative ranges move with the clock), so keying the
@@ -87,7 +108,7 @@ function GoogleAdsReport({ websiteId }: { websiteId: string }) {
   const endDate = useMemo(() => new Date(`${endDay}T23:59:59.999`), [endDay]);
   const isRangeTooLong = differenceInCalendarDays(endDate, startDate) > MAX_RANGE_DAYS;
 
-  // One row per day drives both the totals and the chart.
+  // One row per day drives both the totals and the charts.
   const daily = useGoogleAdsQuery(
     {
       websiteId,
@@ -98,6 +119,22 @@ function GoogleAdsReport({ websiteId }: { websiteId: string }) {
     },
     { enabled: !isRangeTooLong },
   );
+
+  // The comparison period only feeds the change shown on each card. If it fails, the cards
+  // simply show no change.
+  const canCompare = !isRangeTooLong && !isAllTime && hasComparison;
+  const previous = useGoogleAdsQuery(
+    {
+      websiteId,
+      startDate: dateCompare.startDate,
+      endDate: dateCompare.endDate,
+      dimension: 'date',
+      limit: 1000,
+    },
+    { enabled: canCompare },
+  );
+  const previousRows = canCompare ? previous.data?.rows : undefined;
+  const currency = daily.data?.currencyCode ?? null;
 
   const setupProblem = getSetupProblem(daily.error);
   let placeholder = null;
@@ -131,7 +168,14 @@ function GoogleAdsReport({ websiteId }: { websiteId: string }) {
             minHeight="120px"
           >
             {daily.data && (
-              <GoogleAdsMetrics rows={daily.data.rows} currency={daily.data.currencyCode} />
+              <GoogleAdsMetricCards
+                metrics={PERFORMANCE_METRICS}
+                rows={daily.data.rows}
+                previousRows={previousRows}
+                currency={currency}
+                selected={performanceMetric}
+                onSelect={setPerformanceMetric}
+              />
             )}
           </LoadingPanel>
           <Panel>
@@ -142,8 +186,47 @@ function GoogleAdsReport({ websiteId }: { websiteId: string }) {
               minHeight="400px"
             >
               {daily.data && (
-                <SearchConsoleChart
+                <GoogleAdsChart
                   rows={daily.data.rows}
+                  metric={performanceMetric}
+                  currency={currency}
+                  minDate={startDate}
+                  maxDate={endDate}
+                  unit={unit}
+                />
+              )}
+            </LoadingPanel>
+          </Panel>
+          <Heading size="2xl">{t('conversions')}</Heading>
+          <LoadingPanel
+            data={daily.data}
+            isLoading={daily.isLoading}
+            error={daily.error}
+            minHeight="120px"
+          >
+            {daily.data && (
+              <GoogleAdsMetricCards
+                metrics={CONVERSION_METRICS}
+                rows={daily.data.rows}
+                previousRows={previousRows}
+                currency={currency}
+                selected={conversionMetric}
+                onSelect={setConversionMetric}
+              />
+            )}
+          </LoadingPanel>
+          <Panel>
+            <LoadingPanel
+              data={daily.data}
+              isLoading={daily.isLoading}
+              error={daily.error}
+              minHeight="400px"
+            >
+              {daily.data && (
+                <GoogleAdsChart
+                  rows={daily.data.rows}
+                  metric={conversionMetric}
+                  currency={currency}
                   minDate={startDate}
                   maxDate={endDate}
                   unit={unit}
@@ -152,8 +235,15 @@ function GoogleAdsReport({ websiteId }: { websiteId: string }) {
             </LoadingPanel>
           </Panel>
           <Panel>
+            <GoogleAdsConversionsTable
+              websiteId={websiteId}
+              startDate={startDate}
+              endDate={endDate}
+            />
+          </Panel>
+          <Heading size="2xl">{t('ads')}</Heading>
+          <Panel>
             <Tabs>
-              <Heading size="2xl">{t('ads')}</Heading>
               <TabList>
                 <Tab id="campaign">{t('campaigns')}</Tab>
                 <Tab id="ad_group">{t('adGroups')}</Tab>
@@ -191,33 +281,62 @@ function GoogleAdsReport({ websiteId }: { websiteId: string }) {
   );
 }
 
-function GoogleAdsMetrics({ rows, currency }: { rows: GoogleAdsRow[]; currency: string | null }) {
+const TOOLTIPS: Partial<Record<GoogleAdsMetric, 'conversionsTooltip' | 'roasTooltip'>> = {
+  conversions: 'conversionsTooltip',
+  roas: 'roasTooltip',
+};
+
+/** Totals for the range, each a button that puts its metric on the chart below. */
+function GoogleAdsMetricCards({
+  metrics,
+  rows,
+  previousRows,
+  currency,
+  selected,
+  onSelect,
+}: {
+  metrics: GoogleAdsMetric[];
+  rows: GoogleAdsRow[];
+  /** The comparison period's rows, when there is one to compare with. */
+  previousRows?: GoogleAdsRow[];
+  currency: string | null;
+  selected: GoogleAdsMetric;
+  onSelect: (metric: GoogleAdsMetric) => void;
+}) {
   const t = useTranslations('googleAds');
   const { locale } = useLocale();
-  const sum = (metric: 'cost' | 'clicks' | 'impressions' | 'conversions') =>
-    rows.reduce((total, row) => total + row[metric], 0);
-  const clicks = sum('clicks');
-  const impressions = sum('impressions');
+  const totals = sumRows(rows);
+  const previousTotals = previousRows ? sumRows(previousRows) : null;
 
   return (
     <MetricsBar>
-      <MetricCard
-        value={sum('cost')}
-        label={t('cost')}
-        formatValue={(n: number) => formatMoney(n, currency, locale)}
-      />
-      <MetricCard value={clicks} label={t('clicks')} formatValue={formatLongNumber} />
-      <MetricCard value={impressions} label={t('impressions')} formatValue={formatLongNumber} />
-      <MetricCard
-        value={getCtr({ clicks, impressions })}
-        label={t('ctr')}
-        formatValue={formatPercent}
-      />
-      <MetricCard
-        value={sum('conversions')}
-        label={t('conversions')}
-        formatValue={formatConversions}
-      />
+      {metrics.map(metric => {
+        const { label, get } = GOOGLE_ADS_METRICS[metric];
+        const value = get(totals);
+        const previous = previousTotals ? get(previousTotals) : null;
+        // A change needs a value on both sides; a missing ratio is not a zero.
+        const hasChange = value !== null && previous !== null;
+        const tooltip = TOOLTIPS[metric];
+
+        return (
+          <MetricCard
+            key={metric}
+            label={t(label)}
+            tooltip={tooltip && t(tooltip)}
+            value={value ?? 0}
+            formatValue={
+              value === null
+                ? () => NO_VALUE
+                : (n: number) => formatMetric(metric, n, currency, locale)
+            }
+            change={hasChange ? value - previous : 0}
+            showChange={hasChange}
+            reverseColors={isLowerBetter(metric)}
+            onClick={() => onSelect(metric)}
+            selected={metric === selected}
+          />
+        );
+      })}
     </MetricsBar>
   );
 }
