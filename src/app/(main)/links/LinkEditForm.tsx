@@ -48,9 +48,11 @@ export function LinkEditForm({
   const { data, isLoading } = useLinkQuery(linkId);
   const [defaultSlug] = useState(generateId());
 
-  const handleSubmit = async ({ baseUrl, ...data }: any) => {
-    // Only send a base url when there is a choice, so a single LINKS_URL behaves as before.
-    await mutateAsync(hasBaseUrls ? { ...data, baseUrl } : data, {
+  const handleSubmit = async ({ baseUrl, ...values }: any) => {
+    // Only send a base url the user changed, so a link left on the default keeps following it.
+    const changed = baseUrl !== getHostUrl(data?.baseUrl);
+
+    await mutateAsync(changed ? { ...values, baseUrl } : values, {
       onSuccess: async () => {
         toast(t(messages.saved));
         touch('links');
