@@ -51,6 +51,8 @@ const fieldDescriptions: Record<string, string> = {
   logoUrl: 'URL of the logo image.',
   domain: 'Domain name associated with the resource.',
   url: 'URL associated with the resource.',
+  baseUrl:
+    'Base URL the link is shared from, one of the configured LINKS_URL values. Null uses the first one.',
   page: 'Page number, starting at 1.',
   pageSize: 'Number of results per page.',
   maxResults: 'Maximum number of results to include.',

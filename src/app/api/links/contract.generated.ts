@@ -126,6 +126,11 @@ const operation1 = defineOperation({
                         type: 'string',
                         description: 'URL slug used to access the resource.',
                       },
+                      baseUrl: {
+                        type: 'string',
+                        description:
+                          'Base URL the link is shared from, one of the configured LINKS_URL values. Null uses the first one.',
+                      },
                     },
                     required: [
                       'id',
@@ -137,6 +142,7 @@ const operation1 = defineOperation({
                       'teamId',
                       'url',
                       'slug',
+                      'baseUrl',
                     ],
                   },
                   description: 'Data returned by the operation.',
@@ -247,6 +253,19 @@ const operation2 = defineOperation({
                 maxLength: 100,
                 description: 'URL slug used to access the resource.',
               },
+              baseUrl: {
+                anyOf: [
+                  {
+                    type: 'string',
+                    maxLength: 500,
+                  },
+                  {
+                    type: 'null',
+                  },
+                ],
+                description:
+                  'Base URL the link is shared from, one of the configured LINKS_URL values. Null uses the first one.',
+              },
               teamId: {
                 anyOf: [
                   {
@@ -323,6 +342,11 @@ const operation2 = defineOperation({
                   type: 'string',
                   description: 'URL slug used to access the resource.',
                 },
+                baseUrl: {
+                  type: 'string',
+                  description:
+                    'Base URL the link is shared from, one of the configured LINKS_URL values. Null uses the first one.',
+                },
               },
               required: [
                 'id',
@@ -334,6 +358,7 @@ const operation2 = defineOperation({
                 'teamId',
                 'url',
                 'slug',
+                'baseUrl',
               ],
             },
           },

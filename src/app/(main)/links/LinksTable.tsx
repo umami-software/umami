@@ -34,8 +34,8 @@ export function LinksTable({ showActions, data = [], ...props }: LinksTableProps
         label={<SortableLabel label={t(labels.link)} sortKey="slug" />}
         style={{ minWidth: 0 }}
       >
-        {({ slug }: any) => {
-          const url = getSlugUrl(slug);
+        {({ slug, baseUrl }: any) => {
+          const url = getSlugUrl(slug, baseUrl);
           return <ExternalLink href={url}>{url}</ExternalLink>;
         }}
       </DataColumn>

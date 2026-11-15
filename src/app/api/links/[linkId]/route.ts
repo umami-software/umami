@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { getLinksUrls } from '@/lib/config';
 import { parseRequest } from '@/lib/request';
 import { badRequest, json, ok, serverError, unauthorized } from '@/lib/response';
 import { isValidUrl } from '@/lib/url';
@@ -29,6 +30,16 @@ export async function POST(request: Request, { params }: { params: Promise<{ lin
     // Same rule as the link form; a relative url makes the /q redirect fail.
     url: z.string().trim().max(500).refine(isValidUrl, { message: 'Invalid URL.' }).optional(),
     slug: z.string().min(8).max(100).optional(),
+    // Must be one of the configured LINKS_URL entries; empty resets it to the default.
+    baseUrl: z
+      .string()
+      .trim()
+      .max(500)
+      .nullable()
+      .optional()
+      .refine(value => !value || getLinksUrls().includes(value), {
+        message: 'Invalid base URL.',
+      }),
   });
 
   const { auth, body, error } = await parseRequest(request, schema);
@@ -38,14 +49,19 @@ export async function POST(request: Request, { params }: { params: Promise<{ lin
   }
 
   const { linkId } = await params;
-  const { name, url, slug } = body;
+  const { name, url, slug, baseUrl } = body;
 
   if (!(await canUpdateLink(auth, linkId))) {
     return unauthorized();
   }
 
   try {
-    const result = await updateLink(linkId, { name, url, slug });
+    const result = await updateLink(linkId, {
+      name,
+      url,
+      slug,
+      baseUrl: baseUrl === '' ? null : baseUrl,
+    });
 
     return Response.json(result);
   } catch (e: any) {

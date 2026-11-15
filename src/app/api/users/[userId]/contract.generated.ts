@@ -491,6 +491,11 @@ const operation2 = defineOperation({
                         type: 'string',
                         description: 'URL slug used to access the resource.',
                       },
+                      baseUrl: {
+                        type: 'string',
+                        description:
+                          'Base URL the link is shared from, one of the configured LINKS_URL values. Null uses the first one.',
+                      },
                     },
                     required: [
                       'id',
@@ -502,6 +507,7 @@ const operation2 = defineOperation({
                       'teamId',
                       'url',
                       'slug',
+                      'baseUrl',
                     ],
                   },
                   description: 'Tracked links associated with the user.',

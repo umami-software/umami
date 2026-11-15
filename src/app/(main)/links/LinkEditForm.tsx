@@ -7,15 +7,16 @@ import {
   Grid,
   Icon,
   Label,
+  ListItem,
   Loading,
   Row,
+  Select,
   TextField,
 } from '@umami/react-zen';
 import { useState } from 'react';
-import { useConfig, useLinkQuery, useMessages } from '@/components/hooks';
+import { useConfig, useLinkQuery, useMessages, useSlug } from '@/components/hooks';
 import { useUpdateQuery } from '@/components/hooks/queries/useUpdateQuery';
 import { RefreshCw } from '@/components/icons';
-import { LINKS_URL } from '@/lib/constants';
 import { getRandomChars } from '@/lib/generate';
 import { isValidUrl } from '@/lib/url';
 
@@ -42,13 +43,14 @@ export function LinkEditForm({
   );
   const config = useConfig();
   const cloudMode = config?.cloudMode;
-  const linksUrl = config?.linksUrl;
-  const hostUrl = linksUrl || LINKS_URL;
+  const { getHostUrl, hostUrls } = useSlug('link');
+  const hasBaseUrls = hostUrls.length > 1;
   const { data, isLoading } = useLinkQuery(linkId);
   const [defaultSlug] = useState(generateId());
 
-  const handleSubmit = async (data: any) => {
-    await mutateAsync(data, {
+  const handleSubmit = async ({ baseUrl, ...data }: any) => {
+    // Only send a base url when there is a choice, so a single LINKS_URL behaves as before.
+    await mutateAsync(hasBaseUrls ? { ...data, baseUrl } : data, {
       onSuccess: async () => {
         toast(t(messages.saved));
         touch('links');
@@ -60,7 +62,8 @@ export function LinkEditForm({
   };
 
   const checkUrl = (url: string, formValues: any) => {
-    if (!isValidUrl(url) || (url === `${hostUrl}/${formValues.slug}`)) {
+    // Every base url reaches the same slug, so a link to any of them would redirect to itself.
+    if (!isValidUrl(url) || hostUrls.some(hostUrl => url === `${hostUrl}/${formValues.slug}`)) {
       return t(labels.invalidUrl);
     }
     return true;
@@ -74,10 +77,11 @@ export function LinkEditForm({
     <Form
       onSubmit={handleSubmit}
       error={getErrorMessage(error)}
-      defaultValues={{ slug: defaultSlug, ...data }}
+      defaultValues={{ slug: defaultSlug, ...data, baseUrl: getHostUrl(data?.baseUrl) }}
     >
       {({ setValue, watch }) => {
         const slug = watch('slug');
+        const baseUrl = watch('baseUrl');
 
         return (
           <>
@@ -92,6 +96,18 @@ export function LinkEditForm({
             >
               <TextField placeholder="https://example.com" autoComplete="off" />
             </FormField>
+
+            {hasBaseUrls && (
+              <FormField label={t(labels.domain)} name="baseUrl">
+                <Select>
+                  {hostUrls.map(hostUrl => (
+                    <ListItem key={hostUrl} id={hostUrl}>
+                      {hostUrl}
+                    </ListItem>
+                  ))}
+                </Select>
+              </FormField>
+            )}
 
             {cloudMode ? (
               <FormField
@@ -129,7 +145,7 @@ export function LinkEditForm({
               <Label>{t(labels.link)}</Label>
               <Row alignItems="center" gap>
                 <TextField
-                  value={`${hostUrl}/${slug}`}
+                  value={`${getHostUrl(baseUrl)}/${slug}`}
                   autoComplete="off"
                   isReadOnly
                   allowCopy
