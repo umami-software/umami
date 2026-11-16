@@ -6569,6 +6569,8 @@ export interface operations {
             count: number;
             /** @description Data returned by the operation. */
             data: {
+              /** @description Base URL the link is shared from, one of the configured LINKS_URL values. Null uses the first one. */
+              baseUrl: string;
               /**
                * Format: date-time
                * @description Date and time the record was created.
@@ -6660,6 +6662,8 @@ export interface operations {
     requestBody: {
       content: {
         'application/json': {
+          /** @description Base URL the link is shared from, one of the configured LINKS_URL values. Null uses the first one. */
+          baseUrl?: string | null;
           /** @description Unique identifier of the resource. */
           id?: string | null;
           /** @description Display name of the resource. */
@@ -6681,6 +6685,8 @@ export interface operations {
         };
         content: {
           'application/json': {
+            /** @description Base URL the link is shared from, one of the configured LINKS_URL values. Null uses the first one. */
+            baseUrl: string;
             /**
              * Format: date-time
              * @description Date and time the record was created.
@@ -6768,6 +6774,8 @@ export interface operations {
         };
         content: {
           'application/json': {
+            /** @description Base URL the link is shared from, one of the configured LINKS_URL values. Null uses the first one. */
+            baseUrl: string;
             /**
              * Format: date-time
              * @description Date and time the record was created.
@@ -6831,6 +6839,8 @@ export interface operations {
     requestBody: {
       content: {
         'application/json': {
+          /** @description Base URL the link is shared from, one of the configured LINKS_URL values. Null uses the first one. */
+          baseUrl?: string | null;
           /** @description Display name of the resource. */
           name?: string;
           /** @description URL slug used to access the resource. */
@@ -6848,6 +6858,8 @@ export interface operations {
         };
         content: {
           'application/json': {
+            /** @description Base URL the link is shared from, one of the configured LINKS_URL values. Null uses the first one. */
+            baseUrl: string;
             /**
              * Format: date-time
              * @description Date and time the record was created.
@@ -10508,6 +10520,8 @@ export interface operations {
             count: number;
             /** @description Data returned by the operation. */
             data: {
+              /** @description Base URL the link is shared from, one of the configured LINKS_URL values. Null uses the first one. */
+              baseUrl: string;
               /**
                * Format: date-time
                * @description Date and time the record was created.
@@ -11653,6 +11667,8 @@ export interface operations {
             id: string;
             /** @description Tracked links associated with the user. */
             links: {
+              /** @description Base URL the link is shared from, one of the configured LINKS_URL values. Null uses the first one. */
+              baseUrl: string;
               /**
                * Format: date-time
                * @description Date and time the record was created.

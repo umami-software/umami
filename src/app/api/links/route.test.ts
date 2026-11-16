@@ -31,6 +31,7 @@ const createLinkMock = vi.mocked(createLink);
 const isEntityIdInUseMock = vi.mocked(isEntityIdInUse);
 
 beforeEach(() => {
+  vi.unstubAllEnvs();
   parseRequestMock.mockReset();
   canCreateTeamWebsiteMock.mockReset();
   canCreateWebsiteMock.mockReset();
@@ -71,6 +72,7 @@ test('POST requires link slugs to be at least 8 characters so create matches edi
     name: 'Docs',
     url: 'https://example.com',
     slug: 'abcdefgh',
+    baseUrl: null,
     teamId: undefined,
     userId: 'user-1',
   });
@@ -182,4 +184,66 @@ test('POST trims surrounding whitespace from link urls', async () => {
 
   expect(result.data?.url).toBe('https://example.com/docs');
   expect(schema.safeParse({ name: 'Docs', url: '   ', slug: 'abcdefgh' }).success).toBe(false);
+});
+
+// A link may only use one of the configured LINKS_URL bases, so its shown url is always valid.
+test('POST accepts only a configured LINKS_URL entry as the base url', async () => {
+  vi.stubEnv('LINKS_URL', 'https://example.com, https://go.example.org');
+  parseRequestMock.mockResolvedValue({ error: () => new Response(null, { status: 400 }) } as any);
+
+  await POST(new Request('http://localhost/api/links', { method: 'POST' }));
+
+  const schema = parseRequestMock.mock.calls[0][1] as {
+    safeParse: (value: unknown) => { success: boolean };
+  };
+  const body = (baseUrl: unknown) => ({
+    name: 'Docs',
+    url: 'https://example.com/docs',
+    slug: 'abcdefgh',
+    baseUrl,
+  });
+
+  expect(schema.safeParse(body('https://example.com')).success).toBe(true);
+  expect(schema.safeParse(body('https://go.example.org')).success).toBe(true);
+  expect(schema.safeParse(body(undefined)).success).toBe(true);
+  expect(schema.safeParse(body(null)).success).toBe(true);
+  expect(schema.safeParse(body('')).success).toBe(true);
+  expect(schema.safeParse(body('https://evil.example.net')).success).toBe(false);
+  expect(schema.safeParse(body('https://go.example.org/')).success).toBe(false);
+});
+
+test('POST rejects any base url when LINKS_URL is unset', async () => {
+  vi.stubEnv('LINKS_URL', '');
+  parseRequestMock.mockResolvedValue({ error: () => new Response(null, { status: 400 }) } as any);
+
+  await POST(new Request('http://localhost/api/links', { method: 'POST' }));
+
+  const schema = parseRequestMock.mock.calls[0][1] as {
+    safeParse: (value: unknown) => { success: boolean };
+  };
+  const body = { name: 'Docs', url: 'https://example.com/docs', slug: 'abcdefgh' };
+
+  expect(schema.safeParse(body).success).toBe(true);
+  expect(schema.safeParse({ ...body, baseUrl: 'https://example.com' }).success).toBe(false);
+});
+
+test('POST stores the chosen base url', async () => {
+  parseRequestMock.mockResolvedValue({
+    auth: { user: { id: 'user-1' } },
+    body: {
+      name: 'Docs',
+      url: 'https://example.com/docs',
+      slug: 'abcdefgh',
+      baseUrl: 'https://go.example.org',
+    },
+    error: undefined,
+  });
+  canCreateWebsiteMock.mockResolvedValue(true);
+  createLinkMock.mockResolvedValue({ id: 'link-1' } as any);
+
+  await POST(new Request('http://localhost/api/links', { method: 'POST' }));
+
+  expect(createLinkMock).toHaveBeenCalledWith(
+    expect.objectContaining({ baseUrl: 'https://go.example.org' }),
+  );
 });

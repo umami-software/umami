@@ -132,6 +132,11 @@ const operation2 = defineOperation({
                   type: 'string',
                   description: 'URL slug used to access the resource.',
                 },
+                baseUrl: {
+                  type: 'string',
+                  description:
+                    'Base URL the link is shared from, one of the configured LINKS_URL values. Null uses the first one.',
+                },
               },
               required: [
                 'id',
@@ -143,6 +148,7 @@ const operation2 = defineOperation({
                 'teamId',
                 'url',
                 'slug',
+                'baseUrl',
               ],
             },
           },
@@ -213,6 +219,19 @@ const operation3 = defineOperation({
                 maxLength: 100,
                 description: 'URL slug used to access the resource.',
               },
+              baseUrl: {
+                anyOf: [
+                  {
+                    type: 'string',
+                    maxLength: 500,
+                  },
+                  {
+                    type: 'null',
+                  },
+                ],
+                description:
+                  'Base URL the link is shared from, one of the configured LINKS_URL values. Null uses the first one.',
+              },
             },
           },
         },
@@ -265,6 +284,11 @@ const operation3 = defineOperation({
                   type: 'string',
                   description: 'URL slug used to access the resource.',
                 },
+                baseUrl: {
+                  type: 'string',
+                  description:
+                    'Base URL the link is shared from, one of the configured LINKS_URL values. Null uses the first one.',
+                },
               },
               required: [
                 'id',
@@ -276,6 +300,7 @@ const operation3 = defineOperation({
                 'teamId',
                 'url',
                 'slug',
+                'baseUrl',
               ],
             },
           },

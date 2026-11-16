@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { getLinksUrls } from '@/lib/config';
 import { uuid } from '@/lib/crypto';
 import { isEntityIdInUse } from '@/lib/entity';
 import { getQueryFilters, parseRequest } from '@/lib/request';
@@ -34,6 +35,16 @@ export async function POST(request: Request) {
     // Same rule as the link form; a relative url makes the /q redirect fail.
     url: z.string().trim().max(500).refine(isValidUrl, { message: 'Invalid URL.' }),
     slug: z.string().min(8).max(100),
+    // Must be one of the configured LINKS_URL entries; empty uses the default.
+    baseUrl: z
+      .string()
+      .trim()
+      .max(500)
+      .nullable()
+      .optional()
+      .refine(value => !value || getLinksUrls().includes(value), {
+        message: 'Invalid base URL.',
+      }),
     teamId: z.string().nullable().optional(),
     id: z.uuid().nullable().optional(),
   });
@@ -44,7 +55,7 @@ export async function POST(request: Request) {
     return error();
   }
 
-  const { id, name, url, slug, teamId } = body;
+  const { id, name, url, slug, baseUrl, teamId } = body;
 
   const canCreate = teamId
     ? await canCreateTeamWebsite(auth, teamId)
@@ -64,6 +75,7 @@ export async function POST(request: Request) {
     name,
     url,
     slug,
+    baseUrl: baseUrl || null,
     teamId,
   };
 

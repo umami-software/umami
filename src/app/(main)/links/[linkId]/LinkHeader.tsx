@@ -10,12 +10,22 @@ export function LinkHeader({ showActions = true }: { showActions?: boolean }) {
 
   return (
     <PageHeader title={link.name} description={link.url} icon={<Link />}>
-      {showActions && link.id && <LinkHeaderActions linkId={link.id} slug={link.slug} />}
+      {showActions && link.id && (
+        <LinkHeaderActions linkId={link.id} slug={link.slug} baseUrl={link.baseUrl} />
+      )}
     </PageHeader>
   );
 }
 
-function LinkHeaderActions({ linkId, slug }: { linkId: string; slug: string }) {
+function LinkHeaderActions({
+  linkId,
+  slug,
+  baseUrl,
+}: {
+  linkId: string;
+  slug: string;
+  baseUrl?: string | null;
+}) {
   const { t, labels } = useMessages();
   const { renderUrl } = useNavigation();
   const { getSlugUrl } = useSlug('link');
@@ -25,7 +35,7 @@ function LinkHeaderActions({ linkId, slug }: { linkId: string; slug: string }) {
       <LinkButton href={renderUrl(`/links/${linkId}/edit`, false)}>
         <IconLabel icon={<Edit />} label={t(labels.edit)} />
       </LinkButton>
-      <LinkButton href={getSlugUrl(slug)} target="_blank" prefetch={false} asAnchor>
+      <LinkButton href={getSlugUrl(slug, baseUrl)} target="_blank" prefetch={false} asAnchor>
         <IconLabel icon={<ExternalLink />} label={t(labels.view)} />
       </LinkButton>
     </Row>
