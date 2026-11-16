@@ -424,3 +424,26 @@ export const segmentParamSchema = z.object({
     })
     .optional(),
 });
+
+export const alertRuleSchema = z.object({
+  name: z.string().min(1).max(100),
+  type: z.enum(['traffic_spike', 'traffic_drop', 'error_spike', 'metric_threshold']),
+  metric: z.enum(['pageviews', 'visitors', 'errors']),
+  threshold: z.coerce.number().positive(),
+  windowMinutes: z.coerce.number().int().min(1).max(1440).default(15),
+  channelType: z.enum(['webhook', 'slack', 'discord']),
+  channelConfig: z.object({
+    url: z.string().url(),
+    secret: z.string().optional(),
+  }),
+  isEnabled: z.boolean().optional().default(true),
+});
+
+
+export const filterRuleSchema = z.object({
+  name: z.string().min(1).max(100),
+  type: z.enum(['ip', 'cidr', 'user_agent', 'query_param', 'country']),
+  value: z.string().min(1).max(500),
+  action: z.enum(['exclude']).optional().default('exclude'),
+  isEnabled: z.boolean().optional().default(true),
+});

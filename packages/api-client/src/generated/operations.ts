@@ -298,6 +298,22 @@ export const operations = {
     queryParams: [],
     hasBody: false,
   },
+  deleteWebsitesWebsiteIdAlertsAlertRuleId: {
+    operationId: 'deleteWebsitesWebsiteIdAlertsAlertRuleId',
+    method: 'delete',
+    path: '/api/websites/{websiteId}/alerts/{alertRuleId}',
+    pathParams: ['websiteId', 'alertRuleId'],
+    queryParams: [],
+    hasBody: false,
+  },
+  deleteWebsitesWebsiteIdFiltersFilterRuleId: {
+    operationId: 'deleteWebsitesWebsiteIdFiltersFilterRuleId',
+    method: 'delete',
+    path: '/api/websites/{websiteId}/filters/{filterRuleId}',
+    pathParams: ['websiteId', 'filterRuleId'],
+    queryParams: [],
+    hasBody: false,
+  },
   disableTwoFactor: {
     operationId: 'disableTwoFactor',
     method: 'post',
@@ -2985,6 +3001,46 @@ export const operations = {
     ],
     hasBody: false,
   },
+  getWebsitesWebsiteIdAlerts: {
+    operationId: 'getWebsitesWebsiteIdAlerts',
+    method: 'get',
+    path: '/api/websites/{websiteId}/alerts',
+    pathParams: ['websiteId'],
+    queryParams: [],
+    hasBody: false,
+  },
+  getWebsitesWebsiteIdAlertsAlertRuleId: {
+    operationId: 'getWebsitesWebsiteIdAlertsAlertRuleId',
+    method: 'get',
+    path: '/api/websites/{websiteId}/alerts/{alertRuleId}',
+    pathParams: ['websiteId', 'alertRuleId'],
+    queryParams: [],
+    hasBody: false,
+  },
+  getWebsitesWebsiteIdAlertsHistory: {
+    operationId: 'getWebsitesWebsiteIdAlertsHistory',
+    method: 'get',
+    path: '/api/websites/{websiteId}/alerts/history',
+    pathParams: ['websiteId'],
+    queryParams: ['page', 'pageSize', 'maxResults'],
+    hasBody: false,
+  },
+  getWebsitesWebsiteIdFilters: {
+    operationId: 'getWebsitesWebsiteIdFilters',
+    method: 'get',
+    path: '/api/websites/{websiteId}/filters',
+    pathParams: ['websiteId'],
+    queryParams: [],
+    hasBody: false,
+  },
+  getWebsitesWebsiteIdFiltersFilterRuleId: {
+    operationId: 'getWebsitesWebsiteIdFiltersFilterRuleId',
+    method: 'get',
+    path: '/api/websites/{websiteId}/filters/{filterRuleId}',
+    pathParams: ['websiteId', 'filterRuleId'],
+    queryParams: [],
+    hasBody: false,
+  },
   getWebsiteUtmMetrics: {
     operationId: 'getWebsiteUtmMetrics',
     method: 'get',
@@ -3089,6 +3145,46 @@ export const operations = {
     pathParams: [],
     queryParams: [],
     hasBody: false,
+  },
+  postWebsitesWebsiteIdAlerts: {
+    operationId: 'postWebsitesWebsiteIdAlerts',
+    method: 'post',
+    path: '/api/websites/{websiteId}/alerts',
+    pathParams: ['websiteId'],
+    queryParams: [],
+    hasBody: true,
+  },
+  postWebsitesWebsiteIdAlertsAlertRuleIdTest: {
+    operationId: 'postWebsitesWebsiteIdAlertsAlertRuleIdTest',
+    method: 'post',
+    path: '/api/websites/{websiteId}/alerts/{alertRuleId}/test',
+    pathParams: ['websiteId', 'alertRuleId'],
+    queryParams: [],
+    hasBody: false,
+  },
+  postWebsitesWebsiteIdFilters: {
+    operationId: 'postWebsitesWebsiteIdFilters',
+    method: 'post',
+    path: '/api/websites/{websiteId}/filters',
+    pathParams: ['websiteId'],
+    queryParams: [],
+    hasBody: true,
+  },
+  putWebsitesWebsiteIdAlertsAlertRuleId: {
+    operationId: 'putWebsitesWebsiteIdAlertsAlertRuleId',
+    method: 'put',
+    path: '/api/websites/{websiteId}/alerts/{alertRuleId}',
+    pathParams: ['websiteId', 'alertRuleId'],
+    queryParams: [],
+    hasBody: true,
+  },
+  putWebsitesWebsiteIdFiltersFilterRuleId: {
+    operationId: 'putWebsitesWebsiteIdFiltersFilterRuleId',
+    method: 'put',
+    path: '/api/websites/{websiteId}/filters/{filterRuleId}',
+    pathParams: ['websiteId', 'filterRuleId'],
+    queryParams: [],
+    hasBody: true,
   },
   record: {
     operationId: 'record',
@@ -3726,6 +3822,28 @@ export abstract class GeneratedUmamiClient {
     options?: RequestOptions,
   ): Promise<OperationOutput<'deleteWebsiteSession'>> {
     return this.execute('deleteWebsiteSession', input, options);
+  }
+
+  /**
+   * Delete websites website id alerts alert rule id
+   * `DELETE /api/websites/{websiteId}/alerts/{alertRuleId}`
+   */
+  deleteWebsitesWebsiteIdAlertsAlertRuleId(
+    input: OperationInput<'deleteWebsitesWebsiteIdAlertsAlertRuleId'>,
+    options?: RequestOptions,
+  ): Promise<OperationOutput<'deleteWebsitesWebsiteIdAlertsAlertRuleId'>> {
+    return this.execute('deleteWebsitesWebsiteIdAlertsAlertRuleId', input, options);
+  }
+
+  /**
+   * Delete websites website id filters filter rule id
+   * `DELETE /api/websites/{websiteId}/filters/{filterRuleId}`
+   */
+  deleteWebsitesWebsiteIdFiltersFilterRuleId(
+    input: OperationInput<'deleteWebsitesWebsiteIdFiltersFilterRuleId'>,
+    options?: RequestOptions,
+  ): Promise<OperationOutput<'deleteWebsitesWebsiteIdFiltersFilterRuleId'>> {
+    return this.execute('deleteWebsitesWebsiteIdFiltersFilterRuleId', input, options);
   }
 
   /**
@@ -5049,6 +5167,61 @@ export abstract class GeneratedUmamiClient {
   }
 
   /**
+   * Get websites website id alerts
+   * `GET /api/websites/{websiteId}/alerts`
+   */
+  getWebsitesWebsiteIdAlerts(
+    input: OperationInput<'getWebsitesWebsiteIdAlerts'>,
+    options?: RequestOptions,
+  ): Promise<OperationOutput<'getWebsitesWebsiteIdAlerts'>> {
+    return this.execute('getWebsitesWebsiteIdAlerts', input, options);
+  }
+
+  /**
+   * Get websites website id alerts alert rule id
+   * `GET /api/websites/{websiteId}/alerts/{alertRuleId}`
+   */
+  getWebsitesWebsiteIdAlertsAlertRuleId(
+    input: OperationInput<'getWebsitesWebsiteIdAlertsAlertRuleId'>,
+    options?: RequestOptions,
+  ): Promise<OperationOutput<'getWebsitesWebsiteIdAlertsAlertRuleId'>> {
+    return this.execute('getWebsitesWebsiteIdAlertsAlertRuleId', input, options);
+  }
+
+  /**
+   * Get websites website id alerts history
+   * `GET /api/websites/{websiteId}/alerts/history`
+   */
+  getWebsitesWebsiteIdAlertsHistory(
+    input: OperationInput<'getWebsitesWebsiteIdAlertsHistory'>,
+    options?: RequestOptions,
+  ): Promise<OperationOutput<'getWebsitesWebsiteIdAlertsHistory'>> {
+    return this.execute('getWebsitesWebsiteIdAlertsHistory', input, options);
+  }
+
+  /**
+   * Get websites website id filters
+   * `GET /api/websites/{websiteId}/filters`
+   */
+  getWebsitesWebsiteIdFilters(
+    input: OperationInput<'getWebsitesWebsiteIdFilters'>,
+    options?: RequestOptions,
+  ): Promise<OperationOutput<'getWebsitesWebsiteIdFilters'>> {
+    return this.execute('getWebsitesWebsiteIdFilters', input, options);
+  }
+
+  /**
+   * Get websites website id filters filter rule id
+   * `GET /api/websites/{websiteId}/filters/{filterRuleId}`
+   */
+  getWebsitesWebsiteIdFiltersFilterRuleId(
+    input: OperationInput<'getWebsitesWebsiteIdFiltersFilterRuleId'>,
+    options?: RequestOptions,
+  ): Promise<OperationOutput<'getWebsitesWebsiteIdFiltersFilterRuleId'>> {
+    return this.execute('getWebsitesWebsiteIdFiltersFilterRuleId', input, options);
+  }
+
+  /**
    * Get website UTM metrics
    * Returns pageview counts grouped by a UTM parameter, such as source, medium, campaign, term, or content, for the selected date range.
    * `GET /api/websites/{websiteId}/utm/metrics`
@@ -5130,6 +5303,61 @@ export abstract class GeneratedUmamiClient {
     options?: RequestOptions,
   ): Promise<OperationOutput<'logout'>> {
     return this.execute('logout', input, options);
+  }
+
+  /**
+   * Create or update websites website id alerts
+   * `POST /api/websites/{websiteId}/alerts`
+   */
+  postWebsitesWebsiteIdAlerts(
+    input: OperationInput<'postWebsitesWebsiteIdAlerts'>,
+    options?: RequestOptions,
+  ): Promise<OperationOutput<'postWebsitesWebsiteIdAlerts'>> {
+    return this.execute('postWebsitesWebsiteIdAlerts', input, options);
+  }
+
+  /**
+   * Create or update websites website id alerts alert rule id test
+   * `POST /api/websites/{websiteId}/alerts/{alertRuleId}/test`
+   */
+  postWebsitesWebsiteIdAlertsAlertRuleIdTest(
+    input: OperationInput<'postWebsitesWebsiteIdAlertsAlertRuleIdTest'>,
+    options?: RequestOptions,
+  ): Promise<OperationOutput<'postWebsitesWebsiteIdAlertsAlertRuleIdTest'>> {
+    return this.execute('postWebsitesWebsiteIdAlertsAlertRuleIdTest', input, options);
+  }
+
+  /**
+   * Create or update websites website id filters
+   * `POST /api/websites/{websiteId}/filters`
+   */
+  postWebsitesWebsiteIdFilters(
+    input: OperationInput<'postWebsitesWebsiteIdFilters'>,
+    options?: RequestOptions,
+  ): Promise<OperationOutput<'postWebsitesWebsiteIdFilters'>> {
+    return this.execute('postWebsitesWebsiteIdFilters', input, options);
+  }
+
+  /**
+   * Replace websites website id alerts alert rule id
+   * `PUT /api/websites/{websiteId}/alerts/{alertRuleId}`
+   */
+  putWebsitesWebsiteIdAlertsAlertRuleId(
+    input: OperationInput<'putWebsitesWebsiteIdAlertsAlertRuleId'>,
+    options?: RequestOptions,
+  ): Promise<OperationOutput<'putWebsitesWebsiteIdAlertsAlertRuleId'>> {
+    return this.execute('putWebsitesWebsiteIdAlertsAlertRuleId', input, options);
+  }
+
+  /**
+   * Replace websites website id filters filter rule id
+   * `PUT /api/websites/{websiteId}/filters/{filterRuleId}`
+   */
+  putWebsitesWebsiteIdFiltersFilterRuleId(
+    input: OperationInput<'putWebsitesWebsiteIdFiltersFilterRuleId'>,
+    options?: RequestOptions,
+  ): Promise<OperationOutput<'putWebsitesWebsiteIdFiltersFilterRuleId'>> {
+    return this.execute('putWebsitesWebsiteIdFiltersFilterRuleId', input, options);
   }
 
   /**

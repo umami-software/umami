@@ -4,6 +4,7 @@ import { type CollectionCache, resolveIdentifiedSession } from '@/lib/collection
 import { CACHE_TOKEN_TYPE, COLLECTION_TYPE, EVENT_TYPE, FIELD_LENGTH } from '@/lib/constants';
 import { hash, secret } from '@/lib/crypto';
 import { getClientInfo, hasBlockedIp } from '@/lib/detect';
+import { isWebsiteExcluded } from '@/lib/filter-rules';
 import { truncateString } from '@/lib/format';
 import { createToken, parseToken } from '@/lib/jwt';
 import { fetchWebsite } from '@/lib/load';
@@ -101,6 +102,10 @@ export async function POST(request: Request) {
     // IP block
     if (hasBlockedIp(ip)) {
       return forbidden();
+    }
+
+    if (websiteId && (await isWebsiteExcluded(websiteId, { ip, userAgent, country, url }))) {
+      return json({ beep: 'boop' });
     }
 
     const createdAt = timestamp !== undefined ? new Date(timestamp * 1000) : new Date();
