@@ -430,7 +430,8 @@ describe('data-salt-rotation', () => {
   });
 });
 
-test('records LCP and FCP when page is loaded in foreground and paint occurs before being hidden', async () => {
+const historyMethods = ['none', 'pushState', 'replaceState'] as const;
+test.each(historyMethods)('records LCP and FCP after %s', async method => {
   type ObserverCallback = (list: { getEntries: () => unknown[] }) => void;
   const observers: { type: string; callback: ObserverCallback }[] = [];
 
@@ -464,7 +465,19 @@ test('records LCP and FCP when page is loaded in foreground and paint occurs bef
   const fetchMock = vi.fn().mockResolvedValue({ json: vi.fn().mockResolvedValue({}) });
   vi.stubGlobal('fetch', fetchMock);
 
+  vi.spyOn(history, 'pushState').mockImplementation((...args) =>
+    History.prototype.pushState.apply(history, args),
+  );
+  vi.spyOn(history, 'replaceState').mockImplementation((...args) =>
+    History.prototype.replaceState.apply(history, args),
+  );
+
   await import('./index');
+
+  if (method !== 'none') history[method]({}, '', location.href);
+  expect(
+    fetchMock.mock.calls.filter(([, init]) => JSON.parse(init.body).type === 'performance'),
+  ).toHaveLength(0);
 
   // Trigger paint and largest-contentful-paint observers while visible
   const paintObserver = observers.find(o => o.type === 'paint');
