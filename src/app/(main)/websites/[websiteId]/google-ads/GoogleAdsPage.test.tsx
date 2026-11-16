@@ -43,7 +43,10 @@ function row(overrides = {}) {
     key: 'key',
     name: 'name',
     parent: null,
+    parentKey: null,
     matchType: null,
+    status: null,
+    type: null,
     cost: 0,
     clicks: 0,
     impressions: 0,
@@ -296,6 +299,158 @@ test('lists campaigns, then loads ad groups with their campaign and keywords wit
   await user.click(screen.getByRole('tab', { name: 'Keywords' }));
   expect(await screen.findByText('red shoes')).toBeInTheDocument();
   expect(screen.getByText('Shoes · Exact match')).toBeInTheDocument();
+});
+
+test("shows a campaign's type and any status other than enabled", async () => {
+  respondWith({
+    campaign: [
+      row({ key: '1', name: 'Spring sale', type: 'SEARCH', status: 'ENABLED', impressions: 1 }),
+      row({ key: '2', name: 'Old promo', type: 'PERFORMANCE_MAX', status: 'PAUSED' }),
+    ],
+  });
+
+  render(<GoogleAdsPage websiteId="site-1" />);
+
+  expect(await screen.findByText('Spring sale')).toBeInTheDocument();
+  expect(screen.getByText('Search')).toBeInTheDocument();
+  expect(screen.getByText('Performance max · Paused')).toBeInTheDocument();
+});
+
+test('sorts by the clicked column and searches by name', async () => {
+  respondWith({
+    campaign: [
+      row({ key: '1', name: 'Alpha', cost: 30, clicks: 1 }),
+      row({ key: '2', name: 'Bravo', cost: 20, clicks: 9 }),
+      row({ key: '3', name: 'Charlie', cost: 10, clicks: 5 }),
+    ],
+  });
+  const user = userEvent.setup();
+  const names = () =>
+    screen.getAllByText(/^(Alpha|Bravo|Charlie)$/).map(element => element.textContent);
+
+  render(<GoogleAdsPage websiteId="site-1" />);
+
+  await screen.findByText('Alpha');
+  expect(names()).toEqual(['Alpha', 'Bravo', 'Charlie']); // highest cost first
+
+  // The Clicks card has the same name, so pick the column header by its pressed state.
+  const clicksHeader = screen
+    .getAllByRole('button', { name: 'Clicks' })
+    .find(button => button.getAttribute('aria-pressed') === 'false');
+  await user.click(clicksHeader);
+  expect(names()).toEqual(['Bravo', 'Charlie', 'Alpha']);
+
+  await user.type(screen.getByPlaceholderText('Search'), 'char');
+  await waitFor(() => expect(names()).toEqual(['Charlie']));
+});
+
+test('pages through more rows than fit one page', async () => {
+  respondWith({
+    campaign: Array.from({ length: 25 }, (_, index) =>
+      row({ key: String(index), name: `Campaign ${index + 1}`, cost: 100 - index }),
+    ),
+  });
+  const user = userEvent.setup();
+
+  render(<GoogleAdsPage websiteId="site-1" />);
+
+  expect(await screen.findByText('Campaign 20')).toBeInTheDocument();
+  expect(screen.queryByText('Campaign 21')).not.toBeInTheDocument();
+
+  const pagerButtons = screen
+    .getAllByRole('button')
+    .filter(button => !button.textContent && !button.getAttribute('aria-pressed'));
+  await user.click(pagerButtons[pagerButtons.length - 1]);
+
+  expect(await screen.findByText('Campaign 21')).toBeInTheDocument();
+  expect(screen.queryByText('Campaign 20')).not.toBeInTheDocument();
+});
+
+test("opens a campaign's ad groups, then an ad group's keywords, and clears the filter", async () => {
+  respondWith({
+    campaign: [row({ key: '11', name: 'Spring sale' })],
+    ad_group: [row({ key: '22', name: 'Shoes', parent: 'Spring sale', parentKey: '11' })],
+    keyword: [row({ key: '22~3', name: 'red shoes', parent: 'Shoes', parentKey: '22' })],
+  });
+  const user = userEvent.setup();
+  const lastQuery = (dimension: string) =>
+    vi
+      .mocked(httpGet)
+      .mock.calls.map(([, params]) => params as Record<string, unknown>)
+      .filter(params => params.dimension === dimension)
+      .at(-1);
+
+  render(<GoogleAdsPage websiteId="site-1" />);
+
+  await user.click(await screen.findByRole('button', { name: 'Spring sale' }));
+  expect(await screen.findByRole('button', { name: 'Shoes' })).toBeInTheDocument();
+  expect(lastQuery('ad_group')).toMatchObject({ campaignId: '11' });
+
+  await user.click(screen.getByRole('button', { name: 'Shoes' }));
+  expect(await screen.findByText('red shoes')).toBeInTheDocument();
+  expect(lastQuery('keyword')).toMatchObject({ adGroupId: '22' });
+  expect(lastQuery('keyword')).not.toHaveProperty('campaignId');
+
+  await user.click(screen.getByTitle('Clear filter'));
+  await waitFor(() => expect(lastQuery('keyword')).not.toHaveProperty('adGroupId'));
+});
+
+test('lists search terms with their ad group and landing pages by URL', async () => {
+  respondWith({
+    search_term: [row({ key: '22~buy red shoes', name: 'buy red shoes', parent: 'Shoes' })],
+    landing_page: [row({ key: 'https://example.com/shoes', name: 'https://example.com/shoes' })],
+  });
+  const user = userEvent.setup();
+
+  render(<GoogleAdsPage websiteId="site-1" />);
+
+  await user.click(await screen.findByRole('tab', { name: 'Search terms' }));
+  expect(await screen.findByText('buy red shoes')).toBeInTheDocument();
+  expect(screen.getByText('Shoes')).toBeInTheDocument();
+
+  await user.click(screen.getByRole('tab', { name: 'Landing pages' }));
+  expect(await screen.findByText('https://example.com/shoes')).toBeInTheDocument();
+});
+
+test('names devices and networks the way Google Ads does', async () => {
+  respondWith({
+    device: [row({ key: 'MOBILE', name: 'MOBILE' }), row({ key: 'OTHER', name: 'OTHER' })],
+    network: [
+      row({ key: 'CONTENT', name: 'CONTENT' }),
+      row({ key: 'GOOGLE_TV', name: 'GOOGLE_TV' }),
+    ],
+  });
+  const user = userEvent.setup();
+
+  render(<GoogleAdsPage websiteId="site-1" />);
+
+  await user.click(await screen.findByRole('tab', { name: 'Devices' }));
+  expect(await screen.findByText('Mobile phones')).toBeInTheDocument();
+  expect(screen.getByText('Other')).toBeInTheDocument();
+
+  await user.click(screen.getByRole('tab', { name: 'Networks' }));
+  expect(await screen.findByText('Display Network')).toBeInTheDocument();
+  // A value without a name of its own is still made readable.
+  expect(screen.getByText('Google tv')).toBeInTheDocument();
+});
+
+test('narrows search terms to the campaign that was opened', async () => {
+  respondWith({
+    campaign: [row({ key: '11', name: 'Spring sale' })],
+    search_term: [row({ key: '22~buy red shoes', name: 'buy red shoes', parent: 'Shoes' })],
+  });
+  const user = userEvent.setup();
+
+  render(<GoogleAdsPage websiteId="site-1" />);
+
+  await user.click(await screen.findByRole('button', { name: 'Spring sale' }));
+  await user.click(screen.getByRole('tab', { name: 'Search terms' }));
+
+  expect(await screen.findByText('buy red shoes')).toBeInTheDocument();
+  expect(httpGet).toHaveBeenCalledWith(
+    expect.any(String),
+    expect.objectContaining({ dimension: 'search_term', campaignId: '11' }),
+  );
 });
 
 test.each([

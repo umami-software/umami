@@ -11,12 +11,25 @@ export interface SortableLabelProps {
   label: ReactNode;
   sortKey: string;
   defaultDirection?: SortDirection;
+  /**
+   * Sorts in local state instead of the URL, for a table that sorts rows it already holds.
+   * Receives the next direction; pair it with `direction`.
+   */
+  onSort?: (direction: SortDirection) => void;
+  /** The current direction when this column is the sorted one. Only read with `onSort`. */
+  direction?: SortDirection | null;
 }
 
-export function SortableLabel({ label, sortKey, defaultDirection = 'asc' }: SortableLabelProps) {
+export function SortableLabel({
+  label,
+  sortKey,
+  defaultDirection = 'asc',
+  onSort,
+  direction: localDirection,
+}: SortableLabelProps) {
   const { router, query, updateParams } = useNavigation();
-  const isActive = query.orderBy === sortKey;
-  const isDescending = query.sortDescending === 'true';
+  const isActive = onSort ? !!localDirection : query.orderBy === sortKey;
+  const isDescending = onSort ? localDirection === 'desc' : query.sortDescending === 'true';
   const direction = isActive ? (isDescending ? 'desc' : 'asc') : undefined;
   const activeColor = 'var(--zen-fg)';
 
@@ -30,6 +43,11 @@ export function SortableLabel({ label, sortKey, defaultDirection = 'asc' }: Sort
 
   const handleSort = () => {
     const nextDirection = getNextDirection();
+
+    if (onSort) {
+      onSort(nextDirection);
+      return;
+    }
 
     router.push(
       updateParams({

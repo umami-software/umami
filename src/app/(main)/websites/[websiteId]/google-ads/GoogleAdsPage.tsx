@@ -31,7 +31,7 @@ import {
 } from './format';
 import { GoogleAdsChart } from './GoogleAdsChart';
 import { GoogleAdsConversionsTable } from './GoogleAdsConversionsTable';
-import { GoogleAdsTable } from './GoogleAdsTable';
+import { GoogleAdsTable, type GoogleAdsTableFilter } from './GoogleAdsTable';
 
 const INTEGRATIONS_URL = `${process.env.cloudUrl || ''}/settings/integrations`;
 
@@ -97,6 +97,9 @@ function GoogleAdsReport({ websiteId }: { websiteId: string }) {
   } = useDateRange({ timezone });
   const [performanceMetric, setPerformanceMetric] = useState<GoogleAdsMetric>('cost');
   const [conversionMetric, setConversionMetric] = useState<GoogleAdsMetric>('conversions');
+  const [tab, setTab] = useState('campaign');
+  // Set by opening a campaign or ad group; it narrows the tabs below that level.
+  const [filter, setFilter] = useState<GoogleAdsTableFilter | null>(null);
 
   // Google reports whole days, so the page works in calendar days. useDateRange returns new
   // Date objects on every render (and relative ranges move with the clock), so keying the
@@ -243,11 +246,15 @@ function GoogleAdsReport({ websiteId }: { websiteId: string }) {
           </Panel>
           <Heading size="2xl">{t('ads')}</Heading>
           <Panel>
-            <Tabs>
+            <Tabs selectedKey={tab} onSelectionChange={setTab}>
               <TabList>
                 <Tab id="campaign">{t('campaigns')}</Tab>
                 <Tab id="ad_group">{t('adGroups')}</Tab>
                 <Tab id="keyword">{t('keywords')}</Tab>
+                <Tab id="search_term">{t('searchTerms')}</Tab>
+                <Tab id="landing_page">{t('landingPages')}</Tab>
+                <Tab id="device">{t('devices')}</Tab>
+                <Tab id="network">{t('networks')}</Tab>
               </TabList>
               <TabPanel id="campaign">
                 <GoogleAdsTable
@@ -255,6 +262,10 @@ function GoogleAdsReport({ websiteId }: { websiteId: string }) {
                   startDate={startDate}
                   endDate={endDate}
                   dimension="campaign"
+                  onDrill={row => {
+                    setFilter({ type: 'campaign', id: row.key, name: row.name });
+                    setTab('ad_group');
+                  }}
                 />
               </TabPanel>
               <TabPanel id="ad_group">
@@ -263,6 +274,12 @@ function GoogleAdsReport({ websiteId }: { websiteId: string }) {
                   startDate={startDate}
                   endDate={endDate}
                   dimension="ad_group"
+                  filter={filter}
+                  onClearFilter={() => setFilter(null)}
+                  onDrill={row => {
+                    setFilter({ type: 'adGroup', id: row.key, name: row.name });
+                    setTab('keyword');
+                  }}
                 />
               </TabPanel>
               <TabPanel id="keyword">
@@ -271,8 +288,30 @@ function GoogleAdsReport({ websiteId }: { websiteId: string }) {
                   startDate={startDate}
                   endDate={endDate}
                   dimension="keyword"
+                  filter={filter}
+                  onClearFilter={() => setFilter(null)}
                 />
               </TabPanel>
+              <TabPanel id="search_term">
+                <GoogleAdsTable
+                  websiteId={websiteId}
+                  startDate={startDate}
+                  endDate={endDate}
+                  dimension="search_term"
+                  filter={filter}
+                  onClearFilter={() => setFilter(null)}
+                />
+              </TabPanel>
+              {(['landing_page', 'device', 'network'] as const).map(dimension => (
+                <TabPanel key={dimension} id={dimension}>
+                  <GoogleAdsTable
+                    websiteId={websiteId}
+                    startDate={startDate}
+                    endDate={endDate}
+                    dimension={dimension}
+                  />
+                </TabPanel>
+              ))}
             </Tabs>
           </Panel>
         </>

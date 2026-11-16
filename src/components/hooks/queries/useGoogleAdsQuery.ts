@@ -2,7 +2,16 @@ import { keepPreviousData, useQuery } from '@tanstack/react-query';
 import { format } from 'date-fns';
 import { httpGet } from '@/lib/fetch';
 
-export type GoogleAdsDimension = 'campaign' | 'ad_group' | 'keyword' | 'date' | 'conversion_action';
+export type GoogleAdsDimension =
+  | 'search_term'
+  | 'landing_page'
+  | 'device'
+  | 'network'
+  | 'campaign'
+  | 'ad_group'
+  | 'keyword'
+  | 'date'
+  | 'conversion_action';
 
 export interface GoogleAdsRow {
   /** A stable ID, or YYYY-MM-DD for the date dimension. */
@@ -10,8 +19,14 @@ export interface GoogleAdsRow {
   name: string;
   /** The campaign of an ad group, the ad group of a keyword, or the category of a conversion action. */
   parent: string | null;
+  /** The parent's ID: the campaign of an ad group, the ad group of a keyword. */
+  parentKey: string | null;
   /** Keyword match type, e.g. EXACT. */
   matchType: string | null;
+  /** Serving status of a campaign, ad group or keyword, e.g. ENABLED or PAUSED. */
+  status: string | null;
+  /** A campaign's advertising channel, e.g. SEARCH or PERFORMANCE_MAX. */
+  type: string | null;
   /** In the account's currency. */
   cost: number;
   clicks: number;
@@ -52,12 +67,18 @@ export function useGoogleAdsQuery(
     endDate,
     dimension,
     limit = 10,
+    campaignId,
+    adGroupId,
   }: {
     websiteId: string;
     startDate: Date;
     endDate: Date;
     dimension: GoogleAdsDimension;
     limit?: number;
+    /** Narrows ad groups and keywords to one campaign. */
+    campaignId?: string;
+    /** Narrows keywords to one ad group. */
+    adGroupId?: string;
   },
   options?: { enabled?: boolean },
 ) {
@@ -66,7 +87,7 @@ export function useGoogleAdsQuery(
   const end = format(endDate, 'yyyy-MM-dd');
 
   return useQuery<GoogleAdsData, GoogleAdsQueryError>({
-    queryKey: ['google-ads', { websiteId, start, end, dimension, limit }],
+    queryKey: ['google-ads', { websiteId, start, end, dimension, limit, campaignId, adGroupId }],
     queryFn: async () => {
       const res = await httpGet(getQueryUrl(), {
         websiteId,
@@ -74,6 +95,8 @@ export function useGoogleAdsQuery(
         endDate: end,
         dimension,
         limit,
+        ...(campaignId && { campaignId }),
+        ...(adGroupId && { adGroupId }),
       });
 
       if (!res.ok) {
