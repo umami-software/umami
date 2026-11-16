@@ -47,9 +47,17 @@ export function UpdateNotice({ user, config }) {
   }
 
   return (
-    <Column justifyContent="center" alignItems="center" position="fixed" top="10px" width="100%">
-      <Row width="600px">
-        <Alert style={{ width: '100%' }}>
+    <Column
+      justifyContent="center"
+      alignItems="center"
+      position="fixed"
+      top="10px"
+      width="100%"
+      zIndex={200}
+      pointerEvents="none"
+    >
+      <Row width="600px" pointerEvents="auto">
+        <Alert className="shadow-lg px-5 py-4" style={{ width: '100%' }}>
           <AlertTitle>{t(messages.newVersionAvailable, { version: `v${latest}` })}</AlertTitle>
           <Row gap="3" paddingTop="2">
             <Button variant="primary" onPress={handleViewClick}>
