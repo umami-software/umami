@@ -165,6 +165,36 @@ test('POST accepts only absolute link urls, matching the link form', async () =>
   expect(schema.safeParse(body('')).success).toBe(false);
 });
 
+// The API is a way to create links without the form, so it must refuse the same unsafe
+// destinations the form does.
+test('POST refuses unsafe link destinations, and ip hosts only in cloud mode', async () => {
+  parseRequestMock.mockResolvedValue({ error: () => new Response(null, { status: 400 }) } as any);
+  const body = (url: string) => ({ name: 'Docs', url, slug: 'abcdefgh' });
+  const getSchema = async () => {
+    parseRequestMock.mockClear();
+    await POST(new Request('http://localhost/api/links', { method: 'POST' }));
+
+    return parseRequestMock.mock.calls[0][1] as {
+      safeParse: (value: unknown) => { success: boolean };
+    };
+  };
+
+  vi.stubEnv('CLOUD_MODE', '');
+  const selfHosted = await getSchema();
+
+  expect(selfHosted.safeParse(body('javascript:alert(1)')).success).toBe(false);
+  expect(selfHosted.safeParse(body('https://bank.com@evil.example')).success).toBe(false);
+  expect(selfHosted.safeParse(body('http://192.168.1.10/wiki')).success).toBe(true);
+
+  vi.stubEnv('CLOUD_MODE', '1');
+  const cloud = await getSchema();
+
+  expect(cloud.safeParse(body('http://203.0.113.7/login')).success).toBe(false);
+  expect(cloud.safeParse(body('https://example.com/docs')).success).toBe(true);
+
+  vi.unstubAllEnvs();
+});
+
 // Pasted urls often carry surrounding spaces; store the url the redirect will actually use.
 test('POST trims surrounding whitespace from link urls', async () => {
   parseRequestMock.mockResolvedValue({ error: () => new Response(null, { status: 400 }) } as any);

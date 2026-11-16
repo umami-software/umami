@@ -41,6 +41,36 @@ test('POST accepts only absolute link urls and keeps url optional', async () => 
   expect(schema.safeParse({ url: 'foo' }).success).toBe(false);
 });
 
+// Otherwise an existing link could be edited to point somewhere create would refuse.
+test('POST refuses unsafe link destinations, and ip hosts only in cloud mode', async () => {
+  parseRequestMock.mockResolvedValue({ error: () => new Response(null, { status: 400 }) } as any);
+  const getSchema = async () => {
+    parseRequestMock.mockClear();
+    await POST(new Request('http://localhost/api/links/link-1', { method: 'POST' }), {
+      params: Promise.resolve({ linkId: 'link-1' }),
+    });
+
+    return parseRequestMock.mock.calls[0][1] as {
+      safeParse: (value: unknown) => { success: boolean };
+    };
+  };
+
+  vi.stubEnv('CLOUD_MODE', '');
+  const selfHosted = await getSchema();
+
+  expect(selfHosted.safeParse({ url: 'data:text/html,<h1>Sign in</h1>' }).success).toBe(false);
+  expect(selfHosted.safeParse({ url: 'https://bank.com@evil.example' }).success).toBe(false);
+  expect(selfHosted.safeParse({ url: 'http://192.168.1.10/wiki' }).success).toBe(true);
+
+  vi.stubEnv('CLOUD_MODE', '1');
+  const cloud = await getSchema();
+
+  expect(cloud.safeParse({ url: 'http://203.0.113.7/login' }).success).toBe(false);
+  expect(cloud.safeParse({ name: 'Docs' }).success).toBe(true);
+
+  vi.unstubAllEnvs();
+});
+
 test('POST trims surrounding whitespace from link urls', async () => {
   parseRequestMock.mockResolvedValue({ error: () => new Response(null, { status: 400 }) } as any);
 

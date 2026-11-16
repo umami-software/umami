@@ -17,7 +17,7 @@ import { useUpdateQuery } from '@/components/hooks/queries/useUpdateQuery';
 import { RefreshCw } from '@/components/icons';
 import { LINKS_URL } from '@/lib/constants';
 import { getRandomChars } from '@/lib/generate';
-import { isValidUrl } from '@/lib/url';
+import { isValidLinkUrl } from '@/lib/url';
 
 const generateId = () => getRandomChars(9);
 
@@ -60,7 +60,7 @@ export function LinkEditForm({
   };
 
   const checkUrl = (url: string, formValues: any) => {
-    if (!isValidUrl(url) || (url === `${hostUrl}/${formValues.slug}`)) {
+    if (!isValidLinkUrl(url, cloudMode) || url === `${hostUrl}/${formValues.slug}`) {
       return t(labels.invalidUrl);
     }
     return true;

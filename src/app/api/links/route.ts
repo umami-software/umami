@@ -4,7 +4,7 @@ import { isEntityIdInUse } from '@/lib/entity';
 import { getQueryFilters, parseRequest } from '@/lib/request';
 import { badRequest, json, unauthorized } from '@/lib/response';
 import { pagingParams, searchParams, sortingParams } from '@/lib/schema';
-import { isValidUrl } from '@/lib/url';
+import { isValidLinkUrl } from '@/lib/url';
 import { canCreateTeamWebsite, canCreateWebsite } from '@/permissions';
 import { createLink, getUserLinks } from '@/queries/prisma';
 
@@ -32,7 +32,11 @@ export async function POST(request: Request) {
   const schema = z.object({
     name: z.string().max(100),
     // Same rule as the link form; a relative url makes the /q redirect fail.
-    url: z.string().trim().max(500).refine(isValidUrl, { message: 'Invalid URL.' }),
+    url: z
+      .string()
+      .trim()
+      .max(500)
+      .refine(url => isValidLinkUrl(url, !!process.env.CLOUD_MODE), { message: 'Invalid URL.' }),
     slug: z.string().min(8).max(100),
     teamId: z.string().nullable().optional(),
     id: z.uuid().nullable().optional(),
