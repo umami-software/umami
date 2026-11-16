@@ -8,6 +8,7 @@ const FEATURES = {
   replays: ['isBusiness'],
   searchConsole: ['hasSubscription'],
   googleAds: ['hasSubscription'],
+  links: ['hasSubscription'],
 } as const satisfies Record<string, readonly (keyof Subscription)[]>;
 
 export type FeatureName = keyof typeof FEATURES;

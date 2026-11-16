@@ -1,5 +1,6 @@
 import { beforeEach, expect, test, vi } from 'vitest';
 import { isEntityIdInUse } from '@/lib/entity';
+import { fetchAccount, fetchTeam } from '@/lib/load';
 import { parseRequest } from '@/lib/request';
 import { canCreateTeamWebsite, canCreateWebsite } from '@/permissions';
 import { createLink } from '@/queries/prisma';
@@ -12,6 +13,11 @@ vi.mock('@/lib/request', () => ({
 
 vi.mock('@/lib/entity', () => ({
   isEntityIdInUse: vi.fn(),
+}));
+
+vi.mock('@/lib/load', () => ({
+  fetchAccount: vi.fn(),
+  fetchTeam: vi.fn(),
 }));
 
 vi.mock('@/permissions', () => ({
@@ -29,6 +35,8 @@ const canCreateTeamWebsiteMock = vi.mocked(canCreateTeamWebsite);
 const canCreateWebsiteMock = vi.mocked(canCreateWebsite);
 const createLinkMock = vi.mocked(createLink);
 const isEntityIdInUseMock = vi.mocked(isEntityIdInUse);
+const fetchAccountMock = vi.mocked(fetchAccount);
+const fetchTeamMock = vi.mocked(fetchTeam);
 
 beforeEach(() => {
   parseRequestMock.mockReset();
@@ -36,6 +44,9 @@ beforeEach(() => {
   canCreateWebsiteMock.mockReset();
   createLinkMock.mockReset();
   isEntityIdInUseMock.mockReset();
+  fetchAccountMock.mockReset();
+  fetchTeamMock.mockReset();
+  vi.unstubAllEnvs();
 });
 
 test('POST requires link slugs to be at least 8 characters so create matches edit validation', async () => {
@@ -144,6 +155,86 @@ test('POST rejects a team link when the team check fails', async () => {
 
   expect(createLinkMock).not.toHaveBeenCalled();
   expect(response.status).toBe(401);
+});
+
+// Creating links on cloud is a paid feature; free plans keep the links they already have.
+const createAs = async (plan: object | null, teamId?: string) => {
+  vi.stubEnv('CLOUD_MODE', '1');
+  parseRequestMock.mockResolvedValue({
+    auth: { user: { id: 'user-1' } },
+    body: { name: 'Docs', url: 'https://example.com', slug: 'abcdefgh', teamId },
+    error: undefined,
+  });
+  fetchAccountMock.mockResolvedValue(teamId ? { hasSubscription: true } : plan);
+  fetchTeamMock.mockResolvedValue(plan);
+  canCreateWebsiteMock.mockResolvedValue(true);
+  canCreateTeamWebsiteMock.mockResolvedValue(true);
+  createLinkMock.mockResolvedValue({ id: 'link-1' } as any);
+
+  return POST(new Request('http://localhost/api/links', { method: 'POST' }));
+};
+
+test('POST refuses a cloud link for a free plan without creating it', async () => {
+  const response = await createAs({ hasSubscription: false });
+
+  expect(response.status).toBe(403);
+  expect(createLinkMock).not.toHaveBeenCalled();
+});
+
+test('POST refuses a cloud link when the plan cannot be loaded', async () => {
+  const response = await createAs(null);
+
+  expect(response.status).toBe(403);
+  expect(createLinkMock).not.toHaveBeenCalled();
+});
+
+test('POST creates cloud links for paid plans and accounts without billing', async () => {
+  expect((await createAs({ hasSubscription: true, isPro: true })).status).toBe(200);
+  expect((await createAs({ hasSubscription: true, isBusiness: true })).status).toBe(200);
+  expect((await createAs({ isNoBilling: true })).status).toBe(200);
+  expect(createLinkMock).toHaveBeenCalledTimes(3);
+});
+
+// The team pays for team links, so a paid user in a free team must not get them.
+test('POST judges a cloud team link by the team plan, not the user plan', async () => {
+  const response = await createAs({ hasSubscription: false }, 'team-1');
+
+  expect(fetchTeamMock).toHaveBeenCalledWith('team-1');
+  expect(response.status).toBe(403);
+  expect(createLinkMock).not.toHaveBeenCalled();
+});
+
+// Answering "Pro subscription required" to a stranger would tell them the team is on a free plan.
+test('POST refuses a cloud team link to a non-member without revealing the team plan', async () => {
+  vi.stubEnv('CLOUD_MODE', '1');
+  parseRequestMock.mockResolvedValue({
+    auth: { user: { id: 'user-1' } },
+    body: { name: 'Docs', url: 'https://example.com', slug: 'abcdefgh', teamId: 'team-1' },
+    error: undefined,
+  });
+  canCreateTeamWebsiteMock.mockResolvedValue(false);
+  fetchTeamMock.mockResolvedValue({ hasSubscription: false });
+
+  const response = await POST(new Request('http://localhost/api/links', { method: 'POST' }));
+
+  expect(response.status).toBe(401);
+  expect(fetchTeamMock).not.toHaveBeenCalled();
+  expect(createLinkMock).not.toHaveBeenCalled();
+});
+
+test('POST does not check plans outside cloud mode', async () => {
+  parseRequestMock.mockResolvedValue({
+    auth: { user: { id: 'user-1' } },
+    body: { name: 'Docs', url: 'https://example.com', slug: 'abcdefgh' },
+    error: undefined,
+  });
+  canCreateWebsiteMock.mockResolvedValue(true);
+  createLinkMock.mockResolvedValue({ id: 'link-1' } as any);
+
+  const response = await POST(new Request('http://localhost/api/links', { method: 'POST' }));
+
+  expect(fetchAccountMock).not.toHaveBeenCalled();
+  expect(response.status).toBe(200);
 });
 
 // A relative url passes a plain string check, then the /q redirect records a click and fails.

@@ -65,6 +65,11 @@ export function getCloudWebsiteLimit(account?: SubscriptionAccount | null): numb
   return null;
 }
 
+// Matches the links feature in useSubscription: any paid plan, or an account with no billing.
+export function canCreateCloudLinks(account?: SubscriptionAccount | null): boolean {
+  return !!(account?.hasSubscription || account?.isNoBilling);
+}
+
 export function getCloudTeamLimit(account?: SubscriptionAccount | null): number | null {
   if (!account?.hasSubscription) {
     return CLOUD_FREE_TEAM_LIMIT;

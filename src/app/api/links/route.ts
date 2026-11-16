@@ -1,9 +1,11 @@
 import { z } from 'zod';
 import { uuid } from '@/lib/crypto';
 import { isEntityIdInUse } from '@/lib/entity';
+import { fetchAccount, fetchTeam } from '@/lib/load';
 import { getQueryFilters, parseRequest } from '@/lib/request';
-import { badRequest, json, unauthorized } from '@/lib/response';
+import { badRequest, forbidden, json, unauthorized } from '@/lib/response';
 import { pagingParams, searchParams, sortingParams } from '@/lib/schema';
+import { canCreateCloudLinks } from '@/lib/subscription';
 import { isValidLinkUrl } from '@/lib/url';
 import { canCreateTeamWebsite, canCreateWebsite } from '@/permissions';
 import { createLink, getUserLinks } from '@/queries/prisma';
@@ -56,6 +58,16 @@ export async function POST(request: Request) {
 
   if (!canCreate) {
     return unauthorized();
+  }
+
+  // Only creating needs a paid plan; existing links keep redirecting and stay editable. Checked
+  // after access, so a caller outside a team cannot learn the team's plan.
+  if (process.env.CLOUD_MODE) {
+    const account = teamId ? await fetchTeam(teamId) : await fetchAccount(auth.user.id);
+
+    if (!canCreateCloudLinks(account)) {
+      return forbidden({ message: 'Pro subscription required.' });
+    }
   }
 
   // Ids share one namespace with every entity and user; see isEntityIdInUse.
