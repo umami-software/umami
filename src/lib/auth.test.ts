@@ -34,12 +34,22 @@ vi.mock('@/queries/prisma/apiKey', () => ({
 
 const prismaMocks = vi.hoisted(() => ({
   findTwoFactorAuth: vi.fn(),
+  findBoard: vi.fn(),
+  findWebsites: vi.fn(),
+  findPixels: vi.fn(),
+  findLinks: vi.fn(),
+  findTeamUsers: vi.fn(),
 }));
 
 vi.mock('@/lib/prisma', () => ({
   default: {
     client: {
       twoFactorAuth: { findUnique: prismaMocks.findTwoFactorAuth },
+      board: { findUnique: prismaMocks.findBoard },
+      website: { findMany: prismaMocks.findWebsites },
+      pixel: { findMany: prismaMocks.findPixels },
+      link: { findMany: prismaMocks.findLinks },
+      teamUser: { findMany: prismaMocks.findTeamUsers },
     },
   },
 }));
@@ -465,6 +475,129 @@ describe('checkAuth share tokens', () => {
     expect(result?.authType).toBe('share');
     expect(result?.shareToken.websiteId).toBe('website-1');
     expect(result?.shareToken.parameters).toEqual({ overview: true, sessions: false });
+  });
+});
+
+describe('checkAuth board share tokens', () => {
+  // Board share tokens embed the board's entity ids when minted. Removing an entity from the
+  // board, or transferring it to someone else, must take effect for tokens already issued.
+  type Owned = { id: string; userId: string | null; teamId: string | null };
+
+  function boardWith(
+    websiteIds: string[],
+    owner: { userId?: string; teamId?: string; ownerDeleted?: boolean },
+  ) {
+    return {
+      type: 'mixed',
+      parameters: {
+        rows: [{ columns: websiteIds.map(websiteId => ({ component: { websiteId } })) }],
+      },
+      userId: owner.userId ?? null,
+      teamId: owner.teamId ?? null,
+      user: owner.userId
+        ? {
+            id: owner.userId,
+            role: 'user',
+            deletedAt: owner.ownerDeleted ? new Date() : null,
+          }
+        : null,
+    };
+  }
+
+  function withWebsites(websites: Owned[]) {
+    prismaMocks.findWebsites.mockImplementation(async ({ where }: any) =>
+      websites.filter(({ id }) => where.id.in.includes(id)),
+    );
+  }
+
+  async function boardShareWebsiteIds(tokenWebsiteIds: string[]) {
+    parseTokenMock.mockReturnValue({
+      type: 'share',
+      shareId: 'share-1',
+      shareType: 4,
+      boardId: 'board-1',
+      websiteIds: tokenWebsiteIds,
+      pixelIds: [],
+      linkIds: [],
+    } as any);
+
+    const result: any = await checkAuth(
+      new Request('http://localhost/api/test', {
+        headers: { 'x-umami-share-token': 'share-jwt', 'x-umami-share-context': '1' },
+      }),
+    );
+
+    return result?.shareToken.websiteIds;
+  }
+
+  beforeEach(() => {
+    getShareMock.mockResolvedValue({
+      id: 'share-1',
+      shareType: 4,
+      entityId: 'board-1',
+      parameters: {},
+    } as any);
+    prismaMocks.findTeamUsers.mockResolvedValue([]);
+  });
+
+  test('exposes nothing once the board owner has been deleted', async () => {
+    prismaMocks.findBoard.mockResolvedValue(
+      boardWith(['site-a'], { userId: 'owner-1', ownerDeleted: true }),
+    );
+    withWebsites([{ id: 'site-a', userId: 'owner-1', teamId: null }]);
+
+    expect(await boardShareWebsiteIds(['site-a'])).toEqual([]);
+  });
+
+  test('drops a website that has been removed from the board', async () => {
+    prismaMocks.findBoard.mockResolvedValue(boardWith(['site-b'], { userId: 'owner-1' }));
+    withWebsites([
+      { id: 'site-a', userId: 'owner-1', teamId: null },
+      { id: 'site-b', userId: 'owner-1', teamId: null },
+    ]);
+
+    expect(await boardShareWebsiteIds(['site-a', 'site-b'])).toEqual(['site-b']);
+  });
+
+  test('drops a website transferred to another user while still on the board', async () => {
+    prismaMocks.findBoard.mockResolvedValue(boardWith(['site-a', 'site-b'], { userId: 'owner-1' }));
+    withWebsites([
+      { id: 'site-a', userId: 'new-owner', teamId: null },
+      { id: 'site-b', userId: 'owner-1', teamId: null },
+    ]);
+
+    expect(await boardShareWebsiteIds(['site-a', 'site-b'])).toEqual(['site-b']);
+  });
+
+  test('keeps a team website on a personal board only while the owner is a team member', async () => {
+    prismaMocks.findBoard.mockResolvedValue(boardWith(['site-t'], { userId: 'owner-1' }));
+    withWebsites([{ id: 'site-t', userId: null, teamId: 'team-1' }]);
+
+    prismaMocks.findTeamUsers.mockResolvedValue([{ teamId: 'team-1' }]);
+    expect(await boardShareWebsiteIds(['site-t'])).toEqual(['site-t']);
+
+    prismaMocks.findTeamUsers.mockResolvedValue([]);
+    expect(await boardShareWebsiteIds(['site-t'])).toEqual([]);
+  });
+
+  test('keeps only websites the team owns on a team board', async () => {
+    prismaMocks.findBoard.mockResolvedValue(boardWith(['site-t', 'site-x'], { teamId: 'team-1' }));
+    withWebsites([
+      { id: 'site-t', userId: null, teamId: 'team-1' },
+      { id: 'site-x', userId: null, teamId: 'team-2' },
+    ]);
+
+    expect(await boardShareWebsiteIds(['site-t', 'site-x'])).toEqual(['site-t']);
+  });
+
+  test('never grants a website the token was not minted with', async () => {
+    prismaMocks.findBoard.mockResolvedValue(boardWith(['site-a', 'site-b'], { userId: 'owner-1' }));
+    withWebsites([
+      { id: 'site-a', userId: 'owner-1', teamId: null },
+      { id: 'site-b', userId: 'owner-1', teamId: null },
+    ]);
+
+    expect(await boardShareWebsiteIds(['site-a'])).toEqual(['site-a']);
   });
 });
 
