@@ -15,13 +15,13 @@ export function usePagedQuery<TData = any, TError = Error>({
   queryFn: (params?: object) => Promise<PageResult<TData>> | PageResult<TData>;
 }): UseQueryResult<PageResult<TData>, TError> {
   const {
-    query: { page, search, orderBy, sortDescending },
+    query: { page, search, orderBy, sortDescending, pageSize },
   } = useNavigation();
   const { useQuery } = useApi();
 
   return useQuery<PageResult<TData>, TError>({
-    queryKey: [...queryKey, page, search, orderBy, sortDescending] as const,
-    queryFn: () => queryFn({ page, search, orderBy, sortDescending }),
+    queryKey: [...queryKey, page, search, orderBy, sortDescending, pageSize] as const,
+    queryFn: () => queryFn({ page, search, orderBy, sortDescending, pageSize }),
     ...options,
   });
 }

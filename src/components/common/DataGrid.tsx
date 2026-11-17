@@ -38,6 +38,8 @@ export interface DataGridProps {
   searchWidth?: number;
   allowSearch?: boolean;
   allowPaging?: boolean;
+  allowPageSize?: boolean;
+  pageSizeOptions?: number[];
   autoFocus?: boolean;
   renderActions?: () => ReactNode;
   renderEmpty?: () => ReactNode;
@@ -50,6 +52,8 @@ export function DataGrid({
   searchWidth,
   allowSearch,
   allowPaging = true,
+  allowPageSize = true,
+  pageSizeOptions,
   autoFocus,
   renderActions,
   renderEmpty = () => <Empty />,
@@ -84,6 +88,13 @@ export function DataGrid({
   const handlePageChange = useCallback(
     (page: number) => {
       router.push(updateParams({ search, page }));
+    },
+    [router, updateParams, search],
+  );
+
+  const handlePageSizeChange = useCallback(
+    (newPageSize: number) => {
+      router.push(updateParams({ search: search || undefined, page: 1, pageSize: newPageSize }));
     },
     [router, updateParams, search],
   );
@@ -190,6 +201,8 @@ export function DataGrid({
             count={data.count}
             isCapped={data.isCapped}
             onPageChange={handlePageChange}
+            onPageSizeChange={allowPaging && allowPageSize ? handlePageSizeChange : undefined}
+            pageSizeOptions={pageSizeOptions}
           />
         </Row>
       )}

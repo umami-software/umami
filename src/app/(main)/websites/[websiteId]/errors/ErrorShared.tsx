@@ -23,7 +23,7 @@ export function useErrorFilters() {
     startAt,
     endAt,
     page: Math.max(1, Math.min(10000, Number(query.page) || 1)),
-    pageSize: 25,
+    pageSize: Math.max(1, Math.min(100, Number(query.pageSize) || 25)),
     ...Object.fromEntries(
       ['status', 'search', 'release', 'environment', 'browser', 'urlPath']
         .filter(key => query[key])

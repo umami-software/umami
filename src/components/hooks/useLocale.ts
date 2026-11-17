@@ -32,6 +32,7 @@ export function useLocale() {
         '12-hour': enUS.label['12-hour'],
         '24-hour': enUS.label['24-hour'],
         'time-format': enUS.label['time-format'],
+        'rows-per-page': enUS.label['rows-per-page'],
         ...data.label,
       },
       errorTracking: { ...enUS.errorTracking, ...data.errorTracking },
