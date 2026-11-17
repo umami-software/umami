@@ -34,6 +34,12 @@ export interface BarChartProps extends ChartProps {
   YAxisType?: string;
   minDate?: Date;
   maxDate?: Date;
+  /**
+   * For data that comes in whole periods, such as daily ad or search data: a range within one
+   * period ends the axis at that period's end. Otherwise the axis has no width, and Chart.js
+   * widens it into the previous period, which then gets a label of its own.
+   */
+  fitSinglePeriod?: boolean;
   /** Called with the start of the clicked bar's time bucket. */
   onBarClick?: (date: Date) => void;
 }
@@ -54,6 +60,7 @@ function BarChartComponent({
   stacked = false,
   minDate,
   maxDate,
+  fitSinglePeriod,
   currency,
   formatValue,
   onBarClick,
@@ -69,6 +76,9 @@ function BarChartComponent({
   const isClickable = !!onBarClick;
 
   const chartOptions: any = useMemo(() => {
+    const min = formatDate(minDate, DATE_FORMATS[unit], locale);
+    const max = formatDate(maxDate, DATE_FORMATS[unit], locale);
+
     return {
       __id: Date.now(),
       ...(isClickable && {
@@ -93,8 +103,8 @@ function BarChartComponent({
         x: {
           type: XAxisType,
           stacked: true,
-          min: formatDate(minDate, DATE_FORMATS[unit], locale),
-          max: formatDate(maxDate, DATE_FORMATS[unit], locale),
+          min,
+          max: fitSinglePeriod && min === max ? DATE_FUNCTIONS[unit].end(maxDate).getTime() : max,
           offset: true,
           time: {
             unit,
@@ -138,6 +148,7 @@ function BarChartComponent({
     renderYLabel,
     minDate,
     maxDate,
+    fitSinglePeriod,
     locale,
     XAxisType,
     YAxisType,
