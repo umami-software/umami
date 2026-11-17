@@ -427,6 +427,7 @@ export const labels: Record<string, string> = {
   twoFactorGetCode: 'label.two-factor-get-code',
   twoFactorEnterCode: 'label.two-factor-enter-code',
   twoFactorUseBackup: 'label.two-factor-use-backup',
+  twoFactorBackupCode: 'label.two-factor-backup-code',
   twoFactorSaveBackupCodes: 'label.two-factor-save-backup-codes',
   twoFactorDownloadCodes: 'label.two-factor-download-codes',
   twoFactorSavedCodes: 'label.two-factor-saved-codes',

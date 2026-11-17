@@ -19,7 +19,7 @@ export function GoogleAdsConversionsTable({
   endDate,
   limit = 50,
 }: GoogleAdsConversionsTableProps) {
-  const t = useTranslations('googleAds');
+  const t = useTranslations('ads');
   const { locale } = useLocale();
   const { isPhone } = useMobile();
   const { data, isLoading, error } = useGoogleAdsQuery({

@@ -421,6 +421,7 @@
     "two-factor-get-code": "Get verification code",
     "two-factor-enter-code": "Enter verification code",
     "two-factor-use-backup": "Use a backup code instead",
+    "two-factor-backup-code": "Backup code",
     "two-factor-save-backup-codes": "Save your backup codes",
     "two-factor-download-codes": "Download codes",
     "two-factor-saved-codes": "I have saved my backup codes",
@@ -613,9 +614,9 @@
     "reconnectDescription": "Google rejected the connection. Reconnect it to continue reading search data.",
     "manageIntegrations": "Manage integrations"
   },
-  "googleAds": {
+  "ads": {
     "ads": "Ads",
-    "description": "See how your Google Ads campaigns perform and what they cost.",
+    "description": "See how your ad campaigns perform and what they cost.",
     "cost": "Cost",
     "clicks": "Clicks",
     "impressions": "Impressions",
@@ -662,8 +663,9 @@
     "viewAdGroups": "View ad groups",
     "viewKeywords": "View keywords",
     "clearFilter": "Clear filter",
-    "notConnected": "Connect Google Ads",
-    "notConnectedDescription": "Connect a Google Ads account to this website to see its ad performance here.",
+    "adAccount": "Ad account",
+    "notConnected": "Connect an ad account",
+    "notConnectedDescription": "Connect an ad account to this website to see its campaign performance, spend and conversions here.",
     "accountNotSet": "Choose a Google Ads account",
     "accountNotSetDescription": "Your Google Ads connection needs a client account selected for this website.",
     "reconnect": "Reconnect Google Ads",

@@ -1,7 +1,12 @@
+import type { ReactNode } from 'react';
 import { beforeEach, expect, test, vi } from 'vitest';
 import { httpGet } from '@/lib/fetch';
+import { getTestRouter } from '@/test/navigation';
 import { render, screen, userEvent, waitFor } from '@/test/render';
 import { GoogleAdsPage } from './GoogleAdsPage';
+
+const ACCOUNT = { provider: 'google_ads', currencyCode: 'EUR', createdAt: '2026-01-01' };
+const ads = vi.hoisted(() => ({ connections: [] as unknown[] }));
 
 const subscription = vi.hoisted(() => ({
   current: { cloudMode: true, isLoading: false, hasFeature: (): boolean => true },
@@ -26,6 +31,32 @@ vi.mock('@/components/hooks', async importOriginal => ({
     hasComparison: comparison.hasComparison,
     isAllTime: comparison.isAllTime,
   }),
+}));
+// A native select stands in for the account picker so a test can choose an option.
+vi.mock('@umami/react-zen', async importOriginal => ({
+  ...(await importOriginal<typeof import('@umami/react-zen')>()),
+  ListItem: ({ id, children }: { id: string; children: ReactNode }) => (
+    <option value={id}>{children}</option>
+  ),
+  Select: ({
+    label,
+    value,
+    onChange,
+    children,
+  }: {
+    label: string;
+    value?: string;
+    onChange?: (value: string) => void;
+    children: ReactNode;
+  }) => (
+    <select
+      aria-label={label}
+      value={value ?? ''}
+      onChange={event => onChange?.(event.currentTarget.value)}
+    >
+      {children}
+    </select>
+  ),
 }));
 vi.mock('@/app/(main)/websites/[websiteId]/WebsiteControls', () => ({
   WebsiteControls: () => <div data-test="controls" />,
@@ -60,7 +91,11 @@ function row(overrides = {}) {
 
 /** Rows by dimension for the selected range; `previous` holds the comparison period's days. */
 function respondWith(byDimension: Record<string, unknown[]>, currencyCode: string | null = 'EUR') {
-  vi.mocked(httpGet).mockImplementation(async (_url, params) => {
+  vi.mocked(httpGet).mockImplementation(async (url, params) => {
+    if (String(url).endsWith('/api/integrations/ads/connections')) {
+      return { ok: true, status: 200, data: ads.connections };
+    }
+
     const { dimension, startDate } = params as { dimension: string; startDate: string };
     const key = startDate === '2025-12-25' ? 'previous' : dimension;
 
@@ -82,6 +117,7 @@ function failWith(code: string, status: number) {
 
 beforeEach(() => {
   vi.clearAllMocks();
+  ads.connections = [{ ...ACCOUNT, id: 'conn-1', name: 'Umami', accountId: '1234567890' }];
   subscription.current = { cloudMode: true, isLoading: false, hasFeature: () => true };
   dateRange.startDate = new Date('2026-01-01T00:00:00');
   dateRange.endDate = new Date('2026-01-07T23:59:59');
@@ -454,7 +490,7 @@ test('narrows search terms to the campaign that was opened', async () => {
 });
 
 test.each([
-  ['not_connected', 404, 'Connect Google Ads'],
+  ['not_connected', 404, 'Connect an ad account'],
   ['account_not_set', 409, 'Choose a Google Ads account'],
   ['manager_account', 400, 'Choose a Google Ads account'],
   ['authentication', 401, 'Reconnect Google Ads'],
@@ -499,5 +535,97 @@ test('asks for a shorter range instead of sending one Cloud would reject', () =>
 
   expect(screen.getByText('Choose a shorter date range')).toBeInTheDocument();
   expect(screen.getByTestId('controls')).toBeInTheDocument();
-  expect(httpGet).not.toHaveBeenCalled();
+  // Listing the ad accounts is fine; no report is requested.
+  expect(httpGet).not.toHaveBeenCalledWith(
+    expect.stringMatching(/\/api\/integrations\/google-ads\/query$/),
+    expect.anything(),
+  );
+});
+
+// A website with one ad account has nothing to choose between.
+test('hides the ad account choice when the website has one ad account', async () => {
+  respondWith({ date: [row({ key: '2026-01-01', cost: 1 })] });
+
+  render(<GoogleAdsPage websiteId="site-1" />);
+
+  expect(await screen.findByText('cost chart: 1 days')).toBeInTheDocument();
+  expect(screen.queryByRole('combobox', { name: 'Ad account' })).not.toBeInTheDocument();
+});
+
+// With several ad accounts, the newest is shown first and choosing another reports on it.
+test('lists each ad account once and switches the report to the one chosen', async () => {
+  ads.connections = [
+    { ...ACCOUNT, id: 'conn-2', name: 'Umami EU', accountId: '9876543210' },
+    { ...ACCOUNT, id: 'conn-1', name: 'Umami', accountId: '1234567890' },
+  ];
+  respondWith({ date: [] });
+  const user = userEvent.setup();
+
+  render(<GoogleAdsPage websiteId="site-1" />);
+
+  const picker = await screen.findByRole('combobox', { name: 'Ad account' });
+  expect(picker).toHaveValue('conn-2');
+  expect(screen.getByRole('option', { name: 'Umami · 123-456-7890' })).toBeInTheDocument();
+
+  await user.selectOptions(picker, 'conn-1');
+
+  expect(getTestRouter().push).toHaveBeenCalledWith(expect.stringContaining('connection=conn-1'));
+});
+
+// The account in the URL is the one every report reads, so a shared link shows the same data.
+test('reports on the ad account named in the URL', async () => {
+  ads.connections = [
+    { ...ACCOUNT, id: 'conn-2', name: 'Umami EU', accountId: '9876543210' },
+    { ...ACCOUNT, id: 'conn-1', name: 'Umami', accountId: '1234567890' },
+  ];
+  respondWith({ date: [] });
+
+  render(<GoogleAdsPage websiteId="site-1" />, { route: '/?connection=conn-1' });
+
+  expect(await screen.findByRole('combobox', { name: 'Ad account' })).toHaveValue('conn-1');
+  await waitFor(() =>
+    expect(httpGet).toHaveBeenCalledWith(
+      expect.stringMatching(/\/api\/integrations\/google-ads\/query$/),
+      expect.objectContaining({ connectionId: 'conn-1', dimension: 'date' }),
+    ),
+  );
+});
+
+// A link to an ad account that was since disconnected falls back to the newest one.
+test('drops an ad account from the URL that is no longer connected', async () => {
+  respondWith({ date: [] });
+
+  render(<GoogleAdsPage websiteId="site-1" />, { route: '/?connection=removed' });
+
+  await waitFor(() => expect(getTestRouter().replace).toHaveBeenCalled());
+  expect(getTestRouter().replace).toHaveBeenCalledWith(expect.not.stringContaining('connection='));
+});
+
+// The account list can be minutes old. An account disconnected since then must not leave the
+// page saying no ad account is connected while others are.
+test('falls back from a chosen ad account that was disconnected after the list was read', async () => {
+  ads.connections = [
+    { ...ACCOUNT, id: 'conn-2', name: 'Umami EU', accountId: '9876543210' },
+    { ...ACCOUNT, id: 'conn-1', name: 'Umami', accountId: '1234567890' },
+  ];
+  respondWith({ date: [] });
+  const report = vi.mocked(httpGet).getMockImplementation();
+  vi.mocked(httpGet).mockImplementation(async (url, params) =>
+    (params as { connectionId?: string })?.connectionId === 'conn-2'
+      ? { ok: false, status: 404, data: { error: { code: 'not_connected', status: 404 } } }
+      : report?.(url, params),
+  );
+  const isListRequest = ([url]: unknown[]) =>
+    String(url).endsWith('/api/integrations/ads/connections');
+
+  render(<GoogleAdsPage websiteId="site-1" />, { route: '/?connection=conn-2' });
+
+  await waitFor(() =>
+    expect(getTestRouter().replace).toHaveBeenCalledWith(
+      expect.not.stringContaining('connection='),
+    ),
+  );
+  // The list is read again so the dropdown stops offering the disconnected account.
+  await waitFor(() => expect(vi.mocked(httpGet).mock.calls.filter(isListRequest)).toHaveLength(2));
+  expect(screen.queryByText('Connect an ad account')).not.toBeInTheDocument();
 });

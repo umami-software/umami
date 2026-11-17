@@ -11,6 +11,18 @@ const messages = {
   'en-US': enUS,
 };
 
+// Any message a translation lacks, at any depth, falls back to English rather than showing its key.
+function withFallback(fallback: Record<string, any>, translated: Record<string, any> = {}) {
+  const result = { ...fallback };
+
+  for (const [key, value] of Object.entries(translated)) {
+    const isSection = value && typeof value === 'object' && !Array.isArray(value);
+    result[key] = isSection && fallback[key] ? withFallback(fallback[key], value) : value;
+  }
+
+  return result;
+}
+
 const selector = (state: { locale: string }) => state.locale;
 const timeFormatSelector = (state: { timeFormat: string }) => state.timeFormat;
 
@@ -24,19 +36,7 @@ export function useLocale() {
   async function loadMessages(locale: string) {
     const { data } = await httpGet(`${process.env.basePath || ''}/intl/messages/${locale}.json`);
 
-    messages[locale] = {
-      ...data,
-      label: {
-        monitoring: enUS.label.monitoring,
-        'language-default': enUS.label['language-default'],
-        '12-hour': enUS.label['12-hour'],
-        '24-hour': enUS.label['24-hour'],
-        'time-format': enUS.label['time-format'],
-        ...data.label,
-      },
-      errorTracking: { ...enUS.errorTracking, ...data.errorTracking },
-      googleAds: { ...enUS.googleAds, ...data.googleAds },
-    };
+    messages[locale] = withFallback(enUS, data);
   }
 
   async function saveLocale(value: string) {

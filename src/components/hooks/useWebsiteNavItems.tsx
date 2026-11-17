@@ -150,7 +150,7 @@ export function useWebsiteNavItems(websiteId: string) {
           ? [
               {
                 id: 'google-ads',
-                label: t('googleAds.ads'),
+                label: t('ads.ads'),
                 icon: <Megaphone />,
                 path: renderPath('/google-ads'),
               },

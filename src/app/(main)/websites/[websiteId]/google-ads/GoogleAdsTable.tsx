@@ -157,7 +157,7 @@ export function GoogleAdsTable({
   onClearFilter,
   onDrill,
 }: GoogleAdsTableProps) {
-  const t = useTranslations('googleAds');
+  const t = useTranslations('ads');
   const { t: tm, labels } = useMessages();
   const { locale } = useLocale();
   const { isPhone, isMobile } = useMobile();
@@ -338,7 +338,7 @@ function RowName({
   dimension: GoogleAdsTableProps['dimension'];
   onDrill?: (row: GoogleAdsRow) => void;
 }) {
-  const t = useTranslations('googleAds');
+  const t = useTranslations('ads');
   // Cards size to their content, so a name that cannot wrap would push them past the panel.
   const { isPhone } = useMobile();
   const matchLabel = MATCH_TYPE_LABELS[row.matchType as keyof typeof MATCH_TYPE_LABELS];

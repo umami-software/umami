@@ -49,7 +49,7 @@ export function GoogleAdsChart({
   maxDate,
   unit,
 }: GoogleAdsChartProps) {
-  const t = useTranslations('googleAds');
+  const t = useTranslations('ads');
   const { theme } = useTheme();
   const { locale, dateLocale } = useLocale();
   const { colors } = useMemo(() => getThemeColors(theme), [theme]);

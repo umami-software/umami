@@ -28,7 +28,12 @@ function MessagesProvider({ children }) {
   }, [locale, dir]);
 
   return (
-    <NextIntlClientProvider locale={locale} messages={messages[locale]} onError={() => null}>
+    // English until the chosen language's messages have loaded.
+    <NextIntlClientProvider
+      locale={locale}
+      messages={messages[locale] ?? messages['en-US']}
+      onError={() => null}
+    >
       {children}
     </NextIntlClientProvider>
   );

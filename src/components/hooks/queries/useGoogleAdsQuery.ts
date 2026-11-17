@@ -1,6 +1,7 @@
 import { keepPreviousData, useQuery } from '@tanstack/react-query';
 import { format } from 'date-fns';
 import { httpGet } from '@/lib/fetch';
+import { useNavigation } from '../useNavigation';
 
 export type GoogleAdsDimension =
   | 'search_term'
@@ -82,12 +83,19 @@ export function useGoogleAdsQuery(
   },
   options?: { enabled?: boolean },
 ) {
+  // The ad account chosen on the page; without one, Cloud reports on the newest connection.
+  const {
+    query: { connection: connectionId },
+  } = useNavigation();
   // Google reports whole days, so the range is sent as calendar dates in the viewer's timezone.
   const start = format(startDate, 'yyyy-MM-dd');
   const end = format(endDate, 'yyyy-MM-dd');
 
   return useQuery<GoogleAdsData, GoogleAdsQueryError>({
-    queryKey: ['google-ads', { websiteId, start, end, dimension, limit, campaignId, adGroupId }],
+    queryKey: [
+      'google-ads',
+      { websiteId, connectionId, start, end, dimension, limit, campaignId, adGroupId },
+    ],
     queryFn: async () => {
       const res = await httpGet(getQueryUrl(), {
         websiteId,
@@ -95,6 +103,7 @@ export function useGoogleAdsQuery(
         endDate: end,
         dimension,
         limit,
+        ...(connectionId && { connectionId }),
         ...(campaignId && { campaignId }),
         ...(adGroupId && { adGroupId }),
       });
