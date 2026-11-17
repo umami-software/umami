@@ -1,4 +1,5 @@
 import { afterEach, beforeEach, describe, expect, test, vi } from 'vitest';
+import type { BeforeSend } from './index';
 
 afterEach(() => {
   delete (window as Window & { umami?: unknown }).umami;
@@ -97,6 +98,75 @@ test('ignores clicks dispatched on non-element targets', async () => {
   await new Promise(resolve => setTimeout(resolve, 0));
 
   expect(errors).toHaveLength(0);
+});
+
+// Clicks a same-tab tracked link against a collector that never responds.
+const clickTrackedLink = async (beforeSend?: BeforeSend) => {
+  const script = document.createElement('script');
+  script.src = 'https://analytics.example.com/script.js';
+  script.dataset.websiteId = 'website-id';
+
+  Object.defineProperties(document, {
+    currentScript: { configurable: true, value: script },
+    readyState: { configurable: true, value: 'complete' },
+  });
+  if (beforeSend) window.umamiConfig = { beforeSend };
+
+  location.hash = '';
+  const sent: { name?: string; keepalive: boolean; hashAtSend: string }[] = [];
+  vi.stubGlobal(
+    'fetch',
+    vi.fn((_url, init) => {
+      const { name } = JSON.parse(init.body).payload;
+      sent.push({ name, keepalive: init.keepalive, hashAtSend: location.hash });
+      return new Promise(() => {});
+    }),
+  );
+
+  await import('./index');
+
+  const link = document.createElement('a');
+  link.href = '#buy';
+  link.setAttribute('data-umami-event', 'buy-click');
+  document.body.appendChild(link);
+
+  // The tracker listens in the capture phase, so it has run by the time this fires.
+  let held = false;
+  link.addEventListener('click', e => (held = e.defaultPrevented), { once: true });
+  link.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true }));
+  link.remove();
+
+  await vi.waitFor(() => expect(sent.some(s => s.name === 'buy-click')).toBe(true));
+  return { held, event: sent.find(s => s.name === 'buy-click') };
+};
+
+// A slow or stalled collector must never hold up the site's own navigation.
+test('lets tracked link clicks navigate without waiting for the collector', async () => {
+  const { held, event } = await clickTrackedLink();
+
+  expect(held).toBe(false);
+  // The event still goes out, as a keepalive request that can outlive the page.
+  expect(event).toMatchObject({ keepalive: true });
+});
+
+test('does not hold tracked link clicks for a synchronous beforeSend', async () => {
+  const { held, event } = await clickTrackedLink((_type, payload) => payload);
+
+  expect(held).toBe(false);
+  expect(event).toMatchObject({ keepalive: true });
+});
+
+// Navigating away would cancel an async beforeSend before its event is sent.
+test('holds tracked link clicks until an async beforeSend settles, then navigates', async () => {
+  const { held, event } = await clickTrackedLink(async (_type, payload) => {
+    await new Promise(resolve => setTimeout(resolve, 20));
+    return payload;
+  });
+
+  expect(held).toBe(true);
+  // The event request starts before the page navigates.
+  expect(event).toMatchObject({ keepalive: true, hashAtSend: '' });
+  await vi.waitFor(() => expect(location.hash).toBe('#buy'));
 });
 
 test('configures tracker from umamiConfig only, with no data-* attributes', async () => {

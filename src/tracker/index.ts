@@ -411,7 +411,7 @@ type MetricEntry = PerformanceEntry & {
   };
 
   const handleClicks = () => {
-    const trackElement = async (el: Element) => {
+    const trackElement = async (el: Element, onAsyncHook?: (hook: Promise<unknown>) => void) => {
       const eventName = el.getAttribute(eventNameAttribute);
       if (eventName) {
         const eventData: EventData = {};
@@ -421,7 +421,7 @@ type MetricEntry = PerformanceEntry & {
           if (match) eventData[match[1]] = el.getAttribute(name) as string;
         });
 
-        return track(eventName, eventData);
+        return send({ ...getPayload(), name: eventName, data: eventData }, 'event', onAsyncHook);
       }
     };
     const onClick = (e: MouseEvent) => {
@@ -430,23 +430,23 @@ type MetricEntry = PerformanceEntry & {
       const eventEl = el.closest(`[${eventNameAttribute}]`);
       if (!eventEl) return;
 
-      if (eventEl.tagName === 'A' && (eventEl as HTMLAnchorElement).href) {
+      // Unloading the page would cancel an async beforeSend before the event is sent,
+      // so same-tab links wait for the hook (not the collector) before navigating.
+      const holdNavigation = (hook: Promise<unknown>) => {
+        if (eventEl.tagName !== 'A' || !(eventEl as HTMLAnchorElement).href) return;
         const { href, target } = eventEl as HTMLAnchorElement;
-        const external =
-          target === '_blank' ||
-          e.ctrlKey ||
-          e.shiftKey ||
-          e.metaKey ||
-          (e.button && e.button === 1);
-        if (!external) e.preventDefault();
-        return trackElement(eventEl).finally(() => {
-          if (!external) {
-            (target === '_top' ? (top as WindowProxy).location : location).href = href;
-          }
-        });
-      }
+        if (target === '_blank' || e.ctrlKey || e.shiftKey || e.metaKey || e.button === 1) return;
 
-      return trackElement(eventEl);
+        e.preventDefault();
+        // setTimeout lets send() start its keepalive fetch first.
+        const navigate = () =>
+          setTimeout(() => {
+            (target === '_top' ? (top as WindowProxy).location : location).href = href;
+          });
+        hook.then(navigate, navigate);
+      };
+
+      return trackElement(eventEl, holdNavigation);
     };
     document.addEventListener('click', onClick, true);
   };
@@ -461,13 +461,19 @@ type MetricEntry = PerformanceEntry & {
     (domain && !domains.includes(hostname)) ||
     (dnt && hasDoNotTrack());
 
-  const send = async (payload: Payload | null | undefined, type = 'event'): Promise<void> => {
+  const send = async (
+    payload: Payload | null | undefined,
+    type = 'event',
+    onAsyncHook?: (hook: Promise<unknown>) => void,
+  ): Promise<void> => {
     if (trackingDisabled()) return;
 
     const callback = getBeforeSend();
 
     if (typeof callback === 'function') {
-      payload = await Promise.resolve(callback(type, payload as Payload));
+      const result = callback(type, payload as Payload);
+      if (result instanceof Promise) onAsyncHook?.(result);
+      payload = await result;
     }
 
     if (!payload) return;
