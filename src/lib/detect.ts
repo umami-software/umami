@@ -60,6 +60,15 @@ export function getDevice(userAgent: string, screen: string = '') {
   return type;
 }
 
+export function getVersions(userAgent: string) {
+  const { browser, os } = UAParser(userAgent);
+
+  return {
+    browserVersion: browser.version,
+    osVersion: os.version,
+  };
+}
+
 function getRegionCode(country: string, region: string) {
   if (!country || !region) {
     return undefined;
@@ -143,8 +152,9 @@ export async function getClientInfo(request: Request, payload: Record<string, an
   const browser = payload?.browser ?? browserName(userAgent);
   const os = payload?.os ?? (detectOS(userAgent) as string);
   const device = payload?.device ?? getDevice(userAgent, payload?.screen);
+  const { browserVersion, osVersion } = getVersions(userAgent);
 
-  return { userAgent, browser, os, ip, country, region, city, device };
+  return { userAgent, browser, browserVersion, os, osVersion, ip, country, region, city, device };
 }
 
 export function hasBlockedIp(clientIp: string) {

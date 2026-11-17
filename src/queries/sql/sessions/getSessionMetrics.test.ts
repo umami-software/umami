@@ -1,4 +1,5 @@
 import { beforeEach, describe, expect, test, vi } from 'vitest';
+import { FILTER_COLUMNS } from '@/lib/constants';
 import { getSessionMetrics } from './getSessionMetrics';
 
 const { state, prismaRawQuery, prismaParseFilters, clickhouseRawQuery, clickhouseParseFilters } =
@@ -56,10 +57,14 @@ describe('getSessionMetrics', () => {
   test.each([
     ['prisma', 'device'],
     ['prisma', 'browser'],
+    ['prisma', 'browserVersion'],
     ['prisma', 'os'],
+    ['prisma', 'osVersion'],
     ['clickhouse', 'device'],
     ['clickhouse', 'browser'],
+    ['clickhouse', 'browserVersion'],
     ['clickhouse', 'os'],
+    ['clickhouse', 'osVersion'],
   ] as const)('groups by the raw %s %s column', async (mode, type) => {
     state.mode = mode;
 
@@ -67,8 +72,9 @@ describe('getSessionMetrics', () => {
 
     const rawQuery = mode === 'prisma' ? prismaRawQuery : clickhouseRawQuery;
     const [query] = rawQuery.mock.calls[0];
+    const column = FILTER_COLUMNS[type];
 
-    expect(query).toMatch(new RegExp(`select\\s+${type} x,`));
+    expect(query).toMatch(new RegExp(`select\\s+${column} x,`));
     expect(query).not.toContain("'unknown'");
   });
 });

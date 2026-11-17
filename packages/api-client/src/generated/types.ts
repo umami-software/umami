@@ -3286,6 +3286,7 @@ export interface components {
     WebsiteSession: {
       /** @description Browser used by the visitor. */
       browser: string | null;
+      browserVersion: string | null;
       /** @description City of the visitor. */
       city: string | null;
       /** @description Country code of the visitor. */
@@ -3321,6 +3322,7 @@ export interface components {
       lastAt: string;
       /** @description Operating system used by the visitor. */
       os: string | null;
+      osVersion: string | null;
       /** @description Region or subdivision of the visitor. */
       region: string | null;
       /** @description Screen resolution of the visitor device. */
@@ -13202,6 +13204,7 @@ export interface operations {
       query: {
         /** @description Browser used by the visitor. */
         browser?: string;
+        browserVersion?: string;
         /** @description City of the visitor. */
         city?: string;
         /** @description ID of a saved cohort used to filter visitors. */
@@ -13231,6 +13234,7 @@ export interface operations {
         model: 'first-click' | 'last-click';
         /** @description Operating system used by the visitor. */
         os?: string;
+        osVersion?: string;
         /** @description Filter by page URL path. */
         path?: string;
         /** @description Filter by page URL query string. */
@@ -13389,6 +13393,7 @@ export interface operations {
       query: {
         /** @description Browser used by the visitor. */
         browser?: string;
+        browserVersion?: string;
         /** @description City of the visitor. */
         city?: string;
         /** @description ID of a saved cohort used to filter visitors. */
@@ -13416,6 +13421,7 @@ export interface operations {
         match?: 'all' | 'any';
         /** @description Operating system used by the visitor. */
         os?: string;
+        osVersion?: string;
         /** @description Filter by page URL path. */
         path?: string;
         /** @description Filter by page URL query string. */
@@ -16122,6 +16128,7 @@ export interface operations {
       query?: {
         /** @description Browser used by the visitor. */
         browser?: string;
+        browserVersion?: string;
         /** @description City of the visitor. */
         city?: string;
         /** @description ID of a saved cohort used to filter visitors. */
@@ -16154,6 +16161,7 @@ export interface operations {
         maxResults?: number;
         /** @description Operating system used by the visitor. */
         os?: string;
+        osVersion?: string;
         /** @description Page number, starting at 1. */
         page?: number;
         /** @description Number of results per page. */
@@ -17171,6 +17179,7 @@ export interface operations {
       query: {
         /** @description Browser used by the visitor. */
         browser?: string;
+        browserVersion?: string;
         /** @description City of the visitor. */
         city?: string;
         /** @description ID of a saved cohort used to filter visitors. */
@@ -17197,6 +17206,7 @@ export interface operations {
         match?: 'all' | 'any';
         /** @description Operating system used by the visitor. */
         os?: string;
+        osVersion?: string;
         /** @description Filter by page URL path. */
         path?: string;
         /** @description Filter by page URL query string. */
@@ -17323,6 +17333,7 @@ export interface operations {
       query: {
         /** @description Browser used by the visitor. */
         browser?: string;
+        browserVersion?: string;
         /** @description City of the visitor. */
         city?: string;
         /** @description ID of a saved cohort used to filter visitors. */
@@ -17349,6 +17360,7 @@ export interface operations {
         match?: 'all' | 'any';
         /** @description Operating system used by the visitor. */
         os?: string;
+        osVersion?: string;
         /** @description Filter by page URL path. */
         path?: string;
         /** @description Filter by page URL query string. */
@@ -17987,6 +17999,7 @@ export interface operations {
       query: {
         /** @description Browser used by the visitor. */
         browser?: string;
+        browserVersion?: string;
         /** @description City of the visitor. */
         city?: string;
         /** @description ID of a saved cohort used to filter visitors. */
@@ -18013,6 +18026,7 @@ export interface operations {
         match?: 'all' | 'any';
         /** @description Operating system used by the visitor. */
         os?: string;
+        osVersion?: string;
         /** @description Filter by page URL path. */
         path?: string;
         /** @description Filter by page URL query string. */
@@ -18127,6 +18141,7 @@ export interface operations {
       query: {
         /** @description Browser used by the visitor. */
         browser?: string;
+        browserVersion?: string;
         /** @description City of the visitor. */
         city?: string;
         /** @description ID of a saved cohort used to filter visitors. */
@@ -18153,6 +18168,7 @@ export interface operations {
         match?: 'all' | 'any';
         /** @description Operating system used by the visitor. */
         os?: string;
+        osVersion?: string;
         /** @description Filter by page URL path. */
         path?: string;
         /** @description Filter by page URL query string. */
@@ -18269,6 +18285,7 @@ export interface operations {
       query: {
         /** @description Browser used by the visitor. */
         browser?: string;
+        browserVersion?: string;
         /** @description City of the visitor. */
         city?: string;
         /** @description ID of a saved cohort used to filter visitors. */
@@ -18296,6 +18313,7 @@ export interface operations {
         mode?: 'click' | 'scroll';
         /** @description Operating system used by the visitor. */
         os?: string;
+        osVersion?: string;
         /** @description Filter by page URL path. */
         path?: string;
         /** @description Filter by page URL query string. */
@@ -18474,6 +18492,7 @@ export interface operations {
       query: {
         /** @description Browser used by the visitor. */
         browser?: string;
+        browserVersion?: string;
         /** @description City of the visitor. */
         city?: string;
         /** @description ID of a saved cohort used to filter visitors. */
@@ -18501,6 +18520,7 @@ export interface operations {
         match?: 'all' | 'any';
         /** @description Operating system used by the visitor. */
         os?: string;
+        osVersion?: string;
         /** @description Filter by page URL path. */
         path?: string;
         /** @description Filter by page URL query string. */
@@ -18617,6 +18637,7 @@ export interface operations {
       query: {
         /** @description Browser used by the visitor. */
         browser?: string;
+        browserVersion?: string;
         /** @description City of the visitor. */
         city?: string;
         /** @description ID of a saved cohort used to filter visitors. */
@@ -18651,6 +18672,7 @@ export interface operations {
         offset?: number;
         /** @description Operating system used by the visitor. */
         os?: string;
+        osVersion?: string;
         /** @description Filter by page URL path. */
         path?: string;
         /** @description Relative date range, for example 7d or 30day, used instead of an explicit startAt/endAt range. */
@@ -18689,7 +18711,7 @@ export interface operations {
         timezone?: string;
         /** @description Filter by page title. */
         title?: string;
-        /** @description Dimension to rank: path, entry, exit, title, query, hostname, referrer, domain, channel, event, tag, browser, os, device, screen, language, country, region, city, distinctId, utmSource, utmMedium, utmCampaign, utmContent, utmTerm. */
+        /** @description Dimension to rank: path, entry, exit, title, query, hostname, referrer, domain, channel, event, tag, browser, browserVersion, os, osVersion, device, screen, language, country, region, city, distinctId, utmSource, utmMedium, utmCampaign, utmContent, utmTerm. */
         type: string;
         /** @description Time interval used to group results: minute, hour, day, month, or year. */
         unit?: string;
@@ -18910,6 +18932,7 @@ export interface operations {
       query?: {
         /** @description Browser used by the visitor. */
         browser?: string;
+        browserVersion?: string;
         /** @description City of the visitor. */
         city?: string;
         /** @description ID of a saved cohort used to filter visitors. */
@@ -18940,6 +18963,7 @@ export interface operations {
         match?: 'all' | 'any';
         /** @description Operating system used by the visitor. */
         os?: string;
+        osVersion?: string;
         /** @description Filter by page URL path. */
         path?: string;
         /** @description Relative date range, for example 7d or 30day, used instead of an explicit startAt/endAt range. */
@@ -19050,6 +19074,7 @@ export interface operations {
       query: {
         /** @description Browser used by the visitor. */
         browser?: string;
+        browserVersion?: string;
         /** @description City of the visitor. */
         city?: string;
         /** @description ID of a saved cohort used to filter visitors. */
@@ -19078,6 +19103,7 @@ export interface operations {
         metric?: 'lcp' | 'inp' | 'cls' | 'fcp' | 'ttfb';
         /** @description Operating system used by the visitor. */
         os?: string;
+        osVersion?: string;
         /** @description Filter by page URL path. */
         path?: string;
         /** @description Filter by page URL query string. */
@@ -19195,6 +19221,7 @@ export interface operations {
       query: {
         /** @description Browser used by the visitor. */
         browser?: string;
+        browserVersion?: string;
         /** @description City of the visitor. */
         city?: string;
         /** @description ID of a saved cohort used to filter visitors. */
@@ -19225,6 +19252,7 @@ export interface operations {
         metric?: 'lcp' | 'inp' | 'cls' | 'fcp' | 'ttfb';
         /** @description Operating system used by the visitor. */
         os?: string;
+        osVersion?: string;
         /** @description Filter by page URL path. */
         path?: string;
         /** @description Filter by page URL query string. */
@@ -19345,6 +19373,7 @@ export interface operations {
       query: {
         /** @description Browser used by the visitor. */
         browser?: string;
+        browserVersion?: string;
         /** @description City of the visitor. */
         city?: string;
         /** @description ID of a saved cohort used to filter visitors. */
@@ -19371,6 +19400,7 @@ export interface operations {
         match?: 'all' | 'any';
         /** @description Operating system used by the visitor. */
         os?: string;
+        osVersion?: string;
         /** @description Filter by page URL path. */
         path?: string;
         /** @description Filter by page URL query string. */
@@ -20064,6 +20094,7 @@ export interface operations {
       query: {
         /** @description Browser used by the visitor. */
         browser?: string;
+        browserVersion?: string;
         /** @description City of the visitor. */
         city?: string;
         /** @description ID of a saved cohort used to filter visitors. */
@@ -20090,6 +20121,7 @@ export interface operations {
         match?: 'all' | 'any';
         /** @description Operating system used by the visitor. */
         os?: string;
+        osVersion?: string;
         /** @description Filter by page URL path. */
         path?: string;
         /** @description Filter by page URL query string. */
@@ -22640,6 +22672,7 @@ export interface operations {
       query?: {
         /** @description Browser used by the visitor. */
         browser?: string;
+        browserVersion?: string;
         /** @description City of the visitor. */
         city?: string;
         /** @description ID of a saved cohort used to filter visitors. */
@@ -22672,6 +22705,7 @@ export interface operations {
         maxResults?: number;
         /** @description Operating system used by the visitor. */
         os?: string;
+        osVersion?: string;
         /** @description Page number, starting at 1. */
         page?: number;
         /** @description Number of results per page. */
@@ -22806,6 +22840,7 @@ export interface operations {
           'application/json': {
             /** @description Browser used by the visitor. */
             browser: string | null;
+            browserVersion: string | null;
             /** @description Whether the caller can delete this session. */
             canDelete: boolean;
             /** @description City of the visitor. */
@@ -22838,6 +22873,7 @@ export interface operations {
             lastAt: string;
             /** @description Operating system used by the visitor. */
             os: string | null;
+            osVersion: string | null;
             /** @description Domain of the session's first external referrer. */
             referrerDomain: string | null;
             /** @description Region or subdivision of the visitor. */
@@ -23825,6 +23861,7 @@ export interface operations {
       query?: {
         /** @description Browser used by the visitor. */
         browser?: string;
+        browserVersion?: string;
         /** @description City of the visitor. */
         city?: string;
         /** @description ID of a saved cohort used to filter visitors. */
@@ -23855,6 +23892,7 @@ export interface operations {
         match?: 'all' | 'any';
         /** @description Operating system used by the visitor. */
         os?: string;
+        osVersion?: string;
         /** @description Filter by page URL path. */
         path?: string;
         /** @description Relative date range, for example 7d or 30day, used instead of an explicit startAt/endAt range. */
@@ -24094,6 +24132,7 @@ export interface operations {
       query: {
         /** @description Browser used by the visitor. */
         browser?: string;
+        browserVersion?: string;
         /** @description City of the visitor. */
         city?: string;
         /** @description ID of a saved cohort used to filter visitors. */
@@ -24120,6 +24159,7 @@ export interface operations {
         match?: 'all' | 'any';
         /** @description Operating system used by the visitor. */
         os?: string;
+        osVersion?: string;
         /** @description Filter by page URL path. */
         path?: string;
         /** @description Filter by page URL query string. */

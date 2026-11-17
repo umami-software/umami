@@ -18,7 +18,7 @@ export const pagedAnalyticsQuerySchema = withDateRange({
 export const metricsQuerySchema = withDateRange({
   type: z.string().meta({
     description:
-      'Dimension to rank: path, entry, exit, title, query, hostname, referrer, domain, channel, event, tag, browser, os, device, screen, language, country, region, city, distinctId, utmSource, utmMedium, utmCampaign, utmContent, utmTerm.',
+      'Dimension to rank: path, entry, exit, title, query, hostname, referrer, domain, channel, event, tag, browser, browserVersion, os, osVersion, device, screen, language, country, region, city, distinctId, utmSource, utmMedium, utmCampaign, utmContent, utmTerm.',
   }),
   limit: z.coerce.number().optional(),
   offset: z.coerce.number().optional(),
@@ -90,7 +90,9 @@ export const websiteSessionSchema = z
     websiteId: z.uuid(),
     hostname: z.string().nullable(),
     browser: z.string().nullable(),
+    browserVersion: z.string().nullable(),
     os: z.string().nullable(),
+    osVersion: z.string().nullable(),
     device: z.string().nullable(),
     screen: z.string().nullable(),
     language: z.string().nullable(),

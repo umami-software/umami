@@ -76,6 +76,7 @@ export function SessionInfo({ data }) {
         icon={data?.browser ? <TypeIcon type="browser" value={data.browser} /> : <AppWindow />}
       >
         {data?.browser && formatValue(data.browser, 'browser')}
+        {data?.browserVersion ? ` ${data.browserVersion}` : ''}
       </Info>
 
       <Info
@@ -89,6 +90,7 @@ export function SessionInfo({ data }) {
         }
       >
         {data?.os && formatValue(data.os, 'os')}
+        {data?.osVersion ? ` ${data.osVersion}` : ''}
       </Info>
 
       <Info

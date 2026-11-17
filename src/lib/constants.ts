@@ -65,7 +65,9 @@ export const EVENT_COLUMNS = [
 
 export const SESSION_COLUMNS = [
   'browser',
+  'browserVersion',
   'os',
+  'osVersion',
   'device',
   'screen',
   'language',
@@ -91,7 +93,9 @@ export const FILTER_COLUMNS = {
   title: 'page_title',
   query: 'url_query',
   os: 'os',
+  osVersion: 'os_version',
   browser: 'browser',
+  browserVersion: 'browser_version',
   device: 'device',
   country: 'country',
   region: 'region',
@@ -277,7 +281,9 @@ export const DATETIME_REGEX =
 
 export const FIELD_LENGTH = {
   browser: 20,
+  browserVersion: 20,
   os: 20,
+  osVersion: 20,
   device: 20,
   screen: 11,
   language: 35,

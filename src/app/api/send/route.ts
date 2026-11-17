@@ -88,10 +88,8 @@ export async function POST(request: Request) {
     let sessionLinkId = cache?.sessionLinkId;
 
     // Client info
-    const { ip, userAgent, device, browser, os, country, region, city } = await getClientInfo(
-      request,
-      payload,
-    );
+    const { ip, userAgent, device, browser, browserVersion, os, osVersion, country, region, city } =
+      await getClientInfo(request, payload);
 
     // Bot check
     if (!process.env.DISABLE_BOT_CHECK && isbot(userAgent)) {
@@ -127,7 +125,9 @@ export async function POST(request: Request) {
         id: sessionId,
         websiteId: sourceId,
         browser,
+        browserVersion,
         os,
+        osVersion,
         device,
         screen,
         language,
@@ -223,7 +223,9 @@ export async function POST(request: Request) {
         // Session
         distinctId,
         browser,
+        browserVersion,
         os,
+        osVersion,
         device,
         screen,
         language,
@@ -301,7 +303,9 @@ export async function POST(request: Request) {
         pageTitle: safeDecodeURIComponent(title),
         eventType: EVENT_TYPE.performance,
         browser,
+        browserVersion,
         os,
+        osVersion,
         device,
         screen,
         language,
