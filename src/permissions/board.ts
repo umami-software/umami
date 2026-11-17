@@ -197,6 +197,11 @@ export async function canUpdateBoard({ user }: Auth, boardId: string) {
     return true;
   }
 
+  // A team role or ownership never overrides a globally view-only user.
+  if (!hasPermission(user.role, PERMISSIONS.websiteUpdate)) {
+    return false;
+  }
+
   const board = await getBoard(boardId);
 
   if (!board) {
@@ -227,6 +232,11 @@ export async function canDeleteBoard({ user }: Auth, boardId: string) {
 
   if (user.isAdmin) {
     return true;
+  }
+
+  // A team role or ownership never overrides a globally view-only user.
+  if (!hasPermission(user.role, PERMISSIONS.websiteDelete)) {
+    return false;
   }
 
   const board = await getBoard(boardId);

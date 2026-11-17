@@ -145,3 +145,12 @@ describe('canDeleteEntity', () => {
     await expect(canDeleteEntity({ user: normalUser }, 'entity-1')).resolves.toBe(false);
   });
 });
+
+// The global view-only role must win over ownership, even for the user's own entity.
+test('denies a globally view-only owner from updating or deleting', async () => {
+  const viewOnlyUser = { id: 'user-1', username: 'viewer', role: 'view-only', isAdmin: false };
+  vi.mocked(getEntity).mockResolvedValue({ userId: 'user-1' } as any);
+
+  await expect(canUpdateEntity({ user: viewOnlyUser }, 'entity-1')).resolves.toBe(false);
+  await expect(canDeleteEntity({ user: viewOnlyUser }, 'entity-1')).resolves.toBe(false);
+});

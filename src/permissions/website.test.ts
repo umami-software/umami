@@ -255,6 +255,18 @@ describe('canUpdateWebsite', () => {
     vi.mocked(getTeamUser).mockResolvedValue({ role: 'team-view-only' } as any);
     await expect(canUpdateWebsite({ user: normalUser }, 'website-1')).resolves.toBe(false);
   });
+
+  // The global view-only role must win over ownership and over any team role.
+  test('denies a globally view-only owner of a user-owned website', async () => {
+    vi.mocked(getWebsite).mockResolvedValue({ userId: 'user-2' } as any);
+    await expect(canUpdateWebsite({ user: viewOnlyUser }, 'website-1')).resolves.toBe(false);
+  });
+
+  test('denies a globally view-only user whose team role allows updates', async () => {
+    vi.mocked(getWebsite).mockResolvedValue({ teamId: 'team-1' } as any);
+    vi.mocked(getTeamUser).mockResolvedValue({ role: 'team-member' } as any);
+    await expect(canUpdateWebsite({ user: viewOnlyUser }, 'website-1')).resolves.toBe(false);
+  });
 });
 
 describe('canDeleteWebsite', () => {
@@ -286,6 +298,18 @@ describe('canDeleteWebsite', () => {
     vi.mocked(getWebsite).mockResolvedValue({ teamId: 'team-1' } as any);
     vi.mocked(getTeamUser).mockResolvedValue({ role: 'team-view-only' } as any);
     await expect(canDeleteWebsite({ user: normalUser }, 'website-1')).resolves.toBe(false);
+  });
+
+  // The global view-only role must win over ownership and over any team role.
+  test('denies a globally view-only owner of a user-owned website', async () => {
+    vi.mocked(getWebsite).mockResolvedValue({ userId: 'user-2' } as any);
+    await expect(canDeleteWebsite({ user: viewOnlyUser }, 'website-1')).resolves.toBe(false);
+  });
+
+  test('denies a globally view-only user whose team role allows deletes', async () => {
+    vi.mocked(getWebsite).mockResolvedValue({ teamId: 'team-1' } as any);
+    vi.mocked(getTeamUser).mockResolvedValue({ role: 'team-member' } as any);
+    await expect(canDeleteWebsite({ user: viewOnlyUser }, 'website-1')).resolves.toBe(false);
   });
 });
 

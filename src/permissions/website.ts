@@ -157,6 +157,11 @@ export async function canUpdateWebsite({ user }: Auth, websiteId: string) {
     return true;
   }
 
+  // A team role or ownership never overrides a globally view-only user.
+  if (!hasPermission(user.role, PERMISSIONS.websiteUpdate)) {
+    return false;
+  }
+
   const website = await getWebsite(websiteId);
 
   if (!website) {
@@ -187,6 +192,11 @@ export async function canDeleteWebsite({ user }: Auth, websiteId: string) {
 
   if (user.isAdmin) {
     return true;
+  }
+
+  // A team role or ownership never overrides a globally view-only user.
+  if (!hasPermission(user.role, PERMISSIONS.websiteDelete)) {
+    return false;
   }
 
   const website = await getWebsite(websiteId);

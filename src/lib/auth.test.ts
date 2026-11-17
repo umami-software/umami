@@ -7,7 +7,7 @@ import { getApiKeyByHash, updateApiKeyLastUsed } from '@/queries/prisma/apiKey';
 import { getShare } from '@/queries/prisma/share';
 import { getUser } from '@/queries/prisma/user';
 import { hashApiKey } from './api-key';
-import { checkAuth, createSessionToken } from './auth';
+import { checkAuth, createSessionToken, hasPermission } from './auth';
 
 vi.hoisted(() => {
   process.env.APP_SECRET ??= 'test-app-secret';
@@ -572,4 +572,11 @@ describe('createSessionToken', () => {
       AUTH_SESSION_TTL,
     );
   });
+});
+
+// Permission checks use this in plain conditions like `if (!hasPermission(...))`.
+// If it returned a Promise, those conditions would always pass and grant access.
+test('hasPermission returns a boolean synchronously', () => {
+  expect(hasPermission('view-only', 'website:update')).toBe(false);
+  expect(hasPermission('user', 'website:update')).toBe(true);
 });

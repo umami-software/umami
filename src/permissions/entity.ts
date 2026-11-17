@@ -46,6 +46,11 @@ export async function canUpdateEntity({ user }: Auth, entityId: string) {
     return true;
   }
 
+  // A team role or ownership never overrides a globally view-only user.
+  if (!hasPermission(user.role, PERMISSIONS.websiteUpdate)) {
+    return false;
+  }
+
   const entity = await getEntity(entityId);
 
   if (!entity) {
@@ -76,6 +81,11 @@ export async function canDeleteEntity({ user }: Auth, entityId: string) {
 
   if (user.isAdmin) {
     return true;
+  }
+
+  // A team role or ownership never overrides a globally view-only user.
+  if (!hasPermission(user.role, PERMISSIONS.websiteDelete)) {
+    return false;
   }
 
   const entity = await getEntity(entityId);

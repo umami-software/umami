@@ -194,7 +194,7 @@ export async function createSessionToken(user: { id: string; role: string; passw
   return redis.enabled ? saveAuth(session) : createSecureToken(session, secret());
 }
 
-export async function hasPermission(role: string, permission: string | string[]) {
+export function hasPermission(role: string, permission: string | string[]) {
   return ensureArray(permission).some(e => ROLE_PERMISSIONS[role]?.includes(e));
 }
 

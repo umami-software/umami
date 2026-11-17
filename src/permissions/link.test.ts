@@ -159,3 +159,12 @@ describe('canDeleteLink', () => {
     await expect(canDeleteLink({ user: normalUser }, 'link-1')).resolves.toBe(false);
   });
 });
+
+// The global view-only role must win over ownership, even for the user's own link.
+test('denies a globally view-only owner from updating or deleting', async () => {
+  const viewOnlyUser = { id: 'user-1', username: 'viewer', role: 'view-only', isAdmin: false };
+  vi.mocked(getLink).mockResolvedValue({ userId: 'user-1' } as any);
+
+  await expect(canUpdateLink({ user: viewOnlyUser }, 'link-1')).resolves.toBe(false);
+  await expect(canDeleteLink({ user: viewOnlyUser }, 'link-1')).resolves.toBe(false);
+});
