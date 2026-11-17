@@ -35,9 +35,9 @@ export interface BarChartProps extends ChartProps {
   minDate?: Date;
   maxDate?: Date;
   /**
-   * For data that comes in whole periods, such as daily ad or search data: a range within one
-   * period ends the axis at that period's end. Otherwise the axis has no width, and Chart.js
-   * widens it into the previous period, which then gets a label of its own.
+   * For data that comes in whole periods, such as daily ad or search data. A range within one
+   * period gives the axis no width, so Chart.js adds ticks a millisecond either side of it,
+   * labelled with the neighbouring dates. Only the period's own tick is labelled instead.
    */
   fitSinglePeriod?: boolean;
   /** Called with the start of the clicked bar's time bucket. */
@@ -104,7 +104,7 @@ function BarChartComponent({
           type: XAxisType,
           stacked: true,
           min,
-          max: fitSinglePeriod && min === max ? DATE_FUNCTIONS[unit].end(maxDate).getTime() : max,
+          max,
           offset: true,
           time: {
             unit,
@@ -119,7 +119,14 @@ function BarChartComponent({
             color: colors.chart.text,
             autoSkip: false,
             maxRotation: 0,
-            callback: renderXLabel,
+            callback:
+              fitSinglePeriod && min === max && renderXLabel
+                ? (label: string, index: number, values: any[]) =>
+                    DATE_FUNCTIONS[unit].start(values[index].value).getTime() ===
+                    values[index].value
+                      ? renderXLabel(label, index, values)
+                      : ''
+                : renderXLabel,
           },
         },
         y: {
