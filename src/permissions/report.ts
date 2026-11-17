@@ -47,7 +47,11 @@ export async function canViewReport(auth: Auth, report: Report | null) {
 
   const section = getReportSection(report.type);
 
-  if (auth.user?.id === report.userId) {
+  // The creator keeps direct access only while they can still view the website.
+  if (
+    auth.user?.id === report.userId &&
+    (await canViewWebsite({ user: auth.user }, report.websiteId))
+  ) {
     return hasReportBillingAccess(report);
   }
 
@@ -67,10 +71,6 @@ export async function canUpdateReport(auth: Auth, report: Report) {
     return true;
   }
 
-  if (auth.user.id === report.userId) {
-    return hasReportBillingAccess(report);
-  }
-
   return !!(await canUpdateWebsite(auth, report.websiteId));
 }
 
@@ -81,10 +81,6 @@ export async function canDeleteReport(auth: Auth, report: Report) {
 
   if (auth.user.isAdmin) {
     return true;
-  }
-
-  if (auth.user.id === report.userId) {
-    return hasReportBillingAccess(report);
   }
 
   return !!(await canDeleteWebsite(auth, report.websiteId));

@@ -1,10 +1,12 @@
 import { expect, test, vi } from 'vitest';
 import { ENTITY_TYPE } from '@/lib/constants';
-import { canViewReport, getReportSection } from './report';
-import { canViewWebsite } from './website';
+import { canDeleteReport, canUpdateReport, canViewReport, getReportSection } from './report';
+import { canDeleteWebsite, canUpdateWebsite, canViewWebsite } from './website';
 
 vi.mock('./website', () => ({
   canViewWebsite: vi.fn(),
+  canUpdateWebsite: vi.fn(),
+  canDeleteWebsite: vi.fn(),
 }));
 
 vi.mock('@/lib/load', () => ({
@@ -131,4 +133,42 @@ test('canViewReport falls back to website access for authenticated users', async
       } as any,
     ),
   ).resolves.toBe(true);
+});
+
+// After a website is transferred away, the report's creator must lose the access that
+// creating the report gave them, while the website's current users keep theirs.
+const creator = {
+  user: { id: 'creator-1', username: 'creator', role: 'user', isAdmin: false },
+};
+const savedFunnel = {
+  id: 'report-1',
+  userId: 'creator-1',
+  websiteId: 'website-1',
+  type: 'funnel',
+} as any;
+
+test('canViewReport allows the creator while they can still view the website', async () => {
+  vi.mocked(canViewWebsite).mockResolvedValue(true);
+
+  await expect(canViewReport(creator, savedFunnel)).resolves.toBe(true);
+});
+
+test('canViewReport denies the creator once they can no longer view the website', async () => {
+  vi.mocked(canViewWebsite).mockResolvedValue(false);
+
+  await expect(canViewReport(creator, savedFunnel)).resolves.toBe(false);
+});
+
+test('canUpdateReport and canDeleteReport follow current website access, not authorship', async () => {
+  vi.mocked(canUpdateWebsite).mockResolvedValue(false);
+  vi.mocked(canDeleteWebsite).mockResolvedValue(false);
+
+  await expect(canUpdateReport(creator, savedFunnel)).resolves.toBe(false);
+  await expect(canDeleteReport(creator, savedFunnel)).resolves.toBe(false);
+
+  vi.mocked(canUpdateWebsite).mockResolvedValue(true);
+  vi.mocked(canDeleteWebsite).mockResolvedValue(true);
+
+  await expect(canUpdateReport(creator, savedFunnel)).resolves.toBe(true);
+  await expect(canDeleteReport(creator, savedFunnel)).resolves.toBe(true);
 });
