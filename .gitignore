@@ -60,3 +60,6 @@ yarn-error.log*
 
 # local PR review worktrees
 /.review-pr-*/
+
+# internal notes
+/soc2.md
