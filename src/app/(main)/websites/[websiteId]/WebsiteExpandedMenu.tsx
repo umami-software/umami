@@ -142,9 +142,21 @@ export function WebsiteExpandedMenu({
           icon: <AppWindow />,
         },
         {
+          id: 'browserVersion',
+          label: t(labels.browserVersion),
+          path: updateParams({ view: 'browserVersion' }),
+          icon: <AppWindow />,
+        },
+        {
           id: 'os',
           label: t(labels.os),
           path: updateParams({ view: 'os' }),
+          icon: <Cpu />,
+        },
+        {
+          id: 'osVersion',
+          label: t(labels.osVersion),
+          path: updateParams({ view: 'osVersion' }),
           icon: <Cpu />,
         },
         {

@@ -62,9 +62,21 @@ export function useFields() {
       group: 'environment',
     },
     {
+      name: 'browserVersion',
+      filterLabel: t(labels.browserVersion),
+      label: t(labels.browserVersion),
+      group: 'environment',
+    },
+    {
       name: 'os',
       filterLabel: t(labels.os),
       label: t(labels.os),
+      group: 'environment',
+    },
+    {
+      name: 'osVersion',
+      filterLabel: t(labels.osVersion),
+      label: t(labels.osVersion),
       group: 'environment',
     },
     {

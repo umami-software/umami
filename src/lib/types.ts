@@ -232,7 +232,9 @@ export interface WebsiteSession {
   websiteId: string;
   hostname: string;
   browser: string;
+  browserVersion: string;
   os: string;
+  osVersion: string;
   device: string;
   screen: string;
   language: string;

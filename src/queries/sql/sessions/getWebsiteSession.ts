@@ -21,7 +21,9 @@ async function relationalQuery(websiteId: string, sessionId: string) {
       distinct_id as "distinctId",
       website_id as "websiteId",
       browser,
+      browser_version as "browserVersion",
       os,
+      os_version as "osVersion",
       device,
       screen,
       language,
@@ -50,7 +52,9 @@ async function relationalQuery(websiteId: string, sessionId: string) {
           website_event.visit_id,
           session.website_id,
           session.browser,
+          session.browser_version,
           session.os,
+          session.os_version,
           session.device,
           session.screen,
           session.language,
@@ -66,8 +70,8 @@ async function relationalQuery(websiteId: string, sessionId: string) {
     where session.website_id = {{websiteId::uuid}}
       and session.session_id = {{sessionId::uuid}}
       and website_event.event_type != ${EVENT_TYPE.performance}
-    group by session.session_id, session.distinct_id, visit_id, session.website_id, session.browser, session.os, session.device, session.screen, session.language, session.country, session.region, session.city) t
-    group by id, distinct_id, website_id, browser, os, device, screen, language, country, region, city;
+    group by session.session_id, session.distinct_id, visit_id, session.website_id, session.browser, session.browser_version, session.os, session.os_version, session.device, session.screen, session.language, session.country, session.region, session.city) t
+    group by id, distinct_id, website_id, browser, browser_version, os, os_version, device, screen, language, country, region, city;
     `,
     { websiteId, sessionId },
     FUNCTION_NAME,
@@ -83,7 +87,9 @@ async function clickhouseQuery(websiteId: string, sessionId: string) {
       any(websiteId) as websiteId,
       argMax(distinctId, max_time) as distinctId,
       argMax(browser, max_time) as browser,
+      argMax(browser_version, max_time) as browserVersion,
       argMax(os, max_time) as os,
+      argMax(os_version, max_time) as osVersion,
       argMax(device, max_time) as device,
       argMax(screen, max_time) as screen,
       argMax(language, max_time) as language,
@@ -109,7 +115,9 @@ async function clickhouseQuery(websiteId: string, sessionId: string) {
               visit_id,
               website_id as websiteId,
               browser,
+              browser_version,
               os,
+              os_version,
               device,
               screen,
               language,
@@ -124,7 +132,7 @@ async function clickhouseQuery(websiteId: string, sessionId: string) {
         where website_id = {websiteId:UUID}
           and session_id = {sessionId:UUID}
           and event_type != ${EVENT_TYPE.performance}
-        group by session_id, distinct_id, visit_id, website_id, browser, os, device, screen, language, country, region, city) t
+        group by session_id, distinct_id, visit_id, website_id, browser, browser_version, os, os_version, device, screen, language, country, region, city) t
     group by id;
     `,
     { websiteId, sessionId },

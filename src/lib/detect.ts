@@ -46,9 +46,7 @@ const PROVIDER_HEADERS = [
   },
 ];
 
-export function getDevice(userAgent: string, screen: string = '') {
-  const { device } = UAParser(userAgent);
-
+function getDeviceType(device: UAParser.IDevice, screen: string = '') {
   const [width] = screen.split('x');
 
   const type = device?.type || 'desktop';
@@ -58,6 +56,10 @@ export function getDevice(userAgent: string, screen: string = '') {
   }
 
   return type;
+}
+
+export function getDevice(userAgent: string, screen: string = '') {
+  return getDeviceType(UAParser(userAgent).device, screen);
 }
 
 function getRegionCode(country: string, region: string) {
@@ -135,6 +137,7 @@ export async function getLocation(ip: string = '', headers: Headers, skipHeaders
 
 export async function getClientInfo(request: Request, payload: Record<string, any>) {
   const userAgent = payload?.userAgent || request.headers.get('user-agent');
+  const parsed = UAParser(userAgent);
   const ip = payload?.ip || getIpAddress(request.headers);
   const location = await getLocation(ip, request.headers, !!payload?.ip);
   const country = safeDecodeURIComponent(location?.country);
@@ -142,9 +145,13 @@ export async function getClientInfo(request: Request, payload: Record<string, an
   const city = safeDecodeURIComponent(location?.city);
   const browser = payload?.browser ?? browserName(userAgent);
   const os = payload?.os ?? (detectOS(userAgent) as string);
-  const device = payload?.device ?? getDevice(userAgent, payload?.screen);
+  const device = payload?.device ?? getDeviceType(parsed.device, payload?.screen);
+  // The version is only meaningful for the name parsed from the same user agent, so leave it
+  // unset when the sender supplies its own browser or OS name.
+  const browserVersion = payload?.browser ? undefined : parsed.browser.version;
+  const osVersion = payload?.os ? undefined : parsed.os.version;
 
-  return { userAgent, browser, os, ip, country, region, city, device };
+  return { userAgent, browser, browserVersion, os, osVersion, ip, country, region, city, device };
 }
 
 export function hasBlockedIp(clientIp: string) {

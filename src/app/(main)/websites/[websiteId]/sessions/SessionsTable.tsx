@@ -42,6 +42,7 @@ export function SessionsTable({
         {(row: any) => (
           <TypeIcon type="browser" value={row.browser}>
             {formatValue(row.browser, 'browser')}
+            {row.browserVersion ? ` ${row.browserVersion}` : ''}
           </TypeIcon>
         )}
       </DataColumn>
@@ -49,6 +50,7 @@ export function SessionsTable({
         {(row: any) => (
           <TypeIcon type="os" value={row.os}>
             {formatValue(row.os, 'os')}
+            {row.osVersion ? ` ${row.osVersion}` : ''}
           </TypeIcon>
         )}
       </DataColumn>

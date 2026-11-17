@@ -1,5 +1,5 @@
 import { beforeEach, expect, test, vi } from 'vitest';
-import { getLocation, hasBlockedIp } from './detect';
+import { getClientInfo, getLocation, hasBlockedIp } from './detect';
 import { getIpAddress } from './ip';
 
 const IP = '127.0.0.1';
@@ -74,6 +74,45 @@ test('getLocation: treats localhost check errors as non-local', async () => {
     region: 'US-CA',
     city: 'Los Angeles',
   });
+});
+
+test('getClientInfo: returns browser and OS versions from the user agent', async () => {
+  const userAgent =
+    'Mozilla/5.0 (iPhone; CPU iPhone OS 18_1_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.1 Mobile/15E148 Safari/604.1';
+
+  const info = await getClientInfo(
+    new Request('http://localhost/api/send', { headers: { 'user-agent': userAgent } }),
+    {},
+  );
+
+  expect(info.browser).toBe('ios');
+  expect(info.browserVersion).toBe('18.1');
+  expect(info.os).toBe('iOS');
+  expect(info.osVersion).toBe('18.1.1');
+});
+
+test('getClientInfo: leaves versions unset when the sender overrides browser or os', async () => {
+  const userAgent =
+    'Mozilla/5.0 (iPhone; CPU iPhone OS 18_1_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.1 Mobile/15E148 Safari/604.1';
+
+  const info = await getClientInfo(new Request('http://localhost/api/send'), {
+    userAgent,
+    browser: 'Firefox',
+  });
+
+  expect(info.browser).toBe('Firefox');
+  expect(info.browserVersion).toBeUndefined();
+  expect(info.os).toBe('iOS');
+  expect(info.osVersion).toBe('18.1.1');
+});
+
+test('getClientInfo: returns no versions when the user agent is unknown', async () => {
+  const info = await getClientInfo(new Request('http://localhost/api/send'), {
+    userAgent: 'not-a-browser',
+  });
+
+  expect(info.browserVersion).toBeUndefined();
+  expect(info.osVersion).toBeUndefined();
 });
 
 test('hasBlockedIp: returns false for malformed client ip with cidr block', () => {
