@@ -380,14 +380,22 @@ type MetricEntry = PerformanceEntry & {
   const trackUrlChange = (url?: string | URL | null) => {
     if (!url) return;
 
+    const normalized = normalize(url);
+
+    // The URL may already have been handled by the pushState/replaceState hook
+    // (e.g. a router calling replaceState while handling popstate). Returning
+    // early keeps currentRef pointing at the previous page, so the pending
+    // pageview does not report itself as its own referrer.
+    if (normalized === currentUrl) return;
+
     if (typeof flushPerformance === 'function') {
       flushPerformance();
     }
 
     currentRef = currentUrl;
-    currentUrl = normalize(url);
+    currentUrl = normalized;
 
-    if (currentUrl !== currentRef && autoPageview) {
+    if (autoPageview) {
       setTimeout(track, delayDuration);
     }
   };

@@ -877,7 +877,7 @@ test('tracks page views on browser back/forward navigation (popstate)', { timeou
   const pageviewUrls = () =>
     fetchMock.mock.calls
       .map(([, init]) => JSON.parse(init.body))
-      .filter(request => request.payload?.url)
+      .filter(request => request.type === 'event' && request.payload?.url && !request.payload?.name)
       .map(request => request.payload.url as string);
 
   await vi.waitFor(() => expect(fetchMock).toHaveBeenCalled());
