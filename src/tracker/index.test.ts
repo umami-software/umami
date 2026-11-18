@@ -858,3 +858,54 @@ test('records LCP and FCP relative to activation for a prerendered page', async 
 
   expect(perfPayload).toMatchObject({ fcp: 0, lcp: 300 });
 });
+
+test('tracks page views on browser back/forward navigation (popstate)', { timeout: 20000 }, async () => {
+  const script = document.createElement('script');
+  script.src = 'https://analytics.example.com/script.js';
+  script.dataset.websiteId = 'website-id';
+
+  Object.defineProperties(document, {
+    currentScript: { configurable: true, value: script },
+    readyState: { configurable: true, value: 'complete' },
+  });
+
+  const fetchMock = vi.fn().mockResolvedValue({ json: vi.fn().mockResolvedValue({}) });
+  vi.stubGlobal('fetch', fetchMock);
+
+  await import('./index');
+
+  const pageviewUrls = () =>
+    fetchMock.mock.calls
+      .map(([, init]) => JSON.parse(init.body))
+      .filter(request => request.payload?.url)
+      .map(request => request.payload.url as string);
+
+  await vi.waitFor(() => expect(fetchMock).toHaveBeenCalled());
+  const initialUrl = window.location.href;
+  const initialCount = pageviewUrls().length;
+
+  const pageBUrl = new URL('/page-b', window.location.href).href;
+
+  window.history.pushState({}, '', '/page-b');
+  await vi.waitFor(() => expect(pageviewUrls()).toContain(pageBUrl), { timeout: 5000 });
+
+  const countAfterPush = pageviewUrls().length;
+  const initialUrlCount = pageviewUrls().filter(url => url === initialUrl).length;
+  const pageBCount = pageviewUrls().filter(url => url === pageBUrl).length;
+
+  window.history.back();
+  await vi.waitFor(
+    () =>
+      expect(pageviewUrls().filter(url => url === initialUrl).length).toBeGreaterThan(
+        initialUrlCount,
+      ),
+    { timeout: 5000 },
+  );
+
+  window.history.forward();
+  await vi.waitFor(
+    () =>
+      expect(pageviewUrls().filter(url => url === pageBUrl).length).toBeGreaterThan(pageBCount),
+    { timeout: 5000 },
+  );
+});
