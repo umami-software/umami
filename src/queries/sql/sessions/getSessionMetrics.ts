@@ -1,5 +1,5 @@
 import clickhouse from '@/lib/clickhouse';
-import { EVENT_COLUMNS, FILTER_COLUMNS, SESSION_COLUMNS } from '@/lib/constants';
+import { EVENT_COLUMNS, FILTER_COLUMNS } from '@/lib/constants';
 import { CLICKHOUSE, PRISMA, runQuery } from '@/lib/db';
 import prisma from '@/lib/prisma';
 import type { QueryFilters } from '@/lib/types';
@@ -29,37 +29,47 @@ async function relationalQuery(
   const { type, limit = 500, offset = 0 } = parameters;
   let column = FILTER_COLUMNS[type] || type;
   const { parseFilters, rawQuery } = prisma;
+  // Session-level filters in `filters` still force the session join inside the
+  // subquery below (parseFilters detects them), but the grouped column itself
+  // no longer needs it: the outer query reads it from `session` directly.
   const { filterQuery, joinSessionQuery, cohortQuery, excludeBounceQuery, queryParams } =
-    parseFilters(
-      {
-        ...filters,
-        websiteId,
-      },
-      {
-        joinSession: SESSION_COLUMNS.includes(type),
-      },
-    );
+    parseFilters({
+      ...filters,
+      websiteId,
+    });
   const includeCountry = column === 'city' || column === 'region';
 
   if (type === 'language') {
-    column = `lower(left(${type}, 2))`;
+    column = `lower(left(session.${type}, 2))`;
+  } else {
+    column = `session.${column}`;
   }
 
+  // Aggregate first, join once: reduce the event rows in the date range down
+  // to the distinct set of session ids (an index-only scan), then join each
+  // session row a single time to read the grouped attribute. This avoids
+  // joining `session` against every event row and the count(distinct) over
+  // the full join, which dominated the runtime of this query.
   return rawQuery(
     `
-    select 
+    select
       ${column} x,
-      count(distinct website_event.session_id) y
-      ${includeCountry ? ', country' : ''}
-    from website_event
-    ${cohortQuery}
-    ${excludeBounceQuery}
-    ${joinSessionQuery}
-    where website_event.website_id = {{websiteId::uuid}}
-      and website_event.created_at between {{startDate}} and {{endDate}}
-      and website_event.event_type NOT IN (2, 5)
+      count(*) y
+      ${includeCountry ? ', session.country' : ''}
+    from (
+      select distinct website_event.session_id
+      from website_event
+      ${cohortQuery}
+      ${excludeBounceQuery}
+      ${joinSessionQuery}
+      where website_event.website_id = {{websiteId::uuid}}
+        and website_event.created_at between {{startDate}} and {{endDate}}
+        and website_event.event_type NOT IN (2, 5)
+      ${filterQuery}
+    ) t
+    join session on session.session_id = t.session_id
+    where session.website_id = {{websiteId::uuid}}
       and ${column} != ''
-    ${filterQuery}
     group by 1
     ${includeCountry ? ', 3' : ''}
     order by 2 desc
