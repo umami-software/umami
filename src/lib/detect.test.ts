@@ -1,18 +1,16 @@
-import { beforeEach, expect, test, vi } from 'vitest';
-import { getLocation, hasBlockedIp } from './detect';
+import { beforeEach, expect, test } from 'vitest';
+import { getDevice, getLocation, hasBlockedIp } from './detect';
 import { getIpAddress } from './ip';
 
 const IP = '127.0.0.1';
 
-const isLocalhost = vi.mocked(await import('is-localhost-ip'));
-
-vi.mock('is-localhost-ip', () => ({
-  default: vi.fn(),
-}));
+const LOCATION_HEADERS = {
+  'cf-ipcountry': 'US',
+  'cf-region-code': 'CA',
+  'cf-ipcity': 'Los Angeles',
+};
 
 beforeEach(() => {
-  vi.resetAllMocks();
-
   delete process.env.CLIENT_IP_HEADER;
   delete process.env.IGNORE_IP;
   delete process.env.SKIP_LOCATION_HEADERS;
@@ -56,24 +54,63 @@ test('getLocation: returns null for malformed ip', async () => {
   ).resolves.toEqual(null);
 });
 
-test('getLocation: treats localhost check errors as non-local', async () => {
-  isLocalhost.default.mockRejectedValue(new Error('DNS Lookup failed.'));
+test.each([
+  '127.0.0.1',
+  '127.1',
+  '2130706433',
+  '10.1.2.3',
+  '172.16.0.1',
+  '192.168.1.1',
+  '169.254.0.1',
+  '0.0.0.0',
+  '::',
+  '::1',
+  'fe80::1',
+  'fd00::1',
+  'fd12:3456::abcd',
+  'fe80::1234:5678',
+  '::ffff:a00:1',
+])('getLocation: returns null for local ip %s', async ip => {
+  await expect(getLocation(ip, new Headers(LOCATION_HEADERS), false)).resolves.toEqual(null);
+});
 
-  await expect(
-    getLocation(
-      '8.8.8.8',
-      new Headers({
-        'cf-ipcountry': 'US',
-        'cf-region-code': 'CA',
-        'cf-ipcity': 'Los Angeles',
-      }),
-      false,
-    ),
-  ).resolves.toEqual({
-    country: 'US',
-    region: 'US-CA',
-    city: 'Los Angeles',
-  });
+test.each(['8.8.8.8', '100.64.0.1', '172.32.0.1', '2001:4860::8888', '::ffff:808:808'])(
+  'getLocation: uses location headers for public ip %s',
+  async ip => {
+    await expect(getLocation(ip, new Headers(LOCATION_HEADERS), false)).resolves.toEqual({
+      country: 'US',
+      region: 'US-CA',
+      city: 'Los Angeles',
+    });
+  },
+);
+
+const CHROME_WINDOWS =
+  'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36';
+
+test.each([
+  { userAgent: CHROME_WINDOWS, screen: '2560x1440', device: 'desktop' },
+  { userAgent: CHROME_WINDOWS, screen: '1920x1080', device: 'laptop' },
+  {
+    userAgent:
+      'Mozilla/5.0 (iPhone; CPU iPhone OS 18_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Mobile/15E148 Safari/604.1',
+    screen: '390x844',
+    device: 'mobile',
+  },
+  {
+    userAgent:
+      'Mozilla/5.0 (iPad; CPU OS 18_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Mobile/15E148 Safari/604.1',
+    screen: '820x1180',
+    device: 'tablet',
+  },
+  {
+    userAgent:
+      'Mozilla/5.0 (Linux; Android 14; Pixel 8) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Mobile Safari/537.36',
+    screen: '412x915',
+    device: 'mobile',
+  },
+])('getDevice: $device at $screen', ({ userAgent, screen, device }) => {
+  expect(getDevice(userAgent, screen)).toEqual(device);
 });
 
 test('hasBlockedIp: returns false for malformed client ip with cidr block', () => {
