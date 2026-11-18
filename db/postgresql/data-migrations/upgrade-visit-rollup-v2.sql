@@ -1,0 +1,13 @@
+-- One-time local upgrade for databases that deployed the original
+-- website_visit_rollup_hourly. New deployments get the final schema from
+-- db/postgresql/rollups/01-schema.sql directly and must NOT run this.
+-- The new columns derive from raw history, so the tier is rebuilt: after
+-- running this, re-run 02-refresh.sql to reload the function, rewind the
+-- watermark, and backfill per 03-backfill.sql (tier 1 is reprocessed too;
+-- that is idempotent and harmless, just redundant work).
+DROP TABLE IF EXISTS website_visit_rollup_hourly;
+-- then: \i 01-schema.sql  (recreates the table with the v2 definition)
+--       \i 02-refresh.sql
+--       UPDATE rollup_watermark SET processed_until = '<history start>'
+--         WHERE name = 'website_rollups';
+--       SELECT * FROM refresh_website_rollups(max_hours => 12); \watch 5

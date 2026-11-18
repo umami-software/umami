@@ -113,6 +113,22 @@ function getDateSQL(field: string, unit: string, timezone?: string): string {
   return `to_char(date_trunc('${unit}', ${field} at time zone '${tz}'), '${DATE_FORMATS[unit]}')`;
 }
 
+// Split variant of getDateSQL for large aggregations: truncate (cheap) per
+// row in the inner query, format (expensive) only the few grouped rows in
+// the outer query. to_char over millions of rows is a significant CPU cost.
+// Mirrors getDateSQL exactly, including pinning UTC: date_trunc without an
+// explicit zone falls back to the DB session's ambient TimeZone setting,
+// which this app never pins.
+function getDateTruncSQL(field: string, unit: string, timezone?: string): string {
+  const tz = timezone && !isUtcTimezone(timezone) ? timezone : 'UTC';
+
+  return `date_trunc('${unit}', ${field} at time zone '${tz}')`;
+}
+
+function getDateFormatSQL(field: string, unit: string): string {
+  return `to_char(${field}, '${DATE_FORMATS[unit]}')`;
+}
+
 function getDateStringSQL(
   field: string,
   unit: keyof typeof DATE_STRING_FORMATS = 'utc',
@@ -939,6 +955,8 @@ export default {
   getCastColumnQuery,
   getDayDiffQuery,
   getDateSQL,
+  getDateTruncSQL,
+  getDateFormatSQL,
   getDateStringSQL,
   getDateWeeklySQL,
   getFilterQuery,

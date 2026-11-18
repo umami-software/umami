@@ -1,6 +1,12 @@
 import clickhouse from '@/lib/clickhouse';
 import { CLICKHOUSE, PRISMA, runQuery } from '@/lib/db';
 import prisma from '@/lib/prisma';
+import {
+  getRollupRange,
+  getRollupWatermark,
+  hasWholeHourOffset,
+  logRollupError,
+} from '@/lib/rollups';
 import type { QueryFilters } from '@/lib/types';
 
 const FUNCTION_NAME = 'getEventStats';
@@ -31,11 +37,70 @@ async function relationalQuery(
 ) {
   const { limit } = parameters;
   const { timezone = 'utc', unit = 'day' } = filters;
-  const { rawQuery, getDateSQL, parseFilters } = prisma;
+  const { rawQuery, getDateTruncSQL, getDateFormatSQL, parseFilters } = prisma;
   const { filterQuery, cohortQuery, joinSessionQuery, queryParams } = parseFilters({
     ...filters,
     websiteId,
   });
+
+  // Opt-in rollup path (ROLLUPS_ENABLED): sum hourly buckets from the
+  // event-name tier and merge the raw tail past the watermark. Minute
+  // granularity is finer than the rollup grain and always takes the raw path.
+  if (
+    !filterQuery &&
+    !cohortQuery &&
+    !joinSessionQuery &&
+    unit !== 'minute' &&
+    hasWholeHourOffset(timezone)
+  ) {
+    const watermark = await getRollupWatermark();
+    const range = watermark && getRollupRange(filters.startDate, filters.endDate, watermark);
+
+    if (range) {
+      // Watermark freshness does not guarantee the rollup tables are intact
+      // (e.g. dropped or being rebuilt); fall back to the raw path on error.
+      try {
+        return await rawQuery(
+          `
+          with g as (
+            select nullif(event_name, '') as event_name, bucket as ts, events
+            from website_event_rollup_hourly
+            where website_id = {{websiteId::uuid}}
+              and bucket >= {{hstart}}
+              and bucket < {{hend}}
+              and event_type = 2
+            union all
+            select event_name, created_at, count(*)
+            from website_event
+            where website_id = {{websiteId::uuid}}
+              and ((created_at >= {{startDate}} and created_at < {{hstart}})
+                or (created_at >= {{hend}} and created_at <= {{endDate}}))
+              and event_type = 2
+            group by 1, 2
+          )
+          select t.x, ${getDateFormatSQL('t.t', unit)} t, t.y
+          from (
+            select g.event_name x, ${getDateTruncSQL('g.ts', unit, timezone)} t, sum(g.events) y
+            from g
+            ${
+              limit
+                ? `where g.event_name in (
+                    select event_name from g group by 1 order by sum(events) desc limit ${limit}
+                  )`
+                : ''
+            }
+            group by 1, 2
+          ) t
+          order by 2
+          `,
+          { ...queryParams, hstart: range.hstart, hend: range.hend },
+          FUNCTION_NAME,
+        );
+      } catch (e) {
+        logRollupError(e);
+      }
+    }
+  }
 
   const limitQuery = limit
     ? `and event_name in (
@@ -50,21 +115,29 @@ async function relationalQuery(
   )`
     : '';
 
+  // Truncate per row (cheap), format per group (expensive): to_char over
+  // every scanned row dominates CPU on large date ranges.
   return rawQuery(
     `
     select
-      event_name x,
-      ${getDateSQL('website_event.created_at', unit, timezone)} t,
-      count(*) y
-    from website_event
-    ${cohortQuery}
-    ${joinSessionQuery}
-    where website_event.website_id = {{websiteId::uuid}}
-      and website_event.created_at between {{startDate}} and {{endDate}}
-      and website_event.event_type = 2
-      ${filterQuery}
-      ${limitQuery}
-    group by 1, 2
+      t.x,
+      ${getDateFormatSQL('t.t', unit)} t,
+      t.y
+    from (
+      select
+        event_name x,
+        ${getDateTruncSQL('website_event.created_at', unit, timezone)} t,
+        count(*) y
+      from website_event
+      ${cohortQuery}
+      ${joinSessionQuery}
+      where website_event.website_id = {{websiteId::uuid}}
+        and website_event.created_at between {{startDate}} and {{endDate}}
+        and website_event.event_type = 2
+        ${filterQuery}
+        ${limitQuery}
+      group by 1, 2
+    ) t
     order by 2
     `,
     queryParams,
