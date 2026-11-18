@@ -169,6 +169,22 @@ test('holds tracked link clicks until an async beforeSend settles, then navigate
   await vi.waitFor(() => expect(location.hash).toBe('#buy'));
 });
 
+// Hooks may return promise-likes that are not this window's Promise, e.g. a promise library,
+// a polyfill that replaced window.Promise, or a promise from another frame.
+test('holds tracked link clicks for a beforeSend that returns a non-native thenable', async () => {
+  const { held, event } = await clickTrackedLink(
+    (_type, payload) =>
+      ({
+        // biome-ignore lint/suspicious/noThenProperty: a non-native thenable is the case under test
+        then: (resolve: (value: unknown) => void) => setTimeout(() => resolve(payload), 20),
+      }) as unknown as Promise<Record<string, unknown>>,
+  );
+
+  expect(held).toBe(true);
+  expect(event).toMatchObject({ keepalive: true, hashAtSend: '' });
+  await vi.waitFor(() => expect(location.hash).toBe('#buy'));
+});
+
 test('configures tracker from umamiConfig only, with no data-* attributes', async () => {
   const script = document.createElement('script');
   script.src = 'https://analytics.example.com/script.js';

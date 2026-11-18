@@ -472,7 +472,10 @@ type MetricEntry = PerformanceEntry & {
 
     if (typeof callback === 'function') {
       const result = callback(type, payload as Payload);
-      if (result instanceof Promise) onAsyncHook?.(result);
+      // Any thenable, not only a native Promise (polyfills, other frames, promise libraries).
+      if (typeof (result as PromiseLike<unknown> | null)?.then === 'function') {
+        onAsyncHook?.(Promise.resolve(result));
+      }
       payload = await result;
     }
 
