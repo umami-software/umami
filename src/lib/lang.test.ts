@@ -14,6 +14,11 @@ describe('getDateLocale', () => {
   test('falls back to en-US when a language has no dateLocale', () => {
     expect(getDateLocale('fo-FO')).toBe(enUS);
   });
+
+  test('does not format Urdu or Sinhala dates in another language', () => {
+    expect(getDateLocale('ur-PK')).toBe(enUS);
+    expect(getDateLocale('si-LK')).toBe(enUS);
+  });
 });
 
 describe('getTextDirection', () => {
