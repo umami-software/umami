@@ -46,7 +46,7 @@ import { setHour12 } from './lang';
 // A fixed instant used across timezone-sensitive tests. All expected date
 // values are recomputed with the same date-fns helpers the implementation
 // uses, so assertions stay robust regardless of the host timezone.
-const NOW = new Date('2026-07-24T12:00:00');
+const NOW = new Date('2026-07-24T12:00:00Z');
 
 beforeEach(() => {
   vi.useFakeTimers();
