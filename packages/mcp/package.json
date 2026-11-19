@@ -33,7 +33,7 @@
   },
   "dependencies": {
     "@modelcontextprotocol/server": "^2.3.1",
-    "@umami/api-client": "^0.81.0",
+    "@umami/api-client": "workspace:^",
     "zod": "^4.6.6"
   },
   "devDependencies": {

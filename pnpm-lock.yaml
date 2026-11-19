@@ -343,8 +343,8 @@ importers:
         specifier: ^2.3.1
         version: 2.3.1
       '@umami/api-client':
-        specifier: ^0.81.0
-        version: 0.81.0
+        specifier: workspace:^
+        version: link:../api-client
       zod:
         specifier: ^4.6.6
         version: 4.6.7
