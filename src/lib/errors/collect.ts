@@ -69,7 +69,7 @@ export async function collectError(request: Request, payload: ErrorPayload) {
     const info = await getClientInfo(request, {});
     if (!process.env.DISABLE_BOT_CHECK && isbot(info.userAgent))
       return respond(json({ ok: false, reason: 'bot' }), 'blocked');
-    if (hasBlockedIp(info.ip)) return respond(forbidden());
+    if (await hasBlockedIp(info.ip)) return respond(forbidden());
     if (!(await consumeErrorQuota(payload.website))) {
       return respond(
         Response.json(

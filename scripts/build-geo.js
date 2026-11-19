@@ -111,3 +111,48 @@ if (isDirectMmdb) {
       process.exit(1);
     });
 }
+
+// ASN database, loaded at runtime only when IGNORE_ASN is set. It's optional, so a
+// failed download logs a warning instead of failing the build.
+const asnDb = 'GeoLite2-ASN';
+const asnUrl = process.env.MAXMIND_LICENSE_KEY
+  ? `https://download.maxmind.com/app/geoip_download` +
+    `?edition_id=${asnDb}&license_key=${process.env.MAXMIND_LICENSE_KEY}&suffix=tar.gz`
+  : `https://raw.githubusercontent.com/GitSquared/node-geolite2-redist/master/redist/${asnDb}.tar.gz`;
+
+const skipAsn = e => console.warn(`Skipping ${asnDb} (IGNORE_ASN will not work):`, e.message || e);
+
+const downloadAsn = url => {
+  // Time out instead of stalling the build when outbound traffic is silently dropped.
+  const req = https.get(url, { timeout: 30000 }, res => {
+    if (res.statusCode === 301 || res.statusCode === 302) {
+      res.resume();
+      downloadAsn(res.headers.location);
+      return;
+    }
+
+    if (res.statusCode !== 200) {
+      res.resume();
+      skipAsn(`HTTP ${res.statusCode}`);
+      return;
+    }
+
+    res
+      .pipe(zlib.createGunzip())
+      .on('error', skipAsn)
+      .pipe(list())
+      .on('entry', entry => {
+        if (entry.path.endsWith('.mmdb')) {
+          const filename = path.join(dest, path.basename(entry.path));
+          entry.pipe(fs.createWriteStream(filename));
+
+          console.log('Saved geo database:', filename);
+        }
+      });
+  });
+
+  req.on('timeout', () => req.destroy(new Error('Timed out')));
+  req.on('error', skipAsn);
+};
+
+downloadAsn(asnUrl);

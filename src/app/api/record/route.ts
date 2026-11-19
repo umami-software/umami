@@ -193,7 +193,7 @@ export async function POST(request: Request) {
       return withCorsHeaders(json({ beep: 'boop' }));
     }
 
-    if (hasBlockedIp(ip)) {
+    if (await hasBlockedIp(ip)) {
       return withCorsHeaders(forbidden());
     }
 
