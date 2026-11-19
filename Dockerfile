@@ -1,4 +1,4 @@
-ARG NODE_IMAGE_VERSION="22-alpine"
+ARG NODE_IMAGE_VERSION="22.23.5-alpine"
 
 # Install dependencies only when needed
 FROM node:${NODE_IMAGE_VERSION} AS deps
