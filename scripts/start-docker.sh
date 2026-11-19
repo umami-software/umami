@@ -16,6 +16,10 @@ node scripts/update-tracker.js
 
 # Next's standalone server binds to $HOSTNAME. Some runtimes (e.g. Podman pods)
 # overwrite it with the container hostname, which binds only to the pod IP and
-# breaks localhost healthchecks, so force all interfaces here.
-export HOSTNAME=0.0.0.0
+# breaks localhost healthchecks, so force all interfaces in that case. A
+# user-supplied bind address (e.g. `::` for dual-stack) is left untouched.
+export HOSTNAME="${HOSTNAME:-0.0.0.0}"
+if [ "$HOSTNAME" = "$(cat /etc/hostname 2>/dev/null)" ]; then
+  export HOSTNAME=0.0.0.0
+fi
 exec node server.js
