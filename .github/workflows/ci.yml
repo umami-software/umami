@@ -12,8 +12,7 @@ env:
 
 jobs:
   build:
-    if: github.repository == 'umami-software/umami'
-    runs-on: blacksmith-4vcpu-ubuntu-2404
+    runs-on: ${{ github.repository == 'umami-software/umami' && 'blacksmith-4vcpu-ubuntu-2404' || 'ubuntu-latest' }}
 
     steps:
       - uses: actions/checkout@v4
@@ -29,6 +28,7 @@ jobs:
           node-version: 22
           cache: "pnpm"
       - run: pnpm install
+      - run: pnpm lint
       - run: pnpm lint:i18n
       - run: pnpm openapi:generate
       - run: pnpm openapi:check --explicit
