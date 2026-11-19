@@ -407,7 +407,15 @@ type MetricEntry = PerformanceEntry & {
   // replaceState, so they need their own listener. `location.href` is read at
   // event time; the currentUrl/currentRef check keeps this from double
   // counting when a router also calls replaceState during the same traversal.
-  const handlePopState = () => trackUrlChange(window.location.href);
+  // Clicking an in-page anchor also fires popstate; hash-only changes are
+  // ignored so they don't count as page views.
+  const handlePopState = () => {
+    const url = normalize(window.location.href);
+
+    if (url.split('#')[0] === currentUrl.split('#')[0]) return;
+
+    trackUrlChange(url);
+  };
 
   const handlePathChanges = () => {
     const hook = (

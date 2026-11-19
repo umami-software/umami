@@ -909,3 +909,35 @@ test('tracks page views on browser back/forward navigation (popstate)', { timeou
     { timeout: 5000 },
   );
 });
+
+test('does not track page views for hash-only navigation', { timeout: 20000 }, async () => {
+  const script = document.createElement('script');
+  script.src = 'https://analytics.example.com/script.js';
+  script.dataset.websiteId = 'website-id';
+
+  Object.defineProperties(document, {
+    currentScript: { configurable: true, value: script },
+    readyState: { configurable: true, value: 'complete' },
+  });
+
+  const fetchMock = vi.fn().mockResolvedValue({ json: vi.fn().mockResolvedValue({}) });
+  vi.stubGlobal('fetch', fetchMock);
+
+  await import('./index');
+
+  const pageviewUrls = () =>
+    fetchMock.mock.calls
+      .map(([, init]) => JSON.parse(init.body))
+      .filter(request => request.type === 'event' && request.payload?.url && !request.payload?.name)
+      .map(request => request.payload.url as string);
+
+  await vi.waitFor(() => expect(fetchMock).toHaveBeenCalled());
+  const count = pageviewUrls().length;
+
+  window.location.hash = 'section';
+  window.dispatchEvent(new Event('popstate'));
+
+  await new Promise(resolve => setTimeout(resolve, 1500));
+
+  expect(pageviewUrls().length).toBe(count);
+});
