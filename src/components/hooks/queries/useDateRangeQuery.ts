@@ -9,7 +9,7 @@ type DateRange = {
 export function useDateRangeQuery(websiteId: string, options?: ReactQueryOptions) {
   const { get, useQuery } = useApi();
 
-  const { data } = useQuery<DateRange>({
+  const { data, isLoading } = useQuery<DateRange>({
     queryKey: ['date-range', websiteId],
     queryFn: () => get(`/websites/${websiteId}/daterange`),
     enabled: !!websiteId,
@@ -19,5 +19,6 @@ export function useDateRangeQuery(websiteId: string, options?: ReactQueryOptions
   return {
     startDate: data?.startDate ? new Date(data.startDate) : null,
     endDate: data?.endDate ? new Date(data.endDate) : null,
+    isLoading,
   };
 }

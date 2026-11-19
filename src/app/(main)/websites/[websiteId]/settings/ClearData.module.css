@@ -1,0 +1,107 @@
+/* Every step renders in the same frame so the dialog never changes size. */
+.frame {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  height: min(440px, 70vh);
+}
+
+.content {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 16px;
+  min-height: 0;
+  overflow-y: auto;
+}
+
+.footer {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  gap: 8px;
+}
+
+.footerEnd {
+  display: flex;
+  gap: 8px;
+  margin-left: auto;
+}
+
+.counts {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 12px 16px;
+  border: 1px solid var(--zen-border);
+  border-radius: 8px;
+}
+
+.countRow {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.countValue {
+  font-variant-numeric: tabular-nums;
+  font-weight: 600;
+}
+
+.danger {
+  color: var(--zen-status-error);
+}
+
+.animation {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  justify-content: center;
+  min-height: 120px;
+  color: var(--zen-fg-muted);
+}
+
+.animation svg {
+  width: 128px;
+  height: 128px;
+}
+
+.record {
+  fill: var(--zen-primary);
+  transform-box: fill-box;
+  animation: drop 1.8s ease-in infinite;
+  opacity: 0;
+}
+
+.record:nth-of-type(2) {
+  animation-delay: 0.6s;
+}
+
+.record:nth-of-type(3) {
+  animation-delay: 1.2s;
+}
+
+.check {
+  color: var(--zen-status-success);
+}
+
+@keyframes drop {
+  0% {
+    transform: translateY(0);
+    opacity: 0;
+  }
+  15% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(36px);
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .record {
+    animation: none;
+    opacity: 0.6;
+  }
+}

@@ -34,6 +34,14 @@ export const operations = {
     queryParams: [],
     hasBody: false,
   },
+  clearWebsiteData: {
+    operationId: 'clearWebsiteData',
+    method: 'post',
+    path: '/api/websites/{websiteId}/clear',
+    pathParams: ['websiteId'],
+    queryParams: [],
+    hasBody: true,
+  },
   cloneBoard: {
     operationId: 'cloneBoard',
     method: 'post',
@@ -1649,6 +1657,14 @@ export const operations = {
       'unit',
       'fields',
     ],
+    hasBody: false,
+  },
+  getWebsiteClearPreview: {
+    operationId: 'getWebsiteClearPreview',
+    method: 'get',
+    path: '/api/websites/{websiteId}/clear',
+    pathParams: ['websiteId'],
+    queryParams: ['startAt', 'endAt'],
     hasBody: false,
   },
   getWebsiteDateRange: {
@@ -3333,6 +3349,18 @@ export abstract class GeneratedUmamiClient {
   }
 
   /**
+   * Delete website data for a date range
+   * Permanently deletes the website data in the half-open range [startAt, endAt) and keeps the website configuration. Requires relational storage.
+   * `POST /api/websites/{websiteId}/clear`
+   */
+  clearWebsiteData(
+    input: OperationInput<'clearWebsiteData'>,
+    options?: RequestOptions,
+  ): Promise<OperationOutput<'clearWebsiteData'>> {
+    return this.execute('clearWebsiteData', input, options);
+  }
+
+  /**
    * Clone a board
    * Creates a copy of a board with optional changes to its name, description, and configuration. Removes invalid report references from the copy.
    * `POST /api/boards/{boardId}/clone`
@@ -4458,6 +4486,18 @@ export abstract class GeneratedUmamiClient {
     options?: RequestOptions,
   ): Promise<OperationOutput<'getWebsiteBreakdown'>> {
     return this.execute('getWebsiteBreakdown', input, options);
+  }
+
+  /**
+   * Preview website data deletion for a date range
+   * Counts the rows that deleting the website data in the half-open range [startAt, endAt) would remove. Requires relational storage.
+   * `GET /api/websites/{websiteId}/clear`
+   */
+  getWebsiteClearPreview(
+    input: OperationInput<'getWebsiteClearPreview'>,
+    options?: RequestOptions,
+  ): Promise<OperationOutput<'getWebsiteClearPreview'>> {
+    return this.execute('getWebsiteClearPreview', input, options);
   }
 
   /**
