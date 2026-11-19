@@ -378,7 +378,7 @@ type MetricEntry = PerformanceEntry & {
   /* Event handlers */
 
   const handlePush = (_state: unknown, _title: string, url?: string | URL | null) => {
-    if (!url) return;
+    if (!url || normalize(url) === currentUrl) return;
 
     if (typeof flushPerformance === 'function') {
       flushPerformance();
