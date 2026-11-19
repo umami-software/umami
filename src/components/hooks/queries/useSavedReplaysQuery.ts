@@ -11,7 +11,6 @@ export function useSavedReplaysQuery(websiteId: string) {
     queryFn: pageParams => {
       return get(`/websites/${websiteId}/replays/saved`, {
         ...pageParams,
-        pageSize: 20,
       });
     },
   });

@@ -1,0 +1,9 @@
+.twoFactorSetupModal {
+  width: 700px;
+  max-width: 95vw;
+}
+
+.qrCodeImage {
+  width: 33%;
+  aspect-ratio: 1;
+}

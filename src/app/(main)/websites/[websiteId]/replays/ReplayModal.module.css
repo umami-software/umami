@@ -1,0 +1,14 @@
+.modal,
+.sheet {
+  border-radius: 8px 8px 0 0;
+}
+
+.modal {
+  width: min(calc(100dvw - 48px), 1320px);
+  height: calc(100dvh - 80px);
+  overflow: hidden;
+}
+
+.portrait {
+  width: min(calc(100dvw - 48px), 900px);
+}

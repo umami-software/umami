@@ -1,8 +1,8 @@
 'use client';
 import { Button, Column, Grid, Heading } from '@umami/react-zen';
-import Link from '@/components/common/Link';
 import Script from 'next/script';
 import { WebsiteChart } from '@/app/(main)/websites/[websiteId]/WebsiteChart';
+import Link from '@/components/common/Link';
 import { PageBody } from '@/components/common/PageBody';
 import { PageHeader } from '@/components/common/PageHeader';
 import { Panel } from '@/components/common/Panel';
@@ -23,7 +23,7 @@ export function TestConsolePage({ websiteId }: { websiteId: string }) {
       test: 'test-data',
       boolean: true,
       booleanError: 'true',
-      time: new Date(),
+      time: new Date().toISOString(),
       user: `user${Math.round(Math.random() * 10)}`,
       number: 1,
       number2: Math.random() * 100,
@@ -87,7 +87,7 @@ export function TestConsolePage({ websiteId }: { websiteId: string }) {
       test: 'test-data',
       boolean: true,
       booleanError: 'true',
-      time: new Date(),
+      time: new Date().toISOString(),
       time2: new Date().toISOString(),
       nested: {
         test: 'test-data',

@@ -1,14 +1,99 @@
+import { z } from 'zod';
 import type { Prisma, Website } from '@/generated/prisma/client';
-import { ROLES } from '@/lib/constants';
-import prisma from '@/lib/prisma';
+import { BOARD_TYPES } from '@/lib/boards';
+import prisma, { getSchema } from '@/lib/prisma';
 import redis from '@/lib/redis';
-import type { QueryFilters } from '@/lib/types';
+import { sanitizeSortFilters } from '@/lib/sort';
+import type { PageResult, QueryFilters } from '@/lib/types';
+
+const WEBSITE_SORT_FIELDS = ['name', 'domain', 'createdAt'] as const;
+
+export type WebsiteListItem = Website & {
+  shareId: string | null;
+  user?: { id: string; username: string } | null;
+  createUser?: { id: string; username: string } | null;
+  team?: {
+    members: { userId: string; role: string }[];
+  } | null;
+};
+
+async function deleteWebsiteDependentData(tx: any, websiteId: string) {
+  await tx.sessionReplaySaved.deleteMany({
+    where: { websiteId },
+  });
+
+  await tx.sessionReplay.deleteMany({
+    where: { websiteId },
+  });
+
+  await tx.heatmapEvent.deleteMany({
+    where: { websiteId },
+  });
+
+  await tx.revenue.deleteMany({
+    where: { websiteId },
+  });
+
+  await tx.errorEvent.deleteMany({
+    where: { websiteId },
+  });
+
+  await tx.errorIssue.deleteMany({
+    where: { websiteId },
+  });
+
+  await tx.errorRateLimit.deleteMany({
+    where: { websiteId },
+  });
+
+  await tx.eventData.deleteMany({
+    where: { websiteId },
+  });
+
+  // Follow the real EventData -> WebsiteEvent dependency to clean up any legacy rows
+  // whose duplicated websiteId drifted from the parent event row.
+  const schema = getSchema();
+
+  if (schema) {
+    await tx.$executeRawUnsafe(`SET search_path TO "${schema}";`);
+  }
+
+  await tx.$executeRawUnsafe(
+    `
+      delete from event_data
+      using website_event
+      where event_data.website_event_id = website_event.event_id
+        and website_event.website_id = $1
+    `,
+    websiteId,
+  );
+
+  await tx.sessionData.deleteMany({
+    where: { websiteId },
+  });
+
+  await tx.sessionLink.deleteMany({
+    where: { websiteId },
+  });
+
+  await tx.websiteEvent.deleteMany({
+    where: { websiteId },
+  });
+
+  await tx.session.deleteMany({
+    where: { websiteId },
+  });
+}
 
 export async function findWebsite(criteria: Prisma.WebsiteFindUniqueArgs) {
   return prisma.client.website.findUnique(criteria);
 }
 
 export async function getWebsite(websiteId: string) {
+  if (!z.uuid().safeParse(websiteId).success) {
+    return null;
+  }
+
   const website = await findWebsite({
     where: {
       id: websiteId,
@@ -22,8 +107,12 @@ export async function getWebsite(websiteId: string) {
   return attachShareIdToWebsite(website);
 }
 
-export async function getWebsites(criteria: Prisma.WebsiteFindManyArgs, filters: QueryFilters) {
-  const { search } = filters;
+export async function getWebsites(
+  criteria: Prisma.WebsiteFindManyArgs,
+  filters: QueryFilters,
+): Promise<PageResult<WebsiteListItem[]>> {
+  const sortFilters = sanitizeSortFilters(filters, WEBSITE_SORT_FIELDS);
+  const { search } = sortFilters;
   const { getSearchParameters, pagedQuery } = prisma;
 
   const where: Prisma.WebsiteWhereInput = {
@@ -37,12 +126,15 @@ export async function getWebsites(criteria: Prisma.WebsiteFindManyArgs, filters:
     deletedAt: null,
   };
 
-  const websites = await pagedQuery('website', { ...criteria, where }, filters);
+  const websites = await pagedQuery('website', { ...criteria, where }, sortFilters);
 
   return attachShareIdToWebsites(websites);
 }
 
-export async function getAllUserWebsitesIncludingTeamOwner(userId: string, filters?: QueryFilters) {
+export async function getAllUserWebsitesIncludingTeamAccess(
+  userId: string,
+  filters?: QueryFilters,
+) {
   return getWebsites(
     {
       where: {
@@ -53,7 +145,6 @@ export async function getAllUserWebsitesIncludingTeamOwner(userId: string, filte
               deletedAt: null,
               members: {
                 some: {
-                  role: ROLES.teamOwner,
                   userId,
                 },
               },
@@ -62,10 +153,7 @@ export async function getAllUserWebsitesIncludingTeamOwner(userId: string, filte
         ],
       },
     },
-    {
-      orderBy: 'name',
-      ...filters,
-    },
+    sanitizeSortFilters(filters, WEBSITE_SORT_FIELDS, { orderBy: 'name' }),
   );
 }
 
@@ -84,10 +172,7 @@ export async function getUserWebsites(userId: string, filters?: QueryFilters) {
         },
       },
     },
-    {
-      orderBy: 'name',
-      ...filters,
-    },
+    sanitizeSortFilters(filters, WEBSITE_SORT_FIELDS, { orderBy: 'name' }),
   );
 }
 
@@ -122,47 +207,66 @@ export async function updateWebsite(
   websiteId: string,
   data: Prisma.WebsiteUpdateInput | Prisma.WebsiteUncheckedUpdateInput,
 ) {
-  return prisma.client.website.update({
+  const website = await prisma.client.website.update({
     where: {
       id: websiteId,
     },
     data,
   });
+
+  // Collection reads the website from Redis, so drop it after any change (e.g. a transfer).
+  if (redis.enabled) {
+    await redis.client.del(`website:${websiteId}`);
+  }
+
+  return website;
+}
+
+// Single-website boards only ever show their website, so they move with it to the new owner.
+// Their shares are keyed by board id and move with them.
+export async function transferWebsite(
+  websiteId: string,
+  owner: { userId: string; teamId: null } | { userId: null; teamId: string },
+) {
+  // prisma.transaction takes `any`, so TypeScript picks the batch overload and infers `any[]`
+  const website = await (prisma.transaction(async (tx: Prisma.TransactionClient) => {
+    const current = await tx.website.findUnique({
+      where: { id: websiteId },
+      select: { userId: true, teamId: true },
+    });
+
+    const updated = await tx.website.update({ where: { id: websiteId }, data: owner });
+
+    if (current?.teamId || current?.userId) {
+      await tx.board.updateMany({
+        where: {
+          type: BOARD_TYPES.website,
+          parameters: { path: ['websiteId'], equals: websiteId },
+          ...(current.teamId
+            ? { teamId: current.teamId }
+            : { userId: current.userId, teamId: null }),
+        },
+        data: owner,
+      });
+    }
+
+    return updated;
+  }) as unknown as Promise<Website>);
+
+  // Collection reads the website from Redis, so drop it after the transfer.
+  if (redis.enabled) {
+    await redis.client.del(`website:${websiteId}`);
+  }
+
+  return website;
 }
 
 export async function resetWebsite(websiteId: string) {
   const { transaction } = prisma;
-  const cloudMode = !!process.env.CLOUD_MODE;
 
   return transaction(
     async tx => {
-      await tx.sessionReplaySaved.deleteMany({
-        where: { websiteId },
-      });
-
-      await tx.sessionReplay.deleteMany({
-        where: { websiteId },
-      });
-
-      await tx.revenue.deleteMany({
-        where: { websiteId },
-      });
-
-      await tx.eventData.deleteMany({
-        where: { websiteId },
-      });
-
-      await tx.sessionData.deleteMany({
-        where: { websiteId },
-      });
-
-      await tx.websiteEvent.deleteMany({
-        where: { websiteId },
-      });
-
-      await tx.session.deleteMany({
-        where: { websiteId },
-      });
+      await deleteWebsiteDependentData(tx, websiteId);
 
       const website = await tx.website.update({
         where: { id: websiteId },
@@ -177,7 +281,7 @@ export async function resetWebsite(websiteId: string) {
       timeout: 30000,
     },
   ).then(async data => {
-    if (cloudMode) {
+    if (redis.enabled) {
       await redis.client.set(`website:${websiteId}`, data);
     }
 
@@ -191,39 +295,17 @@ export async function deleteWebsite(websiteId: string) {
 
   return transaction(
     async tx => {
-      await tx.sessionReplaySaved.deleteMany({
-        where: { websiteId },
-      });
-
-      await tx.sessionReplay.deleteMany({
-        where: { websiteId },
-      });
-
-      await tx.revenue.deleteMany({
-        where: { websiteId },
-      });
-
-      await tx.eventData.deleteMany({
-        where: { websiteId },
-      });
-
-      await tx.sessionData.deleteMany({
-        where: { websiteId },
-      });
-
-      await tx.websiteEvent.deleteMany({
-        where: { websiteId },
-      });
-
-      await tx.session.deleteMany({
-        where: { websiteId },
-      });
+      await deleteWebsiteDependentData(tx, websiteId);
 
       await tx.report.deleteMany({
         where: { websiteId },
       });
 
       await tx.segment.deleteMany({
+        where: { websiteId },
+      });
+
+      await tx.annotation.deleteMany({
         where: { websiteId },
       });
 
@@ -248,7 +330,7 @@ export async function deleteWebsite(websiteId: string) {
       timeout: 30000,
     },
   ).then(async data => {
-    if (cloudMode) {
+    if (redis.enabled) {
       await redis.client.del(`website:${websiteId}`);
     }
 
@@ -260,6 +342,15 @@ export async function getWebsiteCount(userId: string) {
   return prisma.client.website.count({
     where: {
       userId,
+      deletedAt: null,
+    },
+  });
+}
+
+export async function getTeamWebsiteCount(teamId: string) {
+  return prisma.client.website.count({
+    where: {
+      teamId,
       deletedAt: null,
     },
   });
@@ -284,14 +375,9 @@ export async function attachShareIdToWebsite(website: Website) {
   };
 }
 
-export async function attachShareIdToWebsites(websites: {
-  data: any;
-  count: any;
-  page: number;
-  pageSize: number;
-  orderBy: string;
-  search: string;
-}) {
+export async function attachShareIdToWebsites(
+  websites: PageResult<(Website & Partial<WebsiteListItem>)[]>,
+): Promise<PageResult<WebsiteListItem[]>> {
   const websiteIds = websites.data.map(website => website.id);
 
   if (websiteIds.length === 0) {

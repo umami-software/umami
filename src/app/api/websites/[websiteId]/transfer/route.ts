@@ -2,7 +2,7 @@ import { z } from 'zod';
 import { parseRequest } from '@/lib/request';
 import { badRequest, json, unauthorized } from '@/lib/response';
 import { canTransferWebsiteToTeam, canTransferWebsiteToUser } from '@/permissions';
-import { updateWebsite } from '@/queries/prisma';
+import { transferWebsite } from '@/queries/prisma';
 
 export async function POST(
   request: Request,
@@ -27,7 +27,7 @@ export async function POST(
       return unauthorized();
     }
 
-    const website = await updateWebsite(websiteId, {
+    const website = await transferWebsite(websiteId, {
       userId,
       teamId: null,
     });
@@ -38,7 +38,7 @@ export async function POST(
       return unauthorized();
     }
 
-    const website = await updateWebsite(websiteId, {
+    const website = await transferWebsite(websiteId, {
       userId: null,
       teamId,
     });

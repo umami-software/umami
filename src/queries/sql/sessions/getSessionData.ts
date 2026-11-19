@@ -1,10 +1,13 @@
 import clickhouse from '@/lib/clickhouse';
 import { CLICKHOUSE, PRISMA, runQuery } from '@/lib/db';
 import prisma from '@/lib/prisma';
+import type { SessionDataValue } from '@/lib/types';
 
 const FUNCTION_NAME = 'getSessionData';
 
-export async function getSessionData(...args: [websiteId: string, sessionId: string]) {
+export async function getSessionData(
+  ...args: [websiteId: string, sessionId: string]
+): Promise<SessionDataValue[]> {
   return runQuery({
     [PRISMA]: () => relationalQuery(...args),
     [CLICKHOUSE]: () => clickhouseQuery(...args),

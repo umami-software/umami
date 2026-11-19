@@ -13,15 +13,9 @@ export function BoardEntityBadge({
   domain?: string;
 }) {
   return (
-    <Row padding borderRadius="full" backgroundColor="surface-base" border gap="2">
+    <Row padding borderRadius="full" backgroundColor="surface" border gap="2">
       <Icon>
-        {type === 'pixel' ? (
-          <Grid2x2 />
-        ) : type === 'link' ? (
-          <Link />
-        ) : (
-          <Favicon domain={domain} />
-        )}
+        {type === 'pixel' ? <Grid2x2 /> : type === 'link' ? <Link /> : <Favicon domain={domain} />}
       </Icon>
       <Text size="sm">{name}</Text>
     </Row>

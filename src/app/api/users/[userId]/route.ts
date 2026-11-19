@@ -53,24 +53,25 @@ export async function POST(request: Request, { params }: { params: Promise<{ use
 
   const data: any = {};
 
-  if (password) {
+  // Only admin can change these fields. Users change their own password through
+  // /api/me/password, which requires the current password.
+  if (password && auth.user.isAdmin) {
     data.password = hashPassword(password);
   }
 
-  // Only admin can change these fields
   if (role && auth.user.isAdmin) {
     data.role = role;
   }
 
   if (username && auth.user.isAdmin) {
-    data.username = username;
+    data.username = username.toLowerCase();
   }
 
   // Check when username changes
   if (data.username && user.username !== data.username) {
-    const user = await getUserByUsername(username);
+    const existingUser = await getUserByUsername(data.username);
 
-    if (user) {
+    if (existingUser && existingUser.id !== userId) {
       return badRequest({ message: 'User already exists' });
     }
   }

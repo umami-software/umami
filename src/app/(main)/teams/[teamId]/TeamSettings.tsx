@@ -9,6 +9,7 @@ import { TeamsMemberAddButton } from '../TeamsMemberAddButton';
 import { TeamEditForm } from './TeamEditForm';
 import { TeamManage } from './TeamManage';
 import { TeamMembersDataTable } from './TeamMembersDataTable';
+import { TeamTwoFactorSettings } from './TeamTwoFactorSettings';
 
 export function TeamSettings({ teamId }: { teamId: string }) {
   const team: any = useTeam();
@@ -45,6 +46,11 @@ export function TeamSettings({ teamId }: { teamId: string }) {
         </Row>
         <TeamMembersDataTable teamId={teamId} allowEdit={canEdit} />
       </Panel>
+      {isAdmin && (
+        <Panel>
+          <TeamTwoFactorSettings teamId={teamId} />
+        </Panel>
+      )}
       {isTeamOwner && (
         <Panel>
           <TeamManage teamId={teamId} />

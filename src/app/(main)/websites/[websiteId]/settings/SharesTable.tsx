@@ -1,51 +1,133 @@
-import { DataColumn, DataTable, type DataTableProps, Row } from '@umami/react-zen';
-import { CopyButton } from '@/components/common/CopyButton';
-import { DateDistance } from '@/components/common/DateDistance';
-import { ExternalLink } from '@/components/common/ExternalLink';
-import { useConfig, useMessages, useMobile } from '@/components/hooks';
-import { ShareDeleteButton } from './ShareDeleteButton';
-import { ShareEditButton } from './ShareEditButton';
+import {
+  Button,
+  Dialog,
+  Icon,
+  Modal,
+  Row,
+} from '@umami/react-zen';
+import { useState } from 'react';
+import { ControlledDialog } from '@/components/common/ControlledDialog';
+import { ConfirmationForm } from '@/components/common/ConfirmationForm';
+import { useDeleteQuery, useMessages, useMobile, useModified } from '@/components/hooks';
+import { Edit, Trash } from 'lucide-react';
+import { SharedSharesTable } from '@/components/share/SharedSharesTable';
+import { ShareEditForm } from './ShareEditForm';
 
-export function SharesTable(props: DataTableProps) {
+export function SharesTable({ data = [] }: { data?: any[] }) {
   const { t, labels } = useMessages();
-  const { cloudMode } = useConfig();
   const { isMobile } = useMobile();
+  const [editShareId, setEditShareId] = useState<string | null>(null);
+  const [deleteShare, setDeleteShare] = useState<{ id: string; slug: string } | null>(null);
 
-  const getUrl = (slug: string) => {
-    if (cloudMode) {
-      return `${process.env.cloudUrl}/share/${slug}`;
+  return (
+    <>
+      <SharedSharesTable
+        data={data}
+        renderActions={({ id, slug }) => (
+          <Row>
+            <Button variant="quiet" aria-label={t(labels.edit)} onPress={() => setEditShareId(id)}>
+              <Icon>
+                <Edit />
+              </Icon>
+            </Button>
+            <Button
+              variant="quiet"
+              aria-label={t(labels.delete)}
+              onPress={() => setDeleteShare({ id, slug })}
+            >
+              <Icon>
+                <Trash />
+              </Icon>
+            </Button>
+          </Row>
+        )}
+      />
+      <ControlledDialog>
+        <Modal isOpen={!!editShareId} onOpenChange={isOpen => !isOpen && setEditShareId(null)}>
+          <Dialog
+            title={t(labels.share)}
+            style={{
+              width: isMobile ? '100%' : '600px',
+              height: isMobile ? '100%' : undefined,
+              maxHeight: isMobile ? '100%' : 'min(80dvh, calc(100dvh - 40px))',
+              overflowY: 'auto',
+              padding: '32px',
+            }}
+          >
+            {editShareId && (
+              <ShareEditForm shareId={editShareId} onClose={() => setEditShareId(null)} />
+            )}
+          </Dialog>
+        </Modal>
+      </ControlledDialog>
+      {deleteShare && (
+        <ShareDeleteDialog
+          share={deleteShare}
+          onClose={() => setDeleteShare(null)}
+          title={t(labels.confirm)}
+          deleteLabel={t(labels.delete)}
+        />
+      )}
+    </>
+  );
+}
+
+function ShareDeleteDialog({
+  share,
+  onClose,
+  title,
+  deleteLabel,
+}: {
+  share: { id: string; slug: string } | null;
+  onClose: () => void;
+  title: string;
+  deleteLabel: string;
+}) {
+  const { t, messages, getErrorMessage } = useMessages();
+  const { mutateAsync, isPending, error } = useDeleteQuery(`/share/id/${share.id}`);
+  const { touch } = useModified();
+
+  const handleConfirm = async () => {
+    if (!share) {
+      return;
     }
-    return `${window?.location.origin}${process.env.basePath || ''}/share/${slug}`;
+
+    await mutateAsync(null, {
+      onSuccess: () => {
+        touch('shares');
+        onClose();
+      },
+    });
   };
 
   return (
-    <DataTable {...props} displayMode={isMobile ? 'cards' : 'table'}>
-      <DataColumn id="name" label={t(labels.name)}>
-        {({ name }: any) => name}
-      </DataColumn>
-      <DataColumn id="slug" label={t(labels.shareUrl)} width="2fr">
-        {({ slug }: any) => {
-          const url = getUrl(slug);
-          return (
-            <Row alignItems="center" gap="1" overflow="hidden">
-              <ExternalLink href={url} prefetch={false}>
-                {isMobile ? slug : url}
-              </ExternalLink>
-              <CopyButton value={url} label="Copy URL" />
-            </Row>
-          );
-        }}
-      </DataColumn>
-      <DataColumn id="action" align="end" width="100px">
-        {({ id, slug }: any) => {
-          return (
-            <Row>
-              <ShareEditButton shareId={id} />
-              <ShareDeleteButton shareId={id} slug={slug} />
-            </Row>
-          );
-        }}
-      </DataColumn>
-    </DataTable>
+    <ControlledDialog>
+      <Modal isOpen={!!share} onOpenChange={isOpen => !isOpen && onClose()}>
+        <Dialog
+          title={title}
+          style={{
+            width: '400px',
+            maxHeight: 'min(80dvh, calc(100dvh - 40px))',
+            overflowY: 'auto',
+            padding: '32px',
+          }}
+        >
+          {share && (
+            <ConfirmationForm
+              message={t.rich(messages.confirmRemove, {
+                target: share.slug,
+                b: chunks => <b>{chunks}</b>,
+              })}
+              isLoading={isPending}
+              error={getErrorMessage(error)}
+              onConfirm={handleConfirm}
+              onClose={onClose}
+              buttonLabel={deleteLabel}
+              buttonVariant="danger"
+            />
+          )}
+        </Dialog>
+      </Modal>
+    </ControlledDialog>
   );
 }

@@ -1,6 +1,6 @@
 import { Column, DataColumn, DataTable, Text } from '@umami/react-zen';
 import { LoadingPanel } from '@/components/common/LoadingPanel';
-import { useFields, useFormat, useMessages, useResultQuery } from '@/components/hooks';
+import { useBreakdownQuery, useFields, useFormat, useMessages } from '@/components/hooks';
 import { formatShortTime } from '@/lib/format';
 
 export interface BreakdownProps {
@@ -14,8 +14,7 @@ export function Breakdown({ websiteId, selectedFields = [], startDate, endDate }
   const { t, labels } = useMessages();
   const { formatValue } = useFormat();
   const { fields } = useFields();
-  const { data, error, isLoading } = useResultQuery<any>(
-    'breakdown',
+  const { data, error, isLoading } = useBreakdownQuery(
     {
       websiteId,
       startDate,

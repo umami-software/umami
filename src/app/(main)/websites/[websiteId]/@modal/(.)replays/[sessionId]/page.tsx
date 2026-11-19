@@ -7,5 +7,5 @@ export default async function ({
 }) {
   const { websiteId, sessionId } = await params;
 
-  return <ReplayModal websiteId={websiteId} sessionId={sessionId} />;
+  return <ReplayModal websiteId={websiteId} replayId={sessionId} />;
 }

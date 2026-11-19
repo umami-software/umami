@@ -9,7 +9,6 @@ import {
   Select,
   Text,
 } from '@umami/react-zen';
-import { type Key, useState } from 'react';
 import {
   useLoginQuery,
   useMessages,
@@ -30,7 +29,6 @@ export function WebsiteTransferForm({
 }) {
   const { user } = useLoginQuery();
   const website = useWebsite();
-  const [teamId, setTeamId] = useState<string>(null);
   const { t, labels, messages, getErrorMessage } = useMessages();
   const { mutateAsync, error, isPending } = useUpdateQuery(`/websites/${websiteId}/transfer`);
   const { data: teams, isLoading } = useUserTeamsQuery(user.id);
@@ -44,11 +42,11 @@ export function WebsiteTransferForm({
       ),
     ) || [];
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (data: { teamId?: string }) => {
     await mutateAsync(
       {
         userId: website.teamId ? user.id : undefined,
-        teamId: website.userId ? teamId : undefined,
+        teamId: website.userId ? data.teamId : undefined,
       },
       {
         onSuccess: async () => {
@@ -59,42 +57,50 @@ export function WebsiteTransferForm({
     );
   };
 
-  const handleChange = (key: Key) => {
-    setTeamId(key as string);
-  };
-
   if (isLoading) {
     return <Loading icon="dots" placement="center" />;
   }
 
   return (
-    <Form onSubmit={handleSubmit} error={getErrorMessage(error)} values={{ teamId }}>
-      <Text>
-        {t(isTeamWebsite ? messages.transferTeamWebsiteToUser : messages.transferUserWebsiteToTeam)}
-      </Text>
-      <FormField name="teamId">
-        {!isTeamWebsite && (
-          <Select onSelectionChange={handleChange} selectedKey={teamId}>
-            {items.map(({ id, name }) => {
-              return (
-                <ListItem key={`${id}`} id={`${id}`}>
-                  {name}
-                </ListItem>
-              );
-            })}
-          </Select>
-        )}
-      </FormField>
-      <FormButtons>
-        <Button onPress={onClose}>{t(labels.cancel)}</Button>
-        <FormSubmitButton
-          variant="primary"
-          isPending={isPending}
-          isDisabled={!isTeamWebsite && !teamId}
-        >
-          {t(labels.transfer)}
-        </FormSubmitButton>
-      </FormButtons>
+    <Form onSubmit={handleSubmit} error={getErrorMessage(error)} defaultValues={{ teamId: '' }}>
+      {({ watch }) => {
+        const selectedTeamId = watch('teamId');
+
+        return (
+          <>
+            <Text>
+              {t(
+                isTeamWebsite
+                  ? messages.transferTeamWebsiteToUser
+                  : messages.transferUserWebsiteToTeam,
+              )}
+            </Text>
+            <FormField name="teamId">
+              {!isTeamWebsite && (
+                <Select>
+                  {items.map(({ id, name }) => {
+                    return (
+                      <ListItem key={`${id}`} id={`${id}`}>
+                        {name}
+                      </ListItem>
+                    );
+                  })}
+                </Select>
+              )}
+            </FormField>
+            <FormButtons>
+              <Button onPress={onClose}>{t(labels.cancel)}</Button>
+              <FormSubmitButton
+                variant="primary"
+                isLoading={isPending}
+                isDisabled={!isTeamWebsite && !selectedTeamId}
+              >
+                {t(labels.transfer)}
+              </FormSubmitButton>
+            </FormButtons>
+          </>
+        );
+      }}
     </Form>
   );
 }

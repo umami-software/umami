@@ -1,6 +1,6 @@
 import { Icon, Row, Text } from '@umami/react-zen';
-import Link from '@/components/common/Link';
 import { type HTMLAttributes, type ReactNode, useState } from 'react';
+import Link from '@/components/common/Link';
 import { useMessages, useNavigation } from '@/components/hooks';
 import { ExternalLink } from '@/components/icons';
 
@@ -10,9 +10,17 @@ export interface FilterLinkProps extends HTMLAttributes<HTMLDivElement> {
   label?: string;
   icon?: ReactNode;
   externalUrl?: string;
+  wrapEmptyLabel?: boolean;
 }
 
-export function FilterLink({ type, value, label, externalUrl, icon }: FilterLinkProps) {
+export function FilterLink({
+  type,
+  value,
+  label,
+  externalUrl,
+  icon,
+  wrapEmptyLabel = true,
+}: FilterLinkProps) {
   const [showLink, setShowLink] = useState(false);
   const { t, labels } = useMessages();
   const { updateParams, query } = useNavigation();
@@ -23,15 +31,18 @@ export function FilterLink({ type, value, label, externalUrl, icon }: FilterLink
     <Row
       alignItems="center"
       gap
-      fontWeight={active && selected ? 'bold' : undefined}
       color={active && !selected ? 'muted' : undefined}
       onMouseOver={() => setShowLink(true)}
       onMouseOut={() => setShowLink(false)}
     >
       {icon}
-      {!value && `(${label || t(labels.unknown)})`}
+      {!value && (
+        <Text weight={active && selected ? 'bold' : undefined}>
+          {wrapEmptyLabel ? `(${label || t(labels.unknown)})` : label || t(labels.unknown)}
+        </Text>
+      )}
       {value && (
-        <Text title={label || value} truncate>
+        <Text title={label || value} truncate weight={active && selected ? 'bold' : undefined}>
           <Link href={updateParams({ [type]: `eq.${value}` })} replace>
             {label || value}
           </Link>

@@ -1,5 +1,5 @@
 import { LoadingPanel } from '@/components/common/LoadingPanel';
-import { useDateRange, useMessages } from '@/components/hooks';
+import { useDateRange, useMessages, useTimezone } from '@/components/hooks';
 import { useWebsiteStatsQuery } from '@/components/hooks/queries/useWebsiteStatsQuery';
 import { MetricCard } from '@/components/metrics/MetricCard';
 import { MetricsBar } from '@/components/metrics/MetricsBar';
@@ -12,7 +12,8 @@ export function LinkMetricsBar({
   showChange?: boolean;
   compareMode?: boolean;
 }) {
-  const { isAllTime } = useDateRange();
+  const { timezone } = useTimezone();
+  const { isAllTime, hasComparison } = useDateRange({ timezone });
   const { t, labels } = useMessages();
   const { data, isLoading, isFetching, error } = useWebsiteStatsQuery({ websiteId: linkId });
 
@@ -60,7 +61,7 @@ export function LinkMetricsBar({
               change={change}
               formatValue={formatValue}
               reverseColors={reverseColors}
-              showChange={!isAllTime}
+              showChange={!isAllTime && hasComparison}
             />
           );
         })}

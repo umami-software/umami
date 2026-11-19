@@ -7,10 +7,12 @@ function BoardComponentRendererComponent({
   config,
   websiteId,
   entityType,
+  isPreview,
 }: {
   config: BoardComponentConfig;
   websiteId?: string;
   entityType?: string;
+  isPreview?: boolean;
 }) {
   const definition = getComponentDefinition(config.type);
 
@@ -33,7 +35,13 @@ function BoardComponentRendererComponent({
     );
   }
 
-  return <Component {...(websiteId ? { websiteId } : {})} {...config.props} />;
+  return (
+    <Component
+      {...(websiteId ? { websiteId } : {})}
+      {...(isPreview ? { isPreview } : {})}
+      {...config.props}
+    />
+  );
 }
 
 export const BoardComponentRenderer = memo(
@@ -41,6 +49,7 @@ export const BoardComponentRenderer = memo(
   (prevProps, nextProps) =>
     prevProps.websiteId === nextProps.websiteId &&
     prevProps.entityType === nextProps.entityType &&
+    prevProps.isPreview === nextProps.isPreview &&
     prevProps.config === nextProps.config,
 );
 

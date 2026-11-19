@@ -1,8 +1,8 @@
 import { z } from 'zod';
 import { parseRequest } from '@/lib/request';
-import { json, notFound, ok, unauthorized } from '@/lib/response';
-import { anyObjectParam, segmentTypeParam } from '@/lib/schema';
-import { canDeleteWebsite, canUpdateWebsite, canViewWebsite } from '@/permissions';
+import { badRequest, json, notFound, ok, unauthorized } from '@/lib/response';
+import { segmentParamSchema, segmentTypeParam } from '@/lib/schema';
+import { canDeleteWebsite, canUpdateWebsite, canViewSharedWebsiteFilters } from '@/permissions';
 import { deleteSegment, getWebsiteSegment, updateSegment } from '@/queries/prisma';
 
 export async function GET(
@@ -17,7 +17,7 @@ export async function GET(
 
   const { websiteId, segmentId } = await params;
 
-  if (!(await canViewWebsite(auth, websiteId))) {
+  if (!(await canViewSharedWebsiteFilters(auth, websiteId))) {
     return unauthorized();
   }
 
@@ -36,8 +36,8 @@ export async function POST(
 ) {
   const schema = z.object({
     type: segmentTypeParam,
-    name: z.string().max(200),
-    parameters: anyObjectParam,
+    name: z.string().min(1).max(200),
+    parameters: segmentParamSchema,
   });
 
   const { auth, body, error } = await parseRequest(request, schema);
@@ -48,6 +48,17 @@ export async function POST(
 
   const { websiteId, segmentId } = await params;
   const { type, name, parameters } = body;
+
+  if (type === 'cohort' && parameters.sessionPropertyFilters?.length) {
+    return badRequest({ message: 'Session property filters are only supported for segments.' });
+  }
+
+  if (
+    type === 'cohort' &&
+    (!parameters.action?.type || !parameters.action?.value || !parameters.dateRange)
+  ) {
+    return badRequest({ message: 'Cohorts require an action type, action value, and date range.' });
+  }
 
   if (!(await canUpdateWebsite(auth, websiteId))) {
     return unauthorized();

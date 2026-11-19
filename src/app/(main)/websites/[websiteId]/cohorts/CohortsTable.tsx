@@ -1,8 +1,8 @@
 import { DataColumn, DataTable, type DataTableProps, Row } from '@umami/react-zen';
-import Link from '@/components/common/Link';
 import { CohortDeleteButton } from '@/app/(main)/websites/[websiteId]/cohorts/CohortDeleteButton';
 import { CohortEditButton } from '@/app/(main)/websites/[websiteId]/cohorts/CohortEditButton';
 import { DateDistance } from '@/components/common/DateDistance';
+import Link from '@/components/common/Link';
 import { useMessages, useNavigation } from '@/components/hooks';
 import { filtersObjectToArray } from '@/lib/params';
 

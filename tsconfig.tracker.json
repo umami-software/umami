@@ -1,0 +1,17 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "declaration": false,
+    "incremental": false,
+    "noEmit": true,
+    "noImplicitAny": true,
+    "outDir": "./public",
+    "rootDir": "./src/tracker",
+    "sourceMap": false,
+    "strict": true,
+    "strictNullChecks": true,
+    "target": "es2022"
+  },
+  "include": ["src/tracker/**/*.ts"],
+  "exclude": ["src/tracker/**/*.test.ts"]
+}

@@ -39,10 +39,9 @@ async function relationalQuery(websiteId: string, filters: QueryFilters) {
     group by website_event.event_id
   `;
 
-  const count = await rawQuery(
-    `select count(*) as num from (${eventQuery}) t`,
-    queryParams,
-  ).then((res: any) => res[0].num);
+  const count = await rawQuery(`select count(*) as num from (${eventQuery}) t`, queryParams).then(
+    (res: any) => res[0].num,
+  );
 
   const data = await rawQuery(
     `
@@ -106,10 +105,9 @@ async function clickhouseQuery(websiteId: string, filters: QueryFilters) {
     group by event_data.event_id
   `;
 
-  const count = await rawQuery(
-    `select count(*) as num from (${eventQuery}) t`,
-    queryParams,
-  ).then((res: any) => res[0].num);
+  const count = await rawQuery(`select count(*) as num from (${eventQuery}) t`, queryParams).then(
+    (res: any) => res[0].num,
+  );
 
   const data = await rawQuery(
     `

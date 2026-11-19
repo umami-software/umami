@@ -1,7 +1,7 @@
 import { z } from 'zod';
 import { parseRequest } from '@/lib/request';
 import { json, unauthorized } from '@/lib/response';
-import { canUpdateWebsite, canViewWebsite } from '@/permissions';
+import { canUpdateWebsite, canViewAuthenticatedWebsite } from '@/permissions';
 import {
   createReplaySaved,
   deleteReplaySaved,
@@ -20,7 +20,7 @@ export async function GET(
 
   const { websiteId, replayId } = await params;
 
-  if (!(await canViewWebsite(auth, websiteId))) {
+  if (!(await canViewAuthenticatedWebsite(auth, websiteId))) {
     return unauthorized();
   }
 

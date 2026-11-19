@@ -1,8 +1,9 @@
 import { z } from 'zod';
 import { uuid } from '@/lib/crypto';
+import { isEntityIdInUse } from '@/lib/entity';
 import { getQueryFilters, parseRequest } from '@/lib/request';
-import { json, unauthorized } from '@/lib/response';
-import { pagingParams, searchParams } from '@/lib/schema';
+import { badRequest, json, unauthorized } from '@/lib/response';
+import { pagingParams, searchParams, sortingParams } from '@/lib/schema';
 import { canCreateTeamWebsite, canCreateWebsite } from '@/permissions';
 import { createPixel, getUserPixels } from '@/queries/prisma';
 
@@ -10,6 +11,7 @@ export async function GET(request: Request) {
   const schema = z.object({
     ...pagingParams,
     ...searchParams,
+    ...sortingParams,
   });
 
   const { auth, query, error } = await parseRequest(request, schema);
@@ -28,7 +30,7 @@ export async function GET(request: Request) {
 export async function POST(request: Request) {
   const schema = z.object({
     name: z.string().max(100),
-    slug: z.string().max(100),
+    slug: z.string().min(8).max(100),
     teamId: z.string().nullable().optional(),
     id: z.uuid().nullable().optional(),
   });
@@ -41,8 +43,17 @@ export async function POST(request: Request) {
 
   const { id, name, slug, teamId } = body;
 
-  if ((teamId && !(await canCreateTeamWebsite(auth, teamId))) || !(await canCreateWebsite(auth))) {
+  const canCreate = teamId
+    ? await canCreateTeamWebsite(auth, teamId)
+    : await canCreateWebsite(auth);
+
+  if (!canCreate) {
     return unauthorized();
+  }
+
+  // Ids share one namespace with every entity and user; see isEntityIdInUse.
+  if (id && (await isEntityIdInUse(id))) {
+    return badRequest({ message: 'ID already in use.' });
   }
 
   const data: any = {

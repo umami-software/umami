@@ -23,6 +23,14 @@ export async function GET(request: Request, { params }: { params: Promise<{ team
     return notFound({ message: 'Team not found.' });
   }
 
+  // The access code lets anyone join the team as a member, so only roles that can edit the
+  // team receive it.
+  if (!(await canUpdateTeam(auth, teamId))) {
+    const { accessCode: _accessCode, ...rest } = team;
+
+    return json(rest);
+  }
+
   return json(team);
 }
 

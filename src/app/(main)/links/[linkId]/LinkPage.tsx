@@ -10,7 +10,7 @@ import { WebsiteChart } from '@/app/(main)/websites/[websiteId]/WebsiteChart';
 import { PageBody } from '@/components/common/PageBody';
 import { Panel } from '@/components/common/Panel';
 
-const excludedIds = ['path', 'entry', 'exit', 'title', 'language', 'screen', 'event'];
+const excludedIds = ['path', 'fullPath', 'entry', 'exit', 'title', 'language', 'screen', 'event'];
 
 export function LinkPage({
   linkId,
@@ -28,7 +28,7 @@ export function LinkPage({
             <LinkControls linkId={linkId} />
             <LinkMetricsBar linkId={linkId} showChange={true} />
             <Panel>
-              <WebsiteChart websiteId={linkId} />
+              <WebsiteChart websiteId={linkId} allowBarDrill={true} />
             </Panel>
             <LinkPanels linkId={linkId} />
           </PageBody>

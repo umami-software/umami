@@ -1,14 +1,6 @@
-import { IconLabel } from '@/components/common/IconLabel';
-import { useMessages, useNavigation, useShare } from '@/components/hooks';
-import { AlignEndHorizontal, Clock, Eye, PanelLeft, Sheet, Tag, User } from '@/components/icons';
-import { LanguageButton } from '@/components/input/LanguageButton';
-import { PreferencesButton } from '@/components/input/PreferencesButton';
-import { Funnel, Gauge, Lightning, Magnet, Money, Network, Path, Target } from '@/components/svg';
-import { buildPath } from '@/lib/url';
 import {
   Button,
   Column,
-  Focusable,
   Icon,
   Row,
   Text,
@@ -16,7 +8,15 @@ import {
   Tooltip,
   TooltipTrigger,
 } from '@umami/react-zen';
+import { IconLabel } from '@/components/common/IconLabel';
 import Link from '@/components/common/Link';
+import { useMessages, useNavigation, useShare } from '@/components/hooks';
+import { AlignEndHorizontal, Clock, Eye, PanelLeft, Sheet, Tag, User } from '@/components/icons';
+import { LanguageButton } from '@/components/input/LanguageButton';
+import { PreferencesButton } from '@/components/input/PreferencesButton';
+import { Funnel, Gauge, Lightning, Magnet, Money, Network, Path, Target } from '@/components/svg';
+import { allowShareFilter, excludeShareFilterParam, getShareTheme } from '@/lib/share';
+import { buildPath } from '@/lib/url';
 import { ShareBranding } from './ShareBranding';
 
 export function ShareNav({
@@ -32,12 +32,19 @@ export function ShareNav({
   const { t, labels } = useMessages();
   const { pathname, query } = useNavigation();
   const { slug, parameters } = share;
+  const allowFilter = allowShareFilter(parameters);
+  const shareTheme = getShareTheme(parameters);
 
   const renderPath = (path: string) =>
     buildPath(`/share/${slug}${path}`, {
-      ...query,
+      ...Object.fromEntries(
+        Object.entries(query).filter(([key]) => {
+          return allowFilter || !excludeShareFilterParam(key);
+        }),
+      ),
       event: undefined,
       compare: undefined,
+      theme: undefined,
       view: undefined,
       unit: undefined,
       excludeBounce: undefined,
@@ -55,18 +62,6 @@ export function ShareNav({
           label: t(labels.sessions),
           icon: <User />,
           path: renderPath('/sessions'),
-        },
-        {
-          id: 'realtime',
-          label: t(labels.realtime),
-          icon: <Clock />,
-          path: renderPath('/realtime'),
-        },
-        {
-          id: 'performance',
-          label: t(labels.performance),
-          icon: <Gauge />,
-          path: renderPath('/performance'),
         },
         {
           id: 'compare',
@@ -116,6 +111,24 @@ export function ShareNav({
         },
       ],
     },
+    {
+      section: 'monitoring',
+      label: t(labels.monitoring),
+      items: [
+        {
+          id: 'realtime',
+          label: t(labels.realtime),
+          icon: <Clock />,
+          path: renderPath('/realtime'),
+        },
+        {
+          id: 'performance',
+          label: t(labels.performance),
+          icon: <Gauge />,
+          path: renderPath('/performance'),
+        },
+      ],
+    },
   ];
 
   // Filter items based on parameters
@@ -161,7 +174,7 @@ export function ShareNav({
         {items.map(({ label: sectionLabel, items: sectionItems }, index) => (
           <Column key={`${sectionLabel}${index}`} gap="1" marginBottom="1">
             {!collapsed && (
-              <Row padding>
+              <Row paddingX="3" marginTop="2">
                 <Text weight="bold">{sectionLabel}</Text>
               </Row>
             )}
@@ -169,26 +182,37 @@ export function ShareNav({
               const isSelected = selectedKey === id;
               return (
                 <Link key={id} href={path} role="button" onClick={onItemClick}>
-                  <TooltipTrigger isDisabled={!collapsed} delay={0}>
-                    <Focusable>
+                  {collapsed ? (
+                    <TooltipTrigger delay={0}>
                       <Row
+                        tabIndex={0}
                         alignItems="center"
-                        justifyContent={collapsed ? 'center' : undefined}
+                        justifyContent="center"
                         hover={{ backgroundColor: 'surface-sunken' }}
                         backgroundColor={isSelected ? 'surface-sunken' : undefined}
                         borderRadius
                         minHeight="40px"
                       >
-                        <IconLabel
-                          icon={icon}
-                          label={collapsed ? '' : label}
-                          weight={isSelected ? 'bold' : undefined}
-                          {...(!collapsed && { padding: true })}
-                        />
+                        <IconLabel icon={icon} label="" weight={isSelected ? 'bold' : undefined} />
                       </Row>
-                    </Focusable>
-                    <Tooltip placement="right">{label}</Tooltip>
-                  </TooltipTrigger>
+                      <Tooltip placement="right">{label}</Tooltip>
+                    </TooltipTrigger>
+                  ) : (
+                    <Row
+                      alignItems="center"
+                      hover={{ backgroundColor: 'surface-sunken' }}
+                      backgroundColor={isSelected ? 'surface-sunken' : undefined}
+                      borderRadius
+                      minHeight="40px"
+                    >
+                      <IconLabel
+                        icon={icon}
+                        label={label}
+                        weight={isSelected ? 'bold' : undefined}
+                        padding
+                      />
+                    </Row>
+                  )}
                 </Link>
               );
             })}
@@ -202,13 +226,13 @@ export function ShareNav({
       >
         {collapsed ? (
           <Column gap="2" alignItems="center">
-            <ThemeButton />
+            {!shareTheme && <ThemeButton />}
             <LanguageButton />
             <PreferencesButton />
           </Column>
         ) : (
           <Row>
-            <ThemeButton />
+            {!shareTheme && <ThemeButton />}
             <LanguageButton />
             <PreferencesButton />
           </Row>

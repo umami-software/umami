@@ -10,7 +10,7 @@ import { WebsiteChart } from '@/app/(main)/websites/[websiteId]/WebsiteChart';
 import { PageBody } from '@/components/common/PageBody';
 import { Panel } from '@/components/common/Panel';
 
-const excludedIds = ['path', 'entry', 'exit', 'title', 'language', 'screen', 'event'];
+const excludedIds = ['path', 'fullPath', 'entry', 'exit', 'title', 'language', 'screen', 'event'];
 
 export function PixelPage({
   pixelId,
@@ -28,7 +28,7 @@ export function PixelPage({
             <PixelControls pixelId={pixelId} />
             <PixelMetricsBar pixelId={pixelId} showChange={true} />
             <Panel>
-              <WebsiteChart websiteId={pixelId} />
+              <WebsiteChart websiteId={pixelId} allowBarDrill={true} />
             </Panel>
             <PixelPanels pixelId={pixelId} />
           </PageBody>

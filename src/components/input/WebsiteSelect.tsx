@@ -31,7 +31,7 @@ export function WebsiteSelect({
   const { user } = useLoginQuery();
   const { data, isLoading } = useUserWebsitesQuery(
     { userId: user?.id, teamId },
-    { search, pageSize: 20, includeTeams },
+    { search, pageSize: 100, includeTeams: includeTeams || undefined },
   );
   const listItems: { id: string; name: string }[] = data?.data || [];
 
@@ -74,29 +74,33 @@ export function WebsiteSelect({
   return (
     <Select
       {...props}
-      value={websiteId}
+      value={websiteId ?? null}
       isLoading={isLoading}
       allowSearch={true}
-      searchValue={search}
       onSearch={handleSearch}
-      onChange={handleChange}
+      onChange={value => handleChange(value as string)}
       onOpenChange={handleOpenChange}
       renderValue={renderValue}
       buttonProps={{
         ...buttonProps,
+        className: [
+          'border-transparent bg-transparent shadow-none hover:border-transparent hover:bg-interactive active:bg-interactive-hover',
+          buttonProps?.className,
+        ]
+          .filter(Boolean)
+          .join(' '),
         style: {
-          minHeight: 40,
           gap: 0,
           justifyContent: isCollapsed ? 'start' : undefined,
           ...buttonProps?.style,
         },
       }}
+      maxHeight={480}
       listProps={{
         ...listProps,
         renderEmptyState:
           listProps?.renderEmptyState || (() => <Empty message={t(messages.noResultsFound)} />),
         style: {
-          maxHeight: 'calc(42vh - 65px)',
           width: 280,
           ...listProps?.style,
         },

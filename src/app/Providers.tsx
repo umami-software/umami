@@ -1,11 +1,12 @@
 'use client';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { RouterProvider, ZenProvider } from '@umami/react-zen';
-import { useRouter } from 'next/navigation';
 import { NextIntlClientProvider } from 'next-intl';
-import { useEffect } from 'react';
+import { type ReactNode, useEffect } from 'react';
 import { ErrorBoundary } from '@/components/common/ErrorBoundary';
 import { useLocale } from '@/components/hooks';
+import { type Config, ConfigContext } from '@/components/hooks/useConfig';
+import { FlagsContext, type FlagValues } from '@/components/hooks/useFlag';
 import 'chartjs-adapter-date-fns';
 
 const client = new QueryClient({
@@ -33,30 +34,28 @@ function MessagesProvider({ children }) {
   );
 }
 
-export function Providers({ children }) {
-  const router = useRouter();
-
-  function navigate(url: string) {
-    if (shouldUseNativeLink(url)) {
-      window.location.href = url;
-    } else {
-      router.push(url);
-    }
-  }
-
-  function shouldUseNativeLink(url: string) {
-    return url.startsWith('http');
-  }
-
+export function Providers({
+  config,
+  flags,
+  children,
+}: {
+  config: Config;
+  flags: FlagValues;
+  children: ReactNode;
+}) {
   return (
-    <ZenProvider>
-      <RouterProvider navigate={navigate}>
-        <MessagesProvider>
-          <QueryClientProvider client={client}>
-            <ErrorBoundary>{children}</ErrorBoundary>
-          </QueryClientProvider>
-        </MessagesProvider>
-      </RouterProvider>
-    </ZenProvider>
+    <ConfigContext.Provider value={config}>
+      <FlagsContext.Provider value={flags}>
+        <ZenProvider>
+          <RouterProvider>
+            <MessagesProvider>
+              <QueryClientProvider client={client}>
+                <ErrorBoundary>{children}</ErrorBoundary>
+              </QueryClientProvider>
+            </MessagesProvider>
+          </RouterProvider>
+        </ZenProvider>
+      </FlagsContext.Provider>
+    </ConfigContext.Provider>
   );
 }

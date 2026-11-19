@@ -1,5 +1,6 @@
 import { DataColumn, DataTable, type DataTableProps } from '@umami/react-zen';
 import type { ReactNode } from 'react';
+import { SortableLabel } from '@/components/common/SortableLabel';
 import { useMessages } from '@/components/hooks';
 import { ROLES } from '@/lib/constants';
 
@@ -12,7 +13,7 @@ export function TeamsTable({ renderLink, ...props }: TeamsTableProps) {
 
   return (
     <DataTable {...props}>
-      <DataColumn id="name" label={t(labels.name)}>
+      <DataColumn id="name" label={<SortableLabel label={t(labels.name)} sortKey="name" />}>
         {renderLink}
       </DataColumn>
       <DataColumn id="owner" label={t(labels.owner)}>

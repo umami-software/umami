@@ -4,19 +4,19 @@ import { useState } from 'react';
 import { FieldSelectForm } from '@/app/(main)/websites/[websiteId]/(reports)/breakdown/FieldSelectForm';
 import { WebsiteControls } from '@/app/(main)/websites/[websiteId]/WebsiteControls';
 import { Panel } from '@/components/common/Panel';
-import { useDateRange, useMessages, useResultQuery } from '@/components/hooks';
+import { useBreakdownQuery, useDateRange, useMessages, useTimezone } from '@/components/hooks';
 import { ListCheck } from '@/components/icons';
-import { DownloadButton } from '@/components/input/DownloadButton';
 import { DialogButton } from '@/components/input/DialogButton';
+import { DownloadButton } from '@/components/input/DownloadButton';
 import { Breakdown } from './Breakdown';
 
 export function BreakdownPage({ websiteId }: { websiteId: string }) {
+  const { timezone } = useTimezone();
   const {
     dateRange: { startDate, endDate },
-  } = useDateRange();
+  } = useDateRange({ timezone });
   const [fields, setFields] = useState(['path']);
-  const { data } = useResultQuery<any>(
-    'breakdown',
+  const { data } = useBreakdownQuery(
     { websiteId, startDate, endDate, fields },
     { enabled: !!fields.length },
   );

@@ -91,7 +91,7 @@ export function WebsiteDateFilter({
             <Select
               value={compare}
               onChange={handleSelect}
-              style={{ width: 200 }}
+              buttonProps={{ style: { width: 200 } }}
               popoverProps={{ style: { width: 200 } }}
             >
               <ListItem id="prev">{t(labels.previousPeriod)}</ListItem>

@@ -5,7 +5,7 @@ import { getRandomChars } from '@/lib/generate';
 import { parseRequest } from '@/lib/request';
 import { json, unauthorized } from '@/lib/response';
 import { anyObjectParam, filterParams, pagingParams } from '@/lib/schema';
-import { canUpdateWebsite, canViewWebsite } from '@/permissions';
+import { canUpdateWebsite, canViewAuthenticatedWebsite } from '@/permissions';
 import { createShare, getSharesByEntityId } from '@/queries/prisma';
 
 export async function GET(
@@ -26,7 +26,7 @@ export async function GET(
   const { websiteId } = await params;
   const { page, pageSize, search } = query;
 
-  if (!(await canViewWebsite(auth, websiteId))) {
+  if (!(await canViewAuthenticatedWebsite(auth, websiteId))) {
     return unauthorized();
   }
 

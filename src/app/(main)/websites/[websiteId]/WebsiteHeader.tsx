@@ -31,7 +31,7 @@ export function WebsiteHeader({
       titleHref={allowLink ? renderUrl(`/websites/${website.id}`, false) : undefined}
     >
       <Row alignItems="center" gap="6" wrap="wrap">
-        <ActiveUsers websiteId={website.id} />
+        <ActiveUsers websiteId={website.id} allowLink={allowLink} />
 
         {showActions && (
           <LinkButton href={renderUrl(`/websites/${website.id}/settings`, false)}>

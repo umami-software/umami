@@ -1,7 +1,13 @@
 import clickhouse from '@/lib/clickhouse';
+import { FILTER_COLUMNS, SESSION_COLUMNS } from '@/lib/constants';
 import { CLICKHOUSE, PRISMA, runQuery } from '@/lib/db';
 import prisma from '@/lib/prisma';
+import { escapeLikeValue } from '@/lib/search';
 import type { QueryFilters } from '@/lib/types';
+
+const SESSION_DB_COLUMNS = new Set(
+  SESSION_COLUMNS.map(col => FILTER_COLUMNS[col as keyof typeof FILTER_COLUMNS]).filter(Boolean),
+);
 
 const FUNCTION_NAME = 'getValues';
 
@@ -28,14 +34,14 @@ async function relationalQuery(websiteId: string, column: string, filters: Query
   }
 
   if (search) {
-    if (decodeURIComponent(search).includes(',')) {
-      searchQuery = `AND (${decodeURIComponent(search)
+    if (search.includes(',')) {
+      searchQuery = `AND (${search
         .split(',')
         .slice(0, 5)
         .map((value: string, index: number) => {
           const key = `search${index}`;
 
-          params[key] = value;
+          params[key] = `%${escapeLikeValue(value)}%`;
 
           return getSearchSQL(column, key).replace('and ', '');
         })
@@ -45,13 +51,27 @@ async function relationalQuery(websiteId: string, column: string, filters: Query
     }
   }
 
+  if (SESSION_DB_COLUMNS.has(column)) {
+    return rawQuery(
+      `
+      select ${column} as "value", count(*) as "count"
+      from session
+      where website_id = {{websiteId::uuid}}
+        and created_at between {{startDate}} and {{endDate}}
+        ${searchQuery}
+      group by 1
+      order by 2 desc
+      limit 10
+      `,
+      { websiteId, startDate, endDate, search: `%${escapeLikeValue(search ?? '')}%`, ...params },
+      FUNCTION_NAME,
+    );
+  }
+
   return rawQuery(
     `
     select ${column} as "value", count(*) as "count"
     from website_event
-    inner join session
-      on session.session_id = website_event.session_id
-        and session.website_id = website_event.website_id
     where website_event.website_id = {{websiteId::uuid}}
       and website_event.created_at between {{startDate}} and {{endDate}}
       ${searchQuery}
@@ -60,13 +80,7 @@ async function relationalQuery(websiteId: string, column: string, filters: Query
     order by 2 desc
     limit 10
     `,
-    {
-      websiteId,
-      startDate,
-      endDate,
-      search: `%${search}%`,
-      ...params,
-    },
+    { websiteId, startDate, endDate, search: `%${escapeLikeValue(search ?? '')}%`, ...params },
     FUNCTION_NAME,
   );
 }
@@ -84,12 +98,8 @@ async function clickhouseQuery(websiteId: string, column: string, filters: Query
   }
 
   if (search) {
-    searchQuery = `and positionCaseInsensitive(${column}, {search:String}) > 0`;
-  }
-
-  if (search) {
-    if (decodeURIComponent(search).includes(',')) {
-      searchQuery = `AND (${decodeURIComponent(search)
+    if (search.includes(',')) {
+      searchQuery = `AND (${search
         .split(',')
         .slice(0, 5)
         .map((value: string, index: number) => {

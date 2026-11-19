@@ -1,0 +1,12 @@
+/*
+ * Sized to its content up to the max height. The dialog's inner wrapper must be allowed
+ * to shrink, so that past the max height the tab panels scroll instead of clipping.
+ */
+.dialog {
+  display: flex;
+  flex-direction: column;
+}
+
+.dialog > * {
+  min-height: 0;
+}

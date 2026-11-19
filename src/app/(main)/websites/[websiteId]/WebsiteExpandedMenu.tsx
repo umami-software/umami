@@ -11,6 +11,7 @@ import {
   Languages,
   Laptop,
   Layers,
+  Link,
   Link2,
   LogIn,
   LogOut,
@@ -45,13 +46,19 @@ export function WebsiteExpandedMenu({
 
   const items = [
     {
-      label: 'URL',
+      label: t(labels.pages),
       items: [
         {
           id: 'path',
           label: t(labels.path),
           path: updateParams({ view: 'path' }),
           icon: <SquareSlash />,
+        },
+        {
+          id: 'fullPath',
+          label: t(labels.url),
+          path: updateParams({ view: 'fullPath' }),
+          icon: <Link />,
         },
         {
           id: 'entry',

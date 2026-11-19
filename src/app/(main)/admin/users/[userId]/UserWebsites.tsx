@@ -7,9 +7,7 @@ export function UserWebsites({ userId }) {
 
   return (
     <DataGrid query={queryResult}>
-      {({ data }) => (
-        <WebsitesTable data={data} showActions={true} allowEdit={true} allowView={true} />
-      )}
+      {({ data }) => <WebsitesTable data={data} showActions />}
     </DataGrid>
   );
 }

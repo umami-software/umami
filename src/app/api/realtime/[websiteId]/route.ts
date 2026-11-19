@@ -1,15 +1,23 @@
 import { startOfMinute, subMinutes } from 'date-fns';
+import { z } from 'zod';
 import { REALTIME_RANGE } from '@/lib/constants';
 import { getQueryFilters, parseRequest } from '@/lib/request';
 import { json, unauthorized } from '@/lib/response';
-import { canViewWebsite } from '@/permissions';
+import { filterParams, timezoneParam, unitParam } from '@/lib/schema';
+import { canViewWebsiteSection, canViewWebsiteSectionRows } from '@/permissions';
 import { getRealtimeData } from '@/queries/sql';
 
 export async function GET(
   request: Request,
   { params }: { params: Promise<{ websiteId: string }> },
 ) {
-  const { auth, query, error } = await parseRequest(request);
+  const schema = z.object({
+    timezone: timezoneParam.optional(),
+    unit: unitParam.optional(),
+    ...filterParams,
+  });
+
+  const { auth, query, error } = await parseRequest(request, schema);
 
   if (error) {
     return error();
@@ -17,7 +25,10 @@ export async function GET(
 
   const { websiteId } = await params;
 
-  if (!(await canViewWebsite(auth, websiteId))) {
+  // Board shares can read realtime aggregates but not the per-visitor event log.
+  const canViewRows = await canViewWebsiteSectionRows(auth, websiteId, 'realtime');
+
+  if (!canViewRows && !(await canViewWebsiteSection(auth, websiteId, 'realtime'))) {
     return unauthorized();
   }
 
@@ -32,5 +43,5 @@ export async function GET(
 
   const data = await getRealtimeData(websiteId, filters);
 
-  return json(data);
+  return json(canViewRows ? data : { ...data, events: [] });
 }

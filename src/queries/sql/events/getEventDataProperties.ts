@@ -3,11 +3,18 @@ import { CLICKHOUSE, PRISMA, runQuery } from '@/lib/db';
 import prisma from '@/lib/prisma';
 import type { QueryFilters } from '@/lib/types';
 
+export interface EventDataProperty {
+  eventName: string;
+  propertyName: string;
+  dataType: number;
+  total: number;
+}
+
 const FUNCTION_NAME = 'getEventDataProperties';
 
 export async function getEventDataProperties(
   ...args: [websiteId: string, filters: QueryFilters & { propertyName?: string }]
-) {
+): Promise<EventDataProperty[]> {
   return runQuery({
     [PRISMA]: () => relationalQuery(...args),
     [CLICKHOUSE]: () => clickhouseQuery(...args),
@@ -31,6 +38,7 @@ async function relationalQuery(
     select
       website_event.event_name as "eventName",
       event_data.data_key as "propertyName",
+      event_data.data_type as "dataType",
       count(*) as "total"
     from event_data 
     join website_event on website_event.event_id = event_data.website_event_id
@@ -41,8 +49,8 @@ async function relationalQuery(
     where event_data.website_id = {{websiteId::uuid}}
       and event_data.created_at between {{startDate}} and {{endDate}}
     ${filterQuery}
-    group by website_event.event_name, event_data.data_key
-    order by 3 desc
+    group by website_event.event_name, event_data.data_key, event_data.data_type
+    order by 4 desc
     limit 500
     `,
     queryParams,
@@ -53,7 +61,7 @@ async function relationalQuery(
 async function clickhouseQuery(
   websiteId: string,
   filters: QueryFilters & { propertyName?: string },
-): Promise<{ eventName: string; propertyName: string; total: number }[]> {
+): Promise<{ eventName: string; propertyName: string; dataType: number; total: number }[]> {
   const { rawQuery, parseFilters } = clickhouse;
   const { filterQuery, cohortQuery, queryParams } = parseFilters(
     { ...filters, websiteId },
@@ -65,8 +73,9 @@ async function clickhouseQuery(
   return rawQuery(
     `
     select
-      event_name as eventName,
-      data_key as propertyName,
+      event_data.event_name as eventName,
+      event_data.data_key as propertyName,
+      event_data.data_type as dataType,
       count(*) as total
     from event_data
     any left join (
@@ -82,8 +91,8 @@ async function clickhouseQuery(
     where event_data.website_id = {websiteId:UUID}
       and event_data.created_at between {startDate:DateTime64} and {endDate:DateTime64}
     ${filterQuery}
-    group by event_name, data_key
-    order by 1, 3 desc
+    group by event_data.event_name, event_data.data_key, event_data.data_type
+    order by 1, 4 desc
     limit 500
     `,
     queryParams,

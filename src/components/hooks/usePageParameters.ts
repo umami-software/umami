@@ -3,7 +3,7 @@ import { useNavigation } from './useNavigation';
 
 export function usePageParameters() {
   const {
-    query: { page, pageSize, search },
+    query: { page, pageSize, search, orderBy, sortDescending },
   } = useNavigation();
 
   return useMemo(() => {
@@ -11,6 +11,8 @@ export function usePageParameters() {
       page,
       pageSize,
       search,
+      orderBy,
+      sortDescending,
     };
-  }, [page, pageSize, search]);
+  }, [orderBy, page, pageSize, search, sortDescending]);
 }

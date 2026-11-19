@@ -1,17 +1,19 @@
 import { z } from 'zod';
+import { parsePropertyFilters } from '@/lib/params';
 import { getQueryFilters, parseRequest } from '@/lib/request';
 import { json, unauthorized } from '@/lib/response';
-import { filterParams } from '@/lib/schema';
-import { canViewWebsite } from '@/permissions';
+import { filterParams, withPeriodDateRange } from '@/lib/schema';
+import { canViewWebsiteSection } from '@/permissions';
 import { getSessionDataProperties } from '@/queries/sql';
 
 export async function GET(
   request: Request,
   { params }: { params: Promise<{ websiteId: string }> },
 ) {
-  const schema = z.object({
+  const schema = withPeriodDateRange({
     startAt: z.coerce.number().int(),
     endAt: z.coerce.number().int(),
+    propertyName: z.string().optional(),
     ...filterParams,
   });
 
@@ -23,13 +25,15 @@ export async function GET(
 
   const { websiteId } = await params;
 
-  if (!(await canViewWebsite(auth, websiteId))) {
+  if (!(await canViewWebsiteSection(auth, websiteId, 'sessions'))) {
     return unauthorized();
   }
 
-  const filters = await getQueryFilters(query, websiteId);
+  const { propertyName, ...rest } = query;
+  const filters = await getQueryFilters(rest, websiteId);
+  const propertyFilters = parsePropertyFilters(query);
 
-  const data = await getSessionDataProperties(websiteId, filters);
+  const data = await getSessionDataProperties(websiteId, filters, propertyFilters, propertyName);
 
   return json(data);
 }

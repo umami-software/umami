@@ -2,8 +2,9 @@ import { z } from 'zod';
 import { parseRequest } from '@/lib/request';
 import { json, unauthorized } from '@/lib/response';
 import { pagingParams, searchParams } from '@/lib/schema';
-import { canViewWebsite } from '@/permissions';
+import { canViewAuthenticatedWebsite } from '@/permissions';
 import { getSavedReplays } from '@/queries/prisma/sessionReplay';
+import { getReplayDistinctIds } from '@/queries/sql';
 
 export async function GET(
   request: Request,
@@ -22,11 +23,18 @@ export async function GET(
 
   const { websiteId } = await params;
 
-  if (!(await canViewWebsite(auth, websiteId))) {
+  if (!(await canViewAuthenticatedWebsite(auth, websiteId))) {
     return unauthorized();
   }
 
   const data = await getSavedReplays(websiteId, query);
+  const distinctIds = await getReplayDistinctIds(
+    websiteId,
+    data.data.map(({ visitId }) => visitId),
+  );
 
-  return json(data);
+  return json({
+    ...data,
+    data: data.data.map(row => ({ ...row, distinctIds: distinctIds[row.visitId] })),
+  });
 }

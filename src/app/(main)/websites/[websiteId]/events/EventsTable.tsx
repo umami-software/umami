@@ -10,10 +10,10 @@ import {
   Row,
   Text,
 } from '@umami/react-zen';
-import Link from '@/components/common/Link';
 import { Avatar } from '@/components/common/Avatar';
 import { DateDistance } from '@/components/common/DateDistance';
 import { IconLabel } from '@/components/common/IconLabel';
+import Link from '@/components/common/Link';
 import { TypeIcon } from '@/components/common/TypeIcon';
 import { useFormat, useMessages, useNavigation } from '@/components/hooks';
 import { Eye, FileText } from '@/components/icons';
@@ -43,22 +43,25 @@ export function EventsTable(props: DataTableProps) {
       <DataColumn id="event" label={t(labels.event)} width="2fr">
         {(row: any) => {
           return (
-            <Row alignItems="center" wrap="wrap" gap>
-              <Row>
+            <Row alignItems="center" gap="2" wrap="nowrap" style={{ minWidth: 0 }}>
+              <Row style={{ flexShrink: 0 }}>
                 <IconLabel
                   icon={row.eventName ? <Lightning /> : <Eye />}
                   label={t(row.eventName ? labels.triggeredEvent : labels.viewedPage)}
+                  labelProps={{ wrap: 'nowrap' }}
                 />
               </Row>
-              <Text
-                weight="bold"
-                style={{ maxWidth: '300px' }}
-                title={row.eventName || row.urlPath}
-                truncate
-              >
-                {row.eventName || renderLink(row.urlPath, row.hostname)}
-              </Text>
-              {row.hasData > 0 && <PropertiesButton websiteId={row.websiteId} eventId={row.id} />}
+              <Row alignItems="center" gap wrap="nowrap" style={{ minWidth: 0 }}>
+                <Text
+                  weight="bold"
+                  style={{ maxWidth: '300px' }}
+                  title={row.eventName || row.urlPath}
+                  truncate
+                >
+                  {row.eventName || renderLink(row.urlPath, row.hostname)}
+                </Text>
+                {row.hasData > 0 && <PropertiesButton websiteId={row.websiteId} eventId={row.id} />}
+              </Row>
             </Row>
           );
         }}
@@ -110,7 +113,7 @@ const PropertiesButton = props => {
           </Icon>
         </Row>
       </Button>
-      <Popover placement="right">
+      <Popover side="right" sideOffset={8}>
         <Dialog>
           <EventData {...props} />
         </Dialog>

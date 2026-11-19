@@ -3,8 +3,8 @@ import { Loading, useToast } from '@umami/react-zen';
 import { createContext, type ReactNode, useCallback, useEffect, useRef, useState } from 'react';
 import { v4 as uuid } from 'uuid';
 import { useApi, useMessages, useModified, useNavigation } from '@/components/hooks';
-import { BOARD_TYPES, getBoardType } from '@/lib/boards';
 import { useBoardQuery } from '@/components/hooks/queries/useBoardQuery';
+import { BOARD_TYPES, getBoardType } from '@/lib/boards';
 import type { Board, BoardParameters } from '@/lib/types';
 import { getComponentDefinition } from './boardComponentRegistry';
 

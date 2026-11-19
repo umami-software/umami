@@ -1,3 +1,4 @@
+import { toZonedTime } from 'date-fns-tz';
 import { useMemo } from 'react';
 import { useLocale } from '@/components/hooks/useLocale';
 import { useNavigation } from '@/components/hooks/useNavigation';
@@ -11,19 +12,31 @@ export function useDateRange(options: { ignoreOffset?: boolean; timezone?: strin
   } = useNavigation();
   const { locale } = useLocale();
   const dateRange = useMemo(() => {
-    const dateRangeObject = parseDateRange(
+    let dateRangeObject = parseDateRange(
       date || getItem(DATE_RANGE_CONFIG) || DEFAULT_DATE_RANGE_VALUE,
       unit,
       locale,
       options.timezone,
     );
 
+    if (!dateRangeObject) {
+      dateRangeObject = parseDateRange(DEFAULT_DATE_RANGE_VALUE, unit, locale, options.timezone);
+    }
+
     return !options.ignoreOffset && offset
       ? getOffsetDateRange(dateRangeObject, +offset)
       : dateRangeObject;
-  }, [date, unit, offset, options]);
+  }, [date, unit, offset, options, locale]);
 
-  const dateCompare = getCompareDate(compare, dateRange.startDate, dateRange.endDate);
+  const now = new Date();
+  const dateCompare = getCompareDate(
+    compare,
+    dateRange.startDate,
+    dateRange.endDate,
+    options.timezone ? toZonedTime(now, options.timezone) : now,
+  );
+  // In the first hour of a period no whole hour has elapsed, so the comparison window is empty.
+  const hasComparison = !(dateCompare.endDate < dateCompare.startDate);
 
   return {
     date,
@@ -34,5 +47,6 @@ export function useDateRange(options: { ignoreOffset?: boolean; timezone?: strin
     isCustomRange: date.startsWith('range:'),
     dateRange,
     dateCompare,
+    hasComparison,
   };
 }

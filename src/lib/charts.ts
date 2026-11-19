@@ -24,3 +24,18 @@ export function renderDateLabels(unit: string, locale: string) {
     }
   };
 }
+
+export function getChartBucketIndex(data: any[], date: Date) {
+  let index = -1;
+
+  for (let i = 0; i < data.length; i++) {
+    const timestamp = new Date(data[i]?.x ?? data[i]).getTime();
+
+    if (!Number.isFinite(timestamp)) continue;
+    if (timestamp > date.getTime()) break;
+
+    index = i;
+  }
+
+  return index;
+}
