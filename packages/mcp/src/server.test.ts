@@ -9,6 +9,8 @@ const WEBSITE_ID = '6f2a7e0e-2b0f-4b3f-9f0a-1234567890ab';
 const SESSION_ID = '0b3b6c2e-1f4a-4d0c-9a5e-abcdefabcdef';
 const FUNNEL_ID = '1a2b3c4d-0000-4000-8000-000000000001';
 const GOAL_ID = '1a2b3c4d-0000-4000-8000-000000000002';
+const ISSUE_ID = '1a2b3c4d-0000-4000-8000-000000000003';
+const ERROR_EVENT_ID = '1a2b3c4d-0000-4000-8000-000000000004';
 
 type Handler = (url: URL, init?: RequestInit) => { status?: number; body: unknown };
 
@@ -360,6 +362,72 @@ describe('createUmamiMcpServer', () => {
       };
     }
 
+    if (path === `/api/websites/${WEBSITE_ID}/errors`) {
+      return {
+        body: {
+          data: [
+            {
+              id: ISSUE_ID,
+              title: 'TypeError: x is undefined',
+              status: 'unresolved',
+              occurrences: 12,
+              visits: 5,
+              lastSeen: '2024-01-04T00:00:00.000Z',
+            },
+          ],
+          count: 1,
+          page: 1,
+          pageSize: 20,
+        },
+      };
+    }
+
+    if (path === `/api/websites/${WEBSITE_ID}/errors/stats`) {
+      return {
+        body: {
+          occurrences: 12,
+          visits: 5,
+          issues: 1,
+          series: [{ date: '2024-01-02', occurrences: 12 }],
+        },
+      };
+    }
+
+    if (path === `/api/websites/${WEBSITE_ID}/errors/${ISSUE_ID}`) {
+      return {
+        body: {
+          id: ISSUE_ID,
+          title: 'TypeError: x is undefined',
+          status: 'resolved',
+          resolvedAt: '2024-01-05T00:00:00.000Z',
+          occurrences: 12,
+          visits: 5,
+          series: [{ date: '2024-01-02', occurrences: 12 }],
+        },
+      };
+    }
+
+    if (path === `/api/websites/${WEBSITE_ID}/errors/${ISSUE_ID}/events`) {
+      return {
+        body: {
+          data: [{ id: ERROR_EVENT_ID, createdAt: '2024-01-03T00:00:00.000Z', release: '1.2.0' }],
+          count: 1,
+          page: 1,
+          pageSize: 10,
+        },
+      };
+    }
+
+    if (path === `/api/websites/${WEBSITE_ID}/errors/${ISSUE_ID}/events/${ERROR_EVENT_ID}`) {
+      return {
+        body: {
+          id: ERROR_EVENT_ID,
+          stack: 'TypeError: x is undefined\n    at pay (app.js:10:5)',
+          tags: { plan: 'pro' },
+        },
+      };
+    }
+
     if (path === `/api/websites/${WEBSITE_ID}/annotations`) {
       return {
         body: {
@@ -446,6 +514,9 @@ describe('createUmamiMcpServer', () => {
         'run_funnel',
         'get_goals',
         'get_annotations',
+        'get_errors',
+        'get_error_issue',
+        'get_error_stats',
         'list_segments',
         'get_performance',
         'run_journey',
@@ -917,6 +988,85 @@ describe('createUmamiMcpServer', () => {
 
     expect(url.searchParams.get('startAt')).toBe(String(Date.parse('2024-01-01')));
     expect(url.searchParams.get('search')).toBe('v2');
+  });
+
+  test('get_errors passes filters and the range, and rejects a bad range', async () => {
+    const result = await harness.client.callTool({
+      name: 'get_errors',
+      arguments: {
+        websiteId: WEBSITE_ID,
+        startAt: '2024-01-01',
+        endAt: '2024-02-01',
+        status: 'unresolved',
+      },
+    });
+
+    expect(result.isError).toBeFalsy();
+    expect(result.structuredContent).toMatchObject({
+      issues: [{ id: ISSUE_ID, status: 'unresolved', occurrences: 12, visits: 5 }],
+      count: 1,
+      hasMore: false,
+    });
+
+    const url = harness.calls[0].url;
+
+    expect(url.searchParams.get('startAt')).toBe(String(Date.parse('2024-01-01')));
+    expect(url.searchParams.get('status')).toBe('unresolved');
+
+    const invalid = await harness.client.callTool({
+      name: 'get_errors',
+      arguments: { websiteId: WEBSITE_ID, startAt: '2024-02-01', endAt: '2024-01-01' },
+    });
+
+    expect(invalid.isError).toBe(true);
+    expect(invalid.structuredContent).toMatchObject({ error: { code: 'invalid_date_range' } });
+  });
+
+  test('get_error_issue returns the issue with recent occurrences, or one stack trace', async () => {
+    const issue = await harness.client.callTool({
+      name: 'get_error_issue',
+      arguments: { websiteId: WEBSITE_ID, issueId: ISSUE_ID, startAt: '2024-01-01' },
+    });
+
+    expect(issue.isError).toBeFalsy();
+    expect(issue.structuredContent).toMatchObject({
+      issue: { id: ISSUE_ID, status: 'resolved', resolvedAt: '2024-01-05T00:00:00.000Z' },
+      series: [{ date: '2024-01-02', occurrences: 12 }],
+      recentOccurrences: [{ id: ERROR_EVENT_ID, release: '1.2.0' }],
+    });
+
+    const event = await harness.client.callTool({
+      name: 'get_error_issue',
+      arguments: {
+        websiteId: WEBSITE_ID,
+        issueId: ISSUE_ID,
+        eventId: ERROR_EVENT_ID,
+        startAt: '2024-01-01',
+      },
+    });
+
+    expect(event.structuredContent).toMatchObject({
+      event: {
+        id: ERROR_EVENT_ID,
+        stack: expect.stringContaining('at pay'),
+        tags: { plan: 'pro' },
+      },
+    });
+  });
+
+  test('get_error_stats returns totals and a trend', async () => {
+    const result = await harness.client.callTool({
+      name: 'get_error_stats',
+      arguments: { websiteId: WEBSITE_ID, startAt: '2024-01-01' },
+    });
+
+    expect(result.isError).toBeFalsy();
+    expect(result.structuredContent).toMatchObject({
+      occurrences: 12,
+      visits: 5,
+      issues: 1,
+      series: [{ date: '2024-01-02', occurrences: 12 }],
+    });
   });
 
   test('get_performance returns vitals, and series + breakdown on request', async () => {
