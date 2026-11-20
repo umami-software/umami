@@ -40,6 +40,7 @@ async function relationalQuery(websiteId: string, filters: QueryFilters) {
     select
       session.session_id as "id",
       session.website_id as "websiteId",
+      session.distinct_id as "distinctId",
       website_event.hostname,
       session.browser,
       session.os,
@@ -66,6 +67,7 @@ async function relationalQuery(websiteId: string, filters: QueryFilters) {
     ${searchQuery}
     group by session.session_id, 
       session.website_id, 
+      session.distinct_id, 
       website_event.hostname, 
       session.browser, 
       session.os, 
@@ -115,6 +117,7 @@ async function clickhouseQuery(websiteId: string, filters: QueryFilters) {
     select
       session_id as id,
       any(website_id) as websiteId,
+      any(distinct_id) as distinctId,
       argMax(hostname, created_at) as hostname,
       argMax(browser, created_at) as browser,
       argMax(os, created_at) as os,
@@ -145,6 +148,7 @@ async function clickhouseQuery(websiteId: string, filters: QueryFilters) {
     select
       session_id as id,
       any(website_id) as websiteId,
+      argMax(distinct_id, max_time) as distinctId,
       argMax(arrayFirst(x -> 1, hostname), max_time) as hostname,
       argMax(browser, max_time) as browser,
       argMax(os, max_time) as os,
