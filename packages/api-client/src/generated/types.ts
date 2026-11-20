@@ -1338,6 +1338,77 @@ export interface paths {
     patch?: never;
     trace?: never;
   };
+  '/api/websites/{websiteId}/alerts': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /** Get websites website id alerts */
+    get: operations['getWebsitesWebsiteIdAlerts'];
+    put?: never;
+    /** Create or update websites website id alerts */
+    post: operations['postWebsitesWebsiteIdAlerts'];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/websites/{websiteId}/alerts/{alertRuleId}': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /** Get websites website id alerts alert rule id */
+    get: operations['getWebsitesWebsiteIdAlertsAlertRuleId'];
+    /** Replace websites website id alerts alert rule id */
+    put: operations['putWebsitesWebsiteIdAlertsAlertRuleId'];
+    post?: never;
+    /** Delete websites website id alerts alert rule id */
+    delete: operations['deleteWebsitesWebsiteIdAlertsAlertRuleId'];
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/websites/{websiteId}/alerts/{alertRuleId}/test': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    /** Create or update websites website id alerts alert rule id test */
+    post: operations['postWebsitesWebsiteIdAlertsAlertRuleIdTest'];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/websites/{websiteId}/alerts/history': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /** Get websites website id alerts history */
+    get: operations['getWebsitesWebsiteIdAlertsHistory'];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
   '/api/websites/{websiteId}/annotations': {
     parameters: {
       query?: never;
@@ -1929,6 +2000,43 @@ export interface paths {
     put?: never;
     post?: never;
     delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/websites/{websiteId}/filters': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /** Get websites website id filters */
+    get: operations['getWebsitesWebsiteIdFilters'];
+    put?: never;
+    /** Create or update websites website id filters */
+    post: operations['postWebsitesWebsiteIdFilters'];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/websites/{websiteId}/filters/{filterRuleId}': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /** Get websites website id filters filter rule id */
+    get: operations['getWebsitesWebsiteIdFiltersFilterRuleId'];
+    /** Replace websites website id filters filter rule id */
+    put: operations['putWebsitesWebsiteIdFiltersFilterRuleId'];
+    post?: never;
+    /** Delete websites website id filters filter rule id */
+    delete: operations['deleteWebsitesWebsiteIdFiltersFilterRuleId'];
     options?: never;
     head?: never;
     patch?: never;
@@ -12850,6 +12958,705 @@ export interface operations {
       };
     };
   };
+  getWebsitesWebsiteIdAlerts: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        /** @description ID of the website. */
+        websiteId: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description The operation completed successfully. */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': {
+            channelConfig:
+              | string
+              | number
+              | false
+              | true
+              | {
+                  [key: string]:
+                    | string
+                    | number
+                    | false
+                    | true
+                    | unknown
+                    | {
+                        length: number;
+                      };
+                }
+              | {
+                  length: number;
+                };
+            channelType: string;
+            /**
+             * Format: date-time
+             * @description Date and time the record was created.
+             */
+            createdAt: string;
+            /** @description Unique identifier of the resource. */
+            id: string;
+            /** @description Whether two-factor authentication is enabled. */
+            isEnabled: boolean;
+            /** Format: date-time */
+            lastTriggeredAt: string;
+            metric: string;
+            /** @description Display name of the resource. */
+            name: string;
+            threshold: {
+              d: number[];
+              e: number;
+              s: number;
+            };
+            type: string;
+            /**
+             * Format: date-time
+             * @description Date and time the record was last updated.
+             */
+            updatedAt: string;
+            /** @description ID of the website. */
+            websiteId: string;
+            windowMinutes: number;
+          }[];
+        };
+      };
+      /** @description Unauthorized. */
+      401: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          /**
+           * @example {
+           *       "error": {
+           *         "code": "unauthorized",
+           *         "message": "Unauthorized.",
+           *         "status": 401
+           *       }
+           *     }
+           */
+          'application/json': components['schemas']['ApiError'];
+        };
+      };
+    };
+  };
+  postWebsitesWebsiteIdAlerts: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        /** @description ID of the website. */
+        websiteId: string;
+      };
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        'application/json': unknown;
+      };
+    };
+    responses: {
+      /** @description The operation completed successfully. */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': {
+            channelConfig:
+              | string
+              | number
+              | false
+              | true
+              | {
+                  [key: string]:
+                    | string
+                    | number
+                    | false
+                    | true
+                    | unknown
+                    | {
+                        length: number;
+                      };
+                }
+              | {
+                  length: number;
+                };
+            channelType: string;
+            /**
+             * Format: date-time
+             * @description Date and time the record was created.
+             */
+            createdAt: string;
+            /** @description Unique identifier of the resource. */
+            id: string;
+            /** @description Whether two-factor authentication is enabled. */
+            isEnabled: boolean;
+            /** Format: date-time */
+            lastTriggeredAt: string;
+            metric: string;
+            /** @description Display name of the resource. */
+            name: string;
+            threshold: {
+              d: number[];
+              e: number;
+              s: number;
+            };
+            type: string;
+            /**
+             * Format: date-time
+             * @description Date and time the record was last updated.
+             */
+            updatedAt: string;
+            /** @description ID of the website. */
+            websiteId: string;
+            windowMinutes: number;
+          };
+        };
+      };
+      /** @description Bad request. */
+      400: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          /**
+           * @example {
+           *       "error": {
+           *         "code": "bad-request",
+           *         "message": "Bad request.",
+           *         "status": 400
+           *       }
+           *     }
+           */
+          'application/json': components['schemas']['ApiError'];
+        };
+      };
+      /** @description Unauthorized. */
+      401: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          /**
+           * @example {
+           *       "error": {
+           *         "code": "unauthorized",
+           *         "message": "Unauthorized.",
+           *         "status": 401
+           *       }
+           *     }
+           */
+          'application/json': components['schemas']['ApiError'];
+        };
+      };
+    };
+  };
+  getWebsitesWebsiteIdAlertsAlertRuleId: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        alertRuleId: string;
+        /** @description ID of the website. */
+        websiteId: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description The operation completed successfully. */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': {
+            channelConfig:
+              | string
+              | number
+              | false
+              | true
+              | {
+                  [key: string]:
+                    | string
+                    | number
+                    | false
+                    | true
+                    | unknown
+                    | {
+                        length: number;
+                      };
+                }
+              | {
+                  length: number;
+                };
+            channelType: string;
+            /**
+             * Format: date-time
+             * @description Date and time the record was created.
+             */
+            createdAt: string;
+            /** @description Unique identifier of the resource. */
+            id: string;
+            /** @description Whether two-factor authentication is enabled. */
+            isEnabled: boolean;
+            /** Format: date-time */
+            lastTriggeredAt: string;
+            metric: string;
+            /** @description Display name of the resource. */
+            name: string;
+            threshold: {
+              d: number[];
+              e: number;
+              s: number;
+            };
+            type: string;
+            /**
+             * Format: date-time
+             * @description Date and time the record was last updated.
+             */
+            updatedAt: string;
+            /** @description ID of the website. */
+            websiteId: string;
+            windowMinutes: number;
+          };
+        };
+      };
+      /** @description Unauthorized. */
+      401: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          /**
+           * @example {
+           *       "error": {
+           *         "code": "unauthorized",
+           *         "message": "Unauthorized.",
+           *         "status": 401
+           *       }
+           *     }
+           */
+          'application/json': components['schemas']['ApiError'];
+        };
+      };
+      /** @description Not found. */
+      404: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          /**
+           * @example {
+           *       "error": {
+           *         "code": "not-found",
+           *         "message": "Not found.",
+           *         "status": 404
+           *       }
+           *     }
+           */
+          'application/json': components['schemas']['ApiError'];
+        };
+      };
+    };
+  };
+  putWebsitesWebsiteIdAlertsAlertRuleId: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        alertRuleId: string;
+        /** @description ID of the website. */
+        websiteId: string;
+      };
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        'application/json': unknown;
+      };
+    };
+    responses: {
+      /** @description The operation completed successfully. */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': {
+            channelConfig:
+              | string
+              | number
+              | false
+              | true
+              | {
+                  [key: string]:
+                    | string
+                    | number
+                    | false
+                    | true
+                    | unknown
+                    | {
+                        length: number;
+                      };
+                }
+              | {
+                  length: number;
+                };
+            channelType: string;
+            /**
+             * Format: date-time
+             * @description Date and time the record was created.
+             */
+            createdAt: string;
+            /** @description Unique identifier of the resource. */
+            id: string;
+            /** @description Whether two-factor authentication is enabled. */
+            isEnabled: boolean;
+            /** Format: date-time */
+            lastTriggeredAt: string;
+            metric: string;
+            /** @description Display name of the resource. */
+            name: string;
+            threshold: {
+              d: number[];
+              e: number;
+              s: number;
+            };
+            type: string;
+            /**
+             * Format: date-time
+             * @description Date and time the record was last updated.
+             */
+            updatedAt: string;
+            /** @description ID of the website. */
+            websiteId: string;
+            windowMinutes: number;
+          };
+        };
+      };
+      /** @description Bad request. */
+      400: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          /**
+           * @example {
+           *       "error": {
+           *         "code": "bad-request",
+           *         "message": "Bad request.",
+           *         "status": 400
+           *       }
+           *     }
+           */
+          'application/json': components['schemas']['ApiError'];
+        };
+      };
+      /** @description Unauthorized. */
+      401: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          /**
+           * @example {
+           *       "error": {
+           *         "code": "unauthorized",
+           *         "message": "Unauthorized.",
+           *         "status": 401
+           *       }
+           *     }
+           */
+          'application/json': components['schemas']['ApiError'];
+        };
+      };
+      /** @description Not found. */
+      404: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          /**
+           * @example {
+           *       "error": {
+           *         "code": "not-found",
+           *         "message": "Not found.",
+           *         "status": 404
+           *       }
+           *     }
+           */
+          'application/json': components['schemas']['ApiError'];
+        };
+      };
+    };
+  };
+  deleteWebsitesWebsiteIdAlertsAlertRuleId: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        alertRuleId: string;
+        /** @description ID of the website. */
+        websiteId: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description The operation completed successfully. */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': {
+            /** @description Whether the operation succeeded. */
+            ok: boolean;
+          };
+        };
+      };
+      /** @description Unauthorized. */
+      401: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          /**
+           * @example {
+           *       "error": {
+           *         "code": "unauthorized",
+           *         "message": "Unauthorized.",
+           *         "status": 401
+           *       }
+           *     }
+           */
+          'application/json': components['schemas']['ApiError'];
+        };
+      };
+      /** @description Not found. */
+      404: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          /**
+           * @example {
+           *       "error": {
+           *         "code": "not-found",
+           *         "message": "Not found.",
+           *         "status": 404
+           *       }
+           *     }
+           */
+          'application/json': components['schemas']['ApiError'];
+        };
+      };
+    };
+  };
+  postWebsitesWebsiteIdAlertsAlertRuleIdTest: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        alertRuleId: string;
+        /** @description ID of the website. */
+        websiteId: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description The operation completed successfully. */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': {
+            /** @description Error details returned when the operation fails. */
+            error?: string;
+            statusCode?: number;
+            success: boolean;
+          };
+        };
+      };
+      /** @description Bad request. */
+      400: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          /**
+           * @example {
+           *       "error": {
+           *         "code": "bad-request",
+           *         "message": "Bad request.",
+           *         "status": 400
+           *       }
+           *     }
+           */
+          'application/json': components['schemas']['ApiError'];
+        };
+      };
+      /** @description Unauthorized. */
+      401: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          /**
+           * @example {
+           *       "error": {
+           *         "code": "unauthorized",
+           *         "message": "Unauthorized.",
+           *         "status": 401
+           *       }
+           *     }
+           */
+          'application/json': components['schemas']['ApiError'];
+        };
+      };
+      /** @description Not found. */
+      404: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          /**
+           * @example {
+           *       "error": {
+           *         "code": "not-found",
+           *         "message": "Not found.",
+           *         "status": 404
+           *       }
+           *     }
+           */
+          'application/json': components['schemas']['ApiError'];
+        };
+      };
+    };
+  };
+  getWebsitesWebsiteIdAlertsHistory: {
+    parameters: {
+      query?: {
+        /** @description Maximum number of results to include. */
+        maxResults?: number;
+        /** @description Page number, starting at 1. */
+        page?: number;
+        /** @description Number of results per page. */
+        pageSize?: number;
+      };
+      header?: never;
+      path: {
+        /** @description ID of the website. */
+        websiteId: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description The operation completed successfully. */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': {
+            /** @description Number of matching records. */
+            count: number;
+            /** @description Data returned by the operation. */
+            data: {
+              alertRuleId: string;
+              channelType: string;
+              /**
+               * Format: date-time
+               * @description Date and time the record was created.
+               */
+              createdAt: string;
+              details:
+                | string
+                | number
+                | false
+                | true
+                | {
+                    [key: string]:
+                      | string
+                      | number
+                      | false
+                      | true
+                      | unknown
+                      | {
+                          length: number;
+                        };
+                  }
+                | {
+                    length: number;
+                  };
+              /** @description Unique identifier of the resource. */
+              id: string;
+              /** @description Human-readable explanation of the result. */
+              message: string;
+              status: string;
+              /** @description Title of the page. */
+              title: string;
+              /** @description ID of the website. */
+              websiteId: string;
+            }[];
+            /** @description Page number, starting at 1. */
+            page: number;
+            /** @description Number of results per page. */
+            pageSize: number;
+          };
+        };
+      };
+      /** @description Bad request. */
+      400: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          /**
+           * @example {
+           *       "error": {
+           *         "code": "bad-request",
+           *         "message": "Bad request.",
+           *         "status": 400
+           *       }
+           *     }
+           */
+          'application/json': components['schemas']['ApiError'];
+        };
+      };
+      /** @description Unauthorized. */
+      401: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          /**
+           * @example {
+           *       "error": {
+           *         "code": "unauthorized",
+           *         "message": "Unauthorized.",
+           *         "status": 401
+           *       }
+           *     }
+           */
+          'application/json': components['schemas']['ApiError'];
+        };
+      };
+    };
+  };
   getWebsiteAnnotations: {
     parameters: {
       query?: {
@@ -16769,6 +17576,403 @@ export interface operations {
         };
         content: {
           'application/json': unknown;
+        };
+      };
+    };
+  };
+  getWebsitesWebsiteIdFilters: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        /** @description ID of the website. */
+        websiteId: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description The operation completed successfully. */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': {
+            action: string;
+            /**
+             * Format: date-time
+             * @description Date and time the record was created.
+             */
+            createdAt: string;
+            /** @description Unique identifier of the resource. */
+            id: string;
+            /** @description Whether two-factor authentication is enabled. */
+            isEnabled: boolean;
+            /** @description Display name of the resource. */
+            name: string;
+            type: string;
+            /**
+             * Format: date-time
+             * @description Date and time the record was last updated.
+             */
+            updatedAt: string;
+            value: string;
+            /** @description ID of the website. */
+            websiteId: string;
+          }[];
+        };
+      };
+      /** @description Unauthorized. */
+      401: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          /**
+           * @example {
+           *       "error": {
+           *         "code": "unauthorized",
+           *         "message": "Unauthorized.",
+           *         "status": 401
+           *       }
+           *     }
+           */
+          'application/json': components['schemas']['ApiError'];
+        };
+      };
+    };
+  };
+  postWebsitesWebsiteIdFilters: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        /** @description ID of the website. */
+        websiteId: string;
+      };
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        'application/json': unknown;
+      };
+    };
+    responses: {
+      /** @description The operation completed successfully. */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': {
+            action: string;
+            /**
+             * Format: date-time
+             * @description Date and time the record was created.
+             */
+            createdAt: string;
+            /** @description Unique identifier of the resource. */
+            id: string;
+            /** @description Whether two-factor authentication is enabled. */
+            isEnabled: boolean;
+            /** @description Display name of the resource. */
+            name: string;
+            type: string;
+            /**
+             * Format: date-time
+             * @description Date and time the record was last updated.
+             */
+            updatedAt: string;
+            value: string;
+            /** @description ID of the website. */
+            websiteId: string;
+          };
+        };
+      };
+      /** @description Bad request. */
+      400: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          /**
+           * @example {
+           *       "error": {
+           *         "code": "bad-request",
+           *         "message": "Bad request.",
+           *         "status": 400
+           *       }
+           *     }
+           */
+          'application/json': components['schemas']['ApiError'];
+        };
+      };
+      /** @description Unauthorized. */
+      401: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          /**
+           * @example {
+           *       "error": {
+           *         "code": "unauthorized",
+           *         "message": "Unauthorized.",
+           *         "status": 401
+           *       }
+           *     }
+           */
+          'application/json': components['schemas']['ApiError'];
+        };
+      };
+    };
+  };
+  getWebsitesWebsiteIdFiltersFilterRuleId: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        filterRuleId: string;
+        /** @description ID of the website. */
+        websiteId: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description The operation completed successfully. */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': {
+            action: string;
+            /**
+             * Format: date-time
+             * @description Date and time the record was created.
+             */
+            createdAt: string;
+            /** @description Unique identifier of the resource. */
+            id: string;
+            /** @description Whether two-factor authentication is enabled. */
+            isEnabled: boolean;
+            /** @description Display name of the resource. */
+            name: string;
+            type: string;
+            /**
+             * Format: date-time
+             * @description Date and time the record was last updated.
+             */
+            updatedAt: string;
+            value: string;
+            /** @description ID of the website. */
+            websiteId: string;
+          };
+        };
+      };
+      /** @description Unauthorized. */
+      401: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          /**
+           * @example {
+           *       "error": {
+           *         "code": "unauthorized",
+           *         "message": "Unauthorized.",
+           *         "status": 401
+           *       }
+           *     }
+           */
+          'application/json': components['schemas']['ApiError'];
+        };
+      };
+      /** @description Not found. */
+      404: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          /**
+           * @example {
+           *       "error": {
+           *         "code": "not-found",
+           *         "message": "Not found.",
+           *         "status": 404
+           *       }
+           *     }
+           */
+          'application/json': components['schemas']['ApiError'];
+        };
+      };
+    };
+  };
+  putWebsitesWebsiteIdFiltersFilterRuleId: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        filterRuleId: string;
+        /** @description ID of the website. */
+        websiteId: string;
+      };
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        'application/json': unknown;
+      };
+    };
+    responses: {
+      /** @description The operation completed successfully. */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': {
+            action: string;
+            /**
+             * Format: date-time
+             * @description Date and time the record was created.
+             */
+            createdAt: string;
+            /** @description Unique identifier of the resource. */
+            id: string;
+            /** @description Whether two-factor authentication is enabled. */
+            isEnabled: boolean;
+            /** @description Display name of the resource. */
+            name: string;
+            type: string;
+            /**
+             * Format: date-time
+             * @description Date and time the record was last updated.
+             */
+            updatedAt: string;
+            value: string;
+            /** @description ID of the website. */
+            websiteId: string;
+          };
+        };
+      };
+      /** @description Bad request. */
+      400: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          /**
+           * @example {
+           *       "error": {
+           *         "code": "bad-request",
+           *         "message": "Bad request.",
+           *         "status": 400
+           *       }
+           *     }
+           */
+          'application/json': components['schemas']['ApiError'];
+        };
+      };
+      /** @description Unauthorized. */
+      401: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          /**
+           * @example {
+           *       "error": {
+           *         "code": "unauthorized",
+           *         "message": "Unauthorized.",
+           *         "status": 401
+           *       }
+           *     }
+           */
+          'application/json': components['schemas']['ApiError'];
+        };
+      };
+      /** @description Not found. */
+      404: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          /**
+           * @example {
+           *       "error": {
+           *         "code": "not-found",
+           *         "message": "Not found.",
+           *         "status": 404
+           *       }
+           *     }
+           */
+          'application/json': components['schemas']['ApiError'];
+        };
+      };
+    };
+  };
+  deleteWebsitesWebsiteIdFiltersFilterRuleId: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        filterRuleId: string;
+        /** @description ID of the website. */
+        websiteId: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description The operation completed successfully. */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': {
+            /** @description Whether the operation succeeded. */
+            ok: boolean;
+          };
+        };
+      };
+      /** @description Unauthorized. */
+      401: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          /**
+           * @example {
+           *       "error": {
+           *         "code": "unauthorized",
+           *         "message": "Unauthorized.",
+           *         "status": 401
+           *       }
+           *     }
+           */
+          'application/json': components['schemas']['ApiError'];
+        };
+      };
+      /** @description Not found. */
+      404: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          /**
+           * @example {
+           *       "error": {
+           *         "code": "not-found",
+           *         "message": "Not found.",
+           *         "status": 404
+           *       }
+           *     }
+           */
+          'application/json': components['schemas']['ApiError'];
         };
       };
     };
