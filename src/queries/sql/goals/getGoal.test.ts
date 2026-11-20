@@ -1,5 +1,5 @@
 import { beforeEach, describe, expect, test, vi } from 'vitest';
-import { getGoal } from './getGoal';
+import { getGoal, getGoalBreakdown, getGoalSummary } from './getGoal';
 
 const { state, prismaRawQuery, prismaParseFilters, clickhouseRawQuery, clickhouseParseFilters } =
   vi.hoisted(() => ({
@@ -75,5 +75,55 @@ describe.each([
     expect(parseFilters).toHaveBeenCalledWith(
       expect.objectContaining({ value: '/blog/%/my\\_edit' }),
     );
+  });
+});
+
+describe.each([
+  ['prisma', prismaRawQuery],
+  ['clickhouse', clickhouseRawQuery],
+] as const)('goal views %s branch', (mode, rawQuery) => {
+  beforeEach(() => {
+    state.mode = mode;
+  });
+
+  // Every view reads the same goal_events CTE, so it can't disagree with the normal view's count.
+  test('views share the goal match used by the stats query', async () => {
+    rawQuery.mockResolvedValue([{ completions: 0, median: 0, sessions: 0 }]);
+
+    await getGoalSummary('website-1', { ...baseParameters, value: '/my_page' }, {});
+
+    expect(rawQuery.mock.calls[0][0]).toContain('goal_events AS');
+    expect(rawQuery.mock.calls[0][0]).toMatch(/and url_path = \{\{?value/);
+  });
+
+  // With no converted sessions there is no time to convert, which differs from 0 seconds.
+  test('summary has no median when nobody converted', async () => {
+    rawQuery.mockResolvedValue([{ completions: '0', median: 0, sessions: '0' }]);
+
+    await expect(
+      getGoalSummary('website-1', { ...baseParameters, value: '/my_page' }, {}),
+    ).resolves.toEqual({ completions: 0, median: null });
+  });
+
+  test('breakdown sorts by visitors and parses counts', async () => {
+    rawQuery.mockResolvedValue([
+      { name: 'mobile', visitors: '10', converted: '1' },
+      { name: 'desktop', visitors: '20', converted: '5' },
+    ]);
+
+    await expect(
+      getGoalBreakdown('website-1', { ...baseParameters, value: '/x', field: 'device' }, {}),
+    ).resolves.toEqual([
+      { name: 'desktop', visitors: 20, converted: 5 },
+      { name: 'mobile', visitors: 10, converted: 1 },
+    ]);
+  });
+
+  // The field is interpolated into SQL, so anything outside the allow list must never reach it.
+  test('breakdown rejects unsupported fields before running SQL', async () => {
+    await expect(
+      getGoalBreakdown('website-1', { ...baseParameters, value: '/x', field: 'url_path' }, {}),
+    ).rejects.toThrow('Unsupported goal breakdown field');
+    expect(rawQuery).not.toHaveBeenCalled();
   });
 });

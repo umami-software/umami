@@ -14,13 +14,13 @@ import { useState } from 'react';
 import { LoadingPanel } from '@/components/common/LoadingPanel';
 import { TypeIcon } from '@/components/common/TypeIcon';
 import { useFormat, useFunnelBreakdownQuery, useMessages } from '@/components/hooks';
-import { FUNNEL_BREAKDOWN_FIELDS } from '@/lib/constants';
+import { BREAKDOWN_FIELDS } from '@/lib/constants';
 import { formatLongNumber } from '@/lib/format';
 import type { FunnelResult } from '@/queries/sql/funnels/getFunnel';
 import { FunnelStepLabel } from './FunnelStepLabel';
 import { formatPercent } from './format';
 
-type BreakdownField = (typeof FUNNEL_BREAKDOWN_FIELDS)[number];
+type BreakdownField = (typeof BREAKDOWN_FIELDS)[number];
 
 // Visitors at each step split by a session attribute, with percentages in the funnel's mode.
 export function FunnelBreakdown({
@@ -49,7 +49,7 @@ export function FunnelBreakdown({
     <Column gap>
       <Row>
         <Select value={field} onChange={value => setField(value as BreakdownField)}>
-          {FUNNEL_BREAKDOWN_FIELDS.map(name => (
+          {BREAKDOWN_FIELDS.map(name => (
             <ListItem key={name} id={name}>
               {fieldLabels[name]}
             </ListItem>

@@ -670,6 +670,21 @@ export const operationDescriptions: Record<string, OperationDescription> = {
     description:
       'Returns the number of conversions and the total for a saved goal over the selected date range, with optional filters.',
   },
+  'GET /api/websites/{websiteId}/goals/{goalId}/chart': {
+    summary: 'Get website saved goal chart',
+    description:
+      'Returns, for each time bucket, how many sessions started and how many of them reached a saved goal, grouped by their first event.',
+  },
+  'GET /api/websites/{websiteId}/goals/{goalId}/summary': {
+    summary: 'Get website saved goal summary',
+    description:
+      'Returns the number of events that matched a saved goal, and the median time in seconds from a session start to its first match.',
+  },
+  'GET /api/websites/{websiteId}/goals/{goalId}/breakdown': {
+    summary: 'Get website saved goal breakdown',
+    description:
+      'Returns visitors and converted visitors for a saved goal split by a session attribute (browser, os, device, or country), for the most common values.',
+  },
   'GET /api/websites/{websiteId}/goals/stats': {
     summary: 'Get website goal stats',
     description:

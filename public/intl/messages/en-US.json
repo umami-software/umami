@@ -142,6 +142,8 @@
     "first-click": "First click",
     "first-seen": "First seen",
     "median-time-to-convert": "Median time to convert",
+    "completions": "Completions",
+    "per-visitor": "per visitor",
     "from-first-step": "From first step",
     "from-previous-step": "From previous step",
     "funnel": "Funnel",

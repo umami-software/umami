@@ -251,6 +251,8 @@ export const labels: Record<string, string> = {
   fromPreviousStep: 'label.from-previous-step',
   conversionOverTime: 'label.conversion-over-time',
   medianTimeToConvert: 'label.median-time-to-convert',
+  completions: 'label.completions',
+  perVisitor: 'label.per-visitor',
   referrer: 'label.referrer',
   hostname: 'label.hostname',
   country: 'label.country',

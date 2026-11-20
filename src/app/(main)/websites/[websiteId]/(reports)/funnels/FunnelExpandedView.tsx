@@ -25,17 +25,14 @@ import { ChangeLabel } from '@/components/metrics/ChangeLabel';
 import { MetricCard } from '@/components/metrics/MetricCard';
 import { MetricsBar } from '@/components/metrics/MetricsBar';
 import { Lightning } from '@/components/svg';
-import { formatLongNumber, formatShortTime } from '@/lib/format';
+import { formatLongNumber } from '@/lib/format';
 import type { FunnelResult } from '@/queries/sql/funnels/getFunnel';
 import { FunnelBreakdown } from './FunnelBreakdown';
 import { FunnelChart } from './FunnelChart';
 import { FunnelStepLabel } from './FunnelStepLabel';
-import { formatPercent } from './format';
+import { formatDuration, formatPercent } from './format';
 
 type PercentMode = 'first' | 'previous';
-
-const formatDuration = (seconds: number) =>
-  formatShortTime(Math.round(seconds), ['d', 'h', 'm', 's'], ' ').trim();
 
 // The bottleneck is the largest drop-off as a share of the previous step, not in visitors.
 export function getBottleneckIndex(data: FunnelResult[]) {
@@ -68,7 +65,7 @@ export function FunnelMaximizeButton({
   return (
     <>
       <TooltipTrigger delay={0}>
-        <Button size="sm" variant="quiet" onPress={() => setIsOpen(true)}>
+        <Button size="icon" variant="quiet" onPress={() => setIsOpen(true)}>
           <Icon>
             <Maximize />
           </Icon>

@@ -59,7 +59,7 @@ export function Funnel({
             </Text>
           </Row>
         </Column>
-        <Row alignItems="center" gap>
+        <Row alignItems="center" gap="1">
           {allowMaximize && !isMobile && !!data?.length && (
             <FunnelMaximizeButton websiteId={websiteId} id={id} name={name} data={data} />
           )}

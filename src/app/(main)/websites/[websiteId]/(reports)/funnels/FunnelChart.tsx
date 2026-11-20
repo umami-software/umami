@@ -15,13 +15,25 @@ import { generateTimeSeries } from '@/lib/date';
 
 // Conversion rate of the whole funnel, by when sessions entered it.
 export function FunnelChart({ websiteId, id }: { websiteId: string; id: string }) {
+  return <ConversionChart {...useFunnelChartQuery({ websiteId, id })} />;
+}
+
+// Converted / entered per time bucket as a line, shared by the funnel and goal views.
+export function ConversionChart({
+  data,
+  isLoading,
+  error,
+}: {
+  data?: Array<{ t: string; entered: number; converted: number }>;
+  isLoading?: boolean;
+  error?: unknown;
+}) {
   const { t, labels } = useMessages();
   const { timezone } = useTimezone();
   const {
     dateRange: { startDate, endDate, unit },
   } = useDateRange({ timezone });
   const { locale, dateLocale } = useLocale();
-  const { data, isLoading, error } = useFunnelChartQuery({ websiteId, id });
 
   const chartData: any = useMemo(() => {
     if (!data) return { datasets: [] };

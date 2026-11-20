@@ -1,5 +1,5 @@
 import clickhouse from '@/lib/clickhouse';
-import { FILTER_COLUMNS, FUNNEL_BREAKDOWN_FIELDS } from '@/lib/constants';
+import { FILTER_COLUMNS, BREAKDOWN_FIELDS } from '@/lib/constants';
 import { CLICKHOUSE, PRISMA, runQuery } from '@/lib/db';
 import prisma from '@/lib/prisma';
 import { getWildcardMatch } from '@/lib/search';
@@ -220,7 +220,7 @@ export async function getFunnelBreakdown(
   const [websiteId, parameters, filters] = args;
   const levelCount = parameters.steps.length;
 
-  if (!(FUNNEL_BREAKDOWN_FIELDS as readonly string[]).includes(parameters.field)) {
+  if (!(BREAKDOWN_FIELDS as readonly string[]).includes(parameters.field)) {
     throw new Error(`Unsupported funnel breakdown field: ${parameters.field}`);
   }
 
@@ -255,7 +255,7 @@ export async function getFunnelBreakdown(
       join session on session.session_id = starts.session_id
         and session.website_id = {{websiteId::uuid}}`),
       ),
-    // Attributes can differ between a session's events, so take the first event's value.
+    // Attributes can differ between a session's events, so take the value when entering the funnel.
     [CLICKHOUSE]: () =>
       clickhouseQuery(
         websiteId,
@@ -263,10 +263,7 @@ export async function getFunnelBreakdown(
         filters,
         breakdownQuery(`
       select session_id, argMin(${column}, created_at) as name
-      from website_event
-      where website_id = {websiteId:UUID}
-        and created_at between {startDate:DateTime64} and {endDate:DateTime64}
-        and session_id in (select session_id from level1)
+      from level1
       group by session_id`),
       ),
   }).then((rows: any[]) => {
@@ -549,7 +546,8 @@ async function clickhouseQuery(
   return rawQuery(
     `
     WITH level0 AS (
-      select distinct event_id, session_id, url_path, referrer_path, event_name, created_at
+      select distinct event_id, session_id, url_path, referrer_path, event_name, created_at,
+        ${BREAKDOWN_FIELDS.map(field => FILTER_COLUMNS[field]).join(', ')}
       from website_event
       ${cohortQuery}
       where (${stepFilterQuery})

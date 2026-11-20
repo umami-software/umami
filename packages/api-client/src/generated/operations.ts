@@ -2786,10 +2786,125 @@ export const operations = {
     ],
     hasBody: false,
   },
+  getWebsiteSavedGoalBreakdown: {
+    operationId: 'getWebsiteSavedGoalBreakdown',
+    method: 'get',
+    path: '/api/websites/{websiteId}/goals/{goalId}/breakdown',
+    pathParams: ['websiteId', 'goalId'],
+    queryParams: [
+      'path',
+      'referrer',
+      'title',
+      'query',
+      'os',
+      'browser',
+      'device',
+      'country',
+      'region',
+      'city',
+      'tag',
+      'hostname',
+      'distinctId',
+      'language',
+      'event',
+      'utmSource',
+      'utmMedium',
+      'utmCampaign',
+      'utmContent',
+      'utmTerm',
+      'segment',
+      'cohort',
+      'eventType',
+      'excludeBounce',
+      'match',
+      'startAt',
+      'endAt',
+      'timezone',
+      'unit',
+      'field',
+    ],
+    hasBody: false,
+  },
+  getWebsiteSavedGoalChart: {
+    operationId: 'getWebsiteSavedGoalChart',
+    method: 'get',
+    path: '/api/websites/{websiteId}/goals/{goalId}/chart',
+    pathParams: ['websiteId', 'goalId'],
+    queryParams: [
+      'path',
+      'referrer',
+      'title',
+      'query',
+      'os',
+      'browser',
+      'device',
+      'country',
+      'region',
+      'city',
+      'tag',
+      'hostname',
+      'distinctId',
+      'language',
+      'event',
+      'utmSource',
+      'utmMedium',
+      'utmCampaign',
+      'utmContent',
+      'utmTerm',
+      'segment',
+      'cohort',
+      'eventType',
+      'excludeBounce',
+      'match',
+      'startAt',
+      'endAt',
+      'timezone',
+      'unit',
+    ],
+    hasBody: false,
+  },
   getWebsiteSavedGoalStats: {
     operationId: 'getWebsiteSavedGoalStats',
     method: 'get',
     path: '/api/websites/{websiteId}/goals/{goalId}/stats',
+    pathParams: ['websiteId', 'goalId'],
+    queryParams: [
+      'path',
+      'referrer',
+      'title',
+      'query',
+      'os',
+      'browser',
+      'device',
+      'country',
+      'region',
+      'city',
+      'tag',
+      'hostname',
+      'distinctId',
+      'language',
+      'event',
+      'utmSource',
+      'utmMedium',
+      'utmCampaign',
+      'utmContent',
+      'utmTerm',
+      'segment',
+      'cohort',
+      'eventType',
+      'excludeBounce',
+      'match',
+      'startAt',
+      'endAt',
+      'timezone',
+      'unit',
+    ],
+    hasBody: false,
+  },
+  getWebsiteSavedGoalSummary: {
+    operationId: 'getWebsiteSavedGoalSummary',
+    method: 'get',
+    path: '/api/websites/{websiteId}/goals/{goalId}/summary',
     pathParams: ['websiteId', 'goalId'],
     queryParams: [
       'path',
@@ -5032,6 +5147,30 @@ export abstract class GeneratedUmamiClient {
   }
 
   /**
+   * Get website saved goal breakdown
+   * Returns visitors and converted visitors for a saved goal split by a session attribute (browser, os, device, or country), for the most common values.
+   * `GET /api/websites/{websiteId}/goals/{goalId}/breakdown`
+   */
+  getWebsiteSavedGoalBreakdown(
+    input: OperationInput<'getWebsiteSavedGoalBreakdown'>,
+    options?: RequestOptions,
+  ): Promise<OperationOutput<'getWebsiteSavedGoalBreakdown'>> {
+    return this.execute('getWebsiteSavedGoalBreakdown', input, options);
+  }
+
+  /**
+   * Get website saved goal chart
+   * Returns, for each time bucket, how many sessions started and how many of them reached a saved goal, grouped by their first event.
+   * `GET /api/websites/{websiteId}/goals/{goalId}/chart`
+   */
+  getWebsiteSavedGoalChart(
+    input: OperationInput<'getWebsiteSavedGoalChart'>,
+    options?: RequestOptions,
+  ): Promise<OperationOutput<'getWebsiteSavedGoalChart'>> {
+    return this.execute('getWebsiteSavedGoalChart', input, options);
+  }
+
+  /**
    * Get website saved goal stats
    * Returns the number of conversions and the total for a saved goal over the selected date range, with optional filters.
    * `GET /api/websites/{websiteId}/goals/{goalId}/stats`
@@ -5041,6 +5180,18 @@ export abstract class GeneratedUmamiClient {
     options?: RequestOptions,
   ): Promise<OperationOutput<'getWebsiteSavedGoalStats'>> {
     return this.execute('getWebsiteSavedGoalStats', input, options);
+  }
+
+  /**
+   * Get website saved goal summary
+   * Returns the number of events that matched a saved goal, and the median time in seconds from a session start to its first match.
+   * `GET /api/websites/{websiteId}/goals/{goalId}/summary`
+   */
+  getWebsiteSavedGoalSummary(
+    input: OperationInput<'getWebsiteSavedGoalSummary'>,
+    options?: RequestOptions,
+  ): Promise<OperationOutput<'getWebsiteSavedGoalSummary'>> {
+    return this.execute('getWebsiteSavedGoalSummary', input, options);
   }
 
   /**

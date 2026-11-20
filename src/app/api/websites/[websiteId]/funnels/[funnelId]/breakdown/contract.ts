@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { funnelBreakdownQuerySchema } from '@/lib/analytics-schema';
+import { savedBreakdownQuerySchema } from '@/lib/analytics-schema';
 import { defineOperation } from '@/openapi/operation';
 import {
   badRequestResponse,
@@ -20,7 +20,7 @@ export const operations = [
       tags: ['Websites'],
       requestParams: {
         path: z.object({ websiteId: z.uuid(), funnelId: z.uuid() }),
-        query: funnelBreakdownQuerySchema,
+        query: savedBreakdownQuerySchema,
       },
       responses: {
         '200': jsonResponse(
