@@ -377,19 +377,44 @@ type MetricEntry = PerformanceEntry & {
 
   /* Event handlers */
 
-  const handlePush = (_state: unknown, _title: string, url?: string | URL | null) => {
+  const trackUrlChange = (url?: string | URL | null) => {
     if (!url) return;
+
+    const normalized = normalize(url);
+
+    // The URL may already have been handled by the pushState/replaceState hook
+    // (e.g. a router calling replaceState while handling popstate). Returning
+    // early keeps currentRef pointing at the previous page, so the pending
+    // pageview does not report itself as its own referrer.
+    if (normalized === currentUrl) return;
 
     if (typeof flushPerformance === 'function') {
       flushPerformance();
     }
 
     currentRef = currentUrl;
-    currentUrl = normalize(url);
+    currentUrl = normalized;
 
-    if (currentUrl !== currentRef && autoPageview) {
+    if (autoPageview) {
       setTimeout(track, delayDuration);
     }
+  };
+
+  const handlePush = (_state: unknown, _title: string, url?: string | URL | null) =>
+    trackUrlChange(url);
+
+  // Back/Forward navigations fire `popstate` without touching pushState or
+  // replaceState, so they need their own listener. `location.href` is read at
+  // event time; the currentUrl/currentRef check keeps this from double
+  // counting when a router also calls replaceState during the same traversal.
+  // Clicking an in-page anchor also fires popstate; hash-only changes are
+  // ignored so they don't count as page views.
+  const handlePopState = () => {
+    const url = normalize(window.location.href);
+
+    if (url.split('#')[0] === currentUrl.split('#')[0]) return;
+
+    trackUrlChange(url);
   };
 
   const handlePathChanges = () => {
@@ -408,6 +433,7 @@ type MetricEntry = PerformanceEntry & {
 
     history.pushState = hook(history, 'pushState', handlePush);
     history.replaceState = hook(history, 'replaceState', handlePush);
+    window.addEventListener('popstate', handlePopState);
   };
 
   const handleClicks = () => {
