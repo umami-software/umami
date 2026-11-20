@@ -10,15 +10,22 @@ import {
   Text,
 } from '@umami/react-zen';
 import { ArrowRight } from 'lucide-react';
-import type { Key } from 'react';
+import { type Key, useEffect } from 'react';
 import { IconLabel } from '@/components/common/IconLabel';
-import { useLoginQuery, useMessages, useMobile, useNavigation } from '@/components/hooks';
+import {
+  useLoginQuery,
+  useMessages,
+  useMobile,
+  useModified,
+  useNavigation,
+} from '@/components/hooks';
 import { ChevronRight, User, Users } from '@/components/icons';
 import { LAST_TEAM_CONFIG } from '@/lib/constants';
 import { removeItem } from '@/lib/storage';
 
 export function TeamsButton() {
-  const { user } = useLoginQuery();
+  const { user, refetch } = useLoginQuery();
+  const { modified } = useModified('teams');
   const { t, labels } = useMessages();
   const { teamId, router } = useNavigation();
   const { isPhone } = useMobile();
@@ -27,6 +34,14 @@ export function TeamsButton() {
   const label = teamId ? team?.name : user.username;
 
   const cloudMode = !!process.env.cloudMode;
+
+  // The user's teams are loaded once with the login. Reload them when teams are
+  // created, joined, left, renamed or deleted so the menu stays current.
+  useEffect(() => {
+    if (modified) {
+      refetch();
+    }
+  }, [modified, refetch]);
 
   const getUrl = (url: string) => {
     return cloudMode ? `${process.env.cloudUrl}${url}` : url;
