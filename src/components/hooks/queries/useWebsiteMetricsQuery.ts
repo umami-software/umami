@@ -4,10 +4,9 @@ import { useApi } from '../useApi';
 import { useDateParameters } from '../useDateParameters';
 import { useFilterParameters } from '../useFilterParameters';
 
-export type WebsiteMetricsData = {
-  x: string;
-  y: number;
-}[];
+export type WebsiteMetricsData =
+  | { x: string; y: number }[]
+  | { data: { x: string; y: number }[]; total: number };
 
 export function useWebsiteMetricsQuery(
   websiteId: string,
