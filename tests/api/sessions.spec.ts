@@ -84,6 +84,30 @@ test.describe('Sessions', () => {
     expect(identifiedSessionId).not.toBe('');
   });
 
+  test('GET /api/websites/{websiteId}/sessions filters by minimum visit duration', async ({
+    admin,
+    seed,
+  }) => {
+    const path = `/api/websites/${seed.website.id}/sessions`;
+    const all = await admin.get(path, { params: dateRange(seed) });
+    const filtered = await admin.get(path, { params: dateRange(seed, { minDuration: 60 }) });
+    // Longer than the whole date window, so no visit can qualify.
+    const none = await admin.get(path, { params: dateRange(seed, { minDuration: 30 * 86400 }) });
+    // Selecting a single page of a visit must not shrink its measured duration:
+    // every seeded visit spans at least 60s across its several pageviews.
+    const page = await admin.get(path, {
+      params: dateRange(seed, { path: '/pricing', minDuration: 60 }),
+    });
+
+    expect(filtered.status).toBe(200);
+    expect(page.status).toBe(200);
+    expect(all.body.count).toBeGreaterThan(0);
+    expect(filtered.body.count).toBeGreaterThan(0);
+    expect(filtered.body.count).toBeLessThanOrEqual(all.body.count);
+    expect(none.body.count).toBe(0);
+    expect(page.body.count).toBeGreaterThan(0);
+  });
+
   test('GET /api/websites/{websiteId}/sessions validates params and permissions', async ({
     admin,
     api,
