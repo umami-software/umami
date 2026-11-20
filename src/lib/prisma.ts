@@ -173,6 +173,10 @@ function mapFilter(
       return `${table}.${column} ~* ${value}`;
     case OPERATORS.notRegex:
       return `coalesce(${table}.${column}, '') !~* ${value}`;
+    case OPERATORS.set:
+      return `coalesce(${table}.${column}, '') != ''`;
+    case OPERATORS.notSet:
+      return `coalesce(${table}.${column}, '') = ''`;
     default:
       return '';
   }

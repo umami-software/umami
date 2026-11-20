@@ -39,3 +39,12 @@ describe('getDateSQL bucket formatting', () => {
     );
   });
 });
+
+describe('getFilterQuery presence operators', () => {
+  test.each([
+    ['is set', 's.', "and coalesce(tag, '') != ''"],
+    ['is not set', 'ns.', "and coalesce(tag, '') = ''"],
+  ])('filters on whether a field has a value for %s', (_label, value, clause) => {
+    expect(clickhouse.getFilterQuery({ tag: value })).toContain(clause);
+  });
+});

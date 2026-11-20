@@ -22,6 +22,8 @@ export function useFilters() {
     { name: 'dnc', type: 'string', label: t(labels.doesNotContain) },
     { name: 're', type: 'string', label: t(labels.regexMatch) },
     { name: 'nre', type: 'string', label: t(labels.regexNotMatch) },
+    { name: 's', type: 'string', label: t(labels.isSet) },
+    { name: 'ns', type: 'string', label: t(labels.isNotSet) },
     { name: 'i', type: 'array', label: t(labels.includes) },
     { name: 'dni', type: 'array', label: t(labels.doesNotInclude) },
     { name: 't', type: 'boolean', label: t(labels.isTrue) },

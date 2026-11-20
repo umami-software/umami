@@ -12,6 +12,7 @@ import {
 } from '@/components/hooks';
 import { Bookmark, X } from '@/components/icons';
 import {
+  isPresenceOperator,
   isSearchOperator,
   serializeSessionPropertyFilters,
   serializeUniversalEventPropertyFilters,
@@ -118,12 +119,14 @@ export function FilterBar({ websiteId }: { websiteId?: string }) {
         )}
         {filters.map(filter => {
           const { name, type, label, operator, value } = filter;
-          const paramValue = isSearchOperator(operator)
-            ? value
-            : String(value)
-                .split(',')
-                .map(v => formatValue(v, type || name))
-                .join(', ');
+          const paramValue = isPresenceOperator(operator)
+            ? ''
+            : isSearchOperator(operator)
+              ? value
+              : String(value)
+                  .split(',')
+                  .map(v => formatValue(v, type || name))
+                  .join(', ');
 
           return (
             <FilterItem

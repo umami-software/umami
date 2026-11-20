@@ -14,7 +14,7 @@ import { Empty } from '@/components/common/Empty';
 import { MultiSelect, MultiSelectItem } from '@/components/common/MultiSelect';
 import { useFilters, useFormat, useWebsiteValuesQuery } from '@/components/hooks';
 import { X } from '@/components/icons';
-import { isSearchOperator } from '@/lib/params';
+import { isPresenceOperator, isSearchOperator } from '@/lib/params';
 
 export interface FilterRecordProps {
   websiteId?: string;
@@ -49,6 +49,7 @@ export function FilterRecord({
 }: FilterRecordProps) {
   const { fields, operators } = useFilters();
   const isSearch = isSearchOperator(operator);
+  const isPresence = isPresenceOperator(operator);
   const [selected, setSelected] = useState<string[]>(() => getSelectedValues(value, operator));
   const [search, setSearch] = useState('');
   const { formatValue } = useFormat();
@@ -97,14 +98,14 @@ export function FilterRecord({
                 </ListItem>
               ))}
           </Select>
-          {isSearch && (
+          {isSearch && !isPresence && (
             <TextField
               value={selected[0] || ''}
               defaultValue={selected[0] || ''}
               onChange={handleSelectValue}
             />
           )}
-          {!isSearch && (
+          {!isSearch && !isPresence && (
             <MultiSelect
               value={selected}
               onChange={handleMultiSelectValue}

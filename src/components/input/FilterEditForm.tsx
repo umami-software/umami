@@ -4,6 +4,7 @@ import { useFilters, useMessages, useMobile, useNavigation } from '@/components/
 import { FieldFilters } from '@/components/input/FieldFilters';
 import { PropertyFilters } from '@/components/property-data/PropertyFilters';
 import { SegmentFilters } from '@/components/input/SegmentFilters';
+import { isPresenceOperator } from '@/lib/params';
 import type { EventPropertyFilter, SessionPropertyFilter } from '@/lib/types';
 
 export interface FilterEditFormProps {
@@ -72,7 +73,10 @@ export function FilterEditForm({ websiteId, onChange, onClose }: FilterEditFormP
 
   const handleSave = () => {
     onChange?.({
-      filters: currentFilters.filter(f => f.value),
+      // Presence operators ignore the value; drop any left over from a previous operator.
+      filters: currentFilters
+        .map(f => (isPresenceOperator(f.operator) ? { ...f, value: '' } : f))
+        .filter(f => f.value || isPresenceOperator(f.operator)),
       eventPropertyFilters: currentEventPropertyFilters.filter(f => f.value),
       sessionPropertyFilters: currentSessionPropertyFilters.filter(f => f.value),
       segment: currentSegment,

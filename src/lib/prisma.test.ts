@@ -126,6 +126,13 @@ describe('getFilterQuery null handling', () => {
     expect(prisma.getFilterQuery({ distinctId: value })).toContain(`and ${clause}`);
   });
 
+  test.each([
+    ['is set', 's.', "and coalesce(website_event.tag, '') != ''"],
+    ['is not set', 'ns.', "and coalesce(website_event.tag, '') = ''"],
+  ])('filters on whether a field has a value for %s', (_label, value, clause) => {
+    expect(prisma.getFilterQuery({ tag: value })).toContain(clause);
+  });
+
   test('keeps positive filters on the bare column so they can use indexes', () => {
     expect(prisma.getFilterQuery({ country: 'US' })).toContain(
       'and session.country = ANY({{country}})',
