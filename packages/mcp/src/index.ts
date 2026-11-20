@@ -11,4 +11,4 @@ export {
   SERVER_VERSION,
 } from './server';
 export { resolveClientOptions, type StdioEnvironment, serveUmamiStdio } from './stdio';
-export { allTools, coreTools, reportTools } from './tools';
+export { allTools, coreTools, errorTools, reportTools } from './tools';

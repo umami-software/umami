@@ -34,6 +34,9 @@ user/team permission checks as the web app.
 | `run_attribution`     | First/last-click attribution for a conversion.                          |
 | `get_revenue`         | Revenue totals, series and breakdowns.                                  |
 | `get_performance`     | Core Web Vitals (LCP, INP, CLS, FCP, TTFB) percentiles, trend, breakdown. |
+| `get_errors`          | Grouped error issues with status, occurrences and affected visits.      |
+| `get_error_issue`     | One error issue with trend and recent occurrences; `eventId` for a stack trace. |
+| `get_error_stats`     | Error totals and daily trend, filterable by release or environment.     |
 
 All tools are read-only. Dates are ISO 8601; results are paginated with a hard cap on page size.
 
