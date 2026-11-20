@@ -3,13 +3,13 @@ import { getQueryFilters, parseRequest } from '@/lib/request';
 import { json, unauthorized } from '@/lib/response';
 import { canViewWebsiteSection } from '@/permissions';
 import { getWebsiteStats } from '@/queries/sql';
-import { analyticsQuerySchema } from '../analytics-schema';
+import { websiteStatsQuerySchema } from '../analytics-schema';
 
 export async function GET(
   request: Request,
   { params }: { params: Promise<{ websiteId: string }> },
 ) {
-  const { auth, query, error } = await parseRequest(request, analyticsQuerySchema);
+  const { auth, query, error } = await parseRequest(request, websiteStatsQuerySchema);
 
   if (error) {
     return error();
@@ -24,6 +24,10 @@ export async function GET(
   const filters = await getQueryFilters(query, websiteId);
 
   const data = await getWebsiteStats(websiteId, filters);
+
+  if (filters.compare === 'none') {
+    return json(data);
+  }
 
   const { startDate, endDate } = getCompareDate(
     filters.compare ?? 'prev',
