@@ -27,6 +27,7 @@ export * from './getRealtimeData';
 export * from './getValues';
 export * from './getWebsiteDateRange';
 export * from './getWebsiteListCharts';
+export * from './getWebsiteVisitorTotals';
 export * from './getWebsiteStats';
 export * from './getWeeklyTraffic';
 export * from './heatmap/extractHeatmapEvents';

@@ -1,6 +1,5 @@
 import { z } from 'zod';
-import { fromZonedTime } from 'date-fns-tz';
-import { parseDateRange } from '@/lib/date';
+import { getWebsiteListDateRange } from '@/lib/date';
 import { canViewBatchWebsites } from '@/permissions/website';
 import { parseRequest, resolvePeriodDateRange } from '@/lib/request';
 import { json } from '@/lib/response';
@@ -26,14 +25,10 @@ export async function GET(request: Request) {
 
   const resolvedQuery = resolvePeriodDateRange(query);
   const timezone = resolvedQuery.timezone || 'UTC';
-  const defaultRange = parseDateRange('7day', undefined, undefined, timezone);
   const hasDateRange = resolvedQuery.startAt != null && resolvedQuery.endAt != null;
-  const startDate = hasDateRange
-    ? new Date(resolvedQuery.startAt)
-    : fromZonedTime(defaultRange.startDate, timezone);
-  const endDate = hasDateRange
-    ? new Date(resolvedQuery.endAt)
-    : fromZonedTime(defaultRange.endDate, timezone);
+  const { startDate, endDate } = hasDateRange
+    ? { startDate: new Date(resolvedQuery.startAt), endDate: new Date(resolvedQuery.endAt) }
+    : getWebsiteListDateRange(timezone);
 
   const websiteIds = await canViewBatchWebsites(auth, query.ids);
 
