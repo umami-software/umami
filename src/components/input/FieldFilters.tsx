@@ -91,7 +91,7 @@ export function FieldFilters({
             </Icon>
           </Button>
           <Popover side={isMobile ? 'left' : 'bottom'} align={isMobile ? undefined : 'start'}>
-            <Menu style={{ maxHeight: 'calc(100vh - 2rem)', overflowY: 'auto' }}>
+            <Menu>
               {groupLabels.map(({ key: groupKey, label }) => {
                 const groupFields = groupedFields[groupKey];
                 if (!groupFields || groupFields.length === 0) return null;
