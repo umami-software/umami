@@ -39,13 +39,13 @@ export function WeeklyTraffic({ websiteId }: { websiteId: string }) {
 
   return (
     <LoadingPanel data={data} isLoading={isLoading} error={error}>
-      <Grid columns="repeat(8, 1fr)" gap>
+      <Grid columns="auto repeat(7, 1fr)" gap>
         {data && (
           <>
             <Row>&nbsp;</Row>
             {daysOfWeek.map((index: number) => (
               <Row key={index} alignItems="center" justifyContent="center">
-                <Text weight="bold" align="center">
+                <Text weight="bold" align="center" wrap="nowrap">
                   {format(getDayOfWeekAsDate(index), 'EEE', { locale: dateLocale })}
                 </Text>
               </Row>
@@ -61,7 +61,7 @@ export function WeeklyTraffic({ websiteId }: { websiteId: string }) {
                   );
                   return (
                     <Row key={i} justifyContent="flex-end">
-                      <Text color="muted" size="sm">
+                      <Text color="muted" size="sm" wrap="nowrap">
                         {label}
                       </Text>
                     </Row>
