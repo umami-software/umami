@@ -1,6 +1,12 @@
 import type { AnalyticsParameters } from '@/lib/analytics-query';
 import type { ReactQueryOptions } from '@/lib/types';
-import type { FunnelParameters, FunnelResult } from '@/queries/sql/funnels/getFunnel';
+import type {
+  FunnelBreakdownData,
+  FunnelChartData,
+  FunnelParameters,
+  FunnelResult,
+  FunnelTimesData,
+} from '@/queries/sql/funnels/getFunnel';
 import { useAnalyticsQuery } from './useAnalyticsQuery';
 
 export function useFunnelQuery(
@@ -19,6 +25,31 @@ export function useFunnelQuery(
           timezone: params.timezone,
         }
       : params,
+    options,
+  );
+}
+
+export function useFunnelChartQuery(
+  { websiteId, id }: { websiteId: string; id: string },
+  options?: ReactQueryOptions<FunnelChartData[]>,
+) {
+  return useAnalyticsQuery<FunnelChartData[]>(`funnels/${id}/chart`, { websiteId }, options);
+}
+
+export function useFunnelTimesQuery(
+  { websiteId, id }: { websiteId: string; id: string },
+  options?: ReactQueryOptions<FunnelTimesData>,
+) {
+  return useAnalyticsQuery<FunnelTimesData>(`funnels/${id}/times`, { websiteId }, options);
+}
+
+export function useFunnelBreakdownQuery(
+  { websiteId, id, field }: { websiteId: string; id: string; field: string },
+  options?: ReactQueryOptions<FunnelBreakdownData[]>,
+) {
+  return useAnalyticsQuery<FunnelBreakdownData[]>(
+    `funnels/${id}/breakdown`,
+    { websiteId, field },
     options,
   );
 }

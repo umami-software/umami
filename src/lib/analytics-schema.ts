@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { FUNNEL_BREAKDOWN_FIELDS } from './constants';
 import {
   attributionReportSchema,
   breakdownReportSchema,
@@ -72,6 +73,9 @@ export const funnelQuerySchema = analyticsSchema({
 });
 export const goalQuerySchema = analyticsSchema(goalParametersSchema.shape);
 export const savedStatsQuerySchema = analyticsSchema({});
+export const funnelBreakdownQuerySchema = analyticsSchema({
+  field: z.enum(FUNNEL_BREAKDOWN_FIELDS),
+});
 export const definitionListSchema = z.object({ ...pagingParams, search: z.string().optional() });
 export const funnelDefinitionSchema = z.object({
   name: z.string().min(1).max(200),

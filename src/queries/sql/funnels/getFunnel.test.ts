@@ -1,5 +1,5 @@
 import { beforeEach, describe, expect, test, vi } from 'vitest';
-import { getFunnel } from './getFunnel';
+import { getFunnel, getFunnelBreakdown, getFunnelChart, getFunnelTimes } from './getFunnel';
 
 const {
   state,
@@ -28,6 +28,7 @@ vi.mock('@/lib/prisma', () => ({
     rawQuery: prismaRawQuery,
     parseFilters: prismaParseFilters,
     getAddIntervalQuery,
+    getDateSQL: (field: string, unit: string) => `pg_date(${field}, ${unit})`,
   },
 }));
 
@@ -35,6 +36,7 @@ vi.mock('@/lib/clickhouse', () => ({
   default: {
     rawQuery: clickhouseRawQuery,
     parseFilters: clickhouseParseFilters,
+    getDateSQL: (field: string, unit: string) => `ch_date(${field}, ${unit})`,
   },
 }));
 
@@ -312,5 +314,96 @@ describe('getFunnel clickhouse branch', () => {
     expect(query).toContain('data_key = {f_0_0_k:String}');
     expect(query).toContain('like {f_0_0_v:String}');
     expect(params).toMatchObject({ f_0_0_k: 'plan', f_0_0_v: '%pro%' });
+  });
+});
+
+describe.each([
+  ['prisma', prismaRawQuery, 'pg_date'],
+  ['clickhouse', clickhouseRawQuery, 'ch_date'],
+] as const)('getFunnelChart %s branch', (mode, rawQuery, dateFn) => {
+  beforeEach(() => {
+    state.mode = mode;
+  });
+
+  // Each session counts once, by first entry, so buckets add up to the first and last steps.
+  test('buckets sessions by first entry and counts those that reached the last step', async () => {
+    rawQuery.mockResolvedValue([{ t: '2026-05-18', entered: '10', converted: '3' }]);
+
+    const result = await getFunnelChart('website-1', { ...baseParameters, unit: 'day' }, {});
+    const [query] = rawQuery.mock.calls[0];
+
+    expect(query).toContain('min(created_at) as first_at\n      from level1');
+    expect(query).toContain(`${dateFn}(first_at, day) as t`);
+    expect(query).toContain('session_id in (select session_id from level2)');
+    expect(result).toEqual([{ t: '2026-05-18', entered: 10, converted: 3 }]);
+  });
+});
+
+describe.each([
+  ['prisma', prismaRawQuery, 'percentile_disc(0.5)'],
+  ['clickhouse', clickhouseRawQuery, 'quantileExactLow(0.5)'],
+] as const)('getFunnelTimes %s branch', (mode, rawQuery, median) => {
+  beforeEach(() => {
+    state.mode = mode;
+  });
+
+  // Each step is timed from the previous one; level 0 is the whole funnel.
+  test('measures each step from the previous one and the funnel from first to last', async () => {
+    rawQuery.mockResolvedValue([
+      { level: 2, sessions: 5, median: 42 },
+      { level: 0, sessions: 0, median: 0 },
+    ]);
+
+    const result = await getFunnelTimes('website-1', baseParameters, {});
+    const [query] = rawQuery.mock.calls[0];
+
+    expect(query).toContain(median);
+    expect(query).toMatch(/select 2 as level,[\s\S]*from reached2 b\s+join reached1 a/);
+    expect(query).toMatch(/select 0 as level,[\s\S]*from reached2 b\s+join reached1 a/);
+    // No sessions means no median, not a median of 0.
+    expect(result).toEqual({ total: null, steps: [null, 42] });
+  });
+});
+
+describe('getFunnelBreakdown', () => {
+  // The column is interpolated into SQL, so only allowed attributes may reach the query.
+  test('rejects fields outside the allowed session attributes without querying', async () => {
+    await expect(
+      getFunnelBreakdown('website-1', { ...baseParameters, field: 'url_path' }, {}),
+    ).rejects.toThrow('Unsupported funnel breakdown field');
+    expect(prismaRawQuery).not.toHaveBeenCalled();
+  });
+
+  test('postgres reads the attribute from the session row', async () => {
+    prismaRawQuery.mockResolvedValue([
+      { level: 1, name: 'mobile', count: 10 },
+      { level: 2, name: 'mobile', count: 4 },
+      { level: 1, name: 'desktop', count: 20 },
+    ]);
+
+    const result = await getFunnelBreakdown(
+      'website-1',
+      { ...baseParameters, field: 'device' },
+      {},
+    );
+    const [query] = prismaRawQuery.mock.calls[0];
+
+    expect(query).toContain("coalesce(session.device, '') as name");
+    // Sorted by first-step visitors; steps a value never reached count as 0.
+    expect(result).toEqual([
+      { name: 'desktop', visitors: [20, 0] },
+      { name: 'mobile', visitors: [10, 4] },
+    ]);
+  });
+
+  // Attributes can change within a session, so ClickHouse takes the first event's value.
+  test('clickhouse takes the value from the session first event', async () => {
+    state.mode = 'clickhouse';
+    clickhouseRawQuery.mockResolvedValue([]);
+
+    await getFunnelBreakdown('website-1', { ...baseParameters, field: 'device' }, {});
+    const [query] = clickhouseRawQuery.mock.calls[0];
+
+    expect(query).toContain('argMin(device, created_at) as name');
   });
 });

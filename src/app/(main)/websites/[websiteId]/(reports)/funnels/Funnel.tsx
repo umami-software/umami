@@ -8,6 +8,7 @@ import { Lightning } from '@/components/svg';
 import { formatLongNumber } from '@/lib/format';
 import type { FunnelResult } from '@/queries/sql/funnels/getFunnel';
 import { FunnelEditForm } from './FunnelEditForm';
+import { FunnelMaximizeButton } from './FunnelExpandedView';
 
 interface FunnelProps {
   id: string;
@@ -16,9 +17,18 @@ interface FunnelProps {
   parameters: Record<string, any>;
   websiteId: string;
   allowEdit?: boolean;
+  allowMaximize?: boolean;
 }
 
-export function Funnel({ id, name, type, parameters, websiteId, allowEdit = true }: FunnelProps) {
+export function Funnel({
+  id,
+  name,
+  type,
+  parameters,
+  websiteId,
+  allowEdit = true,
+  allowMaximize = true,
+}: FunnelProps) {
   const { t, labels } = useMessages();
   const { pathname } = useNavigation();
   const isSharePage = pathname.includes('/share/');
@@ -40,8 +50,11 @@ export function Funnel({ id, name, type, parameters, websiteId, allowEdit = true
             </Text>
           </Row>
         </Column>
-        {allowEdit && !isSharePage && (
-          <Column>
+        <Row alignItems="center" gap>
+          {allowMaximize && !!data?.length && (
+            <FunnelMaximizeButton websiteId={websiteId} id={id} name={name} data={data} />
+          )}
+          {allowEdit && !isSharePage && (
             <SavedDefinitionEditButton
               websiteId={websiteId}
               id={id}
@@ -53,8 +66,8 @@ export function Funnel({ id, name, type, parameters, websiteId, allowEdit = true
             >
               {({ close }) => <FunnelEditForm id={id} websiteId={websiteId} onClose={close} />}
             </SavedDefinitionEditButton>
-          </Column>
-        )}
+          )}
+        </Row>
       </Grid>
       <LoadingPanel data={data} isLoading={isLoading} error={error}>
         {data?.map(

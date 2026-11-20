@@ -2633,10 +2633,125 @@ export const operations = {
     ],
     hasBody: false,
   },
+  getWebsiteSavedFunnelBreakdown: {
+    operationId: 'getWebsiteSavedFunnelBreakdown',
+    method: 'get',
+    path: '/api/websites/{websiteId}/funnels/{funnelId}/breakdown',
+    pathParams: ['websiteId', 'funnelId'],
+    queryParams: [
+      'path',
+      'referrer',
+      'title',
+      'query',
+      'os',
+      'browser',
+      'device',
+      'country',
+      'region',
+      'city',
+      'tag',
+      'hostname',
+      'distinctId',
+      'language',
+      'event',
+      'utmSource',
+      'utmMedium',
+      'utmCampaign',
+      'utmContent',
+      'utmTerm',
+      'segment',
+      'cohort',
+      'eventType',
+      'excludeBounce',
+      'match',
+      'startAt',
+      'endAt',
+      'timezone',
+      'unit',
+      'field',
+    ],
+    hasBody: false,
+  },
+  getWebsiteSavedFunnelChart: {
+    operationId: 'getWebsiteSavedFunnelChart',
+    method: 'get',
+    path: '/api/websites/{websiteId}/funnels/{funnelId}/chart',
+    pathParams: ['websiteId', 'funnelId'],
+    queryParams: [
+      'path',
+      'referrer',
+      'title',
+      'query',
+      'os',
+      'browser',
+      'device',
+      'country',
+      'region',
+      'city',
+      'tag',
+      'hostname',
+      'distinctId',
+      'language',
+      'event',
+      'utmSource',
+      'utmMedium',
+      'utmCampaign',
+      'utmContent',
+      'utmTerm',
+      'segment',
+      'cohort',
+      'eventType',
+      'excludeBounce',
+      'match',
+      'startAt',
+      'endAt',
+      'timezone',
+      'unit',
+    ],
+    hasBody: false,
+  },
   getWebsiteSavedFunnelStats: {
     operationId: 'getWebsiteSavedFunnelStats',
     method: 'get',
     path: '/api/websites/{websiteId}/funnels/{funnelId}/stats',
+    pathParams: ['websiteId', 'funnelId'],
+    queryParams: [
+      'path',
+      'referrer',
+      'title',
+      'query',
+      'os',
+      'browser',
+      'device',
+      'country',
+      'region',
+      'city',
+      'tag',
+      'hostname',
+      'distinctId',
+      'language',
+      'event',
+      'utmSource',
+      'utmMedium',
+      'utmCampaign',
+      'utmContent',
+      'utmTerm',
+      'segment',
+      'cohort',
+      'eventType',
+      'excludeBounce',
+      'match',
+      'startAt',
+      'endAt',
+      'timezone',
+      'unit',
+    ],
+    hasBody: false,
+  },
+  getWebsiteSavedFunnelTimes: {
+    operationId: 'getWebsiteSavedFunnelTimes',
+    method: 'get',
+    path: '/api/websites/{websiteId}/funnels/{funnelId}/times',
     pathParams: ['websiteId', 'funnelId'],
     queryParams: [
       'path',
@@ -4869,6 +4984,30 @@ export abstract class GeneratedUmamiClient {
   }
 
   /**
+   * Get website saved funnel breakdown
+   * Returns visitor counts for each step of a saved funnel split by a session attribute (browser, os, device, or country), for the most common values.
+   * `GET /api/websites/{websiteId}/funnels/{funnelId}/breakdown`
+   */
+  getWebsiteSavedFunnelBreakdown(
+    input: OperationInput<'getWebsiteSavedFunnelBreakdown'>,
+    options?: RequestOptions,
+  ): Promise<OperationOutput<'getWebsiteSavedFunnelBreakdown'>> {
+    return this.execute('getWebsiteSavedFunnelBreakdown', input, options);
+  }
+
+  /**
+   * Get website saved funnel chart
+   * Returns, for each time bucket, how many sessions entered a saved funnel and how many of them reached its last step, grouped by when they entered.
+   * `GET /api/websites/{websiteId}/funnels/{funnelId}/chart`
+   */
+  getWebsiteSavedFunnelChart(
+    input: OperationInput<'getWebsiteSavedFunnelChart'>,
+    options?: RequestOptions,
+  ): Promise<OperationOutput<'getWebsiteSavedFunnelChart'>> {
+    return this.execute('getWebsiteSavedFunnelChart', input, options);
+  }
+
+  /**
    * Get website saved funnel stats
    * Returns visitor counts and drop-off for each step of a saved funnel over the selected date range, with optional filters.
    * `GET /api/websites/{websiteId}/funnels/{funnelId}/stats`
@@ -4878,6 +5017,18 @@ export abstract class GeneratedUmamiClient {
     options?: RequestOptions,
   ): Promise<OperationOutput<'getWebsiteSavedFunnelStats'>> {
     return this.execute('getWebsiteSavedFunnelStats', input, options);
+  }
+
+  /**
+   * Get website saved funnel times
+   * Returns the median time in seconds between consecutive steps of a saved funnel, and from the first step to the last, for sessions that reached each step.
+   * `GET /api/websites/{websiteId}/funnels/{funnelId}/times`
+   */
+  getWebsiteSavedFunnelTimes(
+    input: OperationInput<'getWebsiteSavedFunnelTimes'>,
+    options?: RequestOptions,
+  ): Promise<OperationOutput<'getWebsiteSavedFunnelTimes'>> {
+    return this.execute('getWebsiteSavedFunnelTimes', input, options);
   }
 
   /**
