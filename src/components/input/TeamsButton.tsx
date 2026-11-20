@@ -13,6 +13,7 @@ import { ArrowRight } from 'lucide-react';
 import { type Key, useEffect } from 'react';
 import { IconLabel } from '@/components/common/IconLabel';
 import {
+  useApi,
   useLoginQuery,
   useMessages,
   useMobile,
@@ -22,9 +23,11 @@ import {
 import { ChevronRight, User, Users } from '@/components/icons';
 import { LAST_TEAM_CONFIG } from '@/lib/constants';
 import { removeItem } from '@/lib/storage';
+import { setUser, useApp } from '@/store/app';
 
 export function TeamsButton() {
-  const { user, refetch } = useLoginQuery();
+  const { user } = useLoginQuery();
+  const { post } = useApi();
   const { modified } = useModified('teams');
   const { t, labels } = useMessages();
   const { teamId, router } = useNavigation();
@@ -36,12 +39,24 @@ export function TeamsButton() {
   const cloudMode = !!process.env.cloudMode;
 
   // The user's teams are loaded once with the login. Reload them when teams are
-  // created, joined, left, renamed or deleted so the menu stays current.
+  // created, joined, left, renamed or deleted so the menu stays current. This is
+  // kept out of the shared login query: an error there signs the user out, while
+  // a failed refresh here should just keep the current list.
   useEffect(() => {
-    if (modified) {
-      refetch();
+    if (!modified) {
+      return;
     }
-  }, [modified, refetch]);
+
+    post('/auth/verify')
+      .then(({ teams }) => {
+        const { user } = useApp.getState();
+
+        if (user) {
+          setUser({ ...user, teams });
+        }
+      })
+      .catch(() => {});
+  }, [modified, post]);
 
   const getUrl = (url: string) => {
     return cloudMode ? `${process.env.cloudUrl}${url}` : url;
