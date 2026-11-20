@@ -712,6 +712,20 @@ describe('timezone helpers', () => {
     expect(normalizeTimezone('Asia/Jayapura')).toBe('Asia/Jayapura');
   });
 
+  test.each([
+    ['Africa/Asmera', 'Africa/Asmara'],
+    ['America/Godthab', 'America/Nuuk'],
+    ['America/Indianapolis', 'America/Indiana/Indianapolis'],
+    ['America/Louisville', 'America/Kentucky/Louisville'],
+    ['Atlantic/Faeroe', 'Atlantic/Faroe'],
+    ['Pacific/Enderbury', 'Pacific/Kanton'],
+    ['Pacific/Ponape', 'Pacific/Pohnpei'],
+    ['Pacific/Truk', 'Pacific/Chuuk'],
+  ])('normalizeTimezone maps legacy picker alias %s to %s', (alias, canonical) => {
+    expect(normalizeTimezone(alias)).toBe(canonical);
+    expect(isValidTimezone(canonical)).toBe(true);
+  });
+
   test('isValidTimezone accepts real and aliased zones', () => {
     expect(isValidTimezone('America/New_York')).toBe(true);
     expect(isValidTimezone('Asia/Calcutta')).toBe(true);
