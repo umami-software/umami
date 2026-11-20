@@ -30,11 +30,9 @@ import type { FunnelResult } from '@/queries/sql/funnels/getFunnel';
 import { FunnelBreakdown } from './FunnelBreakdown';
 import { FunnelChart } from './FunnelChart';
 import { FunnelStepLabel } from './FunnelStepLabel';
+import { formatPercent } from './format';
 
 type PercentMode = 'first' | 'previous';
-
-// Whole numbers, like the normal funnel view, so values don't change when maximized.
-const formatPercent = (n: number) => `${Math.round(n * 100)}%`;
 
 const formatDuration = (seconds: number) =>
   formatShortTime(Math.round(seconds), ['d', 'h', 'm', 's'], ' ').trim();
@@ -118,6 +116,7 @@ function FunnelExpandedView({
   // Two steps make both percent modes equal and the bottleneck trivial, so both are hidden.
   const hasMiddleSteps = data.length > 2;
   const bottleneck = hasMiddleSteps ? getBottleneckIndex(data) : -1;
+  const cardCount = 2 + Number(bottleneck > 0) + Number(times?.total != null);
 
   return (
     <Column gap="6">
@@ -141,7 +140,8 @@ function FunnelExpandedView({
           </Button>
         </Row>
       </Row>
-      <MetricsBar>
+      {/* Two per row until there is room for every card's large value on one row. */}
+      <MetricsBar columns={{ base: 'repeat(2, 1fr)', xl: `repeat(${cardCount}, 1fr)` }}>
         <MetricCard
           label={t(labels.conversionRate)}
           value={first ? last / first : 0}
@@ -187,7 +187,15 @@ function FunnelExpandedView({
           const percent = mode === 'first' || index === 0 ? remaining : 1 - dropoff;
 
           return (
-            <Column key={index} gap="2">
+            // The drop label shares the step's columns so it centers on the funnel bars.
+            <Grid
+              key={index}
+              columns="minmax(180px, 1fr) minmax(0, 3fr) minmax(120px, auto)"
+              alignItems="center"
+              gapX="6"
+              gapY="2"
+            >
+              {index > 0 && previous > 0 && <Box />}
               {index > 0 && previous > 0 && (
                 <Row justifyContent="center" alignItems="center" gap>
                   <ChangeLabel value={-dropped}>
@@ -203,36 +211,28 @@ function FunnelExpandedView({
                   )}
                 </Row>
               )}
-              <Grid
-                columns={{
-                  base: '1fr',
-                  md: 'minmax(180px, 1fr) minmax(0, 3fr) minmax(120px, auto)',
-                }}
-                alignItems="center"
-                gap="6"
-              >
-                <FunnelStepLabel index={index} type={type} value={value} />
-                <Row justifyContent="center">
-                  <Box
-                    height="48px"
-                    borderRadius
-                    style={{
-                      width: `${(remaining || 0) * 100}%`,
-                      minWidth: visitors > 0 ? '2px' : 0,
-                      background: 'var(--zen-primary)',
-                    }}
-                  />
-                </Row>
-                <Column alignItems="end">
-                  <Text weight="bold" size="3xl">
-                    {formatPercent(percent || 0)}
-                  </Text>
-                  <Text color="muted" title={visitors.toString()} transform="lowercase">
-                    {`${formatLongNumber(visitors)} ${t(labels.visitors)}`}
-                  </Text>
-                </Column>
-              </Grid>
-            </Column>
+              {index > 0 && previous > 0 && <Box />}
+              <FunnelStepLabel index={index} type={type} value={value} />
+              <Row justifyContent="center">
+                <Box
+                  height="48px"
+                  borderRadius
+                  style={{
+                    width: `${(remaining || 0) * 100}%`,
+                    minWidth: visitors > 0 ? '2px' : 0,
+                    background: 'var(--zen-primary)',
+                  }}
+                />
+              </Row>
+              <Column alignItems="end">
+                <Text weight="bold" size="3xl">
+                  {formatPercent(percent || 0)}
+                </Text>
+                <Text color="muted" title={visitors.toString()} transform="lowercase">
+                  {`${formatLongNumber(visitors)} ${t(labels.visitors)}`}
+                </Text>
+              </Column>
+            </Grid>
           );
         })}
       </Column>

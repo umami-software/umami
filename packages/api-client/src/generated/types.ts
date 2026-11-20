@@ -17267,7 +17267,7 @@ export interface operations {
         eventType?: number;
         /** @description Set a non-empty value to exclude visits with only one pageview. */
         excludeBounce?: string;
-        field: 'browser' | 'os' | 'device' | 'country';
+        field: 'device' | 'browser' | 'os' | 'country';
         /** @description Hostname on which the activity occurred. */
         hostname?: string;
         /** @description Preferred language reported by the visitor browser. */

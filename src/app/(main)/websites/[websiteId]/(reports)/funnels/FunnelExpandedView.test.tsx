@@ -139,4 +139,22 @@ describe('FunnelMaximizeButton', () => {
     expect(within(dialog).queryByText('From previous step')).not.toBeInTheDocument();
     expect(within(dialog).queryByText('Biggest drop-off')).not.toBeInTheDocument();
   });
+
+  // 82 of 16,000 must not read as 1% or 0%, the same as the normal funnel view.
+  test('keeps one decimal for conversion below 1%', async () => {
+    const { user } = render(
+      <FunnelMaximizeButton
+        websiteId="website-1"
+        id="funnel-1"
+        name="Signup"
+        data={funnel([16000, 82])}
+      />,
+    );
+
+    await user.click(screen.getByRole('button'));
+
+    const dialog = await screen.findByRole('dialog', { name: 'Signup' });
+
+    expect(within(dialog).getAllByText('0.5%').length).toBeGreaterThan(0);
+  });
 });
