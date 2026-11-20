@@ -711,14 +711,17 @@ function getSessionPropertyFilterQuery(
     return { sql: '', params: {} };
   }
 
+  // Uncorrelated so Postgres can pull it up into a semi-join and pick a hash or nested-loop join.
+  // A correlated `exists` runs once per candidate event row. Don't wrap the `in` in an expression
+  // (e.g. `coalesce`): it then stays a subplan, which is only hashed when the matching sessions fit
+  // in `work_mem`, and is otherwise rescanned for every event row.
   return {
-    sql: `and exists (
-      select 1
+    sql: `and website_event.session_id in (
+      select session_id
       from session_data
-      where website_id = website_event.website_id
-        and session_id = website_event.session_id
+      where website_id = {{websiteId::uuid}}
         and data_key in (${keyRefs.join(', ')})
-      group by website_id, session_id
+      group by session_id
       having ${clauses.join('\n        and ')}
     )`,
     params,
