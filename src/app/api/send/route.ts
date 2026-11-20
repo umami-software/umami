@@ -99,7 +99,7 @@ export async function POST(request: Request) {
     }
 
     // IP block
-    if (hasBlockedIp(ip)) {
+    if (await hasBlockedIp(ip)) {
       return forbidden();
     }
 

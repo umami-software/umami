@@ -53,6 +53,11 @@ export async function canUpdatePixel({ user }: Auth, pixelId: string) {
     return true;
   }
 
+  // A team role or ownership never overrides a globally view-only user.
+  if (!hasPermission(user.role, PERMISSIONS.websiteUpdate)) {
+    return false;
+  }
+
   const pixel = await getPixel(pixelId);
 
   if (!pixel) {
@@ -83,6 +88,11 @@ export async function canDeletePixel({ user }: Auth, pixelId: string) {
 
   if (user.isAdmin) {
     return true;
+  }
+
+  // A team role or ownership never overrides a globally view-only user.
+  if (!hasPermission(user.role, PERMISSIONS.websiteDelete)) {
+    return false;
   }
 
   const pixel = await getPixel(pixelId);

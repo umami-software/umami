@@ -2,12 +2,13 @@ import path from 'node:path';
 import { browserName, detectOS } from 'detect-browser';
 import ipaddr from 'ipaddr.js';
 import isLocalhost from 'is-localhost-ip';
-import maxmind from 'maxmind';
+import maxmind, { type AsnResponse, type Reader } from 'maxmind';
 import { UAParser } from 'ua-parser-js';
 import { getIpAddress, stripPort } from '@/lib/ip';
 import { safeDecodeURIComponent } from '@/lib/url';
 
 const MAXMIND = 'maxmind';
+const MAXMIND_ASN = 'maxmind-asn';
 
 const PROVIDER_HEADERS = [
   // Umami custom headers (cloud mode only)
@@ -147,10 +148,57 @@ export async function getClientInfo(request: Request, payload: Record<string, an
   return { userAgent, browser, os, ip, country, region, city, device };
 }
 
-export function hasBlockedIp(clientIp: string) {
+export async function hasBlockedIp(clientIp: string) {
+  if (!clientIp) {
+    return false;
+  }
+
+  return hasIgnoredIp(clientIp) || (await hasIgnoredAsn(clientIp));
+}
+
+function getAsnDb(): Promise<Reader<AsnResponse> | null> {
+  // Cache the promise so concurrent first requests share one load. A missing or
+  // unreadable file disables the check (logged once) instead of failing collection.
+  if (!globalThis[MAXMIND_ASN]) {
+    globalThis[MAXMIND_ASN] = maxmind
+      .open<AsnResponse>(
+        process.env.GEOLITE_ASN_DB_PATH || path.resolve(process.cwd(), 'geo', 'GeoLite2-ASN.mmdb'),
+      )
+      .catch(e => {
+        console.error('IGNORE_ASN is set but the ASN database could not be loaded:', e);
+        return null;
+      });
+  }
+
+  return globalThis[MAXMIND_ASN];
+}
+
+async function hasIgnoredAsn(clientIp: string) {
+  const ignoreAsns = process.env.IGNORE_ASN;
+
+  if (!ignoreAsns) {
+    return false;
+  }
+
+  const ip = stripPort(clientIp);
+
+  if (!ipaddr.isValid(ip)) {
+    return false;
+  }
+
+  const asn = (await getAsnDb())?.get(ip)?.autonomous_system_number;
+
+  if (!asn) {
+    return false;
+  }
+
+  return ignoreAsns.split(',').some(n => Number(n.trim().replace(/^AS/i, '')) === asn);
+}
+
+function hasIgnoredIp(clientIp: string) {
   const ignoreIps = process.env.IGNORE_IP;
 
-  if (!clientIp || !ignoreIps) {
+  if (!ignoreIps) {
     return false;
   }
 

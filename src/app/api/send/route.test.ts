@@ -116,7 +116,7 @@ beforeEach(() => {
   delete process.env.ENABLE_CLIENT_SALT;
 
   isbotMock.mockReturnValue(false);
-  hasBlockedIpMock.mockReturnValue(false);
+  hasBlockedIpMock.mockResolvedValue(false);
   fetchWebsiteMock.mockResolvedValue({ id: WEBSITE_ID } as any);
   getClientInfoMock.mockResolvedValue({ ...defaultClientInfo } as any);
   createSessionMock.mockResolvedValue(undefined as any);
@@ -268,7 +268,7 @@ describe('bot detection gate', () => {
 
 describe('IP blocklist', () => {
   test('returns 403 when the client IP is blocked', async () => {
-    hasBlockedIpMock.mockReturnValue(true);
+    hasBlockedIpMock.mockResolvedValue(true);
 
     const response = await callPOST({
       type: 'event',

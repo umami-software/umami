@@ -132,7 +132,7 @@ describe('record route cache token binding', () => {
       userAgent:
         'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36',
     } as any);
-    vi.mocked(hasBlockedIp).mockReturnValue(false);
+    vi.mocked(hasBlockedIp).mockResolvedValue(false);
   });
 
   test('rejects a cache token issued for a different website', async () => {

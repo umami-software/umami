@@ -83,9 +83,17 @@ describe('getChannelExpandedMetrics postgres branch', () => {
     expect(query).toContain('sum(visit_stats.c) as "pageviews"');
     expect(query).toContain('count(distinct visit_stats.session_id) as "visitors"');
     expect(query).toContain('count(distinct visit_stats.visit_id) as "visits"');
-    expect(query).toContain('sum(case when visit_stats.c = 1 and coalesce(visit_events.has_custom_event, 0) = 0 then 1 else 0 end) as "bounces"');
-    expect(query).toContain('visit_events as');
-    expect(query).toContain('left join visit_events');
+    // Custom events come from the same filtered scan (no second website_event read): they
+    // stop a bounce and extend duration, but visits need at least one pageview to count.
+    expect(query).toContain(
+      'sum(case when visit_stats.c = 1 and visit_stats.has_custom_event = 0 then 1 else 0 end) as "bounces"',
+    );
+    expect(query).not.toContain('visit_events');
+    expect(query.match(/from website_event\b/g)).toHaveLength(1);
+    expect(query).toContain('and website_event.event_type != 5');
+    expect(query).toContain('having sum(case when event_type NOT IN (2, 5) then 1 else 0 end) > 0');
+    // Channel attribution still ignores custom events.
+    expect(query).toContain('from channels\n          where event_type != 2');
     // getTimestampDiffSQL output is injected into the totaltime column
     expect(query).toContain('sum(ts_diff(min_time, max_time)) as "totaltime"');
     expect(getTimestampDiffSQL).toHaveBeenCalledWith(
@@ -153,8 +161,14 @@ describe('getChannelExpandedMetrics clickhouse branch', () => {
 
     expect(query).toContain('uniq(t.session_id) as "visitors"');
     expect(query).toContain('uniq(t.visit_id) as "visits"');
-    expect(query).toContain('sumIf(1, t.c = 1 and ifNull(e.has_custom_event, 0) = 0) as "bounces"');
-    expect(query).toContain('left join (');
+    expect(query).toContain('sumIf(1, t.c = 1 and t.has_custom_event = 0) as "bounces"');
+    expect(query).not.toContain('left join (');
+    expect(query).toContain('and event_type != 5');
+    expect(query).toContain('having c > 0');
+    // Channel attribution still ignores custom events.
+    expect(query).toContain(
+      "argMinIf(name, tuple(if(name != '', 0, 1), created_at, event_id), event_type != 2)",
+    );
     expect(query).toContain('sum(max_time-min_time) as "totaltime"');
     expect(query).toContain('where website_id = {websiteId:UUID}');
     expect(query).toContain(

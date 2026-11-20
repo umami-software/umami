@@ -42,28 +42,15 @@ async function relationalQuery(
         websiteId,
         startDate,
         endDate,
-        eventType: EVENT_TYPE.pageView,
       },
       {
         joinSession: !!fields.find((name: string) => SESSION_COLUMNS.includes(name)),
       },
     );
-  const needsBounceEvents = filters.excludeBounce !== true;
-  const bounceQuery = needsBounceEvents
-    ? `sum(case when t.c = 1 and coalesce(e.has_custom_event, 0) = 0 then 1 else 0 end) as "bounces",`
-    : '0 as "bounces",';
-  const visitEventsJoin = needsBounceEvents
-    ? `left join (
-      select session_id, visit_id, 1 as "has_custom_event"
-      from website_event
-      where website_id = {{websiteId::uuid}}
-        and created_at between {{startDate}} and {{endDate}}
-        and event_type = ${EVENT_TYPE.customEvent}
-      group by 1, 2
-    ) as e
-      on e.session_id = t.session_id
-      and e.visit_id = t.visit_id`
-    : '';
+  const bounceQuery =
+    filters.excludeBounce !== true
+      ? `sum(case when t.c = 1 and t.has_custom_event = 0 then 1 else 0 end) as "bounces",`
+      : '0 as "bounces",';
 
   return rawQuery(
     `
@@ -79,20 +66,22 @@ async function relationalQuery(
         ${parseFields(fields)},
         website_event.session_id,
         website_event.visit_id,
-        count(*) as "c",
+        sum(case when website_event.event_type NOT IN (2, 5) then 1 else 0 end) as "c",
         min(website_event.created_at) as "min_time",
-        max(website_event.created_at) as "max_time"
+        max(website_event.created_at) as "max_time",
+        max(case when website_event.event_type = ${EVENT_TYPE.customEvent} then 1 else 0 end) as "has_custom_event"
       from website_event
       ${cohortQuery}
       ${excludeBounceQuery}
       ${joinSessionQuery}
       where website_event.website_id = {{websiteId::uuid}}
         and website_event.created_at between {{startDate}} and {{endDate}}
+        and website_event.event_type != ${EVENT_TYPE.performance}
         ${filterQuery}
       group by ${parseFieldsByName(fields)},
         website_event.session_id, website_event.visit_id
+      having sum(case when website_event.event_type NOT IN (2, 5) then 1 else 0 end) > 0
     ) as t
-    ${visitEventsJoin}
     group by ${parseFieldsByName(fields)}
     order by 2 desc, 1 desc
     limit 500
@@ -113,22 +102,11 @@ async function clickhouseQuery(
     websiteId,
     startDate,
     endDate,
-    eventType: EVENT_TYPE.pageView,
   });
-  const needsBounceEvents = filters.excludeBounce !== true;
-  const bounceQuery = needsBounceEvents
-    ? `sumIf(1, t.c = 1 and ifNull(e.has_custom_event, 0) = 0) as "bounces",`
-    : '0 as "bounces",';
-  const visitEventsJoin = needsBounceEvents
-    ? `left join (
-      select session_id, visit_id, toUInt8(1) as has_custom_event
-      from website_event
-      where website_id = {websiteId:UUID}
-        and created_at between {startDate:DateTime64} and {endDate:DateTime64}
-        and event_type = ${EVENT_TYPE.customEvent}
-      group by session_id, visit_id
-    ) as e using (session_id, visit_id)`
-    : '';
+  const bounceQuery =
+    filters.excludeBounce !== true
+      ? `sumIf(1, t.c = 1 and t.has_custom_event = 0) as "bounces",`
+      : '0 as "bounces",';
 
   return rawQuery(
     `
@@ -144,19 +122,21 @@ async function clickhouseQuery(
         ${parseFields(fields)},
         session_id,
         visit_id,
-        count(*) c,
+        sumIf(1, event_type NOT IN (2, 5)) c,
         min(created_at) min_time,
-        max(created_at) max_time
+        max(created_at) max_time,
+        max(if(event_type = ${EVENT_TYPE.customEvent}, 1, 0)) has_custom_event
       from website_event
       ${cohortQuery}
       ${excludeBounceQuery}
       where website_id = {websiteId:UUID}
         and created_at between {startDate:DateTime64} and {endDate:DateTime64}
+        and event_type != ${EVENT_TYPE.performance}
         ${filterQuery}
       group by ${parseFieldsByName(fields)},
         session_id, visit_id
+      having c > 0
     ) as t
-    ${visitEventsJoin}
     group by ${parseFieldsByName(fields)}
     order by 2 desc, 1 desc
     limit 500

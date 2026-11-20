@@ -377,19 +377,44 @@ type MetricEntry = PerformanceEntry & {
 
   /* Event handlers */
 
-  const handlePush = (_state: unknown, _title: string, url?: string | URL | null) => {
+  const trackUrlChange = (url?: string | URL | null) => {
     if (!url) return;
+
+    const normalized = normalize(url);
+
+    // The URL may already have been handled by the pushState/replaceState hook
+    // (e.g. a router calling replaceState while handling popstate). Returning
+    // early keeps currentRef pointing at the previous page, so the pending
+    // pageview does not report itself as its own referrer.
+    if (normalized === currentUrl) return;
 
     if (typeof flushPerformance === 'function') {
       flushPerformance();
     }
 
     currentRef = currentUrl;
-    currentUrl = normalize(url);
+    currentUrl = normalized;
 
-    if (currentUrl !== currentRef && autoPageview) {
+    if (autoPageview) {
       setTimeout(track, delayDuration);
     }
+  };
+
+  const handlePush = (_state: unknown, _title: string, url?: string | URL | null) =>
+    trackUrlChange(url);
+
+  // Back/Forward navigations fire `popstate` without touching pushState or
+  // replaceState, so they need their own listener. `location.href` is read at
+  // event time; the currentUrl/currentRef check keeps this from double
+  // counting when a router also calls replaceState during the same traversal.
+  // Clicking an in-page anchor also fires popstate; hash-only changes are
+  // ignored so they don't count as page views.
+  const handlePopState = () => {
+    const url = normalize(window.location.href);
+
+    if (url.split('#')[0] === currentUrl.split('#')[0]) return;
+
+    trackUrlChange(url);
   };
 
   const handlePathChanges = () => {
@@ -408,10 +433,11 @@ type MetricEntry = PerformanceEntry & {
 
     history.pushState = hook(history, 'pushState', handlePush);
     history.replaceState = hook(history, 'replaceState', handlePush);
+    window.addEventListener('popstate', handlePopState);
   };
 
   const handleClicks = () => {
-    const trackElement = async (el: Element) => {
+    const trackElement = async (el: Element, onAsyncHook?: (hook: Promise<unknown>) => void) => {
       const eventName = el.getAttribute(eventNameAttribute);
       if (eventName) {
         const eventData: EventData = {};
@@ -421,7 +447,7 @@ type MetricEntry = PerformanceEntry & {
           if (match) eventData[match[1]] = el.getAttribute(name) as string;
         });
 
-        return track(eventName, eventData);
+        return send({ ...getPayload(), name: eventName, data: eventData }, 'event', onAsyncHook);
       }
     };
     const onClick = (e: MouseEvent) => {
@@ -430,23 +456,23 @@ type MetricEntry = PerformanceEntry & {
       const eventEl = el.closest(`[${eventNameAttribute}]`);
       if (!eventEl) return;
 
-      if (eventEl.tagName === 'A' && (eventEl as HTMLAnchorElement).href) {
+      // Unloading the page would cancel an async beforeSend before the event is sent,
+      // so same-tab links wait for the hook (not the collector) before navigating.
+      const holdNavigation = (hook: Promise<unknown>) => {
+        if (eventEl.tagName !== 'A' || !(eventEl as HTMLAnchorElement).href) return;
         const { href, target } = eventEl as HTMLAnchorElement;
-        const external =
-          target === '_blank' ||
-          e.ctrlKey ||
-          e.shiftKey ||
-          e.metaKey ||
-          (e.button && e.button === 1);
-        if (!external) e.preventDefault();
-        return trackElement(eventEl).finally(() => {
-          if (!external) {
-            (target === '_top' ? (top as WindowProxy).location : location).href = href;
-          }
-        });
-      }
+        if (target === '_blank' || e.ctrlKey || e.shiftKey || e.metaKey || e.button === 1) return;
 
-      return trackElement(eventEl);
+        e.preventDefault();
+        // setTimeout lets send() start its keepalive fetch first.
+        const navigate = () =>
+          setTimeout(() => {
+            (target === '_top' ? (top as WindowProxy).location : location).href = href;
+          });
+        hook.then(navigate, navigate);
+      };
+
+      return trackElement(eventEl, holdNavigation);
     };
     document.addEventListener('click', onClick, true);
   };
@@ -461,13 +487,22 @@ type MetricEntry = PerformanceEntry & {
     (domain && !domains.includes(hostname)) ||
     (dnt && hasDoNotTrack());
 
-  const send = async (payload: Payload | null | undefined, type = 'event'): Promise<void> => {
+  const send = async (
+    payload: Payload | null | undefined,
+    type = 'event',
+    onAsyncHook?: (hook: Promise<unknown>) => void,
+  ): Promise<void> => {
     if (trackingDisabled()) return;
 
     const callback = getBeforeSend();
 
     if (typeof callback === 'function') {
-      payload = await Promise.resolve(callback(type, payload as Payload));
+      const result = callback(type, payload as Payload);
+      // Any thenable, not only a native Promise (polyfills, other frames, promise libraries).
+      if (typeof (result as PromiseLike<unknown> | null)?.then === 'function') {
+        onAsyncHook?.(Promise.resolve(result));
+      }
+      payload = await result;
     }
 
     if (!payload) return;

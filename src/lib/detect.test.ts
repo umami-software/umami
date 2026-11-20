@@ -10,10 +10,18 @@ vi.mock('is-localhost-ip', () => ({
   default: vi.fn(),
 }));
 
+const maxmind = vi.mocked((await import('maxmind')).default);
+
+vi.mock('maxmind', () => ({
+  default: { open: vi.fn() },
+}));
+
 beforeEach(() => {
   vi.resetAllMocks();
 
+  delete globalThis['maxmind-asn'];
   delete process.env.CLIENT_IP_HEADER;
+  delete process.env.IGNORE_ASN;
   delete process.env.IGNORE_IP;
   delete process.env.SKIP_LOCATION_HEADERS;
 });
@@ -76,8 +84,36 @@ test('getLocation: treats localhost check errors as non-local', async () => {
   });
 });
 
-test('hasBlockedIp: returns false for malformed client ip with cidr block', () => {
+test('hasBlockedIp: returns false for malformed client ip with cidr block', async () => {
   process.env.IGNORE_IP = '10.0.0.0/8';
 
-  expect(hasBlockedIp('not-an-ip')).toBe(false);
+  await expect(hasBlockedIp('not-an-ip')).resolves.toBe(false);
+});
+
+// Headless browser fleets rotate IPs within cloud ranges but keep the same ASN,
+// so blocking by ASN catches the whole fleet where IGNORE_IP ranges fall behind.
+test('hasBlockedIp: blocks clients on an ignored ASN', async () => {
+  process.env.IGNORE_ASN = '45102, AS132203';
+  maxmind.open.mockResolvedValue({
+    get: (ip: string) => ({ autonomous_system_number: ip === '43.156.0.1' ? 132203 : 15169 }),
+  } as any);
+
+  await expect(hasBlockedIp('43.156.0.1')).resolves.toBe(true);
+  await expect(hasBlockedIp('8.8.8.8')).resolves.toBe(false);
+});
+
+// The ASN database is only worth its memory for installs that opted in.
+test('hasBlockedIp: does not load the ASN database unless IGNORE_ASN is set', async () => {
+  await expect(hasBlockedIp('43.156.0.1')).resolves.toBe(false);
+
+  expect(maxmind.open).not.toHaveBeenCalled();
+});
+
+// A missing database must not take down collection for every visitor.
+test('hasBlockedIp: allows traffic when the ASN database cannot be loaded', async () => {
+  process.env.IGNORE_ASN = '132203';
+  maxmind.open.mockRejectedValue(new Error('ENOENT'));
+  vi.spyOn(console, 'error').mockImplementation(() => {});
+
+  await expect(hasBlockedIp('43.156.0.1')).resolves.toBe(false);
 });

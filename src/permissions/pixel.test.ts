@@ -159,3 +159,12 @@ describe('canDeletePixel', () => {
     await expect(canDeletePixel({ user: normalUser }, 'pixel-1')).resolves.toBe(false);
   });
 });
+
+// The global view-only role must win over ownership, even for the user's own pixel.
+test('denies a globally view-only owner from updating or deleting', async () => {
+  const viewOnlyUser = { id: 'user-1', username: 'viewer', role: 'view-only', isAdmin: false };
+  vi.mocked(getPixel).mockResolvedValue({ userId: 'user-1' } as any);
+
+  await expect(canUpdatePixel({ user: viewOnlyUser }, 'pixel-1')).resolves.toBe(false);
+  await expect(canDeletePixel({ user: viewOnlyUser }, 'pixel-1')).resolves.toBe(false);
+});
