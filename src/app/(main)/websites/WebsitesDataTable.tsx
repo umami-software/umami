@@ -8,14 +8,19 @@ import { WebsitesTable } from './WebsitesTable';
 export function WebsitesDataTable({
   userId,
   teamId,
+  includeTeams,
   showActions = true,
 }: {
   userId?: string;
   teamId?: string;
+  includeTeams?: boolean;
   showActions?: boolean;
 }) {
   const { user } = useLoginQuery();
-  const queryResult = useUserWebsitesQuery({ userId: userId || user?.id, teamId });
+  const queryResult = useUserWebsitesQuery(
+    { userId: userId || user?.id, teamId },
+    includeTeams ? { includeTeams } : undefined,
+  );
   const { renderUrl } = useNavigation();
 
   const renderLink = (row: any) => (
