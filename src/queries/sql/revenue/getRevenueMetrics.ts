@@ -451,7 +451,7 @@ async function clickhouseQuery(
 }
 
 function toClickHouseStringArray(arr: string[]): string {
-  return arr.map(p => `'${p.replace(/'/g, "\\'")}'`).join(', ');
+  return arr.map(p => `'${p.replace(/\\/g, '\\\\').replace(/'/g, "\\'")}'`).join(', ');
 }
 
 function toPostgresLikeClause(column: string, arr: string[]) {
