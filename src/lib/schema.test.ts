@@ -115,6 +115,11 @@ describe('filterParams', () => {
     expect(() => schema.parse({ eventType: '0' })).toThrow();
   });
 
+  test('rejects an eventType that overflows a Postgres integer', () => {
+    expect(schema.parse({ eventType: '2147483647' }).eventType).toBe(2147483647);
+    expect(() => schema.parse({ eventType: '99999999999' })).toThrow();
+  });
+
   test('validates segment as a uuid', () => {
     expect(schema.parse({ segment: UUID }).segment).toBe(UUID);
     expect(() => schema.parse({ segment: 'not-a-uuid' })).toThrow();
@@ -141,6 +146,11 @@ describe('pagingParams', () => {
 
   test('rejects a non-positive page', () => {
     expect(() => schema.parse({ page: '0' })).toThrow();
+  });
+
+  test('rejects values that overflow a Postgres integer', () => {
+    expect(() => schema.parse({ pageSize: '99999999999' })).toThrow();
+    expect(() => schema.parse({ page: '99999999999' })).toThrow();
   });
 });
 

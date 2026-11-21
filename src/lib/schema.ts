@@ -13,6 +13,9 @@ export const unitParam = z.string().refine(value => UNIT_TYPES.includes(value), 
   message: 'Invalid unit',
 });
 
+// Positive integer that fits a Postgres integer column; larger values make the query fail with a 500.
+export const int32Param = z.coerce.number().int().positive().max(2147483647);
+
 export const periodParam = z.enum(DATE_PERIODS);
 
 const periodDateRangeParams = {
@@ -121,7 +124,7 @@ export const filterParams = {
   utmTerm: z.string().optional(),
   segment: z.uuid().optional(),
   cohort: z.uuid().optional(),
-  eventType: z.coerce.number().int().positive().optional(),
+  eventType: int32Param.optional(),
   excludeBounce: z.string().optional(),
   match: z.enum(['all', 'any']).optional(),
 };
@@ -141,9 +144,9 @@ export const annotationSchema = z.object({
 });
 
 export const pagingParams = {
-  page: z.coerce.number().int().positive().optional(),
-  pageSize: z.coerce.number().int().positive().optional(),
-  maxResults: z.coerce.number().int().positive().optional(),
+  page: int32Param.optional(),
+  pageSize: int32Param.optional(),
+  maxResults: int32Param.optional(),
 };
 
 export const sortingParams = {
@@ -283,7 +286,7 @@ export const journeyReportSchema = z.object({
     steps: z.coerce.number().min(2).max(7),
     startStep: z.string().optional(),
     endStep: z.string().optional(),
-    eventType: z.coerce.number().int().positive().optional(),
+    eventType: int32Param.optional(),
   }),
 });
 
