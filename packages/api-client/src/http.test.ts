@@ -8,6 +8,7 @@ import {
   sendRequest,
   splitInput,
   stripApiPrefix,
+  trimSlashes,
 } from './http';
 
 const statsOperation: OperationDefinition = {
@@ -218,5 +219,21 @@ describe('sendRequest', () => {
         headers: {},
       }),
     ).resolves.toBeUndefined();
+  });
+});
+
+describe('trimSlashes', () => {
+  test('removes leading and trailing slashes only', () => {
+    expect(trimSlashes('/websites/abc/')).toBe('websites/abc');
+    expect(trimSlashes('//a//b//')).toBe('a//b');
+    expect(trimSlashes('///')).toBe('');
+    expect(trimSlashes('')).toBe('');
+  });
+
+  test('handles long runs of slashes in linear time', () => {
+    const input = `${'/'.repeat(100_000)}x${'/'.repeat(100_000)}y`;
+    const start = performance.now();
+    expect(trimSlashes(input)).toBe(input.slice(100_000));
+    expect(performance.now() - start).toBeLessThan(100);
   });
 });
