@@ -19,6 +19,25 @@ import { addCustomEvent, record } from 'rrweb';
     return Array.isArray(fromGlobal) ? fromGlobal.join(',') : String(fromGlobal);
   };
 
+  const getUrlTransform = () => {
+    const name = config('transform-url');
+    const callback = name ? window[name] : globalConfig.transformUrl;
+    return typeof callback === 'function' ? callback : null;
+  };
+
+  const transformUrl = url => {
+    const callback = getUrlTransform();
+
+    if (!callback) return url;
+
+    try {
+      const result = callback(url);
+      return typeof result === 'string' ? result : url;
+    } catch {
+      return url;
+    }
+  };
+
   const website = config('website-id');
   const hostUrl = config('host-url');
 
@@ -42,6 +61,7 @@ import { addCustomEvent, record } from 'rrweb';
   const REPLAY_FRAGMENT_TOTAL_PLACEHOLDER = 999999999;
   const RRWEB_EVENT_TYPE = {
     FullSnapshot: 2,
+    Meta: 4,
   };
   const HEATMAP_FLUSH_EVENT_COUNT = 20;
   const HEATMAP_FLUSH_INTERVAL = 5000;
@@ -119,6 +139,14 @@ import { addCustomEvent, record } from 'rrweb';
     `${Date.now().toString(36)}-${Math.random().toString(36).slice(2)}`;
 
   const isReplayFullSnapshot = event => event?.type === RRWEB_EVENT_TYPE.FullSnapshot;
+
+  const transformReplayEvent = event => {
+    if (event?.type !== RRWEB_EVENT_TYPE.Meta || typeof event.data?.href !== 'string') {
+      return event;
+    }
+
+    return { ...event, data: { ...event.data, href: transformUrl(event.data.href) } };
+  };
 
   const sendPayload = (type, payload, useKeepalive = false) => {
     const cache = getSessionCache();
@@ -449,8 +477,10 @@ import { addCustomEvent, record } from 'rrweb';
     replayFlushTimer = setInterval(() => flushReplay(), REPLAY_FLUSH_INTERVAL);
 
     replayStopFn = record({
-      emit(event) {
+      emit(rawEvent) {
         if (replayStopped) return;
+
+        const event = transformReplayEvent(rawEvent);
 
         if (Date.now() - replayStartTime > maxDuration) {
           stopReplay();
@@ -521,6 +551,7 @@ import { addCustomEvent, record } from 'rrweb';
 
     const { computePageMetrics, computeScrollPct } = createPageMetrics();
     let scrollUrl = location.href;
+    let replayUrl = transformUrl(scrollUrl);
     let maxScrollPct = 0;
     let lastFlushedScrollPct = 0;
     let scrollTimer = null;
@@ -532,7 +563,7 @@ import { addCustomEvent, record } from 'rrweb';
 
       queueHeatmapEvent({
         type: 'scroll',
-        url: scrollUrl,
+        url: transformUrl(scrollUrl),
         scrollPct: maxScrollPct,
         viewportW: window.innerWidth,
         viewportH: window.innerHeight,
@@ -569,7 +600,7 @@ import { addCustomEvent, record } from 'rrweb';
 
       queueHeatmapEvent({
         type: 'click',
-        url: location.href,
+        url: transformUrl(location.href),
         x: Math.round(event.clientX),
         y: Math.round(event.clientY),
         pageX: Math.round(pageX),
@@ -603,8 +634,14 @@ import { addCustomEvent, record } from 'rrweb';
       scrollUrl = location.href;
       lastFlushedScrollPct = 0;
 
+      const url = transformUrl(scrollUrl);
+
+      if (url === replayUrl) return;
+
+      replayUrl = url;
+
       if (replayStopFn && !replayStopped) {
-        addCustomEvent('url-change', { url: scrollUrl });
+        addCustomEvent('url-change', { url });
       }
     };
 
