@@ -16,7 +16,7 @@ export interface WebsiteStatsData {
 
 export async function getWebsiteStats(
   ...args: [websiteId: string, filters: QueryFilters]
-): Promise<WebsiteStatsData[]> {
+): Promise<WebsiteStatsData> {
   return runQuery({
     [PRISMA]: () => relationalQuery(...args),
     [CLICKHOUSE]: () => clickhouseQuery(...args),
@@ -26,7 +26,7 @@ export async function getWebsiteStats(
 async function relationalQuery(
   websiteId: string,
   filters: QueryFilters,
-): Promise<WebsiteStatsData[]> {
+): Promise<WebsiteStatsData> {
   const { getTimestampDiffSQL, parseFilters, rawQuery } = prisma;
   const { filterQuery, joinSessionQuery, cohortQuery, excludeBounceQuery, queryParams } =
     parseFilters({
@@ -72,7 +72,7 @@ async function relationalQuery(
 async function clickhouseQuery(
   websiteId: string,
   filters: QueryFilters,
-): Promise<WebsiteStatsData[]> {
+): Promise<WebsiteStatsData> {
   const { rawQuery, parseFilters } = clickhouse;
   const { filterQuery, cohortQuery, excludeBounceQuery, queryParams } = parseFilters({
     ...filters,
