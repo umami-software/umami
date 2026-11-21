@@ -11,7 +11,16 @@ import {
 import { IconLabel } from '@/components/common/IconLabel';
 import Link from '@/components/common/Link';
 import { useMessages, useNavigation, useShare } from '@/components/hooks';
-import { AlignEndHorizontal, Clock, Eye, PanelLeft, Sheet, Tag, User } from '@/components/icons';
+import {
+  AlignEndHorizontal,
+  Clock,
+  Eye,
+  PanelLeft,
+  Sheet,
+  Sparkles,
+  Tag,
+  User,
+} from '@/components/icons';
 import { LanguageButton } from '@/components/input/LanguageButton';
 import { PreferencesButton } from '@/components/input/PreferencesButton';
 import { Funnel, Gauge, Lightning, Magnet, Money, Network, Path, Target } from '@/components/svg';
@@ -94,6 +103,12 @@ export function ShareNav({
           label: t(labels.retention),
           icon: <Magnet />,
           path: renderPath('/retention'),
+        },
+        {
+          id: 'feature-adoption',
+          label: t(labels.featureAdoption),
+          icon: <Sparkles />,
+          path: renderPath('/feature-adoption'),
         },
       ],
     },

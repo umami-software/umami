@@ -64,6 +64,10 @@ vi.mock('@/app/(main)/websites/[websiteId]/(reports)/breakdown/BreakdownPage', (
   BreakdownPage: () => <div>breakdown page</div>,
 }));
 
+vi.mock('@/app/(main)/websites/[websiteId]/(reports)/feature-adoption/FeatureAdoptionPage', () => ({
+  FeatureAdoptionPage: () => <div>feature adoption page</div>,
+}));
+
 vi.mock('@/app/(main)/websites/[websiteId]/(reports)/funnels/FunnelsPage', () => ({
   FunnelsPage: () => <div>funnels page</div>,
 }));
