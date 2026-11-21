@@ -12,7 +12,9 @@ import {
   useSubscription,
   useTeamQuery,
   useTwoFactorStatusQuery,
+  useCommandPalette,
 } from '@/components/hooks';
+import { CommandPalette } from '@/components/common/CommandPalette';
 import { PasswordChangeRequiredModal } from '@/components/modals/PasswordChangeRequiredModal';
 import { TwoFactorSetupModal } from '@/components/modals/TwoFactorSetupModal';
 import { LAST_TEAM_CONFIG } from '@/lib/constants';
@@ -20,6 +22,7 @@ import { removeItem, setItem } from '@/lib/storage';
 import { UpdateNotice } from './UpdateNotice';
 
 export function App({ children }) {
+  useCommandPalette();
   const { user, isLoading, error } = useLoginQuery();
   const config = useConfig();
   const { pathname, router, teamId } = useNavigation();
@@ -145,6 +148,7 @@ export function App({ children }) {
           src={`${process.env.basePath || ''}/recorder.js`}
         />
       )}
+      <CommandPalette />
     </Grid>
   );
 }
