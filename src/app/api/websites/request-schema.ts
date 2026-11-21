@@ -1,5 +1,11 @@
 import { z } from 'zod';
 import { DOMAIN_REGEX } from '@/lib/constants';
+import {
+  RECORDER_CANVAS_FPS_MAX,
+  RECORDER_CANVAS_FPS_MIN,
+  RECORDER_CONSOLE_LEVELS,
+  RECORDER_MASK_LEVELS,
+} from '@/lib/recorder';
 import { pagingParams, searchParams, sortingParams } from '@/lib/schema';
 
 export const replayConfigInputSchema = z
@@ -8,9 +14,18 @@ export const replayConfigInputSchema = z
     heatmapEnabled: z.boolean().optional(),
     sampleRate: z.number().min(0).max(1).optional(),
     heatmapSampleRate: z.number().min(0).max(1).optional(),
-    maskLevel: z.enum(['strict', 'moderate']).optional(),
+    maskLevel: z.enum(RECORDER_MASK_LEVELS).optional(),
+    consoleLevel: z.enum(RECORDER_CONSOLE_LEVELS).optional(),
     maxDuration: z.number().int().positive().optional(),
     blockSelector: z.string().optional(),
+    recordCanvas: z.boolean().optional(),
+    canvasFps: z
+      .number()
+      .int()
+      .min(RECORDER_CANVAS_FPS_MIN)
+      .max(RECORDER_CANVAS_FPS_MAX)
+      .optional(),
+    canvasQuality: z.number().min(0).max(1).optional(),
   })
   .meta({ id: 'ReplayConfigInput' });
 

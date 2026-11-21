@@ -1,12 +1,14 @@
 import { expect, test } from 'vitest';
 import {
   canReplayEvents,
+  getReplayConsoleLogs,
   getReplayEventCount,
   getReplayPlayerEvents,
   getReplayViewport,
   hasReplayableFullSnapshot,
   hasReplayFullSnapshot,
   hasReplayMeta,
+  REPLAY_CONSOLE_EVENT_TAG,
   REPLAY_EVENT_FRAGMENT_TYPE,
   restoreReplayEventFragments,
 } from './replay';
@@ -134,4 +136,26 @@ test('getReplayEventCount counts a fragment group as one event', () => {
       { type: 3 },
     ]),
   ).toBe(3);
+});
+
+test('getReplayConsoleLogs reads captured console events', () => {
+  expect(
+    getReplayConsoleLogs([
+      { type: 4, timestamp: 1000 },
+      {
+        type: 5,
+        timestamp: 2000,
+        data: {
+          tag: REPLAY_CONSOLE_EVENT_TAG,
+          payload: { level: 'error', args: ['Failed', { code: 500 }, null] },
+        },
+      },
+      { type: 5, timestamp: 3000, data: { tag: 'url-change', payload: { url: '/' } } },
+      { type: 5, timestamp: 4000, data: { tag: REPLAY_CONSOLE_EVENT_TAG, payload: {} } },
+    ]),
+  ).toEqual([
+    { timestamp: 2000, level: 'error', message: 'Failed {"code":500} null' },
+    { timestamp: 4000, level: 'log', message: '' },
+  ]);
+  expect(getReplayConsoleLogs(null)).toEqual([]);
 });

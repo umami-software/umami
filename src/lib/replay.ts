@@ -1,9 +1,18 @@
 export const RRWEB_EVENT_TYPE = {
   Meta: 4,
   FullSnapshot: 2,
+  Custom: 5,
 } as const;
 
 export const REPLAY_EVENT_FRAGMENT_TYPE = 'umami:rrweb-event-fragment';
+
+export const REPLAY_CONSOLE_EVENT_TAG = 'umami.console';
+
+export interface ReplayConsoleLog {
+  timestamp: number;
+  level: string;
+  message: string;
+}
 
 interface ReplayEventFragment {
   type: typeof REPLAY_EVENT_FRAGMENT_TYPE;
@@ -208,4 +217,36 @@ export function getReplayPlayerEvents(events: any[] | null | undefined) {
 
 export function canReplayEvents(events: any[] | null | undefined) {
   return getReplayPlayerEvents(events).length >= 2;
+}
+
+function formatConsoleValue(value: unknown) {
+  if (typeof value === 'string') return value;
+  if (value === null || value === undefined) return String(value);
+
+  try {
+    return JSON.stringify(value);
+  } catch {
+    return String(value);
+  }
+}
+
+export function getReplayConsoleLogs(events: any[] | null | undefined): ReplayConsoleLog[] {
+  if (!Array.isArray(events)) {
+    return [];
+  }
+
+  return events
+    .filter(
+      event =>
+        event?.type === RRWEB_EVENT_TYPE.Custom && event.data?.tag === REPLAY_CONSOLE_EVENT_TAG,
+    )
+    .map(event => {
+      const { level, args } = event.data.payload || {};
+
+      return {
+        timestamp: Number(event.timestamp) || 0,
+        level: typeof level === 'string' ? level : 'log',
+        message: (Array.isArray(args) ? args : []).map(formatConsoleValue).join(' '),
+      };
+    });
 }
