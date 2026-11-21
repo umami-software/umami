@@ -35,6 +35,8 @@ export function useWebsiteNavItems(websiteId: string) {
       view: undefined,
       unit: undefined,
       excludeBounce: undefined,
+      minVisitDuration: undefined,
+      maxVisitDuration: undefined,
     });
 
   const items = [

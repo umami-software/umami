@@ -1,7 +1,14 @@
 import { FILTER_COLUMNS } from './constants';
 import type { ShareParameters, ShareTheme } from './types';
 
-const FILTER_QUERY_PARAMS = new Set(['cohort', 'excludeBounce', 'match', 'segment']);
+const FILTER_QUERY_PARAMS = new Set([
+  'cohort',
+  'excludeBounce',
+  'match',
+  'maxVisitDuration',
+  'minVisitDuration',
+  'segment',
+]);
 
 export function allowShareFilter(parameters?: ShareParameters | null) {
   return parameters?.allowFilter !== false;
