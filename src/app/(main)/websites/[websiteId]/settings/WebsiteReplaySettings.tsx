@@ -13,7 +13,13 @@ import {
 } from '@umami/react-zen';
 import { useEffect, useState } from 'react';
 import { EmptyPlaceholder } from '@/components/common/EmptyPlaceholder';
-import { useMessages, useSubscription, useUpdateQuery, useWebsite } from '@/components/hooks';
+import {
+  useConfig,
+  useMessages,
+  useSubscription,
+  useUpdateQuery,
+  useWebsite,
+} from '@/components/hooks';
 import { Video } from '@/components/icons';
 import { getRecorderConfig, type RecorderConfig } from '@/lib/recorder';
 
@@ -24,6 +30,7 @@ export function WebsiteReplaySettings({ websiteId }: { websiteId: string }) {
   const { t, labels, messages } = useMessages();
   const { hasFeature, cloudMode, isLoading } = useSubscription(website?.teamId);
   const { mutateAsync, touch, toast, isPending } = useUpdateQuery(`/websites/${websiteId}`);
+  const appConfig = useConfig();
   const config = getRecorderConfig(website?.replayConfig);
 
   const [replayEnabled, setReplayEnabled] = useState(config.replayEnabled === true);
@@ -52,9 +59,19 @@ export function WebsiteReplaySettings({ websiteId }: { websiteId: string }) {
     config.sampleRate,
   ]);
 
+  // When TRACKER_SCRIPT_NAME is a full URL (the dashboard is served on a different
+  // host than the tracker), serve the recorder from that same host, like the
+  // tracking code does, instead of the dashboard's own origin.
+  const trackerScriptUrl = appConfig?.trackerScriptName
+    ?.split(',')
+    ?.map((name: string) => name.trim())
+    ?.find((name: string) => name.startsWith('http'));
+
   const recorderUrl = cloudMode
     ? `${process.env.cloudUrl}/${RECORDER_NAME}`
-    : `${window?.location?.origin || ''}${process.env.basePath || ''}/${RECORDER_NAME}`;
+    : trackerScriptUrl
+      ? new URL(RECORDER_NAME, trackerScriptUrl).href
+      : `${window?.location?.origin || ''}${process.env.basePath || ''}/${RECORDER_NAME}`;
 
   const recorderCode = `<script defer src="${recorderUrl}" data-website-id="${websiteId}"></script>`;
   const sectionLabel = `${t(labels.replays)} & ${t(labels.heatmaps)}`;
