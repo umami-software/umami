@@ -7,6 +7,7 @@ const chartProps = vi.hoisted(() => ({ current: null as any }));
 
 function hitTest({ clientX, clientY }: { clientX: number; clientY: number }) {
   if (clientY >= 180) return [];
+  if (clientX >= 150 && clientX < 200) return [{ index: 4, datasetIndex: 0 }];
   return [{ index: 2, datasetIndex: clientX < 150 ? 0 : 1 }];
 }
 
@@ -34,8 +35,13 @@ vi.mock('@/components/charts/Chart', () => ({
               dataPoints: [
                 {
                   raw: {
-                    x: '2026-01-03',
-                    y: bar.datasetIndex === 0 ? (props.chartData?.datasets[0]?.data[0] ?? 42) : 33,
+                    x: bar.index === 4 ? '2026-01-05' : '2026-01-03',
+                    y:
+                      bar.datasetIndex === 0
+                        ? bar.index === 4
+                          ? 58
+                          : (props.chartData?.datasets[0]?.data[0] ?? 42)
+                        : 33,
                   },
                   dataset: { label: 'visitors' },
                 },
@@ -184,6 +190,38 @@ test('touching a different bar or empty space requires a new first tap', () => {
   tap(canvas, 220);
 
   expect(onBarClick).not.toHaveBeenCalled();
+});
+
+test('touching a different date in the same series switches the tooltip before drilling down', () => {
+  const onBarClick = vi.fn();
+  render(
+    <BarChart
+      unit="day"
+      minDate={new Date(2026, 0, 1)}
+      maxDate={new Date(2026, 0, 31)}
+      onBarClick={onBarClick}
+    />,
+  );
+
+  const canvas = screen.getByTestId('chart-canvas');
+  tap(canvas, 100);
+
+  expect(onBarClick).not.toHaveBeenCalled();
+  expect(screen.getByRole('tooltip').textContent).toContain('January 3rd, 2026');
+  expect(screen.getByRole('tooltip').textContent).toContain('42 visitors');
+
+  tap(canvas, 170);
+
+  expect(onBarClick).not.toHaveBeenCalled();
+  expect(screen.getByRole('tooltip').textContent).toContain('January 5th, 2026');
+  expect(screen.getByRole('tooltip').textContent).toContain('58 visitors');
+
+  tap(canvas, 170);
+
+  expect(onBarClick).toHaveBeenCalledOnce();
+  expect(onBarClick).toHaveBeenCalledWith(new Date(2026, 0, 5));
+  expect(onBarClick).not.toHaveBeenCalledWith(new Date(2026, 0, 3));
+  expect(screen.queryByRole('tooltip')).toBeNull();
 });
 
 test.each(['axis', 'outside', 'cancel', 'drag', 'scroll'])(
