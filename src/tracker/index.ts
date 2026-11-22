@@ -408,6 +408,26 @@ type MetricEntry = PerformanceEntry & {
 
     history.pushState = hook(history, 'pushState', handlePush);
     history.replaceState = hook(history, 'replaceState', handlePush);
+
+    // Back/Forward navigation fires `popstate` without calling pushState/replaceState,
+    // so the history hooks above never see it. Listen for it directly and reuse the same
+    // logic: normalize the current URL and send a page view only when it actually changed.
+    // The `currentUrl !== currentRef` guard inside handlePush prevents double counting when
+    // a router also calls replaceState while handling the same popstate event.
+    window.addEventListener('popstate', () => handlePush(null, document.title, location.href));
+
+    // Cross-document navigations restored from the back/forward cache (bfcache) do not
+    // re-run the tracker, but they do fire `pageshow` with `persisted === true`. Treat
+    // those as a fresh page view so restored SPA pages are still counted. A bfcache
+    // restore keeps the same URL, so we must NOT route this through `handlePush` (its
+    // `currentUrl !== currentRef` guard would suppress the view); record it directly.
+    // A `popstate` for the same traversal is deduped by that same guard, so the two
+    // listeners never double count a single restore.
+    window.addEventListener('pageshow', event => {
+      if ((event as PageTransitionEvent).persisted) {
+        track();
+      }
+    });
   };
 
   const handleClicks = () => {
