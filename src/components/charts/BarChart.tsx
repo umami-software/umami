@@ -1,5 +1,15 @@
 import { useTheme } from '@umami/react-zen';
-import { memo, useCallback, useMemo, useRef, useState } from 'react';
+import ChartJS from 'chart.js/auto';
+import {
+  memo,
+  type PointerEvent,
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
 import { Chart, type ChartProps } from '@/components/charts/Chart';
 import { ChartTooltip } from '@/components/charts/ChartTooltip';
 import { useLocale } from '@/components/hooks';
@@ -67,6 +77,10 @@ function BarChartComponent({
   ...props
 }: BarChartProps) {
   const [tooltip, setTooltip] = useState<TooltipState | null>(null);
+  const [touchPosition, setTouchPosition] = useState<{ x: number; y: number } | null>(null);
+  const touchInput = useRef(false);
+  const touch = useRef<{ chart: ChartJS; x: number; y: number } | null>(null);
+  const selectedTouchBar = useRef<{ index: number; datasetIndex: number } | null>(null);
   const { theme } = useTheme();
   const { locale } = useLocale();
   const { colors } = useMemo(() => getThemeColors(theme), [theme]);
@@ -75,6 +89,57 @@ function BarChartComponent({
   onBarClickRef.current = onBarClick;
   const isClickable = !!onBarClick;
 
+  const dismissTouch = useCallback((chart = touch.current?.chart) => {
+    selectedTouchBar.current = null;
+    touch.current = null;
+    setTouchPosition(null);
+    setTooltip(null);
+    chart?.tooltip?.setActiveElements([], { x: 0, y: 0 });
+  }, []);
+
+  const startTime = minDate?.getTime();
+  const endTime = maxDate?.getTime();
+
+  useLayoutEffect(() => {
+    if (touch.current) {
+      dismissTouch();
+    }
+  }, [chartData, startTime, endTime, unit, isClickable, dismissTouch]);
+
+  useEffect(() => {
+    if (!touchPosition) return;
+
+    const dismissOutside = (event: Event) => {
+      if (touch.current && event.target !== touch.current.chart.canvas) {
+        dismissTouch();
+      }
+    };
+
+    document.addEventListener('pointerdown', dismissOutside, true);
+    document.addEventListener('touchstart', dismissOutside, true);
+    document.addEventListener('scroll', dismissOutside, true);
+    return () => {
+      document.removeEventListener('pointerdown', dismissOutside, true);
+      document.removeEventListener('touchstart', dismissOutside, true);
+      document.removeEventListener('scroll', dismissOutside, true);
+    };
+  }, [touchPosition, dismissTouch]);
+
+  const restorePointerInput = (event: PointerEvent<HTMLElement>) => {
+    // A touch can generate mouse events, but its Pointer Events still identify it as touch.
+    if (!touchInput.current || event.pointerType === 'touch') return;
+
+    if (!touch.current && event.target instanceof HTMLCanvasElement) {
+      const chart = ChartJS.getChart(event.target);
+      chart?.tooltip?.setActiveElements([], { x: 0, y: 0 });
+    }
+
+    touchInput.current = false;
+    touch.current = null;
+    selectedTouchBar.current = null;
+    setTouchPosition(null);
+  };
+
   const chartOptions: any = useMemo(() => {
     const min = formatDate(minDate, DATE_FORMATS[unit], locale);
     const max = formatDate(maxDate, DATE_FORMATS[unit], locale);
@@ -82,16 +147,32 @@ function BarChartComponent({
     return {
       __id: Date.now(),
       ...(isClickable && {
-        onClick: (event: { native?: { target?: HTMLElement } }, elements: { index: number }[]) => {
-          if (elements.length) {
-            // The canvas is reused, and the next view may not be clickable.
-            if (event.native?.target) {
-              event.native.target.style.cursor = 'default';
-            }
-            // Buckets are generated from minDate, so the index gives the bar's date.
-            const { add, start } = DATE_FUNCTIONS[unit];
-            onBarClickRef.current?.(add(start(minDate), elements[0].index));
+        onClick: (
+          event: { native?: { target?: HTMLElement } },
+          elements: { index: number; datasetIndex: number }[],
+        ) => {
+          if (!elements.length) {
+            if (touch.current) dismissTouch();
+            return;
           }
+          if (touchInput.current) {
+            if (!touch.current) return;
+
+            const selected = selectedTouchBar.current;
+            const { index, datasetIndex } = elements[0];
+            if (!selected || selected.index !== index || selected.datasetIndex !== datasetIndex) {
+              selectedTouchBar.current = { index, datasetIndex };
+              return;
+            }
+            dismissTouch();
+          }
+          // The canvas is reused, and the next view may not be clickable.
+          if (event.native?.target) {
+            event.native.target.style.cursor = 'default';
+          }
+          // Buckets are generated from minDate, so the index gives the bar's date.
+          const { add, start } = DATE_FUNCTIONS[unit];
+          onBarClickRef.current?.(add(start(minDate), elements[0].index));
         },
         onHover: (event: { native?: { target?: HTMLElement } }, elements: unknown[]) => {
           if (event.native?.target) {
@@ -160,10 +241,14 @@ function BarChartComponent({
     XAxisType,
     YAxisType,
     isClickable,
+    dismissTouch,
   ]);
 
   const handleTooltip = useCallback(
     ({ tooltip }: { tooltip: any }) => {
+      // Chart.js can still process compatibility events after a touch was dismissed.
+      if (touchInput.current && !touch.current) return;
+
       const { opacity, labelColors, dataPoints } = tooltip;
       const nextTooltip = opacity
         ? {
@@ -198,12 +283,62 @@ function BarChartComponent({
     <>
       <MemoChart
         {...props}
+        onPointerDownCapture={event => {
+          props.onPointerDownCapture?.(event);
+          restorePointerInput(event);
+        }}
+        onPointerMoveCapture={event => {
+          props.onPointerMoveCapture?.(event);
+          restorePointerInput(event);
+        }}
+        onTouchStartCapture={event => {
+          props.onTouchStartCapture?.(event);
+          touchInput.current = true;
+          const pointer = event.touches[0];
+          const chart =
+            event.target instanceof HTMLCanvasElement ? ChartJS.getChart(event.target) : undefined;
+          // Chart.js does not call onClick for canvas points outside the plotting area.
+          if (
+            !chart ||
+            event.touches.length !== 1 ||
+            !chart.getElementsAtEventForMode(
+              event.nativeEvent,
+              'nearest',
+              { intersect: true },
+              false,
+            ).length
+          ) {
+            dismissTouch(chart);
+            return;
+          }
+
+          touch.current = { chart, x: pointer.clientX, y: pointer.clientY };
+          setTouchPosition({ x: pointer.clientX, y: pointer.clientY });
+          // Let the next native event publish the tooltip even if Chart.js kept the same active bar.
+          chart.tooltip?.setActiveElements([], { x: 0, y: 0 });
+        }}
+        onTouchMoveCapture={event => {
+          props.onTouchMoveCapture?.(event);
+          const start = touch.current;
+          const pointer = event.touches[0];
+          if (
+            start &&
+            pointer &&
+            Math.hypot(pointer.clientX - start.x, pointer.clientY - start.y) > 10
+          ) {
+            dismissTouch();
+          }
+        }}
+        onTouchCancelCapture={event => {
+          props.onTouchCancelCapture?.(event);
+          dismissTouch();
+        }}
         type="bar"
         chartData={chartData}
         chartOptions={chartOptions}
         onTooltip={handleTooltip}
       />
-      {tooltip && <ChartTooltip {...tooltip} />}
+      {tooltip && <ChartTooltip {...tooltip} touchPosition={touchPosition} />}
     </>
   );
 }
