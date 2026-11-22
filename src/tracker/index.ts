@@ -380,14 +380,24 @@ type MetricEntry = PerformanceEntry & {
   const handlePush = (_state: unknown, _title: string, url?: string | URL | null) => {
     if (!url) return;
 
+    const normalized = normalize(url);
+
+    // Skip unchanged URLs *before* flushing performance or overwriting `currentRef`.
+    // A router that calls `replaceState` with the destination URL while handling a
+    // `popstate` makes `handlePush` run twice for one navigation; without this guard the
+    // second pass would clobber `currentRef` and emit a near-zero-duration performance
+    // record for the destination, and the delayed view would report itself as its own
+    // referrer. Bailing out early keeps the first pass's state intact.
+    if (normalized === currentUrl) return;
+
     if (typeof flushPerformance === 'function') {
       flushPerformance();
     }
 
     currentRef = currentUrl;
-    currentUrl = normalize(url);
+    currentUrl = normalized;
 
-    if (currentUrl !== currentRef && autoPageview) {
+    if (autoPageview) {
       setTimeout(track, delayDuration);
     }
   };
@@ -418,15 +428,27 @@ type MetricEntry = PerformanceEntry & {
 
     // Cross-document navigations restored from the back/forward cache (bfcache) do not
     // re-run the tracker, but they do fire `pageshow` with `persisted === true`. Treat
-    // those as a fresh page view so restored SPA pages are still counted. A bfcache
-    // restore keeps the same URL, so we must NOT route this through `handlePush` (its
-    // `currentUrl !== currentRef` guard would suppress the view); record it directly.
-    // A `popstate` for the same traversal is deduped by that same guard, so the two
-    // listeners never double count a single restore.
+    // those as a fresh page view so restored SPA pages are still counted.
+    //
+    // Two subtleties handled here (both raised in code review):
+    //   1. Respect `autoPageview`: when the site sends views itself, a restored page must
+    //      NOT auto-fire a view (otherwise it is counted twice). Only track when enabled.
+    //   2. A bfcache restore can land on a *different* SPA history entry than the one the
+    //      tracker last recorded (e.g. visit /a, push /b, leave, then Back to /a). The
+    //      restored document's `location.href` is authoritative, so we re-synchronize the
+    //      tracker's URL state to it before recording. This both reports the correct page
+    //      and prevents the subsequent `popstate` from re-firing a view for the same entry
+    //      (its `currentUrl !== currentRef` guard now sees no change).
     window.addEventListener('pageshow', event => {
-      if ((event as PageTransitionEvent).persisted) {
-        track();
+      if (!(event as PageTransitionEvent).persisted || !autoPageview) return;
+
+      if (typeof flushPerformance === 'function') {
+        flushPerformance();
       }
+
+      currentRef = currentUrl;
+      currentUrl = normalize(location.href);
+      track();
     });
   };
 
