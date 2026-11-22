@@ -162,6 +162,35 @@ describe('SPA history navigation (issue #4787)', () => {
     expect(fetchMock).toHaveBeenCalledTimes(3);
   });
 
+  test('does not double-wrap history when the tracker is evaluated twice (review P2)', async () => {
+    // First load wraps pushState/replaceState.
+    const fetchMock = await loadTracker();
+    const wrappedPush = history.pushState;
+
+    // Simulate the tracker script being evaluated a second time on the same page
+    // (e.g. bundled twice or re-injected). `vi.resetModules()` gives a fresh module
+    // instance whose `handlePathChanges` runs again against the already-patched history.
+    // The `addEventListener` spy installed by `loadTracker` is still active, so any new
+    // listeners the second evaluation registers are captured for cleanup too.
+    await vi.resetModules();
+    await import('./index');
+
+    // The wrapper must NOT be nested: pushState is the same function reference, so the
+    // second evaluation's `hook` detected the existing wrapper and left it untouched.
+    expect(history.pushState).toBe(wrappedPush);
+
+    // The second evaluation legitimately fires its own initial page view (a fresh load),
+    // so wait for that to settle before measuring navigation behaviour.
+    const baseline = fetchMock.mock.calls.length;
+
+    // A single navigation must fire exactly ONE additional page view. If the wrappers had
+    // nested, the single pushState would invoke handlePush twice and produce two views.
+    window.history.pushState({}, '', '/b');
+    await vi.waitFor(() => expect(fetchMock.mock.calls.length).toBe(baseline + 1));
+    await new Promise(resolve => setTimeout(resolve, 400));
+    expect(fetchMock.mock.calls.length).toBe(baseline + 1);
+  });
+
   test('does not auto-track bfcache restore when autoPageview is disabled (review P1)', async () => {
     // Load the tracker with auto-pageview disabled BEFORE import.
     const script = document.createElement('script');

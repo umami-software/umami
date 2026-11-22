@@ -403,17 +403,33 @@ type MetricEntry = PerformanceEntry & {
   };
 
   const handlePathChanges = () => {
+    // Guard against double-wrapping. If the tracker script is evaluated more than once
+    // on the same page (e.g. bundled twice, or re-injected by a tag manager), wrapping
+    // `history.pushState`/`replaceState` again would nest wrappers: every navigation
+    // would invoke `handlePush` multiple times and each wrapper would permanently retain
+    // its `orig` closure (a memory leak). Mark the patched functions so a second pass is
+    // a no-op. The marker is a non-enumerable Symbol so it never leaks into user code.
+    const WRAPPED = Symbol.for('umami.history.wrapped');
+    const isWrapped = (fn: unknown): boolean =>
+      typeof fn === 'function' && (fn as unknown as Record<symbol, boolean>)[WRAPPED] === true;
+
     const hook = (
       _this: History,
       method: 'pushState' | 'replaceState',
       callback: typeof handlePush,
     ) => {
       const orig = _this[method];
-      return (...args: Parameters<History['pushState']>) => {
+      if (isWrapped(orig)) return orig;
+
+      const wrapped = (...args: Parameters<History['pushState']>) => {
         const result = orig.apply(_this, args);
         callback.apply(null, args);
         return result;
       };
+      Object.defineProperty(wrapped, WRAPPED, { value: true, enumerable: false });
+      // Preserve the original so it can be unwrapped/restored if ever needed.
+      Object.defineProperty(wrapped, 'original', { value: orig, enumerable: false });
+      return wrapped;
     };
 
     history.pushState = hook(history, 'pushState', handlePush);
