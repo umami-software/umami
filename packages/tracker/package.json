@@ -1,0 +1,35 @@
+{
+  "name": "@umami/tracker",
+  "version": "0.1.0",
+  "description": "Umami browser tracker as an ES module, for bundling into your own frontend.",
+  "author": "Umami Software, Inc. <hello@umami.is>",
+  "license": "MIT",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "sideEffects": false,
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "build": "tsup",
+    "test": "vitest run",
+    "typecheck": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "jsdom": "^30.1.2",
+    "tsup": "^8.5.0",
+    "typescript": "^6.0.3",
+    "vitest": "^5.0.3"
+  }
+}
