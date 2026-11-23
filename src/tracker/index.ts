@@ -380,34 +380,92 @@ type MetricEntry = PerformanceEntry & {
   const handlePush = (_state: unknown, _title: string, url?: string | URL | null) => {
     if (!url) return;
 
+    const normalized = normalize(url);
+
+    // Skip unchanged URLs *before* flushing performance or overwriting `currentRef`.
+    // A router that calls `replaceState` with the destination URL while handling a
+    // `popstate` makes `handlePush` run twice for one navigation; without this guard the
+    // second pass would clobber `currentRef` and emit a near-zero-duration performance
+    // record for the destination, and the delayed view would report itself as its own
+    // referrer. Bailing out early keeps the first pass's state intact.
+    if (normalized === currentUrl) return;
+
     if (typeof flushPerformance === 'function') {
       flushPerformance();
     }
 
     currentRef = currentUrl;
-    currentUrl = normalize(url);
+    currentUrl = normalized;
 
-    if (currentUrl !== currentRef && autoPageview) {
+    if (autoPageview) {
       setTimeout(track, delayDuration);
     }
   };
 
   const handlePathChanges = () => {
+    // Guard against double-wrapping. If the tracker script is evaluated more than once
+    // on the same page (e.g. bundled twice, or re-injected by a tag manager), wrapping
+    // `history.pushState`/`replaceState` again would nest wrappers: every navigation
+    // would invoke `handlePush` multiple times and each wrapper would permanently retain
+    // its `orig` closure (a memory leak). Mark the patched functions so a second pass is
+    // a no-op. The marker is a non-enumerable Symbol so it never leaks into user code.
+    const WRAPPED = Symbol.for('umami.history.wrapped');
+    const isWrapped = (fn: unknown): boolean =>
+      typeof fn === 'function' && (fn as unknown as Record<symbol, boolean>)[WRAPPED] === true;
+
     const hook = (
       _this: History,
       method: 'pushState' | 'replaceState',
       callback: typeof handlePush,
     ) => {
       const orig = _this[method];
-      return (...args: Parameters<History['pushState']>) => {
+      if (isWrapped(orig)) return orig;
+
+      const wrapped = (...args: Parameters<History['pushState']>) => {
         const result = orig.apply(_this, args);
         callback.apply(null, args);
         return result;
       };
+      Object.defineProperty(wrapped, WRAPPED, { value: true, enumerable: false });
+      // Preserve the original so it can be unwrapped/restored if ever needed.
+      Object.defineProperty(wrapped, 'original', { value: orig, enumerable: false });
+      return wrapped;
     };
 
     history.pushState = hook(history, 'pushState', handlePush);
     history.replaceState = hook(history, 'replaceState', handlePush);
+
+    // Back/Forward navigation fires `popstate` without calling pushState/replaceState,
+    // so the history hooks above never see it. Listen for it directly and reuse the same
+    // logic: normalize the current URL and send a page view only when it actually changed.
+    // The `currentUrl !== currentRef` guard inside handlePush prevents double counting when
+    // a router also calls replaceState while handling the same popstate event.
+    window.addEventListener('popstate', () => handlePush(null, document.title, location.href));
+
+    // Cross-document navigations restored from the back/forward cache (bfcache) do not
+    // re-run the tracker, but they do fire `pageshow` with `persisted === true`. Treat
+    // those as a fresh page view so restored SPA pages are still counted.
+    //
+    // Two subtleties handled here (both raised in code review):
+    //   1. Respect `autoPageview`: when the site sends views itself, a restored page must
+    //      NOT auto-fire a view (otherwise it is counted twice). Only track when enabled.
+    //   2. A bfcache restore can land on a *different* SPA history entry than the one the
+    //      tracker last recorded (e.g. visit /a, push /b, leave, then Back to /a). The
+    //      restored document's `location.href` is authoritative, so we re-synchronize the
+    //      tracker's URL state to it before recording. This both reports the correct page
+    //      and prevents the subsequent `popstate` from re-firing a view for the same entry
+    //      (its `currentUrl !== currentRef` guard now sees no change).
+    window.addEventListener('pageshow', event => {
+      if (!(event as PageTransitionEvent).persisted || !autoPageview) return;
+
+      if (typeof flushPerformance === 'function') {
+        flushPerformance();
+      }
+
+      currentRef = currentUrl;
+      currentUrl = normalize(location.href);
+      track();
+    });
   };
 
   const handleClicks = () => {
