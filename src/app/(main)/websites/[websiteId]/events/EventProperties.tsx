@@ -1,5 +1,5 @@
 'use client';
-import { Column, Grid, Label, ListItem, Row, Select } from '@umami/react-zen';
+import { Column, Grid, ListItem, Row, Select } from '@umami/react-zen';
 import { useMemo, useState } from 'react';
 import { ComboBox } from '@/components/common/ComboBox';
 import { LoadingPanel } from '@/components/common/LoadingPanel';
@@ -106,43 +106,41 @@ export function EventProperties({ websiteId }: { websiteId: string }) {
               width="100%"
               style={{ flex: 1, minWidth: 0 }}
             >
-              <Column gap="1" style={{ minWidth: 0 }}>
-                <Label>{t(labels.event)}</Label>
-                <Select
-                  value={eventName}
-                  onChange={value => handleEventChange(value as string)}
-                  allowSearch
-                  searchValue={eventSearch}
-                  onSearch={setEventSearch}
-                  onOpenChange={handleEventOpenChange}
-                  placeholder={t(labels.selectEvent)}
-                  maxHeight={400}
-                  buttonProps={{ style: { minWidth: 0, maxWidth: '100%', overflow: 'hidden' } }}
-                  renderValue={({ defaultChildren }) => (
-                    <span style={selectValueStyle}>{defaultChildren}</span>
-                  )}
-                >
-                  {filteredEventNames.map(name => (
-                    <ListItem key={name} id={name}>
-                      {name}
-                    </ListItem>
-                  ))}
-                </Select>
-              </Column>
-              <Column gap="1" style={{ minWidth: 0 }}>
-                <Label>{t(labels.property)}</Label>
-                <ComboBox
-                  inputValue={propertyName}
-                  onInputValueChange={setPropertyName}
-                  isDisabled={!eventName}
-                >
-                  {properties.map((field: { propertyName: string }) => (
-                    <ListItem key={field.propertyName} id={field.propertyName}>
-                      {field.propertyName}
-                    </ListItem>
-                  ))}
-                </ComboBox>
-              </Column>
+              <Select
+                label={t(labels.event)}
+                className="min-w-0"
+                value={eventName}
+                onChange={value => handleEventChange(value as string)}
+                allowSearch
+                searchValue={eventSearch}
+                onSearch={setEventSearch}
+                onOpenChange={handleEventOpenChange}
+                placeholder={t(labels.selectEvent)}
+                maxHeight={400}
+                buttonProps={{ style: { minWidth: 0, maxWidth: '100%', overflow: 'hidden' } }}
+                renderValue={({ defaultChildren }) => (
+                  <span style={selectValueStyle}>{defaultChildren}</span>
+                )}
+              >
+                {filteredEventNames.map(name => (
+                  <ListItem key={name} id={name}>
+                    {name}
+                  </ListItem>
+                ))}
+              </Select>
+              <ComboBox
+                label={t(labels.property)}
+                className="min-w-0"
+                inputValue={propertyName}
+                onInputValueChange={setPropertyName}
+                isDisabled={!eventName}
+              >
+                {properties.map((field: { propertyName: string }) => (
+                  <ListItem key={field.propertyName} id={field.propertyName}>
+                    {field.propertyName}
+                  </ListItem>
+                ))}
+              </ComboBox>
             </Grid>
             {eventName && (
               <Row

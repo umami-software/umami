@@ -84,7 +84,7 @@ export function FilterRecord({
   };
 
   return (
-    <Column gap="1">
+    <Column gap="2">
       <Label>{fields.find(f => f.name === name)?.label}</Label>
       <Grid columns="1fr auto" gap>
         <Grid columns={{ base: '1fr', md: '200px 1fr' }} gap>

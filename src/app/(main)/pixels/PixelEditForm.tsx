@@ -93,7 +93,7 @@ export function PixelEditForm({
               <input type="hidden" />
             </FormField>
 
-            <Column gap="1">
+            <Column gap="2">
               <Label>{t(labels.link)}</Label>
               <Row alignItems="center" gap>
                 <TextField

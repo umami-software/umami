@@ -1,12 +1,10 @@
 import {
   Button,
-  Column,
   Form,
   FormField,
   FormSubmitButton,
   Grid,
   Icon,
-  Label,
   Loading,
   Row,
   TextField,
@@ -125,18 +123,13 @@ export function LinkEditForm({
               </Grid>
             )}
 
-            <Column gap="1">
-              <Label>{t(labels.link)}</Label>
-              <Row alignItems="center" gap>
-                <TextField
-                  value={`${hostUrl}/${slug}`}
-                  autoComplete="off"
-                  isReadOnly
-                  allowCopy
-                  style={{ width: '100%' }}
-                />
-              </Row>
-            </Column>
+            <TextField
+              label={t(labels.link)}
+              value={`${hostUrl}/${slug}`}
+              autoComplete="off"
+              isReadOnly
+              allowCopy
+            />
 
             <Row justifyContent="flex-end" paddingTop="3" gap="3">
               {onClose && (

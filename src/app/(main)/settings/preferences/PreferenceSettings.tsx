@@ -17,27 +17,27 @@ export function PreferenceSettings() {
 
   return (
     <Column gap="6">
-      <Column gap="1">
+      <Column gap="2">
         <Label>{t(labels.defaultDateRange)}</Label>
         <DateRangeSetting />
       </Column>
-      <Column gap="1">
+      <Column gap="2">
         <Label>{t(labels.timezone)}</Label>
         <TimezoneSetting />
       </Column>
-      <Column gap="1">
+      <Column gap="2">
         <Label>{t(labels.timeFormat)}</Label>
         <TimeFormatSetting />
       </Column>
-      <Column gap="1">
+      <Column gap="2">
         <Label>{t(labels.language)}</Label>
         <LanguageSetting />
       </Column>
-      <Column gap="1">
+      <Column gap="2">
         <Label>{t(labels.theme)}</Label>
         <ThemeSetting />
       </Column>
-      <Column gap="1">
+      <Column gap="2">
         <Label>{t(labels.version)}</Label>
         <VersionSetting />
       </Column>

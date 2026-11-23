@@ -3,7 +3,6 @@ import {
   Column,
   Grid,
   Icon,
-  Label,
   List,
   ListItem,
   ListSection,
@@ -143,17 +142,15 @@ export function FieldFilters({
       <Column overflow="auto" gapY="4" style={{ contain: 'layout' }}>
         {onMatchChange && (
           <Row alignItems="center" gap>
-            <Column gap="1">
-              <Label>{t(labels.match)}</Label>
-              <Select
-                value={match}
-                onChange={value => onMatchChange(value as string)}
-                buttonProps={{ style: { width: 150 } }}
-              >
-                <ListItem id="all">{t(labels.matchAll)}</ListItem>
-                <ListItem id="any">{t(labels.matchAny)}</ListItem>
-              </Select>
-            </Column>
+            <Select
+              label={t(labels.match)}
+              value={match}
+              onChange={value => onMatchChange(value as string)}
+              buttonProps={{ style: { width: 150 } }}
+            >
+              <ListItem id="all">{t(labels.matchAll)}</ListItem>
+              <ListItem id="any">{t(labels.matchAny)}</ListItem>
+            </Select>
           </Row>
         )}
         {value.map((filter, index) => {

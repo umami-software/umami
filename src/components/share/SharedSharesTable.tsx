@@ -1,11 +1,18 @@
-import { Icon, Row, Text } from '@umami/react-zen';
-import type { ReactNode } from 'react';
+import { Button, Icon, Row, Text } from '@umami/react-zen';
+import type { CSSProperties, ReactNode } from 'react';
 import { CopyButton } from '@/components/common/CopyButton';
 import { useConfig, useMessages, useMobile } from '@/components/hooks';
 import { ExternalLink } from '@/components/icons';
 
 const desktopGridTemplateColumns = 'minmax(180px, 1fr) minmax(0, 2fr) auto';
 const rowBorder = '1px solid var(--zen-border)';
+const subgridRow: CSSProperties = {
+  display: 'grid',
+  gridTemplateColumns: 'subgrid',
+  gridColumn: '1 / -1',
+  alignItems: 'center',
+  borderBottom: rowBorder,
+};
 
 export interface ShareRow {
   id: string;
@@ -34,91 +41,86 @@ export function SharedSharesTable({
     return `${origin}${process.env.basePath || ''}/share/${slug}`;
   };
 
-  return (
-    <div style={{ width: '100%' }}>
-      {!isMobile && (
-        <div
-          style={{
-            display: 'grid',
-            gridTemplateColumns: desktopGridTemplateColumns,
-            gap: '16px',
-            alignItems: 'center',
-            padding: '0 0 12px',
-            borderBottom: rowBorder,
-          }}
-        >
-          <Text weight="bold">{t(labels.name)}</Text>
-          <Text weight="bold">{t(labels.shareUrl)}</Text>
-          <div />
-        </div>
-      )}
-      <div>
+  if (isMobile) {
+    return (
+      <div style={{ width: '100%' }}>
         {data.map(row => {
           const url = getUrl(row.slug);
-
-          if (isMobile) {
-            return (
-              <div
-                key={row.id}
-                style={{
-                  padding: '12px 0',
-                  borderBottom: rowBorder,
-                }}
-              >
-                <Text weight="bold">{row.name}</Text>
-                <div style={{ marginTop: '8px' }}>
-                  <ShareUrlCell url={url} value={row.slug} />
-                </div>
-                <Row justifyContent="flex-end" style={{ marginTop: '12px' }}>
-                  {renderActions(row)}
-                </Row>
-              </div>
-            );
-          }
 
           return (
             <div
               key={row.id}
               style={{
-                display: 'grid',
-                gridTemplateColumns: desktopGridTemplateColumns,
-                gap: '16px',
-                alignItems: 'center',
-                minHeight: '56px',
                 padding: '12px 0',
                 borderBottom: rowBorder,
               }}
             >
-              <Text>{row.name}</Text>
+              <Row alignItems="center" justifyContent="space-between" gap>
+                <Text weight="bold" truncate style={{ minWidth: 0 }}>
+                  {row.name}
+                </Text>
+                <Row style={{ flexShrink: 0 }}>{renderActions(row)}</Row>
+              </Row>
               <ShareUrlCell url={url} value={url} />
-              <Row justifyContent="flex-end">{renderActions(row)}</Row>
             </div>
           );
         })}
       </div>
+    );
+  }
+
+  // One outer grid with a subgrid per row, so the header and every row share
+  // the same column tracks regardless of how wide each row's actions are.
+  return (
+    <div
+      style={{
+        display: 'grid',
+        gridTemplateColumns: desktopGridTemplateColumns,
+        columnGap: '16px',
+        width: '100%',
+      }}
+    >
+      <div style={{ ...subgridRow, padding: '0 0 12px' }}>
+        <Text weight="bold">{t(labels.name)}</Text>
+        <Text weight="bold">{t(labels.shareUrl)}</Text>
+        <div />
+      </div>
+      {data.map(row => {
+        const url = getUrl(row.slug);
+
+        return (
+          <div key={row.id} style={{ ...subgridRow, minHeight: '56px', padding: '12px 0' }}>
+            <Text>{row.name}</Text>
+            <ShareUrlCell url={url} value={url} />
+            <Row justifyContent="flex-end">{renderActions(row)}</Row>
+          </div>
+        );
+      })}
     </div>
   );
 }
 
 function ShareUrlCell({ url, value }: { url: string; value: string }) {
   return (
-    <Row alignItems="center" gap="1" minWidth="0" width="100%" overflow="hidden">
-      <Row alignItems="center" gap minWidth="0" style={{ flex: 1 }}>
-        <Text title={url} style={{ minWidth: 0, flex: 1, overflowWrap: 'anywhere' }}>
-          <a
-            href={url}
-            target="_blank"
-            rel="noreferrer"
-            className="underline decoration-edge underline-offset-4 hover:text-foreground-primary hover:decoration-primary"
-          >
-            {value}
-          </a>
-        </Text>
-        <Icon size="sm" strokeColor="muted" style={{ flexShrink: 0 }}>
-          <ExternalLink />
-        </Icon>
+    <Row alignItems="center" minWidth="0" width="100%">
+      <Text title={url} truncate style={{ minWidth: 0, flex: 1 }}>
+        <a
+          href={url}
+          target="_blank"
+          rel="noreferrer"
+          className="underline decoration-edge underline-offset-4 hover:text-foreground-primary hover:decoration-primary"
+        >
+          {value}
+        </a>
+      </Text>
+      <Row style={{ flexShrink: 0 }}>
+        <Button variant="quiet" href={url} target="_blank" rel="noreferrer" aria-label="Open URL">
+          <Icon size="sm">
+            <ExternalLink />
+          </Icon>
+        </Button>
+        <CopyButton value={url} label="Copy URL" />
       </Row>
-      <CopyButton value={url} label="Copy URL" />
     </Row>
   );
 }

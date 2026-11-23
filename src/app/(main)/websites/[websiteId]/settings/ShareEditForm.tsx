@@ -6,7 +6,6 @@ import {
   FormField,
   FormSubmitButton,
   Grid,
-  Label,
   ListSeparator,
   Loading,
   Row,
@@ -127,12 +126,7 @@ export function ShareEditForm({
 
         return (
           <Column gap="6">
-            {url && (
-              <Column gap="1">
-                <Label>{t(labels.shareUrl)}</Label>
-                <TextField value={url} isReadOnly allowCopy />
-              </Column>
-            )}
+            {url && <TextField label={t(labels.shareUrl)} value={url} isReadOnly allowCopy />}
             <FormField label={t(labels.name)} name="name" rules={{ required: t(labels.required) }}>
               <TextField autoComplete="off" autoFocus={!isEditing} />
             </FormField>

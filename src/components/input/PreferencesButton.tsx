@@ -18,15 +18,15 @@ export function PreferencesButton() {
       <Popover side="top" align="start" className="w-auto">
         <Dialog aria-label={t(labels.preferences)}>
           <Column gap="3">
-            <Column gap="1">
+            <Column gap="2">
               <Label>{t(labels.timezone)}</Label>
               <TimezoneSetting />
             </Column>
-            <Column gap="1">
+            <Column gap="2">
               <Label>{t(labels.timeFormat)}</Label>
               <TimeFormatSetting />
             </Column>
-            <Column gap="1">
+            <Column gap="2">
               <Label>{t(labels.defaultDateRange)}</Label>
               <DateRangeSetting />
             </Column>

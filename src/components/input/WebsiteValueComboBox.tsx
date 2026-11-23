@@ -1,4 +1,4 @@
-import { type ComboBoxProps, cn, Label, ListItem, Loading, useDebounce } from '@umami/react-zen';
+import { type ComboBoxProps, ListItem, Loading, useDebounce } from '@umami/react-zen';
 import { useEffect, useMemo, useState } from 'react';
 import { ComboBox } from '@/components/common/ComboBox';
 import { Empty } from '@/components/common/Empty';
@@ -70,32 +70,31 @@ export function WebsiteValueComboBox({
   }, [value, primaryQuery.data, additionalQuery.data]);
 
   return (
-    <div className={cn('flex flex-col gap-1', className)}>
-      {label && <Label>{label}</Label>}
-      <ComboBox
-        {...props}
-        aria-label={props['aria-label'] ?? label}
-        items={items}
-        inputValue={value}
-        placeholder={placeholder}
-        onInputValueChange={value => {
-          setSearch(value);
-          onChange(value);
-        }}
-        renderEmptyState={() =>
-          primaryQuery.isLoading || additionalQuery.isLoading ? (
-            <Loading placement="center" icon="dots" />
-          ) : (
-            <Empty message={t(messages.noResultsFound)} />
-          )
-        }
-      >
-        {items.map(item => (
-          <ListItem key={item} id={item}>
-            {item}
-          </ListItem>
-        ))}
-      </ComboBox>
-    </div>
+    <ComboBox
+      {...props}
+      label={label}
+      className={className}
+      aria-label={props['aria-label'] ?? label}
+      items={items}
+      inputValue={value}
+      placeholder={placeholder}
+      onInputValueChange={value => {
+        setSearch(value);
+        onChange(value);
+      }}
+      renderEmptyState={() =>
+        primaryQuery.isLoading || additionalQuery.isLoading ? (
+          <Loading placement="center" icon="dots" />
+        ) : (
+          <Empty message={t(messages.noResultsFound)} />
+        )
+      }
+    >
+      {items.map(item => (
+        <ListItem key={item} id={item}>
+          {item}
+        </ListItem>
+      ))}
+    </ComboBox>
   );
 }

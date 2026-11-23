@@ -181,37 +181,34 @@ export function WebsiteReplaySettings({ websiteId }: { websiteId: string }) {
                 showValue
                 style={{ maxWidth: '360px' }}
               />
-              <Column gap="1">
-                <Label>{t(labels.maskLevel)}</Label>
-                <Select
-                  value={maskLevel}
-                  onChange={v => setMaskLevel(v as typeof maskLevel)}
-                  buttonProps={{ style: { maxWidth: '360px' } }}
-                >
-                  <ListItem id="strict">strict</ListItem>
-                  <ListItem id="moderate">moderate</ListItem>
-                </Select>
-              </Column>
-              <Column gap="1">
-                <Label>{t(labels.maxDuration)}</Label>
-                <Select
-                  value={maxDuration}
-                  onChange={v => setMaxDuration(v as string)}
-                  buttonProps={{ style: { maxWidth: '360px' } }}
-                >
-                  <ListItem id="300000">5 minutes</ListItem>
-                  <ListItem id="600000">10 minutes</ListItem>
-                  <ListItem id="900000">15 minutes</ListItem>
-                  <ListItem id="1200000">20 minutes</ListItem>
-                </Select>
-              </Column>
-              <Column gap="1">
-                <Label>{t(labels.blockSelector)}</Label>
-                <TextField value={blockSelector} onChange={setBlockSelector} />
-              </Column>
+              <Select
+                label={t(labels.maskLevel)}
+                value={maskLevel}
+                onChange={v => setMaskLevel(v as typeof maskLevel)}
+                buttonProps={{ style: { maxWidth: '360px' } }}
+              >
+                <ListItem id="strict">strict</ListItem>
+                <ListItem id="moderate">moderate</ListItem>
+              </Select>
+              <Select
+                label={t(labels.maxDuration)}
+                value={maxDuration}
+                onChange={v => setMaxDuration(v as string)}
+                buttonProps={{ style: { maxWidth: '360px' } }}
+              >
+                <ListItem id="300000">5 minutes</ListItem>
+                <ListItem id="600000">10 minutes</ListItem>
+                <ListItem id="900000">15 minutes</ListItem>
+                <ListItem id="1200000">20 minutes</ListItem>
+              </Select>
+              <TextField
+                label={t(labels.blockSelector)}
+                value={blockSelector}
+                onChange={setBlockSelector}
+              />
             </>
           )}
-          <Row>
+          <Row justifyContent="flex-end">
             <Button variant="primary" onPress={handleSave} isDisabled={isPending}>
               {t(labels.save)}
             </Button>

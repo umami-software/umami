@@ -4,7 +4,6 @@ import {
   Form,
   FormField,
   FormSubmitButton,
-  Label,
   Loading,
   Row,
   Switch,
@@ -92,10 +91,12 @@ export function SimpleShareEditForm({
     >
       {({ watch, setValue }) => (
         <Column gap="6">
-          <Column gap="1">
-            <Label>{t(labels.shareUrl)}</Label>
-            <TextField value={getUrl(share?.slug || '')} isReadOnly allowCopy />
-          </Column>
+          <TextField
+            label={t(labels.shareUrl)}
+            value={getUrl(share?.slug || '')}
+            isReadOnly
+            allowCopy
+          />
           <FormField label={t(labels.name)} name="name" rules={{ required: t(labels.required) }}>
             <TextField autoComplete="off" autoFocus />
           </FormField>

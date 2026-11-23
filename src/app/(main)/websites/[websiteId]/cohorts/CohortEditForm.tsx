@@ -91,7 +91,7 @@ export function CohortEditForm({
               <TextField autoFocus />
             </FormField>
 
-            <Column gap="1">
+            <Column gap="2">
               <Label>{t(labels.action)}</Label>
               <Grid columns={{ base: '1fr', md: '1fr 1fr' }} gap>
                 <Column>
@@ -112,14 +112,14 @@ export function CohortEditForm({
               </Grid>
             </Column>
 
-            <Column width="260px" gap="1">
+            <Column width="260px" gap="2">
               <Label>{t(labels.dateRange)}</Label>
               <FormField name="parameters.dateRange" rules={{ required: t(labels.required) }}>
                 <DateFilter placement="bottom start" />
               </FormField>
             </Column>
 
-            <Column gap="1">
+            <Column gap="2">
               <Text weight="bold">{t(labels.filters)}</Text>
               <FormField name="parameters.filters">
                 <FieldFilters
