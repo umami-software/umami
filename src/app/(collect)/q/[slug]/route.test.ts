@@ -45,3 +45,19 @@ test('GET returns 404 without recording a click for a stored relative url', asyn
   expect(sendPostMock).not.toHaveBeenCalled();
   expect(response.status).toBe(404);
 });
+
+test.each([
+  'javascript:alert(1)',
+  'data:text/html,<script>alert(1)</script>',
+  'https://bank.example@evil.example/login',
+])(
+  'GET returns 404 without recording a click for a stored url the API now refuses: %s',
+  async url => {
+    findLinkMock.mockResolvedValue({ id: 'link-1', url } as any);
+
+    const response = await GET(request(), params);
+
+    expect(sendPostMock).not.toHaveBeenCalled();
+    expect(response.status).toBe(404);
+  },
+);
