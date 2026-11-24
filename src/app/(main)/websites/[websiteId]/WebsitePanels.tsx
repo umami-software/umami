@@ -22,14 +22,24 @@ export function WebsitePanels({ websiteId }: { websiteId: string }) {
     <Grid gap="3">
       <GridRow layout="two" {...rowProps}>
         <Panel>
-          <Heading size="2xl">{t(labels.pages)}</Heading>
           <Tabs>
-            <TabsList>
-              <TabsTrigger value="path">{t(labels.path)}</TabsTrigger>
-              <TabsTrigger value="fullPath">{t(labels.url)}</TabsTrigger>
-              <TabsTrigger value="entry">{t(labels.entry)}</TabsTrigger>
-              <TabsTrigger value="exit">{t(labels.exit)}</TabsTrigger>
-            </TabsList>
+            <Row alignItems="center" justifyContent="space-between" gap="3" wrap="wrap">
+              <Heading size="2xl">{t(labels.pages)}</Heading>
+              <TabsList>
+                <TabsTrigger className="text-xs" value="path">
+                  {t(labels.path)}
+                </TabsTrigger>
+                <TabsTrigger className="text-xs" value="fullPath">
+                  {t(labels.url)}
+                </TabsTrigger>
+                <TabsTrigger className="text-xs" value="entry">
+                  {t(labels.entry)}
+                </TabsTrigger>
+                <TabsTrigger className="text-xs" value="exit">
+                  {t(labels.exit)}
+                </TabsTrigger>
+              </TabsList>
+            </Row>
             <TabsContent value="path">
               <MetricsTable type="path" title={t(labels.path)} {...tableProps} />
             </TabsContent>
@@ -45,12 +55,18 @@ export function WebsitePanels({ websiteId }: { websiteId: string }) {
           </Tabs>
         </Panel>
         <Panel>
-          <Heading size="2xl">{t(labels.sources)}</Heading>
           <Tabs>
-            <TabsList>
-              <TabsTrigger value="referrer">{t(labels.referrers)}</TabsTrigger>
-              <TabsTrigger value="channel">{t(labels.channels)}</TabsTrigger>
-            </TabsList>
+            <Row alignItems="center" justifyContent="space-between" gap="3" wrap="wrap">
+              <Heading size="2xl">{t(labels.sources)}</Heading>
+              <TabsList>
+                <TabsTrigger className="text-xs" value="referrer">
+                  {t(labels.referrers)}
+                </TabsTrigger>
+                <TabsTrigger className="text-xs" value="channel">
+                  {t(labels.channels)}
+                </TabsTrigger>
+              </TabsList>
+            </Row>
             <TabsContent value="referrer">
               <MetricsTable type="referrer" title={t(labels.referrer)} {...tableProps} />
             </TabsContent>
@@ -63,13 +79,21 @@ export function WebsitePanels({ websiteId }: { websiteId: string }) {
 
       <GridRow layout="two" {...rowProps}>
         <Panel>
-          <Heading size="2xl">{t(labels.environment)}</Heading>
           <Tabs>
-            <TabsList>
-              <TabsTrigger value="browser">{t(labels.browsers)}</TabsTrigger>
-              <TabsTrigger value="os">{t(labels.os)}</TabsTrigger>
-              <TabsTrigger value="device">{t(labels.devices)}</TabsTrigger>
-            </TabsList>
+            <Row alignItems="center" justifyContent="space-between" gap="3" wrap="wrap">
+              <Heading size="2xl">{t(labels.environment)}</Heading>
+              <TabsList>
+                <TabsTrigger className="text-xs" value="browser">
+                  {t(labels.browsers)}
+                </TabsTrigger>
+                <TabsTrigger className="text-xs" value="os">
+                  {t(labels.os)}
+                </TabsTrigger>
+                <TabsTrigger className="text-xs" value="device">
+                  {t(labels.devices)}
+                </TabsTrigger>
+              </TabsList>
+            </Row>
             <TabsContent value="browser">
               <MetricsTable type="browser" title={t(labels.browser)} {...tableProps} />
             </TabsContent>
@@ -83,13 +107,21 @@ export function WebsitePanels({ websiteId }: { websiteId: string }) {
         </Panel>
 
         <Panel>
-          <Heading size="2xl">{t(labels.location)}</Heading>
           <Tabs>
-            <TabsList>
-              <TabsTrigger value="country">{t(labels.countries)}</TabsTrigger>
-              <TabsTrigger value="region">{t(labels.regions)}</TabsTrigger>
-              <TabsTrigger value="city">{t(labels.cities)}</TabsTrigger>
-            </TabsList>
+            <Row alignItems="center" justifyContent="space-between" gap="3" wrap="wrap">
+              <Heading size="2xl">{t(labels.location)}</Heading>
+              <TabsList>
+                <TabsTrigger className="text-xs" value="country">
+                  {t(labels.countries)}
+                </TabsTrigger>
+                <TabsTrigger className="text-xs" value="region">
+                  {t(labels.regions)}
+                </TabsTrigger>
+                <TabsTrigger className="text-xs" value="city">
+                  {t(labels.cities)}
+                </TabsTrigger>
+              </TabsList>
+            </Row>
             <TabsContent value="country">
               <MetricsTable type="country" title={t(labels.country)} {...tableProps} />
             </TabsContent>

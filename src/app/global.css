@@ -60,6 +60,16 @@ select:is(:-webkit-autofill, :autofill):focus {
   display: none;
 }
 
+/* Success tint for Badge, matching the destructive variant (zen has no success variant). */
+.badge-success {
+  color: var(--success);
+  background-color: color-mix(in oklch, var(--success) 10%, transparent);
+}
+
+.dark .badge-success {
+  background-color: color-mix(in oklch, var(--success) 20%, transparent);
+}
+
 /* Code snippet textareas */
 .code-textarea textarea {
   min-height: 100px;

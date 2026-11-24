@@ -130,15 +130,21 @@ export function Revenue({ websiteId, startDate, endDate, unit }: RevenueProps) {
             <Grid gap="3">
               <GridRow layout="two">
                 <Panel>
-                  <Heading size="2xl">{t(labels.sources)}</Heading>
                   <Tabs
                     value={sourceTab}
                     onValueChange={key => setSourceTab(String(key) as SourceTab)}
                   >
-                    <TabsList>
-                      <TabsTrigger value="referrer">{t(labels.referrers)}</TabsTrigger>
-                      <TabsTrigger value="channel">{t(labels.channels)}</TabsTrigger>
-                    </TabsList>
+                    <Row alignItems="center" justifyContent="space-between" gap="3" wrap="wrap">
+                      <Heading size="2xl">{t(labels.sources)}</Heading>
+                      <TabsList>
+                        <TabsTrigger className="text-xs" value="referrer">
+                          {t(labels.referrers)}
+                        </TabsTrigger>
+                        <TabsTrigger className="text-xs" value="channel">
+                          {t(labels.channels)}
+                        </TabsTrigger>
+                      </TabsList>
+                    </Row>
                     <TabsContent value="referrer">
                       <RevenueMetricsTable
                         websiteId={websiteId}
@@ -162,15 +168,21 @@ export function Revenue({ websiteId, startDate, endDate, unit }: RevenueProps) {
                   </Tabs>
                 </Panel>
                 <Panel>
-                  <Heading size="2xl">{t(labels.location)}</Heading>
                   <Tabs
                     value={locationTab}
                     onValueChange={key => setLocationTab(String(key) as LocationTab)}
                   >
-                    <TabsList>
-                      <TabsTrigger value="country">{t(labels.countries)}</TabsTrigger>
-                      <TabsTrigger value="region">{t(labels.regions)}</TabsTrigger>
-                    </TabsList>
+                    <Row alignItems="center" justifyContent="space-between" gap="3" wrap="wrap">
+                      <Heading size="2xl">{t(labels.location)}</Heading>
+                      <TabsList>
+                        <TabsTrigger className="text-xs" value="country">
+                          {t(labels.countries)}
+                        </TabsTrigger>
+                        <TabsTrigger className="text-xs" value="region">
+                          {t(labels.regions)}
+                        </TabsTrigger>
+                      </TabsList>
+                    </Row>
                     <TabsContent value="country">
                       <RevenueMetricsTable
                         websiteId={websiteId}

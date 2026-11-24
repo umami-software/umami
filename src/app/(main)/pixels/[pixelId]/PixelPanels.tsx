@@ -1,4 +1,4 @@
-import { Grid, Heading, Tabs, TabsContent, TabsList, TabsTrigger } from '@umami/react-zen';
+import { Grid, Heading, Row, Tabs, TabsContent, TabsList, TabsTrigger } from '@umami/react-zen';
 import { GridRow } from '@/components/common/GridRow';
 import { Panel } from '@/components/common/Panel';
 import { useMessages } from '@/components/hooks';
@@ -20,12 +20,18 @@ export function PixelPanels({ pixelId }: { pixelId: string }) {
     <Grid gap="3">
       <GridRow layout="two" {...rowProps}>
         <Panel>
-          <Heading size="2xl">{t(labels.sources)}</Heading>
           <Tabs>
-            <TabsList>
-              <TabsTrigger value="referrer">{t(labels.referrers)}</TabsTrigger>
-              <TabsTrigger value="channel">{t(labels.channels)}</TabsTrigger>
-            </TabsList>
+            <Row alignItems="center" justifyContent="space-between" gap="3" wrap="wrap">
+              <Heading size="2xl">{t(labels.sources)}</Heading>
+              <TabsList>
+                <TabsTrigger className="text-xs" value="referrer">
+                  {t(labels.referrers)}
+                </TabsTrigger>
+                <TabsTrigger className="text-xs" value="channel">
+                  {t(labels.channels)}
+                </TabsTrigger>
+              </TabsList>
+            </Row>
             <TabsContent value="referrer">
               <MetricsTable type="referrer" title={t(labels.domain)} {...tableProps} />
             </TabsContent>
@@ -35,13 +41,21 @@ export function PixelPanels({ pixelId }: { pixelId: string }) {
           </Tabs>
         </Panel>
         <Panel>
-          <Heading size="2xl">{t(labels.environment)}</Heading>
           <Tabs>
-            <TabsList>
-              <TabsTrigger value="browser">{t(labels.browsers)}</TabsTrigger>
-              <TabsTrigger value="os">{t(labels.os)}</TabsTrigger>
-              <TabsTrigger value="device">{t(labels.devices)}</TabsTrigger>
-            </TabsList>
+            <Row alignItems="center" justifyContent="space-between" gap="3" wrap="wrap">
+              <Heading size="2xl">{t(labels.environment)}</Heading>
+              <TabsList>
+                <TabsTrigger className="text-xs" value="browser">
+                  {t(labels.browsers)}
+                </TabsTrigger>
+                <TabsTrigger className="text-xs" value="os">
+                  {t(labels.os)}
+                </TabsTrigger>
+                <TabsTrigger className="text-xs" value="device">
+                  {t(labels.devices)}
+                </TabsTrigger>
+              </TabsList>
+            </Row>
             <TabsContent value="browser">
               <MetricsTable type="browser" title={t(labels.browser)} {...tableProps} />
             </TabsContent>
@@ -59,13 +73,21 @@ export function PixelPanels({ pixelId }: { pixelId: string }) {
           <WorldMap websiteId={pixelId} />
         </Panel>
         <Panel>
-          <Heading size="2xl">{t(labels.location)}</Heading>
           <Tabs>
-            <TabsList>
-              <TabsTrigger value="country">{t(labels.countries)}</TabsTrigger>
-              <TabsTrigger value="region">{t(labels.regions)}</TabsTrigger>
-              <TabsTrigger value="city">{t(labels.cities)}</TabsTrigger>
-            </TabsList>
+            <Row alignItems="center" justifyContent="space-between" gap="3" wrap="wrap">
+              <Heading size="2xl">{t(labels.location)}</Heading>
+              <TabsList>
+                <TabsTrigger className="text-xs" value="country">
+                  {t(labels.countries)}
+                </TabsTrigger>
+                <TabsTrigger className="text-xs" value="region">
+                  {t(labels.regions)}
+                </TabsTrigger>
+                <TabsTrigger className="text-xs" value="city">
+                  {t(labels.cities)}
+                </TabsTrigger>
+              </TabsList>
+            </Row>
             <TabsContent value="country">
               <MetricsTable type="country" title={t(labels.country)} {...tableProps} />
             </TabsContent>

@@ -4,6 +4,7 @@ import {
   Column,
   Heading,
   Loading,
+  Row,
   Tabs,
   TabsContent,
   TabsList,
@@ -138,11 +139,17 @@ function SearchConsoleReport({ websiteId }: { websiteId: string }) {
           <GridRow layout="two">
             <Panel>
               <Tabs>
-                <Heading size="2xl">{t('searches')}</Heading>
-                <TabsList>
-                  <TabsTrigger value="query">{t('queries')}</TabsTrigger>
-                  <TabsTrigger value="page">{t('pages')}</TabsTrigger>
-                </TabsList>
+                <Row alignItems="center" justifyContent="space-between" gap="3" wrap="wrap">
+                  <Heading size="2xl">{t('searches')}</Heading>
+                  <TabsList>
+                    <TabsTrigger className="text-xs" value="query">
+                      {t('queries')}
+                    </TabsTrigger>
+                    <TabsTrigger className="text-xs" value="page">
+                      {t('pages')}
+                    </TabsTrigger>
+                  </TabsList>
+                </Row>
                 <TabsContent value="query">
                   <SearchConsoleTable
                     websiteId={websiteId}
@@ -163,11 +170,17 @@ function SearchConsoleReport({ websiteId }: { websiteId: string }) {
             </Panel>
             <Panel>
               <Tabs>
-                <Heading size="2xl">{tm(labels.audience)}</Heading>
-                <TabsList>
-                  <TabsTrigger value="country">{t('countries')}</TabsTrigger>
-                  <TabsTrigger value="device">{t('devices')}</TabsTrigger>
-                </TabsList>
+                <Row alignItems="center" justifyContent="space-between" gap="3" wrap="wrap">
+                  <Heading size="2xl">{tm(labels.audience)}</Heading>
+                  <TabsList>
+                    <TabsTrigger className="text-xs" value="country">
+                      {t('countries')}
+                    </TabsTrigger>
+                    <TabsTrigger className="text-xs" value="device">
+                      {t('devices')}
+                    </TabsTrigger>
+                  </TabsList>
+                </Row>
                 <TabsContent value="country">
                   <SearchConsoleTable
                     websiteId={websiteId}

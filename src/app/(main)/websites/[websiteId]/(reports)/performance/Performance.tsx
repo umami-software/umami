@@ -263,11 +263,17 @@ export function Performance({ websiteId, startDate, endDate, unit }: Performance
         <GridRow layout="two">
           <Panel>
             <Tabs>
-              <Heading size="2xl">{t(labels.pages)}</Heading>
-              <TabsList>
-                <TabsTrigger value="path">{t(labels.path)}</TabsTrigger>
-                <TabsTrigger value="title">{t(labels.pageTitle)}</TabsTrigger>
-              </TabsList>
+              <Row alignItems="center" justifyContent="space-between" gap="3" wrap="wrap">
+                <Heading size="2xl">{t(labels.pages)}</Heading>
+                <TabsList>
+                  <TabsTrigger className="text-xs" value="path">
+                    {t(labels.path)}
+                  </TabsTrigger>
+                  <TabsTrigger className="text-xs" value="title">
+                    {t(labels.pageTitle)}
+                  </TabsTrigger>
+                </TabsList>
+              </Row>
               <TabsContent value="path">
                 <PerformanceMetricsTable
                   params={{ ...queryParams, metric: selectedMetric, type: 'path' }}
@@ -286,11 +292,17 @@ export function Performance({ websiteId, startDate, endDate, unit }: Performance
           </Panel>
           <Panel>
             <Tabs>
-              <Heading size="2xl">{t(labels.environment)}</Heading>
-              <TabsList>
-                <TabsTrigger value="device">{t(labels.device)}</TabsTrigger>
-                <TabsTrigger value="browser">{t(labels.browser)}</TabsTrigger>
-              </TabsList>
+              <Row alignItems="center" justifyContent="space-between" gap="3" wrap="wrap">
+                <Heading size="2xl">{t(labels.environment)}</Heading>
+                <TabsList>
+                  <TabsTrigger className="text-xs" value="device">
+                    {t(labels.device)}
+                  </TabsTrigger>
+                  <TabsTrigger className="text-xs" value="browser">
+                    {t(labels.browser)}
+                  </TabsTrigger>
+                </TabsList>
+              </Row>
               <TabsContent value="device">
                 <PerformanceMetricsTable
                   params={{ ...queryParams, metric: selectedMetric, type: 'device' }}
