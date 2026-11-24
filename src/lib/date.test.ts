@@ -788,4 +788,20 @@ describe('formatBackendDate', () => {
   test('returns the raw value when it cannot be parsed', () => {
     expect(formatBackendDate('not a date', 'PPpp')).toBe('not a date');
   });
+
+  test('returns values that are not in the backend date shape unchanged', () => {
+    expect(formatBackendDate('2026', 'PPpp')).toBe('2026');
+    expect(formatBackendDate('349.3300', 'PPpp')).toBe('349.3300');
+    expect(formatBackendDate('2026-11-05', 'PPpp')).toBe('2026-11-05');
+    expect(formatBackendDate('2026-11-05T15:30:00.000Z', 'PPpp')).toBe('2026-11-05T15:30:00.000Z');
+  });
+
+  test('uses the 24-hour preference', () => {
+    setHour12(false);
+    try {
+      expect(formatBackendDate('2026-11-05T15:30:00Z', 'PPpp')).toBe('Nov 5, 2026, 15:30:00');
+    } finally {
+      setHour12(undefined);
+    }
+  });
 });
