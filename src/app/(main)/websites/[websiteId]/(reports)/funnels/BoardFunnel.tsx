@@ -55,6 +55,7 @@ export function BoardFunnel({
           parameters={data.parameters}
           websiteId={websiteId}
           allowEdit={false}
+          allowMaximize={false}
         />
       ) : (
         <Text color="muted">Funnel unavailable</Text>

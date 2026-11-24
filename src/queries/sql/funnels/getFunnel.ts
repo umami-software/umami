@@ -1,4 +1,5 @@
 import clickhouse from '@/lib/clickhouse';
+import { FILTER_COLUMNS, BREAKDOWN_FIELDS } from '@/lib/constants';
 import { CLICKHOUSE, PRISMA, runQuery } from '@/lib/db';
 import prisma from '@/lib/prisma';
 import { getWildcardMatch } from '@/lib/search';
@@ -31,12 +32,252 @@ export interface FunnelResult extends FunnelStep {
   remaining: number;
 }
 
+export interface FunnelChartParameters extends FunnelParameters {
+  unit?: string;
+  timezone?: string;
+}
+
+export interface FunnelChartData {
+  t: string;
+  entered: number;
+  converted: number;
+}
+
+export interface FunnelTimesData {
+  total: number | null;
+  steps: Array<number | null>;
+}
+
+export interface FunnelBreakdownParameters extends FunnelParameters {
+  field: string;
+}
+
+export interface FunnelBreakdownData {
+  name: string;
+  visitors: number[];
+}
+
+// The select after the level CTEs, so every funnel view shares the same step matching.
+type FinalQuery = (levelCount: number) => string;
+
+const FUNNEL_BREAKDOWN_LIMIT = 10;
+
+const levelNumbers = (levelCount: number) => Array.from({ length: levelCount }, (_, i) => i + 1);
+
+const stepCountsQuery = (levelCount: number, union: string) =>
+  levelNumbers(levelCount)
+    .map(n => `select ${n} as level, count(distinct(session_id)) as count from level${n}`)
+    .join(`\n${union} `);
+
 export async function getFunnel(
   ...args: [websiteId: string, parameters: FunnelParameters, filters: QueryFilters]
 ): Promise<FunnelResult[]> {
+  const [websiteId, parameters, filters] = args;
+
   return runQuery({
-    [PRISMA]: () => relationalQuery(...args),
-    [CLICKHOUSE]: () => clickhouseQuery(...args),
+    [PRISMA]: () =>
+      relationalQuery(
+        websiteId,
+        parameters,
+        filters,
+        levelCount => `${stepCountsQuery(levelCount, 'union')}\n    ORDER BY level;`,
+      ),
+    [CLICKHOUSE]: () =>
+      clickhouseQuery(
+        websiteId,
+        parameters,
+        filters,
+        levelCount =>
+          `select *\n    from (\n      ${stepCountsQuery(levelCount, 'union all')}\n    ) ORDER BY level;`,
+      ),
+  }).then(formatResults(parameters.steps));
+}
+
+// Sessions are bucketed by when they entered the funnel; converted means reaching the last step.
+export async function getFunnelChart(
+  ...args: [websiteId: string, parameters: FunnelChartParameters, filters: QueryFilters]
+): Promise<FunnelChartData[]> {
+  const [websiteId, parameters, filters] = args;
+  const { unit = 'day', timezone = 'utc' } = parameters;
+
+  const chartQuery =
+    (dateQuery: string, countIf: (condition: string) => string): FinalQuery =>
+    levelCount =>
+      `
+    , starts AS (
+      select session_id, min(created_at) as first_at
+      from level1
+      group by session_id
+    )
+    select ${dateQuery} as t,
+      count(*) as entered,
+      ${countIf(`session_id in (select session_id from level${levelCount})`)} as converted
+    from starts
+    group by t
+    order by t;`;
+
+  return runQuery({
+    [PRISMA]: () =>
+      relationalQuery(
+        websiteId,
+        parameters,
+        filters,
+        chartQuery(
+          prisma.getDateSQL('first_at', unit, timezone),
+          condition => `sum(case when ${condition} then 1 else 0 end)`,
+        ),
+      ),
+    [CLICKHOUSE]: () =>
+      clickhouseQuery(
+        websiteId,
+        parameters,
+        filters,
+        chartQuery(
+          clickhouse.getDateSQL('first_at', unit, timezone),
+          condition => `countIf(${condition})`,
+        ),
+      ),
+  }).then((rows: any[]) =>
+    rows.map(({ t, entered, converted }) => ({
+      t,
+      entered: Number(entered) || 0,
+      converted: Number(converted) || 0,
+    })),
+  );
+}
+
+// Lower median of whole seconds from first reaching the previous step to first reaching each step.
+export async function getFunnelTimes(
+  ...args: [websiteId: string, parameters: FunnelParameters, filters: QueryFilters]
+): Promise<FunnelTimesData> {
+  const [websiteId, parameters, filters] = args;
+  const levelCount = parameters.steps.length;
+  // Level 0 is the whole funnel, from step 1 to the last step.
+  const pairs = [
+    ...levelNumbers(levelCount)
+      .slice(1)
+      .map(n => [n, n - 1, n]),
+    [0, 1, levelCount],
+  ];
+
+  const timesQuery =
+    (median: string): FinalQuery =>
+    () =>
+      `${levelNumbers(levelCount)
+        .map(
+          n => `
+    , reached${n} AS (
+      select session_id, min(created_at) as first_at
+      from level${n}
+      group by session_id
+    )`,
+        )
+        .join('')}
+    ${pairs
+      .map(
+        ([level, from, to]) => `select ${level} as level,
+      count(*) as sessions,
+      ${median} as median
+    from reached${to} b
+    join reached${from} a on a.session_id = b.session_id`,
+      )
+      .join('\n    union all\n    ')};`;
+
+  return runQuery({
+    [PRISMA]: () =>
+      relationalQuery(
+        websiteId,
+        parameters,
+        filters,
+        timesQuery(
+          'percentile_disc(0.5) within group (order by floor(extract(epoch from (b.first_at - a.first_at))))',
+        ),
+      ),
+    [CLICKHOUSE]: () =>
+      clickhouseQuery(
+        websiteId,
+        parameters,
+        filters,
+        timesQuery("quantileExactLow(0.5)(dateDiff('second', a.first_at, b.first_at))"),
+      ),
+  }).then((rows: any[]) => {
+    const medianOf = (level: number) => {
+      const row = rows.find(r => Number(r.level) === level);
+      return row && Number(row.sessions) > 0 ? Number(row.median) : null;
+    };
+
+    return {
+      total: medianOf(0),
+      steps: levelNumbers(levelCount).map(n => (n > 1 ? medianOf(n) : null)),
+    };
+  });
+}
+
+// Visitors at each step split by a session attribute, for its most common values at step 1.
+export async function getFunnelBreakdown(
+  ...args: [websiteId: string, parameters: FunnelBreakdownParameters, filters: QueryFilters]
+): Promise<FunnelBreakdownData[]> {
+  const [websiteId, parameters, filters] = args;
+  const levelCount = parameters.steps.length;
+
+  if (!(BREAKDOWN_FIELDS as readonly string[]).includes(parameters.field)) {
+    throw new Error(`Unsupported funnel breakdown field: ${parameters.field}`);
+  }
+
+  const column = FILTER_COLUMNS[parameters.field];
+
+  const breakdownQuery =
+    (dimsQuery: string): FinalQuery =>
+    () =>
+      `
+    , dims AS (${dimsQuery}
+    )
+    , top_dims AS (
+      select name from dims group by name order by count(*) desc, name limit ${FUNNEL_BREAKDOWN_LIMIT}
+    )
+    select l.level as level, d.name as name, count(distinct l.session_id) as count
+    from (${levelNumbers(levelCount)
+      .map(n => `select ${n} as level, session_id from level${n}`)
+      .join('\n      union all ')}) l
+    join dims d on d.session_id = l.session_id
+    where d.name in (select name from top_dims)
+    group by l.level, d.name;`;
+
+  return runQuery({
+    [PRISMA]: () =>
+      relationalQuery(
+        websiteId,
+        parameters,
+        filters,
+        breakdownQuery(`
+      select starts.session_id, coalesce(session.${column}, '') as name
+      from (select distinct session_id from level1) starts
+      join session on session.session_id = starts.session_id
+        and session.website_id = {{websiteId::uuid}}`),
+      ),
+    // Attributes can differ between a session's events, so take the value when entering the funnel.
+    [CLICKHOUSE]: () =>
+      clickhouseQuery(
+        websiteId,
+        parameters,
+        filters,
+        breakdownQuery(`
+      select session_id, argMin(${column}, created_at) as name
+      from level1
+      group by session_id`),
+      ),
+  }).then((rows: any[]) => {
+    const byName = new Map<string, number[]>();
+
+    for (const { level, name, count } of rows) {
+      const visitors = byName.get(name) ?? Array(levelCount).fill(0);
+      visitors[Number(level) - 1] = Number(count) || 0;
+      byName.set(name, visitors);
+    }
+
+    return [...byName.entries()]
+      .map(([name, visitors]) => ({ name, visitors }))
+      .sort((a, b) => b.visitors[0] - a.visitors[0] || a.name.localeCompare(b.name));
   });
 }
 
@@ -44,7 +285,8 @@ async function relationalQuery(
   websiteId: string,
   parameters: FunnelParameters,
   filters: QueryFilters,
-): Promise<Array<FunnelResult>> {
+  finalQuery: FinalQuery,
+): Promise<any[]> {
   const { startDate, endDate, window, steps } = parameters;
   const { rawQuery, getAddIntervalQuery, parseFilters } = prisma;
   const { filterQuery, joinSessionQuery, cohortQuery, queryParams } = parseFilters({
@@ -53,7 +295,7 @@ async function relationalQuery(
     startDate,
     endDate,
   });
-  const { levelOneQuery, levelQuery, sumQuery, params } = getFunnelQuery(steps, window);
+  const { levelOneQuery, levelQuery, params } = getFunnelQuery(steps, window);
 
   function buildExistsFilters(
     stepIndex: number,
@@ -99,7 +341,6 @@ async function relationalQuery(
   ): {
     levelOneQuery: string;
     levelQuery: string;
-    sumQuery: string;
     params: Record<string, string>;
   } {
     const extraParams: Record<string, string> = {};
@@ -107,7 +348,6 @@ async function relationalQuery(
     const result = steps.reduce(
       (pv, cv, i) => {
         const levelNumber = i + 1;
-        const startSum = i > 0 ? 'union ' : '';
         const isURL = cv.type === 'path';
         const column = isURL ? 'url_path' : 'event_name';
 
@@ -155,7 +395,6 @@ async function relationalQuery(
           )`;
         }
 
-        pv.sumQuery += `\n${startSum}select ${levelNumber} as level, count(distinct(session_id)) as count from level${levelNumber}`;
         pv.params[i] = paramValue;
 
         return pv;
@@ -163,7 +402,6 @@ async function relationalQuery(
       {
         levelOneQuery: '',
         levelQuery: '',
-        sumQuery: '',
         params: {} as Record<string, string>,
       },
     );
@@ -175,27 +413,24 @@ async function relationalQuery(
     `
     ${levelOneQuery}
     ${levelQuery}
-    ${sumQuery}
-    ORDER BY level;
+    ${finalQuery(steps.length)}
     `,
     {
       ...params,
       ...queryParams,
     },
-  ).then(formatResults(steps));
+  );
 }
 
 async function clickhouseQuery(
   websiteId: string,
   parameters: FunnelParameters,
   filters: QueryFilters,
-): Promise<Array<FunnelResult>> {
+  finalQuery: FinalQuery,
+): Promise<any[]> {
   const { startDate, endDate, window, steps } = parameters;
   const { rawQuery, parseFilters } = clickhouse;
-  const { levelOneQuery, levelQuery, sumQuery, stepFilterQuery, params } = getFunnelQuery(
-    steps,
-    window,
-  );
+  const { levelOneQuery, levelQuery, stepFilterQuery, params } = getFunnelQuery(steps, window);
   const { filterQuery, cohortQuery, queryParams } = parseFilters({
     ...filters,
     websiteId,
@@ -246,7 +481,6 @@ async function clickhouseQuery(
   ): {
     levelOneQuery: string;
     levelQuery: string;
-    sumQuery: string;
     stepFilterQuery: string;
     params: Record<string, string>;
   } {
@@ -255,7 +489,6 @@ async function clickhouseQuery(
     const result = steps.reduce(
       (pv, cv, i) => {
         const levelNumber = i + 1;
-        const startSum = i > 0 ? 'union all ' : '';
         const startFilter = i > 0 ? 'or' : '';
         const isURL = cv.type === 'path';
         const column = isURL ? 'url_path' : 'event_name';
@@ -294,7 +527,6 @@ async function clickhouseQuery(
           )`;
         }
 
-        pv.sumQuery += `\n${startSum}select ${levelNumber} as level, count(distinct(session_id)) as count from level${levelNumber}`;
         pv.stepFilterQuery += `${startFilter} ${column} ${operator} {param${i}:String} `;
         pv.params[`param${i}`] = paramValue;
 
@@ -303,7 +535,6 @@ async function clickhouseQuery(
       {
         levelOneQuery: '',
         levelQuery: '',
-        sumQuery: '',
         stepFilterQuery: '',
         params: {} as Record<string, string>,
       },
@@ -315,7 +546,8 @@ async function clickhouseQuery(
   return rawQuery(
     `
     WITH level0 AS (
-      select distinct event_id, session_id, url_path, referrer_path, event_name, created_at
+      select distinct event_id, session_id, url_path, referrer_path, event_name, created_at,
+        ${BREAKDOWN_FIELDS.map(field => FILTER_COLUMNS[field]).join(', ')}
       from website_event
       ${cohortQuery}
       where (${stepFilterQuery})
@@ -325,16 +557,13 @@ async function clickhouseQuery(
     ),
     ${levelOneQuery}
     ${levelQuery}
-    select *
-    from (
-      ${sumQuery}
-    ) ORDER BY level;
+    ${finalQuery(steps.length)}
     `,
     {
       ...params,
       ...queryParams,
     },
-  ).then(formatResults(steps));
+  );
 }
 
 const formatResults = (steps: Array<FunnelStep>) => (results: unknown) => {

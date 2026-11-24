@@ -1,6 +1,12 @@
 import { Box, Column, Grid, Icon, ProgressBar, Row, Text } from '@umami/react-zen';
 import { LoadingPanel } from '@/components/common/LoadingPanel';
-import { useFunnelQuery, useMessages, useNavigation, useOperatorLabels } from '@/components/hooks';
+import {
+  useFunnelQuery,
+  useMessages,
+  useMobile,
+  useNavigation,
+  useOperatorLabels,
+} from '@/components/hooks';
 import { File, User } from '@/components/icons';
 import { SavedDefinitionEditButton } from '@/components/input/SavedDefinitionEditButton';
 import { ChangeLabel } from '@/components/metrics/ChangeLabel';
@@ -8,6 +14,8 @@ import { Lightning } from '@/components/svg';
 import { formatLongNumber } from '@/lib/format';
 import type { FunnelResult } from '@/queries/sql/funnels/getFunnel';
 import { FunnelEditForm } from './FunnelEditForm';
+import { FunnelMaximizeButton } from './FunnelExpandedView';
+import { formatPercent } from './format';
 
 interface FunnelProps {
   id: string;
@@ -16,12 +24,23 @@ interface FunnelProps {
   parameters: Record<string, any>;
   websiteId: string;
   allowEdit?: boolean;
+  allowMaximize?: boolean;
 }
 
-export function Funnel({ id, name, type, parameters, websiteId, allowEdit = true }: FunnelProps) {
+export function Funnel({
+  id,
+  name,
+  type,
+  parameters,
+  websiteId,
+  allowEdit = true,
+  allowMaximize = true,
+}: FunnelProps) {
   const { t, labels } = useMessages();
   const { pathname } = useNavigation();
   const isSharePage = pathname.includes('/share/');
+  // The expanded view is a desktop analysis layout, so small screens keep the compact funnel.
+  const { isMobile } = useMobile();
   const { data, error, isLoading } = useFunnelQuery({
     websiteId,
     id,
@@ -40,8 +59,11 @@ export function Funnel({ id, name, type, parameters, websiteId, allowEdit = true
             </Text>
           </Row>
         </Column>
-        {allowEdit && !isSharePage && (
-          <Column>
+        <Row alignItems="center" gap="1">
+          {allowMaximize && !isMobile && !!data?.length && (
+            <FunnelMaximizeButton websiteId={websiteId} id={id} name={name} data={data} />
+          )}
+          {allowEdit && !isSharePage && (
             <SavedDefinitionEditButton
               websiteId={websiteId}
               id={id}
@@ -53,8 +75,8 @@ export function Funnel({ id, name, type, parameters, websiteId, allowEdit = true
             >
               {({ close }) => <FunnelEditForm id={id} websiteId={websiteId} onClose={close} />}
             </SavedDefinitionEditButton>
-          </Column>
-        )}
+          )}
+        </Row>
       </Grid>
       <LoadingPanel data={data} isLoading={isLoading} error={error}>
         {data?.map(
@@ -114,7 +136,7 @@ export function Funnel({ id, name, type, parameters, websiteId, allowEdit = true
                     </Column>
                     <Row alignItems="center" gap>
                       {index > 0 && (
-                        <ChangeLabel value={-dropped} title={`${-Math.round(dropoff * 100)}%`}>
+                        <ChangeLabel value={-dropped} title={`-${formatPercent(dropoff)}`}>
                           {formatLongNumber(dropped)}
                         </ChangeLabel>
                       )}
@@ -135,7 +157,7 @@ export function Funnel({ id, name, type, parameters, websiteId, allowEdit = true
                     />
                     <Row minWidth="90px" justifyContent="end">
                       <Text weight="bold" size="4xl">
-                        {Math.round(remaining * 100)}%
+                        {formatPercent(remaining)}
                       </Text>
                     </Row>
                   </Row>

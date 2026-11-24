@@ -1,11 +1,13 @@
 import { Column, Grid, Icon, ProgressBar, Row, Text } from '@umami/react-zen';
 import { LoadingPanel } from '@/components/common/LoadingPanel';
-import { useGoalQuery, useMessages, useNavigation } from '@/components/hooks';
+import { useGoalQuery, useMessages, useMobile, useNavigation } from '@/components/hooks';
 import { File, User } from '@/components/icons';
 import { SavedDefinitionEditButton } from '@/components/input/SavedDefinitionEditButton';
 import { Lightning } from '@/components/svg';
 import { formatLongNumber } from '@/lib/format';
+import { formatPercent } from '../funnels/format';
 import { GoalEditForm } from './GoalEditForm';
+import { GoalMaximizeButton } from './GoalExpandedView';
 
 export interface GoalProps {
   id: string;
@@ -20,6 +22,7 @@ export interface GoalProps {
   startDate: Date;
   endDate: Date;
   allowEdit?: boolean;
+  allowMaximize?: boolean;
 }
 
 export type GoalData = { num: number; total: number };
@@ -33,10 +36,13 @@ export function Goal({
   startDate,
   endDate,
   allowEdit = true,
+  allowMaximize = true,
 }: GoalProps) {
   const { t, labels } = useMessages();
   const { pathname } = useNavigation();
   const isSharePage = pathname.includes('/share/');
+  // The expanded view is a desktop analysis layout, so small screens keep the compact goal.
+  const { isMobile } = useMobile();
   const { data, error, isLoading, isFetching } = useGoalQuery({
     websiteId,
     id,
@@ -56,8 +62,18 @@ export function Goal({
             </Text>
           </Row>
         </Column>
-        {allowEdit && !isSharePage && (
-          <Column>
+        <Row alignItems="center" gap="1">
+          {allowMaximize && !isMobile && data && (
+            <GoalMaximizeButton
+              websiteId={websiteId}
+              id={id}
+              name={name}
+              type={parameters.type}
+              value={parameters.value}
+              data={data}
+            />
+          )}
+          {allowEdit && !isSharePage && (
             <SavedDefinitionEditButton
               websiteId={websiteId}
               id={id}
@@ -69,8 +85,8 @@ export function Goal({
             >
               {({ close }) => <GoalEditForm id={id} websiteId={websiteId} onClose={close} />}
             </SavedDefinitionEditButton>
-          </Column>
-        )}
+          )}
+        </Row>
       </Grid>
       <LoadingPanel data={data} isLoading={isLoading} isFetching={isFetching} error={error}>
         <Row alignItems="center" justifyContent="space-between" gap>
@@ -99,7 +115,7 @@ export function Goal({
             style={{ width: '100%' }}
           />
           <Text weight="bold" size="4xl">
-            {data?.total ? Math.round((+data?.num / +data?.total) * 100) : '0'}%
+            {formatPercent(data?.total ? +data.num / +data.total : 0)}
           </Text>
         </Row>
       </LoadingPanel>

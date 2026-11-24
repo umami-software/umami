@@ -73,7 +73,7 @@ export function SavedDefinitionEditButton({
   return (
     <>
       <MenuTrigger>
-        <Button variant="quiet">
+        <Button size="icon" variant="quiet">
           <Icon>
             <MoreHorizontal />
           </Icon>

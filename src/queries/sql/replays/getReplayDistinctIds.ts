@@ -66,25 +66,63 @@ async function relationalQuery(websiteId: string, visitIds: string[]) {
 async function clickhouseQuery(websiteId: string, visitIds: string[]) {
   const { rawQuery } = clickhouse;
 
-  return rawQuery(
+  // website_event is sorted by time first, so a lookup by visit needs a time range to use the
+  // index. Chunk times are server times, and the hour of margin covers a visit's events from
+  // before its recording started.
+  const visits = (await rawQuery(
     `
-    select distinct session_replay.visit_id as visitId, session_link.distinct_id as distinctId, 1 as linked
+    select
+      visit_id as visitId,
+      any(session_id) as sessionId,
+      toString(min(min(created_at)) over () - interval 1 hour) as startAt,
+      toString(max(max(created_at)) over () + interval 1 hour) as endAt
     from session_replay
-    join (
-      select session_id, distinct_id
-      from session_link
-      where website_id = {websiteId:UUID}
-    ) session_link on session_link.session_id = session_replay.session_id
-    where session_replay.website_id = {websiteId:UUID}
-      and session_replay.visit_id in {visitIds:Array(UUID)}
-    union all
-    select distinct visit_id as visitId, distinct_id as distinctId, 0 as linked
-    from website_event
     where website_id = {websiteId:UUID}
       and visit_id in {visitIds:Array(UUID)}
-      and distinct_id != ''
+    group by visit_id
     `,
     { websiteId, visitIds },
     FUNCTION_NAME,
-  ) as Promise<ReplayDistinctId[]>;
+  )) as { visitId: string; sessionId: string; startAt: string; endAt: string }[];
+
+  if (!visits.length) {
+    return [];
+  }
+
+  const { startAt, endAt } = visits[0];
+  const sessionIds = [...new Set(visits.map(({ sessionId }) => sessionId))];
+
+  const [links, events] = await Promise.all([
+    rawQuery(
+      `
+      select distinct session_id as sessionId, distinct_id as distinctId
+      from session_link
+      where website_id = {websiteId:UUID}
+        and session_id in {sessionIds:Array(UUID)}
+      `,
+      { websiteId, sessionIds },
+      FUNCTION_NAME,
+    ) as Promise<{ sessionId: string; distinctId: string }[]>,
+    rawQuery(
+      `
+      select distinct visit_id as visitId, distinct_id as distinctId
+      from website_event
+      where website_id = {websiteId:UUID}
+        and created_at between {startAt:DateTime64} and {endAt:DateTime64}
+        and visit_id in {visitIds:Array(UUID)}
+        and distinct_id != ''
+      `,
+      { websiteId, visitIds, startAt, endAt },
+      FUNCTION_NAME,
+    ) as Promise<{ visitId: string; distinctId: string }[]>,
+  ]);
+
+  return [
+    ...visits.flatMap(({ visitId, sessionId }) =>
+      links
+        .filter(link => link.sessionId === sessionId)
+        .map(({ distinctId }) => ({ visitId, distinctId, linked: 1 })),
+    ),
+    ...events.map(({ visitId, distinctId }) => ({ visitId, distinctId, linked: 0 })),
+  ];
 }

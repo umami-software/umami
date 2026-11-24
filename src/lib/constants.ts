@@ -75,6 +75,9 @@ export const SESSION_COLUMNS = [
   'distinctId',
 ];
 
+// Session attributes funnels and goals can be broken down by; each session has exactly one value.
+export const BREAKDOWN_FIELDS = ['device', 'browser', 'os', 'country'] as const;
+
 export const SEGMENT_TYPES = {
   segment: 'segment',
   cohort: 'cohort',

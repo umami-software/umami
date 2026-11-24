@@ -171,3 +171,71 @@ test('ClickHouse revenue locations keep revenue whose session has no event row',
   expect(query).toContain("event_name in ('stripe:payment'");
   expect(query).toContain('any left join revenue_session');
 });
+
+// Each filter key becomes its own clause, so a test can see which filters reached a query.
+function mockFilterClauses() {
+  parseFiltersMock.mockImplementation((filters: Record<string, unknown>) => ({
+    queryParams: {},
+    filterQuery: Object.keys(filters)
+      .map(key => `and ${key}_matches`)
+      .join(' '),
+    cohortQuery: '',
+    joinSessionQuery: '',
+    dateQuery: '',
+  }));
+}
+
+// A session that came direct and later returned from ChatGPT matches a ChatGPT filter, so its
+// revenue must be credited to the ChatGPT visit, not the earlier direct one (#4808). Filters on
+// pages or events select sessions only; they must not move credit away from the landing source.
+test('revenue referrers prefer the first event matching the traffic-source filters', async () => {
+  mockFilterClauses();
+  rawQueryMock.mockResolvedValue([]);
+
+  await getRevenueMetrics(
+    'website-1',
+    parameters,
+    { referrer: 'eq.chatgpt.com', query: 'c.utm_source=chatgpt', path: 'eq./checkout' },
+    'referrer',
+  );
+
+  const [query] = rawQueryMock.mock.calls[0];
+
+  expect(query).toContain(
+    'case when (1 = 1 and referrer_matches and query_matches) then 0 else 1 end, created_at',
+  );
+  expect(query).not.toMatch(/case when [^\n]*path_matches/);
+});
+
+test('ClickHouse revenue channels prefer the first event matching the traffic-source filters', async () => {
+  db.mode = 'clickhouse';
+  mockFilterClauses();
+  rawQueryMock.mockResolvedValue([]);
+
+  await getRevenueMetrics(
+    'website-1',
+    parameters,
+    { match: 'any', referrer: 'eq.chatgpt.com', country: 'eq.US' },
+    'channel',
+  );
+
+  const [query] = rawQueryMock.mock.calls[0];
+
+  expect(query).toContain(
+    'tuple(if((1 = 1 and match_matches and referrer_matches), 0, 1), created_at)',
+  );
+  expect(query).not.toMatch(/tuple\(if\([^\n]*country_matches/);
+});
+
+// Several events can share a session's first timestamp; joining back on it counted the
+// session's revenue once per tied event.
+test('revenue channels credit each session once', async () => {
+  rawQueryMock.mockResolvedValue([]);
+
+  await getRevenueMetrics('website-1', parameters, {}, 'channel');
+
+  const [query] = rawQueryMock.mock.calls[0];
+
+  expect(query).toContain('select distinct on (session_id)');
+  expect(query).not.toContain('created_at = revenue_data.created_at');
+});

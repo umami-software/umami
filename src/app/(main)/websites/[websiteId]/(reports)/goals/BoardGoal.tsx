@@ -59,6 +59,7 @@ export function BoardGoal({
           startDate={startDate}
           endDate={endDate}
           allowEdit={false}
+          allowMaximize={false}
         />
       ) : (
         <Text color="muted">Goal unavailable</Text>

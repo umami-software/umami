@@ -620,6 +620,21 @@ export const operationDescriptions: Record<string, OperationDescription> = {
     description:
       'Returns visitor counts and drop-off for each step of a saved funnel over the selected date range, with optional filters.',
   },
+  'GET /api/websites/{websiteId}/funnels/{funnelId}/chart': {
+    summary: 'Get website saved funnel chart',
+    description:
+      'Returns, for each time bucket, how many sessions entered a saved funnel and how many of them reached its last step, grouped by when they entered.',
+  },
+  'GET /api/websites/{websiteId}/funnels/{funnelId}/times': {
+    summary: 'Get website saved funnel times',
+    description:
+      'Returns the median time in seconds between consecutive steps of a saved funnel, and from the first step to the last, for sessions that reached each step.',
+  },
+  'GET /api/websites/{websiteId}/funnels/{funnelId}/breakdown': {
+    summary: 'Get website saved funnel breakdown',
+    description:
+      'Returns visitor counts for each step of a saved funnel split by a session attribute (browser, os, device, or country), for the most common values.',
+  },
   'GET /api/websites/{websiteId}/funnels/stats': {
     summary: 'Get website funnel stats',
     description:
@@ -654,6 +669,21 @@ export const operationDescriptions: Record<string, OperationDescription> = {
     summary: 'Get website saved goal stats',
     description:
       'Returns the number of conversions and the total for a saved goal over the selected date range, with optional filters.',
+  },
+  'GET /api/websites/{websiteId}/goals/{goalId}/chart': {
+    summary: 'Get website saved goal chart',
+    description:
+      'Returns, for each time bucket, how many sessions started and how many of them reached a saved goal, grouped by their first event.',
+  },
+  'GET /api/websites/{websiteId}/goals/{goalId}/summary': {
+    summary: 'Get website saved goal summary',
+    description:
+      'Returns the number of events that matched a saved goal, and the median time in seconds from a session start to its first match.',
+  },
+  'GET /api/websites/{websiteId}/goals/{goalId}/breakdown': {
+    summary: 'Get website saved goal breakdown',
+    description:
+      'Returns visitors and converted visitors for a saved goal split by a session attribute (browser, os, device, or country), for the most common values.',
   },
   'GET /api/websites/{websiteId}/goals/stats': {
     summary: 'Get website goal stats',
