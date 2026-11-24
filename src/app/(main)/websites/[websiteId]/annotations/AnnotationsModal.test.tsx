@@ -32,17 +32,12 @@ vi.mock('@/components/hooks', () => ({
   useWebsiteAnnotationsQuery: (...args: unknown[]) => mockUseWebsiteAnnotationsQuery(...args),
 }));
 
-vi.mock('@/components/input/FilterButtons', () => ({
-  FilterButtons: ({ onChange }: { onChange: (value: string) => void }) => (
-    <button type="button" onClick={() => onChange('all')}>
-      All notes
-    </button>
-  ),
-}));
-
 beforeEach(() => {
   mockUseWebsiteAnnotationsQuery.mockClear();
-  mockUseWebsiteAnnotationsQuery.mockReturnValue({ data: { data: [], count: 0 }, isLoading: false });
+  mockUseWebsiteAnnotationsQuery.mockReturnValue({
+    data: { data: [], count: 0 },
+    isLoading: false,
+  });
 });
 
 test('defaults to the supplied date range and can show all notes', async () => {
@@ -57,7 +52,7 @@ test('defaults to the supplied date range and can show all notes', async () => {
     endAt: 2000,
   });
 
-  await user.click(screen.getByRole('button', { name: 'All notes' }));
+  await user.click(screen.getByRole('tab', { name: 'All Notes' }));
 
   expect(mockUseWebsiteAnnotationsQuery).toHaveBeenLastCalledWith('website-1', {
     page: 1,

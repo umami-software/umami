@@ -101,7 +101,7 @@ export function AdminWebsitesTable({ data = [], ...props }: { data: any[] }) {
         </DataColumn>
       </DataTable>
       <Dialog open={!!deleteWebsite} onOpenChange={open => !open && setDeleteWebsite(null)}>
-        <DialogContent style={{ width: 400 }}>
+        <DialogContent showCloseButton={false} style={{ width: 400 }}>
           <WebsiteDeleteForm websiteId={deleteWebsite} onClose={() => setDeleteWebsite(null)} />
         </DialogContent>
       </Dialog>

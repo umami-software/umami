@@ -188,7 +188,7 @@ export function Heatmap({ websiteId, urlPath, onUrlPathChange, mode, search }: H
           )}
 
           <Dialog open={isPagePickerOpen} onOpenChange={isOpen => setIsPagePickerOpen(isOpen)}>
-            <DialogContent
+            <DialogContent showCloseButton
               style={{
                 width: '100%',
                 height: '100%',

@@ -33,7 +33,7 @@ export function TeamsJoinButton() {
         </Icon>
         <Text>{t(labels.joinTeam)}</Text>
       </DialogTrigger>
-      <DialogContent style={{ width: 400 }}>
+      <DialogContent showCloseButton={false} style={{ width: 400 }}>
         <DialogHeader>
           <DialogTitle>{t(labels.joinTeam)}</DialogTitle>
         </DialogHeader>

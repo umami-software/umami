@@ -41,7 +41,7 @@ export function TeamsMemberAddButton({
         </Icon>
         <Text>{t(labels.addMember)}</Text>
       </DialogTrigger>
-      <DialogContent style={{ width: 400 }}>
+      <DialogContent showCloseButton={false} style={{ width: 400 }}>
         <DialogHeader>
           <DialogTitle>{t(labels.addMember)}</DialogTitle>
         </DialogHeader>

@@ -31,7 +31,7 @@ export function ApiKeyAddButton({ onSave }: { onSave?: () => void }) {
         </Icon>
         <Text>{t(labels.createApiKey)}</Text>
       </DialogTrigger>
-      <DialogContent style={{ width: 480, maxWidth: 'calc(100% - 2rem)' }}>
+      <DialogContent showCloseButton={false} style={{ width: 480, maxWidth: 'calc(100% - 2rem)' }}>
         <DialogHeader>
           <DialogTitle>{t(labels.createApiKey)}</DialogTitle>
         </DialogHeader>

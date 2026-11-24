@@ -95,7 +95,7 @@ export function UsersTable({
         )}
       </DataTable>
       <Dialog open={!!deleteUser} onOpenChange={open => !open && setDeleteUser(null)}>
-        <DialogContent style={{ width: 400 }}>
+        <DialogContent showCloseButton={false} style={{ width: 400 }}>
           <DialogHeader>
             <DialogTitle>{t(labels.delete)}</DialogTitle>
           </DialogHeader>

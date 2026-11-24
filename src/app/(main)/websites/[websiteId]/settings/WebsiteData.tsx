@@ -66,7 +66,7 @@ export function WebsiteData({ websiteId, onSave }: { websiteId: string; onSave?:
             <DialogTrigger render={<Button variant="secondary" disabled={!canTransferWebsite} />}>
               {t(labels.transfer)}
             </DialogTrigger>
-            <DialogContent style={{ width: 400 }}>
+            <DialogContent showCloseButton={false} style={{ width: 400 }}>
               <DialogHeader>
                 <DialogTitle>{t(labels.transferWebsite)}</DialogTitle>
               </DialogHeader>
@@ -83,7 +83,7 @@ export function WebsiteData({ websiteId, onSave }: { websiteId: string; onSave?:
       <ActionForm label={t(labels.resetWebsite)} description={t(messages.resetWebsiteWarning)}>
         <Dialog open={showReset} onOpenChange={setShowReset}>
           <DialogTrigger render={<Button variant="secondary" />}>{t(labels.reset)}</DialogTrigger>
-          <DialogContent style={{ width: 400 }}>
+          <DialogContent showCloseButton={false} style={{ width: 400 }}>
             <DialogHeader>
               <DialogTitle>{t(labels.resetWebsite)}</DialogTitle>
             </DialogHeader>
@@ -101,7 +101,7 @@ export function WebsiteData({ websiteId, onSave }: { websiteId: string; onSave?:
           <DialogTrigger render={<Button data-test="button-delete" variant="destructive" />}>
             {t(labels.delete)}
           </DialogTrigger>
-          <DialogContent style={{ width: 400 }}>
+          <DialogContent showCloseButton={false} style={{ width: 400 }}>
             <DialogHeader>
               <DialogTitle>{t(labels.deleteWebsite)}</DialogTitle>
             </DialogHeader>

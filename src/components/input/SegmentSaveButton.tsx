@@ -26,7 +26,7 @@ export function SegmentSaveButton({ websiteId }: { websiteId: string }) {
         </Icon>
         <Text>{t(labels.segment)}</Text>
       </DialogTrigger>
-      <DialogContent
+      <DialogContent showCloseButton={false}
         style={{
           width: isMobile ? '100%' : '800px',
           height: isMobile ? '100%' : undefined,

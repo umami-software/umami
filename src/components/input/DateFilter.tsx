@@ -143,7 +143,7 @@ export function DateFilter({
         </SelectContent>
       </Select>
       <Dialog open={showPicker} onOpenChange={setShowPicker}>
-        <DialogContent style={{ width: 'auto', maxWidth: 'calc(100% - 2rem)' }}>
+        <DialogContent showCloseButton={false} style={{ width: 'auto', maxWidth: 'calc(100% - 2rem)' }}>
           {showPicker && (
             <DatePickerForm
               startDate={startDate}

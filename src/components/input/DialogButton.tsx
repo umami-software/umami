@@ -88,7 +88,7 @@ export function DialogButton({
           <IconLabel icon={icon} label={label} />
         </DialogTrigger>
       )}
-      <DialogContent className={dialogClassName} style={style}>
+      <DialogContent showCloseButton={false} className={dialogClassName} style={style}>
         {dialogTitle && (
           <DialogHeader>
             <DialogTitle>{dialogTitle}</DialogTitle>

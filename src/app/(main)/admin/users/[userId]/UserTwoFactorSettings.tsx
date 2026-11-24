@@ -122,7 +122,7 @@ export function UserTwoFactorSettings({ userId }: { userId: string }) {
       </Column>
 
       <Dialog open={showReset} onOpenChange={open => !open && setShowReset(false)}>
-        <DialogContent style={{ width: 400 }}>
+        <DialogContent showCloseButton={false} style={{ width: 400 }}>
           <DialogHeader>
             <DialogTitle>{t(labels.twoFactorReset)}</DialogTitle>
           </DialogHeader>

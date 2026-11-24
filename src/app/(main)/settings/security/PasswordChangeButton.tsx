@@ -31,7 +31,7 @@ export function PasswordChangeButton() {
         </Icon>
         <Text>{t(labels.changePassword)}</Text>
       </DialogTrigger>
-      <DialogContent style={{ width: 400 }}>
+      <DialogContent showCloseButton={false} style={{ width: 400 }}>
         <DialogHeader>
           <DialogTitle>{t(labels.changePassword)}</DialogTitle>
         </DialogHeader>

@@ -37,7 +37,7 @@ export function TwoFactorDisableModal({ onClose, onSuccess }: TwoFactorDisableMo
 
   return (
     <Dialog open={true} onOpenChange={open => !open && onClose()}>
-      <DialogContent style={{ width: 420 }}>
+      <DialogContent showCloseButton={false} style={{ width: 420 }}>
         <DialogHeader>
           <DialogTitle>{t(labels.twoFactorDisableTitle)}</DialogTitle>
         </DialogHeader>

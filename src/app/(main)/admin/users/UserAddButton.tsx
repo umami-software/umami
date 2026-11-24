@@ -34,7 +34,7 @@ export function UserAddButton({ onSave }: { onSave?: () => void }) {
         </Icon>
         <Text>{t(labels.createUser)}</Text>
       </DialogTrigger>
-      <DialogContent style={{ width: 400 }}>
+      <DialogContent showCloseButton={false} style={{ width: 400 }}>
         <DialogHeader>
           <DialogTitle>{t(labels.createUser)}</DialogTitle>
         </DialogHeader>

@@ -6,6 +6,9 @@ import {
   Heading,
   Loading,
   Row,
+  Tabs,
+  TabsList,
+  TabsTrigger,
   Text,
 } from '@umami/react-zen';
 import { useState } from 'react';
@@ -23,7 +26,6 @@ import {
   useWebsiteAnnotationsQuery,
 } from '@/components/hooks';
 import { Edit, Plus } from '@/components/icons';
-import { FilterButtons } from '@/components/input/FilterButtons';
 import { type AnnotationRange, getAnnotationDateRangeValue } from '@/lib/annotations';
 import { AnnotationDeleteButton } from './AnnotationDeleteButton';
 import { type Annotation, AnnotationEditForm } from './AnnotationEditForm';
@@ -109,14 +111,14 @@ export function AnnotationsModal({
           </Button>
         )}
       </Row>
-      <FilterButtons
-        value={filter}
-        onChange={handleFilterChange}
-        items={[
-          { id: RANGE_FILTER, label: `${t(labels.current)} ${t(labels.dateRange)}` },
-          { id: ALL_FILTER, label: `${t(labels.all)} ${t(labels.notes)}` },
-        ]}
-      />
+      <Tabs value={filter} onValueChange={value => handleFilterChange(value as string)}>
+        <TabsList>
+          <TabsTrigger value={RANGE_FILTER}>
+            {`${t(labels.current)} ${t(labels.dateRange)}`}
+          </TabsTrigger>
+          <TabsTrigger value={ALL_FILTER}>{`${t(labels.all)} ${t(labels.notes)}`}</TabsTrigger>
+        </TabsList>
+      </Tabs>
       {rows.length === 0 ? (
         <Empty />
       ) : (

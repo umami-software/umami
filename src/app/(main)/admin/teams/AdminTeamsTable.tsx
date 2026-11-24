@@ -103,7 +103,7 @@ export function AdminTeamsTable({
         )}
       </DataTable>
       <Dialog open={!!deleteTeam} onOpenChange={open => !open && setDeleteTeam(null)}>
-        <DialogContent style={{ width: 400 }}>
+        <DialogContent showCloseButton={false} style={{ width: 400 }}>
           <TeamDeleteForm teamId={deleteTeam} onClose={() => setDeleteTeam(null)} />
         </DialogContent>
       </Dialog>

@@ -34,7 +34,7 @@ export function TeamLeaveButton({ teamId, teamName }: { teamId: string; teamName
         </Icon>
         <Text>{t(labels.leave)}</Text>
       </DialogTrigger>
-      <DialogContent style={{ width: 400 }}>
+      <DialogContent showCloseButton={false} style={{ width: 400 }}>
         <DialogHeader>
           <DialogTitle>{t(labels.leaveTeam)}</DialogTitle>
         </DialogHeader>

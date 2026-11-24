@@ -27,7 +27,7 @@ export function TeamManage({ teamId }: { teamId: string }) {
     <ActionForm label={t(labels.deleteTeam)} description={t(messages.deleteTeamWarning)}>
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogTrigger render={<Button variant="destructive" />}>{t(labels.delete)}</DialogTrigger>
-        <DialogContent style={{ width: 400 }}>
+        <DialogContent showCloseButton={false} style={{ width: 400 }}>
           <DialogHeader>
             <DialogTitle>{t(labels.deleteTeam)}</DialogTitle>
           </DialogHeader>

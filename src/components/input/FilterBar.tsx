@@ -192,7 +192,7 @@ export function FilterBar({ websiteId }: { websiteId?: string }) {
           </Tooltip>
         )}
         <Dialog open={showSaveSegment} onOpenChange={setShowSaveSegment}>
-          <DialogContent
+          <DialogContent showCloseButton={false}
             style={{
               width: isMobile ? '100%' : '800px',
               height: isMobile ? '100%' : undefined,
