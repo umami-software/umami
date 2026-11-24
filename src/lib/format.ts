@@ -27,13 +27,27 @@ export function formatTime(val: number) {
 }
 
 export function formatShortTime(val: number, formats = ['m', 's'], space = '') {
-  const { days, hours, minutes, seconds, ms } = parseTime(val);
+  const { ms } = parseTime(val);
+  const units: [string, number][] = [
+    ['d', 86400],
+    ['h', 3600],
+    ['m', 60],
+    ['s', 1],
+  ];
+  let remaining = ~~val;
   let t = '';
 
-  if (days > 0 && formats.indexOf('d') !== -1) t += `${days}d${space}`;
-  if (hours > 0 && formats.indexOf('h') !== -1) t += `${hours}h${space}`;
-  if (minutes > 0 && formats.indexOf('m') !== -1) t += `${minutes}m${space}`;
-  if (seconds > 0 && formats.indexOf('s') !== -1) t += `${seconds}s${space}`;
+  // A unit left out of formats carries into the next smaller one, so 3661 with ['m', 's']
+  // shows as 61m1s instead of dropping the hour.
+  for (const [unit, size] of units) {
+    if (formats.indexOf(unit) === -1) continue;
+
+    const amount = ~~(remaining / size);
+    remaining -= amount * size;
+
+    if (amount > 0) t += `${amount}${unit}${space}`;
+  }
+
   if (ms > 0 && formats.indexOf('ms') !== -1) t += `${ms}ms`;
 
   if (!t) {
