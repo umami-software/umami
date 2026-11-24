@@ -4,9 +4,12 @@ import {
   FormButtons,
   FormField,
   FormSubmitButton,
-  ListItem,
   PasswordField,
   Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
   TextField,
 } from '@umami/react-zen';
 import { useMessages, useUpdateQuery } from '@/components/hooks';
@@ -15,6 +18,12 @@ import { ROLES } from '@/lib/constants';
 export function UserAddForm({ onSave, onClose }) {
   const { mutateAsync, error, isPending } = useUpdateQuery(`/users`);
   const { t, labels, messages, getErrorMessage } = useMessages();
+
+  const roles = [
+    { value: ROLES.viewOnly, label: t(labels.viewOnly), test: 'viewOnly' },
+    { value: ROLES.user, label: t(labels.user), test: 'user' },
+    { value: ROLES.admin, label: t(labels.admin), test: 'admin' },
+  ];
 
   const handleSubmit = async (data: any) => {
     await mutateAsync(data, {
@@ -45,23 +54,24 @@ export function UserAddForm({ onSave, onClose }) {
         <PasswordField autoComplete="new-password" data-test="input-password" />
       </FormField>
       <FormField label={t(labels.role)} name="role" rules={{ required: t(labels.required) }}>
-        <Select>
-          <ListItem id={ROLES.viewOnly} data-test="dropdown-item-viewOnly">
-            {t(labels.viewOnly)}
-          </ListItem>
-          <ListItem id={ROLES.user} data-test="dropdown-item-user">
-            {t(labels.user)}
-          </ListItem>
-          <ListItem id={ROLES.admin} data-test="dropdown-item-admin">
-            {t(labels.admin)}
-          </ListItem>
+        <Select items={roles}>
+          <SelectTrigger className="w-full">
+            <SelectValue />
+          </SelectTrigger>
+          <SelectContent alignItemWithTrigger={false}>
+            {roles.map(({ value, label, test }) => (
+              <SelectItem key={value} value={value} data-test={`dropdown-item-${test}`}>
+                {label}
+              </SelectItem>
+            ))}
+          </SelectContent>
         </Select>
       </FormField>
       <FormButtons>
-        <Button isDisabled={isPending} onPress={onClose}>
+        <Button variant="secondary" disabled={isPending} onClick={onClose}>
           {t(labels.cancel)}
         </Button>
-        <FormSubmitButton variant="primary" data-test="button-submit" isDisabled={false}>
+        <FormSubmitButton data-test="button-submit" disabled={false}>
           {t(labels.save)}
         </FormSubmitButton>
       </FormButtons>

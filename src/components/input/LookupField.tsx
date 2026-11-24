@@ -1,11 +1,14 @@
-import { type ComboBoxProps, ListItem, Loading, useDebounce } from '@umami/react-zen';
+import { useDebounce } from '@umami/react-zen';
 import { endOfDay, subMonths } from 'date-fns';
 import { type SetStateAction, useMemo, useState } from 'react';
-import { ComboBox } from '@/components/common/ComboBox';
-import { Empty } from '@/components/common/Empty';
-import { useMessages, useWebsiteValuesQuery } from '@/components/hooks';
+import { ComboBox, type ComboBoxProps } from '@/components/common/ComboBox';
+import { useWebsiteValuesQuery } from '@/components/hooks';
 
-export interface LookupFieldProps extends Omit<ComboBoxProps, 'onChange'> {
+export interface LookupFieldProps
+  extends Omit<
+    ComboBoxProps,
+    'items' | 'value' | 'inputValue' | 'onValueChange' | 'onInputValueChange' | 'isLoading'
+  > {
   websiteId: string;
   type: string;
   value: string;
@@ -23,7 +26,6 @@ export function LookupField({
   onValueChange,
   ...props
 }: LookupFieldProps) {
-  const { t, messages } = useMessages();
   const [search, setSearch] = useState(value);
   const searchValue = useDebounce(search, 300);
   const startDate = subMonths(endOfDay(new Date()), 6);
@@ -60,7 +62,7 @@ export function LookupField({
       items={options}
       value={value ?? ''}
       inputValue={value ?? ''}
-      onChange={value => {
+      onValueChange={value => {
         const next = value ?? '';
         handleSearch(next);
         onChange?.(next);
@@ -71,19 +73,7 @@ export function LookupField({
         onChange?.(value);
         onValueChange?.(value);
       }}
-      renderEmptyState={() =>
-        isLoading ? (
-          <Loading placement="center" icon="dots" />
-        ) : (
-          <Empty message={t(messages.noResultsFound)} />
-        )
-      }
-    >
-      {options.map(item => (
-        <ListItem key={item} id={item}>
-          {item}
-        </ListItem>
-      ))}
-    </ComboBox>
+      isLoading={isLoading}
+    />
   );
 }

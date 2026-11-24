@@ -147,7 +147,7 @@ const Cell = ({ intensity = 0, children }: { intensity?: number; children: React
   // Capped at 60% so the normal text color stays readable.
   const style = intensity
     ? {
-        backgroundColor: `color-mix(in srgb, var(--zen-primary) ${Math.round(intensity * 60)}%, var(--zen-surface-raised))`,
+        backgroundColor: `color-mix(in srgb, var(--primary) ${Math.round(intensity * 60)}%, var(--muted))`,
       }
     : undefined;
 
@@ -157,7 +157,7 @@ const Cell = ({ intensity = 0, children }: { intensity?: number; children: React
       alignItems="center"
       width="100px"
       height="100px"
-      backgroundColor="surface-raised"
+      backgroundColor="muted"
       borderRadius
       style={style}
     >

@@ -32,7 +32,7 @@ export function CopyButton({ value, label = 'Copy' }: { value: string; label?: s
   };
 
   return (
-    <Button variant="quiet" onPress={handleCopy} aria-label={label}>
+    <Button variant="ghost" onClick={handleCopy} aria-label={label}>
       <Icon size="sm">{copied ? <Check /> : <Copy />}</Icon>
     </Button>
   );

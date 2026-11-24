@@ -27,10 +27,10 @@ export function SegmentFilters({
   return (
     <LoadingPanel data={data} isLoading={isLoading} isFetching={isFetching} overflowY="auto">
       {data?.data?.length === 0 && <Empty />}
-      <List selectionMode="single" value={[segmentId]} onChange={id => handleChange(id[0])}>
+      <List selectionMode="single" value={[segmentId]} onValueChange={ids => handleChange(ids[0])}>
         {data?.data?.map(item => {
           return (
-            <ListItem key={item.id} id={item.id}>
+            <ListItem key={item.id} value={item.id}>
               <IconLabel icon={type === 'segment' ? <ChartPie /> : <UserPlus />}>
                 {item.name}
               </IconLabel>

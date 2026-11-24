@@ -1,31 +1,26 @@
-import { Icon, MenuItem, Row, Text } from '@umami/react-zen';
+import { DropdownMenuItem, Icon, Row, Text } from '@umami/react-zen';
 import { expect, test, vi } from 'vitest';
 import { Edit } from '@/components/icons';
 import { render, screen } from '@/test/render';
 import { MenuButton } from './MenuButton';
 
-test('preserves child menu item actions while still notifying the parent handler', async () => {
-  const onChildAction = vi.fn();
-  const onMenuAction = vi.fn();
+test('opens the menu and runs the chosen item', async () => {
+  const onEdit = vi.fn();
   const { user } = render(
-    <MenuButton onAction={onMenuAction}>
-      <MenuItem id="edit" onAction={onChildAction}>
+    <MenuButton>
+      <DropdownMenuItem onClick={onEdit}>
         <Row alignItems="center" gap>
           <Icon>
             <Edit />
           </Icon>
           <Text>Edit</Text>
         </Row>
-      </MenuItem>
+      </DropdownMenuItem>
     </MenuButton>,
   );
 
-  const button = screen.getByRole('button');
+  await user.click(screen.getByRole('button', { name: 'menu' }));
+  await user.click(await screen.findByRole('menuitem', { name: 'Edit' }));
 
-  button.focus();
-  await user.keyboard('{Enter}');
-  await user.click(screen.getByRole('menuitem', { name: 'Edit' }));
-
-  expect(onChildAction).toHaveBeenCalledWith('edit');
-  expect(onMenuAction).toHaveBeenCalledWith('edit');
+  expect(onEdit).toHaveBeenCalledTimes(1);
 });

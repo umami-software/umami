@@ -12,7 +12,7 @@ export function AnnotationsButton({ websiteId }: { websiteId: string }) {
       icon={<MessageSquareText />}
       label={t(labels.notes)}
       title={null}
-      variant="quiet"
+      variant="ghost"
       width="800px"
     >
       {({ close }) => (

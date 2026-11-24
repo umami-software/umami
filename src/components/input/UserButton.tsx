@@ -1,16 +1,20 @@
 import {
   Button,
-  Column,
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuRadioGroup,
+  DropdownMenuRadioItem,
+  DropdownMenuSeparator,
+  DropdownMenuSub,
+  DropdownMenuSubContent,
+  DropdownMenuSubTrigger,
+  DropdownMenuTrigger,
   Icon,
-  Menu,
-  MenuItem,
-  MenuSeparator,
-  MenuTrigger,
-  Popover,
   Row,
-  SubmenuTrigger,
   Text,
   Tooltip,
+  TooltipContent,
   TooltipTrigger,
   useTheme,
 } from '@umami/react-zen';
@@ -100,122 +104,125 @@ export function UserButton({ showText = true, onClose }: UserButtonProps) {
     },
   ].filter(Boolean);
 
-  const trigger = (
-    <Button
-      data-test="button-profile"
-      variant="zero"
-      aria-label={showText ? undefined : user.username}
-      style={{
-        display: 'flex',
-        padding: 0,
-        width: '100%',
-        flexGrow: 1,
-        justifyContent: 'flex-start',
-      }}
-    >
-      <Row
-        alignItems="center"
-        flexGrow={1}
-        width="100%"
-        hover={{ backgroundColor: 'surface-sunken' }}
-        borderRadius
-        minHeight="40px"
-        style={{ textWrap: 'nowrap', overflow: 'hidden' }}
-      >
-        <Row alignItems="center" gap padding>
-          <Icon>
-            <UserCircle />
-          </Icon>
-          {showText && <Text>{user.username}</Text>}
-        </Row>
-      </Row>
-    </Button>
-  );
-
   const menu = (
-    <MenuTrigger>
-      {trigger}
-      <Popover side="top" align="start">
-        <Column minWidth="200px">
-          <Menu>
-            <MenuItem id="settings" onAction={() => handleNavigate(getUrl('/settings'))}>
-              <Row alignItems="center" gap>
+    <DropdownMenu>
+      <DropdownMenuTrigger
+        render={
+          <Button
+            data-test="button-profile"
+            variant="ghost"
+            className="h-auto hover:bg-transparent"
+            aria-label={showText ? undefined : user.username}
+            style={{
+              display: 'flex',
+              padding: 0,
+              width: '100%',
+              flexGrow: 1,
+              justifyContent: 'flex-start',
+            }}
+          />
+        }
+      >
+        <Row
+          alignItems="center"
+          flexGrow={1}
+          width="100%"
+          hover={{ backgroundColor: 'muted' }}
+          borderRadius
+          minHeight="40px"
+          style={{ textWrap: 'nowrap', overflow: 'hidden' }}
+        >
+          <Row alignItems="center" gap padding>
+            <Icon>
+              <UserCircle />
+            </Icon>
+            {showText && <Text>{user.username}</Text>}
+          </Row>
+        </Row>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent side="top" align="start" style={{ width: 'auto', minWidth: 200 }}>
+        <DropdownMenuItem onClick={() => handleNavigate(getUrl('/settings'))}>
+          <Row alignItems="center" gap>
+            <Icon>
+              <Settings />
+            </Icon>
+            <Text>{t(labels.settings)}</Text>
+          </Row>
+        </DropdownMenuItem>
+        <DropdownMenuSub>
+          <DropdownMenuSubTrigger>
+            <Row alignItems="center" gap>
+              <Icon>
+                <Globe />
+              </Icon>
+              <Text>{t(labels.language)}</Text>
+            </Row>
+          </DropdownMenuSubTrigger>
+          <DropdownMenuSubContent
+            side={isMobile ? 'bottom' : 'right'}
+            align={isMobile ? 'start' : 'end'}
+          >
+            <LanguageMenu onSelect={() => onClose?.()} />
+          </DropdownMenuSubContent>
+        </DropdownMenuSub>
+        <DropdownMenuSub>
+          <DropdownMenuSubTrigger>
+            <Row alignItems="center" gap>
+              <Icon>
+                <SunMoon />
+              </Icon>
+              <Text>{t(labels.theme)}</Text>
+            </Row>
+          </DropdownMenuSubTrigger>
+          <DropdownMenuSubContent
+            side={isMobile ? 'bottom' : 'right'}
+            align={isMobile ? 'start' : 'end'}
+          >
+            <DropdownMenuRadioGroup value={theme}>
+              <DropdownMenuRadioItem
+                value="light"
+                closeOnClick
+                onClick={() => handleSelectTheme('light')}
+              >
                 <Icon>
-                  <Settings />
+                  <Sun />
                 </Icon>
-                <Text>{t(labels.settings)}</Text>
-              </Row>
-            </MenuItem>
-            <SubmenuTrigger>
-              <MenuItem id="language" showSubMenuIcon>
-                <Row alignItems="center" gap>
-                  <Icon>
-                    <Globe />
-                  </Icon>
-                  <Text>{t(labels.language)}</Text>
-                </Row>
-              </MenuItem>
-              <Popover
-                side={isMobile ? 'bottom' : 'right'}
-                align={isMobile ? 'start' : 'end'}
-                isNonModal
+                <Text weight={theme === 'light' ? 'bold' : undefined}>Light</Text>
+              </DropdownMenuRadioItem>
+              <DropdownMenuRadioItem
+                value="dark"
+                closeOnClick
+                onClick={() => handleSelectTheme('dark')}
               >
-                <LanguageMenu onSelect={() => onClose?.()} />
-              </Popover>
-            </SubmenuTrigger>
-            <SubmenuTrigger>
-              <MenuItem id="theme" showSubMenuIcon>
-                <Row alignItems="center" gap>
-                  <Icon>
-                    <SunMoon />
-                  </Icon>
-                  <Text>{t(labels.theme)}</Text>
-                </Row>
-              </MenuItem>
-              <Popover
-                side={isMobile ? 'bottom' : 'right'}
-                align={isMobile ? 'start' : 'end'}
-                isNonModal
-              >
-                <Menu selectionMode="single" selectedKeys={new Set([theme])}>
-                  <MenuItem id="light" onAction={() => handleSelectTheme('light')}>
-                    <Icon>
-                      <Sun />
-                    </Icon>
-                    <Text weight={theme === 'light' ? 'bold' : undefined}>Light</Text>
-                  </MenuItem>
-                  <MenuItem id="dark" onAction={() => handleSelectTheme('dark')}>
-                    <Icon>
-                      <Moon />
-                    </Icon>
-                    <Text weight={theme === 'dark' ? 'bold' : undefined}>Dark</Text>
-                  </MenuItem>
-                </Menu>
-              </Popover>
-            </SubmenuTrigger>
-            {items.map(({ id, path, label, icon, separator, target, external }: any) => {
-              if (separator) {
-                return <MenuSeparator key={id} />;
-              }
+                <Icon>
+                  <Moon />
+                </Icon>
+                <Text weight={theme === 'dark' ? 'bold' : undefined}>Dark</Text>
+              </DropdownMenuRadioItem>
+            </DropdownMenuRadioGroup>
+          </DropdownMenuSubContent>
+        </DropdownMenuSub>
+        {items.map(({ id, path, label, icon, separator, target, external }: any) => {
+          if (separator) {
+            return <DropdownMenuSeparator key={id} />;
+          }
 
-              return (
-                <MenuItem key={id} id={id} onAction={() => handleNavigate(path, target)}>
-                  <Row alignItems="center" gap>
-                    <Icon>{icon}</Icon>
-                    <Text>{label}</Text>
-                    {external && (
-                      <Icon color="muted" size="sm">
-                        <ExternalLink />
-                      </Icon>
-                    )}
-                  </Row>
-                </MenuItem>
-              );
-            })}
-          </Menu>
-        </Column>
-      </Popover>
-    </MenuTrigger>
+          return (
+            <DropdownMenuItem key={id} onClick={() => handleNavigate(path, target)}>
+              <Row alignItems="center" gap>
+                <Icon>{icon}</Icon>
+                <Text>{label}</Text>
+                {external && (
+                  <Icon color="muted-foreground" size="sm">
+                    <ExternalLink />
+                  </Icon>
+                )}
+              </Row>
+            </DropdownMenuItem>
+          );
+        })}
+      </DropdownMenuContent>
+    </DropdownMenu>
   );
 
   if (showText) {
@@ -223,9 +230,11 @@ export function UserButton({ showText = true, onClose }: UserButtonProps) {
   }
 
   return (
-    <TooltipTrigger delay={0}>
-      <div style={{ width: '100%' }}>{menu}</div>
-      <Tooltip placement="right">{user.username}</Tooltip>
-    </TooltipTrigger>
+    <Tooltip>
+      <TooltipTrigger delay={0} render={<div style={{ width: '100%' }} />}>
+        {menu}
+      </TooltipTrigger>
+      <TooltipContent side="right">{user.username}</TooltipContent>
+    </Tooltip>
   );
 }

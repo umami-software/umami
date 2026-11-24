@@ -1,9 +1,9 @@
-import { Button, Column, Row, Tab, TabList, TabPanel, Tabs } from '@umami/react-zen';
+import { Button, Column, Row, Tabs, TabsContent, TabsList, TabsTrigger } from '@umami/react-zen';
 import { useState } from 'react';
 import { useFilters, useMessages, useMobile, useNavigation } from '@/components/hooks';
 import { FieldFilters } from '@/components/input/FieldFilters';
-import { PropertyFilters } from '@/components/property-data/PropertyFilters';
 import { SegmentFilters } from '@/components/input/SegmentFilters';
+import { PropertyFilters } from '@/components/property-data/PropertyFilters';
 import type { EventPropertyFilter, SessionPropertyFilter } from '@/lib/types';
 
 export interface FilterEditFormProps {
@@ -27,7 +27,8 @@ export function FilterEditForm({ websiteId, onChange, onClose }: FilterEditFormP
   const { filters, eventPropertyFilters, sessionPropertyFilters } = useFilters();
   const { t, labels } = useMessages();
   const [currentFilters, setCurrentFilters] = useState(filters);
-  const [currentEventPropertyFilters, setCurrentEventPropertyFilters] = useState(eventPropertyFilters);
+  const [currentEventPropertyFilters, setCurrentEventPropertyFilters] =
+    useState(eventPropertyFilters);
   const [currentSessionPropertyFilters, setCurrentSessionPropertyFilters] =
     useState(sessionPropertyFilters);
   const [currentSegment, setCurrentSegment] = useState(segment);
@@ -97,7 +98,9 @@ export function FilterEditForm({ websiteId, onChange, onClose }: FilterEditFormP
         WebkitOverflowScrolling: 'touch',
       } as const)
     : undefined;
-  const mobileTabStyle = isMobile ? ({ flex: '0 0 auto', whiteSpace: 'nowrap' } as const) : undefined;
+  const mobileTabStyle = isMobile
+    ? ({ flex: '0 0 auto', whiteSpace: 'nowrap' } as const)
+    : undefined;
 
   return (
     <Column width={isMobile ? 'auto' : '800px'} gap="6" style={{ flex: 1, minHeight: 0 }}>
@@ -109,32 +112,32 @@ export function FilterEditForm({ websiteId, onChange, onClose }: FilterEditFormP
           overflow: 'hidden',
         }}
       >
-        <TabList style={mobileTabListStyle}>
-          <Tab id="fields" style={mobileTabStyle}>
+        <TabsList style={mobileTabListStyle}>
+          <TabsTrigger value="fields" style={mobileTabStyle}>
             {t(labels.fields)}
-          </Tab>
+          </TabsTrigger>
           {!isPixelLink && (
             <>
-              <Tab id="segments" style={mobileTabStyle}>
+              <TabsTrigger value="segments" style={mobileTabStyle}>
                 {t(labels.segments)}
-              </Tab>
-              <Tab id="cohorts" style={mobileTabStyle}>
+              </TabsTrigger>
+              <TabsTrigger value="cohorts" style={mobileTabStyle}>
                 {t(labels.cohorts)}
-              </Tab>
+              </TabsTrigger>
               {websiteId && isEventsPath && (
-                <Tab id="event-properties" style={mobileTabStyle}>
+                <TabsTrigger value="event-properties" style={mobileTabStyle}>
                   {t(labels.eventProperties)}
-                </Tab>
+                </TabsTrigger>
               )}
               {websiteId && (
-                <Tab id="session-data" style={mobileTabStyle}>
+                <TabsTrigger value="session-data" style={mobileTabStyle}>
                   {t(labels.sessionData)}
-                </Tab>
+                </TabsTrigger>
               )}
             </>
           )}
-        </TabList>
-        <TabPanel id="fields" style={panelStyle}>
+        </TabsList>
+        <TabsContent value="fields" style={panelStyle}>
           <FieldFilters
             websiteId={websiteId}
             value={currentFilters}
@@ -143,45 +146,45 @@ export function FilterEditForm({ websiteId, onChange, onClose }: FilterEditFormP
             onMatchChange={setCurrentMatch}
             exclude={excludedFields}
           />
-        </TabPanel>
+        </TabsContent>
         {!isPixelLink && websiteId && (
-          <TabPanel id="segments" style={panelStyle}>
+          <TabsContent value="segments" style={panelStyle}>
             <SegmentFilters
               websiteId={websiteId}
               segmentId={currentSegment}
               onChange={handleSegmentChange}
             />
-          </TabPanel>
+          </TabsContent>
         )}
         {!isPixelLink && websiteId && (
-          <TabPanel id="cohorts" style={panelStyle}>
+          <TabsContent value="cohorts" style={panelStyle}>
             <SegmentFilters
               type="cohort"
               websiteId={websiteId}
               segmentId={currentCohort}
               onChange={handleSegmentChange}
             />
-          </TabPanel>
+          </TabsContent>
         )}
         {!isPixelLink && websiteId && isEventsPath && (
-          <TabPanel id="event-properties" style={panelStyle}>
+          <TabsContent value="event-properties" style={panelStyle}>
             <PropertyFilters
               source="event"
               websiteId={websiteId}
               value={currentEventPropertyFilters}
               onChange={setCurrentEventPropertyFilters}
             />
-          </TabPanel>
+          </TabsContent>
         )}
         {!isPixelLink && websiteId && (
-          <TabPanel id="session-data" style={panelStyle}>
+          <TabsContent value="session-data" style={panelStyle}>
             <PropertyFilters
               source="session"
               websiteId={websiteId}
               value={currentSessionPropertyFilters}
               onChange={setCurrentSessionPropertyFilters}
             />
-          </TabPanel>
+          </TabsContent>
         )}
       </Tabs>
       <Row
@@ -190,12 +193,14 @@ export function FilterEditForm({ websiteId, onChange, onClose }: FilterEditFormP
         gap
         style={isMobile ? { paddingBottom: '16px' } : undefined}
       >
-        <Button onPress={handleReset}>{t(labels.reset)}</Button>
+        <Button variant="secondary" onClick={handleReset}>
+          {t(labels.reset)}
+        </Button>
         <Row alignItems="center" justifyContent="flex-end" gridColumn="span 2" gap>
-          <Button onPress={onClose}>{t(labels.cancel)}</Button>
-          <Button variant="primary" onPress={handleSave}>
-            {t(labels.apply)}
+          <Button variant="secondary" onClick={onClose}>
+            {t(labels.cancel)}
           </Button>
+          <Button onClick={handleSave}>{t(labels.apply)}</Button>
         </Row>
       </Row>
     </Column>

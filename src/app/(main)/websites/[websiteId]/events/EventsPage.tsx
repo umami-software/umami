@@ -1,5 +1,5 @@
 'use client';
-import { Column, Tab, TabList, TabPanel, Tabs } from '@umami/react-zen';
+import { Column, Tabs, TabsContent, TabsList, TabsTrigger } from '@umami/react-zen';
 import { type Key, useState } from 'react';
 import { SessionModal } from '@/app/(main)/websites/[websiteId]/sessions/SessionModal';
 import { WebsiteControls } from '@/app/(main)/websites/[websiteId]/WebsiteControls';
@@ -29,19 +29,19 @@ export function EventsPage({ websiteId }) {
       <EventsMetricsBar websiteId={websiteId} />
       <Panel minWidth="0" width="100%" style={{ overflow: 'hidden' }}>
         <Tabs
-          selectedKey={tab}
-          onSelectionChange={key => handleSelect(key)}
+          value={tab}
+          onValueChange={key => handleSelect(key)}
           style={{ minWidth: 0, width: '100%' }}
         >
-          <TabList>
-            <Tab id="chart">{t(labels.chart)}</Tab>
-            <Tab id="activity">{t(labels.activity)}</Tab>
-            <Tab id="properties">{t(labels.properties)}</Tab>
-          </TabList>
-          <TabPanel id="activity" style={{ minWidth: 0, width: '100%' }}>
+          <TabsList>
+            <TabsTrigger value="chart">{t(labels.chart)}</TabsTrigger>
+            <TabsTrigger value="activity">{t(labels.activity)}</TabsTrigger>
+            <TabsTrigger value="properties">{t(labels.properties)}</TabsTrigger>
+          </TabsList>
+          <TabsContent value="activity" style={{ minWidth: 0, width: '100%' }}>
             <EventsDataTable websiteId={websiteId} />
-          </TabPanel>
-          <TabPanel id="chart" style={{ minWidth: 0, width: '100%' }}>
+          </TabsContent>
+          <TabsContent value="chart" style={{ minWidth: 0, width: '100%' }}>
             <Column gap="6">
               <Column border="bottom" paddingBottom="6">
                 <EventsChart websiteId={websiteId} limit={50} allowBarDrill={true} />
@@ -54,10 +54,13 @@ export function EventsPage({ websiteId }) {
                 limit={50}
               />
             </Column>
-          </TabPanel>
-          <TabPanel id="properties" style={{ minWidth: 0, width: '100%', overflow: 'hidden' }}>
+          </TabsContent>
+          <TabsContent
+            value="properties"
+            style={{ minWidth: 0, width: '100%', overflow: 'hidden' }}
+          >
             <EventProperties websiteId={websiteId} />
-          </TabPanel>
+          </TabsContent>
         </Tabs>
       </Panel>
       <SessionModal websiteId={websiteId} />

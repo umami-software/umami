@@ -7,7 +7,7 @@ import {
   within,
 } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { RouterProvider, ZenProvider } from '@umami/react-zen';
+import { ZenProvider } from '@umami/react-zen';
 import { NextIntlClientProvider } from 'next-intl';
 import type { ReactElement, ReactNode } from 'react';
 import { FlagsContext } from '@/components/hooks/useFlag';
@@ -52,11 +52,9 @@ function TestProviders({
   return (
     <FlagsContext.Provider value={{ ...getDefaultFlagValues(), ...flags }}>
       <ZenProvider>
-        <RouterProvider>
-          <NextIntlClientProvider locale={locale} messages={messages} onError={() => null}>
-            <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
-          </NextIntlClientProvider>
-        </RouterProvider>
+        <NextIntlClientProvider locale={locale} messages={messages} onError={() => null}>
+          <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
+        </NextIntlClientProvider>
       </ZenProvider>
     </FlagsContext.Provider>
   );

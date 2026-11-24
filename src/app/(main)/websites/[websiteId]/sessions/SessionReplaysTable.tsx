@@ -22,7 +22,7 @@ export function SessionReplaysTable({
       <DataColumn id="play" label="" width="80px">
         {(row: any) => (
           <Button
-            variant={row.id === selectedId ? 'primary' : 'quiet'}
+            variant={row.id === selectedId ? 'default' : 'ghost'}
             onClick={() => onPlay(row.id)}
           >
             <Icon>

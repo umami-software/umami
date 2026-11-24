@@ -1,13 +1,12 @@
-import { Button, type ButtonProps } from '@umami/react-zen';
-import type { ReactNode } from 'react';
+import { Button } from '@umami/react-zen';
+import type { ComponentProps, ReactNode } from 'react';
 import Link from '@/components/common/Link';
 import { useLocale } from '@/components/hooks';
 
-export interface LinkButtonProps extends ButtonProps {
+export interface LinkButtonProps extends ComponentProps<typeof Button> {
   href: string;
   target?: string;
   scroll?: boolean;
-  variant?: any;
   prefetch?: boolean;
   asAnchor?: boolean;
   children?: ReactNode;
@@ -15,7 +14,7 @@ export interface LinkButtonProps extends ButtonProps {
 
 export function LinkButton({
   href,
-  variant,
+  variant = 'secondary',
   scroll = true,
   target,
   prefetch,

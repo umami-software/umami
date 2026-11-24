@@ -113,8 +113,8 @@ export function LinkEditForm({
                   <TextField autoComplete="off" />
                 </FormField>
                 <Button
-                  variant="quiet"
-                  onPress={() => setValue('slug', generateId(), { shouldDirty: true })}
+                  variant="ghost"
+                  onClick={() => setValue('slug', generateId(), { shouldDirty: true })}
                 >
                   <Icon>
                     <RefreshCw />
@@ -127,13 +127,13 @@ export function LinkEditForm({
               label={t(labels.link)}
               value={`${hostUrl}/${slug}`}
               autoComplete="off"
-              isReadOnly
+              readOnly
               allowCopy
             />
 
             <Row justifyContent="flex-end" paddingTop="3" gap="3">
               {onClose && (
-                <Button isDisabled={isPending} onPress={onClose}>
+                <Button variant="secondary" disabled={isPending} onClick={onClose}>
                   {t(labels.cancel)}
                 </Button>
               )}

@@ -1,4 +1,12 @@
-import { Button, Column, Text, Tooltip, TooltipTrigger, useTheme } from '@umami/react-zen';
+import {
+  Button,
+  Column,
+  Text,
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+  useTheme,
+} from '@umami/react-zen';
 import { isSameDay } from 'date-fns';
 import { useMemo } from 'react';
 import { IconLabel } from '@/components/common/IconLabel';
@@ -57,22 +65,27 @@ export function ChartAnnotationMarkers({
         const visibleAnnotations = annotations.slice(0, MAX_TOOLTIP_ANNOTATIONS);
 
         return (
-          <TooltipTrigger key={first.id} delay={0}>
-            <button
-              type="button"
-              className={styles.marker}
-              style={{
-                left: x,
-                top: y,
-                cursor: isClickable ? 'pointer' : 'default',
-                backgroundColor: colors.chart.views.hoverBorderColor,
-              }}
-              aria-label={annotations.map(({ label }) => label).join(', ')}
-              onClick={isClickable ? () => onClick?.(annotations) : undefined}
+          <Tooltip key={first.id}>
+            <TooltipTrigger
+              delay={0}
+              render={
+                <button
+                  type="button"
+                  className={styles.marker}
+                  style={{
+                    left: x,
+                    top: y,
+                    cursor: isClickable ? 'pointer' : 'default',
+                    backgroundColor: colors.chart.views.hoverBorderColor,
+                  }}
+                  aria-label={annotations.map(({ label }) => label).join(', ')}
+                  onClick={isClickable ? () => onClick?.(annotations) : undefined}
+                />
+              }
             >
               {annotations.length > 1 && <span className={styles.count}>{annotations.length}</span>}
-            </button>
-            <Tooltip placement="top" className="bg-transparent p-0">
+            </TooltipTrigger>
+            <TooltipContent side="top" className="tooltip-bare bg-transparent p-0">
               <Column
                 gap="3"
                 padding="1"
@@ -106,16 +119,16 @@ export function ChartAnnotationMarkers({
                 ))}
                 {onMoreClick && (
                   <Button
-                    variant="quiet"
+                    variant="ghost"
                     className={styles.moreButton}
-                    onPress={() => onMoreClick(annotations)}
+                    onClick={() => onMoreClick(annotations)}
                   >
                     <IconLabel icon={<Maximize />}>{t(labels.view)}</IconLabel>
                   </Button>
                 )}
               </Column>
-            </Tooltip>
-          </TooltipTrigger>
+            </TooltipContent>
+          </Tooltip>
         );
       })}
     </>

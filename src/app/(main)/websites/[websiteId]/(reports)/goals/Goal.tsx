@@ -1,4 +1,4 @@
-import { Column, Grid, Icon, ProgressBar, Row, Text } from '@umami/react-zen';
+import { Column, Grid, Icon, Progress, Row, Text } from '@umami/react-zen';
 import { LoadingPanel } from '@/components/common/LoadingPanel';
 import { useGoalQuery, useMessages, useMobile, useNavigation } from '@/components/hooks';
 import { File, User } from '@/components/icons';
@@ -90,8 +90,10 @@ export function Goal({
       </Grid>
       <LoadingPanel data={data} isLoading={isLoading} isFetching={isFetching} error={error}>
         <Row alignItems="center" justifyContent="space-between" gap>
-          <Text color="muted">{t(isPage ? labels.viewedPage : labels.triggeredEvent)}</Text>
-          <Text color="muted">{t(labels.conversionRate)}</Text>
+          <Text color="muted-foreground">
+            {t(isPage ? labels.viewedPage : labels.triggeredEvent)}
+          </Text>
+          <Text color="muted-foreground">{t(labels.conversionRate)}</Text>
         </Row>
         <Row alignItems="center" justifyContent="space-between" gap>
           <Row alignItems="center" gap>
@@ -108,7 +110,7 @@ export function Goal({
           </Row>
         </Row>
         <Row alignItems="center" gap="6">
-          <ProgressBar
+          <Progress
             value={data?.num || 0}
             min={0}
             max={data?.total || 1}

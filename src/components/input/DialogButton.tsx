@@ -1,17 +1,21 @@
 import {
   Button,
-  type ButtonProps,
   Dialog,
-  type DialogProps,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
   DialogTrigger,
-  Modal,
 } from '@umami/react-zen';
-import type { CSSProperties, ReactNode } from 'react';
-import { ControlledDialog } from '@/components/common/ControlledDialog';
+import { type ComponentProps, type CSSProperties, type ReactNode, useState } from 'react';
 import { IconLabel } from '@/components/common/IconLabel';
 import { useMobile } from '@/components/hooks';
 
-export interface DialogButtonProps extends Omit<ButtonProps, 'children' | 'title'> {
+export interface DialogRenderProps {
+  close: () => void;
+}
+
+export interface DialogButtonProps
+  extends Omit<ComponentProps<typeof Button>, 'children' | 'title'> {
   icon?: ReactNode;
   label?: ReactNode;
   title?: ReactNode;
@@ -20,9 +24,9 @@ export interface DialogButtonProps extends Omit<ButtonProps, 'children' | 'title
   minWidth?: string;
   minHeight?: string;
   dialogClassName?: string;
-  isOpen?: boolean;
-  onOpenChange?: (isOpen: boolean) => void;
-  children?: DialogProps['children'];
+  open?: boolean;
+  onOpenChange?: (open: boolean) => void;
+  children?: ReactNode | ((props: DialogRenderProps) => ReactNode);
 }
 
 export function DialogButton({
@@ -34,17 +38,32 @@ export function DialogButton({
   minWidth,
   minHeight,
   dialogClassName,
-  isOpen,
+  open,
   onOpenChange,
+  variant = 'secondary',
   children,
   ...props
 }: DialogButtonProps) {
   const { isMobile } = useMobile();
+  const [internalOpen, setInternalOpen] = useState(false);
+  const isControlled = open !== undefined;
+  const isOpen = isControlled ? open : internalOpen;
+
+  const setOpen = (value: boolean) => {
+    if (!isControlled) {
+      setInternalOpen(value);
+    }
+    onOpenChange?.(value);
+  };
+
+  const close = () => setOpen(false);
+
   const style: CSSProperties = {
     width,
     height,
     minWidth,
     minHeight,
+    maxWidth: 'calc(100% - 2rem)',
     maxHeight: 'min(80dvh, calc(100dvh - 40px))',
     overflowY: 'auto',
     padding: '32px',
@@ -55,36 +74,28 @@ export function DialogButton({
     style.height = '100%';
     style.minWidth = undefined;
     style.minHeight = undefined;
+    style.maxWidth = '100%';
     style.maxHeight = '100%';
-    style.overflowY = 'auto';
+    style.borderRadius = 0;
   }
 
-  const dialog = (
-    <Dialog title={title === undefined ? label : title} className={dialogClassName} style={style}>
-      {children}
-    </Dialog>
-  );
-
-  if (isOpen !== undefined) {
-    return (
-      <ControlledDialog>
-        <Modal
-          isOpen={isOpen}
-          onOpenChange={onOpenChange}
-          placement={isMobile ? 'fullscreen' : 'center'}
-        >
-          {dialog}
-        </Modal>
-      </ControlledDialog>
-    );
-  }
+  const dialogTitle = title === undefined ? label : title;
 
   return (
-    <DialogTrigger>
-      <Button {...props}>
-        <IconLabel icon={icon} label={label} />
-      </Button>
-      <Modal placement={isMobile ? 'fullscreen' : 'center'}>{dialog}</Modal>
-    </DialogTrigger>
+    <Dialog open={isOpen} onOpenChange={setOpen}>
+      {!isControlled && (
+        <DialogTrigger render={<Button {...props} variant={variant} />}>
+          <IconLabel icon={icon} label={label} />
+        </DialogTrigger>
+      )}
+      <DialogContent className={dialogClassName} style={style}>
+        {dialogTitle && (
+          <DialogHeader>
+            <DialogTitle>{dialogTitle}</DialogTitle>
+          </DialogHeader>
+        )}
+        {typeof children === 'function' ? children({ close }) : children}
+      </DialogContent>
+    </Dialog>
   );
 }

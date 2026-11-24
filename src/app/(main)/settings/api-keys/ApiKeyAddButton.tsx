@@ -1,4 +1,14 @@
-import { Button, Dialog, DialogTrigger, Icon, Modal, Text } from '@umami/react-zen';
+import {
+  Button,
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+  Icon,
+  Text,
+} from '@umami/react-zen';
+import { useState } from 'react';
 import { useMessages, useModified } from '@/components/hooks';
 import { Plus } from '@/components/icons';
 import { ApiKeyAddForm } from './ApiKeyAddForm';
@@ -6,6 +16,7 @@ import { ApiKeyAddForm } from './ApiKeyAddForm';
 export function ApiKeyAddButton({ onSave }: { onSave?: () => void }) {
   const { t, labels } = useMessages();
   const { touch } = useModified();
+  const [open, setOpen] = useState(false);
 
   const handleSave = () => {
     touch('api-keys');
@@ -13,18 +24,19 @@ export function ApiKeyAddButton({ onSave }: { onSave?: () => void }) {
   };
 
   return (
-    <DialogTrigger>
-      <Button variant="primary">
+    <Dialog open={open} onOpenChange={setOpen}>
+      <DialogTrigger render={<Button />}>
         <Icon>
           <Plus />
         </Icon>
         <Text>{t(labels.createApiKey)}</Text>
-      </Button>
-      <Modal>
-        <Dialog title={t(labels.createApiKey)} style={{ width: 480 }}>
-          {({ close }) => <ApiKeyAddForm onSave={handleSave} onClose={close} />}
-        </Dialog>
-      </Modal>
-    </DialogTrigger>
+      </DialogTrigger>
+      <DialogContent style={{ width: 480, maxWidth: 'calc(100% - 2rem)' }}>
+        <DialogHeader>
+          <DialogTitle>{t(labels.createApiKey)}</DialogTitle>
+        </DialogHeader>
+        <ApiKeyAddForm onSave={handleSave} onClose={() => setOpen(false)} />
+      </DialogContent>
+    </Dialog>
   );
 }

@@ -7,6 +7,7 @@ import {
   SearchField,
   Text,
   Tooltip,
+  TooltipContent,
   TooltipTrigger,
 } from '@umami/react-zen';
 import { LayoutGrid, Table2 } from 'lucide-react';
@@ -121,16 +122,25 @@ export function DataGrid({
   const child = data ? (typeof children === 'function' ? children(data) : children) : null;
 
   const viewToggleButton = (
-    <TooltipTrigger delay={0}>
-      <Button variant="zero" onPress={handleToggleDisplayMode}>
+    <Tooltip>
+      <TooltipTrigger
+        delay={0}
+        render={
+          <Button
+            variant="ghost"
+            className="hover:bg-transparent"
+            onClick={handleToggleDisplayMode}
+          />
+        }
+      >
         <Icon>{displayMode === 'cards' ? <Table2 /> : <LayoutGrid />}</Icon>
-      </Button>
-      <Tooltip>
+      </TooltipTrigger>
+      <TooltipContent>
         <Text>
           {displayMode === 'cards' ? t(labels.switchToTableView) : t(labels.switchToCardView)}
         </Text>
-      </Tooltip>
-    </TooltipTrigger>
+      </TooltipContent>
+    </Tooltip>
   );
 
   return (

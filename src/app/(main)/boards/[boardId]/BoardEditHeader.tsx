@@ -26,10 +26,10 @@ export function BoardDesignHeader() {
   return (
     <PageHeader title={title}>
       <Row gap="3">
-        <Button variant="quiet" onPress={handleCancel}>
+        <Button variant="ghost" onClick={handleCancel}>
           {t(labels.cancel)}
         </Button>
-        <LoadingButton variant="primary" onPress={handleSave} isLoading={isPending}>
+        <LoadingButton onClick={handleSave} loading={isPending}>
           {t(labels.save)}
         </LoadingButton>
       </Row>

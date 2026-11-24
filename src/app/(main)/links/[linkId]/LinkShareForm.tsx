@@ -37,7 +37,7 @@ function LinkShareFormContent({
       <Row justifyContent="space-between" alignItems="center">
         <Heading>{t(labels.share)}</Heading>
         {!isCreating && (
-          <Button variant="primary" onPress={() => setIsCreating(true)}>
+          <Button onClick={() => setIsCreating(true)}>
             <IconLabel icon={<Plus size={16} />} label={t(labels.add)} />
           </Button>
         )}
@@ -54,7 +54,7 @@ function LinkShareFormContent({
         (hasShares ? (
           <SimpleSharesTable data={shares} />
         ) : (
-          <Text color="muted">{t(messages.noDataAvailable)}</Text>
+          <Text color="muted-foreground">{t(messages.noDataAvailable)}</Text>
         ))}
     </Column>
   );

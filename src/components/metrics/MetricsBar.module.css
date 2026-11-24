@@ -9,6 +9,6 @@
 }
 
 .joined > * {
-  border-right: 1px solid var(--zen-border);
-  border-bottom: 1px solid var(--zen-border);
+  border-right: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
 }

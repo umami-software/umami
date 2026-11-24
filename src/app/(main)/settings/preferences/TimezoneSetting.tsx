@@ -1,5 +1,6 @@
-import { Button, ListItem, Row, Select } from '@umami/react-zen';
+import { Button, Row, Text } from '@umami/react-zen';
 import { useState } from 'react';
+import { SearchSelect } from '@/components/common/SearchSelect';
 import { useMessages, useTimezone } from '@/components/hooks';
 import { getTimezone } from '@/lib/date';
 
@@ -15,7 +16,7 @@ export function TimezoneSetting() {
 
   const handleReset = () => saveTimezone(getTimezone());
 
-  const handleOpen = isOpen => {
+  const handleOpen = (isOpen: boolean) => {
     if (isOpen) {
       setSearch('');
     }
@@ -23,23 +24,19 @@ export function TimezoneSetting() {
 
   return (
     <Row gap>
-      <Select
+      <SearchSelect
         value={timezone}
+        items={items.map(item => ({ id: item, name: item }))}
         onChange={(value: any) => saveTimezone(value)}
-        allowSearch={true}
         onSearch={setSearch}
         onOpenChange={handleOpen}
         maxHeight={480}
-        buttonProps={{ style: { minWidth: '250px' } }}
-      >
-        {items.map((item: any) => (
-          <ListItem key={item} id={item}>
-            {item}
-          </ListItem>
-        ))}
-        {!items.length && <ListItem></ListItem>}
-      </Select>
-      <Button onPress={handleReset}>{t(labels.reset)}</Button>
+        renderValue={<Text truncate>{timezone}</Text>}
+        triggerProps={{ className: 'justify-between', style: { minWidth: '250px' } }}
+      />
+      <Button variant="secondary" onClick={handleReset}>
+        {t(labels.reset)}
+      </Button>
     </Row>
   );
 }

@@ -1,4 +1,16 @@
-import { Column, Grid, Heading, ListItem, Row, Select } from '@umami/react-zen';
+import {
+  Column,
+  Field,
+  FieldLabel,
+  Grid,
+  Heading,
+  Row,
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@umami/react-zen';
 import { useState } from 'react';
 import { DateDisplay } from '@/components/common/DateDisplay';
 import { Panel } from '@/components/common/Panel';
@@ -152,19 +164,25 @@ export function CompareTables({ websiteId }: { websiteId: string }) {
   return (
     <>
       <Row width="300px">
-        <Select
-          label={t(labels.compare)}
-          value={view}
-          onChange={handleChange}
-          maxHeight={480}
-          listProps={{ style: { width: 200 } }}
-        >
-          {items.map(({ id, label }) => (
-            <ListItem key={id} id={id}>
-              {label}
-            </ListItem>
-          ))}
-        </Select>
+        <Field>
+          <FieldLabel>{t(labels.compare)}</FieldLabel>
+          <Select
+            items={items.map(({ id, label }) => ({ value: id, label }))}
+            value={view}
+            onValueChange={handleChange}
+          >
+            <SelectTrigger className="w-full">
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent alignItemWithTrigger={false} style={{ width: 200, maxHeight: 480 }}>
+              {items.map(({ id, label }) => (
+                <SelectItem key={id} value={id}>
+                  {label}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </Field>
       </Row>
       <Panel minHeight="300px">
         <Grid columns={{ base: '1fr', lg: '1fr 1fr' }} gap="6" height="100%">

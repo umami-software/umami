@@ -1,4 +1,5 @@
-import { Icon, Row, Tab, TabList, Tabs, Text } from '@umami/react-zen';
+import { Icon, Row, Tabs, TabsList, TabsTrigger, Text } from '@umami/react-zen';
+import Link from '@/components/common/Link';
 import { useMessages, useNavigation, useWebsite } from '@/components/hooks';
 import { ChartPie, Clock, Eye, User } from '@/components/icons';
 import { Lightning } from '@/components/svg';
@@ -49,19 +50,24 @@ export function WebsiteTabs() {
 
   return (
     <Row marginBottom="6">
-      <Tabs selectedKey={selectedKey}>
-        <TabList>
+      <Tabs value={selectedKey}>
+        <TabsList>
           {links.map(({ id, label, icon, path }) => {
             return (
-              <Tab key={id} id={id} href={renderUrl(`/websites/${website.id}${path}`, resetParams)}>
+              <TabsTrigger
+                key={id}
+                value={id}
+                nativeButton={false}
+                render={<Link href={renderUrl(`/websites/${website.id}${path}`, resetParams)} />}
+              >
                 <Row alignItems="center" gap>
                   <Icon>{icon}</Icon>
                   <Text>{label}</Text>
                 </Row>
-              </Tab>
+              </TabsTrigger>
             );
           })}
-        </TabList>
+        </TabsList>
       </Tabs>
     </Row>
   );

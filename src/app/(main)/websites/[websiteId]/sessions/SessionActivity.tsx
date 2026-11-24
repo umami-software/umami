@@ -1,11 +1,11 @@
 import {
   Button,
   Column,
-  Dialog,
-  DialogTrigger,
   Heading,
   Icon,
   Popover,
+  PopoverContent,
+  PopoverTrigger,
   Row,
   StatusLight,
   Text,
@@ -95,19 +95,17 @@ export function SessionActivity({
 
 const PropertiesButton = props => {
   return (
-    <DialogTrigger>
-      <Button variant="quiet">
+    <Popover>
+      <PopoverTrigger render={<Button variant="ghost" />}>
         <Row alignItems="center" gap>
           <Icon>
             <FileText />
           </Icon>
         </Row>
-      </Button>
-      <Popover side="right" sideOffset={8}>
-        <Dialog>
-          <EventData {...props} />
-        </Dialog>
-      </Popover>
-    </DialogTrigger>
+      </PopoverTrigger>
+      <PopoverContent side="right" sideOffset={8} style={{ width: 'auto' }}>
+        <EventData {...props} />
+      </PopoverContent>
+    </Popover>
   );
 };

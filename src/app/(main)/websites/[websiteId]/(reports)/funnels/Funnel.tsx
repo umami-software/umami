@@ -1,4 +1,4 @@
-import { Box, Column, Grid, Icon, ProgressBar, Row, Text } from '@umami/react-zen';
+import { Box, Column, Grid, Icon, Progress, Row, Text } from '@umami/react-zen';
 import { LoadingPanel } from '@/components/common/LoadingPanel';
 import {
   useFunnelQuery,
@@ -90,7 +90,7 @@ export function Funnel({
                 <Column alignItems="center" position="relative">
                   <Row
                     borderRadius="full"
-                    backgroundColor="surface-sunken"
+                    backgroundColor="muted"
                     width="40px"
                     height="40px"
                     justifyContent="center"
@@ -104,7 +104,7 @@ export function Funnel({
                   {index > 0 && (
                     <Box
                       position="absolute"
-                      backgroundColor="surface-sunken"
+                      backgroundColor="muted"
                       width="2px"
                       height="120px"
                       top="-100%"
@@ -113,10 +113,10 @@ export function Funnel({
                 </Column>
                 <Column gap>
                   <Row alignItems="center" justifyContent="space-between" gap>
-                    <Text color="muted">
+                    <Text color="muted-foreground">
                       {t(isPage ? labels.viewedPage : labels.triggeredEvent)}
                     </Text>
-                    <Text color="muted">{t(labels.conversionRate)}</Text>
+                    <Text color="muted-foreground">{t(labels.conversionRate)}</Text>
                   </Row>
                   <Row alignItems="center" justifyContent="space-between" gap>
                     <Column gap="1">
@@ -126,11 +126,11 @@ export function Funnel({
                       </Row>
                       {filters?.map((f, i) => (
                         <Row key={i} gap="1" style={{ paddingLeft: 28 }}>
-                          <Text color="muted">{f.property}</Text>
-                          <Text color="muted" transform="lowercase">
+                          <Text color="muted-foreground">{f.property}</Text>
+                          <Text color="muted-foreground" transform="lowercase">
                             {operatorLabels[f.operator] ?? f.operator}
                           </Text>
-                          <Text color="muted">{f.value}</Text>
+                          <Text color="muted-foreground">{f.value}</Text>
                         </Row>
                       ))}
                     </Column>
@@ -149,7 +149,7 @@ export function Funnel({
                     </Row>
                   </Row>
                   <Row alignItems="center" gap="6">
-                    <ProgressBar
+                    <Progress
                       value={visitors || 0}
                       min={0}
                       max={previous || 1}

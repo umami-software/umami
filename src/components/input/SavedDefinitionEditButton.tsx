@@ -1,17 +1,21 @@
 import {
   AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
   Button,
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
   Icon,
-  Menu,
-  MenuItem,
-  MenuTrigger,
-  Modal,
-  Popover,
   Row,
   Text,
 } from '@umami/react-zen';
 import { type ReactNode, useState } from 'react';
-import { ControlledDialog } from '@/components/common/ControlledDialog';
 import { useMessages } from '@/components/hooks';
 import { useDeleteQuery } from '@/components/hooks/queries/useDeleteQuery';
 import { Edit, MoreHorizontal, Trash } from '@/components/icons';
@@ -45,15 +49,7 @@ export function SavedDefinitionEditButton({
   const { t, labels, messages } = useMessages();
   const [showEdit, setShowEdit] = useState(false);
   const [showDelete, setShowDelete] = useState(false);
-  const { mutateAsync, touch } = useDeleteQuery(`/websites/${websiteId}/${type}s/${id}`);
-
-  const handleAction = (id: any) => {
-    if (id === 'edit') {
-      setShowEdit(true);
-    } else if (id === 'delete') {
-      setShowDelete(true);
-    }
-  };
+  const { mutateAsync, isPending, touch } = useDeleteQuery(`/websites/${websiteId}/${type}s/${id}`);
 
   const handleClose = () => {
     setShowEdit(false);
@@ -72,31 +68,29 @@ export function SavedDefinitionEditButton({
 
   return (
     <>
-      <MenuTrigger>
-        <Button size="icon" variant="quiet">
+      <DropdownMenu>
+        <DropdownMenuTrigger render={<Button size="icon" variant="ghost" />}>
           <Icon>
             <MoreHorizontal />
           </Icon>
-        </Button>
-        <Popover side="bottom">
-          <Menu>
-            <MenuItem id="edit" onAction={handleAction}>
-              <Icon>
-                <Edit />
-              </Icon>
-              <Text>{t(labels.edit)}</Text>
-            </MenuItem>
-            <MenuItem id="delete" onAction={handleAction}>
-              <Icon>
-                <Trash />
-              </Icon>
-              <Text>{t(labels.delete)}</Text>
-            </MenuItem>
-          </Menu>
-        </Popover>
-      </MenuTrigger>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent side="bottom" className="w-auto">
+          <DropdownMenuItem onClick={() => setShowEdit(true)}>
+            <Icon>
+              <Edit />
+            </Icon>
+            <Text>{t(labels.edit)}</Text>
+          </DropdownMenuItem>
+          <DropdownMenuItem onClick={() => setShowDelete(true)}>
+            <Icon>
+              <Trash />
+            </Icon>
+            <Text>{t(labels.delete)}</Text>
+          </DropdownMenuItem>
+        </DropdownMenuContent>
+      </DropdownMenu>
       <DialogButton
-        isOpen={showEdit}
+        open={showEdit}
         onOpenChange={open => !open && handleClose()}
         title={title}
         width={width}
@@ -106,18 +100,24 @@ export function SavedDefinitionEditButton({
       >
         {children}
       </DialogButton>
-      <ControlledDialog>
-        <Modal isOpen={showDelete} onOpenChange={open => !open && handleClose()}>
-          <AlertDialog
-            title={t(labels.delete)}
-            onConfirm={handleDelete}
-            onCancel={handleClose}
-            isDanger
-          >
-            <Row gap="1">{t(messages.confirmDelete, { target: name })}</Row>
-          </AlertDialog>
-        </Modal>
-      </ControlledDialog>
+      <AlertDialog open={showDelete} onOpenChange={open => !open && handleClose()}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>{t(labels.delete)}</AlertDialogTitle>
+          </AlertDialogHeader>
+          <Row gap="1">{t(messages.confirmDelete, { target: name })}</Row>
+          <AlertDialogFooter>
+            <AlertDialogCancel>{t(labels.cancel)}</AlertDialogCancel>
+            <AlertDialogAction
+              variant="destructive"
+              disabled={isPending}
+              onClick={() => handleDelete().catch(() => {})}
+            >
+              {t(labels.confirm)}
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </>
   );
 }

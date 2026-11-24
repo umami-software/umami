@@ -1,4 +1,13 @@
-import { Grid, ListItem, Select } from '@umami/react-zen';
+import {
+  Field,
+  FieldLabel,
+  Grid,
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@umami/react-zen';
 import { useTranslations } from 'next-intl';
 import { useEffect } from 'react';
 import { type AdsConnection, useAdsConnectionsQuery, useNavigation } from '@/components/hooks';
@@ -39,17 +48,25 @@ export function AdsConnectionSelect({ websiteId }: { websiteId: string }) {
 
   return (
     <Grid columns="280px" gap>
-      <Select
-        label={t('adAccount')}
-        value={isKnown && connection ? connection : connections[0].id}
-        onChange={id => router.push(updateParams({ connection: id }))}
-      >
-        {connections.map(item => (
-          <ListItem key={item.id} id={item.id}>
-            {getLabel(item)}
-          </ListItem>
-        ))}
-      </Select>
+      <Field>
+        <FieldLabel>{t('adAccount')}</FieldLabel>
+        <Select
+          items={connections.map(item => ({ value: item.id, label: getLabel(item) }))}
+          value={isKnown && connection ? connection : connections[0].id}
+          onValueChange={id => router.push(updateParams({ connection: id }))}
+        >
+          <SelectTrigger className="w-full">
+            <SelectValue />
+          </SelectTrigger>
+          <SelectContent alignItemWithTrigger={false}>
+            {connections.map(item => (
+              <SelectItem key={item.id} value={item.id}>
+                {getLabel(item)}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+      </Field>
     </Grid>
   );
 }

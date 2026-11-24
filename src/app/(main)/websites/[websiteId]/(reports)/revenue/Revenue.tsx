@@ -2,13 +2,16 @@ import {
   Column,
   Grid,
   Heading,
-  ListItem,
   Row,
   Select,
-  Tab,
-  TabList,
-  TabPanel,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
   Tabs,
+  TabsContent,
+  TabsList,
+  TabsTrigger,
 } from '@umami/react-zen';
 import { useMemo, useState } from 'react';
 import { GridRow } from '@/components/common/GridRow';
@@ -78,6 +81,10 @@ export function Revenue({ websiteId, startDate, endDate, unit }: RevenueProps) {
   const error = chartQuery.error || statsQuery.error;
   const isFetching = chartQuery.isFetching || statsQuery.isFetching;
   const isLoading = chartQuery.isLoading || statsQuery.isLoading;
+  const revenueChartModeItems = [
+    { value: 'period', label: t(labels.period) },
+    { value: 'cumulative', label: t(labels.cumulative) },
+  ];
 
   return (
     <Column gap>
@@ -91,13 +98,20 @@ export function Revenue({ websiteId, startDate, endDate, unit }: RevenueProps) {
             <Panel>
               <Row justifyContent="end">
                 <Select
+                  items={revenueChartModeItems}
                   value={revenueChartMode}
-                  onChange={value => handleRevenueChartModeChange(value as RevenueChartMode)}
-                  popoverProps={{ side: 'bottom', align: 'end' }}
-                  buttonProps={{ style: { width: 140 } }}
+                  onValueChange={value => handleRevenueChartModeChange(value as RevenueChartMode)}
                 >
-                  <ListItem id="period">{t(labels.period)}</ListItem>
-                  <ListItem id="cumulative">{t(labels.cumulative)}</ListItem>
+                  <SelectTrigger style={{ width: 140 }}>
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent side="bottom" align="end" alignItemWithTrigger={false}>
+                    {revenueChartModeItems.map(item => (
+                      <SelectItem key={item.value} value={item.value}>
+                        {item.label}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
                 </Select>
               </Row>
               <RevenueChart
@@ -115,14 +129,14 @@ export function Revenue({ websiteId, startDate, endDate, unit }: RevenueProps) {
                 <Panel>
                   <Heading size="2xl">{t(labels.sources)}</Heading>
                   <Tabs
-                    selectedKey={sourceTab}
-                    onSelectionChange={key => setSourceTab(String(key) as SourceTab)}
+                    value={sourceTab}
+                    onValueChange={key => setSourceTab(String(key) as SourceTab)}
                   >
-                    <TabList>
-                      <Tab id="referrer">{t(labels.referrers)}</Tab>
-                      <Tab id="channel">{t(labels.channels)}</Tab>
-                    </TabList>
-                    <TabPanel id="referrer">
+                    <TabsList>
+                      <TabsTrigger value="referrer">{t(labels.referrers)}</TabsTrigger>
+                      <TabsTrigger value="channel">{t(labels.channels)}</TabsTrigger>
+                    </TabsList>
+                    <TabsContent value="referrer">
                       <RevenueMetricsTable
                         websiteId={websiteId}
                         currency={currency}
@@ -131,8 +145,8 @@ export function Revenue({ websiteId, startDate, endDate, unit }: RevenueProps) {
                         totalRevenue={Number(data?.total.sum) || 0}
                         enabled={sourceTab === 'referrer'}
                       />
-                    </TabPanel>
-                    <TabPanel id="channel">
+                    </TabsContent>
+                    <TabsContent value="channel">
                       <RevenueMetricsTable
                         websiteId={websiteId}
                         currency={currency}
@@ -141,20 +155,20 @@ export function Revenue({ websiteId, startDate, endDate, unit }: RevenueProps) {
                         totalRevenue={Number(data?.total.sum) || 0}
                         enabled={sourceTab === 'channel'}
                       />
-                    </TabPanel>
+                    </TabsContent>
                   </Tabs>
                 </Panel>
                 <Panel>
                   <Heading size="2xl">{t(labels.location)}</Heading>
                   <Tabs
-                    selectedKey={locationTab}
-                    onSelectionChange={key => setLocationTab(String(key) as LocationTab)}
+                    value={locationTab}
+                    onValueChange={key => setLocationTab(String(key) as LocationTab)}
                   >
-                    <TabList>
-                      <Tab id="country">{t(labels.countries)}</Tab>
-                      <Tab id="region">{t(labels.regions)}</Tab>
-                    </TabList>
-                    <TabPanel id="country">
+                    <TabsList>
+                      <TabsTrigger value="country">{t(labels.countries)}</TabsTrigger>
+                      <TabsTrigger value="region">{t(labels.regions)}</TabsTrigger>
+                    </TabsList>
+                    <TabsContent value="country">
                       <RevenueMetricsTable
                         websiteId={websiteId}
                         currency={currency}
@@ -163,8 +177,8 @@ export function Revenue({ websiteId, startDate, endDate, unit }: RevenueProps) {
                         totalRevenue={Number(data?.total.sum) || 0}
                         enabled={locationTab === 'country'}
                       />
-                    </TabPanel>
-                    <TabPanel id="region">
+                    </TabsContent>
+                    <TabsContent value="region">
                       <RevenueMetricsTable
                         websiteId={websiteId}
                         currency={currency}
@@ -173,7 +187,7 @@ export function Revenue({ websiteId, startDate, endDate, unit }: RevenueProps) {
                         totalRevenue={Number(data?.total.sum) || 0}
                         enabled={locationTab === 'region'}
                       />
-                    </TabPanel>
+                    </TabsContent>
                   </Tabs>
                 </Panel>
               </GridRow>

@@ -11,7 +11,7 @@ export function FilterButtons({ items, value, onChange }: FilterButtonsProps) {
     <Box>
       <ToggleGroup
         value={[value]}
-        onChange={e => {
+        onValueChange={e => {
           const nextValue = e[0];
 
           if (nextValue) {
@@ -20,7 +20,7 @@ export function FilterButtons({ items, value, onChange }: FilterButtonsProps) {
         }}
       >
         {items.map(({ id, label }) => (
-          <ToggleGroupItem key={id} id={id}>
+          <ToggleGroupItem key={id} value={id}>
             {label}
           </ToggleGroupItem>
         ))}

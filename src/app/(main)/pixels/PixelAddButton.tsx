@@ -7,7 +7,7 @@ export function PixelAddButton({ teamId }: { teamId?: string }) {
   const { t, labels } = useMessages();
 
   return (
-    <DialogButton icon={<Plus />} label={t(labels.addPixel)} variant="primary" width="600px">
+    <DialogButton icon={<Plus />} label={t(labels.addPixel)} variant="default" width="600px">
       {({ close }) => <PixelEditForm teamId={teamId} onClose={close} />}
     </DialogButton>
   );

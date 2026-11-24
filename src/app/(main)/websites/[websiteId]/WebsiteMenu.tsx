@@ -1,11 +1,11 @@
 import {
   Button,
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
   Icon,
-  Menu,
-  MenuItem,
-  MenuSeparator,
-  MenuTrigger,
-  Popover,
   Text,
 } from '@umami/react-zen';
 import { Fragment } from 'react';
@@ -30,27 +30,25 @@ export function WebsiteMenu({ websiteId }: { websiteId: string }) {
   };
 
   return (
-    <MenuTrigger>
-      <Button variant="quiet">
+    <DropdownMenu>
+      <DropdownMenuTrigger render={<Button variant="ghost" />}>
         <Icon>
           <MoreHorizontal />
         </Icon>
-      </Button>
-      <Popover side="bottom">
-        <Menu>
-          {menuItems.map(({ id, label, icon, seperator }, index) => {
-            return (
-              <Fragment key={index}>
-                {seperator && <MenuSeparator />}
-                <MenuItem id={id} onAction={handleAction}>
-                  <Icon>{icon}</Icon>
-                  <Text>{label}</Text>
-                </MenuItem>
-              </Fragment>
-            );
-          })}
-        </Menu>
-      </Popover>
-    </MenuTrigger>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent side="bottom">
+        {menuItems.map(({ id, label, icon, seperator }, index) => {
+          return (
+            <Fragment key={index}>
+              {seperator && <DropdownMenuSeparator />}
+              <DropdownMenuItem onClick={() => handleAction(id)}>
+                <Icon>{icon}</Icon>
+                <Text>{label}</Text>
+              </DropdownMenuItem>
+            </Fragment>
+          );
+        })}
+      </DropdownMenuContent>
+    </DropdownMenu>
   );
 }

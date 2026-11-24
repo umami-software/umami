@@ -1,5 +1,21 @@
-import { Button, Icon, Menu, MenuItem, MenuTrigger, SearchField } from '@umami/react-zen';
-import { Children, type ReactNode } from 'react';
+import {
+  Button,
+  DropdownMenu,
+  DropdownMenuCheckboxItem,
+  DropdownMenuContent,
+  DropdownMenuTrigger,
+  Icon,
+  SearchField,
+} from '@umami/react-zen';
+import {
+  Children,
+  createContext,
+  type ReactNode,
+  useContext,
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
 import { ChevronRight } from '@/components/icons';
 
 const listStyle = {
@@ -7,7 +23,15 @@ const listStyle = {
   overflowY: 'auto' as const,
 };
 
-const menuItemProps = { closeOnClick: false };
+interface MultiSelectContextValue {
+  value: string[];
+  onToggle: (value: string, checked: boolean) => void;
+}
+
+const MultiSelectContext = createContext<MultiSelectContextValue>({
+  value: [],
+  onToggle: () => {},
+});
 
 interface MultiSelectProps {
   value?: string[];
@@ -22,10 +46,16 @@ interface MultiSelectProps {
 }
 
 export function MultiSelectItem({ value, children }: { value: string; children: ReactNode }) {
+  const { value: selected, onToggle } = useContext(MultiSelectContext);
+
   return (
-    <MenuItem id={value} {...menuItemProps}>
+    <DropdownMenuCheckboxItem
+      checked={selected.includes(value)}
+      onCheckedChange={checked => onToggle(value, checked)}
+      closeOnClick={false}
+    >
       {children}
-    </MenuItem>
+    </DropdownMenuCheckboxItem>
   );
 }
 
@@ -40,55 +70,72 @@ export function MultiSelect({
   renderValue,
   children,
 }: MultiSelectProps) {
+  const [open, setOpen] = useState(false);
+  const searchRef = useRef<HTMLInputElement>(null);
   const displayValue = renderValue
     ? renderValue(value)
     : value.length > 0
       ? value.join(', ')
       : null;
 
+  const handleToggle = (item: string, checked: boolean) => {
+    onChange?.(checked ? [...value.filter(v => v !== item), item] : value.filter(v => v !== item));
+  };
+
+  // The menu moves focus to its popup when it opens, so focus the search field after that.
+  useEffect(() => {
+    if (!open || !allowSearch) return;
+
+    const frame = requestAnimationFrame(() => searchRef.current?.focus());
+
+    return () => cancelAnimationFrame(frame);
+  }, [open, allowSearch]);
+
   return (
-    <MenuTrigger>
-      <Button
-        variant="outline"
-        className="w-full justify-between"
-        style={{ maxWidth: '100%', overflow: 'hidden' }}
-      >
-        <span style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
-          {displayValue ?? placeholder}
-        </span>
-        <Icon rotate={90} size="sm" aria-hidden="true">
-          <ChevronRight />
-        </Icon>
-      </Button>
-      <Menu
-        selectionMode="multiple"
-        selectedKeys={value}
-        onSelectionChange={keys =>
-          onChange?.(keys === 'all' ? [] : Array.from(keys, key => String(key)))
-        }
-        className="flex flex-col gap-2"
-        style={{
-          width: 'var(--anchor-width)',
-          maxWidth: 'var(--available-width)',
-        }}
-      >
-        {allowSearch && (
-          <SearchField
-            value={searchValue}
-            onSearch={onSearch}
-            autoFocus
-            onKeyDown={event => {
-              if (event.key !== 'Escape' && event.key !== 'Tab') {
-                event.stopPropagation();
-              }
-            }}
-          />
-        )}
-        <div style={listStyle}>
-          {children}
-          {Children.count(children) === 0 && renderEmptyState?.()}
-        </div>
-      </Menu>
-    </MenuTrigger>
+    <MultiSelectContext.Provider value={{ value, onToggle: handleToggle }}>
+      <DropdownMenu open={open} onOpenChange={setOpen}>
+        <DropdownMenuTrigger
+          render={
+            <Button
+              variant="outline"
+              className="w-full justify-between"
+              style={{ maxWidth: '100%', overflow: 'hidden' }}
+            />
+          }
+        >
+          <span style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+            {displayValue ?? placeholder}
+          </span>
+          <Icon rotate={90} size="sm" aria-hidden="true">
+            <ChevronRight />
+          </Icon>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent
+          className="flex flex-col gap-2"
+          style={{
+            width: 'var(--anchor-width)',
+            maxWidth: 'var(--available-width)',
+          }}
+        >
+          {allowSearch && (
+            <SearchField
+              ref={searchRef}
+              value={searchValue}
+              onSearch={onSearch}
+              autoFocus
+              onKeyDown={event => {
+                if (event.key !== 'Escape' && event.key !== 'Tab') {
+                  event.stopPropagation();
+                }
+              }}
+            />
+          )}
+          <div style={listStyle}>
+            {children}
+            {Children.count(children) === 0 && renderEmptyState?.()}
+          </div>
+        </DropdownMenuContent>
+      </DropdownMenu>
+    </MultiSelectContext.Provider>
   );
 }

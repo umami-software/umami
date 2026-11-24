@@ -1,5 +1,16 @@
 'use client';
-import { Column, Grid, ListItem, Row, Select } from '@umami/react-zen';
+import {
+  Column,
+  Field,
+  FieldLabel,
+  Grid,
+  Row,
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@umami/react-zen';
 import { useState } from 'react';
 import { WebsiteControls } from '@/app/(main)/websites/[websiteId]/WebsiteControls';
 import { Panel } from '@/components/common/Panel';
@@ -43,18 +54,21 @@ export function JourneysPage({ websiteId }: { websiteId: string }) {
     <Column gap>
       <WebsiteControls websiteId={websiteId} />
       <Grid columns="repeat(3, 1fr)" gap>
-        <Select
-          label={t(labels.steps)}
-          value={steps}
-          defaultValue={steps}
-          onChange={value => setSteps(Number(value))}
-        >
-          {JOURNEY_STEPS.map(step => (
-            <ListItem key={step} id={step}>
-              {step}
-            </ListItem>
-          ))}
-        </Select>
+        <Field>
+          <FieldLabel>{t(labels.steps)}</FieldLabel>
+          <Select value={steps} onValueChange={value => setSteps(Number(value))}>
+            <SelectTrigger className="w-full">
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent alignItemWithTrigger={false}>
+              {JOURNEY_STEPS.map(step => (
+                <SelectItem key={step} value={step}>
+                  {step}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </Field>
         <Column>
           <WebsiteValueComboBox
             label={t(labels.startStep)}

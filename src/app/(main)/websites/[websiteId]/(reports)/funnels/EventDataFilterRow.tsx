@@ -4,15 +4,16 @@ import {
   FormField,
   Grid,
   Icon,
-  ListItem,
-  Loading,
   Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
   useDebounce,
 } from '@umami/react-zen';
 import { endOfDay, subMonths } from 'date-fns';
 import { useState } from 'react';
 import { ComboBox } from '@/components/common/ComboBox';
-import { Empty } from '@/components/common/Empty';
 import { useApi, useMessages, useMobile } from '@/components/hooks';
 import { X } from '@/components/icons';
 
@@ -27,17 +28,16 @@ function PropertySelect({
   websiteId,
   eventName,
   value,
-  onChange,
+  onValueChange,
   onPropertyChange,
 }: {
   websiteId: string;
   eventName?: string;
   value?: string;
-  onChange?: (value: string) => void;
+  onValueChange?: (value: string) => void;
   onPropertyChange?: (value: string) => void;
 }) {
   const { get, useQuery } = useApi();
-  const { t, messages } = useMessages();
   const [search, setSearch] = useState(value ?? '');
   const searchValue = useDebounce(search, 300);
   const { startAt, endAt } = getEventDataDateRange();
@@ -65,23 +65,11 @@ function PropertySelect({
       inputValue={value}
       onInputValueChange={v => {
         setSearch(v);
-        onChange?.(v);
+        onValueChange?.(v);
         onPropertyChange?.(v);
       }}
-      renderEmptyState={() =>
-        isLoading ? (
-          <Loading placement="center" icon="dots" />
-        ) : (
-          <Empty message={t(messages.noResultsFound)} />
-        )
-      }
-    >
-      {properties.map(p => (
-        <ListItem key={p} id={p}>
-          {p}
-        </ListItem>
-      ))}
-    </ComboBox>
+      isLoading={isLoading}
+    />
   );
 }
 
@@ -90,16 +78,15 @@ function ValueSelect({
   eventName,
   propertyName,
   value,
-  onChange,
+  onValueChange,
 }: {
   websiteId: string;
   eventName?: string;
   propertyName?: string;
   value?: string;
-  onChange?: (value: string) => void;
+  onValueChange?: (value: string) => void;
 }) {
   const { get, useQuery } = useApi();
-  const { t, messages } = useMessages();
   const { startAt, endAt } = getEventDataDateRange();
 
   const { data, isLoading } = useQuery<Array<{ value: string; total: number }>>({
@@ -122,39 +109,40 @@ function ValueSelect({
       items={values}
       inputValue={value}
       onInputValueChange={v => {
-        onChange?.(v);
+        onValueChange?.(v);
       }}
-      renderEmptyState={() =>
-        isLoading ? (
-          <Loading placement="center" icon="dots" />
-        ) : (
-          <Empty message={t(messages.noResultsFound)} />
-        )
-      }
-    >
-      {values.map(v => (
-        <ListItem key={v} id={v}>
-          {v}
-        </ListItem>
-      ))}
-    </ComboBox>
+      isLoading={isLoading}
+    />
   );
 }
 
 function OperatorSelect({
   value = 'eq',
-  onChange,
+  onValueChange,
 }: {
   value?: string;
-  onChange?: (value: string) => void;
+  onValueChange?: (value: string) => void;
 }) {
   const { t, labels } = useMessages();
+  const items = [
+    { value: 'eq', label: t(labels.is) },
+    { value: 'neq', label: t(labels.isNot) },
+    { value: 'c', label: t(labels.contains) },
+    { value: 'dnc', label: t(labels.doesNotContain) },
+  ];
+
   return (
-    <Select value={value} onChange={v => onChange?.(v as string)}>
-      <ListItem id="eq">{t(labels.is)}</ListItem>
-      <ListItem id="neq">{t(labels.isNot)}</ListItem>
-      <ListItem id="c">{t(labels.contains)}</ListItem>
-      <ListItem id="dnc">{t(labels.doesNotContain)}</ListItem>
+    <Select items={items} value={value} onValueChange={v => onValueChange?.(v as string)}>
+      <SelectTrigger className="w-full">
+        <SelectValue />
+      </SelectTrigger>
+      <SelectContent alignItemWithTrigger={false}>
+        {items.map(item => (
+          <SelectItem key={item.value} value={item.value}>
+            {item.label}
+          </SelectItem>
+        ))}
+      </SelectContent>
     </Select>
   );
 }
@@ -201,7 +189,7 @@ export function EventDataFilterRow({
             <ValueSelect websiteId={websiteId} eventName={eventName} propertyName={propertyName} />
           </FormField>
         </Column>
-        <Button onPress={onRemove}>
+        <Button variant="secondary" onClick={onRemove}>
           <Icon size="sm">
             <X />
           </Icon>
@@ -234,7 +222,7 @@ export function EventDataFilterRow({
           <ValueSelect websiteId={websiteId} eventName={eventName} propertyName={propertyName} />
         </FormField>
       </Column>
-      <Button onPress={onRemove}>
+      <Button variant="secondary" onClick={onRemove}>
         <Icon size="sm">
           <X />
         </Icon>

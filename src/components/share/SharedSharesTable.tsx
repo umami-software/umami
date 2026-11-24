@@ -5,7 +5,7 @@ import { useConfig, useMessages, useMobile } from '@/components/hooks';
 import { ExternalLink } from '@/components/icons';
 
 const desktopGridTemplateColumns = 'minmax(180px, 1fr) minmax(0, 2fr) auto';
-const rowBorder = '1px solid var(--zen-border)';
+const rowBorder = '1px solid var(--border)';
 const subgridRow: CSSProperties = {
   display: 'grid',
   gridTemplateColumns: 'subgrid',
@@ -114,7 +114,12 @@ function ShareUrlCell({ url, value }: { url: string; value: string }) {
         </a>
       </Text>
       <Row style={{ flexShrink: 0 }}>
-        <Button variant="quiet" href={url} target="_blank" rel="noreferrer" aria-label="Open URL">
+        <Button
+          variant="ghost"
+          nativeButton={false}
+          render={<a href={url} target="_blank" rel="noreferrer" />}
+          aria-label="Open URL"
+        >
           <Icon size="sm">
             <ExternalLink />
           </Icon>

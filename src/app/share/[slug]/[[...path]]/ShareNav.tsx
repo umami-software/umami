@@ -6,6 +6,7 @@ import {
   Text,
   ThemeButton,
   Tooltip,
+  TooltipContent,
   TooltipTrigger,
 } from '@umami/react-zen';
 import { IconLabel } from '@/components/common/IconLabel';
@@ -163,8 +164,8 @@ export function ShareNav({
       >
         {!collapsed && <ShareBranding size="md" />}
         {!onItemClick && (
-          <Button variant="quiet" onPress={() => onCollapse?.(!collapsed)}>
-            <Icon color="muted">
+          <Button variant="ghost" onClick={() => onCollapse?.(!collapsed)}>
+            <Icon color="muted-foreground">
               <PanelLeft />
             </Icon>
           </Button>
@@ -183,25 +184,30 @@ export function ShareNav({
               return (
                 <Link key={id} href={path} role="button" onClick={onItemClick}>
                   {collapsed ? (
-                    <TooltipTrigger delay={0}>
-                      <Row
-                        tabIndex={0}
-                        alignItems="center"
-                        justifyContent="center"
-                        hover={{ backgroundColor: 'surface-sunken' }}
-                        backgroundColor={isSelected ? 'surface-sunken' : undefined}
-                        borderRadius
-                        minHeight="40px"
+                    <Tooltip>
+                      <TooltipTrigger
+                        delay={0}
+                        render={
+                          <Row
+                            tabIndex={0}
+                            alignItems="center"
+                            justifyContent="center"
+                            hover={{ backgroundColor: 'muted' }}
+                            backgroundColor={isSelected ? 'muted' : undefined}
+                            borderRadius
+                            minHeight="40px"
+                          />
+                        }
                       >
                         <IconLabel icon={icon} label="" weight={isSelected ? 'bold' : undefined} />
-                      </Row>
-                      <Tooltip placement="right">{label}</Tooltip>
-                    </TooltipTrigger>
+                      </TooltipTrigger>
+                      <TooltipContent side="right">{label}</TooltipContent>
+                    </Tooltip>
                   ) : (
                     <Row
                       alignItems="center"
-                      hover={{ backgroundColor: 'surface-sunken' }}
-                      backgroundColor={isSelected ? 'surface-sunken' : undefined}
+                      hover={{ backgroundColor: 'muted' }}
+                      backgroundColor={isSelected ? 'muted' : undefined}
                       borderRadius
                       minHeight="40px"
                     >

@@ -1,18 +1,25 @@
 import {
   Button,
   Column,
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuGroup,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuTrigger,
+  Field,
+  FieldLabel,
   Grid,
   Icon,
   List,
   ListItem,
   ListSection,
-  Menu,
-  MenuItem,
-  MenuSection,
-  MenuTrigger,
-  Popover,
   Row,
   Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
 } from '@umami/react-zen';
 import { endOfDay, subMonths } from 'date-fns';
 import type { Key } from 'react';
@@ -45,6 +52,10 @@ export function FieldFilters({
   const startDate = subMonths(endOfDay(new Date()), 6);
   const endDate = endOfDay(new Date());
   const { isMobile } = useMobile();
+  const matchItems = [
+    { value: 'all', label: t(labels.matchAll) },
+    { value: 'any', label: t(labels.matchAny) },
+  ];
 
   const groupedFields = fields
     .filter(({ name }) => !exclude.includes(name))
@@ -83,32 +94,35 @@ export function FieldFilters({
   return (
     <Grid columns={{ base: '1fr', md: '180px 1fr' }} overflow="hidden" gapY="6">
       <Row display={{ base: 'flex', md: 'none' }} alignItems="flex-start">
-        <MenuTrigger>
-          <Button size="sm">
+        <DropdownMenu>
+          <DropdownMenuTrigger render={<Button variant="secondary" size="sm" />}>
             <Icon>
               <Plus />
             </Icon>
-          </Button>
-          <Popover side={isMobile ? 'left' : 'bottom'} align={isMobile ? undefined : 'start'}>
-            <Menu style={{ maxHeight: 'calc(100vh - 2rem)', overflowY: 'auto' }}>
-              {groupLabels.map(({ key: groupKey, label }) => {
-                const groupFields = groupedFields[groupKey];
-                if (!groupFields || groupFields.length === 0) return null;
-                return (
-                  <MenuSection key={groupKey} title={label}>
-                    {groupFields.map(field => {
-                      return (
-                        <MenuItem key={field.name} id={field.name} onAction={handleAdd}>
-                          {field.filterLabel}
-                        </MenuItem>
-                      );
-                    })}
-                  </MenuSection>
-                );
-              })}
-            </Menu>
-          </Popover>
-        </MenuTrigger>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent
+            side={isMobile ? 'left' : 'bottom'}
+            align={isMobile ? undefined : 'start'}
+            style={{ maxHeight: 'calc(100vh - 2rem)', overflowY: 'auto' }}
+          >
+            {groupLabels.map(({ key: groupKey, label }) => {
+              const groupFields = groupedFields[groupKey];
+              if (!groupFields || groupFields.length === 0) return null;
+              return (
+                <DropdownMenuGroup key={groupKey}>
+                  <DropdownMenuLabel>{label}</DropdownMenuLabel>
+                  {groupFields.map(field => {
+                    return (
+                      <DropdownMenuItem key={field.name} onClick={() => handleAdd(field.name)}>
+                        {field.filterLabel}
+                      </DropdownMenuItem>
+                    );
+                  })}
+                </DropdownMenuGroup>
+              );
+            })}
+          </DropdownMenuContent>
+        </DropdownMenu>
       </Row>
       <Column
         display={{ base: 'none', md: 'flex' }}
@@ -127,7 +141,7 @@ export function FieldFilters({
                   return (
                     <ListItem
                       key={field.name}
-                      id={field.name}
+                      value={field.name}
                       onClick={() => handleAdd(field.name)}
                     >
                       {field.filterLabel}
@@ -142,15 +156,25 @@ export function FieldFilters({
       <Column overflow="auto" gapY="4" style={{ contain: 'layout' }}>
         {onMatchChange && (
           <Row alignItems="center" gap>
-            <Select
-              label={t(labels.match)}
-              value={match}
-              onChange={value => onMatchChange(value as string)}
-              buttonProps={{ style: { width: 150 } }}
-            >
-              <ListItem id="all">{t(labels.matchAll)}</ListItem>
-              <ListItem id="any">{t(labels.matchAny)}</ListItem>
-            </Select>
+            <Field>
+              <FieldLabel>{t(labels.match)}</FieldLabel>
+              <Select
+                items={matchItems}
+                value={match}
+                onValueChange={value => onMatchChange(value as string)}
+              >
+                <SelectTrigger style={{ width: 150 }}>
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent alignItemWithTrigger={false}>
+                  {matchItems.map(item => (
+                    <SelectItem key={item.value} value={item.value}>
+                      {item.label}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </Field>
           </Row>
         )}
         {value.map((filter, index) => {
@@ -171,7 +195,7 @@ export function FieldFilters({
         {!value.length &&
           (isMobile ? (
             <Row
-              color="muted"
+              color="muted-foreground"
               justifyContent="center"
               width="100%"
               minHeight="70px"

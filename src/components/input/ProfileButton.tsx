@@ -1,12 +1,13 @@
 import {
   Button,
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuGroup,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
   Icon,
-  Menu,
-  MenuItem,
-  MenuSection,
-  MenuSeparator,
-  MenuTrigger,
-  Popover,
   Row,
   Text,
 } from '@umami/react-zen';
@@ -43,32 +44,31 @@ export function ProfileButton() {
   ].filter(n => n);
 
   return (
-    <MenuTrigger>
-      <Button data-test="button-profile" variant="quiet">
+    <DropdownMenu>
+      <DropdownMenuTrigger render={<Button data-test="button-profile" variant="ghost" />}>
         <Icon>
           <UserCircle />
         </Icon>
-      </Button>
-      <Popover side="bottom" align="end">
-        <Menu>
-          <MenuSection title={user.username}>
-            <MenuSeparator />
-            {items.map(({ id, path, label, icon, separator }) => {
-              return (
-                <Fragment key={id}>
-                  {separator && <MenuSeparator />}
-                  <MenuItem id={id} onAction={() => router.push(path)}>
-                    <Row alignItems="center" gap>
-                      <Icon>{icon}</Icon>
-                      <Text>{label}</Text>
-                    </Row>
-                  </MenuItem>
-                </Fragment>
-              );
-            })}
-          </MenuSection>
-        </Menu>
-      </Popover>
-    </MenuTrigger>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent side="bottom" align="end" className="w-auto">
+        <DropdownMenuGroup>
+          <DropdownMenuLabel>{user.username}</DropdownMenuLabel>
+          <DropdownMenuSeparator />
+          {items.map(({ id, path, label, icon, separator }) => {
+            return (
+              <Fragment key={id}>
+                {separator && <DropdownMenuSeparator />}
+                <DropdownMenuItem onClick={() => router.push(path)}>
+                  <Row alignItems="center" gap>
+                    <Icon>{icon}</Icon>
+                    <Text>{label}</Text>
+                  </Row>
+                </DropdownMenuItem>
+              </Fragment>
+            );
+          })}
+        </DropdownMenuGroup>
+      </DropdownMenuContent>
+    </DropdownMenu>
   );
 }

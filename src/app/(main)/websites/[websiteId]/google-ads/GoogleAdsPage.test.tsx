@@ -35,27 +35,26 @@ vi.mock('@/components/hooks', async importOriginal => ({
 // A native select stands in for the account picker so a test can choose an option.
 vi.mock('@umami/react-zen', async importOriginal => ({
   ...(await importOriginal<typeof import('@umami/react-zen')>()),
-  ListItem: ({ id, children }: { id: string; children: ReactNode }) => (
-    <option value={id}>{children}</option>
-  ),
+  Field: ({ children }: { children: ReactNode }) => <label>{children}</label>,
+  FieldLabel: ({ children }: { children: ReactNode }) => <>{children}</>,
   Select: ({
-    label,
     value,
-    onChange,
+    onValueChange,
     children,
   }: {
-    label: string;
     value?: string;
-    onChange?: (value: string) => void;
+    onValueChange?: (value: string) => void;
     children: ReactNode;
   }) => (
-    <select
-      aria-label={label}
-      value={value ?? ''}
-      onChange={event => onChange?.(event.currentTarget.value)}
-    >
+    <select value={value ?? ''} onChange={event => onValueChange?.(event.currentTarget.value)}>
       {children}
     </select>
+  ),
+  SelectTrigger: () => null,
+  SelectValue: () => null,
+  SelectContent: ({ children }: { children: ReactNode }) => <>{children}</>,
+  SelectItem: ({ value, children }: { value: string; children: ReactNode }) => (
+    <option value={value}>{children}</option>
   ),
 }));
 vi.mock('@/app/(main)/websites/[websiteId]/WebsiteControls', () => ({

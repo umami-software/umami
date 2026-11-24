@@ -88,7 +88,7 @@ function StepRow({
             </FormField>
             {valueField}
           </Column>
-          <Button onPress={onRemove}>
+          <Button variant="secondary" onClick={onRemove}>
             <Icon size="sm">
               <X />
             </Icon>
@@ -102,7 +102,7 @@ function StepRow({
             </FormField>
           </Column>
           <Column>{valueField}</Column>
-          <Button onPress={onRemove}>
+          <Button variant="secondary" onClick={onRemove}>
             <Icon size="sm">
               <X />
             </Icon>
@@ -136,8 +136,8 @@ function StepRow({
               {hasEventData && (
                 <Row>
                   <Button
-                    variant="quiet"
-                    onPress={() => appendFilter({ property: '', operator: 'eq', value: '' })}
+                    variant="ghost"
+                    onClick={() => appendFilter({ property: '', operator: 'eq', value: '' })}
                   >
                     <Icon size="sm">
                       <Plus />
@@ -232,7 +232,10 @@ export function FunnelEditForm({
           return (
             <Grid gap>
               {fields.map(
-                ({ id, value: initialEventName }: { id: string; value: string }, index: number) => (
+                (
+                  { id, value: initialEventName }: { id: string; value?: string },
+                  index: number,
+                ) => (
                   <Fragment key={id}>
                     {index > 0 && <ListSeparator />}
                     <StepRow
@@ -247,8 +250,9 @@ export function FunnelEditForm({
               <ListSeparator />
               <Row>
                 <Button
-                  onPress={() => append({ type: 'path', value: '', filters: [] })}
-                  isDisabled={fields.length >= FUNNEL_STEPS_MAX}
+                  variant="secondary"
+                  onClick={() => append({ type: 'path', value: '', filters: [] })}
+                  disabled={fields.length >= FUNNEL_STEPS_MAX}
                 >
                   <Icon>
                     <Plus />
@@ -261,7 +265,7 @@ export function FunnelEditForm({
         }}
       </FormFieldArray>
       <FormButtons style={{ paddingBottom: '16px' }}>
-        <Button onPress={onClose} isDisabled={isPending}>
+        <Button variant="secondary" onClick={onClose} disabled={isPending}>
           {t(labels.cancel)}
         </Button>
         <FormSubmitButton>{t(labels.save)}</FormSubmitButton>

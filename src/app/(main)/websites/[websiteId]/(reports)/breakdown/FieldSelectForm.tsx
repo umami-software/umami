@@ -41,13 +41,13 @@ export function FieldSelectForm({
   return (
     <Column gap="6">
       <Column gap="3" overflowY="auto" maxHeight="400px">
-        <List value={selected} onChange={handleChange} selectionMode="multiple">
+        <List value={selected} onValueChange={handleChange} selectionMode="multiple">
           {groupLabels.map(({ key: groupKey, label }) => {
             const groupFields = groupedFields[groupKey];
             return (
               <ListSection key={groupKey} title={label}>
                 {groupFields.map(field => (
-                  <ListItem key={field.name} id={field.name}>
+                  <ListItem key={field.name} value={field.name}>
                     {field.filterLabel}
                   </ListItem>
                 ))}
@@ -57,10 +57,10 @@ export function FieldSelectForm({
         </List>
       </Column>
       <Grid columns="1fr 1fr" gap>
-        <Button onPress={onClose}>{t(labels.cancel)}</Button>
-        <Button onPress={handleApply} variant="primary">
-          {t(labels.apply)}
+        <Button variant="secondary" onClick={onClose}>
+          {t(labels.cancel)}
         </Button>
+        <Button onClick={handleApply}>{t(labels.apply)}</Button>
       </Grid>
     </Column>
   );

@@ -1,5 +1,5 @@
-import { Checkbox, Row } from '@umami/react-zen';
-import { useState } from 'react';
+import { Checkbox, Field, FieldLabel, Row } from '@umami/react-zen';
+import { useId, useState } from 'react';
 import { useFilters, useMessages, useNavigation } from '@/components/hooks';
 import { ListFilter } from '@/components/icons';
 import { DialogButton } from '@/components/input/DialogButton';
@@ -21,6 +21,7 @@ export function WebsiteFilterButton({
   alignment?: 'end' | 'center' | 'start';
 }) {
   const { t, labels } = useMessages();
+  const checkboxId = useId();
   const { updateParams, pathname, router, query } = useNavigation();
   const { filters: currentFilters } = useFilters();
   const isEventsPath = pathname.endsWith('/events');
@@ -81,13 +82,14 @@ export function WebsiteFilterButton({
           <>
             {(isOverview || allowBounceFilter) && (
               <Row position="absolute" top="30px" right="30px">
-                <Checkbox
-                  value={excludeBounce ? 'true' : ''}
-                  onChange={setExcludeBounce}
-                  style={{ marginTop: '3px' }}
-                >
-                  {t(labels.excludeBounce)}
-                </Checkbox>
+                <Field orientation="horizontal" style={{ marginTop: '3px' }}>
+                  <Checkbox
+                    id={checkboxId}
+                    value={excludeBounce ? 'true' : ''}
+                    onCheckedChange={setExcludeBounce}
+                  />
+                  <FieldLabel htmlFor={checkboxId}>{t(labels.excludeBounce)}</FieldLabel>
+                </Field>
               </Row>
             )}
             <FilterEditForm websiteId={websiteId} onChange={handleChange} onClose={close} />

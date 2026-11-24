@@ -1,4 +1,4 @@
-import { Menu, MenuItem, Text } from '@umami/react-zen';
+import { DropdownMenuRadioGroup, DropdownMenuRadioItem, Text } from '@umami/react-zen';
 import { useLocale } from '@/components/hooks';
 import { languages } from '@/lib/lang';
 
@@ -11,6 +11,7 @@ export interface LanguageMenuProps {
   onSelect?: (value: string) => void;
 }
 
+/** Language options. Render inside a `DropdownMenuContent` or `DropdownMenuSubContent`. */
 export function LanguageMenu({ onSelect }: LanguageMenuProps) {
   const { locale, saveLocale } = useLocale();
 
@@ -20,16 +21,17 @@ export function LanguageMenu({ onSelect }: LanguageMenuProps) {
   };
 
   return (
-    <Menu
-      selectionMode="single"
-      selectedKeys={new Set([locale])}
-      style={{ maxHeight: 300, overflow: 'auto' }}
-    >
+    <DropdownMenuRadioGroup value={locale} style={{ maxHeight: 300, overflow: 'auto' }}>
       {languageItems.map(({ value, label }) => (
-        <MenuItem key={value} id={value} onAction={() => handleSelect(value)}>
+        <DropdownMenuRadioItem
+          key={value}
+          value={value}
+          closeOnClick
+          onClick={() => handleSelect(value)}
+        >
           <Text weight={value === locale ? 'bold' : undefined}>{label}</Text>
-        </MenuItem>
+        </DropdownMenuRadioItem>
       ))}
-    </Menu>
+    </DropdownMenuRadioGroup>
   );
 }

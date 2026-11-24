@@ -8,9 +8,11 @@ import {
   Code,
   Column,
   Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
   Icon,
   Image,
-  Modal,
   Row,
   Tag,
   TagGroup,
@@ -18,7 +20,6 @@ import {
 } from '@umami/react-zen';
 import { LucideCopy } from 'lucide-react';
 import { type ReactNode, useEffect, useState } from 'react';
-import { ControlledDialog } from '@/components/common/ControlledDialog';
 import { OtpInput } from '@/components/common/OtpInput';
 import { useMessages, useUpdateQuery } from '@/components/hooks';
 import styles from './TwoFactorSetupModal.module.css';
@@ -40,7 +41,7 @@ function Step({
       <Column gap="3">
         <Row gap="3" alignItems="center">
           <TagGroup>
-            <Tag variant="primary">{tag}</Tag>
+            <Tag variant="default">{tag}</Tag>
           </TagGroup>
           <Text weight="bold">{title}</Text>
         </Row>
@@ -121,100 +122,104 @@ export function TwoFactorSetupModal({ required, onClose }: TwoFactorSetupModalPr
     );
   }
 
-  const preventDismiss = required ? () => {} : undefined;
-
   return (
-    <ControlledDialog>
-      <Modal isOpen={true} onOpenChange={preventDismiss}>
-        <Dialog title={t(labels.twoFactorSetupTitle)} className={styles.twoFactorSetupModal}>
-          {() => (
-            <Column gap="9">
-              <Text>
-                {required && `${t(messages.twoFactorSetupRequiredDescription)} `}
-                {t(messages.twoFactorSetupDescription)}
-              </Text>
+    <Dialog open={true}>
+      <DialogContent
+        className={styles.twoFactorSetupModal}
+        style={{
+          maxWidth: 'calc(100% - 2rem)',
+          maxHeight: 'calc(100dvh - 2rem)',
+          overflowY: 'auto',
+        }}
+        showCloseButton={false}
+      >
+        <DialogHeader>
+          <DialogTitle>{t(labels.twoFactorSetupTitle)}</DialogTitle>
+        </DialogHeader>
+        <Column gap="9">
+          <Text>
+            {required && `${t(messages.twoFactorSetupRequiredDescription)} `}
+            {t(messages.twoFactorSetupDescription)}
+          </Text>
 
-              {/* Step 1 - Scan QR Code */}
-              <Step
-                tag={t(labels.twoFactorStep1)}
-                title={t(labels.twoFactorScanQr)}
-                details={t(messages.twoFactorStep1Description)}
-              >
-                <Box padding="2" shadow="lg" borderRadius="lg" border width="fit">
-                  <Row alignItems="center" gap="2">
-                    {qrCodeDataUrl && (
-                      <Image
-                        src={qrCodeDataUrl}
-                        alt="QR code"
-                        className={styles.qrCodeImage}
-                        borderRadius="lg"
-                      />
-                    )}
-                    <Column>
-                      <Text weight="bold">{t(labels.twoFactorCantScan)}</Text>
-                      <Column gap="2">
-                        <Text size="sm">{t(labels.twoFactorManualEntry)}</Text>
-                        <Code>{manualKey}</Code>
-                        <div>
-                          <Button variant="outline" onPress={handleCopy}>
-                            <Icon size="sm">
-                              <LucideCopy />
-                            </Icon>
-                            {copied ? t(labels.twoFactorCodeCopied) : t(labels.twoFactorCopyCode)}
-                          </Button>
-                        </div>
-                      </Column>
-                    </Column>
-                  </Row>
-                </Box>
-              </Step>
-
-              {/* Step 2 - Enter Verification Code */}
-              <Step
-                tag={t(labels.twoFactorStep2)}
-                title={t(labels.twoFactorGetCode)}
-                details={t(messages.twoFactorStep2Description)}
-              >
-                <Column gap="3.5">
-                  <Text size="sm" weight="bold">
-                    {t(labels.twoFactorEnterCode)}
-                  </Text>
-                  <OtpInput
-                    value={otpValue}
-                    onChange={val => {
-                      setOtpValue(val);
-                      if (error) setError(null);
-                    }}
-                    onComplete={handleConfirm}
-                    readOnly={isConfirming}
+          {/* Step 1 - Scan QR Code */}
+          <Step
+            tag={t(labels.twoFactorStep1)}
+            title={t(labels.twoFactorScanQr)}
+            details={t(messages.twoFactorStep1Description)}
+          >
+            <Box padding="2" shadow="lg" borderRadius="lg" border width="fit">
+              <Row alignItems="center" gap="2">
+                {qrCodeDataUrl && (
+                  <Image
+                    src={qrCodeDataUrl}
+                    alt="QR code"
+                    className={styles.qrCodeImage}
+                    borderRadius="lg"
                   />
-                </Column>
-              </Step>
-
-              {error && (
-                <Alert variant="danger">
-                  <AlertTitle>{error}</AlertTitle>
-                </Alert>
-              )}
-
-              <Row gap="2" justifyContent="flex-end">
-                {!required && (
-                  <Button variant="outline" onPress={handleCancel} isDisabled={isConfirming}>
-                    {t(labels.cancel)}
-                  </Button>
                 )}
-                <Button
-                  variant="primary"
-                  onPress={() => handleConfirm()}
-                  isDisabled={otpValue.length !== 6 || isConfirming || !!error}
-                >
-                  {t(labels.confirm)}
-                </Button>
+                <Column>
+                  <Text weight="bold">{t(labels.twoFactorCantScan)}</Text>
+                  <Column gap="2">
+                    <Text size="sm">{t(labels.twoFactorManualEntry)}</Text>
+                    <Code>{manualKey}</Code>
+                    <div>
+                      <Button variant="outline" onClick={handleCopy}>
+                        <Icon size="sm">
+                          <LucideCopy />
+                        </Icon>
+                        {copied ? t(labels.twoFactorCodeCopied) : t(labels.twoFactorCopyCode)}
+                      </Button>
+                    </div>
+                  </Column>
+                </Column>
               </Row>
+            </Box>
+          </Step>
+
+          {/* Step 2 - Enter Verification Code */}
+          <Step
+            tag={t(labels.twoFactorStep2)}
+            title={t(labels.twoFactorGetCode)}
+            details={t(messages.twoFactorStep2Description)}
+          >
+            <Column gap="3.5">
+              <Text size="sm" weight="bold">
+                {t(labels.twoFactorEnterCode)}
+              </Text>
+              <OtpInput
+                value={otpValue}
+                onChange={val => {
+                  setOtpValue(val);
+                  if (error) setError(null);
+                }}
+                onComplete={handleConfirm}
+                readOnly={isConfirming}
+              />
             </Column>
+          </Step>
+
+          {error && (
+            <Alert variant="destructive">
+              <AlertTitle>{error}</AlertTitle>
+            </Alert>
           )}
-        </Dialog>
-      </Modal>
-    </ControlledDialog>
+
+          <Row gap="2" justifyContent="flex-end">
+            {!required && (
+              <Button variant="outline" onClick={handleCancel} disabled={isConfirming}>
+                {t(labels.cancel)}
+              </Button>
+            )}
+            <Button
+              onClick={() => handleConfirm()}
+              disabled={otpValue.length !== 6 || isConfirming || !!error}
+            >
+              {t(labels.confirm)}
+            </Button>
+          </Row>
+        </Column>
+      </DialogContent>
+    </Dialog>
   );
 }

@@ -84,7 +84,7 @@ export function WebsitesTable({
             return (
               <LinkButton
                 href={renderUrl(`/websites/${websiteId}/settings`)}
-                variant="quiet"
+                variant="ghost"
                 data-test="link-button-edit"
               >
                 <Icon>

@@ -4,16 +4,18 @@ import {
   Button,
   Column,
   Dialog,
-  Modal,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
   Row,
   Switch,
   Text,
   Tooltip,
+  TooltipContent,
   TooltipTrigger,
 } from '@umami/react-zen';
 import { useState } from 'react';
 import { Badge } from '@/components/common/Badge';
-import { ControlledDialog } from '@/components/common/ControlledDialog';
 import { TypeConfirmationForm } from '@/components/common/TypeConfirmationForm';
 import {
   useDeleteQuery,
@@ -58,9 +60,9 @@ export function UserTwoFactorSettings({ userId }: { userId: string }) {
   const toggle = (
     <Row alignItems="center" gap="3">
       <Switch
-        isSelected={isGlobalRequired || twoFactorRequired}
-        isDisabled={isToggleDisabled}
-        onChange={handleToggle}
+        checked={isGlobalRequired || twoFactorRequired}
+        disabled={isToggleDisabled}
+        onCheckedChange={handleToggle}
       />
       <Text>{t(labels.twoFactorRequireUser)}</Text>
     </Row>
@@ -85,21 +87,21 @@ export function UserTwoFactorSettings({ userId }: { userId: string }) {
           </Badge>
         </Row>
 
-        <Text size="sm" color="muted">
+        <Text size="sm" color="muted-foreground">
           {t(messages.twoFactorRequireUserDescription)}
         </Text>
 
         {showConfigurationError && (
-          <Text size="sm" color="muted">
+          <Text size="sm" color="muted-foreground">
             {t(messages.twoFactorErrorNotConfigured)}
           </Text>
         )}
 
         {isGlobalRequired ? (
-          <TooltipTrigger>
-            {toggle}
-            <Tooltip>{t(labels.twoFactorGlobalActiveTooltip)}</Tooltip>
-          </TooltipTrigger>
+          <Tooltip>
+            <TooltipTrigger render={toggle} />
+            <TooltipContent>{t(labels.twoFactorGlobalActiveTooltip)}</TooltipContent>
+          </Tooltip>
         ) : (
           toggle
         )}
@@ -107,11 +109,11 @@ export function UserTwoFactorSettings({ userId }: { userId: string }) {
         {twoFactorEnabled && (
           <Column gap="3">
             <Text weight="bold">{t(labels.twoFactorReset)}</Text>
-            <Text size="sm" color="muted">
+            <Text size="sm" color="muted-foreground">
               {t(messages.twoFactorResetDescription)}
             </Text>
             <Row>
-              <Button size="sm" variant="danger" onPress={() => setShowReset(true)}>
+              <Button size="sm" variant="destructive" onClick={() => setShowReset(true)}>
                 {t(labels.reset)}
               </Button>
             </Row>
@@ -119,21 +121,22 @@ export function UserTwoFactorSettings({ userId }: { userId: string }) {
         )}
       </Column>
 
-      <ControlledDialog>
-        <Modal isOpen={showReset} onOpenChange={open => !open && setShowReset(false)}>
-          <Dialog title={t(labels.twoFactorReset)} style={{ width: 400 }}>
-            <TypeConfirmationForm
-              confirmationValue={CONFIRM_VALUE}
-              onConfirm={handleReset}
-              onClose={() => setShowReset(false)}
-              isLoading={isResetting}
-              error={resetError}
-              buttonLabel={t(labels.reset)}
-              buttonVariant="danger"
-            />
-          </Dialog>
-        </Modal>
-      </ControlledDialog>
+      <Dialog open={showReset} onOpenChange={open => !open && setShowReset(false)}>
+        <DialogContent style={{ width: 400 }}>
+          <DialogHeader>
+            <DialogTitle>{t(labels.twoFactorReset)}</DialogTitle>
+          </DialogHeader>
+          <TypeConfirmationForm
+            confirmationValue={CONFIRM_VALUE}
+            onConfirm={handleReset}
+            onClose={() => setShowReset(false)}
+            isLoading={isResetting}
+            error={resetError}
+            buttonLabel={t(labels.reset)}
+            buttonVariant="destructive"
+          />
+        </DialogContent>
+      </Dialog>
     </>
   );
 }

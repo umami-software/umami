@@ -1,4 +1,13 @@
-import { Button, Column, Dialog, DialogTrigger, Modal } from '@umami/react-zen';
+import {
+  Button,
+  Column,
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from '@umami/react-zen';
+import { useState } from 'react';
 import { ActionForm } from '@/components/common/ActionForm';
 import {
   useLoginQuery,
@@ -19,6 +28,9 @@ export function WebsiteData({ websiteId, onSave }: { websiteId: string; onSave?:
   const { router, pathname, teamId, renderUrl } = useNavigation();
   const { data: teams } = useUserTeamsQuery(user.id);
   const isAdmin = pathname.startsWith('/admin');
+  const [showTransfer, setShowTransfer] = useState(false);
+  const [showReset, setShowReset] = useState(false);
+  const [showDelete, setShowDelete] = useState(false);
 
   const canTransferWebsite =
     (
@@ -50,45 +62,56 @@ export function WebsiteData({ websiteId, onSave }: { websiteId: string; onSave?:
     <Column gap="6">
       {!isAdmin && (
         <ActionForm label={t(labels.transferWebsite)} description={t(messages.transferWebsite)}>
-          <DialogTrigger>
-            <Button isDisabled={!canTransferWebsite}>{t(labels.transfer)}</Button>
-            <Modal>
-              <Dialog title={t(labels.transferWebsite)} style={{ width: 400 }}>
-                {({ close }) => (
-                  <WebsiteTransferForm websiteId={websiteId} onSave={handleSave} onClose={close} />
-                )}
-              </Dialog>
-            </Modal>
-          </DialogTrigger>
+          <Dialog open={showTransfer} onOpenChange={setShowTransfer}>
+            <DialogTrigger render={<Button variant="secondary" disabled={!canTransferWebsite} />}>
+              {t(labels.transfer)}
+            </DialogTrigger>
+            <DialogContent style={{ width: 400 }}>
+              <DialogHeader>
+                <DialogTitle>{t(labels.transferWebsite)}</DialogTitle>
+              </DialogHeader>
+              <WebsiteTransferForm
+                websiteId={websiteId}
+                onSave={handleSave}
+                onClose={() => setShowTransfer(false)}
+              />
+            </DialogContent>
+          </Dialog>
         </ActionForm>
       )}
 
       <ActionForm label={t(labels.resetWebsite)} description={t(messages.resetWebsiteWarning)}>
-        <DialogTrigger>
-          <Button>{t(labels.reset)}</Button>
-          <Modal>
-            <Dialog title={t(labels.resetWebsite)} style={{ width: 400 }}>
-              {({ close }) => (
-                <WebsiteResetForm websiteId={websiteId} onSave={handleReset} onClose={close} />
-              )}
-            </Dialog>
-          </Modal>
-        </DialogTrigger>
+        <Dialog open={showReset} onOpenChange={setShowReset}>
+          <DialogTrigger render={<Button variant="secondary" />}>{t(labels.reset)}</DialogTrigger>
+          <DialogContent style={{ width: 400 }}>
+            <DialogHeader>
+              <DialogTitle>{t(labels.resetWebsite)}</DialogTitle>
+            </DialogHeader>
+            <WebsiteResetForm
+              websiteId={websiteId}
+              onSave={handleReset}
+              onClose={() => setShowReset(false)}
+            />
+          </DialogContent>
+        </Dialog>
       </ActionForm>
 
       <ActionForm label={t(labels.deleteWebsite)} description={t(messages.deleteWebsiteWarning)}>
-        <DialogTrigger>
-          <Button data-test="button-delete" variant="danger">
+        <Dialog open={showDelete} onOpenChange={setShowDelete}>
+          <DialogTrigger render={<Button data-test="button-delete" variant="destructive" />}>
             {t(labels.delete)}
-          </Button>
-          <Modal>
-            <Dialog title={t(labels.deleteWebsite)} style={{ width: 400 }}>
-              {({ close }) => (
-                <WebsiteDeleteForm websiteId={websiteId} onSave={handleSave} onClose={close} />
-              )}
-            </Dialog>
-          </Modal>
-        </DialogTrigger>
+          </DialogTrigger>
+          <DialogContent style={{ width: 400 }}>
+            <DialogHeader>
+              <DialogTitle>{t(labels.deleteWebsite)}</DialogTitle>
+            </DialogHeader>
+            <WebsiteDeleteForm
+              websiteId={websiteId}
+              onSave={handleSave}
+              onClose={() => setShowDelete(false)}
+            />
+          </DialogContent>
+        </Dialog>
       </ActionForm>
     </Column>
   );

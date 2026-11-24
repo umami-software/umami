@@ -86,11 +86,15 @@ export function SegmentEditForm({
             <Column gap="1">
               <Text weight="bold">{t(labels.filters)}</Text>
               <FormField name="parameters.filters">
-                <FieldFilters
-                  websiteId={websiteId}
-                  match={currentMatch}
-                  onMatchChange={setCurrentMatch}
-                />
+                {({ field }) => (
+                  <FieldFilters
+                    websiteId={websiteId}
+                    value={field.value}
+                    onChange={field.onChange}
+                    match={currentMatch}
+                    onMatchChange={setCurrentMatch}
+                  />
+                )}
               </FormField>
             </Column>
 
@@ -110,10 +114,10 @@ export function SegmentEditForm({
           </Column>
         )}
         <FormButtons>
-          <Button isDisabled={isPending} onPress={onClose}>
+          <Button variant="secondary" disabled={isPending} onClick={onClose}>
             {t(labels.cancel)}
           </Button>
-          <FormSubmitButton variant="primary" data-test="button-submit" isDisabled={isPending}>
+          <FormSubmitButton data-test="button-submit" disabled={isPending}>
             {t(labels.save)}
           </FormSubmitButton>
         </FormButtons>

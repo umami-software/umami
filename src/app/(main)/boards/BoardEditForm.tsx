@@ -4,10 +4,13 @@ import {
   Form,
   FormField,
   FormSubmitButton,
-  ListItem,
   Loading,
   Row,
   Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
   Text,
   TextField,
 } from '@umami/react-zen';
@@ -107,6 +110,13 @@ export function BoardEditForm({
                 ? t(labels.link)
                 : t(labels.website);
 
+        const boardTypeItems = [
+          { value: BOARD_TYPES.mixed, label: t(labels.open) },
+          { value: BOARD_TYPES.website, label: t(labels.website) },
+          { value: BOARD_TYPES.pixel, label: t(labels.pixel) },
+          { value: BOARD_TYPES.link, label: t(labels.link) },
+        ];
+
         const handleTypeChange = (value: string | number | null) => {
           setValue('type', value as BoardType, { shouldDirty: true });
           setValue('entityId', '', { shouldDirty: true });
@@ -134,18 +144,26 @@ export function BoardEditForm({
               label={t(labels.boardType)}
               rules={{ required: t(labels.required) }}
             >
-              <Box width="100%" maxWidth="360px">
-                {boardId ? (
-                  <Text>{boardTypeLabel}</Text>
-                ) : (
-                  <Select value={type} onChange={handleTypeChange}>
-                    <ListItem id={BOARD_TYPES.mixed}>{t(labels.open)}</ListItem>
-                    <ListItem id={BOARD_TYPES.website}>{t(labels.website)}</ListItem>
-                    <ListItem id={BOARD_TYPES.pixel}>{t(labels.pixel)}</ListItem>
-                    <ListItem id={BOARD_TYPES.link}>{t(labels.link)}</ListItem>
-                  </Select>
-                )}
-              </Box>
+              {() => (
+                <Box width="100%" maxWidth="360px">
+                  {boardId ? (
+                    <Text>{boardTypeLabel}</Text>
+                  ) : (
+                    <Select items={boardTypeItems} value={type} onValueChange={handleTypeChange}>
+                      <SelectTrigger className="w-full">
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent alignItemWithTrigger={false}>
+                        {boardTypeItems.map(item => (
+                          <SelectItem key={item.value} value={item.value}>
+                            {item.label}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  )}
+                </Box>
+              )}
             </FormField>
             {requiresBoardEntity(type) && (
               <FormField
@@ -153,38 +171,40 @@ export function BoardEditForm({
                 label={entityLabel}
                 rules={{ required: t(labels.required) }}
               >
-                <Box width="100%" maxWidth="360px">
-                  {type === BOARD_TYPES.website ? (
-                    <WebsiteSelect
-                      websiteId={entityId}
-                      teamId={resolvedTeamId}
-                      onChange={handleEntityChange}
-                    />
-                  ) : type === BOARD_TYPES.pixel ? (
-                    <PixelSelect
-                      pixelId={entityId}
-                      teamId={resolvedTeamId}
-                      placeholder={t(labels.selectPixel)}
-                      onChange={handleEntityChange}
-                    />
-                  ) : (
-                    <LinkSelect
-                      linkId={entityId}
-                      teamId={resolvedTeamId}
-                      placeholder={t(labels.selectLink)}
-                      onChange={handleEntityChange}
-                    />
-                  )}
-                </Box>
+                {() => (
+                  <Box width="100%" maxWidth="360px">
+                    {type === BOARD_TYPES.website ? (
+                      <WebsiteSelect
+                        websiteId={entityId}
+                        teamId={resolvedTeamId}
+                        onChange={handleEntityChange}
+                      />
+                    ) : type === BOARD_TYPES.pixel ? (
+                      <PixelSelect
+                        pixelId={entityId}
+                        teamId={resolvedTeamId}
+                        placeholder={t(labels.selectPixel)}
+                        onChange={handleEntityChange}
+                      />
+                    ) : (
+                      <LinkSelect
+                        linkId={entityId}
+                        teamId={resolvedTeamId}
+                        placeholder={t(labels.selectLink)}
+                        onChange={handleEntityChange}
+                      />
+                    )}
+                  </Box>
+                )}
               </FormField>
             )}
             <Row justifyContent="flex-end" paddingTop="3" gap="3">
               {onClose && (
-                <Button isDisabled={isPending} onPress={onClose}>
+                <Button variant="secondary" disabled={isPending} onClick={onClose}>
                   {t(labels.cancel)}
                 </Button>
               )}
-              <FormSubmitButton isDisabled={isPending}>{t(labels.save)}</FormSubmitButton>
+              <FormSubmitButton disabled={isPending}>{t(labels.save)}</FormSubmitButton>
             </Row>
           </>
         );

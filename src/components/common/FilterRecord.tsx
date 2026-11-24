@@ -4,9 +4,12 @@ import {
   Grid,
   Icon,
   Label,
-  ListItem,
   Loading,
   Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
   TextField,
 } from '@umami/react-zen';
 import { useEffect, useState } from 'react';
@@ -60,6 +63,9 @@ export function FilterRecord({
     endDate,
   });
   const items = data?.filter(({ value }) => value) || [];
+  const operatorItems = operators
+    .filter(({ type }) => type === 'string')
+    .map(({ name, label }: any) => ({ value: name, label }));
 
   useEffect(() => {
     setSelected(getSelectedValues(value, operator));
@@ -88,20 +94,23 @@ export function FilterRecord({
       <Label>{fields.find(f => f.name === name)?.label}</Label>
       <Grid columns="1fr auto" gap>
         <Grid columns={{ base: '1fr', md: '200px 1fr' }} gap>
-          <Select value={operator} onChange={handleSelectOperator}>
-            {operators
-              .filter(({ type }) => type === 'string')
-              .map(({ name, label }: any) => (
-                <ListItem key={name} id={name}>
+          <Select items={operatorItems} value={operator} onValueChange={handleSelectOperator}>
+            <SelectTrigger className="w-full">
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent alignItemWithTrigger={false}>
+              {operatorItems.map(({ value, label }) => (
+                <SelectItem key={value} value={value}>
                   {label}
-                </ListItem>
+                </SelectItem>
               ))}
+            </SelectContent>
           </Select>
           {isSearch && (
             <TextField
               value={selected[0] || ''}
               defaultValue={selected[0] || ''}
-              onChange={handleSelectValue}
+              onValueChange={handleSelectValue}
             />
           )}
           {!isSearch && (
@@ -125,7 +134,7 @@ export function FilterRecord({
           )}
         </Grid>
         <Column justifyContent="flex-start">
-          <Button onPress={() => onRemove?.(name)}>
+          <Button variant="secondary" onClick={() => onRemove?.(name)}>
             <Icon>
               <X />
             </Icon>

@@ -2,14 +2,14 @@
 import {
   Button,
   Column,
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
   Grid,
   Icon,
   List,
   ListItem,
-  Menu,
-  MenuItem,
-  MenuTrigger,
-  Popover,
   Row,
 } from '@umami/react-zen';
 import { format } from 'date-fns';
@@ -109,28 +109,29 @@ export function PropertyFilters({
         style={{ minHeight: isMobile ? undefined : '100%', alignContent: 'start' }}
       >
         <Row display={{ base: 'flex', md: 'none' }} alignItems="flex-start">
-          <MenuTrigger>
-            <Button size="sm">
+          <DropdownMenu>
+            <DropdownMenuTrigger render={<Button variant="secondary" size="sm" />}>
               <Icon>
                 <Plus />
               </Icon>
-            </Button>
-            <Popover side="bottom" align="start">
-              <Menu style={{ maxHeight: 'calc(100vh - 2rem)', overflowY: 'auto' }}>
-                {(fields as any[]).map(field => (
-                  <MenuItem
-                    key={`${field.propertyName}:${field.dataType}`}
-                    id={`${field.propertyName}:${field.dataType}`}
-                    onAction={() => handleAdd(field)}
-                  >
-                    <span title={field.propertyName} style={propertyNameStyle}>
-                      {field.propertyName}
-                    </span>
-                  </MenuItem>
-                ))}
-              </Menu>
-            </Popover>
-          </MenuTrigger>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent
+              side="bottom"
+              align="start"
+              style={{ width: 'auto', maxHeight: 'calc(100vh - 2rem)', overflowY: 'auto' }}
+            >
+              {(fields as any[]).map(field => (
+                <DropdownMenuItem
+                  key={`${field.propertyName}:${field.dataType}`}
+                  onClick={() => handleAdd(field)}
+                >
+                  <span title={field.propertyName} style={propertyNameStyle}>
+                    {field.propertyName}
+                  </span>
+                </DropdownMenuItem>
+              ))}
+            </DropdownMenuContent>
+          </DropdownMenu>
         </Row>
         <Column
           display={{ base: 'none', md: 'flex' }}
@@ -143,7 +144,7 @@ export function PropertyFilters({
             {(fields as any[]).map(field => (
               <ListItem
                 key={`${field.propertyName}:${field.dataType}`}
-                id={`${field.propertyName}:${field.dataType}`}
+                value={`${field.propertyName}:${field.dataType}`}
                 onClick={() => handleAdd(field)}
               >
                 <span title={field.propertyName} style={propertyNameStyle}>
@@ -171,7 +172,7 @@ export function PropertyFilters({
           {!value.length &&
             (isMobile ? (
               <Row
-                color="muted"
+                color="muted-foreground"
                 justifyContent="center"
                 width="100%"
                 minHeight="70px"

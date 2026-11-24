@@ -1,13 +1,14 @@
 import {
   Button,
-  type ButtonProps,
   Column,
   Icon,
   Row,
   Text,
   Tooltip,
+  TooltipContent,
   TooltipTrigger,
 } from '@umami/react-zen';
+import type { ComponentProps } from 'react';
 import { AdminNav } from '@/app/(main)/admin/AdminNav';
 import { SettingsNav } from '@/app/(main)/settings/SettingsNav';
 import { WebsiteNav } from '@/app/(main)/websites/[websiteId]/WebsiteNav';
@@ -72,7 +73,7 @@ export function SideNav(props: any) {
   return (
     <Column
       {...props}
-      backgroundColor="surface"
+      backgroundColor="background"
       border
       borderRadius
       padding="2"
@@ -125,8 +126,8 @@ export function SideNav(props: any) {
                   tabIndex={0}
                   alignItems="center"
                   justifyContent={isCollapsed ? 'center' : undefined}
-                  hover={{ backgroundColor: 'surface-sunken' }}
-                  backgroundColor={isSelected ? 'surface-sunken' : undefined}
+                  hover={{ backgroundColor: 'muted' }}
+                  backgroundColor={isSelected ? 'muted' : undefined}
                   borderRadius
                   minHeight="9"
                 >
@@ -141,10 +142,10 @@ export function SideNav(props: any) {
               return (
                 <Link key={id} href={renderUrl(path, false)} role="button">
                   {isCollapsed ? (
-                    <TooltipTrigger delay={0}>
-                      {content}
-                      <Tooltip placement="right">{label}</Tooltip>
-                    </TooltipTrigger>
+                    <Tooltip>
+                      <TooltipTrigger delay={0} render={content} />
+                      <TooltipContent side="right">{label}</TooltipContent>
+                    </Tooltip>
                   ) : (
                     content
                   )}
@@ -166,16 +167,17 @@ export function SideNav(props: any) {
   );
 }
 
-const PanelButton = (props: ButtonProps) => {
+const PanelButton = (props: ComponentProps<typeof Button>) => {
   const [isCollapsed, setIsCollapsed] = useGlobalState('sidenav-collapsed', false);
   return (
     <Button
-      onPress={() => setIsCollapsed(!isCollapsed)}
-      variant="zero"
+      onClick={() => setIsCollapsed(!isCollapsed)}
+      variant="ghost"
+      className="hover:bg-transparent"
       {...props}
       style={{ padding: 0 }}
     >
-      <Icon strokeColor="muted">
+      <Icon strokeColor="muted-foreground">
         <PanelLeft />
       </Icon>
     </Button>

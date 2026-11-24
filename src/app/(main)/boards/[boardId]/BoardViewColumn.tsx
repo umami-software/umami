@@ -43,7 +43,7 @@ export function BoardViewColumn({
       ) : (
         title && <Heading>{title}</Heading>
       )}
-      {description && <Text color="muted">{description}</Text>}
+      {description && <Text color="muted-foreground">{description}</Text>}
       <Column width="100%" height="100%" style={{ minHeight: 0 }}>
         <Column width="100%" flexGrow={1} style={{ minHeight: 0 }}>
           {!isLoading &&

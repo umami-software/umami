@@ -34,7 +34,7 @@ export function WebsiteDeleteForm({
       isLoading={isPending}
       error={error}
       buttonLabel={t(labels.delete)}
-      buttonVariant="danger"
+      buttonVariant="destructive"
     />
   );
 }

@@ -115,27 +115,37 @@ export function CohortEditForm({
             <Column width="260px" gap="2">
               <Label>{t(labels.dateRange)}</Label>
               <FormField name="parameters.dateRange" rules={{ required: t(labels.required) }}>
-                <DateFilter placement="bottom start" />
+                {({ field }) => (
+                  <DateFilter
+                    placement="bottom start"
+                    value={field.value}
+                    onChange={field.onChange}
+                  />
+                )}
               </FormField>
             </Column>
 
             <Column gap="2">
               <Text weight="bold">{t(labels.filters)}</Text>
               <FormField name="parameters.filters">
-                <FieldFilters
-                  websiteId={websiteId}
-                  exclude={['path', 'event']}
-                  match={currentMatch}
-                  onMatchChange={setCurrentMatch}
-                />
+                {({ field }) => (
+                  <FieldFilters
+                    websiteId={websiteId}
+                    exclude={['path', 'event']}
+                    value={field.value}
+                    onChange={field.onChange}
+                    match={currentMatch}
+                    onMatchChange={setCurrentMatch}
+                  />
+                )}
               </FormField>
             </Column>
 
             <FormButtons>
-              <Button isDisabled={isPending} onPress={onClose}>
+              <Button variant="secondary" disabled={isPending} onClick={onClose}>
                 {t(labels.cancel)}
               </Button>
-              <FormSubmitButton variant="primary" data-test="button-submit" isDisabled={isPending}>
+              <FormSubmitButton data-test="button-submit" disabled={isPending}>
                 {t(labels.save)}
               </FormSubmitButton>
             </FormButtons>

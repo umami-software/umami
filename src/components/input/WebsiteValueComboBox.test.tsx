@@ -1,6 +1,5 @@
 import { fireEvent, render, screen } from '@testing-library/react';
 import { fromZonedTime } from 'date-fns-tz';
-import type { ReactNode } from 'react';
 import { expect, test, vi } from 'vitest';
 import { WebsiteValueComboBox } from './WebsiteValueComboBox';
 
@@ -11,10 +10,6 @@ const websiteValuesQueryMock = vi.fn(({ type }: { type: string }) => ({
 }));
 
 vi.mock('@umami/react-zen', () => ({
-  cn: (...values: string[]) => values.filter(Boolean).join(' '),
-  Label: ({ children }: { children: ReactNode }) => <label>{children}</label>,
-  ListItem: ({ children }: { children: ReactNode }) => <div>{children}</div>,
-  Loading: () => <div>Loading</div>,
   useDebounce: (value: string) => value,
 }));
 
@@ -23,12 +18,12 @@ vi.mock('@/components/common/ComboBox', () => ({
     'aria-label': ariaLabel,
     inputValue,
     onInputValueChange,
-    children,
+    items,
   }: {
     'aria-label'?: string;
     inputValue: string;
     onInputValueChange: (value: string) => void;
-    children: ReactNode;
+    items: string[];
   }) => (
     <div>
       <input
@@ -36,7 +31,9 @@ vi.mock('@/components/common/ComboBox', () => ({
         value={inputValue}
         onChange={event => onInputValueChange(event.currentTarget.value)}
       />
-      {children}
+      {items.map(item => (
+        <div key={item}>{item}</div>
+      ))}
     </div>
   ),
 }));

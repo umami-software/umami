@@ -16,7 +16,7 @@ export function BoardRealtimeActiveUsers({ websiteId }: { websiteId: string }) {
         <Text size="6xl" weight="bold">
           {count}
         </Text>
-        <Text size="sm" color="muted">
+        <Text size="sm" color="muted-foreground">
           {t(labels.online)}
         </Text>
       </Column>

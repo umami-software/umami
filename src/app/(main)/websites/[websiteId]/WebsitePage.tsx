@@ -35,7 +35,7 @@ export function WebsitePage({ websiteId }: { websiteId: string }) {
       <WebsitePanels websiteId={websiteId} />
       <ExpandedViewModal websiteId={websiteId} />
       <DialogButton
-        isOpen={!!annotationRange}
+        open={!!annotationRange}
         onOpenChange={isOpen => !isOpen && setAnnotationRange(null)}
         title={null}
         width="800px"

@@ -1,8 +1,16 @@
-import { DataColumn, DataTable, Dialog, Icon, MenuItem, Modal, Row, Text } from '@umami/react-zen';
+import {
+  DataColumn,
+  DataTable,
+  Dialog,
+  DialogContent,
+  DropdownMenuItem,
+  Icon,
+  Row,
+  Text,
+} from '@umami/react-zen';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { WebsiteDeleteForm } from '@/app/(main)/websites/[websiteId]/settings/WebsiteDeleteForm';
-import { ControlledDialog } from '@/components/common/ControlledDialog';
 import { DateDistance } from '@/components/common/DateDistance';
 import Link from '@/components/common/Link';
 import { SortableLabel } from '@/components/common/SortableLabel';
@@ -65,8 +73,8 @@ export function AdminWebsitesTable({ data = [], ...props }: { data: any[] }) {
 
             return (
               <MenuButton>
-                <MenuItem
-                  onAction={() => router.push(`/admin/websites/${id}`)}
+                <DropdownMenuItem
+                  onClick={() => router.push(`/admin/websites/${id}`)}
                   data-test="link-button-edit"
                 >
                   <Row alignItems="center" gap>
@@ -75,10 +83,9 @@ export function AdminWebsitesTable({ data = [], ...props }: { data: any[] }) {
                     </Icon>
                     <Text>{t(labels.edit)}</Text>
                   </Row>
-                </MenuItem>
-                <MenuItem
-                  id="delete"
-                  onAction={() => setDeleteWebsite(id)}
+                </DropdownMenuItem>
+                <DropdownMenuItem
+                  onClick={() => setDeleteWebsite(id)}
                   data-test="link-button-delete"
                 >
                   <Row alignItems="center" gap>
@@ -87,19 +94,17 @@ export function AdminWebsitesTable({ data = [], ...props }: { data: any[] }) {
                     </Icon>
                     <Text>{t(labels.delete)}</Text>
                   </Row>
-                </MenuItem>
+                </DropdownMenuItem>
               </MenuButton>
             );
           }}
         </DataColumn>
       </DataTable>
-      <ControlledDialog>
-        <Modal isOpen={!!deleteWebsite}>
-          <Dialog style={{ width: 400 }}>
-            <WebsiteDeleteForm websiteId={deleteWebsite} onClose={() => setDeleteWebsite(null)} />
-          </Dialog>
-        </Modal>
-      </ControlledDialog>
+      <Dialog open={!!deleteWebsite} onOpenChange={open => !open && setDeleteWebsite(null)}>
+        <DialogContent style={{ width: 400 }}>
+          <WebsiteDeleteForm websiteId={deleteWebsite} onClose={() => setDeleteWebsite(null)} />
+        </DialogContent>
+      </Dialog>
     </>
   );
 }

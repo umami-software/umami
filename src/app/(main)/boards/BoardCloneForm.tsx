@@ -115,9 +115,11 @@ export function BoardCloneForm({
               />
             </FormField>
             <FormField name="type" label={t(labels.boardType)}>
-              <Box width="100%" maxWidth="360px">
-                <Text>{boardTypeLabel}</Text>
-              </Box>
+              {() => (
+                <Box width="100%" maxWidth="360px">
+                  <Text>{boardTypeLabel}</Text>
+                </Box>
+              )}
             </FormField>
             {requiresBoardEntity(boardType) && (
               <FormField
@@ -125,38 +127,40 @@ export function BoardCloneForm({
                 label={entityLabel}
                 rules={{ required: t(labels.required) }}
               >
-                <Box width="100%" maxWidth="360px">
-                  {boardType === BOARD_TYPES.website ? (
-                    <WebsiteSelect
-                      websiteId={entityId}
-                      teamId={resolvedTeamId}
-                      onChange={handleEntityChange}
-                    />
-                  ) : boardType === BOARD_TYPES.pixel ? (
-                    <PixelSelect
-                      pixelId={entityId}
-                      teamId={resolvedTeamId}
-                      placeholder={t(labels.selectPixel)}
-                      onChange={handleEntityChange}
-                    />
-                  ) : (
-                    <LinkSelect
-                      linkId={entityId}
-                      teamId={resolvedTeamId}
-                      placeholder={t(labels.selectLink)}
-                      onChange={handleEntityChange}
-                    />
-                  )}
-                </Box>
+                {() => (
+                  <Box width="100%" maxWidth="360px">
+                    {boardType === BOARD_TYPES.website ? (
+                      <WebsiteSelect
+                        websiteId={entityId}
+                        teamId={resolvedTeamId}
+                        onChange={handleEntityChange}
+                      />
+                    ) : boardType === BOARD_TYPES.pixel ? (
+                      <PixelSelect
+                        pixelId={entityId}
+                        teamId={resolvedTeamId}
+                        placeholder={t(labels.selectPixel)}
+                        onChange={handleEntityChange}
+                      />
+                    ) : (
+                      <LinkSelect
+                        linkId={entityId}
+                        teamId={resolvedTeamId}
+                        placeholder={t(labels.selectLink)}
+                        onChange={handleEntityChange}
+                      />
+                    )}
+                  </Box>
+                )}
               </FormField>
             )}
             <Row justifyContent="flex-end" paddingTop="3" gap="3">
               {onClose && (
-                <Button isDisabled={isPending} onPress={onClose}>
+                <Button variant="secondary" disabled={isPending} onClick={onClose}>
                   {t(labels.cancel)}
                 </Button>
               )}
-              <FormSubmitButton isDisabled={isPending}>Clone</FormSubmitButton>
+              <FormSubmitButton disabled={isPending}>Clone</FormSubmitButton>
             </Row>
           </>
         );

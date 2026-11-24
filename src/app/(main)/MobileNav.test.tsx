@@ -1,4 +1,3 @@
-import type { DialogRenderProps } from '@umami/react-zen';
 import type { ReactNode } from 'react';
 import { beforeEach, expect, test, vi } from 'vitest';
 import { render, screen } from '@/test/render';
@@ -12,7 +11,7 @@ vi.mock('@/components/hooks', async importOriginal => {
 });
 
 vi.mock('@/components/input/MobileMenuButton', () => ({
-  MobileMenuButton: ({ children }: { children: (props: DialogRenderProps) => ReactNode }) => (
+  MobileMenuButton: ({ children }: { children: (props: { close: () => void }) => ReactNode }) => (
     <div>{children({ close: () => null })}</div>
   ),
 }));

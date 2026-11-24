@@ -53,6 +53,11 @@ export function DatePickerForm({
     !isValid(rangeEndDate) ||
     isAfter(startDate, rangeEndDate);
 
+  const disabledDays = [
+    ...(minDate ? [{ before: minDate }] : []),
+    ...(maxDate ? [{ after: maxDate }] : []),
+  ];
+
   const disabled = selected.includes(FILTER_DAY)
     ? isInvalidDate ||
       Boolean(minDate && isBefore(startOfDay(date), startOfDay(minDate))) ||
@@ -84,23 +89,24 @@ export function DatePickerForm({
       <Row justifyContent="center">
         <ToggleGroup
           value={selected}
-          onChange={value => {
+          onValueChange={value => {
             if (value.length) {
               setSelected(value);
             }
           }}
         >
-          <ToggleGroupItem id={FILTER_DAY}>{t(labels.singleDay)}</ToggleGroupItem>
-          <ToggleGroupItem id={FILTER_RANGE}>{t(labels.dateRange)}</ToggleGroupItem>
+          <ToggleGroupItem value={FILTER_DAY}>{t(labels.singleDay)}</ToggleGroupItem>
+          <ToggleGroupItem value={FILTER_RANGE}>{t(labels.dateRange)}</ToggleGroupItem>
         </ToggleGroup>
       </Row>
       <Column>
         {selected.includes(FILTER_DAY) && (
           <Calendar
-            value={date}
-            minValue={minDate}
-            maxValue={maxDate}
-            onChange={setDate}
+            mode="single"
+            selected={date}
+            defaultMonth={date}
+            disabled={disabledDays}
+            onSelect={setDate}
             required
           />
         )}
@@ -108,15 +114,12 @@ export function DatePickerForm({
           <Calendar
             mode="range"
             numberOfMonths={2}
-            // react-zen's CalendarProps type drops range-only props
-            {...{ resetOnSelect: true }}
+            resetOnSelect
             selected={{ from: startDate, to: endDate }}
-            defaultValue={subMonths(min([rangeEndDate, new Date()]), 1)}
+            defaultMonth={subMonths(min([rangeEndDate, new Date()]), 1)}
             showOutsideDays={false}
-            minValue={minDate}
-            maxValue={maxDate}
-            onSelect={selection => {
-              const range = selection as { from?: Date; to?: Date } | undefined;
+            disabled={disabledDays}
+            onSelect={range => {
               setStartDate(range?.from);
               setEndDate(range?.to);
             }}
@@ -126,8 +129,10 @@ export function DatePickerForm({
         )}
       </Column>
       <Row justifyContent="end" gap>
-        <Button onPress={onClose}>{t(labels.cancel)}</Button>
-        <Button variant="primary" onPress={handleSave} isDisabled={disabled}>
+        <Button variant="secondary" onClick={onClose}>
+          {t(labels.cancel)}
+        </Button>
+        <Button onClick={handleSave} disabled={disabled}>
           {t(labels.apply)}
         </Button>
       </Row>

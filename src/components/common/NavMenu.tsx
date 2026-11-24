@@ -39,8 +39,8 @@ export function NavMenu({
           <Row
             padding
             borderRadius
-            hover={{ backgroundColor: 'surface-sunken' }}
-            backgroundColor={isSelected ? 'surface-sunken' : undefined}
+            hover={{ backgroundColor: 'muted' }}
+            backgroundColor={isSelected ? 'muted' : undefined}
           >
             <IconLabel icon={icon}>
               <Text weight={isSelected ? 'bold' : 'normal'}>{label}</Text>

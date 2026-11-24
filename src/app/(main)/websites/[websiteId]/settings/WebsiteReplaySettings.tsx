@@ -1,17 +1,22 @@
 import {
   Button,
   Column,
+  Field,
+  FieldLabel,
   Label,
-  ListItem,
   Loading,
   Row,
   Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
   Slider,
   Switch,
   Text,
   TextField,
 } from '@umami/react-zen';
-import { useEffect, useState } from 'react';
+import { useEffect, useId, useState } from 'react';
 import { EmptyPlaceholder } from '@/components/common/EmptyPlaceholder';
 import { useMessages, useSubscription, useUpdateQuery, useWebsite } from '@/components/hooks';
 import { Video } from '@/components/icons';
@@ -19,11 +24,58 @@ import { getRecorderConfig, type RecorderConfig } from '@/lib/recorder';
 
 const RECORDER_NAME = 'recorder.js';
 
+const MASK_LEVEL_ITEMS = [
+  { value: 'strict', label: 'strict' },
+  { value: 'moderate', label: 'moderate' },
+];
+
+const MAX_DURATION_ITEMS = [
+  { value: '300000', label: '5 minutes' },
+  { value: '600000', label: '10 minutes' },
+  { value: '900000', label: '15 minutes' },
+  { value: '1200000', label: '20 minutes' },
+];
+
+function SampleRateSlider({
+  label,
+  value,
+  onValueChange,
+}: {
+  label: string;
+  value: number;
+  onValueChange: (value: number) => void;
+}) {
+  const labelId = useId();
+
+  return (
+    <Column gap="2" style={{ maxWidth: '360px' }}>
+      <Row justifyContent="space-between" alignItems="center">
+        <Label id={labelId}>{label}</Label>
+        <Text size="sm" style={{ fontVariantNumeric: 'tabular-nums' }}>
+          {value.toLocaleString()}
+        </Text>
+      </Row>
+      <Slider
+        aria-labelledby={labelId}
+        min={0.05}
+        max={1}
+        step={0.05}
+        value={[value]}
+        onValueChange={v => onValueChange(Array.isArray(v) ? v[0] : v)}
+      />
+    </Column>
+  );
+}
+
 export function WebsiteReplaySettings({ websiteId }: { websiteId: string }) {
   const website = useWebsite();
   const { t, labels, messages } = useMessages();
   const { hasFeature, cloudMode, isLoading } = useSubscription(website?.teamId);
   const { mutateAsync, touch, toast, isPending } = useUpdateQuery(`/websites/${websiteId}`);
+  const replaySwitchId = useId();
+  const heatmapSwitchId = useId();
+  const maskLevelId = useId();
+  const maxDurationId = useId();
   const config = getRecorderConfig(website?.replayConfig);
 
   const [replayEnabled, setReplayEnabled] = useState(config.replayEnabled === true);
@@ -125,10 +177,7 @@ export function WebsiteReplaySettings({ websiteId }: { websiteId: string }) {
           title={t(messages.upgradeRequired, { plan: 'Business' })}
           description="Watch real user sessions and build heatmaps from real visitor behavior."
         >
-          <Button
-            variant="primary"
-            onPress={() => window.open(`${process.env.cloudUrl}/settings/billing`, '_blank')}
-          >
+          <Button onClick={() => window.open(`${process.env.cloudUrl}/settings/billing`, '_blank')}>
             {t(labels.upgrade)}
           </Button>
         </EmptyPlaceholder>
@@ -139,77 +188,101 @@ export function WebsiteReplaySettings({ websiteId }: { websiteId: string }) {
   return (
     <Column gap="4">
       <Label>{sectionLabel}</Label>
-      <Switch isSelected={replayEnabled} onChange={handleReplayToggle} isDisabled={isPending}>
-        {t(labels.replays)}
-      </Switch>
-      <Switch isSelected={heatmapEnabled} onChange={handleHeatmapToggle} isDisabled={isPending}>
-        {t(labels.heatmaps)}
-      </Switch>
+      <Field orientation="horizontal">
+        <Switch
+          id={replaySwitchId}
+          checked={replayEnabled}
+          onCheckedChange={handleReplayToggle}
+          disabled={isPending}
+        />
+        <FieldLabel htmlFor={replaySwitchId}>{t(labels.replays)}</FieldLabel>
+      </Field>
+      <Field orientation="horizontal">
+        <Switch
+          id={heatmapSwitchId}
+          checked={heatmapEnabled}
+          onCheckedChange={handleHeatmapToggle}
+          disabled={isPending}
+        />
+        <FieldLabel htmlFor={heatmapSwitchId}>{t(labels.heatmaps)}</FieldLabel>
+      </Field>
       {(replayEnabled || heatmapEnabled) && (
         <>
           <Label>{t(labels.recorderCode)}</Label>
-          <Text color="muted">{t(messages.trackingCode)}</Text>
+          <Text color="muted-foreground">{t(messages.trackingCode)}</Text>
           <TextField
             value={recorderCode}
-            isReadOnly
+            readOnly
             allowCopy
             asTextArea
             resize="none"
             className="code-textarea"
           />
           {heatmapEnabled && (
-            <Slider
+            <SampleRateSlider
               label={`Heatmap ${t(labels.sampleRate).toLowerCase()}`}
-              min={0.05}
-              max={1}
-              step={0.05}
               value={heatmapSampleRate}
-              onChange={v => setHeatmapSampleRate(Array.isArray(v) ? v[0] : v)}
-              showValue
-              style={{ maxWidth: '360px' }}
+              onValueChange={setHeatmapSampleRate}
             />
           )}
           {replayEnabled && (
             <>
-              <Slider
+              <SampleRateSlider
                 label={`Replay ${t(labels.sampleRate).toLowerCase()}`}
-                min={0.05}
-                max={1}
-                step={0.05}
                 value={sampleRate}
-                onChange={v => setSampleRate(Array.isArray(v) ? v[0] : v)}
-                showValue
-                style={{ maxWidth: '360px' }}
+                onValueChange={setSampleRate}
               />
-              <Select
-                label={t(labels.maskLevel)}
-                value={maskLevel}
-                onChange={v => setMaskLevel(v as typeof maskLevel)}
-                buttonProps={{ style: { maxWidth: '360px' } }}
-              >
-                <ListItem id="strict">strict</ListItem>
-                <ListItem id="moderate">moderate</ListItem>
-              </Select>
-              <Select
-                label={t(labels.maxDuration)}
-                value={maxDuration}
-                onChange={v => setMaxDuration(v as string)}
-                buttonProps={{ style: { maxWidth: '360px' } }}
-              >
-                <ListItem id="300000">5 minutes</ListItem>
-                <ListItem id="600000">10 minutes</ListItem>
-                <ListItem id="900000">15 minutes</ListItem>
-                <ListItem id="1200000">20 minutes</ListItem>
-              </Select>
+              <Field>
+                <FieldLabel htmlFor={maskLevelId}>{t(labels.maskLevel)}</FieldLabel>
+                <Select
+                  items={MASK_LEVEL_ITEMS}
+                  value={maskLevel}
+                  onValueChange={v => setMaskLevel(v as typeof maskLevel)}
+                >
+                  <SelectTrigger id={maskLevelId} className="w-full" style={{ maxWidth: '360px' }}>
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent alignItemWithTrigger={false}>
+                    {MASK_LEVEL_ITEMS.map(item => (
+                      <SelectItem key={item.value} value={item.value}>
+                        {item.label}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </Field>
+              <Field>
+                <FieldLabel htmlFor={maxDurationId}>{t(labels.maxDuration)}</FieldLabel>
+                <Select
+                  items={MAX_DURATION_ITEMS}
+                  value={maxDuration}
+                  onValueChange={v => setMaxDuration(v as string)}
+                >
+                  <SelectTrigger
+                    id={maxDurationId}
+                    className="w-full"
+                    style={{ maxWidth: '360px' }}
+                  >
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent alignItemWithTrigger={false}>
+                    {MAX_DURATION_ITEMS.map(item => (
+                      <SelectItem key={item.value} value={item.value}>
+                        {item.label}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </Field>
               <TextField
                 label={t(labels.blockSelector)}
                 value={blockSelector}
-                onChange={setBlockSelector}
+                onValueChange={setBlockSelector}
               />
             </>
           )}
           <Row justifyContent="flex-end">
-            <Button variant="primary" onPress={handleSave} isDisabled={isPending}>
+            <Button onClick={handleSave} disabled={isPending}>
               {t(labels.save)}
             </Button>
           </Row>

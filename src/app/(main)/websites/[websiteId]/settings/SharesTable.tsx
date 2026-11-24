@@ -1,15 +1,16 @@
 import {
   Button,
   Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
   Icon,
-  Modal,
   Row,
 } from '@umami/react-zen';
+import { Edit, Trash } from 'lucide-react';
 import { useState } from 'react';
-import { ControlledDialog } from '@/components/common/ControlledDialog';
 import { ConfirmationForm } from '@/components/common/ConfirmationForm';
 import { useDeleteQuery, useMessages, useMobile, useModified } from '@/components/hooks';
-import { Edit, Trash } from 'lucide-react';
 import { SharedSharesTable } from '@/components/share/SharedSharesTable';
 import { ShareEditForm } from './ShareEditForm';
 
@@ -25,15 +26,15 @@ export function SharesTable({ data = [] }: { data?: any[] }) {
         data={data}
         renderActions={({ id, slug }) => (
           <Row>
-            <Button variant="quiet" aria-label={t(labels.edit)} onPress={() => setEditShareId(id)}>
+            <Button variant="ghost" aria-label={t(labels.edit)} onClick={() => setEditShareId(id)}>
               <Icon>
                 <Edit />
               </Icon>
             </Button>
             <Button
-              variant="quiet"
+              variant="ghost"
               aria-label={t(labels.delete)}
-              onPress={() => setDeleteShare({ id, slug })}
+              onClick={() => setDeleteShare({ id, slug })}
             >
               <Icon>
                 <Trash />
@@ -42,24 +43,26 @@ export function SharesTable({ data = [] }: { data?: any[] }) {
           </Row>
         )}
       />
-      <ControlledDialog>
-        <Modal isOpen={!!editShareId} onOpenChange={isOpen => !isOpen && setEditShareId(null)}>
-          <Dialog
-            title={t(labels.share)}
-            style={{
-              width: isMobile ? '100%' : '600px',
-              height: isMobile ? '100%' : undefined,
-              maxHeight: isMobile ? '100%' : 'min(80dvh, calc(100dvh - 40px))',
-              overflowY: 'auto',
-              padding: '32px',
-            }}
-          >
-            {editShareId && (
-              <ShareEditForm shareId={editShareId} onClose={() => setEditShareId(null)} />
-            )}
-          </Dialog>
-        </Modal>
-      </ControlledDialog>
+      <Dialog open={!!editShareId} onOpenChange={isOpen => !isOpen && setEditShareId(null)}>
+        <DialogContent
+          style={{
+            width: isMobile ? '100%' : '600px',
+            height: isMobile ? '100%' : undefined,
+            maxWidth: isMobile ? '100%' : 'calc(100% - 2rem)',
+            maxHeight: isMobile ? '100%' : 'min(80dvh, calc(100dvh - 40px))',
+            borderRadius: isMobile ? 0 : undefined,
+            overflowY: 'auto',
+            padding: '32px',
+          }}
+        >
+          <DialogHeader>
+            <DialogTitle>{t(labels.share)}</DialogTitle>
+          </DialogHeader>
+          {editShareId && (
+            <ShareEditForm shareId={editShareId} onClose={() => setEditShareId(null)} />
+          )}
+        </DialogContent>
+      </Dialog>
       {deleteShare && (
         <ShareDeleteDialog
           share={deleteShare}
@@ -101,33 +104,33 @@ function ShareDeleteDialog({
   };
 
   return (
-    <ControlledDialog>
-      <Modal isOpen={!!share} onOpenChange={isOpen => !isOpen && onClose()}>
-        <Dialog
-          title={title}
-          style={{
-            width: '400px',
-            maxHeight: 'min(80dvh, calc(100dvh - 40px))',
-            overflowY: 'auto',
-            padding: '32px',
-          }}
-        >
-          {share && (
-            <ConfirmationForm
-              message={t.rich(messages.confirmRemove, {
-                target: share.slug,
-                b: chunks => <b>{chunks}</b>,
-              })}
-              isLoading={isPending}
-              error={getErrorMessage(error)}
-              onConfirm={handleConfirm}
-              onClose={onClose}
-              buttonLabel={deleteLabel}
-              buttonVariant="danger"
-            />
-          )}
-        </Dialog>
-      </Modal>
-    </ControlledDialog>
+    <Dialog open={!!share} onOpenChange={isOpen => !isOpen && onClose()}>
+      <DialogContent
+        style={{
+          width: '400px',
+          maxHeight: 'min(80dvh, calc(100dvh - 40px))',
+          overflowY: 'auto',
+          padding: '32px',
+        }}
+      >
+        <DialogHeader>
+          <DialogTitle>{title}</DialogTitle>
+        </DialogHeader>
+        {share && (
+          <ConfirmationForm
+            message={t.rich(messages.confirmRemove, {
+              target: share.slug,
+              b: chunks => <b>{chunks}</b>,
+            })}
+            isLoading={isPending}
+            error={getErrorMessage(error)}
+            onConfirm={handleConfirm}
+            onClose={onClose}
+            buttonLabel={deleteLabel}
+            buttonVariant="destructive"
+          />
+        )}
+      </DialogContent>
+    </Dialog>
   );
 }

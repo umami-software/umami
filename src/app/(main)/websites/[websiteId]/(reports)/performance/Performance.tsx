@@ -1,15 +1,20 @@
 'use client';
 import {
   Column,
+  Field,
+  FieldLabel,
   Grid,
   Heading,
-  ListItem,
   Row,
   Select,
-  Tab,
-  TabList,
-  TabPanel,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
   Tabs,
+  TabsContent,
+  TabsList,
+  TabsTrigger,
   Text,
 } from '@umami/react-zen';
 import { colord } from 'colord';
@@ -94,6 +99,8 @@ const PERCENTILES = [
   { id: 'p95', label: 'p95 — 95th Percentile' },
 ] as const;
 
+const percentileItems = PERCENTILES.map(({ id, label }) => ({ value: id, label }));
+
 export function Performance({ websiteId, startDate, endDate, unit }: PerformanceProps) {
   const [selectedMetric, setSelectedMetric] = useState<string>('lcp');
   const [selectedPercentile, setSelectedPercentile] = useState<'p50' | 'p75' | 'p95'>('p75');
@@ -176,17 +183,25 @@ export function Performance({ websiteId, startDate, endDate, unit }: Performance
   return (
     <Column gap>
       <Grid columns="280px" gap>
-        <Select
-          label="Percentile"
-          value={selectedPercentile}
-          onChange={value => setSelectedPercentile(value as 'p50' | 'p75' | 'p95')}
-        >
-          {PERCENTILES.map(({ id, label }) => (
-            <ListItem key={id} id={id}>
-              {label}
-            </ListItem>
-          ))}
-        </Select>
+        <Field>
+          <FieldLabel>Percentile</FieldLabel>
+          <Select
+            items={percentileItems}
+            value={selectedPercentile}
+            onValueChange={value => setSelectedPercentile(value as 'p50' | 'p75' | 'p95')}
+          >
+            <SelectTrigger className="w-full">
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent alignItemWithTrigger={false}>
+              {PERCENTILES.map(({ id, label }) => (
+                <SelectItem key={id} value={id}>
+                  {label}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </Field>
       </Grid>
       <Column gap>
         <LoadingPanel data={stats.data} isLoading={stats.isLoading} error={stats.error}>
@@ -246,47 +261,47 @@ export function Performance({ websiteId, startDate, endDate, unit }: Performance
           <Panel>
             <Tabs>
               <Heading size="2xl">{t(labels.pages)}</Heading>
-              <TabList>
-                <Tab id="path">{t(labels.path)}</Tab>
-                <Tab id="title">{t(labels.pageTitle)}</Tab>
-              </TabList>
-              <TabPanel id="path">
+              <TabsList>
+                <TabsTrigger value="path">{t(labels.path)}</TabsTrigger>
+                <TabsTrigger value="title">{t(labels.pageTitle)}</TabsTrigger>
+              </TabsList>
+              <TabsContent value="path">
                 <PerformanceMetricsTable
                   params={{ ...queryParams, metric: selectedMetric, type: 'path' }}
                   percentile={selectedPercentile}
                   renderLabel={({ label }: { label: string }) => <Text>{label}</Text>}
                 />
-              </TabPanel>
-              <TabPanel id="title">
+              </TabsContent>
+              <TabsContent value="title">
                 <PerformanceMetricsTable
                   params={{ ...queryParams, metric: selectedMetric, type: 'title' }}
                   percentile={selectedPercentile}
                   renderLabel={(row: any) => <MetricLabel type="title" data={row} />}
                 />
-              </TabPanel>
+              </TabsContent>
             </Tabs>
           </Panel>
           <Panel>
             <Tabs>
               <Heading size="2xl">{t(labels.environment)}</Heading>
-              <TabList>
-                <Tab id="device">{t(labels.device)}</Tab>
-                <Tab id="browser">{t(labels.browser)}</Tab>
-              </TabList>
-              <TabPanel id="device">
+              <TabsList>
+                <TabsTrigger value="device">{t(labels.device)}</TabsTrigger>
+                <TabsTrigger value="browser">{t(labels.browser)}</TabsTrigger>
+              </TabsList>
+              <TabsContent value="device">
                 <PerformanceMetricsTable
                   params={{ ...queryParams, metric: selectedMetric, type: 'device' }}
                   percentile={selectedPercentile}
                   renderLabel={(row: any) => <MetricLabel type="device" data={row} />}
                 />
-              </TabPanel>
-              <TabPanel id="browser">
+              </TabsContent>
+              <TabsContent value="browser">
                 <PerformanceMetricsTable
                   params={{ ...queryParams, metric: selectedMetric, type: 'browser' }}
                   percentile={selectedPercentile}
                   renderLabel={(row: any) => <MetricLabel type="browser" data={row} />}
                 />
-              </TabPanel>
+              </TabsContent>
             </Tabs>
           </Panel>
         </GridRow>

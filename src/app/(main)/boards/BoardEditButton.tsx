@@ -11,7 +11,7 @@ export function BoardEditButton({ boardId }: { boardId: string }) {
     <LinkButton
       href={renderUrl(`/boards/${boardId}/edit`)}
       aria-label={t(labels.edit)}
-      variant="quiet"
+      variant="ghost"
     >
       <Icon>
         <Edit />

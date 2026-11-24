@@ -8,7 +8,7 @@ export function FunnelAddButton({ websiteId }: { websiteId: string }) {
 
   return (
     <DialogButton
-      variant="primary"
+      variant="default"
       icon={<Plus />}
       label={t(labels.funnel)}
       title={t(labels.funnel)}

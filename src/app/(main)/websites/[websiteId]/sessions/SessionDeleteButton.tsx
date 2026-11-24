@@ -53,7 +53,7 @@ export function SessionDeleteButton({
       data-test="button-delete-session"
       icon={<Trash />}
       title={t(labels.confirm)}
-      variant="quiet"
+      variant="ghost"
       width="400px"
     >
       {({ close }) => (
@@ -64,7 +64,7 @@ export function SessionDeleteButton({
           onConfirm={handleConfirm.bind(null, close)}
           onClose={close}
           buttonLabel={t(labels.delete)}
-          buttonVariant="danger"
+          buttonVariant="destructive"
         />
       )}
     </DialogButton>

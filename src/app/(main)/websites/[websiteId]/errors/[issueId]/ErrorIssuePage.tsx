@@ -92,9 +92,10 @@ export function ErrorIssuePage({ websiteId, issueId }: { websiteId: string; issu
                     .filter(status => status !== issue.data.status)
                     .map(status => (
                       <Button
+                        variant="secondary"
                         key={status}
-                        isDisabled={mutation.isPending}
-                        onPress={() => mutation.mutate(status)}
+                        disabled={mutation.isPending}
+                        onClick={() => mutation.mutate(status)}
                       >
                         {t(`action-${status}`)}
                       </Button>
@@ -168,7 +169,7 @@ export function ErrorIssuePage({ websiteId, issueId }: { websiteId: string; issu
                     {t('viewReplay')}
                   </Link>
                 ) : (
-                  <Text color="muted">{t('noReplay')}</Text>
+                  <Text color="muted-foreground">{t('noReplay')}</Text>
                 )}
               </Row>
               <Column gap="1">

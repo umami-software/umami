@@ -27,7 +27,7 @@ export function WebsiteShareForm({ websiteId }: WebsiteShareFormProps) {
             icon={<Plus size={16} />}
             label={t(labels.add)}
             title={t(labels.share)}
-            variant="primary"
+            variant="default"
             width="600px"
           >
             {({ close }) => <ShareEditForm websiteId={websiteId} onClose={close} />}

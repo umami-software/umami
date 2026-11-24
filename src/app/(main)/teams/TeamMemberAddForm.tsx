@@ -4,8 +4,11 @@ import {
   FormButtons,
   FormField,
   FormSubmitButton,
-  ListItem,
   Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
 } from '@umami/react-zen';
 import { useMessages, useUpdateQuery } from '@/components/hooks';
 import { UserSelect } from '@/components/input/UserSelect';
@@ -51,21 +54,24 @@ export function TeamMemberAddForm({
         <UserSelect teamId={teamId} />
       </FormField>
       <FormField name="role" label={t(labels.role)} rules={{ required: 'Required' }}>
-        <Select>
-          {roles.map(value => (
-            <ListItem key={value} id={value}>
-              {renderRole(value)}
-            </ListItem>
-          ))}
+        <Select items={roles.map(value => ({ value, label: renderRole(value) }))}>
+          <SelectTrigger className="w-full">
+            <SelectValue />
+          </SelectTrigger>
+          <SelectContent alignItemWithTrigger={false}>
+            {roles.map(value => (
+              <SelectItem key={value} value={value}>
+                {renderRole(value)}
+              </SelectItem>
+            ))}
+          </SelectContent>
         </Select>
       </FormField>
       <FormButtons>
-        <Button isDisabled={isPending} onPress={onClose}>
+        <Button variant="secondary" disabled={isPending} onClick={onClose}>
           {t(labels.cancel)}
         </Button>
-        <FormSubmitButton variant="primary" isDisabled={isPending}>
-          {t(labels.save)}
-        </FormSubmitButton>
+        <FormSubmitButton disabled={isPending}>{t(labels.save)}</FormSubmitButton>
       </FormButtons>
     </Form>
   );

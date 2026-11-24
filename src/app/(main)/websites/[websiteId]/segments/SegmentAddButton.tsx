@@ -7,7 +7,7 @@ export function SegmentAddButton({ websiteId }: { websiteId: string }) {
   const { t, labels } = useMessages();
 
   return (
-    <DialogButton icon={<Plus />} label={t(labels.segment)} variant="primary" width="800px">
+    <DialogButton icon={<Plus />} label={t(labels.segment)} variant="default" width="800px">
       {({ close }) => {
         return <SegmentEditForm websiteId={websiteId} onClose={close} />;
       }}

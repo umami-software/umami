@@ -28,7 +28,7 @@ export function LinkDeleteButton({
   };
 
   return (
-    <DialogButton icon={<Trash />} title={t(labels.confirm)} variant="quiet" width="400px">
+    <DialogButton icon={<Trash />} title={t(labels.confirm)} variant="ghost" width="400px">
       {({ close }) => (
         <ConfirmationForm
           message={t.rich(messages.confirmRemove, {
@@ -40,7 +40,7 @@ export function LinkDeleteButton({
           onConfirm={handleConfirm.bind(null, close)}
           onClose={close}
           buttonLabel={t(labels.delete)}
-          buttonVariant="danger"
+          buttonVariant="destructive"
         />
       )}
     </DialogButton>

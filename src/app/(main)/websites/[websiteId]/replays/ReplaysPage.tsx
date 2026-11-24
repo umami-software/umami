@@ -1,5 +1,13 @@
 'use client';
-import { Button, Column, Loading, Tab, TabList, TabPanel, Tabs } from '@umami/react-zen';
+import {
+  Button,
+  Column,
+  Loading,
+  Tabs,
+  TabsContent,
+  TabsList,
+  TabsTrigger,
+} from '@umami/react-zen';
 import { type Key, useState } from 'react';
 import { SessionModal } from '@/app/(main)/websites/[websiteId]/sessions/SessionModal';
 import { WebsiteControls } from '@/app/(main)/websites/[websiteId]/WebsiteControls';
@@ -16,7 +24,9 @@ import { SavedReplaysDataTable } from './SavedReplaysDataTable';
 const KEY_NAME = 'umami.replays.tab';
 
 export function ReplaysPage({ websiteId }: { websiteId: string }) {
-  const [tab, setTab] = useState<ReplaySource>(() => (getItem(KEY_NAME) === 'saved' ? 'saved' : 'replays'));
+  const [tab, setTab] = useState<ReplaySource>(() =>
+    getItem(KEY_NAME) === 'saved' ? 'saved' : 'replays',
+  );
   const website = useWebsite();
   const { t, labels, messages } = useMessages();
   const { hasFeature, cloudMode, isLoading } = useSubscription(website?.teamId);
@@ -41,8 +51,7 @@ export function ReplaysPage({ websiteId }: { websiteId: string }) {
             description="Watch real user sessions to see exactly how visitors interact with your site."
           >
             <Button
-              variant="primary"
-              onPress={() => window.open(`${process.env.cloudUrl}/settings/billing`, '_blank')}
+              onClick={() => window.open(`${process.env.cloudUrl}/settings/billing`, '_blank')}
             >
               {t(labels.upgrade)}
             </Button>
@@ -56,17 +65,17 @@ export function ReplaysPage({ websiteId }: { websiteId: string }) {
     <Column gap="3">
       <WebsiteControls websiteId={websiteId} />
       <Panel>
-        <Tabs selectedKey={tab} onSelectionChange={handleSelect}>
-          <TabList>
-            <Tab id="replays">{t(labels.replays)}</Tab>
-            <Tab id="saved">{t(labels.saved)}</Tab>
-          </TabList>
-          <TabPanel id="replays">
+        <Tabs value={tab} onValueChange={handleSelect}>
+          <TabsList>
+            <TabsTrigger value="replays">{t(labels.replays)}</TabsTrigger>
+            <TabsTrigger value="saved">{t(labels.saved)}</TabsTrigger>
+          </TabsList>
+          <TabsContent value="replays">
             <ReplaysDataTable websiteId={websiteId} />
-          </TabPanel>
-          <TabPanel id="saved">
+          </TabsContent>
+          <TabsContent value="saved">
             <SavedReplaysDataTable websiteId={websiteId} />
-          </TabPanel>
+          </TabsContent>
         </Tabs>
       </Panel>
       <SessionModal websiteId={websiteId} />

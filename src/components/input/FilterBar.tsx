@@ -1,7 +1,18 @@
-import { Button, Dialog, Icon, Modal, Row, Text, Tooltip, TooltipTrigger } from '@umami/react-zen';
+import {
+  Button,
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  Icon,
+  Row,
+  Text,
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from '@umami/react-zen';
 import { useState } from 'react';
 import { SegmentEditForm } from '@/app/(main)/websites/[websiteId]/segments/SegmentEditForm';
-import { ControlledDialog } from '@/components/common/ControlledDialog';
 import {
   useFilters,
   useFormat,
@@ -94,7 +105,7 @@ export function FilterBar({ websiteId }: { websiteId?: string }) {
       alignItems="center"
       justifyContent="space-between"
       padding="2"
-      backgroundColor="surface-sunken"
+      backgroundColor="muted"
       wrap="wrap"
     >
       <Row alignItems="center" gap="2" wrap="wrap" width={{ base: '100%', md: 'auto' }}>
@@ -159,62 +170,70 @@ export function FilterBar({ websiteId }: { websiteId?: string }) {
       </Row>
       <Row alignItems="center">
         {canSaveSegment && (
-          <TooltipTrigger delay={0}>
-            <Button
-              variant="zero"
-              aria-label={t(labels.saveSegment)}
-              onPress={() => setShowSaveSegment(true)}
+          <Tooltip>
+            <TooltipTrigger
+              delay={0}
+              render={
+                <Button
+                  variant="ghost"
+                  className="hover:bg-transparent"
+                  aria-label={t(labels.saveSegment)}
+                  onClick={() => setShowSaveSegment(true)}
+                />
+              }
             >
               <Icon>
                 <Bookmark />
               </Icon>
-            </Button>
-            <Tooltip>
+            </TooltipTrigger>
+            <TooltipContent>
               <Text>{t(labels.saveSegment)}</Text>
-            </Tooltip>
-          </TooltipTrigger>
+            </TooltipContent>
+          </Tooltip>
         )}
-        {/* Controlled rather than a DialogTrigger: TooltipTrigger does not forward the trigger's click handler. */}
-        <ControlledDialog>
-          <Modal
-            placement={isMobile ? 'fullscreen' : 'center'}
-            isOpen={showSaveSegment}
-            onOpenChange={setShowSaveSegment}
+        <Dialog open={showSaveSegment} onOpenChange={setShowSaveSegment}>
+          <DialogContent
+            style={{
+              width: isMobile ? '100%' : '800px',
+              height: isMobile ? '100%' : undefined,
+              minHeight: 300,
+              maxWidth: isMobile ? '100%' : 'calc(100% - 2rem)',
+              maxHeight: isMobile ? '100%' : 'calc(100dvh - 40px)',
+              borderRadius: isMobile ? 0 : undefined,
+              overflowY: 'auto',
+              padding: '32px',
+            }}
           >
-            <Dialog
-              title={t(labels.segment)}
-              style={{
-                width: isMobile ? '100%' : '800px',
-                height: isMobile ? '100%' : undefined,
-                minHeight: 300,
-                maxHeight: isMobile ? '100%' : 'calc(100dvh - 40px)',
-                overflowY: 'auto',
-                padding: '32px',
-              }}
-            >
-              {({ close }) => {
-                return (
-                  <SegmentEditForm
-                    websiteId={websiteId}
-                    onClose={close}
-                    filters={filters}
-                    sessionPropertyFilters={sessionPropertyFilters}
-                  />
-                );
-              }}
-            </Dialog>
-          </Modal>
-        </ControlledDialog>
-        <TooltipTrigger delay={0}>
-          <Button variant="zero" onPress={handleResetFilter}>
+            <DialogHeader>
+              <DialogTitle>{t(labels.segment)}</DialogTitle>
+            </DialogHeader>
+            <SegmentEditForm
+              websiteId={websiteId}
+              onClose={() => setShowSaveSegment(false)}
+              filters={filters}
+              sessionPropertyFilters={sessionPropertyFilters}
+            />
+          </DialogContent>
+        </Dialog>
+        <Tooltip>
+          <TooltipTrigger
+            delay={0}
+            render={
+              <Button
+                variant="ghost"
+                className="hover:bg-transparent"
+                onClick={handleResetFilter}
+              />
+            }
+          >
             <Icon>
               <X />
             </Icon>
-          </Button>
-          <Tooltip>
+          </TooltipTrigger>
+          <TooltipContent>
             <Text>{t(labels.clearAll)}</Text>
-          </Tooltip>
-        </TooltipTrigger>
+          </TooltipContent>
+        </Tooltip>
       </Row>
     </Row>
   );
@@ -238,12 +257,12 @@ const FilterItem = ({ name, label, operator, value, onRemove }) => {
           gap="2"
           style={{ maxWidth: 'min(500px, calc(100vw - 10rem))', minWidth: 0, overflow: 'hidden' }}
         >
-          <Text color="primary" weight="bold">
+          <Text color="foreground" weight="bold">
             {label}
           </Text>
-          <Text color="muted">{operator}</Text>
+          <Text color="muted-foreground">{operator}</Text>
           <Text
-            color="primary"
+            color="foreground"
             weight="bold"
             style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}
           >

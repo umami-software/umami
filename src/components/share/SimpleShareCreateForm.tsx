@@ -1,6 +1,8 @@
 import {
   Button,
   Column,
+  Field,
+  FieldLabel,
   Form,
   FormField,
   FormSubmitButton,
@@ -62,12 +64,16 @@ export function SimpleShareCreateForm({
           </FormField>
           <Row gap="6">
             <FormField label={t(labels.filters)} name="allowFilter">
-              <Switch
-                isSelected={watch('allowFilter')}
-                onChange={value => setValue('allowFilter', value, { shouldDirty: true })}
-              >
-                {t(labels.filtersEnabled)}
-              </Switch>
+              {({ controlProps }) => (
+                <Field orientation="horizontal">
+                  <Switch
+                    {...controlProps}
+                    checked={watch('allowFilter')}
+                    onCheckedChange={value => setValue('allowFilter', value, { shouldDirty: true })}
+                  />
+                  <FieldLabel htmlFor={controlProps.id}>{t(labels.filtersEnabled)}</FieldLabel>
+                </Field>
+              )}
             </FormField>
             <FormField label={t(labels.theme)} name="theme">
               <ThemeModeSelector
@@ -79,13 +85,11 @@ export function SimpleShareCreateForm({
           </Row>
           <Row justifyContent="flex-end" gap="3">
             {onCancel && (
-              <Button isDisabled={isPending} onPress={onCancel}>
+              <Button variant="secondary" disabled={isPending} onClick={onCancel}>
                 {t(labels.cancel)}
               </Button>
             )}
-            <FormSubmitButton variant="primary" isDisabled={isPending}>
-              {t(labels.add)}
-            </FormSubmitButton>
+            <FormSubmitButton disabled={isPending}>{t(labels.add)}</FormSubmitButton>
           </Row>
         </Column>
       )}

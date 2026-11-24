@@ -1,9 +1,7 @@
 'use client';
-import { Column, Dialog, Modal } from '@umami/react-zen';
+import { Column, Dialog, DialogContent } from '@umami/react-zen';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { ControlledDialog } from '@/components/common/ControlledDialog';
 import { buildPath } from '@/lib/url';
-import styles from './SessionModal.module.css';
 import { SessionProfile } from './SessionProfile';
 
 export function SessionProfileModal({
@@ -30,16 +28,20 @@ export function SessionProfileModal({
   };
 
   return (
-    <ControlledDialog>
-      <Modal className={styles.modal} isOpen onOpenChange={handleOpenChange}>
-        <Column height="100%">
-          <Dialog className="h-full rounded-lg">
-            <Column padding="10">
-              <SessionProfile websiteId={websiteId} sessionId={sessionId} onClose={closeModal} />
-            </Column>
-          </Dialog>
+    <Dialog open onOpenChange={handleOpenChange}>
+      <DialogContent
+        style={{
+          width: 'min(calc(100dvw - 48px), 1320px)',
+          maxWidth: 'calc(100% - 2rem)',
+          height: 'calc(100dvh - 80px)',
+          overflowY: 'auto',
+        }}
+        showCloseButton={false}
+      >
+        <Column padding="10">
+          <SessionProfile websiteId={websiteId} sessionId={sessionId} onClose={closeModal} />
         </Column>
-      </Modal>
-    </ControlledDialog>
+      </DialogContent>
+    </Dialog>
   );
 }

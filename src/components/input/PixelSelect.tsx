@@ -1,22 +1,27 @@
-import { Icon, ListItem, Row, Select, type SelectProps, Text } from '@umami/react-zen';
-import { useEffect, useState } from 'react';
+import { type Button, Icon, Row, Text } from '@umami/react-zen';
+import { type ComponentProps, useEffect, useState } from 'react';
 import { Empty } from '@/components/common/Empty';
+import { SearchSelect } from '@/components/common/SearchSelect';
 import { useMessages, usePixelQuery, usePixelsQuery } from '@/components/hooks';
 import { Grid2x2 } from '@/components/icons';
+
+export interface PixelSelectProps {
+  pixelId?: string;
+  teamId?: string;
+  isCollapsed?: boolean;
+  placeholder?: string;
+  buttonProps?: Omit<ComponentProps<typeof Button>, 'children'>;
+  onChange?: (pixelId: string) => void;
+}
 
 export function PixelSelect({
   pixelId,
   teamId,
-  onChange,
   isCollapsed,
+  placeholder,
   buttonProps,
-  listProps,
-  ...props
-}: {
-  pixelId?: string;
-  teamId?: string;
-  isCollapsed?: boolean;
-} & SelectProps) {
+  onChange,
+}: PixelSelectProps) {
   const { t, labels, messages } = useMessages();
   const { data: pixel } = usePixelQuery(pixelId);
   const [name, setName] = useState<string>(pixel?.name);
@@ -28,10 +33,6 @@ export function PixelSelect({
     setName(pixel?.name);
   }, [pixel?.name]);
 
-  const handleOpenChange = () => {
-    setSearch('');
-  };
-
   const handleChange = (id: string) => {
     setName(listItems.find(item => item.id === id)?.name);
     onChange?.(id);
@@ -42,14 +43,14 @@ export function PixelSelect({
       return '';
     }
 
-    const value = name || props.placeholder || t(labels.pixel);
+    const value = name || placeholder || t(labels.pixel);
 
     return (
       <Row alignItems="center" gap>
         <Icon>
           <Grid2x2 />
         </Icon>
-        <Text truncate color={name ? undefined : 'muted'}>
+        <Text truncate color={name ? undefined : 'muted-foreground'}>
           {value}
         </Text>
       </Row>
@@ -57,17 +58,17 @@ export function PixelSelect({
   };
 
   return (
-    <Select
-      {...props}
+    <SearchSelect
       value={pixelId}
+      items={listItems}
       isLoading={isLoading}
-      allowSearch={true}
-      searchValue={search}
       onSearch={setSearch}
-      onChange={value => handleChange(value as string)}
-      onOpenChange={handleOpenChange}
-      renderValue={renderValue}
-      buttonProps={{
+      onChange={handleChange}
+      renderValue={renderValue()}
+      emptyMessage={<Empty message={t(messages.noResultsFound)} />}
+      contentStyle={{ width: 280 }}
+      maxHeight={480}
+      triggerProps={{
         ...buttonProps,
         style: {
           minHeight: 40,
@@ -76,22 +77,6 @@ export function PixelSelect({
           ...buttonProps?.style,
         },
       }}
-      maxHeight={480}
-      listProps={{
-        ...listProps,
-        renderEmptyState:
-          listProps?.renderEmptyState || (() => <Empty message={t(messages.noResultsFound)} />),
-        style: {
-          width: 280,
-          ...listProps?.style,
-        },
-      }}
-    >
-      {listItems.map(({ id, name }) => (
-        <ListItem key={id} id={id}>
-          {name}
-        </ListItem>
-      ))}
-    </Select>
+    />
   );
 }

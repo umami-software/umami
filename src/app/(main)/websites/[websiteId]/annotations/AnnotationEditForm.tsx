@@ -81,7 +81,7 @@ export function AnnotationEditForm({
               label={t(labels.date)}
               value={date}
               locale={locale}
-              onChange={value => {
+              onValueChange={value => {
                 if (value) {
                   setDate(value);
                 }
@@ -101,21 +101,19 @@ export function AnnotationEditForm({
               </FormField>
               <Text
                 size="sm"
-                color="muted"
+                color="muted-foreground"
                 align="right"
-                style={isOverLimit ? { color: 'var(--zen-status-error)' } : undefined}
+                style={isOverLimit ? { color: 'var(--destructive)' } : undefined}
               >
                 {noteLength} / 500
               </Text>
             </Column>
 
             <FormButtons>
-              <Button isDisabled={isPending} onPress={onClose}>
+              <Button variant="secondary" disabled={isPending} onClick={onClose}>
                 {t(labels.cancel)}
               </Button>
-              <FormSubmitButton variant="primary" isDisabled={isPending}>
-                {t(labels.save)}
-              </FormSubmitButton>
+              <FormSubmitButton disabled={isPending}>{t(labels.save)}</FormSubmitButton>
             </FormButtons>
           </Column>
         );

@@ -1,16 +1,19 @@
 import {
   Button,
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuGroup,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuRadioGroup,
+  DropdownMenuRadioItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
   Icon,
-  Menu,
-  MenuItem,
-  MenuSection,
-  MenuSeparator,
-  MenuTrigger,
   Row,
   Text,
 } from '@umami/react-zen';
 import { ArrowRight } from 'lucide-react';
-import type { Key } from 'react';
 import { IconLabel } from '@/components/common/IconLabel';
 import { useLoginQuery, useMessages, useMobile, useNavigation } from '@/components/hooks';
 import { ChevronRight, User, Users } from '@/components/icons';
@@ -23,7 +26,7 @@ export function TeamsButton() {
   const { teamId, router } = useNavigation();
   const { isPhone } = useMobile();
   const team = user?.teams?.find(({ id }) => id === teamId);
-  const selectedKeys = new Set([teamId || 'user']);
+  const selectedKey = teamId || 'user';
   const label = teamId ? team?.name : user.username;
 
   const cloudMode = !!process.env.cloudMode;
@@ -40,20 +43,18 @@ export function TeamsButton() {
     }
   };
 
-  const handleAction = async (key: Key) => {
-    if (key === 'user') {
-      removeItem(LAST_TEAM_CONFIG);
-      if (cloudMode) {
-        window.location.href = '/';
-      } else {
-        router.push('/');
-      }
+  const handleUserSelect = () => {
+    removeItem(LAST_TEAM_CONFIG);
+    if (cloudMode) {
+      window.location.href = '/';
+    } else {
+      router.push('/');
     }
   };
 
   return (
-    <MenuTrigger>
-      <Button variant="quiet">
+    <DropdownMenu>
+      <DropdownMenuTrigger render={<Button variant="ghost" />}>
         <Row
           alignItems="center"
           position="relative"
@@ -68,38 +69,45 @@ export function TeamsButton() {
         <Icon rotate={90} size="sm">
           <ChevronRight />
         </Icon>
-      </Button>
-      <Menu className="min-w-[300px]" selectionMode="single" selectedKeys={selectedKeys}>
-        <MenuSection title={t(labels.myAccount)}>
-          <MenuItem id="user" onAction={handleAction}>
-            <IconLabel icon={<User />} label={user.username} />
-          </MenuItem>
-        </MenuSection>
-        <MenuSeparator />
-        <MenuSection title={t(labels.teams)}>
-          {user?.teams?.map(({ id, name, billingStatus }) => (
-            <MenuItem
-              key={id}
-              id={id}
-              onAction={() => handleNavigate(getUrl(`/teams/${id}`))}
-              style={billingStatus === 'past_due' ? { opacity: 0.5 } : undefined}
-            >
-              <IconLabel icon={<Users />}>
-                <Text wrap="nowrap">{name}</Text>
-              </IconLabel>
-            </MenuItem>
-          ))}
-          <MenuSeparator />
-          <MenuItem id="manage-teams" onAction={() => handleNavigate(getUrl('/settings/teams'))}>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent className="w-auto" style={{ minWidth: 300 }}>
+        <DropdownMenuGroup>
+          <DropdownMenuLabel>{t(labels.myAccount)}</DropdownMenuLabel>
+          <DropdownMenuRadioGroup value={selectedKey}>
+            <DropdownMenuRadioItem value="user" closeOnClick onClick={handleUserSelect}>
+              <IconLabel icon={<User />} label={user.username} />
+            </DropdownMenuRadioItem>
+          </DropdownMenuRadioGroup>
+        </DropdownMenuGroup>
+        <DropdownMenuSeparator />
+        <DropdownMenuGroup>
+          <DropdownMenuLabel>{t(labels.teams)}</DropdownMenuLabel>
+          <DropdownMenuRadioGroup value={selectedKey}>
+            {user?.teams?.map(({ id, name, billingStatus }) => (
+              <DropdownMenuRadioItem
+                key={id}
+                value={id}
+                closeOnClick
+                onClick={() => handleNavigate(getUrl(`/teams/${id}`))}
+                style={billingStatus === 'past_due' ? { opacity: 0.5 } : undefined}
+              >
+                <IconLabel icon={<Users />}>
+                  <Text wrap="nowrap">{name}</Text>
+                </IconLabel>
+              </DropdownMenuRadioItem>
+            ))}
+          </DropdownMenuRadioGroup>
+          <DropdownMenuSeparator />
+          <DropdownMenuItem onClick={() => handleNavigate(getUrl('/settings/teams'))}>
             <Row alignItems="center" justifyContent="space-between" gap width="100%">
               <Text align="center">Manage teams</Text>
               <Icon>
                 <ArrowRight />
               </Icon>
             </Row>
-          </MenuItem>
-        </MenuSection>
-      </Menu>
-    </MenuTrigger>
+          </DropdownMenuItem>
+        </DropdownMenuGroup>
+      </DropdownMenuContent>
+    </DropdownMenu>
   );
 }

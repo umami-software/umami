@@ -16,7 +16,7 @@ export function CohortEditButton({
   const { t, labels } = useMessages();
 
   return (
-    <DialogButton icon={<Edit />} variant="quiet" title={t(labels.cohort)} width="800px">
+    <DialogButton icon={<Edit />} variant="ghost" title={t(labels.cohort)} width="800px">
       {({ close }) => {
         return (
           <CohortEditForm

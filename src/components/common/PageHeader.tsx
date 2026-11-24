@@ -34,12 +34,12 @@ export function PageHeader({
         {label}
         <Row alignItems="center" gap="3">
           {icon && (
-            <Icon size="md" color="muted">
+            <Icon size="md" color="muted-foreground">
               {icon}
             </Icon>
           )}
           {title && titleHref ? (
-            <LinkButton href={titleHref} variant="quiet">
+            <LinkButton href={titleHref} variant="ghost">
               <Heading size={{ base: 'lg', md: '2xl', lg: '3xl' }}>{title}</Heading>
             </LinkButton>
           ) : (
@@ -52,7 +52,7 @@ export function PageHeader({
           )}
         </Row>
         {description && (
-          <Text color="muted" truncate style={{ maxWidth: 600 }} title={description}>
+          <Text color="muted-foreground" truncate style={{ maxWidth: 600 }} title={description}>
             {description}
           </Text>
         )}

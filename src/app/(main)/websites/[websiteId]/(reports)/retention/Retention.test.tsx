@@ -91,7 +91,7 @@ test('shades cells relative to the best retention shown, not a fixed scale', () 
 
   const background = (text: string) => screen.getByText(text).style.backgroundColor;
 
-  expect(background('15.00%')).toContain('var(--zen-primary) 60%');
+  expect(background('15.00%')).toContain('var(--primary) 60%');
   // sqrt(9.02 / 15) * 60
-  expect(background('9.02%')).toContain('var(--zen-primary) 47%');
+  expect(background('9.02%')).toContain('var(--primary) 47%');
 });

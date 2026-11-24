@@ -1,52 +1,32 @@
-import { Button, DialogTrigger, Icon, Menu, Popover } from '@umami/react-zen';
 import {
-  Children,
-  cloneElement,
-  isValidElement,
-  type Key,
-  type ReactElement,
-  type ReactNode,
-} from 'react';
+  Button,
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuTrigger,
+  Icon,
+} from '@umami/react-zen';
+import type { ReactNode } from 'react';
 import { Ellipsis } from '@/components/icons';
 
-export function MenuButton({
-  children,
-  onAction,
-  isDisabled,
-}: {
-  children: ReactNode;
-  onAction?: (action: string) => void;
-  isDisabled?: boolean;
-}) {
-  const handleAction = (key: Key) => {
-    onAction?.(key.toString());
-  };
-
+/** An ellipsis button that opens a dropdown of `DropdownMenuItem` children. */
+export function MenuButton({ children, disabled }: { children: ReactNode; disabled?: boolean }) {
   return (
-    <DialogTrigger>
-      <Button variant="quiet" isDisabled={isDisabled}>
+    <DropdownMenu>
+      <DropdownMenuTrigger
+        render={<Button variant="ghost" aria-label="menu" disabled={disabled} />}
+      >
         <Icon>
           <Ellipsis />
         </Icon>
-      </Button>
-      <Popover side="bottom" align="start">
-        <Menu aria-label="menu" style={{ minWidth: '140px' }}>
-          {Children.map(children, child => {
-            if (!isValidElement(child)) {
-              return child;
-            }
-
-            const menuChild = child as ReactElement<{ onAction?: (key: Key) => void }>;
-
-            return cloneElement(menuChild, {
-              onAction: (key: Key) => {
-                menuChild.props.onAction?.(key);
-                handleAction(key);
-              },
-            });
-          })}
-        </Menu>
-      </Popover>
-    </DialogTrigger>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent
+        side="bottom"
+        align="start"
+        className="w-auto"
+        style={{ minWidth: '140px' }}
+      >
+        {children}
+      </DropdownMenuContent>
+    </DropdownMenu>
   );
 }

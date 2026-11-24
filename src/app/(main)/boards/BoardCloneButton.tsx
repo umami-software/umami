@@ -1,5 +1,5 @@
-import { Copy } from '@/components/icons';
 import { useLoginQuery, useNavigation } from '@/components/hooks';
+import { Copy } from '@/components/icons';
 import { DialogButton } from '@/components/input/DialogButton';
 import { ROLES } from '@/lib/constants';
 import type { Board } from '@/lib/types';
@@ -29,7 +29,7 @@ export function BoardCloneButton({
       label={showLabel ? 'Clone' : undefined}
       title="Clone board"
       aria-label="Clone"
-      variant={showLabel ? undefined : 'quiet'}
+      variant={showLabel ? undefined : 'ghost'}
       width="600px"
     >
       {({ close }) => <BoardCloneForm boardId={boardId} onSave={handleSave} onClose={close} />}

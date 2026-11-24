@@ -1,5 +1,4 @@
 import { fromZonedTime } from 'date-fns-tz';
-import type { ReactNode } from 'react';
 import { expect, test, vi } from 'vitest';
 import { render } from '@/test/render';
 import { CompareTables } from './CompareTables';
@@ -15,12 +14,6 @@ const useDateRangeMock = vi.fn((_options?: { timezone?: string }) => ({
     endDate: new Date('2026-07-24T23:59:59.999'),
   },
   dateCompare: { compare: 'prev', startDate: compareStart, endDate: compareEnd },
-}));
-
-vi.mock('@umami/react-zen', async importOriginal => ({
-  ...(await importOriginal<typeof import('@umami/react-zen')>()),
-  Select: ({ children }: { children: ReactNode }) => <div>{children}</div>,
-  ListItem: ({ children }: { children: ReactNode }) => <div>{children}</div>,
 }));
 
 vi.mock('@/components/hooks', () => ({

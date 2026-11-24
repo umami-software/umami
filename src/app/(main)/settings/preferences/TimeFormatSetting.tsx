@@ -1,4 +1,12 @@
-import { Button, ListItem, Row, Select } from '@umami/react-zen';
+import {
+  Button,
+  Row,
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@umami/react-zen';
 import { useMessages } from '@/components/hooks';
 import { DEFAULT_TIME_FORMAT, TIME_FORMAT_CONFIG, TIME_FORMATS } from '@/lib/constants';
 import { setItem } from '@/lib/storage';
@@ -10,6 +18,12 @@ export function TimeFormatSetting() {
   const { t, labels } = useMessages();
   const timeFormat = useApp(selector);
 
+  const items = [
+    { value: TIME_FORMATS.auto, label: t(labels.languageDefault) },
+    { value: TIME_FORMATS.h12, label: t(labels.format12Hour) },
+    { value: TIME_FORMATS.h24, label: t(labels.format24Hour) },
+  ];
+
   const saveTimeFormat = (value: string) => {
     setItem(TIME_FORMAT_CONFIG, value);
     setTimeFormat(value);
@@ -17,16 +31,21 @@ export function TimeFormatSetting() {
 
   return (
     <Row gap>
-      <Select
-        value={timeFormat}
-        onChange={val => saveTimeFormat(val as string)}
-        buttonProps={{ style: { minWidth: '250px' } }}
-      >
-        <ListItem id={TIME_FORMATS.auto}>{t(labels.languageDefault)}</ListItem>
-        <ListItem id={TIME_FORMATS.h12}>{t(labels.format12Hour)}</ListItem>
-        <ListItem id={TIME_FORMATS.h24}>{t(labels.format24Hour)}</ListItem>
+      <Select items={items} value={timeFormat} onValueChange={val => saveTimeFormat(val as string)}>
+        <SelectTrigger style={{ minWidth: '250px' }}>
+          <SelectValue />
+        </SelectTrigger>
+        <SelectContent alignItemWithTrigger={false}>
+          {items.map(item => (
+            <SelectItem key={item.value} value={item.value}>
+              {item.label}
+            </SelectItem>
+          ))}
+        </SelectContent>
       </Select>
-      <Button onPress={() => saveTimeFormat(DEFAULT_TIME_FORMAT)}>{t(labels.reset)}</Button>
+      <Button variant="secondary" onClick={() => saveTimeFormat(DEFAULT_TIME_FORMAT)}>
+        {t(labels.reset)}
+      </Button>
     </Row>
   );
 }

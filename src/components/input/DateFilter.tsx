@@ -1,17 +1,27 @@
-import { Dialog, ListItem, ListSeparator, Modal, Select, type SelectProps } from '@umami/react-zen';
-import { Fragment, type Key, useState } from 'react';
-import { ControlledDialog } from '@/components/common/ControlledDialog';
+import {
+  Dialog,
+  DialogContent,
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectSeparator,
+  SelectTrigger,
+  SelectValue,
+} from '@umami/react-zen';
+import { type ComponentProps, type CSSProperties, Fragment, useState } from 'react';
 import { DateDisplay } from '@/components/common/DateDisplay';
-import { useMessages, useMobile } from '@/components/hooks';
+import { useMessages } from '@/components/hooks';
 import { DatePickerForm } from '@/components/metrics/DatePickerForm';
 import { getMaxSelectableDate, parseDateRange } from '@/lib/date';
 
-export interface DateFilterProps extends Omit<SelectProps, 'value' | 'onChange'> {
+export interface DateFilterProps {
   value?: string;
   onChange?: (value: string) => void;
   showAllTime?: boolean;
   renderDate?: boolean;
-  placement?: any;
+  placement?: string;
+  className?: string;
+  buttonProps?: { className?: string; style?: CSSProperties };
 }
 
 export function DateFilter({
@@ -20,12 +30,12 @@ export function DateFilter({
   showAllTime,
   renderDate,
   placement = 'bottom',
-  ...props
+  className,
+  buttonProps,
 }: DateFilterProps) {
   const { t, labels } = useMessages();
   const [showPicker, setShowPicker] = useState(false);
   const { startDate, endDate } = parseDateRange(value) || {};
-  const { isMobile } = useMobile();
 
   const options = [
     { label: t(labels.today), value: '0day' },
@@ -79,83 +89,70 @@ export function DateFilter({
     .filter(n => n)
     .map((a, id) => ({ ...a, id }));
 
-  const handleChange = (value: Key) => {
+  const handleChange = (value: string) => {
     if (value === 'custom') {
       setShowPicker(true);
       return;
     }
-    onChange(value.toString());
+    onChange(value);
   };
 
   const handlePickerChange = (value: string) => {
     setShowPicker(false);
-    onChange(value.toString());
+    onChange(value);
   };
 
-  const renderValue = ({ defaultChildren }) => {
+  const renderValue = (selected: string) => {
     return (value?.startsWith('range') || renderDate) && startDate && endDate ? (
       <DateDisplay startDate={startDate} endDate={endDate} />
     ) : (
-      defaultChildren
+      options.find(option => option.value === selected)?.label
     );
   };
 
-  const selectedValue = value.endsWith(':all') ? 'all' : value;
+  const selectedValue = value?.endsWith(':all') ? 'all' : value;
 
   const [side, align] = String(placement).split(' ');
 
   return (
     <>
-      <Select
-        {...props}
-        value={selectedValue}
-        placeholder={t(labels.selectDate)}
-        onChange={handleChange}
-        renderValue={renderValue}
-        popoverProps={{
-          side: side as any,
-          align: (align === 'top' ? 'start' : align === 'bottom' ? 'end' : align) as any,
-          style: isMobile
-            ? {
-                // Base UI's positioned wrapper contains React Zen's fullscreen popup.
-                position: 'fixed',
-                top: 0,
-                right: 0,
-                bottom: 0,
-                left: 0,
-                width: '100vw',
-                height: '100dvh',
-                transform: 'none',
-              }
-            : { minWidth: 200 },
-        }}
-        isFullscreen={isMobile}
-      >
-        {options.map(({ label, value, divider }: any) => {
-          return (
-            <Fragment key={label}>
-              {divider && <ListSeparator />}
-              <ListItem id={value}>{label}</ListItem>
-            </Fragment>
-          );
-        })}
+      <Select value={selectedValue} onValueChange={handleChange}>
+        <SelectTrigger
+          {...buttonProps}
+          className={[className, buttonProps?.className].filter(Boolean).join(' ') || undefined}
+        >
+          <SelectValue placeholder={t(labels.selectDate)}>{renderValue}</SelectValue>
+        </SelectTrigger>
+        <SelectContent
+          alignItemWithTrigger={false}
+          side={side as ComponentProps<typeof SelectContent>['side']}
+          align={align === 'top' ? 'start' : align === 'bottom' ? 'end' : (align as any)}
+          style={{ minWidth: 200 }}
+        >
+          {options.map(({ label, value, divider }: any) => {
+            return (
+              <Fragment key={label}>
+                {divider && <SelectSeparator />}
+                <SelectItem value={value}>{label}</SelectItem>
+              </Fragment>
+            );
+          })}
+        </SelectContent>
       </Select>
-      {showPicker && (
-        <ControlledDialog>
-          <Modal isOpen={true}>
-            <Dialog>
-              <DatePickerForm
-                startDate={startDate}
-                endDate={endDate}
-                minDate={new Date(2000, 0, 1)}
-                maxDate={getMaxSelectableDate()}
-                onChange={handlePickerChange}
-                onClose={() => setShowPicker(false)}
-              />
-            </Dialog>
-          </Modal>
-        </ControlledDialog>
-      )}
+      <Dialog open={showPicker} onOpenChange={setShowPicker}>
+        <DialogContent style={{ width: 'auto', maxWidth: 'calc(100% - 2rem)' }}>
+          {showPicker && (
+            <DatePickerForm
+              startDate={startDate}
+              endDate={endDate}
+              minDate={new Date(2000, 0, 1)}
+              maxDate={getMaxSelectableDate()}
+              onChange={handlePickerChange}
+              onClose={() => setShowPicker(false)}
+            />
+          )}
+        </DialogContent>
+      </Dialog>
     </>
   );
 }

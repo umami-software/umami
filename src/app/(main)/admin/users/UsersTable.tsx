@@ -1,7 +1,17 @@
-import { DataColumn, DataTable, Icon, MenuItem, Modal, Row, Text } from '@umami/react-zen';
+import {
+  DataColumn,
+  DataTable,
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DropdownMenuItem,
+  Icon,
+  Row,
+  Text,
+} from '@umami/react-zen';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
-import { ControlledDialog } from '@/components/common/ControlledDialog';
 import { DateDistance } from '@/components/common/DateDistance';
 import Link from '@/components/common/Link';
 import { SortableLabel } from '@/components/common/SortableLabel';
@@ -56,8 +66,8 @@ export function UsersTable({
 
               return (
                 <MenuButton>
-                  <MenuItem
-                    onAction={() => router.push(`/admin/users/${id}`)}
+                  <DropdownMenuItem
+                    onClick={() => router.push(`/admin/users/${id}`)}
                     data-test="link-button-edit"
                   >
                     <Row alignItems="center" gap>
@@ -66,10 +76,9 @@ export function UsersTable({
                       </Icon>
                       <Text>{t(labels.edit)}</Text>
                     </Row>
-                  </MenuItem>
-                  <MenuItem
-                    id="delete"
-                    onAction={() => setDeleteUser(row)}
+                  </DropdownMenuItem>
+                  <DropdownMenuItem
+                    onClick={() => setDeleteUser(row)}
                     data-test="link-button-delete"
                   >
                     <Row alignItems="center" gap>
@@ -78,15 +87,18 @@ export function UsersTable({
                       </Icon>
                       <Text>{t(labels.delete)}</Text>
                     </Row>
-                  </MenuItem>
+                  </DropdownMenuItem>
                 </MenuButton>
               );
             }}
           </DataColumn>
         )}
       </DataTable>
-      <ControlledDialog>
-        <Modal isOpen={!!deleteUser}>
+      <Dialog open={!!deleteUser} onOpenChange={open => !open && setDeleteUser(null)}>
+        <DialogContent style={{ width: 400 }}>
+          <DialogHeader>
+            <DialogTitle>{t(labels.delete)}</DialogTitle>
+          </DialogHeader>
           <UserDeleteForm
             userId={deleteUser?.id}
             username={deleteUser?.username}
@@ -94,8 +106,8 @@ export function UsersTable({
               setDeleteUser(null);
             }}
           />
-        </Modal>
-      </ControlledDialog>
+        </DialogContent>
+      </Dialog>
     </>
   );
 }

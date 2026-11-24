@@ -1,4 +1,4 @@
-import { Column, Row, Text, Tooltip, TooltipTrigger } from '@umami/react-zen';
+import { Column, Row, Text, Tooltip, TooltipContent, TooltipTrigger } from '@umami/react-zen';
 import { IconLabel } from '@/components/common/IconLabel';
 import Link from '@/components/common/Link';
 import { useMessages, useNavigation } from '@/components/hooks';
@@ -65,7 +65,7 @@ export function SettingsNav({
               tabIndex={0}
               alignItems="center"
               justifyContent={isCollapsed ? 'center' : undefined}
-              hover={{ backgroundColor: 'surface-sunken' }}
+              hover={{ backgroundColor: 'muted' }}
               borderRadius
               minHeight="9"
             >
@@ -74,10 +74,10 @@ export function SettingsNav({
           );
 
           return isCollapsed ? (
-            <TooltipTrigger delay={0}>
-              {content}
-              <Tooltip placement="right">{t(labels.back)}</Tooltip>
-            </TooltipTrigger>
+            <Tooltip>
+              <TooltipTrigger delay={0} render={content} />
+              <TooltipContent side="right">{t(labels.back)}</TooltipContent>
+            </Tooltip>
           ) : (
             content
           );
@@ -97,8 +97,8 @@ export function SettingsNav({
                 tabIndex={0}
                 alignItems="center"
                 justifyContent={isCollapsed ? 'center' : undefined}
-                hover={{ backgroundColor: 'surface-sunken' }}
-                backgroundColor={isSelected ? 'surface-sunken' : undefined}
+                hover={{ backgroundColor: 'muted' }}
+                backgroundColor={isSelected ? 'muted' : undefined}
                 borderRadius
                 minHeight="9"
               >
@@ -113,10 +113,10 @@ export function SettingsNav({
             return (
               <Link key={id} href={path} role="button" onClick={onItemClick}>
                 {isCollapsed ? (
-                  <TooltipTrigger delay={0}>
-                    {content}
-                    <Tooltip placement="right">{label}</Tooltip>
-                  </TooltipTrigger>
+                  <Tooltip>
+                    <TooltipTrigger delay={0} render={content} />
+                    <TooltipContent side="right">{label}</TooltipContent>
+                  </Tooltip>
                 ) : (
                   content
                 )}

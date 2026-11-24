@@ -99,7 +99,7 @@ export function LoginTwoFactorPage() {
         <Text>{t(messages.twoFactorLoginDescription)}</Text>
 
         {!!lockUntil && lockMessage && (
-          <Text style={{ color: 'var(--zen-status-error)' }}>{lockMessage}</Text>
+          <Text style={{ color: 'var(--destructive)' }}>{lockMessage}</Text>
         )}
 
         <Form
@@ -131,9 +131,8 @@ export function LoginTwoFactorPage() {
 
           <FormButtons>
             <FormSubmitButton
-              variant="primary"
               style={{ flex: 1 }}
-              isDisabled={
+              disabled={
                 !!lockUntil || isPending || (!useBackup && (otpValue.length !== 6 || !!error))
               }
             >
@@ -142,7 +141,7 @@ export function LoginTwoFactorPage() {
           </FormButtons>
         </Form>
 
-        <Button variant="quiet" onPress={() => setUseBackup(v => !v)}>
+        <Button variant="ghost" onClick={() => setUseBackup(v => !v)}>
           {useBackup ? t(labels.twoFactorLogin) : t(labels.twoFactorUseBackup)}
         </Button>
       </Column>

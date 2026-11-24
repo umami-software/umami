@@ -50,11 +50,11 @@ export function WebsiteAddForm({
       </FormField>
       <Row justifyContent="flex-end" paddingTop="3" gap="3">
         {onClose && (
-          <Button isDisabled={isPending} onPress={onClose}>
+          <Button variant="secondary" disabled={isPending} onClick={onClose}>
             {t(labels.cancel)}
           </Button>
         )}
-        <FormSubmitButton data-test="button-submit" isDisabled={false}>
+        <FormSubmitButton data-test="button-submit" disabled={false}>
           {t(labels.save)}
         </FormSubmitButton>
       </Row>

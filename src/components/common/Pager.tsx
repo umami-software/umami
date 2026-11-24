@@ -34,7 +34,7 @@ export function Pager({ page, pageSize, count, isCapped, onPageChange }: PagerPr
 
   return (
     <Row alignItems="center" justifyContent="space-between" gap="3" flexGrow={1} wrap="wrap">
-      <Text color="muted">{t(labels.numberOfRecords, { x: displayCount })}</Text>
+      <Text color="muted-foreground">{t(labels.numberOfRecords, { x: displayCount })}</Text>
       <Row
         alignItems="center"
         justifyContent="flex-end"
@@ -44,19 +44,19 @@ export function Pager({ page, pageSize, count, isCapped, onPageChange }: PagerPr
       >
         {showNavigation && (
           <>
-            <Text color="muted">
+            <Text color="muted-foreground">
               {t(labels.pageOf, {
                 current: page.toLocaleString(),
                 total: maxPage.toLocaleString(),
               })}
             </Text>
             <Row gap="1">
-              <Button variant="outline" onPress={() => handlePageChange(-1)} isDisabled={firstPage}>
+              <Button variant="outline" onClick={() => handlePageChange(-1)} disabled={firstPage}>
                 <Icon size="sm" rotate={180}>
                   <ChevronRight />
                 </Icon>
               </Button>
-              <Button variant="outline" onPress={() => handlePageChange(1)} isDisabled={lastPage}>
+              <Button variant="outline" onClick={() => handlePageChange(1)} disabled={lastPage}>
                 <Icon size="sm">
                   <ChevronRight />
                 </Icon>

@@ -1,22 +1,27 @@
-import { Icon, ListItem, Row, Select, type SelectProps, Text } from '@umami/react-zen';
-import { useEffect, useState } from 'react';
+import { type Button, Icon, Row, Text } from '@umami/react-zen';
+import { type ComponentProps, useEffect, useState } from 'react';
 import { Empty } from '@/components/common/Empty';
+import { SearchSelect } from '@/components/common/SearchSelect';
 import { useLinkQuery, useLinksQuery, useMessages } from '@/components/hooks';
 import { Link } from '@/components/icons';
+
+export interface LinkSelectProps {
+  linkId?: string;
+  teamId?: string;
+  isCollapsed?: boolean;
+  placeholder?: string;
+  buttonProps?: Omit<ComponentProps<typeof Button>, 'children'>;
+  onChange?: (linkId: string) => void;
+}
 
 export function LinkSelect({
   linkId,
   teamId,
-  onChange,
   isCollapsed,
+  placeholder,
   buttonProps,
-  listProps,
-  ...props
-}: {
-  linkId?: string;
-  teamId?: string;
-  isCollapsed?: boolean;
-} & SelectProps) {
+  onChange,
+}: LinkSelectProps) {
   const { t, labels, messages } = useMessages();
   const { data: link } = useLinkQuery(linkId);
   const [name, setName] = useState<string>(link?.name);
@@ -28,10 +33,6 @@ export function LinkSelect({
     setName(link?.name);
   }, [link?.name]);
 
-  const handleOpenChange = () => {
-    setSearch('');
-  };
-
   const handleChange = (id: string) => {
     setName(listItems.find(item => item.id === id)?.name);
     onChange?.(id);
@@ -42,14 +43,14 @@ export function LinkSelect({
       return '';
     }
 
-    const value = name || props.placeholder || t(labels.link);
+    const value = name || placeholder || t(labels.link);
 
     return (
       <Row alignItems="center" gap>
         <Icon>
           <Link />
         </Icon>
-        <Text truncate color={name ? undefined : 'muted'}>
+        <Text truncate color={name ? undefined : 'muted-foreground'}>
           {value}
         </Text>
       </Row>
@@ -57,17 +58,17 @@ export function LinkSelect({
   };
 
   return (
-    <Select
-      {...props}
+    <SearchSelect
       value={linkId}
+      items={listItems}
       isLoading={isLoading}
-      allowSearch={true}
-      searchValue={search}
       onSearch={setSearch}
-      onChange={value => handleChange(value as string)}
-      onOpenChange={handleOpenChange}
-      renderValue={renderValue}
-      buttonProps={{
+      onChange={handleChange}
+      renderValue={renderValue()}
+      emptyMessage={<Empty message={t(messages.noResultsFound)} />}
+      contentStyle={{ width: 280 }}
+      maxHeight={480}
+      triggerProps={{
         ...buttonProps,
         style: {
           minHeight: 40,
@@ -76,22 +77,6 @@ export function LinkSelect({
           ...buttonProps?.style,
         },
       }}
-      maxHeight={480}
-      listProps={{
-        ...listProps,
-        renderEmptyState:
-          listProps?.renderEmptyState || (() => <Empty message={t(messages.noResultsFound)} />),
-        style: {
-          width: 280,
-          ...listProps?.style,
-        },
-      }}
-    >
-      {listItems.map(({ id, name }) => (
-        <ListItem key={id} id={id}>
-          {name}
-        </ListItem>
-      ))}
-    </Select>
+    />
   );
 }

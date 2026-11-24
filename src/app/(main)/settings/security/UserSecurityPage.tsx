@@ -1,6 +1,14 @@
 'use client';
 import { useQueryClient } from '@tanstack/react-query';
-import { Column, Row, Switch, Text, Tooltip, TooltipTrigger } from '@umami/react-zen';
+import {
+  Column,
+  Row,
+  Switch,
+  Text,
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from '@umami/react-zen';
 import { useState } from 'react';
 import { Badge } from '@/components/common/Badge';
 import { PageBody } from '@/components/common/PageBody';
@@ -80,25 +88,25 @@ export function UserSecurityPage() {
             )}
 
             {isConfigured === true && isEnabled && isRequired ? (
-              <TooltipTrigger>
-                <Row alignItems="center" gap="3">
+              <Tooltip>
+                <TooltipTrigger render={<Row alignItems="center" gap="3" />}>
                   <Switch
-                    isSelected={isEnabled}
-                    isDisabled={isEnabled && isRequired}
-                    onChange={handleToggle}
+                    checked={isEnabled}
+                    disabled={isEnabled && isRequired}
+                    onCheckedChange={handleToggle}
                   />
                   <Text>{t(labels.twoFactorEnable)}</Text>
-                </Row>
-                <Tooltip>{t(messages.twoFactorRequiredMessage)}</Tooltip>
-              </TooltipTrigger>
+                </TooltipTrigger>
+                <TooltipContent>{t(messages.twoFactorRequiredMessage)}</TooltipContent>
+              </Tooltip>
             ) : null}
 
             {isConfigured === true && !isEnabled ? (
               <Row alignItems="center" gap="3">
                 <Switch
-                  isSelected={isEnabled}
-                  isDisabled={isEnabled && isRequired}
-                  onChange={handleToggle}
+                  checked={isEnabled}
+                  disabled={isEnabled && isRequired}
+                  onCheckedChange={handleToggle}
                 />
                 <Text>{t(labels.twoFactorEnable)}</Text>
               </Row>
@@ -107,16 +115,16 @@ export function UserSecurityPage() {
             {isConfigured === true && isEnabled && !isRequired ? (
               <Row alignItems="center" gap="3">
                 <Switch
-                  isSelected={isEnabled}
-                  isDisabled={isEnabled && isRequired}
-                  onChange={handleToggle}
+                  checked={isEnabled}
+                  disabled={isEnabled && isRequired}
+                  onCheckedChange={handleToggle}
                 />
                 <Text>{t(labels.twoFactorEnable)}</Text>
               </Row>
             ) : null}
 
             {isConfigured === true && isEnabled && isRequired && (
-              <Text size="sm" color="muted">
+              <Text size="sm" color="muted-foreground">
                 {t(messages.twoFactorRequiredMessage)}
               </Text>
             )}

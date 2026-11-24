@@ -1,4 +1,15 @@
-import { Button, Column, ListItem, Row, Select, Text, TextField } from '@umami/react-zen';
+import {
+  Button,
+  Column,
+  Row,
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+  Text,
+  TextField,
+} from '@umami/react-zen';
 import { useEffect, useMemo, useState } from 'react';
 import { useApi, useMessages } from '@/components/hooks';
 import { useModified } from '@/components/hooks/useModified';
@@ -199,6 +210,12 @@ export function BoardComponentSelect({
       })
     : false;
 
+  const entityTypeItems = [
+    { value: BOARD_ENTITY_TYPES.website, label: t(labels.website) },
+    { value: BOARD_ENTITY_TYPES.pixel, label: t(labels.pixel) },
+    { value: BOARD_ENTITY_TYPES.link, label: t(labels.link) },
+  ];
+
   const handleEntityTypeChange = (value: string) => {
     setSelectedEntityType(value as BoardEntityType);
     setSelectedEntityId(undefined);
@@ -302,20 +319,28 @@ export function BoardComponentSelect({
           {needsWebsite && isOpenType && (
             <>
               <Column gap="2">
-                <Text size="sm" color="muted">
+                <Text size="sm" color="muted-foreground">
                   {t(labels.type)}
                 </Text>
                 <Select
+                  items={entityTypeItems}
                   value={selectedEntityType}
-                  onChange={value => handleEntityTypeChange(value as string)}
+                  onValueChange={value => handleEntityTypeChange(value as string)}
                 >
-                  <ListItem id={BOARD_ENTITY_TYPES.website}>{t(labels.website)}</ListItem>
-                  <ListItem id={BOARD_ENTITY_TYPES.pixel}>{t(labels.pixel)}</ListItem>
-                  <ListItem id={BOARD_ENTITY_TYPES.link}>{t(labels.link)}</ListItem>
+                  <SelectTrigger className="w-full">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent alignItemWithTrigger={false}>
+                    {entityTypeItems.map(item => (
+                      <SelectItem key={item.value} value={item.value}>
+                        {item.label}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
                 </Select>
               </Column>
               <Column gap="2">
-                <Text size="sm" color="muted">
+                <Text size="sm" color="muted-foreground">
                   {selectedEntityType === BOARD_ENTITY_TYPES.pixel
                     ? t(labels.pixel)
                     : selectedEntityType === BOARD_ENTITY_TYPES.link
@@ -349,48 +374,55 @@ export function BoardComponentSelect({
           )}
 
           <Column gap="2">
-            <Text size="sm" color="muted">
+            <Text size="sm" color="muted-foreground">
               {t(labels.title)}
             </Text>
-            <TextField value={title} onChange={setTitle} autoComplete="off" />
+            <TextField value={title} onValueChange={setTitle} autoComplete="off" />
           </Column>
 
           <Column gap="2">
-            <Text size="sm" color="muted">
+            <Text size="sm" color="muted-foreground">
               {t(labels.description)}
             </Text>
-            <TextField value={description} onChange={setDescription} autoComplete="off" />
+            <TextField value={description} onValueChange={setDescription} autoComplete="off" />
           </Column>
 
           {selectedDef?.configFields && selectedDef.configFields.length > 0 && (
             <Column gap="3">
               {selectedDef.configFields.map((field: ConfigField) => (
                 <Column key={field.name} gap="2">
-                  <Text size="sm" color="muted">
+                  <Text size="sm" color="muted-foreground">
                     {field.label}
                   </Text>
 
                   {field.type === 'select' && (
                     <Select
+                      items={field.optionsByEntityType?.[activeEntityType] ?? field.options}
                       value={String(configValues[field.name] ?? field.defaultValue ?? '')}
-                      onChange={value => handleConfigChange(field.name, value as string)}
-                      maxHeight={300}
-                      popoverProps={{ style: { width: 220 } }}
+                      onValueChange={value => handleConfigChange(field.name, value as string)}
                     >
-                      {(field.optionsByEntityType?.[activeEntityType] ?? field.options)?.map(
-                        option => (
-                          <ListItem key={option.value} id={option.value}>
-                            {option.label}
-                          </ListItem>
-                        ),
-                      )}
+                      <SelectTrigger className="w-full">
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent
+                        alignItemWithTrigger={false}
+                        style={{ width: 220, maxHeight: 300 }}
+                      >
+                        {(field.optionsByEntityType?.[activeEntityType] ?? field.options)?.map(
+                          option => (
+                            <SelectItem key={option.value} value={option.value}>
+                              {option.label}
+                            </SelectItem>
+                          ),
+                        )}
+                      </SelectContent>
                     </Select>
                   )}
 
                   {field.type === 'text' && (
                     <TextField
                       value={String(configValues[field.name] ?? field.defaultValue ?? '')}
-                      onChange={(value: string) => handleConfigChange(field.name, value)}
+                      onValueChange={(value: string) => handleConfigChange(field.name, value)}
                     />
                   )}
 
@@ -398,7 +430,7 @@ export function BoardComponentSelect({
                     <TextField
                       type="number"
                       value={String(configValues[field.name] ?? field.defaultValue ?? '')}
-                      onChange={(value: string) => handleConfigChange(field.name, value)}
+                      onValueChange={(value: string) => handleConfigChange(field.name, value)}
                     />
                   )}
 
@@ -406,7 +438,7 @@ export function BoardComponentSelect({
                     <TextField
                       asTextArea
                       value={String(configValues[field.name] ?? field.defaultValue ?? '')}
-                      onChange={(value: string) => handleConfigChange(field.name, value)}
+                      onValueChange={(value: string) => handleConfigChange(field.name, value)}
                       style={{ minHeight: 200 }}
                     />
                   )}
@@ -414,26 +446,36 @@ export function BoardComponentSelect({
                   {field.type === 'report' && (
                     <>
                       <Select
+                        items={(reportOptionsByType[field.reportType ?? ''] ?? []).map(option => ({
+                          value: option.id,
+                          label: option.name,
+                        }))}
                         value={String(configValues[field.name] ?? field.defaultValue ?? '')}
-                        onChange={value => handleConfigChange(field.name, value as string)}
-                        maxHeight={300}
-                        popoverProps={{ style: { width: 220 } }}
+                        onValueChange={value => handleConfigChange(field.name, value as string)}
                       >
-                        {(reportOptionsByType[field.reportType ?? ''] ?? []).map(option => (
-                          <ListItem key={option.id} id={option.id}>
-                            {option.name}
-                          </ListItem>
-                        ))}
+                        <SelectTrigger className="w-full">
+                          <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent
+                          alignItemWithTrigger={false}
+                          style={{ width: 220, maxHeight: 300 }}
+                        >
+                          {(reportOptionsByType[field.reportType ?? ''] ?? []).map(option => (
+                            <SelectItem key={option.id} value={option.id}>
+                              {option.name}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
                       </Select>
                       {isLoadingReportOptions && (
-                        <Text size="xs" color="muted">
+                        <Text size="xs" color="muted-foreground">
                           Loading options...
                         </Text>
                       )}
                       {!isLoadingReportOptions &&
                         resolvedEntityId &&
                         (reportOptionsByType[field.reportType ?? '']?.length ?? 0) === 0 && (
-                          <Text size="xs" color="muted">
+                          <Text size="xs" color="muted-foreground">
                             No saved items found.
                           </Text>
                         )}
@@ -452,7 +494,7 @@ export function BoardComponentSelect({
               <Column gap="1" height="100%" style={{ overflowY: 'auto', minHeight: 0 }}>
                 {groupedDefinitions.map(({ group, definitions }) => (
                   <Column key={group} gap="1" paddingBottom="2">
-                    <Text size="sm" color="muted" weight="bold">
+                    <Text size="sm" color="muted-foreground" weight="bold">
                       {group}
                     </Text>
                     {definitions.map(def => {
@@ -467,10 +509,8 @@ export function BoardComponentSelect({
                           paddingX="3"
                           paddingY="2"
                           borderRadius
-                          backgroundColor={
-                            selectedDef?.type === def.type ? 'surface-sunken' : undefined
-                          }
-                          hover={{ backgroundColor: 'surface-sunken' }}
+                          backgroundColor={selectedDef?.type === def.type ? 'muted' : undefined}
+                          hover={{ backgroundColor: 'muted' }}
                           style={{ cursor: 'pointer' }}
                           onClick={() => handleSelectComponent(def)}
                         >
@@ -482,7 +522,7 @@ export function BoardComponentSelect({
                             >
                               {def.name}
                             </Text>
-                            <Text size="xs" color="muted">
+                            <Text size="xs" color="muted-foreground">
                               {def.description}
                             </Text>
                           </Column>
@@ -494,7 +534,7 @@ export function BoardComponentSelect({
               </Column>
             ) : (
               <Column alignItems="center" justifyContent="center" height="100%">
-                <Text color="muted">{t(messages.selectBoardEntityFirst)}</Text>
+                <Text color="muted-foreground">{t(messages.selectBoardEntityFirst)}</Text>
               </Column>
             )}
           </Column>
@@ -512,7 +552,7 @@ export function BoardComponentSelect({
               />
             ) : (
               <Column alignItems="center" justifyContent="center" height="100%">
-                <Text color="muted">
+                <Text color="muted-foreground">
                   {!hasSelectedEntity
                     ? t(messages.selectBoardEntityFirst)
                     : resolvedEntityId
@@ -526,10 +566,10 @@ export function BoardComponentSelect({
       </Row>
 
       <Row justifyContent="flex-end" gap="2" paddingTop="4">
-        <Button variant="quiet" onPress={onClose}>
+        <Button variant="ghost" onClick={onClose}>
           {t(labels.cancel)}
         </Button>
-        <Button variant="primary" onPress={handleAdd} isDisabled={!canSave}>
+        <Button onClick={handleAdd} disabled={!canSave}>
           {t(labels.save)}
         </Button>
       </Row>

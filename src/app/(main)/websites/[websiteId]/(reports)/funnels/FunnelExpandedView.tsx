@@ -3,21 +3,21 @@ import {
   Button,
   Column,
   Dialog,
+  DialogContent,
   Grid,
   Heading,
   Icon,
-  Modal,
   Row,
-  Tab,
-  TabList,
-  TabPanel,
   Tabs,
+  TabsContent,
+  TabsList,
+  TabsTrigger,
   Text,
   Tooltip,
+  TooltipContent,
   TooltipTrigger,
 } from '@umami/react-zen';
 import { useState } from 'react';
-import { ControlledDialog } from '@/components/common/ControlledDialog';
 import { useFunnelTimesQuery, useMessages } from '@/components/hooks';
 import { Clock, File, Maximize, X } from '@/components/icons';
 import { FilterButtons } from '@/components/input/FilterButtons';
@@ -64,30 +64,40 @@ export function FunnelMaximizeButton({
 
   return (
     <>
-      <TooltipTrigger delay={0}>
-        <Button size="icon" variant="quiet" onPress={() => setIsOpen(true)}>
+      <Tooltip>
+        <TooltipTrigger
+          delay={0}
+          render={<Button size="icon" variant="ghost" onClick={() => setIsOpen(true)} />}
+        >
           <Icon>
             <Maximize />
           </Icon>
-        </Button>
-        <Tooltip>{t(labels.maximize)}</Tooltip>
-      </TooltipTrigger>
-      <ControlledDialog>
-        <Modal isOpen={isOpen} onOpenChange={setIsOpen} placement="fullscreen">
-          <Dialog
-            aria-label={name}
-            style={{ width: '100%', height: '100%', padding: '32px', overflowY: 'auto' }}
-          >
-            <FunnelExpandedView
-              websiteId={websiteId}
-              id={id}
-              name={name}
-              data={data}
-              onClose={() => setIsOpen(false)}
-            />
-          </Dialog>
-        </Modal>
-      </ControlledDialog>
+        </TooltipTrigger>
+        <TooltipContent>{t(labels.maximize)}</TooltipContent>
+      </Tooltip>
+      <Dialog open={isOpen} onOpenChange={setIsOpen}>
+        <DialogContent
+          aria-label={name}
+          showCloseButton={false}
+          style={{
+            width: '100%',
+            height: '100%',
+            maxWidth: '100%',
+            maxHeight: '100%',
+            borderRadius: 0,
+            padding: '32px',
+            overflowY: 'auto',
+          }}
+        >
+          <FunnelExpandedView
+            websiteId={websiteId}
+            id={id}
+            name={name}
+            data={data}
+            onClose={() => setIsOpen(false)}
+          />
+        </DialogContent>
+      </Dialog>
     </>
   );
 }
@@ -130,7 +140,7 @@ function FunnelExpandedView({
               onChange={value => setMode(value as PercentMode)}
             />
           )}
-          <Button size="sm" variant="quiet" onPress={onClose} aria-label={t(labels.close)}>
+          <Button size="sm" variant="ghost" onClick={onClose} aria-label={t(labels.close)}>
             <Icon>
               <X />
             </Icon>
@@ -160,10 +170,10 @@ function FunnelExpandedView({
                 {`-${formatPercent(data[bottleneck].dropoff)}`}
               </Text>
               <Row alignItems="center" gap="2" minWidth="0">
-                <Icon size="sm" color="muted">
+                <Icon size="sm" color="muted-foreground">
                   {data[bottleneck].type === 'path' ? <File /> : <Lightning />}
                 </Icon>
-                <Text color="muted" truncate title={data[bottleneck].value}>
+                <Text color="muted-foreground" truncate title={data[bottleneck].value}>
                   {data[bottleneck].value}
                 </Text>
               </Row>
@@ -200,10 +210,10 @@ function FunnelExpandedView({
                   </ChangeLabel>
                   {times?.steps[index] != null && (
                     <Row alignItems="center" gap="1" title={t(labels.medianTimeToConvert)}>
-                      <Icon size="sm" color="muted">
+                      <Icon size="sm" color="muted-foreground">
                         <Clock />
                       </Icon>
-                      <Text color="muted">{formatDuration(times.steps[index])}</Text>
+                      <Text color="muted-foreground">{formatDuration(times.steps[index])}</Text>
                     </Row>
                   )}
                 </Row>
@@ -217,7 +227,7 @@ function FunnelExpandedView({
                   style={{
                     width: `${(remaining || 0) * 100}%`,
                     minWidth: visitors > 0 ? '2px' : 0,
-                    background: 'var(--zen-primary)',
+                    background: 'var(--primary)',
                   }}
                 />
               </Row>
@@ -225,7 +235,7 @@ function FunnelExpandedView({
                 <Text weight="bold" size="3xl">
                   {formatPercent(percent || 0)}
                 </Text>
-                <Text color="muted" title={visitors.toString()} transform="lowercase">
+                <Text color="muted-foreground" title={visitors.toString()} transform="lowercase">
                   {`${formatLongNumber(visitors)} ${t(labels.visitors)}`}
                 </Text>
               </Column>
@@ -233,17 +243,17 @@ function FunnelExpandedView({
           );
         })}
       </Column>
-      <Tabs defaultSelectedKey="breakdown">
-        <TabList>
-          <Tab id="breakdown">{t(labels.breakdown)}</Tab>
-          <Tab id="chart">{t(labels.conversionOverTime)}</Tab>
-        </TabList>
-        <TabPanel id="breakdown">
+      <Tabs defaultValue="breakdown">
+        <TabsList>
+          <TabsTrigger value="breakdown">{t(labels.breakdown)}</TabsTrigger>
+          <TabsTrigger value="chart">{t(labels.conversionOverTime)}</TabsTrigger>
+        </TabsList>
+        <TabsContent value="breakdown">
           <FunnelBreakdown websiteId={websiteId} id={id} steps={data} mode={mode} />
-        </TabPanel>
-        <TabPanel id="chart">
+        </TabsContent>
+        <TabsContent value="chart">
           <FunnelChart websiteId={websiteId} id={id} />
-        </TabPanel>
+        </TabsContent>
       </Tabs>
     </Column>
   );

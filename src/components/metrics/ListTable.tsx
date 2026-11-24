@@ -133,7 +133,7 @@ const AnimatedRow = ({
       alignItems="center"
       borderRadius
       gap
-      hover={{ backgroundColor: 'surface-sunken' }}
+      hover={{ backgroundColor: 'muted' }}
     >
       <Row alignItems="center">
         <Text truncate={true} style={{ maxWidth: isPhone ? '200px' : '400px' }}>
@@ -158,8 +158,8 @@ const AnimatedRow = ({
           justifyContent="flex-start"
           position="relative"
           border="left"
-          borderColor="strong"
-          color="muted"
+          borderColor="input"
+          color="muted-foreground"
           paddingLeft="3"
         >
           <AnimatedDiv>{animate ? widthText : `${percent?.toFixed?.(0)}%`}</AnimatedDiv>

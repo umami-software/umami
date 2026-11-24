@@ -103,7 +103,7 @@ export function AnnotationsModal({
       <Row alignItems="center" justifyContent="space-between">
         <Heading size="xl">{t(labels.notes)}</Heading>
         {!share && (
-          <Button variant="primary" onPress={() => setView({ mode: 'add' })}>
+          <Button onClick={() => setView({ mode: 'add' })}>
             <Plus />
             {t(labels.addNote)}
           </Button>
@@ -123,7 +123,7 @@ export function AnnotationsModal({
         <DataTable data={rows} displayMode={isMobile ? 'cards' : 'table'}>
           <DataColumn id="date" label={t(labels.date)} width="200px">
             {(row: Annotation) => (
-              <Button onPress={() => handleSelect(row)}>
+              <Button variant="secondary" onClick={() => handleSelect(row)}>
                 {formatAnnotationDate(
                   { id: row.id, date: toLocalDate(row), label: row.note, allDay: row.allDay },
                   locale,
@@ -139,8 +139,8 @@ export function AnnotationsModal({
               {(row: Annotation) => (
                 <Row>
                   <Button
-                    variant="quiet"
-                    onPress={() => setView({ mode: 'edit', annotation: row })}
+                    variant="ghost"
+                    onClick={() => setView({ mode: 'edit', annotation: row })}
                   >
                     <IconLabel icon={<Edit />} />
                   </Button>
@@ -156,7 +156,9 @@ export function AnnotationsModal({
       )}
       {onClose && (
         <Row justifyContent="flex-end" style={{ marginTop: 'auto' }}>
-          <Button onPress={onClose}>{t(labels.close)}</Button>
+          <Button variant="secondary" onClick={onClose}>
+            {t(labels.close)}
+          </Button>
         </Row>
       )}
     </Column>

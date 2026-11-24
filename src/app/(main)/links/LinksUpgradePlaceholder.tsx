@@ -15,11 +15,7 @@ export function LinksUpgradePlaceholder({ onClose }: { onClose?: () => void }) {
     onClose?.();
   };
 
-  const upgradeButton = (
-    <Button variant="primary" onPress={handleUpgrade}>
-      {t(labels.upgrade)}
-    </Button>
-  );
+  const upgradeButton = <Button onClick={handleUpgrade}>{t(labels.upgrade)}</Button>;
 
   if (!onClose) {
     return (
@@ -33,7 +29,9 @@ export function LinksUpgradePlaceholder({ onClose }: { onClose?: () => void }) {
     <Column>
       <EmptyPlaceholder icon={<Link />} title={t(messages.upgradeRequired, { plan: 'Pro' })} />
       <Row justifyContent="flex-end" paddingTop="8" gap="3">
-        <Button onPress={onClose}>{t(labels.cancel)}</Button>
+        <Button variant="secondary" onClick={onClose}>
+          {t(labels.cancel)}
+        </Button>
         {upgradeButton}
       </Row>
     </Column>

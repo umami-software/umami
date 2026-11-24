@@ -62,7 +62,7 @@ export function BoardGoal({
           allowMaximize={false}
         />
       ) : (
-        <Text color="muted">Goal unavailable</Text>
+        <Text color="muted-foreground">Goal unavailable</Text>
       )}
     </LoadingPanel>
   );

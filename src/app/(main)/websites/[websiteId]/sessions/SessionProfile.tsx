@@ -4,12 +4,14 @@ import {
   Column,
   Icon,
   Row,
-  Tab,
-  TabList,
-  TabPanel,
   Tabs,
+  TabsContent,
+  TabsList,
+  TabsTrigger,
   TextField,
 } from '@umami/react-zen';
+import { Avatar } from '@/components/common/Avatar';
+import { LoadingPanel } from '@/components/common/LoadingPanel';
 import {
   useConfig,
   useMessages,
@@ -18,11 +20,9 @@ import {
   useWebsiteSessionQuery,
 } from '@/components/hooks';
 import { X } from '@/components/icons';
-import { Avatar } from '@/components/common/Avatar';
-import { LoadingPanel } from '@/components/common/LoadingPanel';
 import { SessionActivity } from './SessionActivity';
-import { SessionDeleteButton } from './SessionDeleteButton';
 import { SessionData } from './SessionData';
+import { SessionDeleteButton } from './SessionDeleteButton';
 import { SessionInfo } from './SessionInfo';
 import { SessionReplaysDataTable } from './SessionReplaysDataTable';
 import { SessionStats } from './SessionStats';
@@ -66,13 +66,9 @@ export function SessionProfile({
               style={{ position: 'absolute', top: 0, right: 0, zIndex: 1 }}
             >
               {showDeleteButton && (
-                <SessionDeleteButton
-                  websiteId={websiteId}
-                  sessionId={sessionId}
-                  onSave={onClose}
-                />
+                <SessionDeleteButton websiteId={websiteId} sessionId={sessionId} onSave={onClose} />
               )}
-              <Button onPress={onClose} variant="quiet">
+              <Button onClick={onClose} variant="ghost">
                 <Icon>
                   <X />
                 </Icon>
@@ -95,12 +91,12 @@ export function SessionProfile({
             <SessionInfo data={data} />
 
             <Tabs>
-              <TabList>
-                <Tab id="activity">{t(labels.activity)}</Tab>
-                <Tab id="properties">{t(labels.properties)}</Tab>
-                {showReplays && <Tab id="replays">{t(labels.replays)}</Tab>}
-              </TabList>
-              <TabPanel id="activity">
+              <TabsList>
+                <TabsTrigger value="activity">{t(labels.activity)}</TabsTrigger>
+                <TabsTrigger value="properties">{t(labels.properties)}</TabsTrigger>
+                {showReplays && <TabsTrigger value="replays">{t(labels.replays)}</TabsTrigger>}
+              </TabsList>
+              <TabsContent value="activity">
                 <SessionActivity
                   websiteId={websiteId}
                   sessionId={sessionId}
@@ -108,14 +104,17 @@ export function SessionProfile({
                   endDate={data?.lastAt}
                   distinctId={data?.distinctId}
                 />
-              </TabPanel>
-              <TabPanel id="properties">
+              </TabsContent>
+              <TabsContent value="properties">
                 <SessionData sessionId={sessionId} websiteId={websiteId} />
-              </TabPanel>
+              </TabsContent>
               {showReplays && (
-                <TabPanel id="replays" style={{ width: '100%', minWidth: 0, overflowX: 'hidden' }}>
+                <TabsContent
+                  value="replays"
+                  style={{ width: '100%', minWidth: 0, overflowX: 'hidden' }}
+                >
                   <SessionReplaysDataTable websiteId={websiteId} sessionId={sessionId} />
-                </TabPanel>
+                </TabsContent>
               )}
             </Tabs>
           </Column>

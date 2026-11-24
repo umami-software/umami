@@ -15,7 +15,7 @@ export function TeamWebsiteRemoveButton({ teamId, websiteId, onSave }) {
   };
 
   return (
-    <LoadingButton variant="quiet" onClick={() => handleRemoveTeamMember()}>
+    <LoadingButton variant="ghost" onClick={() => handleRemoveTeamMember()}>
       <Icon>
         <X />
       </Icon>

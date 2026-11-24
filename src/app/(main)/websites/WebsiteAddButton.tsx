@@ -37,18 +37,21 @@ export function WebsiteAddButton({ teamId, onSave }: { teamId: string; onSave?: 
 
   return (
     <>
-      <Button onPress={() => handleOpenChange(true)} variant="primary">
+      <Button onClick={() => handleOpenChange(true)}>
         <IconLabel icon={<Plus />} label={t(labels.addWebsite)} />
       </Button>
       <DialogButton
         title={createdWebsite ? t(labels.trackingCode) : t(labels.addWebsite)}
         width={createdWebsite ? '720px' : '400px'}
-        isOpen={isOpen}
+        open={isOpen}
         onOpenChange={handleOpenChange}
       >
         {({ close }) =>
           createdWebsite ? (
-            <TrackingCodeStep websiteId={createdWebsite.id} onClose={() => handleOpenChange(false)} />
+            <TrackingCodeStep
+              websiteId={createdWebsite.id}
+              onClose={() => handleOpenChange(false)}
+            />
           ) : (
             <WebsiteAddForm
               teamId={teamId}
@@ -70,7 +73,9 @@ function TrackingCodeStep({ websiteId, onClose }: { websiteId: string; onClose: 
     <Column gap="4">
       <WebsiteTrackingCode websiteId={websiteId} showHeader={false} />
       <Row justifyContent="flex-end" paddingTop="2">
-        <Button onPress={onClose}>{t(labels.close)}</Button>
+        <Button variant="secondary" onClick={onClose}>
+          {t(labels.close)}
+        </Button>
       </Row>
     </Column>
   );

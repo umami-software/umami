@@ -1,4 +1,11 @@
-import { ListItem, Row, Select } from '@umami/react-zen';
+import {
+  Row,
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@umami/react-zen';
 import { useMessages, useNavigation } from '@/components/hooks';
 import { DATE_RANGE_CONFIG, DEFAULT_DATE_RANGE_VALUE } from '@/lib/constants';
 import { getItem } from '@/lib/storage';
@@ -46,7 +53,7 @@ export function UnitFilter() {
   };
 
   const options = unitConfig.availableUnits.map(unit => ({
-    id: unit,
+    value: unit,
     label: t(labels[unit]),
   }));
 
@@ -55,16 +62,20 @@ export function UnitFilter() {
   return (
     <Row>
       <Select
+        items={options}
         value={selectedUnit}
-        onChange={value => handleChange(value as string)}
-        popoverProps={{ side: 'bottom', align: 'end' }}
-        buttonProps={{ style: { width: 100 } }}
+        onValueChange={value => handleChange(value as string)}
       >
-        {options.map(({ id, label }) => (
-          <ListItem key={id} id={id}>
-            {label}
-          </ListItem>
-        ))}
+        <SelectTrigger style={{ width: 100 }}>
+          <SelectValue />
+        </SelectTrigger>
+        <SelectContent side="bottom" align="end" alignItemWithTrigger={false}>
+          {options.map(({ value, label }) => (
+            <SelectItem key={value} value={value}>
+              {label}
+            </SelectItem>
+          ))}
+        </SelectContent>
       </Select>
     </Row>
   );

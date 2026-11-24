@@ -24,7 +24,7 @@ export function Legend({
             <StatusLight color={color.alpha(color.alpha() + 0.2).toHex()}>
               <Text
                 size="sm"
-                color={hidden ? 'disabled' : undefined}
+                color={hidden ? 'muted-foreground' : undefined}
                 truncate={true}
                 style={{ maxWidth: '300px' }}
               >

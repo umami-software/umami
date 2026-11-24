@@ -31,7 +31,7 @@ export function SortableLabel({
   const isActive = onSort ? !!localDirection : query.orderBy === sortKey;
   const isDescending = onSort ? localDirection === 'desc' : query.sortDescending === 'true';
   const direction = isActive ? (isDescending ? 'desc' : 'asc') : undefined;
-  const activeColor = 'var(--zen-fg)';
+  const activeColor = 'var(--foreground)';
 
   const getNextDirection = (): SortDirection => {
     if (!isActive) {
@@ -73,7 +73,7 @@ export function SortableLabel({
           flexDirection: 'column',
           gap: 0,
           lineHeight: 0,
-          color: 'var(--zen-fg-muted)',
+          color: 'var(--muted-foreground)',
           opacity: 0.8,
         }}
       >
@@ -85,7 +85,7 @@ export function SortableLabel({
             transformOrigin: 'center',
           }}
         >
-          <Icon size="sm" color={direction === 'asc' ? undefined : 'muted'}>
+          <Icon size="sm" color={direction === 'asc' ? undefined : 'muted-foreground'}>
             <ChevronUp />
           </Icon>
         </span>
@@ -98,7 +98,7 @@ export function SortableLabel({
             transformOrigin: 'center',
           }}
         >
-          <Icon size="sm" color={direction === 'desc' ? undefined : 'muted'}>
+          <Icon size="sm" color={direction === 'desc' ? undefined : 'muted-foreground'}>
             <ChevronDown />
           </Icon>
         </span>

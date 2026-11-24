@@ -1,7 +1,7 @@
 .root {
-  --overlay-scrollbar-track: var(--zen-palette-50);
-  --overlay-scrollbar-thumb: var(--zen-palette-300);
-  --overlay-scrollbar-thumb-hover: var(--zen-palette-400);
+  --overlay-scrollbar-track: var(--muted);
+  --overlay-scrollbar-thumb: color-mix(in oklch, var(--foreground) 15%, var(--background));
+  --overlay-scrollbar-thumb-hover: color-mix(in oklch, var(--foreground) 35%, var(--background));
   --overlay-scrollbar-viewport-padding-right: 0px;
   --overlay-scrollbar-vertical-margin-right: 2px;
 }
@@ -48,14 +48,13 @@
   content: "";
 }
 
-[data-theme="dark"] .root {
-  --overlay-scrollbar-track: var(--zen-palette-800);
-  --overlay-scrollbar-thumb: var(--zen-palette-600);
-  --overlay-scrollbar-thumb-hover: var(--zen-palette-500);
+:global(.dark) .root {
+  --overlay-scrollbar-thumb: color-mix(in oklch, var(--foreground) 35%, var(--background));
+  --overlay-scrollbar-thumb-hover: color-mix(in oklch, var(--foreground) 50%, var(--background));
 }
 
 .container {
-  --overlay-scroll-indicator-background: var(--zen-surface);
+  --overlay-scroll-indicator-background: var(--background);
   position: relative;
   display: flex;
   flex-direction: column;
@@ -114,16 +113,16 @@
   border: 0;
   border-radius: 4px;
   background: none;
-  color: var(--zen-fg-muted);
+  color: var(--muted-foreground);
   cursor: pointer;
   pointer-events: auto;
 }
 
 .indicatorButton:hover {
-  color: var(--zen-fg);
+  color: var(--foreground);
 }
 
 .indicatorButton:focus-visible {
-  outline: 2px solid var(--zen-focus-ring);
+  outline: 2px solid var(--ring);
   outline-offset: 1px;
 }

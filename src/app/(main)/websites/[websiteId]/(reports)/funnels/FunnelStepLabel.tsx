@@ -13,7 +13,7 @@ export function FunnelStepLabel({
 }) {
   return (
     <Row alignItems="center" gap minWidth="0">
-      <Text weight="bold" color="muted">
+      <Text weight="bold" color="muted-foreground">
         {index + 1}
       </Text>
       <Icon>{type === 'path' ? <File /> : <Lightning />}</Icon>

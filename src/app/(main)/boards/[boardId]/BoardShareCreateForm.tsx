@@ -60,8 +60,8 @@ export function BoardShareCreateForm({
           <FormField label={t(labels.name)} name="name" rules={{ required: t(labels.required) }}>
             <TextField autoComplete="off" autoFocus />
           </FormField>
-          <FormField name="allowFilter">
-            <Checkbox>{t(labels.filters)}</Checkbox>
+          <FormField name="allowFilter" label={t(labels.filters)} orientation="horizontal">
+            <Checkbox />
           </FormField>
           <FormField label={t(labels.theme)} name="theme">
             <ThemeModeSelector
@@ -72,13 +72,11 @@ export function BoardShareCreateForm({
           </FormField>
           <Row justifyContent="flex-end" gap="3">
             {onCancel && (
-              <Button isDisabled={isPending} onPress={onCancel}>
+              <Button variant="secondary" disabled={isPending} onClick={onCancel}>
                 {t(labels.cancel)}
               </Button>
             )}
-            <FormSubmitButton variant="primary" isDisabled={isPending}>
-              {t(labels.add)}
-            </FormSubmitButton>
+            <FormSubmitButton disabled={isPending}>{t(labels.add)}</FormSubmitButton>
           </Row>
         </Column>
       )}

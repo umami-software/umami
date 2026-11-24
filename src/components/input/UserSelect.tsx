@@ -1,19 +1,20 @@
-import { ListItem, Select, type SelectProps } from '@umami/react-zen';
-import { useMemo, useState } from 'react';
+import { type Button, Text } from '@umami/react-zen';
+import { type ComponentProps, useMemo, useState } from 'react';
 import { Empty } from '@/components/common/Empty';
+import { SearchSelect } from '@/components/common/SearchSelect';
 import { useMessages, useTeamMembersQuery, useUsersQuery } from '@/components/hooks';
 
-export function UserSelect({
-  teamId,
-  onChange,
-  ...props
-}: {
+export interface UserSelectProps {
   teamId?: string;
-} & SelectProps) {
+  value?: string;
+  buttonProps?: Omit<ComponentProps<typeof Button>, 'children'>;
+  onValueChange?: (userId: string) => void;
+}
+
+export function UserSelect({ teamId, value, buttonProps, onValueChange }: UserSelectProps) {
   const { t, messages } = useMessages();
   const { data: users, isLoading: usersLoading } = useUsersQuery();
   const { data: teamMembers, isLoading: teamMembersLoading } = useTeamMembersQuery(teamId);
-  const [username, setUsername] = useState<string>();
   const [search, setSearch] = useState('');
 
   const listItems = useMemo(() => {
@@ -27,39 +28,26 @@ export function UserSelect({
     return users.data.filter(({ id }) => !teamMemberIds.includes(id));
   }, [users, teamMembers, teamId]);
 
-  const handleSearch = (value: string) => {
-    setSearch(value);
-  };
+  const items = listItems
+    .filter(({ username }) => !search || username.toLowerCase().includes(search.toLowerCase()))
+    .map(({ id, username }) => ({ id, name: username }));
 
-  const handleOpenChange = () => {
-    setSearch('');
-  };
-
-  const handleChange = (id: string) => {
-    setUsername(listItems.find(item => item.id === id)?.username);
-    onChange(id);
-  };
+  const username = listItems.find(({ id }) => id === value)?.username;
 
   return (
-    <Select
-      {...props}
-      value={username}
-      isLoading={usersLoading || (teamId && teamMembersLoading)}
-      allowSearch={true}
-      searchValue={search}
-      onSearch={handleSearch}
-      onChange={value => handleChange(value as string)}
-      onOpenChange={handleOpenChange}
+    <SearchSelect
+      value={value}
+      items={items}
+      isLoading={usersLoading || (!!teamId && teamMembersLoading)}
+      onSearch={setSearch}
+      onChange={onValueChange}
       maxHeight={480}
-      listProps={{
-        renderEmptyState: () => <Empty message={t(messages.noResultsFound)} />,
+      emptyMessage={<Empty message={t(messages.noResultsFound)} />}
+      renderValue={<Text truncate>{username}</Text>}
+      triggerProps={{
+        ...buttonProps,
+        className: ['w-full justify-between', buttonProps?.className].filter(Boolean).join(' '),
       }}
-    >
-      {listItems.map(({ id, username }) => (
-        <ListItem key={id} id={id}>
-          {username}
-        </ListItem>
-      ))}
-    </Select>
+    />
   );
 }

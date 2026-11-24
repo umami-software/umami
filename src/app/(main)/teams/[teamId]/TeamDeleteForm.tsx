@@ -34,7 +34,7 @@ export function TeamDeleteForm({
       isLoading={isPending}
       error={getErrorMessage(error)}
       buttonLabel={t(labels.delete)}
-      buttonVariant="danger"
+      buttonVariant="destructive"
     />
   );
 }

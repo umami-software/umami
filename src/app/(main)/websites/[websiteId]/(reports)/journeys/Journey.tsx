@@ -1,4 +1,13 @@
-import { Column, cn, Icon, Row, Text, Tooltip, TooltipTrigger } from '@umami/react-zen';
+import {
+  Column,
+  cn,
+  Icon,
+  Row,
+  Text,
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from '@umami/react-zen';
 import { useMemo, useState } from 'react';
 import { firstBy } from 'thenby';
 import { LoadingPanel } from '@/components/common/LoadingPanel';
@@ -229,9 +238,11 @@ export function Journey({ websiteId, steps, startStep, endStep, view }: JourneyP
                               {columnIndex === 0 || (selectedNode && !selected) ? (
                                 <div>{formatLongNumber(nodeCount)}</div>
                               ) : (
-                                <TooltipTrigger delay={0}>
-                                  <div tabIndex={0}>{formatLongNumber(nodeCount)}</div>
-                                  <Tooltip placement="top" sideOffset={20} showArrow>
+                                <Tooltip>
+                                  <TooltipTrigger delay={0} render={<div tabIndex={0} />}>
+                                    {formatLongNumber(nodeCount)}
+                                  </TooltipTrigger>
+                                  <TooltipContent side="top" sideOffset={20}>
                                     <Text transform="lowercase" color="red">
                                       {`${dropped}% ${t(labels.dropoff)}`}
                                     </Text>
@@ -240,8 +251,8 @@ export function Journey({ websiteId, steps, startStep, endStep, view }: JourneyP
                                         {`${remaining}% ${t(labels.conversion)}`}
                                       </Text>
                                     </Column>
-                                  </Tooltip>
-                                </TooltipTrigger>
+                                  </TooltipContent>
+                                </Tooltip>
                               )}
                             </div>
                             {columnIndex < columns.length &&

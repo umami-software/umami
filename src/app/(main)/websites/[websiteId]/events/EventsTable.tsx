@@ -3,10 +3,10 @@ import {
   DataColumn,
   DataTable,
   type DataTableProps,
-  Dialog,
-  DialogTrigger,
   Icon,
   Popover,
+  PopoverContent,
+  PopoverTrigger,
   Row,
   Text,
 } from '@umami/react-zen';
@@ -105,19 +105,17 @@ export function EventsTable(props: DataTableProps) {
 
 const PropertiesButton = props => {
   return (
-    <DialogTrigger>
-      <Button variant="quiet">
+    <Popover>
+      <PopoverTrigger render={<Button variant="ghost" />}>
         <Row alignItems="center" gap>
           <Icon>
             <FileText />
           </Icon>
         </Row>
-      </Button>
-      <Popover side="right" sideOffset={8}>
-        <Dialog>
-          <EventData {...props} />
-        </Dialog>
-      </Popover>
-    </DialogTrigger>
+      </PopoverTrigger>
+      <PopoverContent side="right" sideOffset={8}>
+        <EventData {...props} />
+      </PopoverContent>
+    </Popover>
   );
 };

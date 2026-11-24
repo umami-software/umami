@@ -3,9 +3,12 @@ import {
   FormButtons,
   FormField,
   FormSubmitButton,
-  ListItem,
   PasswordField,
   Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
   TextField,
 } from '@umami/react-zen';
 import { useLoginQuery, useMessages, useUpdateQuery, useUser } from '@/components/hooks';
@@ -17,6 +20,12 @@ export function UserEditForm({ userId, onSave }: { userId: string; onSave?: () =
   const { user: login } = useLoginQuery();
 
   const { mutateAsync, error, toast, touch } = useUpdateQuery(`/users/${userId}`);
+
+  const roles = [
+    { value: ROLES.viewOnly, label: t(labels.viewOnly), test: 'viewOnly' },
+    { value: ROLES.user, label: t(labels.user), test: 'user' },
+    { value: ROLES.admin, label: t(labels.admin), test: 'admin' },
+  ];
 
   const handleSubmit = async (data: any) => {
     await mutateAsync(data, {
@@ -46,23 +55,22 @@ export function UserEditForm({ userId, onSave }: { userId: string; onSave?: () =
 
       {user.id !== login.id && (
         <FormField name="role" label={t(labels.role)} rules={{ required: t(labels.required) }}>
-          <Select defaultValue={user.role}>
-            <ListItem id={ROLES.viewOnly} data-test="dropdown-item-viewOnly">
-              {t(labels.viewOnly)}
-            </ListItem>
-            <ListItem id={ROLES.user} data-test="dropdown-item-user">
-              {t(labels.user)}
-            </ListItem>
-            <ListItem id={ROLES.admin} data-test="dropdown-item-admin">
-              {t(labels.admin)}
-            </ListItem>
+          <Select items={roles} defaultValue={user.role}>
+            <SelectTrigger className="w-full">
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent alignItemWithTrigger={false}>
+              {roles.map(({ value, label, test }) => (
+                <SelectItem key={value} value={value} data-test={`dropdown-item-${test}`}>
+                  {label}
+                </SelectItem>
+              ))}
+            </SelectContent>
           </Select>
         </FormField>
       )}
       <FormButtons>
-        <FormSubmitButton data-test="button-submit" variant="primary">
-          {t(labels.save)}
-        </FormSubmitButton>
+        <FormSubmitButton data-test="button-submit">{t(labels.save)}</FormSubmitButton>
       </FormButtons>
     </Form>
   );

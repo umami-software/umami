@@ -1,3 +1,5 @@
+import { Button, Column, DataColumn, DataTable, Icon, Row, SearchField } from '@umami/react-zen';
+import { type ReactNode, useEffect, useState } from 'react';
 import { LoadingPanel } from '@/components/common/LoadingPanel';
 import { OverlayScrollArea } from '@/components/common/OverlayScrollArea';
 import { Pager } from '@/components/common/Pager';
@@ -7,8 +9,6 @@ import { DownloadButton } from '@/components/input/DownloadButton';
 import { MetricLabel } from '@/components/metrics/MetricLabel';
 import { DEFAULT_PAGE_SIZE, SESSION_COLUMNS } from '@/lib/constants';
 import { formatShortTime } from '@/lib/format';
-import { Button, Column, DataColumn, DataTable, Icon, Row, SearchField } from '@umami/react-zen';
-import { type ReactNode, useEffect, useState } from 'react';
 
 export interface MetricsExpandedTableProps {
   websiteId: string;
@@ -68,7 +68,7 @@ export function MetricsExpandedTable({
           {children}
           {allowDownload && <DownloadButton filename={type} data={data} />}
           {onClose && (
-            <Button onPress={onClose} variant="quiet">
+            <Button onClick={onClose} variant="ghost">
               <Icon>
                 <X />
               </Icon>

@@ -25,35 +25,26 @@ vi.mock('@umami/react-zen', async importOriginal => {
     ...actual,
     Column: ({ children }: { children: ReactNode }) => <div>{children}</div>,
     Grid: ({ children }: { children: ReactNode }) => <div>{children}</div>,
-    ListItem: ({ id, children }: { id: string; children: ReactNode }) => (
-      <option value={id}>{children}</option>
-    ),
+    Field: ({ children }: { children: ReactNode }) => <label>{children}</label>,
+    FieldLabel: ({ children }: { children: ReactNode }) => <>{children}</>,
     Select: ({
-      label,
       value,
-      defaultValue,
-      placeholder,
-      onChange,
+      onValueChange,
       children,
     }: {
-      label: string;
-      value?: string;
-      defaultValue?: string;
-      placeholder?: string;
-      onChange?: (value: string) => void;
+      value?: string | number;
+      onValueChange?: (value: string) => void;
       children: ReactNode;
     }) => (
-      <label>
-        {label}
-        <select
-          aria-label={label}
-          value={value ?? defaultValue ?? ''}
-          onChange={event => onChange?.(event.currentTarget.value)}
-        >
-          {placeholder && <option value="">{placeholder}</option>}
-          {children}
-        </select>
-      </label>
+      <select value={value ?? ''} onChange={event => onValueChange?.(event.currentTarget.value)}>
+        {children}
+      </select>
+    ),
+    SelectTrigger: () => null,
+    SelectValue: () => null,
+    SelectContent: ({ children }: { children: ReactNode }) => <>{children}</>,
+    SelectItem: ({ value, children }: { value: string | number; children: ReactNode }) => (
+      <option value={value}>{children}</option>
     ),
   };
 });

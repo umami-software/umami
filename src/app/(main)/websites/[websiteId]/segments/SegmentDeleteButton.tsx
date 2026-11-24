@@ -30,7 +30,7 @@ export function SegmentDeleteButton({
   };
 
   return (
-    <DialogButton icon={<Trash />} title={t(labels.confirm)} variant="quiet" width="600px">
+    <DialogButton icon={<Trash />} title={t(labels.confirm)} variant="ghost" width="600px">
       {({ close }) => (
         <ConfirmationForm
           message={t.rich(messages.confirmRemove, {
@@ -42,7 +42,7 @@ export function SegmentDeleteButton({
           onConfirm={handleConfirm.bind(null, close)}
           onClose={close}
           buttonLabel={t(labels.delete)}
-          buttonVariant="danger"
+          buttonVariant="destructive"
         />
       )}
     </DialogButton>

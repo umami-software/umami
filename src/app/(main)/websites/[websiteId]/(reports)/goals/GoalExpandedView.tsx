@@ -2,20 +2,20 @@ import {
   Button,
   Column,
   Dialog,
+  DialogContent,
   Heading,
   Icon,
-  Modal,
   Row,
-  Tab,
-  TabList,
-  TabPanel,
   Tabs,
+  TabsContent,
+  TabsList,
+  TabsTrigger,
   Text,
   Tooltip,
+  TooltipContent,
   TooltipTrigger,
 } from '@umami/react-zen';
 import { useState } from 'react';
-import { ControlledDialog } from '@/components/common/ControlledDialog';
 import { useGoalChartQuery, useGoalSummaryQuery, useMessages } from '@/components/hooks';
 import { File, Maximize, X } from '@/components/icons';
 import { MetricCard } from '@/components/metrics/MetricCard';
@@ -42,24 +42,34 @@ export function GoalMaximizeButton(props: GoalViewProps) {
 
   return (
     <>
-      <TooltipTrigger delay={0}>
-        <Button size="icon" variant="quiet" onPress={() => setIsOpen(true)}>
+      <Tooltip>
+        <TooltipTrigger
+          delay={0}
+          render={<Button size="icon" variant="ghost" onClick={() => setIsOpen(true)} />}
+        >
           <Icon>
             <Maximize />
           </Icon>
-        </Button>
-        <Tooltip>{t(labels.maximize)}</Tooltip>
-      </TooltipTrigger>
-      <ControlledDialog>
-        <Modal isOpen={isOpen} onOpenChange={setIsOpen} placement="fullscreen">
-          <Dialog
-            aria-label={props.name}
-            style={{ width: '100%', height: '100%', padding: '32px', overflowY: 'auto' }}
-          >
-            <GoalExpandedView {...props} onClose={() => setIsOpen(false)} />
-          </Dialog>
-        </Modal>
-      </ControlledDialog>
+        </TooltipTrigger>
+        <TooltipContent>{t(labels.maximize)}</TooltipContent>
+      </Tooltip>
+      <Dialog open={isOpen} onOpenChange={setIsOpen}>
+        <DialogContent
+          aria-label={props.name}
+          showCloseButton={false}
+          style={{
+            width: '100%',
+            height: '100%',
+            maxWidth: '100%',
+            maxHeight: '100%',
+            borderRadius: 0,
+            padding: '32px',
+            overflowY: 'auto',
+          }}
+        >
+          <GoalExpandedView {...props} onClose={() => setIsOpen(false)} />
+        </DialogContent>
+      </Dialog>
     </>
   );
 }
@@ -85,15 +95,15 @@ function GoalExpandedView({
         <Column gap="2" minWidth="0">
           <Heading size="2xl">{name}</Heading>
           <Row alignItems="center" gap="2" minWidth="0">
-            <Icon size="sm" color="muted">
+            <Icon size="sm" color="muted-foreground">
               {type === 'path' ? <File /> : <Lightning />}
             </Icon>
-            <Text color="muted" truncate title={value}>
+            <Text color="muted-foreground" truncate title={value}>
               {value}
             </Text>
           </Row>
         </Column>
-        <Button size="sm" variant="quiet" onPress={onClose} aria-label={t(labels.close)}>
+        <Button size="sm" variant="ghost" onClick={onClose} aria-label={t(labels.close)}>
           <Icon>
             <X />
           </Icon>
@@ -122,7 +132,7 @@ function GoalExpandedView({
                 {formatLongNumber(summary.completions)}
               </Text>
               {num > 0 && (
-                <Text color="muted" wrap="nowrap">
+                <Text color="muted-foreground" wrap="nowrap">
                   {`${Number((summary.completions / num).toFixed(1))} ${t(labels.perVisitor)}`}
                 </Text>
               )}
@@ -137,17 +147,17 @@ function GoalExpandedView({
           />
         )}
       </MetricsBar>
-      <Tabs defaultSelectedKey="breakdown">
-        <TabList>
-          <Tab id="breakdown">{t(labels.breakdown)}</Tab>
-          <Tab id="chart">{t(labels.conversionOverTime)}</Tab>
-        </TabList>
-        <TabPanel id="breakdown">
+      <Tabs defaultValue="breakdown">
+        <TabsList>
+          <TabsTrigger value="breakdown">{t(labels.breakdown)}</TabsTrigger>
+          <TabsTrigger value="chart">{t(labels.conversionOverTime)}</TabsTrigger>
+        </TabsList>
+        <TabsContent value="breakdown">
           <GoalBreakdown websiteId={websiteId} id={id} />
-        </TabPanel>
-        <TabPanel id="chart">
+        </TabsContent>
+        <TabsContent value="chart">
           <GoalChart websiteId={websiteId} id={id} />
-        </TabPanel>
+        </TabsContent>
       </Tabs>
     </Column>
   );

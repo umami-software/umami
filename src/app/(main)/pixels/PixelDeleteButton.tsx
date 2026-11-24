@@ -27,7 +27,7 @@ export function PixelDeleteButton({
   };
 
   return (
-    <DialogButton icon={<Trash />} variant="quiet" title={t(labels.confirm)} width="400px">
+    <DialogButton icon={<Trash />} variant="ghost" title={t(labels.confirm)} width="400px">
       {({ close }) => (
         <ConfirmationForm
           message={t.rich(messages.confirmRemove, {
@@ -39,7 +39,7 @@ export function PixelDeleteButton({
           onConfirm={handleConfirm.bind(null, close)}
           onClose={close}
           buttonLabel={t(labels.delete)}
-          buttonVariant="danger"
+          buttonVariant="destructive"
         />
       )}
     </DialogButton>

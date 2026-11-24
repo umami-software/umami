@@ -21,7 +21,7 @@ export function PageBody({
 
   if (error) {
     return (
-      <Alert variant="danger">
+      <Alert variant="destructive">
         <AlertTitle>{t(messages.error)}</AlertTitle>
       </Alert>
     );

@@ -1,14 +1,17 @@
 import {
   Button,
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuGroup,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
   Icon,
-  Menu,
-  MenuItem,
-  MenuSection,
-  MenuSeparator,
-  MenuTrigger,
-  Popover,
+  Row,
+  Text,
 } from '@umami/react-zen';
-import type { Key } from 'react';
+import type { ReactNode } from 'react';
 import { useConfig, useLoginQuery, useMessages, useNavigation } from '@/components/hooks';
 import {
   BookText,
@@ -27,9 +30,7 @@ export function SettingsButton() {
   const { router } = useNavigation();
   const { cloudMode } = useConfig();
 
-  const handleAction = (id: Key) => {
-    const url = id.toString();
-
+  const handleAction = (url: string) => {
     if (cloudMode) {
       if (url === '/docs') {
         window.open(DOCS_URL, '_blank');
@@ -41,61 +42,48 @@ export function SettingsButton() {
     }
   };
 
+  const renderItem = (url: string, icon: ReactNode, label: ReactNode, children?: ReactNode) => (
+    <DropdownMenuItem onClick={() => handleAction(url)}>
+      <Row alignItems="center" gap>
+        <Icon>{icon}</Icon>
+        <Text>{label}</Text>
+        {children}
+      </Row>
+    </DropdownMenuItem>
+  );
+
   return (
-    <MenuTrigger>
-      <Button data-test="button-profile" variant="quiet" autoFocus={false}>
+    <DropdownMenu>
+      <DropdownMenuTrigger
+        render={<Button data-test="button-profile" variant="ghost" autoFocus={false} />}
+      >
         <Icon>
           <UserCircle />
         </Icon>
-      </Button>
-      <Popover side="bottom" align="end">
-        <Menu>
-          <MenuSection title={user.username}>
-            <MenuSeparator />
-            <MenuItem
-              id="/settings"
-              icon={<Settings />}
-              label={t(labels.settings)}
-              onAction={handleAction}
-            />
-            {!cloudMode && user.isAdmin && (
-              <MenuItem
-                id="/admin"
-                icon={<LockKeyhole />}
-                label={t(labels.admin)}
-                onAction={handleAction}
-              />
-            )}
-            {cloudMode && (
-              <>
-                <MenuItem
-                  id="/docs"
-                  icon={<BookText />}
-                  label={t(labels.documentation)}
-                  onAction={handleAction}
-                >
-                  <Icon color="muted">
-                    <ExternalLink />
-                  </Icon>
-                </MenuItem>
-                <MenuItem
-                  id="/settings/support"
-                  icon={<LifeBuoy />}
-                  label={t(labels.support)}
-                  onAction={handleAction}
-                />
-              </>
-            )}
-            <MenuSeparator />
-            <MenuItem
-              id="/logout"
-              icon={<LogOut />}
-              label={t(labels.logout)}
-              onAction={handleAction}
-            />
-          </MenuSection>
-        </Menu>
-      </Popover>
-    </MenuTrigger>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent side="bottom" align="end" className="w-auto">
+        <DropdownMenuGroup>
+          <DropdownMenuLabel>{user.username}</DropdownMenuLabel>
+          <DropdownMenuSeparator />
+          {renderItem('/settings', <Settings />, t(labels.settings))}
+          {!cloudMode && user.isAdmin && renderItem('/admin', <LockKeyhole />, t(labels.admin))}
+          {cloudMode && (
+            <>
+              {renderItem(
+                '/docs',
+                <BookText />,
+                t(labels.documentation),
+                <Icon color="muted-foreground">
+                  <ExternalLink />
+                </Icon>,
+              )}
+              {renderItem('/settings/support', <LifeBuoy />, t(labels.support))}
+            </>
+          )}
+          <DropdownMenuSeparator />
+          {renderItem('/logout', <LogOut />, t(labels.logout))}
+        </DropdownMenuGroup>
+      </DropdownMenuContent>
+    </DropdownMenu>
   );
 }

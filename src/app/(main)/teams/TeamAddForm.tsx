@@ -41,12 +41,10 @@ export function TeamAddForm({
         </FormField>
       )}
       <FormButtons>
-        <Button isDisabled={isPending} onPress={onClose}>
+        <Button variant="secondary" disabled={isPending} onClick={onClose}>
           {t(labels.cancel)}
         </Button>
-        <FormSubmitButton variant="primary" isDisabled={isPending}>
-          {t(labels.save)}
-        </FormSubmitButton>
+        <FormSubmitButton disabled={isPending}>{t(labels.save)}</FormSubmitButton>
       </FormButtons>
     </Form>
   );

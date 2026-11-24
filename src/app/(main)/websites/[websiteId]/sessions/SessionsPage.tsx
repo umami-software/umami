@@ -1,5 +1,5 @@
 'use client';
-import { Column, Tab, TabList, TabPanel, Tabs } from '@umami/react-zen';
+import { Column, Tabs, TabsContent, TabsList, TabsTrigger } from '@umami/react-zen';
 import { type Key, useState } from 'react';
 import { WebsiteControls } from '@/app/(main)/websites/[websiteId]/WebsiteControls';
 import { Panel } from '@/components/common/Panel';
@@ -25,21 +25,20 @@ export function SessionsPage({ websiteId }) {
       <WebsiteControls websiteId={websiteId} />
       <SessionModal websiteId={websiteId} />
       <Panel minWidth="0" width="100%" style={{ overflow: 'hidden' }}>
-        <Tabs
-          selectedKey={tab}
-          onSelectionChange={handleSelect}
-          style={{ minWidth: 0, width: '100%' }}
-        >
-          <TabList>
-            <Tab id="activity">{t(labels.activity)}</Tab>
-            <Tab id="properties">{t(labels.properties)}</Tab>
-          </TabList>
-          <TabPanel id="activity" style={{ minWidth: 0, width: '100%' }}>
+        <Tabs value={tab} onValueChange={handleSelect} style={{ minWidth: 0, width: '100%' }}>
+          <TabsList>
+            <TabsTrigger value="activity">{t(labels.activity)}</TabsTrigger>
+            <TabsTrigger value="properties">{t(labels.properties)}</TabsTrigger>
+          </TabsList>
+          <TabsContent value="activity" style={{ minWidth: 0, width: '100%' }}>
             <SessionsDataTable websiteId={websiteId} />
-          </TabPanel>
-          <TabPanel id="properties" style={{ minWidth: 0, width: '100%', overflow: 'hidden' }}>
+          </TabsContent>
+          <TabsContent
+            value="properties"
+            style={{ minWidth: 0, width: '100%', overflow: 'hidden' }}
+          >
             <SessionProperties websiteId={websiteId} />
-          </TabPanel>
+          </TabsContent>
         </Tabs>
       </Panel>
     </Column>

@@ -3,16 +3,19 @@ import {
   Button,
   Calendar,
   Column,
-  Dialog,
-  DialogTrigger,
   Grid,
   Icon,
   Label,
-  ListItem,
   Loading,
   Popover,
+  PopoverContent,
+  PopoverTrigger,
   Row,
   Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
   TextField,
 } from '@umami/react-zen';
 import { format, parseISO } from 'date-fns';
@@ -137,6 +140,12 @@ export function PropertyFilterRecord({
     }
   };
 
+  const operatorItems = operators.map(op => ({ value: op, label: operatorLabel(op) }));
+  const booleanItems = [
+    { value: 'true', label: t(labels.true) },
+    { value: 'false', label: t(labels.false) },
+  ];
+
   const handleOperatorChange = (op: Operator) => {
     const wasMulti = MULTI_OPERATORS.includes(filter.operator);
     const isMulti = MULTI_OPERATORS.includes(op);
@@ -163,22 +172,37 @@ export function PropertyFilterRecord({
       <Grid columns="1fr auto" gap>
         <Grid columns={{ base: '1fr', md: '200px 1fr' }} gap>
           <Select
+            items={operatorItems}
             value={filter.operator}
-            onChange={value => handleOperatorChange(value as Operator)}
+            onValueChange={value => handleOperatorChange(value as Operator)}
           >
-            {operators.map(op => (
-              <ListItem key={op} id={op}>
-                {operatorLabel(op)}
-              </ListItem>
-            ))}
+            <SelectTrigger className="w-full">
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent alignItemWithTrigger={false}>
+              {operatorItems.map(({ value, label }) => (
+                <SelectItem key={value} value={value}>
+                  {label}
+                </SelectItem>
+              ))}
+            </SelectContent>
           </Select>
           {isBoolean ? (
             <Select
+              items={booleanItems}
               value={filter.value || 'true'}
-              onChange={value => onChange({ ...filter, value: value as string })}
+              onValueChange={value => onChange({ ...filter, value: value as string })}
             >
-              <ListItem id="true">{t(labels.true)}</ListItem>
-              <ListItem id="false">{t(labels.false)}</ListItem>
+              <SelectTrigger className="w-full">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent alignItemWithTrigger={false}>
+                {booleanItems.map(({ value, label }) => (
+                  <SelectItem key={value} value={value}>
+                    {label}
+                  </SelectItem>
+                ))}
+              </SelectContent>
             </Select>
           ) : isDate ? (
             <DateValuePicker
@@ -195,24 +219,12 @@ export function PropertyFilterRecord({
                 setSearch(v);
                 onChange({ ...filter, value: v });
               }}
-              renderEmptyState={() =>
-                isLoading ? (
-                  <Loading placement="center" icon="dots" />
-                ) : (
-                  <Empty message={t(messages.noResultsFound)} />
-                )
-              }
-            >
-              {filteredValues.map(v => (
-                <ListItem key={v} id={v}>
-                  {v}
-                </ListItem>
-              ))}
-            </ComboBox>
+              isLoading={isLoading}
+            />
           ) : isNumeric || isFreeText ? (
             <TextField
               value={filter.value}
-              onChange={v => onChange({ ...filter, value: v })}
+              onValueChange={v => onChange({ ...filter, value: v })}
               inputMode={isNumeric ? 'numeric' : 'text'}
             />
           ) : (
@@ -240,7 +252,7 @@ export function PropertyFilterRecord({
           )}
         </Grid>
         <Column justifyContent="flex-start">
-          <Button onPress={onRemove}>
+          <Button variant="secondary" onClick={onRemove}>
             <Icon>
               <X />
             </Icon>
@@ -263,42 +275,48 @@ function DateValuePicker({
   const selectedDate = getSelectedDate(value);
   const [draftDate, setDraftDate] = useState<Date>(selectedDate);
 
+  const handleOpenChange = (open: boolean) => {
+    if (open) {
+      setDraftDate(getSelectedDate(value));
+    }
+    setShowPicker(open);
+  };
+
   return (
-    <DialogTrigger isOpen={showPicker} onOpenChange={setShowPicker}>
-      <Button
-        onPress={() => {
-          setDraftDate(getSelectedDate(value));
-          setShowPicker(true);
-        }}
-        style={{ width: '100%', justifyContent: 'flex-start' }}
+    <Popover open={showPicker} onOpenChange={handleOpenChange}>
+      <PopoverTrigger
+        render={
+          <Button variant="secondary" style={{ width: '100%', justifyContent: 'flex-start' }} />
+        }
       >
         <DateDisplay startDate={selectedDate} endDate={selectedDate} />
-      </Button>
-      <Popover side="bottom" align="start" isNonModal>
-        <Dialog>
-          <Column gap>
-            <Calendar
-              value={draftDate}
-              minValue={new Date(2000, 0, 1)}
-              maxValue={getMaxSelectableDate()}
-              onChange={setDraftDate}
-            />
-            <Row justifyContent="end" gap>
-              <Button onPress={() => setShowPicker(false)}>{t(labels.cancel)}</Button>
-              <Button
-                variant="primary"
-                onPress={() => {
-                  onChange(format(draftDate, 'yyyy-MM-dd'));
-                  setShowPicker(false);
-                }}
-              >
-                {t(labels.apply)}
-              </Button>
-            </Row>
-          </Column>
-        </Dialog>
-      </Popover>
-    </DialogTrigger>
+      </PopoverTrigger>
+      <PopoverContent side="bottom" align="start" style={{ width: 'auto' }}>
+        <Column gap>
+          <Calendar
+            mode="single"
+            selected={draftDate}
+            defaultMonth={draftDate}
+            disabled={[{ before: new Date(2000, 0, 1) }, { after: getMaxSelectableDate() }]}
+            onSelect={setDraftDate}
+            required
+          />
+          <Row justifyContent="end" gap>
+            <Button variant="secondary" onClick={() => setShowPicker(false)}>
+              {t(labels.cancel)}
+            </Button>
+            <Button
+              onClick={() => {
+                onChange(format(draftDate, 'yyyy-MM-dd'));
+                setShowPicker(false);
+              }}
+            >
+              {t(labels.apply)}
+            </Button>
+          </Row>
+        </Column>
+      </PopoverContent>
+    </Popover>
   );
 }
 

@@ -2,6 +2,8 @@ import {
   Button,
   Checkbox,
   Column,
+  Field,
+  FieldLabel,
   Form,
   FormField,
   FormSubmitButton,
@@ -126,18 +128,24 @@ export function ShareEditForm({
 
         return (
           <Column gap="6">
-            {url && <TextField label={t(labels.shareUrl)} value={url} isReadOnly allowCopy />}
+            {url && <TextField label={t(labels.shareUrl)} value={url} readOnly allowCopy />}
             <FormField label={t(labels.name)} name="name" rules={{ required: t(labels.required) }}>
               <TextField autoComplete="off" autoFocus={!isEditing} />
             </FormField>
             <Grid columns={{ base: 'repeat(2, 1fr)', lg: 'repeat(3, 1fr)' }} gap="3">
               <FormField label={t(labels.filters)} name="allowFilter">
-                <Switch
-                  isSelected={watch('allowFilter')}
-                  onChange={value => setValue('allowFilter', value, { shouldDirty: true })}
-                >
-                  {t(labels.filtersEnabled)}
-                </Switch>
+                {({ controlProps }) => (
+                  <Field orientation="horizontal">
+                    <Switch
+                      id={controlProps.id}
+                      checked={watch('allowFilter')}
+                      onCheckedChange={value =>
+                        setValue('allowFilter', value, { shouldDirty: true })
+                      }
+                    />
+                    <FieldLabel htmlFor={controlProps.id}>{t(labels.filtersEnabled)}</FieldLabel>
+                  </Field>
+                )}
               </FormField>
               <FormField label={t(labels.theme)} name="theme">
                 <ThemeModeSelector
@@ -154,8 +162,13 @@ export function ShareEditForm({
                   <Text weight="bold">{t((labels as any)[section.section])}</Text>
                   <Column gap="1">
                     {section.items.map(item => (
-                      <FormField key={item.id} name={item.id}>
-                        <Checkbox>{t((labels as any)[item.label])}</Checkbox>
+                      <FormField
+                        key={item.id}
+                        name={item.id}
+                        label={t((labels as any)[item.label])}
+                        orientation="horizontal"
+                      >
+                        <Checkbox />
                       </FormField>
                     ))}
                   </Column>
@@ -164,14 +177,11 @@ export function ShareEditForm({
             </Grid>
             <Row justifyContent="flex-end" paddingTop="3" gap="3">
               {onClose && (
-                <Button isDisabled={isPending} onPress={onClose}>
+                <Button variant="secondary" disabled={isPending} onClick={onClose}>
                   {t(labels.cancel)}
                 </Button>
               )}
-              <FormSubmitButton
-                variant="primary"
-                isDisabled={isPending || !hasSelection || !values.name}
-              >
+              <FormSubmitButton disabled={isPending || !hasSelection || !values.name}>
                 {t(labels.save)}
               </FormSubmitButton>
             </Row>

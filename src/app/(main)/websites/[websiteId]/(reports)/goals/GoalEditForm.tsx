@@ -110,7 +110,7 @@ export function GoalEditForm({
             </Column>
 
             <FormButtons>
-              <Button onPress={onClose} isDisabled={isPending}>
+              <Button variant="secondary" onClick={onClose} disabled={isPending}>
                 {t(labels.cancel)}
               </Button>
               <FormSubmitButton>{t(labels.save)}</FormSubmitButton>

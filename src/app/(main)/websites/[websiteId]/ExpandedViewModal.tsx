@@ -1,6 +1,5 @@
-import { Dialog, Modal } from '@umami/react-zen';
+import { Dialog, DialogContent } from '@umami/react-zen';
 import { WebsiteExpandedView } from '@/app/(main)/websites/[websiteId]/WebsiteExpandedView';
-import { ControlledDialog } from '@/components/common/ControlledDialog';
 import { useMobile, useNavigation } from '@/components/hooks';
 import styles from './ExpandedViewModal.module.css';
 
@@ -18,41 +17,36 @@ export function ExpandedViewModal({
   } = useNavigation();
   const { isMobile } = useMobile();
 
-  const handleClose = (close: () => void) => {
+  const handleClose = () => {
     router.push(updateParams({ view: undefined }));
-    close();
   };
 
   const handleOpenChange = (isOpen: boolean) => {
     if (!isOpen) {
-      router.push(updateParams({ view: undefined }));
+      handleClose();
     }
   };
 
   return (
-    <ControlledDialog>
-      <Modal isOpen={!!view} onOpenChange={handleOpenChange}>
-        <Dialog
-          className={styles.dialog}
-          style={{
-            maxWidth: 1320,
-            width: '100vw',
-            height: isMobile ? '100dvh' : undefined,
-            maxHeight: isMobile ? undefined : 'calc(100dvh - 40px)',
-            overflow: 'hidden',
-          }}
-        >
-          {({ close }) => {
-            return (
-              <WebsiteExpandedView
-                websiteId={websiteId}
-                excludedIds={excludedIds}
-                onClose={() => handleClose(close)}
-              />
-            );
-          }}
-        </Dialog>
-      </Modal>
-    </ControlledDialog>
+    <Dialog open={!!view} onOpenChange={handleOpenChange}>
+      <DialogContent
+        className={styles.dialog}
+        showCloseButton={false}
+        style={{
+          display: 'flex',
+          maxWidth: 1320,
+          width: '100vw',
+          height: isMobile ? '100dvh' : undefined,
+          maxHeight: isMobile ? undefined : 'calc(100dvh - 40px)',
+          overflow: 'hidden',
+        }}
+      >
+        <WebsiteExpandedView
+          websiteId={websiteId}
+          excludedIds={excludedIds}
+          onClose={handleClose}
+        />
+      </DialogContent>
+    </Dialog>
   );
 }

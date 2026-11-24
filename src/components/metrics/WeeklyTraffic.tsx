@@ -1,4 +1,4 @@
-import { Box, Grid, Row, Text, Tooltip, TooltipTrigger } from '@umami/react-zen';
+import { Box, Grid, Row, Text, Tooltip, TooltipContent, TooltipTrigger } from '@umami/react-zen';
 import { addHours, format, startOfDay } from 'date-fns';
 import { Fragment } from 'react';
 import { LoadingPanel } from '@/components/common/LoadingPanel';
@@ -61,7 +61,7 @@ export function WeeklyTraffic({ websiteId }: { websiteId: string }) {
                   );
                   return (
                     <Row key={i} justifyContent="flex-end">
-                      <Text color="muted" size="sm">
+                      <Text color="muted-foreground" size="sm">
                         {label}
                       </Text>
                     </Row>
@@ -85,7 +85,7 @@ export function WeeklyTraffic({ websiteId }: { websiteId: string }) {
                         tabIndex={0}
                         alignItems="center"
                         justifyContent="center"
-                        backgroundColor="surface-raised"
+                        backgroundColor="muted"
                         width="16px"
                         height="16px"
                         borderRadius="full"
@@ -107,9 +107,9 @@ export function WeeklyTraffic({ websiteId }: { websiteId: string }) {
                     }
 
                     return (
-                      <TooltipTrigger key={j} delay={0}>
-                        {cell}
-                        <Tooltip placement="right" className="bg-transparent p-0">
+                      <Tooltip key={j}>
+                        <TooltipTrigger delay={0} render={cell} />
+                        <TooltipContent side="right" className="tooltip-bare bg-transparent p-0">
                           <Box
                             padding
                             borderRadius="md"
@@ -119,8 +119,8 @@ export function WeeklyTraffic({ websiteId }: { websiteId: string }) {
                               {`${t(labels.visitors)}: ${formatLongNumber(count)}`}
                             </Text>
                           </Box>
-                        </Tooltip>
-                      </TooltipTrigger>
+                        </TooltipContent>
+                      </Tooltip>
                     );
                   })}
                 </Grid>

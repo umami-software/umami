@@ -72,8 +72,12 @@ export function PasswordEditForm({
         <PasswordField autoComplete="confirm-password" />
       </FormField>
       <FormButtons>
-        {!required && <Button onPress={onClose}>{t(labels.cancel)}</Button>}
-        <FormSubmitButton isDisabled={isPending}>{t(labels.save)}</FormSubmitButton>
+        {!required && (
+          <Button variant="secondary" onClick={onClose}>
+            {t(labels.cancel)}
+          </Button>
+        )}
+        <FormSubmitButton disabled={isPending}>{t(labels.save)}</FormSubmitButton>
       </FormButtons>
     </Form>
   );

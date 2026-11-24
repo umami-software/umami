@@ -1,4 +1,4 @@
-import { Icon, LoadingButton, Tooltip, TooltipTrigger } from '@umami/react-zen';
+import { Icon, LoadingButton, Tooltip, TooltipContent, TooltipTrigger } from '@umami/react-zen';
 import { useSearchParams } from 'next/navigation';
 import { useState } from 'react';
 import { useApi, useMessages } from '@/components/hooks';
@@ -30,19 +30,19 @@ export function ExportButton({ websiteId }: { websiteId: string }) {
   };
 
   return (
-    <TooltipTrigger delay={0}>
-      <LoadingButton
-        variant="quiet"
-        showText={!isLoading}
-        isLoading={isLoading}
-        onClick={handleClick}
+    <Tooltip>
+      <TooltipTrigger
+        delay={0}
+        render={<LoadingButton variant="ghost" loading={isLoading} onClick={handleClick} />}
       >
-        <Icon>
-          <Download />
-        </Icon>
-      </LoadingButton>
-      <Tooltip>{t(labels.download)}</Tooltip>
-    </TooltipTrigger>
+        {!isLoading && (
+          <Icon>
+            <Download />
+          </Icon>
+        )}
+      </TooltipTrigger>
+      <TooltipContent>{t(labels.download)}</TooltipContent>
+    </Tooltip>
   );
 }
 

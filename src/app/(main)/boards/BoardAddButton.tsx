@@ -13,7 +13,7 @@ export function BoardAddButton() {
   };
 
   return (
-    <DialogButton icon={<Plus />} label={t(labels.addBoard)} variant="primary" width="600px">
+    <DialogButton icon={<Plus />} label={t(labels.addBoard)} variant="default" width="600px">
       {({ close }) => <BoardEditForm teamId={teamId} onSave={handleSave} onClose={close} />}
     </DialogButton>
   );

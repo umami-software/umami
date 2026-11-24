@@ -58,7 +58,7 @@ export function BoardFunnel({
           allowMaximize={false}
         />
       ) : (
-        <Text color="muted">Funnel unavailable</Text>
+        <Text color="muted-foreground">Funnel unavailable</Text>
       )}
     </LoadingPanel>
   );

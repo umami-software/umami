@@ -1,4 +1,4 @@
-import { Column, Grid, ListItem, Row } from '@umami/react-zen';
+import { Column, Grid, Row } from '@umami/react-zen';
 import { useMemo, useState } from 'react';
 import { ComboBox } from '@/components/common/ComboBox';
 import { LoadingPanel } from '@/components/common/LoadingPanel';
@@ -86,15 +86,10 @@ export function SessionProperties({ websiteId }: { websiteId: string }) {
               <ComboBox
                 label={t(labels.property)}
                 className="min-w-0"
+                items={properties.map((field: { propertyName: string }) => field.propertyName)}
                 inputValue={propertyName}
                 onInputValueChange={setPropertyName}
-              >
-                {properties.map((field: { propertyName: string }) => (
-                  <ListItem key={field.propertyName} id={field.propertyName}>
-                    {field.propertyName}
-                  </ListItem>
-                ))}
-              </ComboBox>
+              />
             </Grid>
             {propertyName && (
               <Row

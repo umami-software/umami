@@ -1,4 +1,4 @@
-import { Column, Row, Text, Tooltip, TooltipTrigger } from '@umami/react-zen';
+import { Column, Row, Text, Tooltip, TooltipContent, TooltipTrigger } from '@umami/react-zen';
 import { IconLabel } from '@/components/common/IconLabel';
 import Link from '@/components/common/Link';
 import { useMessages, useNavigation, useWebsiteNavItems } from '@/components/hooks';
@@ -21,26 +21,26 @@ export function WebsiteNav({
     <Column gap="2" marginTop={isCollapsed ? '2' : undefined}>
       <Link href={renderUrl('/websites', false)} role="button" onClick={onItemClick}>
         {isCollapsed ? (
-          <TooltipTrigger delay={0}>
-            <Row
-              tabIndex={0}
-              alignItems="center"
-              justifyContent="center"
-              hover={{ backgroundColor: 'surface-sunken' }}
-              borderRadius
-              minHeight="9"
+          <Tooltip>
+            <TooltipTrigger
+              delay={0}
+              render={
+                <Row
+                  tabIndex={0}
+                  alignItems="center"
+                  justifyContent="center"
+                  hover={{ backgroundColor: 'muted' }}
+                  borderRadius
+                  minHeight="9"
+                />
+              }
             >
               <IconLabel icon={<ArrowLeft />} label="" padding />
-            </Row>
-            <Tooltip placement="right">{t(labels.back)}</Tooltip>
-          </TooltipTrigger>
+            </TooltipTrigger>
+            <TooltipContent side="right">{t(labels.back)}</TooltipContent>
+          </Tooltip>
         ) : (
-          <Row
-            alignItems="center"
-            hover={{ backgroundColor: 'surface-sunken' }}
-            borderRadius
-            minHeight="9"
-          >
+          <Row alignItems="center" hover={{ backgroundColor: 'muted' }} borderRadius minHeight="9">
             <IconLabel icon={<ArrowLeft />} label={t(labels.back)} padding />
           </Row>
         )}
@@ -57,15 +57,20 @@ export function WebsiteNav({
             return (
               <Link key={id} href={path} role="button" onClick={onItemClick}>
                 {isCollapsed ? (
-                  <TooltipTrigger delay={0}>
-                    <Row
-                      tabIndex={0}
-                      alignItems="center"
-                      justifyContent="center"
-                      hover={{ backgroundColor: 'surface-sunken' }}
-                      backgroundColor={isSelected ? 'surface-sunken' : undefined}
-                      borderRadius
-                      minHeight="9"
+                  <Tooltip>
+                    <TooltipTrigger
+                      delay={0}
+                      render={
+                        <Row
+                          tabIndex={0}
+                          alignItems="center"
+                          justifyContent="center"
+                          hover={{ backgroundColor: 'muted' }}
+                          backgroundColor={isSelected ? 'muted' : undefined}
+                          borderRadius
+                          minHeight="9"
+                        />
+                      }
                     >
                       <IconLabel
                         icon={icon}
@@ -73,14 +78,14 @@ export function WebsiteNav({
                         weight={isSelected ? 'bold' : undefined}
                         padding
                       />
-                    </Row>
-                    <Tooltip placement="right">{label}</Tooltip>
-                  </TooltipTrigger>
+                    </TooltipTrigger>
+                    <TooltipContent side="right">{label}</TooltipContent>
+                  </Tooltip>
                 ) : (
                   <Row
                     alignItems="center"
-                    hover={{ backgroundColor: 'surface-sunken' }}
-                    backgroundColor={isSelected ? 'surface-sunken' : undefined}
+                    hover={{ backgroundColor: 'muted' }}
+                    backgroundColor={isSelected ? 'muted' : undefined}
                     borderRadius
                     minHeight="9"
                   >

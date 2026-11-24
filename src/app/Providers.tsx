@@ -1,6 +1,6 @@
 'use client';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { RouterProvider, ZenProvider } from '@umami/react-zen';
+import { ZenProvider } from '@umami/react-zen';
 import { NextIntlClientProvider } from 'next-intl';
 import { type ReactNode, useEffect } from 'react';
 import { ErrorBoundary } from '@/components/common/ErrorBoundary';
@@ -52,13 +52,11 @@ export function Providers({
     <ConfigContext.Provider value={config}>
       <FlagsContext.Provider value={flags}>
         <ZenProvider>
-          <RouterProvider>
-            <MessagesProvider>
-              <QueryClientProvider client={client}>
-                <ErrorBoundary>{children}</ErrorBoundary>
-              </QueryClientProvider>
-            </MessagesProvider>
-          </RouterProvider>
+          <MessagesProvider>
+            <QueryClientProvider client={client}>
+              <ErrorBoundary>{children}</ErrorBoundary>
+            </QueryClientProvider>
+          </MessagesProvider>
         </ZenProvider>
       </FlagsContext.Provider>
     </ConfigContext.Provider>

@@ -6,23 +6,23 @@
 }
 
 .clickable:focus-visible {
-  outline: 2px solid var(--zen-fg);
+  outline: 2px solid var(--foreground);
   outline-offset: -2px;
 }
 
 /* Standalone card: outline ring on hover and selection. */
 .bordered:hover,
 .bordered.selected {
-  box-shadow: 0 0 0 1px var(--zen-fg);
+  box-shadow: 0 0 0 1px var(--foreground);
 }
 
 /* Inside a joined MetricsBar the bar clips outer rings, so highlight the cell instead. */
 .clickable:not(.bordered):hover {
-  background-color: var(--zen-interactive-bg);
+  background-color: var(--muted);
 }
 
 .clickable:not(.bordered).selected {
-  box-shadow: inset 0 -2px 0 var(--zen-primary);
+  box-shadow: inset 0 -2px 0 var(--primary);
 }
 
 /* Keep the info button from making the label row taller than cards without one. */

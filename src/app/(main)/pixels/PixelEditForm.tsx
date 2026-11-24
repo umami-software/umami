@@ -99,11 +99,14 @@ export function PixelEditForm({
                 <TextField
                   value={`${hostUrl}/${slug}`}
                   autoComplete="off"
-                  isReadOnly
+                  readOnly
                   allowCopy
                   style={{ width: '100%' }}
                 />
-                <Button onPress={() => setValue('slug', handleSlug(), { shouldDirty: true })}>
+                <Button
+                  variant="secondary"
+                  onClick={() => setValue('slug', handleSlug(), { shouldDirty: true })}
+                >
                   <Icon>
                     <RefreshCw />
                   </Icon>
@@ -113,11 +116,11 @@ export function PixelEditForm({
 
             <Row justifyContent="flex-end" paddingTop="3" gap="3">
               {onClose && (
-                <Button isDisabled={isPending} onPress={onClose}>
+                <Button variant="secondary" disabled={isPending} onClick={onClose}>
                   {t(labels.cancel)}
                 </Button>
               )}
-              <FormSubmitButton isDisabled={false}>{t(labels.save)}</FormSubmitButton>
+              <FormSubmitButton disabled={false}>{t(labels.save)}</FormSubmitButton>
             </Row>
           </>
         );

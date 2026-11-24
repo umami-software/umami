@@ -60,10 +60,10 @@ export function UpdateNotice({ user, config }) {
         <Alert className="shadow-lg px-5 py-4" style={{ width: '100%' }}>
           <AlertTitle>{t(messages.newVersionAvailable, { version: `v${latest}` })}</AlertTitle>
           <Row gap="3" paddingTop="2">
-            <Button variant="primary" onPress={handleViewClick}>
-              {t(labels.viewDetails)}
+            <Button onClick={handleViewClick}>{t(labels.viewDetails)}</Button>
+            <Button variant="secondary" onClick={handleDismissClick}>
+              {t(labels.dismiss)}
             </Button>
-            <Button onPress={handleDismissClick}>{t(labels.dismiss)}</Button>
           </Row>
         </Alert>
       </Row>

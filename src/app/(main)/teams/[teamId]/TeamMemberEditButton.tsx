@@ -26,7 +26,7 @@ export function TeamMemberEditButton({
   };
 
   return (
-    <DialogButton icon={<Edit />} title={t(labels.editMember)} variant="quiet" width="400px">
+    <DialogButton icon={<Edit />} title={t(labels.editMember)} variant="ghost" width="400px">
       {({ close }) => (
         <TeamMemberEditForm
           teamId={teamId}

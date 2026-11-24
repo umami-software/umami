@@ -1,4 +1,14 @@
-import { Button, Icon, ListItem, Row, Select, Text } from '@umami/react-zen';
+import {
+  Button,
+  Icon,
+  Row,
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+  Text,
+} from '@umami/react-zen';
 import { isAfter } from 'date-fns';
 import { useMemo } from 'react';
 import { useDateRange, useDateRangeQuery, useMessages, useNavigation } from '@/components/hooks';
@@ -55,6 +65,11 @@ export function WebsiteDateFilter({
     router.push(updateParams({ compare }));
   };
 
+  const compareItems = [
+    { value: 'prev', label: t(labels.previousPeriod) },
+    { value: 'yoy', label: t(labels.previousYear) },
+  ];
+
   const dateValue = useMemo(() => {
     return offset !== 0
       ? getDateRangeValue(dateRange.startDate, dateRange.endDate)
@@ -65,12 +80,12 @@ export function WebsiteDateFilter({
     <Row wrap="wrap" gap>
       {showButtons && !isAllTime && !isCustomRange && (
         <Row gap="1">
-          <Button onPress={() => handleIncrement(-1)} variant="outline">
+          <Button onClick={() => handleIncrement(-1)} variant="outline">
             <Icon rotate={180}>
               <ChevronRight />
             </Icon>
           </Button>
-          <Button onPress={() => handleIncrement(1)} variant="outline" isDisabled={disableForward}>
+          <Button onClick={() => handleIncrement(1)} variant="outline" disabled={disableForward}>
             <Icon>
               <ChevronRight />
             </Icon>
@@ -78,7 +93,7 @@ export function WebsiteDateFilter({
         </Row>
       )}
       <DateFilter
-        className="min-w-[200px]"
+        buttonProps={{ style: { minWidth: 200 } }}
         value={dateValue}
         onChange={handleChange}
         showAllTime={hasData && showAllTime}
@@ -89,13 +104,20 @@ export function WebsiteDateFilter({
           <Text weight="bold">VS</Text>
           <Row width="200px">
             <Select
+              items={compareItems}
               value={compare}
-              onChange={handleSelect}
-              buttonProps={{ style: { width: 200 } }}
-              popoverProps={{ style: { width: 200 } }}
+              onValueChange={value => handleSelect(value)}
             >
-              <ListItem id="prev">{t(labels.previousPeriod)}</ListItem>
-              <ListItem id="yoy">{t(labels.previousYear)}</ListItem>
+              <SelectTrigger style={{ width: 200 }}>
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent alignItemWithTrigger={false} style={{ width: 200 }}>
+                {compareItems.map(({ value, label }) => (
+                  <SelectItem key={value} value={value}>
+                    {label}
+                  </SelectItem>
+                ))}
+              </SelectContent>
             </Select>
           </Row>
         </Row>

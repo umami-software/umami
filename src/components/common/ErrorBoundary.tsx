@@ -25,7 +25,9 @@ export function ErrorBoundary({ children }: { children: ReactNode }) {
         <h1>{t(messages.error)}</h1>
         <h3>{error.message}</h3>
         <pre>{error.stack}</pre>
-        <Button onClick={resetErrorBoundary}>OK</Button>
+        <Button variant="secondary" onClick={resetErrorBoundary}>
+          OK
+        </Button>
       </Column>
     );
   };

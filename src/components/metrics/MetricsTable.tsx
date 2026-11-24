@@ -82,7 +82,7 @@ export function MetricsTable({
         {data && <ListTable {...props} data={filteredData} renderLabel={renderLabel} />}
         {showMore && limit && (
           <Row justifyContent="center" alignItems="flex-end" paddingTop="4">
-            <LinkButton href={updateParams({ view: type })} variant="quiet">
+            <LinkButton href={updateParams({ view: type })} variant="ghost">
               <IconLabel icon={<Maximize />}>{t(labels.more)}</IconLabel>
             </LinkButton>
           </Row>

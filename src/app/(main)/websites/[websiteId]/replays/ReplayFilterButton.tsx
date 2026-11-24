@@ -20,13 +20,7 @@ function getMinDurationValue(value: unknown) {
   return Number(value) > 0 ? value : DEFAULT_MIN_DURATION;
 }
 
-function ReplayFilterForm({
-  minDuration,
-  onClose,
-}: {
-  minDuration: string;
-  onClose?: () => void;
-}) {
+function ReplayFilterForm({ minDuration, onClose }: { minDuration: string; onClose?: () => void }) {
   const { t, labels, messages } = useMessages();
   const { router, updateParams } = useNavigation();
   const [value, setValue] = useState(minDuration);
@@ -58,10 +52,10 @@ function ReplayFilterForm({
     <Column width="320px" gap="4">
       <Column gap="2">
         <Label>{t(labels.minDurationSeconds)}</Label>
-        <Text color="muted">{t(messages.replayMinDurationDescription)}</Text>
+        <Text color="muted-foreground">{t(messages.replayMinDurationDescription)}</Text>
         <TextField
           value={value}
-          onChange={handleChange}
+          onValueChange={handleChange}
           autoFocus
           autoComplete="off"
           inputMode="numeric"
@@ -69,12 +63,14 @@ function ReplayFilterForm({
         />
       </Column>
       <Row alignItems="center" justifyContent="space-between" gap>
-        <Button onPress={handleReset}>{t(labels.reset)}</Button>
+        <Button variant="secondary" onClick={handleReset}>
+          {t(labels.reset)}
+        </Button>
         <Row alignItems="center" justifyContent="flex-end" gap>
-          <Button onPress={onClose}>{t(labels.cancel)}</Button>
-          <Button variant="primary" onPress={handleApply}>
-            {t(labels.apply)}
+          <Button variant="secondary" onClick={onClose}>
+            {t(labels.cancel)}
           </Button>
+          <Button onClick={handleApply}>{t(labels.apply)}</Button>
         </Row>
       </Row>
     </Column>

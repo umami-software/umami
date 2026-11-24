@@ -1,5 +1,5 @@
 'use client';
-import { Button, Icon, Row, Text, Tooltip, TooltipTrigger } from '@umami/react-zen';
+import { Button, Icon, Row, Text, Tooltip, TooltipContent, TooltipTrigger } from '@umami/react-zen';
 import { useMessages } from '@/components/hooks';
 import { X } from '@/components/icons';
 import { OPERATORS } from '@/lib/constants';
@@ -68,16 +68,21 @@ export function PropertyFilterBar({
           />
         ))}
       </Row>
-      <TooltipTrigger delay={0}>
-        <Button variant="zero" onPress={() => onChange([])}>
+      <Tooltip>
+        <TooltipTrigger
+          delay={0}
+          render={
+            <Button variant="ghost" className="hover:bg-transparent" onClick={() => onChange([])} />
+          }
+        >
           <Icon>
             <X />
           </Icon>
-        </Button>
-        <Tooltip>
+        </TooltipTrigger>
+        <TooltipContent>
           <Text>{t(labels.clearAll)}</Text>
-        </Tooltip>
-      </TooltipTrigger>
+        </TooltipContent>
+      </Tooltip>
     </Row>
   );
 }
@@ -109,12 +114,12 @@ function FilterPill({
         gap="2"
         style={{ maxWidth: 'min(500px, calc(100vw - 10rem))', minWidth: 0, overflow: 'hidden' }}
       >
-        <Text color="primary" weight="bold">
+        <Text color="foreground" weight="bold">
           {label}
         </Text>
-        <Text color="muted">{operator}</Text>
+        <Text color="muted-foreground">{operator}</Text>
         <Text
-          color="primary"
+          color="foreground"
           weight="bold"
           style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}
         >

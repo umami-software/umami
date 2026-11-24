@@ -66,12 +66,7 @@ export function LoginForm() {
           <PasswordField autoComplete="current-password" />
         </FormField>
         <FormButtons>
-          <FormSubmitButton
-            data-test="button-submit"
-            variant="primary"
-            style={{ flex: 1 }}
-            isDisabled={false}
-          >
+          <FormSubmitButton data-test="button-submit" style={{ flex: 1 }} disabled={false}>
             {t(labels.login)}
           </FormSubmitButton>
         </FormButtons>

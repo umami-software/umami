@@ -15,10 +15,10 @@ export function DashboardEditHeader() {
   return (
     <PageHeader title={t(labels.dashboard)}>
       <Row gap="3">
-        <Button variant="quiet" onPress={() => router.push(renderUrl('/dashboard', false))}>
+        <Button variant="ghost" onClick={() => router.push(renderUrl('/dashboard', false))}>
           {t(labels.cancel)}
         </Button>
-        <LoadingButton variant="primary" onPress={handleSave} isLoading={isPending}>
+        <LoadingButton onClick={handleSave} loading={isPending}>
           {t(labels.save)}
         </LoadingButton>
       </Row>

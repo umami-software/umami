@@ -170,8 +170,8 @@ export function ReplayPlayer({ events }: { events: any[] }) {
             height: showUnavailable ? playerHeight : playerOuterHeight,
             overflow: 'hidden',
             borderRadius: '8px',
-            border: '1px solid var(--zen-border)',
-            background: 'var(--zen-surface-sunken)',
+            border: '1px solid var(--border)',
+            background: 'var(--muted)',
           }}
         >
           <div

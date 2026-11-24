@@ -1,5 +1,14 @@
 'use client';
-import { Button, Column, Heading, Loading, Tab, TabList, TabPanel, Tabs } from '@umami/react-zen';
+import {
+  Button,
+  Column,
+  Heading,
+  Loading,
+  Tabs,
+  TabsContent,
+  TabsList,
+  TabsTrigger,
+} from '@umami/react-zen';
 import { format } from 'date-fns';
 import { useTranslations } from 'next-intl';
 import { useMemo } from 'react';
@@ -53,10 +62,7 @@ function UpgradePlaceholder() {
         title={tm(messages.upgradeRequired, { plan: 'Pro' })}
         description={t('description')}
       >
-        <Button
-          variant="primary"
-          onPress={() => window.open(`${process.env.cloudUrl}/settings/billing`, '_blank')}
-        >
+        <Button onClick={() => window.open(`${process.env.cloudUrl}/settings/billing`, '_blank')}>
           {tm(labels.upgrade)}
         </Button>
       </EmptyPlaceholder>
@@ -133,51 +139,51 @@ function SearchConsoleReport({ websiteId }: { websiteId: string }) {
             <Panel>
               <Tabs>
                 <Heading size="2xl">{t('searches')}</Heading>
-                <TabList>
-                  <Tab id="query">{t('queries')}</Tab>
-                  <Tab id="page">{t('pages')}</Tab>
-                </TabList>
-                <TabPanel id="query">
+                <TabsList>
+                  <TabsTrigger value="query">{t('queries')}</TabsTrigger>
+                  <TabsTrigger value="page">{t('pages')}</TabsTrigger>
+                </TabsList>
+                <TabsContent value="query">
                   <SearchConsoleTable
                     websiteId={websiteId}
                     startDate={startDate}
                     endDate={endDate}
                     dimension="query"
                   />
-                </TabPanel>
-                <TabPanel id="page">
+                </TabsContent>
+                <TabsContent value="page">
                   <SearchConsoleTable
                     websiteId={websiteId}
                     startDate={startDate}
                     endDate={endDate}
                     dimension="page"
                   />
-                </TabPanel>
+                </TabsContent>
               </Tabs>
             </Panel>
             <Panel>
               <Tabs>
                 <Heading size="2xl">{tm(labels.audience)}</Heading>
-                <TabList>
-                  <Tab id="country">{t('countries')}</Tab>
-                  <Tab id="device">{t('devices')}</Tab>
-                </TabList>
-                <TabPanel id="country">
+                <TabsList>
+                  <TabsTrigger value="country">{t('countries')}</TabsTrigger>
+                  <TabsTrigger value="device">{t('devices')}</TabsTrigger>
+                </TabsList>
+                <TabsContent value="country">
                   <SearchConsoleTable
                     websiteId={websiteId}
                     startDate={startDate}
                     endDate={endDate}
                     dimension="country"
                   />
-                </TabPanel>
-                <TabPanel id="device">
+                </TabsContent>
+                <TabsContent value="device">
                   <SearchConsoleTable
                     websiteId={websiteId}
                     startDate={startDate}
                     endDate={endDate}
                     dimension="device"
                   />
-                </TabPanel>
+                </TabsContent>
               </Tabs>
             </Panel>
           </GridRow>
@@ -248,7 +254,7 @@ function SearchConsolePlaceholder({ problem }: { problem: SetupProblem }) {
         title={t(problem)}
         description={t(`${problem}Description`)}
       >
-        <Button variant="primary" onPress={() => window.open(INTEGRATIONS_URL, '_blank')}>
+        <Button onClick={() => window.open(INTEGRATIONS_URL, '_blank')}>
           {t('manageIntegrations')}
         </Button>
       </EmptyPlaceholder>

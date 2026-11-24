@@ -4,9 +4,12 @@ import {
   FormButtons,
   FormField,
   FormSubmitButton,
-  ListItem,
   Loading,
   Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
   Text,
 } from '@umami/react-zen';
 import {
@@ -76,25 +79,34 @@ export function WebsiteTransferForm({
               )}
             </Text>
             <FormField name="teamId">
-              {!isTeamWebsite && (
-                <Select>
-                  {items.map(({ id, name }) => {
-                    return (
-                      <ListItem key={`${id}`} id={`${id}`}>
-                        {name}
-                      </ListItem>
-                    );
-                  })}
-                </Select>
-              )}
+              {({ field }) =>
+                !isTeamWebsite && (
+                  <Select
+                    items={items.map(({ id, name }) => ({ value: `${id}`, label: name }))}
+                    value={field.value || null}
+                    onValueChange={value => field.onChange(value ?? '')}
+                  >
+                    <SelectTrigger className="w-full">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent alignItemWithTrigger={false}>
+                      {items.map(({ id, name }) => {
+                        return (
+                          <SelectItem key={`${id}`} value={`${id}`}>
+                            {name}
+                          </SelectItem>
+                        );
+                      })}
+                    </SelectContent>
+                  </Select>
+                )
+              }
             </FormField>
             <FormButtons>
-              <Button onPress={onClose}>{t(labels.cancel)}</Button>
-              <FormSubmitButton
-                variant="primary"
-                isLoading={isPending}
-                isDisabled={!isTeamWebsite && !selectedTeamId}
-              >
+              <Button variant="secondary" onClick={onClose}>
+                {t(labels.cancel)}
+              </Button>
+              <FormSubmitButton loading={isPending} disabled={!isTeamWebsite && !selectedTeamId}>
                 {t(labels.transfer)}
               </FormSubmitButton>
             </FormButtons>

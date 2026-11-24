@@ -1,5 +1,4 @@
 import { fireEvent, render, screen } from '@testing-library/react';
-import type { ReactNode } from 'react';
 import { useState } from 'react';
 import { beforeEach, expect, test, vi } from 'vitest';
 import { LookupField } from './LookupField';
@@ -7,8 +6,6 @@ import { LookupField } from './LookupField';
 const queryMock = vi.fn();
 
 vi.mock('@umami/react-zen', () => ({
-  ListItem: ({ children }: { children: ReactNode }) => <div>{children}</div>,
-  Loading: () => <div>Loading</div>,
   useDebounce: (value: string) => value,
 }));
 
@@ -17,14 +14,14 @@ vi.mock('@/components/common/ComboBox', () => ({
     'aria-label': ariaLabel,
     value,
     inputValue,
-    onChange,
+    onValueChange,
     onInputValueChange,
     items,
   }: {
     'aria-label'?: string;
     value?: string;
     inputValue?: string;
-    onChange?: (value: string) => void;
+    onValueChange?: (value: string) => void;
     onInputValueChange?: (value: string) => void;
     items: string[];
   }) => {
@@ -45,7 +42,7 @@ vi.mock('@/components/common/ComboBox', () => ({
           onBlur={handleBlur}
         />
         {items.map(item => (
-          <button key={item} type="button" onClick={() => onChange?.(item)}>
+          <button key={item} type="button" onClick={() => onValueChange?.(item)}>
             {item}
           </button>
         ))}

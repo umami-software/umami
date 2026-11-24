@@ -40,12 +40,15 @@ export function PropertyFilterEditForm({
         />
       </Column>
       <Row alignItems="center" justifyContent="space-between" gap>
-        <Button onPress={() => setFilters([])}>{t(labels.reset)}</Button>
+        <Button variant="secondary" onClick={() => setFilters([])}>
+          {t(labels.reset)}
+        </Button>
         <Row gap>
-          <Button onPress={onClose}>{t(labels.cancel)}</Button>
+          <Button variant="secondary" onClick={onClose}>
+            {t(labels.cancel)}
+          </Button>
           <Button
-            variant="primary"
-            onPress={() => {
+            onClick={() => {
               onApply(filters);
               onClose();
             }}

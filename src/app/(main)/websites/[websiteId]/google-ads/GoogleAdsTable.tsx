@@ -243,7 +243,7 @@ export function GoogleAdsTable({
               className="w-full max-w-md"
             />
             {activeFilter && (
-              <Button variant="outline" onPress={onClearFilter} title={t('clearFilter')}>
+              <Button variant="outline" onClick={onClearFilter} title={t('clearFilter')}>
                 <Text>{activeFilter.name}</Text>
                 <Icon size="sm">
                   <X />
@@ -380,7 +380,7 @@ function RowName({
         name
       )}
       {details && (
-        <Text truncate={!isPhone} size="sm" color="muted" title={details}>
+        <Text truncate={!isPhone} size="sm" color="muted-foreground" title={details}>
           {details}
         </Text>
       )}

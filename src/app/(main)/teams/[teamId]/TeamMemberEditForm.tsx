@@ -4,8 +4,11 @@ import {
   FormButtons,
   FormField,
   FormSubmitButton,
-  ListItem,
   Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
 } from '@umami/react-zen';
 import { useMessages, useUpdateQuery } from '@/components/hooks';
 import { ROLES } from '@/lib/constants';
@@ -26,6 +29,12 @@ export function TeamMemberEditForm({
   const { mutateAsync, error, isPending } = useUpdateQuery(`/teams/${teamId}/users/${userId}`);
   const { t, labels, getErrorMessage } = useMessages();
 
+  const roles = [
+    { value: ROLES.teamManager, label: t(labels.manager) },
+    { value: ROLES.teamMember, label: t(labels.member) },
+    { value: ROLES.teamViewOnly, label: t(labels.viewOnly) },
+  ];
+
   const handleSubmit = async (data: any) => {
     await mutateAsync(data, {
       onSuccess: async () => {
@@ -38,20 +47,25 @@ export function TeamMemberEditForm({
   return (
     <Form onSubmit={handleSubmit} error={getErrorMessage(error)} defaultValues={{ role }}>
       <FormField name="role" rules={{ required: t(labels.required) }} label={t(labels.role)}>
-        <Select>
-          <ListItem id={ROLES.teamManager}>{t(labels.manager)}</ListItem>
-          <ListItem id={ROLES.teamMember}>{t(labels.member)}</ListItem>
-          <ListItem id={ROLES.teamViewOnly}>{t(labels.viewOnly)}</ListItem>
+        <Select items={roles}>
+          <SelectTrigger className="w-full">
+            <SelectValue />
+          </SelectTrigger>
+          <SelectContent alignItemWithTrigger={false}>
+            {roles.map(({ value, label }) => (
+              <SelectItem key={value} value={value}>
+                {label}
+              </SelectItem>
+            ))}
+          </SelectContent>
         </Select>
       </FormField>
 
       <FormButtons>
-        <Button isDisabled={isPending} onPress={onClose}>
+        <Button variant="secondary" disabled={isPending} onClick={onClose}>
           {t(labels.cancel)}
         </Button>
-        <FormSubmitButton variant="primary" isDisabled={false}>
-          {t(labels.save)}
-        </FormSubmitButton>
+        <FormSubmitButton disabled={false}>{t(labels.save)}</FormSubmitButton>
       </FormButtons>
     </Form>
   );

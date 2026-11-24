@@ -19,7 +19,7 @@ function BoardComponentRendererComponent({
   if (!definition) {
     return (
       <Column alignItems="center" justifyContent="center" width="100%" height="100%">
-        <Text color="muted">Unknown component: {config.type}</Text>
+        <Text color="muted-foreground">Unknown component: {config.type}</Text>
       </Column>
     );
   }
@@ -30,7 +30,7 @@ function BoardComponentRendererComponent({
   if (!websiteId && definition.requiresWebsite !== false) {
     return (
       <Column alignItems="center" justifyContent="center" width="100%" height="100%">
-        <Text color="muted">Select a website</Text>
+        <Text color="muted-foreground">Select a website</Text>
       </Column>
     );
   }

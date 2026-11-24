@@ -1,5 +1,16 @@
 'use client';
-import { Button, Column, Dialog, DialogTrigger, Icon, Popover, Row, Text } from '@umami/react-zen';
+import {
+  Button,
+  Column,
+  Icon,
+  Popover,
+  PopoverContent,
+  PopoverHeader,
+  PopoverTitle,
+  PopoverTrigger,
+  Row,
+  Text,
+} from '@umami/react-zen';
 import { Bookmark, ChevronLeft, ChevronRight, X } from 'lucide-react';
 import { useEffect, useMemo, useState } from 'react';
 import { SessionInfo } from '@/app/(main)/websites/[websiteId]/sessions/SessionInfo';
@@ -14,9 +25,9 @@ import {
   useUpdateQuery,
   useWebsiteSessionQuery,
 } from '@/components/hooks';
-import { type ReplaySource, useReplays } from '@/store/replays';
 import { touch } from '@/components/hooks/useModified';
 import { getReplayViewport } from '@/lib/replay';
+import { type ReplaySource, useReplays } from '@/store/replays';
 import { ReplayPlayer } from './ReplayPlayer';
 import { ReplaySaveForm } from './ReplaySaveForm';
 
@@ -44,13 +55,15 @@ export function ReplayPlayback({
   const { isMobile } = useMobile();
   const { router, updateParams } = useNavigation();
   const [savedState, setSavedState] = useState<{ replayId: string; isSaved: boolean } | null>(null);
+  const [showSave, setShowSave] = useState(false);
   const { mutate } = useUpdateQuery(`/websites/${websiteId}/replays/saved/${replayId}`);
   const replays = useReplays(state => state.replays);
   const replayWebsiteId = useReplays(state => state.websiteId);
   const storedReplaySource = useReplays(state => state.source);
   const getReplayId = (r: any) => r.visitId || r.id;
 
-  const navigationReplays = replayWebsiteId === websiteId && storedReplaySource === replaySource ? replays : [];
+  const navigationReplays =
+    replayWebsiteId === websiteId && storedReplaySource === replaySource ? replays : [];
   const currentIndex = navigationReplays.findIndex(r => getReplayId(r) === replayId);
   const prevReplay = currentIndex > 0 ? navigationReplays[currentIndex - 1] : null;
   const nextReplay =
@@ -70,7 +83,8 @@ export function ReplayPlayback({
       ? 'landscape'
       : null;
 
-  const saved = savedState?.replayId === replayId ? savedState.isSaved : (replaySaved?.isSaved ?? false);
+  const saved =
+    savedState?.replayId === replayId ? savedState.isSaved : (replaySaved?.isSaved ?? false);
 
   useEffect(() => {
     onReplayStateChange?.(replayOrientation);
@@ -87,7 +101,9 @@ export function ReplayPlayback({
         e.metaKey ||
         e.shiftKey ||
         e.isComposing ||
-        target?.closest('input, textarea, select, [contenteditable="true"], [role="listbox"], [role="menu"], [role="slider"]')
+        target?.closest(
+          'input, textarea, select, [contenteditable="true"], [role="listbox"], [role="menu"], [role="slider"]',
+        )
       ) {
         return;
       }
@@ -131,7 +147,7 @@ export function ReplayPlayback({
                 <Avatar seed={replay.sessionId} size={48} />
                 <Column minWidth="0">
                   <Text weight="bold">{t(labels.replay)}</Text>
-                  <Text color="muted">
+                  <Text color="muted-foreground">
                     {replay.eventCount} {t(labels.actions).toLowerCase()}
                   </Text>
                 </Column>
@@ -139,9 +155,9 @@ export function ReplayPlayback({
               <Row gap="2" style={{ flex: '0 0 auto' }}>
                 <Button
                   aria-label={`${t(labels.previous)} ${t(labels.replay).toLowerCase()}`}
-                  variant="quiet"
-                  isDisabled={!prevReplay}
-                  onPress={() => prevReplay && navigateToReplay(getReplayId(prevReplay))}
+                  variant="ghost"
+                  disabled={!prevReplay}
+                  onClick={() => prevReplay && navigateToReplay(getReplayId(prevReplay))}
                 >
                   <Icon>
                     <ChevronLeft />
@@ -149,46 +165,45 @@ export function ReplayPlayback({
                 </Button>
                 <Button
                   aria-label={`${t(labels.continue)} ${t(labels.replay).toLowerCase()}`}
-                  variant="quiet"
-                  isDisabled={!nextReplay}
-                  onPress={() => nextReplay && navigateToReplay(getReplayId(nextReplay))}
+                  variant="ghost"
+                  disabled={!nextReplay}
+                  onClick={() => nextReplay && navigateToReplay(getReplayId(nextReplay))}
                 >
                   <Icon>
                     <ChevronRight />
                   </Icon>
                 </Button>
                 {saved ? (
-                  <Button onPress={handleUnsave} variant="quiet">
+                  <Button onClick={handleUnsave} variant="ghost">
                     <Icon>
                       <Bookmark fill="currentColor" />
                     </Icon>
                   </Button>
                 ) : (
-                  <DialogTrigger>
-                    <Button variant="quiet">
+                  <Popover open={showSave} onOpenChange={setShowSave}>
+                    <PopoverTrigger render={<Button variant="ghost" />}>
                       <Icon>
                         <Bookmark fill="none" />
                       </Icon>
-                    </Button>
-                    <Popover side="bottom" align="end">
-                      <Dialog title={t(labels.saveReplay)} style={{ width: '300px' }}>
-                        {({ close }) => (
-                          <ReplaySaveForm
-                            websiteId={websiteId}
-                            replayId={replayId}
-                            onSave={() => {
-                              setSavedState({ replayId, isSaved: true });
-                              touch('replays');
-                            }}
-                            onClose={close}
-                          />
-                        )}
-                      </Dialog>
-                    </Popover>
-                  </DialogTrigger>
+                    </PopoverTrigger>
+                    <PopoverContent side="bottom" align="end" style={{ width: '300px' }}>
+                      <PopoverHeader>
+                        <PopoverTitle>{t(labels.saveReplay)}</PopoverTitle>
+                      </PopoverHeader>
+                      <ReplaySaveForm
+                        websiteId={websiteId}
+                        replayId={replayId}
+                        onSave={() => {
+                          setSavedState({ replayId, isSaved: true });
+                          touch('replays');
+                        }}
+                        onClose={() => setShowSave(false)}
+                      />
+                    </PopoverContent>
+                  </Popover>
                 )}
                 {onClose && (
-                  <Button onPress={onClose} variant="quiet">
+                  <Button onClick={onClose} variant="ghost">
                     <Icon>
                       <X />
                     </Icon>

@@ -3,19 +3,23 @@ import {
   Button,
   Column,
   Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
   Grid,
   Heading,
   Icon,
-  ListItem,
   Loading,
-  Modal,
   Row,
   Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
   Text,
 } from '@umami/react-zen';
 import { Laptop, Monitor, Smartphone, Tablet } from 'lucide-react';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { ControlledDialog } from '@/components/common/ControlledDialog';
 import { IconLabel } from '@/components/common/IconLabel';
 import { LoadingPanel } from '@/components/common/LoadingPanel';
 import { useHeatmapQuery, useMobile } from '@/components/hooks';
@@ -139,10 +143,10 @@ export function Heatmap({ websiteId, urlPath, onUrlPathChange, mode, search }: H
               gap
               className={styles.mobilePageHeader}
             >
-              <Text color="muted" className={styles.mobileSectionLabel}>
+              <Text color="muted-foreground" className={styles.mobileSectionLabel}>
                 Selected page
               </Text>
-              <Button variant="outline" onPress={() => setIsPagePickerOpen(true)}>
+              <Button variant="outline" onClick={() => setIsPagePickerOpen(true)}>
                 <IconLabel icon={<ListCheck />} label="Pages" />
               </Button>
             </Row>
@@ -154,7 +158,7 @@ export function Heatmap({ websiteId, urlPath, onUrlPathChange, mode, search }: H
               >
                 <Row alignItems="center" justifyContent="space-between" gap="3">
                   <Text truncate>{selectedPage.urlPath}</Text>
-                  <Text color="muted" className={styles.pageMetric}>
+                  <Text color="muted-foreground" className={styles.pageMetric}>
                     {formatLongNumber(selectedPage.sessions)}
                   </Text>
                 </Row>
@@ -182,39 +186,34 @@ export function Heatmap({ websiteId, urlPath, onUrlPathChange, mode, search }: H
             <EmptyState />
           )}
 
-          <ControlledDialog>
-            <Modal
-              isOpen={isPagePickerOpen}
-              onOpenChange={isOpen => setIsPagePickerOpen(isOpen)}
-              placement="fullscreen"
+          <Dialog open={isPagePickerOpen} onOpenChange={isOpen => setIsPagePickerOpen(isOpen)}>
+            <DialogContent
+              style={{
+                width: '100%',
+                height: '100%',
+                maxWidth: '100%',
+                maxHeight: '100%',
+                borderRadius: 0,
+                overflowY: 'auto',
+                padding: '24px',
+              }}
             >
-              <Dialog
-                title="Pages"
-                style={{
-                  width: '100%',
-                  height: '100%',
-                  maxHeight: '100%',
-                  overflowY: 'auto',
-                  padding: '24px',
+              <DialogHeader>
+                <DialogTitle>Pages</DialogTitle>
+              </DialogHeader>
+              <PageList
+                pages={filteredPages}
+                selected={urlPath}
+                onSelect={nextUrlPath => {
+                  onUrlPathChange(nextUrlPath);
+                  setIsPagePickerOpen(false);
                 }}
-              >
-                {({ close }) => (
-                  <PageList
-                    pages={filteredPages}
-                    selected={urlPath}
-                    onSelect={nextUrlPath => {
-                      onUrlPathChange(nextUrlPath);
-                      setIsPagePickerOpen(false);
-                      close();
-                    }}
-                    mode={mode}
-                    hasSearch={Boolean(search)}
-                    showHeading={false}
-                  />
-                )}
-              </Dialog>
-            </Modal>
-          </ControlledDialog>
+                mode={mode}
+                hasSearch={Boolean(search)}
+                showHeading={false}
+              />
+            </DialogContent>
+          </Dialog>
         </Column>
       ) : (
         <Grid columns="320px 12px 1fr" minHeight="900px" className={styles.layoutGrid}>
@@ -278,7 +277,7 @@ function PageList({
     <Column className={styles.pageList} gap="1">
       {showHeading && <Heading size="lg">Pages</Heading>}
       <Column className={styles.pageListItems} gap="2">
-        {pages.length === 0 && hasSearch && <Text color="muted">No matching pages</Text>}
+        {pages.length === 0 && hasSearch && <Text color="muted-foreground">No matching pages</Text>}
         {pages.map(page => (
           <button
             key={page.urlPath}
@@ -289,7 +288,11 @@ function PageList({
           >
             <Row alignItems="center" justifyContent="space-between" gap="2">
               <Text truncate>{page.urlPath}</Text>
-              <Text color="muted" className={styles.pageMetric} title={getPageMetricTitle(page)}>
+              <Text
+                color="muted-foreground"
+                className={styles.pageMetric}
+                title={getPageMetricTitle(page)}
+              >
                 {formatLongNumber(page.sessions)}
               </Text>
             </Row>
@@ -571,43 +574,31 @@ function ScreenWidthSelect({
 
   return (
     <Row alignItems="center" gap="2" className={styles.screenWidthControl}>
-      <Text color="muted" className={styles.screenWidthLabel}>
+      <Text color="muted-foreground" className={styles.screenWidthLabel}>
         Screen width:
       </Text>
-      <Select
-        aria-label="Screen width"
-        value={value}
-        onChange={nextValue => onChange(Number(nextValue))}
-        maxHeight={420}
-        renderValue={() => <ScreenWidthValue width={value} />}
-        buttonProps={{
-          style: {
-            minHeight: 36,
-            minWidth: 132,
-          },
-        }}
-        listProps={{
-          style: {
-            width: 176,
-          },
-        }}
-      >
-        {SCREEN_WIDTH_BUCKETS.map(width => {
-          const bucket = bucketsByWidth.get(width);
+      <Select value={value} onValueChange={nextValue => onChange(Number(nextValue))}>
+        <SelectTrigger aria-label="Screen width" style={{ minHeight: 36, minWidth: 132 }}>
+          <SelectValue>{() => <ScreenWidthValue width={value} />}</SelectValue>
+        </SelectTrigger>
+        <SelectContent alignItemWithTrigger={false} style={{ width: 176, maxHeight: 420 }}>
+          {SCREEN_WIDTH_BUCKETS.map(width => {
+            const bucket = bucketsByWidth.get(width);
 
-          return (
-            <ListItem key={width} id={width} isDisabled={!bucket}>
-              <Row alignItems="center" justifyContent="space-between" gap="2">
-                <ScreenWidthValue width={width} />
-                {bucket && (
-                  <Text color="muted" className={styles.screenWidthCount}>
-                    {formatLongNumber(bucket.count)}
-                  </Text>
-                )}
-              </Row>
-            </ListItem>
-          );
-        })}
+            return (
+              <SelectItem key={width} value={width} disabled={!bucket}>
+                <Row alignItems="center" justifyContent="space-between" gap="2">
+                  <ScreenWidthValue width={width} />
+                  {bucket && (
+                    <Text color="muted-foreground" className={styles.screenWidthCount}>
+                      {formatLongNumber(bucket.count)}
+                    </Text>
+                  )}
+                </Row>
+              </SelectItem>
+            );
+          })}
+        </SelectContent>
       </Select>
     </Row>
   );
@@ -697,14 +688,14 @@ function ClickHeatmapView({
       <Column gap="2" className={styles.summaryHeader}>
         {!isPhone && (
           <Row alignItems="center" justifyContent="space-between" gap>
-            <Text color="muted" title={urlPath} className={styles.summaryPath}>
+            <Text color="muted-foreground" title={urlPath} className={styles.summaryPath}>
               {urlPath}
             </Text>
           </Row>
         )}
         {showLoading ? (
           <Row alignItems="center" gap className={styles.summaryStats}>
-            <Text color="muted" className={styles.summaryStat}>
+            <Text color="muted-foreground" className={styles.summaryStat}>
               Loading Heatmap...
             </Text>
           </Row>
@@ -723,7 +714,7 @@ function ClickHeatmapView({
             gap
             className={styles.summaryStats}
           >
-            <Text color="muted" className={styles.summaryStat} title={bucketDescription}>
+            <Text color="muted-foreground" className={styles.summaryStat} title={bucketDescription}>
               {viewport
                 ? `${visible.length} positions - ${formatLongNumber(totalClicks)} clicks`
                 : 'No click data for this page yet.'}
@@ -882,13 +873,13 @@ function ScrollHeatmapView({
   return (
     <Column gap>
       {!isPhone && (
-        <Text color="muted" title={urlPath} className={styles.summaryPath}>
+        <Text color="muted-foreground" title={urlPath} className={styles.summaryPath}>
           {urlPath}
         </Text>
       )}
       {showLoading ? (
         <Row alignItems="center" gap className={styles.summaryStats}>
-          <Text color="muted" className={styles.summaryStat}>
+          <Text color="muted-foreground" className={styles.summaryStat}>
             Loading Heatmap...
           </Text>
         </Row>
@@ -907,7 +898,7 @@ function ScrollHeatmapView({
           gap
           className={styles.summaryHeader}
         >
-          <Text color="muted" className={styles.summaryStat} title={bucketDescription}>
+          <Text color="muted-foreground" className={styles.summaryStat} title={bucketDescription}>
             {hasScrollData
               ? `${formatLongNumber(totalSessions)} sessions - page ${pageW}x${pageH}${viewportH ? ` - viewport ${viewportW}x${viewportH}` : ''}`
               : 'No scroll data for this page yet.'}
@@ -1073,7 +1064,9 @@ function EmptyState({ message }: { message?: string } = {}) {
   return (
     <Column alignItems="center" justifyContent="center" minHeight="360px" gap>
       {!message && <Heading size="lg">Select a page</Heading>}
-      <Text color="muted">{message ?? 'Choose a page from the list to view its heatmap.'}</Text>
+      <Text color="muted-foreground">
+        {message ?? 'Choose a page from the list to view its heatmap.'}
+      </Text>
     </Column>
   );
 }

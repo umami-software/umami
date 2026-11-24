@@ -2,12 +2,13 @@ import {
   Column,
   DataColumn,
   DataTable,
-  ListItem,
-  ProgressBar,
-  ProgressIndicator,
-  ProgressTrack,
+  Progress,
   Row,
   Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
   Text,
 } from '@umami/react-zen';
 import { useState } from 'react';
@@ -44,16 +45,26 @@ export function FunnelBreakdown({
     device: t(labels.device),
     country: t(labels.country),
   };
+  const fieldItems = BREAKDOWN_FIELDS.map(name => ({ value: name, label: fieldLabels[name] }));
 
   return (
     <Column gap>
       <Row>
-        <Select value={field} onChange={value => setField(value as BreakdownField)}>
-          {BREAKDOWN_FIELDS.map(name => (
-            <ListItem key={name} id={name}>
-              {fieldLabels[name]}
-            </ListItem>
-          ))}
+        <Select
+          items={fieldItems}
+          value={field}
+          onValueChange={value => setField(value as BreakdownField)}
+        >
+          <SelectTrigger>
+            <SelectValue />
+          </SelectTrigger>
+          <SelectContent alignItemWithTrigger={false}>
+            {fieldItems.map(item => (
+              <SelectItem key={item.value} value={item.value}>
+                {item.label}
+              </SelectItem>
+            ))}
+          </SelectContent>
         </Select>
       </Row>
       <LoadingPanel data={data} isLoading={isLoading} error={error}>
@@ -86,15 +97,17 @@ export function FunnelBreakdown({
                     <Column gap="1" width="100%" paddingRight="6">
                       <Row alignItems="baseline" justifyContent="space-between" gap="2">
                         <Text weight="bold">{formatPercent(ratio)}</Text>
-                        <Text color="muted" title={String(visitors)}>
+                        <Text color="muted-foreground" title={String(visitors)}>
                           {formatLongNumber(visitors)}
                         </Text>
                       </Row>
-                      <ProgressBar value={ratio * 100} min={0} max={100}>
-                        <ProgressTrack>
-                          <ProgressIndicator style={isBaseline ? { opacity: 0.35 } : undefined} />
-                        </ProgressTrack>
-                      </ProgressBar>
+                      {/* The baseline bar is always full, so fading the whole bar fades just its fill. */}
+                      <Progress
+                        value={ratio * 100}
+                        min={0}
+                        max={100}
+                        style={isBaseline ? { opacity: 0.35 } : undefined}
+                      />
                     </Column>
                   );
                 }}

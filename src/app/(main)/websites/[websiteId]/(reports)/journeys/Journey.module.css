@@ -3,9 +3,9 @@
   height: 100%;
   position: relative;
 
-  --journey-line-color: var(--zen-border-strong);
-  --journey-active-color: var(--zen-primary);
-  --journey-faded-color: var(--zen-interactive-bg);
+  --journey-line-color: var(--input);
+  --journey-active-color: var(--primary);
+  --journey-faded-color: var(--muted);
 }
 
 .view {
@@ -43,8 +43,8 @@
 
 .dropoff {
   font-weight: 600;
-  color: var(--zen-fg-muted);
-  background: var(--zen-surface-sunken);
+  color: var(--muted-foreground);
+  background: var(--muted);
   padding: 4px 8px;
   border-radius: 5px;
 }
@@ -58,8 +58,8 @@
   height: 50px;
   font-size: 16px;
   font-weight: 700;
-  color: var(--zen-surface);
-  background: var(--zen-surface-inverted);
+  color: var(--background);
+  background: var(--foreground);
   z-index: 1;
   margin: 0 auto 20px;
 }
@@ -84,7 +84,7 @@
   position: relative;
   cursor: pointer;
   padding: 10px 20px;
-  background: var(--zen-interactive-bg);
+  background: var(--muted);
   border-radius: 5px;
   display: flex;
   align-items: center;
@@ -96,27 +96,27 @@
 }
 
 .node:hover:not(.selected) {
-  background: var(--zen-interactive-bg-hover);
+  background: var(--accent);
 }
 
 .node.selected {
-  color: var(--zen-surface);
-  background: var(--zen-surface-inverted);
+  color: var(--background);
+  background: var(--foreground);
 }
 
 .node.active {
-  color: var(--zen-primary-fg);
-  background: var(--zen-primary);
+  color: var(--primary-foreground);
+  background: var(--primary);
 }
 
 .node.selected .count {
-  color: var(--zen-surface);
-  background: var(--zen-surface-inverted);
+  color: var(--background);
+  background: var(--foreground);
 }
 
 .node.selected.active .count {
-  color: var(--zen-primary-fg);
-  background: var(--zen-primary);
+  color: var(--primary-foreground);
+  background: var(--primary);
 }
 
 .name {
@@ -212,7 +212,7 @@
   position: absolute;
   border-radius: 100%;
   border: 3px solid var(--journey-line-color);
-  background: var(--zen-surface);
+  background: var(--background);
   width: 14px;
   height: 14px;
 }

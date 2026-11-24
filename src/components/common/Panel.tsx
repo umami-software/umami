@@ -7,6 +7,7 @@ import {
   Row,
   Text,
   Tooltip,
+  TooltipContent,
   TooltipTrigger,
 } from '@umami/react-zen';
 import { type ReactNode, useState } from 'react';
@@ -54,33 +55,36 @@ export function Panel({
       paddingX={{ base: '3', md: '6' }}
       border
       borderRadius
-      backgroundColor="surface"
+      backgroundColor="background"
       position="relative"
       gap
       {...props}
       style={{ ...style, ...(isFullscreen ? fullscreenStyles : { height, width }) }}
     >
       {title && <Heading>{title}</Heading>}
-      {description && <Text color="muted">{description}</Text>}
+      {description && <Text color="muted-foreground">{description}</Text>}
       {(allowFullscreen || toolbar) && (
         <Row justifyContent="flex-end" alignItems="center" gap>
           {toolbar}
           {allowFullscreen &&
             (isFullscreen ? (
-              <Button size="sm" variant="quiet" onPress={handleFullscreen}>
+              <Button size="sm" variant="ghost" onClick={handleFullscreen}>
                 <Icon>
                   <X />
                 </Icon>
               </Button>
             ) : (
-              <TooltipTrigger delay={0}>
-                <Button size="sm" variant="quiet" onPress={handleFullscreen}>
+              <Tooltip>
+                <TooltipTrigger
+                  delay={0}
+                  render={<Button size="sm" variant="ghost" onClick={handleFullscreen} />}
+                >
                   <Icon>
                     <Maximize />
                   </Icon>
-                </Button>
-                <Tooltip>{t(labels.maximize)}</Tooltip>
-              </TooltipTrigger>
+                </TooltipTrigger>
+                <TooltipContent>{t(labels.maximize)}</TooltipContent>
+              </Tooltip>
             ))}
         </Row>
       )}

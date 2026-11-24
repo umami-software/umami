@@ -1,9 +1,9 @@
 'use client';
+import { useQueryClient } from '@tanstack/react-query';
 import { Column, Row, Switch, Text } from '@umami/react-zen';
 import { PageHeader } from '@/components/common/PageHeader';
 import { Panel } from '@/components/common/Panel';
-import { useMessages, useUpdateQuery, useTwoFactorStatusQuery } from '@/components/hooks';
-import { useQueryClient } from '@tanstack/react-query';
+import { useMessages, useTwoFactorStatusQuery, useUpdateQuery } from '@/components/hooks';
 
 export function AdminSecurityPage() {
   const { t, labels, messages } = useMessages();
@@ -38,15 +38,15 @@ export function AdminSecurityPage() {
 
           <Row alignItems="center" gap="3">
             <Switch
-              isSelected={isGlobalRequired}
-              isDisabled={!isConfigured && !isGlobalRequired}
-              onChange={handleToggle}
+              checked={isGlobalRequired}
+              disabled={!isConfigured && !isGlobalRequired}
+              onCheckedChange={handleToggle}
             />
             <Text>{t(labels.twoFactorRequireGlobal)}</Text>
           </Row>
 
           {isConfigured === true && isGlobalRequired && (
-            <Text size="sm" color="muted">
+            <Text size="sm" color="muted-foreground">
               {t(messages.twoFactorOverrideNote)}
             </Text>
           )}

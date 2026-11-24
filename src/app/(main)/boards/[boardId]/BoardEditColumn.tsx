@@ -3,14 +3,16 @@ import {
   Button,
   Column,
   Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
   Icon,
-  Modal,
   Row,
   Tooltip,
+  TooltipContent,
   TooltipTrigger,
 } from '@umami/react-zen';
 import { useMemo, useState } from 'react';
-import { ControlledDialog } from '@/components/common/ControlledDialog';
 import { Empty } from '@/components/common/Empty';
 import { Panel } from '@/components/common/Panel';
 import { useBoard, useMessages, useNavigation } from '@/components/hooks';
@@ -102,23 +104,31 @@ export function BoardEditColumn({
             gap="1"
             padding={hasComponent ? '2' : undefined}
             borderRadius={hasComponent || undefined}
-            backgroundColor={hasComponent ? 'surface-sunken' : undefined}
+            backgroundColor={hasComponent ? 'muted' : undefined}
           >
-            <TooltipTrigger delay={0}>
-              <Button variant="outline" onPress={() => setShowSelect(true)}>
+            <Tooltip>
+              <TooltipTrigger
+                delay={0}
+                render={<Button variant="outline" onClick={() => setShowSelect(true)} />}
+              >
                 <Icon size="sm">{hasComponent ? <Pencil /> : <Plus />}</Icon>
-              </Button>
-              <Tooltip>{t(hasComponent ? labels.edit : labels.selectComponent)}</Tooltip>
-            </TooltipTrigger>
+              </TooltipTrigger>
+              <TooltipContent>
+                {t(hasComponent ? labels.edit : labels.selectComponent)}
+              </TooltipContent>
+            </Tooltip>
             {canRemoveAction && (
-              <TooltipTrigger delay={0}>
-                <Button variant="outline" onPress={handleRemove}>
+              <Tooltip>
+                <TooltipTrigger
+                  delay={0}
+                  render={<Button variant="outline" onClick={handleRemove} />}
+                >
                   <Icon size="sm">
                     <X />
                   </Icon>
-                </Button>
-                <Tooltip>{t(labels.remove)}</Tooltip>
-              </TooltipTrigger>
+                </TooltipTrigger>
+                <TooltipContent>{t(labels.remove)}</TooltipContent>
+              </Tooltip>
             )}
           </Row>
         </Box>
@@ -133,31 +143,29 @@ export function BoardEditColumn({
       {!isLoading && component && entityId && isUnavailable && (
         <Empty message="Selected item is no longer available." />
       )}
-      <ControlledDialog>
-        <Modal isOpen={showSelect} onOpenChange={setShowSelect}>
-          <Dialog
-            title={t(labels.selectComponent)}
-            style={{
-              width: '1200px',
-              maxWidth: 'calc(100vw - 40px)',
-              maxHeight: 'calc(100dvh - 40px)',
-              padding: '32px',
-            }}
-          >
-            {() => (
-              <BoardComponentSelect
-                teamId={teamId}
-                boardType={boardType}
-                boardEntityType={boardEntityType}
-                boardEntityId={boardEntityId}
-                initialConfig={component}
-                onSelect={handleSelect}
-                onClose={() => setShowSelect(false)}
-              />
-            )}
-          </Dialog>
-        </Modal>
-      </ControlledDialog>
+      <Dialog open={showSelect} onOpenChange={setShowSelect}>
+        <DialogContent
+          style={{
+            width: '1200px',
+            maxWidth: 'calc(100vw - 40px)',
+            maxHeight: 'calc(100dvh - 40px)',
+            padding: '32px',
+          }}
+        >
+          <DialogHeader>
+            <DialogTitle>{t(labels.selectComponent)}</DialogTitle>
+          </DialogHeader>
+          <BoardComponentSelect
+            teamId={teamId}
+            boardType={boardType}
+            boardEntityType={boardEntityType}
+            boardEntityId={boardEntityId}
+            initialConfig={component}
+            onSelect={handleSelect}
+            onClose={() => setShowSelect(false)}
+          />
+        </DialogContent>
+      </Dialog>
     </Panel>
   );
 }

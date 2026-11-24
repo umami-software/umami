@@ -60,7 +60,7 @@ export function LinkEditForm({
   };
 
   const checkUrl = (url: string, formValues: any) => {
-    if (!isValidUrl(url) || (url === `${hostUrl}/${formValues.slug}`)) {
+    if (!isValidUrl(url) || url === `${hostUrl}/${formValues.slug}`) {
       return t(labels.invalidUrl);
     }
     return true;
@@ -115,8 +115,8 @@ export function LinkEditForm({
                   <TextField autoComplete="off" />
                 </FormField>
                 <Button
-                  variant="quiet"
-                  onPress={() => setValue('slug', generateId(), { shouldDirty: true })}
+                  variant="ghost"
+                  onClick={() => setValue('slug', generateId(), { shouldDirty: true })}
                 >
                   <Icon>
                     <RefreshCw />
@@ -131,7 +131,7 @@ export function LinkEditForm({
                 <TextField
                   value={`${hostUrl}/${slug}`}
                   autoComplete="off"
-                  isReadOnly
+                  readOnly
                   allowCopy
                   style={{ width: '100%' }}
                 />
@@ -140,7 +140,7 @@ export function LinkEditForm({
 
             <Row justifyContent="flex-end" paddingTop="3" gap="3">
               {onClose && (
-                <Button isDisabled={isPending} onPress={onClose}>
+                <Button variant="secondary" disabled={isPending} onClick={onClose}>
                   {t(labels.cancel)}
                 </Button>
               )}

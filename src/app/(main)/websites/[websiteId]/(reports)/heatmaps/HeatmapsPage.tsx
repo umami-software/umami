@@ -41,8 +41,7 @@ export function HeatmapsPage({ websiteId }: { websiteId: string }) {
             description="View click and scroll heatmaps for your pages."
           >
             <Button
-              variant="primary"
-              onPress={() => window.open(`${process.env.cloudUrl}/settings/billing`, '_blank')}
+              onClick={() => window.open(`${process.env.cloudUrl}/settings/billing`, '_blank')}
             >
               {t(labels.upgrade)}
             </Button>

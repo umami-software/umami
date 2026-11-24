@@ -150,7 +150,7 @@ export function TestConsolePage({ websiteId }: { websiteId: string }) {
             </Column>
             <Column gap>
               <Heading>Click events</Heading>
-              <Button id="send-event-button" data-umami-event="button-click" variant="primary">
+              <Button id="send-event-button" data-umami-event="button-click">
                 Send event
               </Button>
               <Button
@@ -158,7 +158,6 @@ export function TestConsolePage({ websiteId }: { websiteId: string }) {
                 data-umami-event="button-click"
                 data-umami-event-name="bob"
                 data-umami-event-id="123"
-                variant="primary"
               >
                 Send event with data
               </Button>
@@ -167,7 +166,6 @@ export function TestConsolePage({ websiteId }: { websiteId: string }) {
                 data-umami-event="checkout-cart"
                 data-umami-event-revenue={(Math.random() * 10000).toFixed(2).toString()}
                 data-umami-event-currency="USD"
-                variant="primary"
               >
                 Generate revenue data
               </Button>
@@ -176,7 +174,6 @@ export function TestConsolePage({ websiteId }: { websiteId: string }) {
                 data-umami-event="button-click"
                 data-umami-event-name={'bob'}
                 data-umami-event-id="123"
-                variant="primary"
               >
                 <div>Button with div</div>
               </Button>
@@ -189,13 +186,13 @@ export function TestConsolePage({ websiteId }: { websiteId: string }) {
             </Column>
             <Column gap>
               <Heading>Javascript events</Heading>
-              <Button id="manual-button" variant="primary" onClick={handleRunScript}>
+              <Button id="manual-button" onClick={handleRunScript}>
                 Run script
               </Button>
-              <Button id="manual-button" variant="primary" onClick={handleRunIdentify}>
+              <Button id="manual-button" onClick={handleRunIdentify}>
                 Run identify
               </Button>
-              <Button id="manual-button" variant="primary" onClick={handleRunRevenue}>
+              <Button id="manual-button" onClick={handleRunRevenue}>
                 Revenue script
               </Button>
             </Column>

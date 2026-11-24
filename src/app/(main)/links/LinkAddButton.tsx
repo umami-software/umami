@@ -14,7 +14,7 @@ export function LinkAddButton({
   const { t, labels } = useMessages();
 
   return (
-    <DialogButton icon={<Plus />} label={t(labels.addLink)} variant="primary" width="600px">
+    <DialogButton icon={<Plus />} label={t(labels.addLink)} variant="default" width="600px">
       {({ close }) =>
         upgradeRequired ? (
           <LinksUpgradePlaceholder onClose={close} />

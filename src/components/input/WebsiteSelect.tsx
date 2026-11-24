@@ -1,6 +1,7 @@
-import { Icon, ListItem, Row, Select, type SelectProps, Text } from '@umami/react-zen';
-import { useEffect, useState } from 'react';
+import { type Button, Icon, Row, Text } from '@umami/react-zen';
+import { type ComponentProps, useEffect, useState } from 'react';
 import { Empty } from '@/components/common/Empty';
+import { SearchSelect } from '@/components/common/SearchSelect';
 import {
   useLoginQuery,
   useMessages,
@@ -9,21 +10,25 @@ import {
 } from '@/components/hooks';
 import { Globe } from '@/components/icons';
 
-export function WebsiteSelect({
-  websiteId,
-  teamId,
-  onChange,
-  includeTeams,
-  isCollapsed,
-  buttonProps,
-  listProps,
-  ...props
-}: {
+export interface WebsiteSelectProps {
   websiteId?: string;
   teamId?: string;
   includeTeams?: boolean;
   isCollapsed?: boolean;
-} & SelectProps) {
+  placeholder?: string;
+  buttonProps?: Omit<ComponentProps<typeof Button>, 'children'>;
+  onChange?: (websiteId: string) => void;
+}
+
+export function WebsiteSelect({
+  websiteId,
+  teamId,
+  includeTeams,
+  isCollapsed,
+  placeholder,
+  buttonProps,
+  onChange,
+}: WebsiteSelectProps) {
   const { t, labels, messages } = useMessages();
   const { data: website } = useWebsiteQuery(websiteId);
   const [name, setName] = useState<string>(website?.name);
@@ -39,17 +44,9 @@ export function WebsiteSelect({
     setName(website?.name);
   }, [website?.name]);
 
-  const handleSearch = (value: string) => {
-    setSearch(value);
-  };
-
-  const handleOpenChange = () => {
-    setSearch('');
-  };
-
   const handleChange = (id: string) => {
     setName(listItems.find(item => item.id === id)?.name);
-    onChange(id);
+    onChange?.(id);
   };
 
   const renderValue = () => {
@@ -57,14 +54,14 @@ export function WebsiteSelect({
       return '';
     }
 
-    const value = name || props.placeholder || t(labels.selectWebsite);
+    const value = name || placeholder || t(labels.selectWebsite);
 
     return (
       <Row alignItems="center" gap>
         <Icon>
           <Globe />
         </Icon>
-        <Text truncate color={name ? undefined : 'muted'}>
+        <Text truncate color={name ? undefined : 'muted-foreground'}>
           {value}
         </Text>
       </Row>
@@ -72,45 +69,25 @@ export function WebsiteSelect({
   };
 
   return (
-    <Select
-      {...props}
+    <SearchSelect
       value={websiteId ?? null}
+      items={listItems}
       isLoading={isLoading}
-      allowSearch={true}
-      onSearch={handleSearch}
-      onChange={value => handleChange(value as string)}
-      onOpenChange={handleOpenChange}
-      renderValue={renderValue}
-      buttonProps={{
+      onSearch={setSearch}
+      onChange={handleChange}
+      renderValue={renderValue()}
+      emptyMessage={<Empty message={t(messages.noResultsFound)} />}
+      contentStyle={{ width: 280 }}
+      maxHeight={480}
+      triggerProps={{
         ...buttonProps,
-        className: [
-          'border-transparent bg-transparent shadow-none hover:border-transparent hover:bg-interactive active:bg-interactive-hover',
-          buttonProps?.className,
-        ]
-          .filter(Boolean)
-          .join(' '),
+        variant: 'ghost',
         style: {
           gap: 0,
           justifyContent: isCollapsed ? 'start' : undefined,
           ...buttonProps?.style,
         },
       }}
-      maxHeight={480}
-      listProps={{
-        ...listProps,
-        renderEmptyState:
-          listProps?.renderEmptyState || (() => <Empty message={t(messages.noResultsFound)} />),
-        style: {
-          width: 280,
-          ...listProps?.style,
-        },
-      }}
-    >
-      {listItems.map(({ id, name }) => (
-        <ListItem key={id} id={id}>
-          {name}
-        </ListItem>
-      ))}
-    </Select>
+    />
   );
 }

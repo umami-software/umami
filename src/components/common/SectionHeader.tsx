@@ -20,7 +20,7 @@ export function SectionHeader({
       <Row gap="3" alignItems="center">
         {icon && <Icon size="md">{icon}</Icon>}
         {title && <Heading size="lg">{title}</Heading>}
-        {description && <Text color="muted">{description}</Text>}
+        {description && <Text color="muted-foreground">{description}</Text>}
       </Row>
       <Row justifyContent="flex-end">{children}</Row>
     </Row>

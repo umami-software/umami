@@ -6,6 +6,7 @@ import {
   FormSubmitButton,
   TextField,
 } from '@umami/react-zen';
+import type { ComponentProps } from 'react';
 import { useMessages } from '@/components/hooks';
 
 export function TypeConfirmationForm({
@@ -19,7 +20,7 @@ export function TypeConfirmationForm({
 }: {
   confirmationValue: string;
   buttonLabel?: string;
-  buttonVariant?: 'primary' | 'outline' | 'quiet' | 'danger' | 'zero';
+  buttonVariant?: ComponentProps<typeof Button>['variant'];
   isLoading?: boolean;
   error?: string | Error;
   onConfirm?: () => void;
@@ -45,8 +46,10 @@ export function TypeConfirmationForm({
         <TextField autoComplete="off" />
       </FormField>
       <FormButtons>
-        <Button onPress={onClose}>{t(labels.cancel)}</Button>
-        <FormSubmitButton isLoading={isLoading} variant={buttonVariant}>
+        <Button variant="secondary" onClick={onClose}>
+          {t(labels.cancel)}
+        </Button>
+        <FormSubmitButton loading={isLoading} variant={buttonVariant}>
           {buttonLabel || t(labels.ok)}
         </FormSubmitButton>
       </FormButtons>

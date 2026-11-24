@@ -1,4 +1,13 @@
-import { Box, Button, Column, Icon, Row, Tooltip, TooltipTrigger } from '@umami/react-zen';
+import {
+  Box,
+  Button,
+  Column,
+  Icon,
+  Row,
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from '@umami/react-zen';
 import { produce } from 'immer';
 import { Fragment, useState } from 'react';
 import {
@@ -144,57 +153,75 @@ export function BoardEditRow({
           top="50%"
           right="12px"
           zIndex={20}
-          backgroundColor="surface-sunken"
+          backgroundColor="muted"
           borderRadius
           style={{ transform: 'translateY(-50%)' }}
         >
-          <TooltipTrigger delay={0}>
-            <Button
-              variant="outline"
-              onPress={() => onMoveUp(rowId)}
-              isDisabled={moveUpDisabled}
-              style={moveUpDisabled ? { pointerEvents: 'none' } : undefined}
+          <Tooltip>
+            <TooltipTrigger
+              delay={0}
+              render={
+                <Button
+                  variant="outline"
+                  onClick={() => onMoveUp(rowId)}
+                  disabled={moveUpDisabled}
+                  style={moveUpDisabled ? { pointerEvents: 'none' } : undefined}
+                />
+              }
             >
-              <Icon rotate={180} color={moveUpDisabled ? 'muted' : undefined}>
+              <Icon rotate={180} color={moveUpDisabled ? 'muted-foreground' : undefined}>
                 <ChevronDown />
               </Icon>
-            </Button>
-            <Tooltip placement="top">Move row up</Tooltip>
-          </TooltipTrigger>
-          <TooltipTrigger delay={0}>
-            <Button
-              variant="outline"
-              onPress={handleAddColumn}
-              isDisabled={addColumnDisabled}
-              style={addColumnDisabled ? { pointerEvents: 'none' } : undefined}
+            </TooltipTrigger>
+            <TooltipContent side="top">Move row up</TooltipContent>
+          </Tooltip>
+          <Tooltip>
+            <TooltipTrigger
+              delay={0}
+              render={
+                <Button
+                  variant="outline"
+                  onClick={handleAddColumn}
+                  disabled={addColumnDisabled}
+                  style={addColumnDisabled ? { pointerEvents: 'none' } : undefined}
+                />
+              }
             >
-              <Icon color={addColumnDisabled ? 'muted' : undefined}>
+              <Icon color={addColumnDisabled ? 'muted-foreground' : undefined}>
                 <Plus />
               </Icon>
-            </Button>
-            <Tooltip placement="left">Add column</Tooltip>
-          </TooltipTrigger>
-          <TooltipTrigger delay={0}>
-            <Button variant="outline" onPress={() => onRemove(rowId)}>
+            </TooltipTrigger>
+            <TooltipContent side="left">Add column</TooltipContent>
+          </Tooltip>
+          <Tooltip>
+            <TooltipTrigger
+              delay={0}
+              render={<Button variant="outline" onClick={() => onRemove(rowId)} />}
+            >
               <Icon>
                 <Minus />
               </Icon>
-            </Button>
-            <Tooltip placement="left">Remove row</Tooltip>
-          </TooltipTrigger>
-          <TooltipTrigger delay={0}>
-            <Button
-              variant="outline"
-              onPress={() => onMoveDown(rowId)}
-              isDisabled={moveDownDisabled}
-              style={moveDownDisabled ? { pointerEvents: 'none' } : undefined}
+            </TooltipTrigger>
+            <TooltipContent side="left">Remove row</TooltipContent>
+          </Tooltip>
+          <Tooltip>
+            <TooltipTrigger
+              delay={0}
+              render={
+                <Button
+                  variant="outline"
+                  onClick={() => onMoveDown(rowId)}
+                  disabled={moveDownDisabled}
+                  style={moveDownDisabled ? { pointerEvents: 'none' } : undefined}
+                />
+              }
             >
-              <Icon color={moveDownDisabled ? 'muted' : undefined}>
+              <Icon color={moveDownDisabled ? 'muted-foreground' : undefined}>
                 <ChevronDown />
               </Icon>
-            </Button>
-            <Tooltip placement="bottom">Move row down</Tooltip>
-          </TooltipTrigger>
+            </TooltipTrigger>
+            <TooltipContent side="bottom">Move row down</TooltipContent>
+          </Tooltip>
         </Column>
       )}
     </Box>

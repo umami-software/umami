@@ -1,22 +1,25 @@
-import { Icon, ListItem, Row, Select, type SelectProps, Text } from '@umami/react-zen';
-import { useEffect, useState } from 'react';
+import { type Button, Icon, Row, Text } from '@umami/react-zen';
+import { type ComponentProps, useEffect, useState } from 'react';
 import { Empty } from '@/components/common/Empty';
+import { SearchSelect } from '@/components/common/SearchSelect';
 import { useBoardQuery, useBoardsQuery, useMessages } from '@/components/hooks';
 import { LayoutDashboard } from '@/components/icons';
+
+export interface BoardSelectProps {
+  boardId?: string;
+  teamId?: string;
+  isCollapsed?: boolean;
+  buttonProps?: Omit<ComponentProps<typeof Button>, 'children'>;
+  onChange?: (boardId: string) => void;
+}
 
 export function BoardSelect({
   boardId,
   teamId,
-  onChange,
   isCollapsed,
   buttonProps,
-  listProps,
-  ...props
-}: {
-  boardId?: string;
-  teamId?: string;
-  isCollapsed?: boolean;
-} & SelectProps) {
+  onChange,
+}: BoardSelectProps) {
   const { t, messages } = useMessages();
   const { data: board } = useBoardQuery(boardId);
   const [name, setName] = useState<string>(board?.name);
@@ -27,10 +30,6 @@ export function BoardSelect({
   useEffect(() => {
     setName(board?.name);
   }, [board?.name]);
-
-  const handleOpenChange = () => {
-    setSearch('');
-  };
 
   const handleChange = (id: string) => {
     setName(listItems.find(item => item.id === id)?.name);
@@ -53,17 +52,17 @@ export function BoardSelect({
   };
 
   return (
-    <Select
-      {...props}
+    <SearchSelect
       value={boardId}
+      items={listItems}
       isLoading={isLoading}
-      allowSearch={true}
-      searchValue={search}
       onSearch={setSearch}
-      onChange={value => handleChange(value as string)}
-      onOpenChange={handleOpenChange}
-      renderValue={renderValue}
-      buttonProps={{
+      onChange={handleChange}
+      renderValue={renderValue()}
+      emptyMessage={<Empty message={t(messages.noResultsFound)} />}
+      contentStyle={{ width: 280 }}
+      maxHeight={480}
+      triggerProps={{
         ...buttonProps,
         style: {
           minHeight: 40,
@@ -72,22 +71,6 @@ export function BoardSelect({
           ...buttonProps?.style,
         },
       }}
-      maxHeight={480}
-      listProps={{
-        ...listProps,
-        renderEmptyState:
-          listProps?.renderEmptyState || (() => <Empty message={t(messages.noResultsFound)} />),
-        style: {
-          width: 280,
-          ...listProps?.style,
-        },
-      }}
-    >
-      {listItems.map(({ id, name }) => (
-        <ListItem key={id} id={id}>
-          {name}
-        </ListItem>
-      ))}
-    </Select>
+    />
   );
 }

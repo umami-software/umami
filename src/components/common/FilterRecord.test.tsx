@@ -9,9 +9,12 @@ vi.mock('@umami/react-zen', () => ({
   Grid: ({ children }: { children: ReactNode }) => <div>{children}</div>,
   Icon: ({ children }: { children: ReactNode }) => <span>{children}</span>,
   Label: ({ children }: { children: ReactNode }) => <label>{children}</label>,
-  ListItem: ({ children }: { children: ReactNode }) => <div>{children}</div>,
   Loading: () => <div>Loading</div>,
   Select: ({ children }: { children: ReactNode }) => <div>{children}</div>,
+  SelectContent: ({ children }: { children: ReactNode }) => <div>{children}</div>,
+  SelectItem: ({ children }: { children: ReactNode }) => <div>{children}</div>,
+  SelectTrigger: ({ children }: { children: ReactNode }) => <div>{children}</div>,
+  SelectValue: () => null,
   TextField: ({ value }: { value: string }) => (
     <input aria-label="Filter value" value={value} readOnly />
   ),

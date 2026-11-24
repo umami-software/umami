@@ -1,4 +1,4 @@
-import { AlertDialog, Row } from '@umami/react-zen';
+import { Button, Column, Row } from '@umami/react-zen';
 import { useDeleteQuery, useMessages, useModified } from '@/components/hooks';
 
 export function UserDeleteForm({
@@ -28,14 +28,16 @@ export function UserDeleteForm({
   };
 
   return (
-    <AlertDialog
-      title={t(labels.delete)}
-      onConfirm={handleConfirm}
-      onCancel={onClose}
-      confirmLabel={t(labels.delete)}
-      isDanger
-    >
+    <Column gap="4">
       <Row gap="1">{t(messages.confirmDelete, { target: username })}</Row>
-    </AlertDialog>
+      <Row alignItems="center" justifyContent="flex-end" gap="3">
+        <Button variant="secondary" onClick={onClose}>
+          {t(labels.cancel)}
+        </Button>
+        <Button variant="destructive" onClick={handleConfirm}>
+          {t(labels.delete)}
+        </Button>
+      </Row>
+    </Column>
   );
 }

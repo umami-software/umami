@@ -26,7 +26,9 @@ export function DateRangeSetting() {
         onChange={handleChange}
         buttonProps={{ style: { minWidth: '250px' } }}
       />
-      <Button onPress={handleReset}>{t(labels.reset)}</Button>
+      <Button variant="secondary" onClick={handleReset}>
+        {t(labels.reset)}
+      </Button>
     </Row>
   );
 }

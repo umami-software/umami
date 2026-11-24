@@ -1,5 +1,6 @@
-import { Button, ListItem, Row, Select } from '@umami/react-zen';
+import { Button, Row, Text } from '@umami/react-zen';
 import { useState } from 'react';
+import { SearchSelect } from '@/components/common/SearchSelect';
 import { useLocale, useMessages } from '@/components/hooks';
 import { DEFAULT_LOCALE } from '@/lib/constants';
 import { languages } from '@/lib/lang';
@@ -27,23 +28,19 @@ export function LanguageSetting() {
 
   return (
     <Row gap>
-      <Select
+      <SearchSelect
         value={locale}
-        onChange={val => saveLocale(val as string)}
-        allowSearch
+        items={items.map(item => ({ id: item, name: languages[item].label }))}
+        onChange={val => saveLocale(val)}
         onSearch={setSearch}
         onOpenChange={handleOpen}
         maxHeight={480}
-        buttonProps={{ style: { minWidth: '250px' } }}
-      >
-        {items.map(item => (
-          <ListItem key={item} id={item}>
-            {languages[item].label}
-          </ListItem>
-        ))}
-        {!items.length && <ListItem></ListItem>}
-      </Select>
-      <Button onPress={handleReset}>{t(labels.reset)}</Button>
+        renderValue={<Text truncate>{languages[locale]?.label ?? locale}</Text>}
+        triggerProps={{ className: 'justify-between', style: { minWidth: '250px' } }}
+      />
+      <Button variant="secondary" onClick={handleReset}>
+        {t(labels.reset)}
+      </Button>
     </Row>
   );
 }

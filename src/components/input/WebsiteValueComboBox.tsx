@@ -1,15 +1,14 @@
-import { type ComboBoxProps, ListItem, Loading, useDebounce } from '@umami/react-zen';
+import { useDebounce } from '@umami/react-zen';
 import { useEffect, useMemo, useState } from 'react';
-import { ComboBox } from '@/components/common/ComboBox';
-import { Empty } from '@/components/common/Empty';
-import { useMessages, useTimezone, useWebsiteValuesQuery } from '@/components/hooks';
+import { ComboBox, type ComboBoxProps } from '@/components/common/ComboBox';
+import { useTimezone, useWebsiteValuesQuery } from '@/components/hooks';
 
 const DEFAULT_PLACEHOLDER = 'Select an item';
 
 export interface WebsiteValueComboBoxProps
   extends Omit<
     ComboBoxProps,
-    'children' | 'inputValue' | 'items' | 'onChange' | 'onInputValueChange'
+    'inputValue' | 'items' | 'value' | 'onInputValueChange' | 'isLoading'
   > {
   websiteId: string;
   type: string;
@@ -33,7 +32,6 @@ export function WebsiteValueComboBox({
   placeholder = DEFAULT_PLACEHOLDER,
   ...props
 }: WebsiteValueComboBoxProps) {
-  const { t, messages } = useMessages();
   const { toUtc } = useTimezone();
   const [search, setSearch] = useState(value);
   const searchValue = useDebounce(search, 300);
@@ -74,7 +72,7 @@ export function WebsiteValueComboBox({
       {...props}
       label={label}
       className={className}
-      aria-label={props['aria-label'] ?? label}
+      aria-label={props['aria-label'] ?? (typeof label === 'string' ? label : undefined)}
       items={items}
       inputValue={value}
       placeholder={placeholder}
@@ -82,19 +80,7 @@ export function WebsiteValueComboBox({
         setSearch(value);
         onChange(value);
       }}
-      renderEmptyState={() =>
-        primaryQuery.isLoading || additionalQuery.isLoading ? (
-          <Loading placement="center" icon="dots" />
-        ) : (
-          <Empty message={t(messages.noResultsFound)} />
-        )
-      }
-    >
-      {items.map(item => (
-        <ListItem key={item} id={item}>
-          {item}
-        </ListItem>
-      ))}
-    </ComboBox>
+      isLoading={primaryQuery.isLoading || additionalQuery.isLoading}
+    />
   );
 }

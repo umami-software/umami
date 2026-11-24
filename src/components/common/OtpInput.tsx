@@ -115,11 +115,11 @@ export function OtpInput({
         >
           <TextField
             value={digit}
-            onChange={char => handleInput(i, char)}
+            onValueChange={char => handleInput(i, char)}
             onKeyDown={e => handleKeyDown(i, e)}
             onPaste={handlePaste}
-            isDisabled={disabled}
-            isReadOnly={readOnly}
+            disabled={disabled}
+            readOnly={readOnly}
             inputMode="numeric"
             maxLength={1}
             autoComplete="one-time-code"

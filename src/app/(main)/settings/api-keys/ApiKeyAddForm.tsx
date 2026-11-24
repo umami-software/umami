@@ -40,13 +40,11 @@ export function ApiKeyAddForm({ onSave, onClose }: { onSave: () => void; onClose
           <AlertTitle>{t(messages.apiKeyCreated)}</AlertTitle>
         </Alert>
         <Row alignItems="center" gap="2">
-          <TextField value={createdKey} isReadOnly style={{ flex: 1, fontFamily: 'monospace' }} />
+          <TextField value={createdKey} readOnly style={{ flex: 1, fontFamily: 'monospace' }} />
           <CopyButton value={createdKey} label={t(labels.copy)} />
         </Row>
         <Row justifyContent="flex-end">
-          <Button variant="primary" onPress={onClose}>
-            {t(labels.close)}
-          </Button>
+          <Button onClick={onClose}>{t(labels.close)}</Button>
         </Row>
       </Column>
     );
@@ -58,12 +56,10 @@ export function ApiKeyAddForm({ onSave, onClose }: { onSave: () => void; onClose
         <TextField autoComplete="off" autoFocus />
       </FormField>
       <FormButtons>
-        <Button isDisabled={isPending} onPress={onClose}>
+        <Button variant="secondary" disabled={isPending} onClick={onClose}>
           {t(labels.cancel)}
         </Button>
-        <FormSubmitButton variant="primary" isDisabled={isPending}>
-          {t(labels.save)}
-        </FormSubmitButton>
+        <FormSubmitButton disabled={isPending}>{t(labels.save)}</FormSubmitButton>
       </FormButtons>
     </Form>
   );

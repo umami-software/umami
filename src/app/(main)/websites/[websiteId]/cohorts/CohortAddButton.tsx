@@ -7,7 +7,7 @@ export function CohortAddButton({ websiteId }: { websiteId: string }) {
   const { t, labels } = useMessages();
 
   return (
-    <DialogButton icon={<Plus />} label={t(labels.cohort)} variant="primary" width="800px">
+    <DialogButton icon={<Plus />} label={t(labels.cohort)} variant="default" width="800px">
       {({ close }) => {
         return <CohortEditForm websiteId={websiteId} onClose={close} />;
       }}

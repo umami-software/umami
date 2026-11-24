@@ -1,15 +1,24 @@
 'use client';
-import { Column, Grid, ListItem, Loading, Select, useDebounce } from '@umami/react-zen';
+import {
+  Column,
+  Field,
+  FieldLabel,
+  Grid,
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+  useDebounce,
+} from '@umami/react-zen';
 import { useTranslations } from 'next-intl';
 import { useMemo, useState } from 'react';
 import { BarChart } from '@/components/charts/BarChart';
 import { ComboBox } from '@/components/common/ComboBox';
-import { Empty } from '@/components/common/Empty';
 import { Panel } from '@/components/common/Panel';
 import { useApi } from '@/components/hooks/useApi';
 import { useDateParameters } from '@/components/hooks/useDateParameters';
 import { useLocale } from '@/components/hooks/useLocale';
-import { useMessages } from '@/components/hooks/useMessages';
 import { useNavigation } from '@/components/hooks/useNavigation';
 import { MetricCard } from '@/components/metrics/MetricCard';
 import { MetricsBar } from '@/components/metrics/MetricsBar';
@@ -58,6 +67,11 @@ export function ErrorFilters({ websiteId, issueId }: { websiteId: string; issueI
     });
   };
 
+  const statusItems = [
+    { value: '', label: t('allStatuses') },
+    ...['unresolved', 'resolved', 'ignored'].map(status => ({ value: status, label: t(status) })),
+  ];
+
   return (
     <Grid
       columns={{
@@ -69,18 +83,25 @@ export function ErrorFilters({ websiteId, issueId }: { websiteId: string; issueI
       alignItems="end"
     >
       {!issueId && (
-        <Select
-          label={t('status')}
-          value={query.status || ''}
-          onChange={value => applyFilter('status', value)}
-        >
-          <ListItem id="">{t('allStatuses')}</ListItem>
-          {['unresolved', 'resolved', 'ignored'].map(status => (
-            <ListItem key={status} id={status}>
-              {t(status)}
-            </ListItem>
-          ))}
-        </Select>
+        <Field>
+          <FieldLabel>{t('status')}</FieldLabel>
+          <Select
+            items={statusItems}
+            value={query.status || ''}
+            onValueChange={value => applyFilter('status', value as string)}
+          >
+            <SelectTrigger className="w-full">
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent alignItemWithTrigger={false}>
+              {statusItems.map(item => (
+                <SelectItem key={item.value} value={item.value}>
+                  {item.label}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </Field>
       )}
       {VALUE_FIELDS.map(key => (
         <ErrorValueFilter
@@ -110,7 +131,6 @@ function ErrorValueFilter({
   onChange: (value: string | null) => void;
 }) {
   const t = useTranslations('errorTracking');
-  const { t: tm, messages } = useMessages();
   const { page: _page, pageSize: _pageSize, ...filters } = useErrorFilters();
   const [search, setSearch] = useState('');
   const searchValue = useDebounce(search, 300);
@@ -129,26 +149,15 @@ function ErrorValueFilter({
       label={t(type)}
       placeholder={t('all')}
       value={value}
-      onChange={onChange}
+      onValueChange={onChange}
       onInputValueChange={(input, details) => {
         if (details.reason === 'input-change') setSearch(input);
       }}
       filter={null}
       showClear={!!value}
-      renderEmptyState={() =>
-        isLoading ? (
-          <Loading placement="center" icon="dots" />
-        ) : (
-          <Empty message={tm(messages.noResultsFound)} />
-        )
-      }
-    >
-      {items.map(item => (
-        <ListItem key={item} id={item}>
-          {item}
-        </ListItem>
-      ))}
-    </ComboBox>
+      isLoading={isLoading}
+      items={items}
+    />
   );
 }
 

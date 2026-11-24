@@ -7,7 +7,7 @@ export function ShareEditButton({ shareId }: { shareId: string }) {
   const { t, labels } = useMessages();
 
   return (
-    <DialogButton icon={<Edit />} title={t(labels.share)} variant="quiet" width="600px">
+    <DialogButton icon={<Edit />} title={t(labels.share)} variant="ghost" width="600px">
       {({ close }) => {
         return <ShareEditForm shareId={shareId} onClose={close} />;
       }}

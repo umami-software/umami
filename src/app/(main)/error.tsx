@@ -16,8 +16,10 @@ export default function RouteError({ error, retry }: { error: unknown; retry: ()
       minHeight="600px"
     >
       <h1>{t(messages.error)}</h1>
-      {digest && <Text color="muted">{digest}</Text>}
-      <Button onPress={() => retry()}>{t(labels.refresh)}</Button>
+      {digest && <Text color="muted-foreground">{digest}</Text>}
+      <Button variant="secondary" onClick={() => retry()}>
+        {t(labels.refresh)}
+      </Button>
     </Column>
   );
 }

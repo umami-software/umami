@@ -1,6 +1,15 @@
 'use client';
 import { useQueryClient } from '@tanstack/react-query';
-import { Button, Column, Heading, Loading, Tab, TabList, TabPanel, Tabs } from '@umami/react-zen';
+import {
+  Button,
+  Column,
+  Heading,
+  Loading,
+  Tabs,
+  TabsContent,
+  TabsList,
+  TabsTrigger,
+} from '@umami/react-zen';
 import { differenceInCalendarDays, format } from 'date-fns';
 import { useTranslations } from 'next-intl';
 import { useEffect, useMemo, useState } from 'react';
@@ -82,10 +91,7 @@ function UpgradePlaceholder() {
         title={tm(messages.upgradeRequired, { plan: 'Pro' })}
         description={t('description')}
       >
-        <Button
-          variant="primary"
-          onPress={() => window.open(`${process.env.cloudUrl}/settings/billing`, '_blank')}
-        >
+        <Button onClick={() => window.open(`${process.env.cloudUrl}/settings/billing`, '_blank')}>
           {tm(labels.upgrade)}
         </Button>
       </EmptyPlaceholder>
@@ -272,17 +278,17 @@ function GoogleAdsReport({ websiteId }: { websiteId: string }) {
           </Panel>
           <Heading size="2xl">{t('ads')}</Heading>
           <Panel>
-            <Tabs selectedKey={tab} onSelectionChange={setTab}>
-              <TabList>
-                <Tab id="campaign">{t('campaigns')}</Tab>
-                <Tab id="ad_group">{t('adGroups')}</Tab>
-                <Tab id="keyword">{t('keywords')}</Tab>
-                <Tab id="search_term">{t('searchTerms')}</Tab>
-                <Tab id="landing_page">{t('landingPages')}</Tab>
-                <Tab id="device">{t('devices')}</Tab>
-                <Tab id="network">{t('networks')}</Tab>
-              </TabList>
-              <TabPanel id="campaign">
+            <Tabs value={tab} onValueChange={setTab}>
+              <TabsList>
+                <TabsTrigger value="campaign">{t('campaigns')}</TabsTrigger>
+                <TabsTrigger value="ad_group">{t('adGroups')}</TabsTrigger>
+                <TabsTrigger value="keyword">{t('keywords')}</TabsTrigger>
+                <TabsTrigger value="search_term">{t('searchTerms')}</TabsTrigger>
+                <TabsTrigger value="landing_page">{t('landingPages')}</TabsTrigger>
+                <TabsTrigger value="device">{t('devices')}</TabsTrigger>
+                <TabsTrigger value="network">{t('networks')}</TabsTrigger>
+              </TabsList>
+              <TabsContent value="campaign">
                 <GoogleAdsTable
                   websiteId={websiteId}
                   startDate={startDate}
@@ -293,8 +299,8 @@ function GoogleAdsReport({ websiteId }: { websiteId: string }) {
                     setTab('ad_group');
                   }}
                 />
-              </TabPanel>
-              <TabPanel id="ad_group">
+              </TabsContent>
+              <TabsContent value="ad_group">
                 <GoogleAdsTable
                   websiteId={websiteId}
                   startDate={startDate}
@@ -307,8 +313,8 @@ function GoogleAdsReport({ websiteId }: { websiteId: string }) {
                     setTab('keyword');
                   }}
                 />
-              </TabPanel>
-              <TabPanel id="keyword">
+              </TabsContent>
+              <TabsContent value="keyword">
                 <GoogleAdsTable
                   websiteId={websiteId}
                   startDate={startDate}
@@ -317,8 +323,8 @@ function GoogleAdsReport({ websiteId }: { websiteId: string }) {
                   filter={filter}
                   onClearFilter={() => setFilter(null)}
                 />
-              </TabPanel>
-              <TabPanel id="search_term">
+              </TabsContent>
+              <TabsContent value="search_term">
                 <GoogleAdsTable
                   websiteId={websiteId}
                   startDate={startDate}
@@ -327,16 +333,16 @@ function GoogleAdsReport({ websiteId }: { websiteId: string }) {
                   filter={filter}
                   onClearFilter={() => setFilter(null)}
                 />
-              </TabPanel>
+              </TabsContent>
               {(['landing_page', 'device', 'network'] as const).map(dimension => (
-                <TabPanel key={dimension} id={dimension}>
+                <TabsContent key={dimension} value={dimension}>
                   <GoogleAdsTable
                     websiteId={websiteId}
                     startDate={startDate}
                     endDate={endDate}
                     dimension={dimension}
                   />
-                </TabPanel>
+                </TabsContent>
               ))}
             </Tabs>
           </Panel>
@@ -438,7 +444,7 @@ function GoogleAdsPlaceholder({ problem }: { problem: SetupProblem }) {
         title={t(problem)}
         description={t(`${problem}Description`)}
       >
-        <Button variant="primary" onPress={() => window.open(INTEGRATIONS_URL, '_blank')}>
+        <Button onClick={() => window.open(INTEGRATIONS_URL, '_blank')}>
           {t('manageIntegrations')}
         </Button>
       </EmptyPlaceholder>

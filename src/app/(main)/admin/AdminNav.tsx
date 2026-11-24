@@ -1,4 +1,4 @@
-import { Column, Row, Tooltip, TooltipTrigger } from '@umami/react-zen';
+import { Column, Row, Tooltip, TooltipContent, TooltipTrigger } from '@umami/react-zen';
 import { IconLabel } from '@/components/common/IconLabel';
 import Link from '@/components/common/Link';
 import { NavMenu } from '@/components/common/NavMenu';
@@ -48,18 +48,23 @@ export function AdminNav({ onItemClick }: { onItemClick?: () => void }) {
   return (
     <Column gap="2">
       <Link href={renderUrl('/websites', false)} role="button" onClick={onItemClick}>
-        <TooltipTrigger delay={0}>
-          <Row
-            tabIndex={0}
-            alignItems="center"
-            hover={{ backgroundColor: 'surface-sunken' }}
-            borderRadius
-            minHeight="9"
+        <Tooltip>
+          <TooltipTrigger
+            delay={0}
+            render={
+              <Row
+                tabIndex={0}
+                alignItems="center"
+                hover={{ backgroundColor: 'muted' }}
+                borderRadius
+                minHeight="9"
+              />
+            }
           >
             <IconLabel icon={<ArrowLeft />} label={t(labels.back)} padding />
-          </Row>
-          <Tooltip placement="right">{t(labels.back)}</Tooltip>
-        </TooltipTrigger>
+          </TooltipTrigger>
+          <TooltipContent side="right">{t(labels.back)}</TooltipContent>
+        </Tooltip>
       </Link>
       <NavMenu
         items={items}

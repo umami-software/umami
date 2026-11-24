@@ -1,4 +1,4 @@
-import { Box, Button, Icon, Row, Tooltip, TooltipTrigger } from '@umami/react-zen';
+import { Box, Button, Icon, Row, Tooltip, TooltipContent, TooltipTrigger } from '@umami/react-zen';
 import { produce } from 'immer';
 import { Fragment, useEffect, useRef } from 'react';
 import { Group, type GroupImperativeHandle, Panel, Separator } from 'react-resizable-panels';
@@ -163,14 +163,14 @@ export function BoardEditBody({ requiresBoardWebsite = true }: { requiresBoardWe
         {canEdit && (
           <Panel minSize={BUTTON_ROW_HEIGHT}>
             <Row paddingY="3">
-              <TooltipTrigger delay={0}>
-                <Button variant="outline" onPress={handle}>
+              <Tooltip>
+                <TooltipTrigger delay={0} render={<Button variant="outline" onClick={handle} />}>
                   <Icon>
                     <Plus />
                   </Icon>
-                </Button>
-                <Tooltip placement="right">Add row</Tooltip>
-              </TooltipTrigger>
+                </TooltipTrigger>
+                <TooltipContent side="right">Add row</TooltipContent>
+              </Tooltip>
             </Row>
           </Panel>
         )}

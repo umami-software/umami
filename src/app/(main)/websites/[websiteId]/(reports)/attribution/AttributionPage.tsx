@@ -1,5 +1,15 @@
 'use client';
-import { Column, Grid, ListItem, Select } from '@umami/react-zen';
+import {
+  Column,
+  Field,
+  FieldLabel,
+  Grid,
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@umami/react-zen';
 import { useState } from 'react';
 import { WebsiteControls } from '@/app/(main)/websites/[websiteId]/WebsiteControls';
 import { Empty } from '@/components/common/Empty';
@@ -21,31 +31,57 @@ export function AttributionPage({ websiteId }: { websiteId: string }) {
     setStep('');
   };
 
+  const modelItems = [
+    { value: 'first-click', label: t(labels.firstClick) },
+    { value: 'last-click', label: t(labels.lastClick) },
+  ];
+
+  const typeItems = [
+    { value: 'path', label: t(labels.viewedPage) },
+    { value: 'event', label: t(labels.triggeredEvent) },
+  ];
+
   return (
     <Column gap="6">
       <WebsiteControls websiteId={websiteId} />
       <Grid columns={{ base: '1fr', md: '1fr 1fr 1fr' }} gap>
         <Column>
-          <Select
-            label={t(labels.model)}
-            value={model}
-            defaultValue={model}
-            onChange={value => setModel(value as string)}
-          >
-            <ListItem id="first-click">{t(labels.firstClick)}</ListItem>
-            <ListItem id="last-click">{t(labels.lastClick)}</ListItem>
-          </Select>
+          <Field>
+            <FieldLabel>{t(labels.model)}</FieldLabel>
+            <Select
+              items={modelItems}
+              value={model}
+              onValueChange={value => setModel(value as string)}
+            >
+              <SelectTrigger className="w-full">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent alignItemWithTrigger={false}>
+                {modelItems.map(item => (
+                  <SelectItem key={item.value} value={item.value}>
+                    {item.label}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </Field>
         </Column>
         <Column>
-          <Select
-            label={t(labels.type)}
-            value={type}
-            defaultValue={type}
-            onChange={handleTypeChange}
-          >
-            <ListItem id="path">{t(labels.viewedPage)}</ListItem>
-            <ListItem id="event">{t(labels.triggeredEvent)}</ListItem>
-          </Select>
+          <Field>
+            <FieldLabel>{t(labels.type)}</FieldLabel>
+            <Select items={typeItems} value={type} onValueChange={handleTypeChange}>
+              <SelectTrigger className="w-full">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent alignItemWithTrigger={false}>
+                {typeItems.map(item => (
+                  <SelectItem key={item.value} value={item.value}>
+                    {item.label}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </Field>
         </Column>
         <Column>
           <WebsiteValueComboBox

@@ -8,7 +8,7 @@ export function GoalAddButton({ websiteId }: { websiteId: string }) {
 
   return (
     <DialogButton
-      variant="primary"
+      variant="default"
       icon={<Plus />}
       label={t(labels.goal)}
       title={t(labels.goal)}

@@ -16,7 +16,7 @@ export function SegmentEditButton({
   const { t, labels } = useMessages();
 
   return (
-    <DialogButton icon={<Edit />} title={t(labels.segment)} variant="quiet" width="800px">
+    <DialogButton icon={<Edit />} title={t(labels.segment)} variant="ghost" width="800px">
       {({ close }) => {
         return (
           <SegmentEditForm

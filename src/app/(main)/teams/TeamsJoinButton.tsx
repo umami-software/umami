@@ -1,4 +1,15 @@
-import { Button, Dialog, DialogTrigger, Icon, Modal, Text, useToast } from '@umami/react-zen';
+import {
+  Button,
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+  Icon,
+  Text,
+  useToast,
+} from '@umami/react-zen';
+import { useState } from 'react';
 import { useMessages, useModified } from '@/components/hooks';
 import { UserPlus } from '@/components/icons';
 import { TeamJoinForm } from './TeamJoinForm';
@@ -7,6 +18,7 @@ export function TeamsJoinButton() {
   const { t, labels, messages } = useMessages();
   const { toast } = useToast();
   const { touch } = useModified();
+  const [open, setOpen] = useState(false);
 
   const handleJoin = () => {
     toast(t(messages.saved));
@@ -14,18 +26,19 @@ export function TeamsJoinButton() {
   };
 
   return (
-    <DialogTrigger>
-      <Button>
+    <Dialog open={open} onOpenChange={setOpen}>
+      <DialogTrigger render={<Button variant="secondary" />}>
         <Icon>
           <UserPlus />
         </Icon>
         <Text>{t(labels.joinTeam)}</Text>
-      </Button>
-      <Modal>
-        <Dialog title={t(labels.joinTeam)} style={{ width: 400 }}>
-          {({ close }) => <TeamJoinForm onSave={handleJoin} onClose={close} />}
-        </Dialog>
-      </Modal>
-    </DialogTrigger>
+      </DialogTrigger>
+      <DialogContent style={{ width: 400 }}>
+        <DialogHeader>
+          <DialogTitle>{t(labels.joinTeam)}</DialogTitle>
+        </DialogHeader>
+        <TeamJoinForm onSave={handleJoin} onClose={() => setOpen(false)} />
+      </DialogContent>
+    </Dialog>
   );
 }

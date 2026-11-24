@@ -1,4 +1,13 @@
-import { Button, Column, Icon, Row, Text, Tooltip, TooltipTrigger } from '@umami/react-zen';
+import {
+  Button,
+  Column,
+  Icon,
+  Row,
+  Text,
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from '@umami/react-zen';
 import { useSpring, useTransform } from 'motion/react';
 import { type KeyboardEvent, type ReactNode, useEffect } from 'react';
 import { AnimatedDiv } from '@/components/common/AnimatedDiv';
@@ -89,7 +98,7 @@ export const MetricCard = ({
       paddingX="6"
       paddingY="4"
       borderRadius={bordered ? true : undefined}
-      backgroundColor={bordered ? 'surface' : undefined}
+      backgroundColor={bordered ? 'background' : undefined}
       border={bordered ? true : undefined}
       gap="2"
     >
@@ -100,14 +109,14 @@ export const MetricCard = ({
           </Text>
           {tooltip && (
             <span className={styles.tooltip}>
-              <TooltipTrigger delay={0}>
-                <Button size="sm" variant="quiet">
+              <Tooltip>
+                <TooltipTrigger delay={0} render={<Button size="sm" variant="ghost" />}>
                   <Icon size="sm">
                     <Info />
                   </Icon>
-                </Button>
-                <Tooltip placement="top">{tooltip}</Tooltip>
-              </TooltipTrigger>
+                </TooltipTrigger>
+                <TooltipContent side="top">{tooltip}</TooltipContent>
+              </Tooltip>
             </span>
           )}
         </Row>

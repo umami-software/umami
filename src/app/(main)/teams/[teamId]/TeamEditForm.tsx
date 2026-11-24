@@ -47,19 +47,20 @@ export function TeamEditForm({
         return (
           <>
             <FormField name="id" label={t(labels.teamId)}>
-              <TextField isReadOnly allowCopy />
+              <TextField readOnly allowCopy />
             </FormField>
             <FormField name="name" label={t(labels.name)} rules={{ required: t(labels.required) }}>
-              <TextField isReadOnly={!allowEdit} />
+              <TextField readOnly={!allowEdit} />
             </FormField>
             {showAccessCode && (
               <Row alignItems="flex-end" gap>
                 <FormField name="accessCode" label={t(labels.accessCode)} style={{ flex: 1 }}>
-                  <TextField isReadOnly allowCopy />
+                  <TextField readOnly allowCopy />
                 </FormField>
                 {allowEdit && (
                   <Button
-                    onPress={() => setValue('accessCode', generateId(), { shouldDirty: true })}
+                    variant="secondary"
+                    onClick={() => setValue('accessCode', generateId(), { shouldDirty: true })}
                   >
                     <IconLabel icon={<RefreshCw />} label={t(labels.regenerate)} />
                   </Button>
@@ -67,10 +68,8 @@ export function TeamEditForm({
               </Row>
             )}
             {allowEdit && (
-              <FormButtons justifyContent="flex-end">
-                <FormSubmitButton variant="primary" isLoading={isPending}>
-                  {t(labels.save)}
-                </FormSubmitButton>
+              <FormButtons>
+                <FormSubmitButton loading={isPending}>{t(labels.save)}</FormSubmitButton>
               </FormButtons>
             )}
           </>

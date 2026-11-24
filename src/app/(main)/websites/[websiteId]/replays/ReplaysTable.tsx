@@ -1,6 +1,6 @@
 import { Button, DataColumn, DataTable, type DataTableProps, Icon } from '@umami/react-zen';
-import { useEffect } from 'react';
 import { Play } from 'lucide-react';
+import { useEffect } from 'react';
 import { Avatar } from '@/components/common/Avatar';
 import { DateDistance } from '@/components/common/DateDistance';
 import Link from '@/components/common/Link';
@@ -30,7 +30,7 @@ export function ReplaysTable({ websiteId, ...props }: DataTableProps & { website
     <DataTable {...props}>
       <DataColumn id="play" label="" width="80px">
         {(row: any) => (
-          <Button variant="quiet" onClick={() => router.push(updateParams({ replay: row.id }))}>
+          <Button variant="ghost" onClick={() => router.push(updateParams({ replay: row.id }))}>
             <Icon>
               <Play />
             </Icon>

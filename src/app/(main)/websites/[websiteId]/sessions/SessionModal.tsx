@@ -1,16 +1,15 @@
 'use client';
-import { Column, Dialog, Modal, type ModalProps } from '@umami/react-zen';
+import { Column, Dialog, DialogContent } from '@umami/react-zen';
 import { SessionProfile } from '@/app/(main)/websites/[websiteId]/sessions/SessionProfile';
-import { ControlledDialog } from '@/components/common/ControlledDialog';
 import { useMobile, useNavigation } from '@/components/hooks';
 import { useApp } from '@/store/app';
-import styles from './SessionModal.module.css';
 
-export interface SessionModalProps extends ModalProps {
+export interface SessionModalProps {
   websiteId: string;
+  className?: string;
 }
 
-export function SessionModal({ websiteId, className, ...props }: SessionModalProps) {
+export function SessionModal({ websiteId, className }: SessionModalProps) {
   const {
     router,
     pathname,
@@ -32,34 +31,32 @@ export function SessionModal({ websiteId, className, ...props }: SessionModalPro
   };
 
   return (
-    <ControlledDialog>
-      <Modal
-        className={[styles.modal, className].filter(Boolean).join(' ')}
-        isOpen={!!session && canViewSession}
-        onOpenChange={handleOpenChange}
-        {...props}
+    <Dialog open={!!session && canViewSession} onOpenChange={handleOpenChange}>
+      <DialogContent
+        className={className}
+        style={{
+          width: 'min(calc(100dvw - 48px), 1320px)',
+          maxWidth: 'calc(100% - 2rem)',
+          height: 'calc(100dvh - 80px)',
+          overflowY: 'auto',
+        }}
+        showCloseButton={false}
       >
-        <Column height="100%">
-          <Dialog className="h-full rounded-lg">
-            {({ close }) => (
-              <Column
-                paddingX={isMobile ? '6' : '10'}
-                paddingTop="6"
-                paddingBottom={isMobile ? '6' : '10'}
-                minWidth="0"
-                width="100%"
-              >
-                <SessionProfile
-                  websiteId={websiteId}
-                  sessionId={session}
-                  showReplays={!isSharePage}
-                  onClose={() => close()}
-                />
-              </Column>
-            )}
-          </Dialog>
+        <Column
+          paddingX={isMobile ? '6' : '10'}
+          paddingTop="6"
+          paddingBottom={isMobile ? '6' : '10'}
+          minWidth="0"
+          width="100%"
+        >
+          <SessionProfile
+            websiteId={websiteId}
+            sessionId={session}
+            showReplays={!isSharePage}
+            onClose={() => handleOpenChange(false)}
+          />
         </Column>
-      </Modal>
-    </ControlledDialog>
+      </DialogContent>
+    </Dialog>
   );
 }

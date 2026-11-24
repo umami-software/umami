@@ -1,6 +1,8 @@
 import {
   Button,
   Column,
+  Field,
+  FieldLabel,
   Form,
   FormField,
   FormSubmitButton,
@@ -94,7 +96,7 @@ export function SimpleShareEditForm({
           <TextField
             label={t(labels.shareUrl)}
             value={getUrl(share?.slug || '')}
-            isReadOnly
+            readOnly
             allowCopy
           />
           <FormField label={t(labels.name)} name="name" rules={{ required: t(labels.required) }}>
@@ -102,12 +104,16 @@ export function SimpleShareEditForm({
           </FormField>
           <Row gap="6">
             <FormField label={t(labels.filters)} name="allowFilter">
-              <Switch
-                isSelected={watch('allowFilter')}
-                onChange={value => setValue('allowFilter', value, { shouldDirty: true })}
-              >
-                {t(labels.filtersEnabled)}
-              </Switch>
+              {({ controlProps }) => (
+                <Field orientation="horizontal">
+                  <Switch
+                    {...controlProps}
+                    checked={watch('allowFilter')}
+                    onCheckedChange={value => setValue('allowFilter', value, { shouldDirty: true })}
+                  />
+                  <FieldLabel htmlFor={controlProps.id}>{t(labels.filtersEnabled)}</FieldLabel>
+                </Field>
+              )}
             </FormField>
             <FormField label={t(labels.theme)} name="theme">
               <ThemeModeSelector
@@ -119,13 +125,11 @@ export function SimpleShareEditForm({
           </Row>
           <Row justifyContent="flex-end" paddingTop="3" gap="3">
             {onClose && (
-              <Button isDisabled={isPending} onPress={onClose}>
+              <Button variant="secondary" disabled={isPending} onClick={onClose}>
                 {t(labels.cancel)}
               </Button>
             )}
-            <FormSubmitButton variant="primary" isDisabled={isPending}>
-              {t(labels.save)}
-            </FormSubmitButton>
+            <FormSubmitButton disabled={isPending}>{t(labels.save)}</FormSubmitButton>
           </Row>
         </Column>
       )}

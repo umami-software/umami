@@ -38,7 +38,7 @@ function BoardShareDialogContent({
       <Row justifyContent="space-between" alignItems="center">
         <Heading>{t(labels.share)}</Heading>
         {!isCreating && (
-          <Button variant="primary" onPress={() => setIsCreating(true)}>
+          <Button onClick={() => setIsCreating(true)}>
             <IconLabel icon={<Plus size={16} />} label={t(labels.add)} />
           </Button>
         )}
@@ -51,12 +51,7 @@ function BoardShareDialogContent({
         />
       )}
       {hasShares && <Text>{t(messages.shareUrl)}</Text>}
-      {!showCreateForm &&
-        (hasShares ? (
-          <BoardSharesTable data={shares} />
-        ) : (
-          <Empty />
-        ))}
+      {!showCreateForm && (hasShares ? <BoardSharesTable data={shares} /> : <Empty />)}
     </Column>
   );
 }

@@ -46,13 +46,18 @@ export function TopNav() {
       paddingRight="5"
       width="100%"
       zIndex={100}
-      backgroundColor="surface-raised"
+      backgroundColor="muted"
     >
       <Row alignItems="center">
         <TeamsButton />
         {(websiteId || linkId || pixelId || boardId) && (
           <>
-            <Icon size="sm" color="muted" rotate={90} style={{ opacity: 0.7, margin: '0 6px' }}>
+            <Icon
+              size="sm"
+              color="muted-foreground"
+              rotate={90}
+              style={{ opacity: 0.7, margin: '0 6px' }}
+            >
               <Minus />
             </Icon>
             {websiteId && (
@@ -73,7 +78,7 @@ export function TopNav() {
                 onChange={handleLinkChange}
                 buttonProps={{
                   className:
-                    'border-transparent bg-transparent shadow-none hover:border-transparent hover:bg-interactive active:bg-interactive-hover',
+                    'border-transparent bg-transparent shadow-none hover:border-transparent hover:bg-muted active:bg-accent',
                   style: { minHeight: 40, minWidth: 200, maxWidth: 200 },
                 }}
               />
@@ -85,7 +90,7 @@ export function TopNav() {
                 onChange={handlePixelChange}
                 buttonProps={{
                   className:
-                    'border-transparent bg-transparent shadow-none hover:border-transparent hover:bg-interactive active:bg-interactive-hover',
+                    'border-transparent bg-transparent shadow-none hover:border-transparent hover:bg-muted active:bg-accent',
                   style: { minHeight: 40, minWidth: 200, maxWidth: 200 },
                 }}
               />
@@ -97,7 +102,7 @@ export function TopNav() {
                 onChange={handleBoardChange}
                 buttonProps={{
                   className:
-                    'border-transparent bg-transparent shadow-none hover:border-transparent hover:bg-interactive active:bg-interactive-hover',
+                    'border-transparent bg-transparent shadow-none hover:border-transparent hover:bg-muted active:bg-accent',
                   style: { minHeight: 40, minWidth: 200, maxWidth: 200 },
                 }}
               />
@@ -112,7 +117,7 @@ export function TopNav() {
           left: 0,
           right: 0,
           height: 16,
-          background: 'linear-gradient(to bottom, var(--zen-surface-raised), transparent)',
+          background: 'linear-gradient(to bottom, var(--muted), transparent)',
           pointerEvents: 'none',
         }}
       />

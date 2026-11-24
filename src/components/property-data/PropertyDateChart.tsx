@@ -57,7 +57,7 @@ function InsightCard({ label, value, hint }: { label: string; value: string; hin
       paddingX="6"
       paddingY="4"
       borderRadius={joined ? undefined : true}
-      backgroundColor={joined ? undefined : 'surface'}
+      backgroundColor={joined ? undefined : 'background'}
       border={joined ? undefined : true}
       gap="2"
       height="100%"
@@ -70,7 +70,7 @@ function InsightCard({ label, value, hint }: { label: string; value: string; hin
         {value}
       </Text>
       {hint && (
-        <Text color="muted" style={{ overflowWrap: 'anywhere' }}>
+        <Text color="muted-foreground" style={{ overflowWrap: 'anywhere' }}>
           {hint}
         </Text>
       )}

@@ -182,7 +182,7 @@ export function RealtimeLog({ data }: { data: any }) {
                   right="-2px"
                   bottom="-2px"
                   borderRadius="full"
-                  backgroundColor="surface"
+                  backgroundColor="background"
                   role="img"
                   title={t(labels.online)}
                   aria-label={t(labels.online)}
