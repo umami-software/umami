@@ -53,7 +53,7 @@ export function SideNav() {
   const isCollapsed = state === 'collapsed';
 
   return (
-    <Sidebar variant="floating" collapsible="icon">
+    <Sidebar variant="sidebar" collapsible="icon">
       <SidebarHeader>
         <Row
           alignItems="center"

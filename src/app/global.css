@@ -19,6 +19,16 @@
   --page: color-mix(in oklch, var(--background) 97%, var(--foreground));
 }
 
+/* Sidebar sits on the page surface (separated by its border) rather than its own tinted panel.
+   Matches Zen's palette selectors so it wins over every palette's --sidebar. */
+:root,
+.dark,
+[data-palette],
+[data-palette].dark,
+[data-palette] .dark {
+  --sidebar: var(--page);
+}
+
 /* Zen's rem-based typography and spacing assume the browser's default root size. */
 html {
   font-size: 100%;
