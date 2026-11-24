@@ -73,7 +73,7 @@ export function SideNav(props: any) {
   return (
     <Column
       {...props}
-      backgroundColor="background"
+      backgroundColor="sidebar"
       border
       borderRadius
       padding="2"

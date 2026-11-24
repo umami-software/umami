@@ -72,7 +72,6 @@ export function LinkSelect({
         ...buttonProps,
         style: {
           minHeight: 40,
-          gap: 0,
           justifyContent: isCollapsed ? 'start' : undefined,
           ...buttonProps?.style,
         },

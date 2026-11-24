@@ -1,15 +1,16 @@
+import { Combobox as ComboboxPrimitive } from '@base-ui/react/combobox';
 import {
   Button,
   Combobox,
   ComboboxContent,
   ComboboxEmpty,
-  ComboboxInput,
   ComboboxItem,
   ComboboxList,
   ComboboxTrigger,
   Loading,
+  SearchField,
 } from '@umami/react-zen';
-import { type ComponentProps, type CSSProperties, type ReactNode, useMemo } from 'react';
+import { type ComponentProps, type CSSProperties, type ReactNode, useMemo, useState } from 'react';
 import { useMessages } from '@/components/hooks';
 
 export interface SearchSelectItem {
@@ -58,6 +59,12 @@ export function SearchSelect({
   const { t, labels, messages } = useMessages();
   const ids = useMemo(() => items.map(({ id }) => id), [items]);
   const names = useMemo(() => new Map(items.map(({ id, name }) => [id, name])), [items]);
+  const [search, setSearch] = useState('');
+
+  const handleSearch = (value: string) => {
+    setSearch(value);
+    onSearch?.(value);
+  };
 
   return (
     <Combobox
@@ -71,14 +78,24 @@ export function SearchSelect({
           onChange?.(id);
         }
       }}
-      onInputValueChange={search => onSearch?.(search)}
+      inputValue={search}
+      onInputValueChange={handleSearch}
       onOpenChange={open => onOpenChange?.(open)}
     >
       <ComboboxTrigger render={<Button variant="outline" {...triggerProps} />}>
         {renderValue}
       </ComboboxTrigger>
       <ComboboxContent style={contentStyle}>
-        <ComboboxInput showTrigger={false} placeholder={placeholder ?? t(labels.search)} />
+        <div style={{ padding: 4 }}>
+          <ComboboxPrimitive.Input
+            render={
+              <SearchField
+                placeholder={placeholder ?? t(labels.search)}
+                onValueChange={value => value === '' && handleSearch('')}
+              />
+            }
+          />
+        </div>
         {isLoading ? (
           <Loading icon="dots" placement="center" size="sm" style={{ padding: '32px 0' }} />
         ) : (

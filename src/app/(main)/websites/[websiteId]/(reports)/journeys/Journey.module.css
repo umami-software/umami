@@ -212,7 +212,7 @@
   position: absolute;
   border-radius: 100%;
   border: 3px solid var(--journey-line-color);
-  background: var(--background);
+  background: var(--card);
   width: 14px;
   height: 14px;
 }

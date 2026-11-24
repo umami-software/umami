@@ -66,7 +66,6 @@ export function BoardSelect({
         ...buttonProps,
         style: {
           minHeight: 40,
-          gap: 0,
           justifyContent: isCollapsed ? 'start' : undefined,
           ...buttonProps?.style,
         },

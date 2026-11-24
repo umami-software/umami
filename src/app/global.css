@@ -20,8 +20,6 @@ html {
 html,
 body {
   font-family: var(--font-sans);
-  color: var(--foreground);
-  background-color: var(--muted);
   width: 100%;
   min-height: 100vh;
 }

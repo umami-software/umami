@@ -18,7 +18,7 @@ export interface MetricsBarProps extends GridProps {
 export function MetricsBar({ joined = true, children, ...props }: MetricsBarProps) {
   if (joined) {
     return (
-      <Box border borderRadius backgroundColor="background" overflow="hidden">
+      <Box border borderRadius backgroundColor="card" overflow="hidden">
         <Grid columns="repeat(auto-fit, minmax(160px, 1fr))" className={styles.joined} {...props}>
           <MetricsBarJoinedContext.Provider value={true}>
             {children}

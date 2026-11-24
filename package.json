@@ -76,6 +76,7 @@
     ".next/cache"
   ],
   "dependencies": {
+    "@base-ui/react": "^1.8.0",
     "@clickhouse/client": "^1.25.0",
     "@dicebear/core": "^10.7.0",
     "@dicebear/styles": "^10.6.0",

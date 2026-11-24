@@ -54,7 +54,7 @@
 }
 
 .container {
-  --overlay-scroll-indicator-background: var(--background);
+  --overlay-scroll-indicator-background: var(--card);
   position: relative;
   display: flex;
   flex-direction: column;
