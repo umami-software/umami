@@ -8,11 +8,13 @@ import Link from '@/components/common/Link';
 import { LoadingPanel } from '@/components/common/LoadingPanel';
 import { Pager } from '@/components/common/Pager';
 import {
+  useLocale,
   useMessages,
   useMobile,
   useNavigation,
   useSessionDataPivotQuery,
 } from '@/components/hooks';
+import { formatBackendDate } from '@/lib/date';
 import type { PropertyFilter } from '@/lib/types';
 
 export function SessionDataPivotTable({
@@ -20,15 +22,24 @@ export function SessionDataPivotTable({
   propertyName,
   propertyKeys: providedPropertyKeys,
   propertyFilters = [],
+  dateKeys = [],
 }: {
   websiteId: string;
   propertyName: string;
   propertyKeys?: string[];
   propertyFilters?: PropertyFilter[];
+  dateKeys?: string[];
 }) {
   const { t, labels } = useMessages();
   const { router, updateParams } = useNavigation();
   const { isMobile } = useMobile();
+  const { locale } = useLocale();
+
+  // Date values arrive already shifted to the selected timezone, so format them as wall-clock time.
+  const getPropertyValue = (row: any, key: string) =>
+    dateKeys.includes(key) && row[key]
+      ? formatBackendDate(row[key], 'PPpp', locale)
+      : (row[key] ?? '');
 
   const pivotQuery = useSessionDataPivotQuery(websiteId, propertyName, propertyFilters);
 
@@ -98,7 +109,7 @@ export function SessionDataPivotTable({
       </DataColumn>
       {propertyKeys.map(key => (
         <DataColumn key={key} id={key} label={key} width="160px">
-          {(row: any) => renderTruncatedText(row[key] ?? '')}
+          {(row: any) => renderTruncatedText(getPropertyValue(row, key))}
         </DataColumn>
       ))}
       <DataColumn id="distinctId" label="Distinct ID" width="220px">

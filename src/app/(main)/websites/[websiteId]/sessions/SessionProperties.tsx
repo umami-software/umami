@@ -58,6 +58,13 @@ export function SessionProperties({ websiteId }: { websiteId: string }) {
     () => scopedProperties.map((field: { propertyName: string }) => field.propertyName),
     [scopedProperties],
   );
+  const dateKeys = useMemo(
+    () =>
+      (data ?? [])
+        .filter((field: { dataType: number }) => field.dataType === DATA_TYPE.date)
+        .map((field: { propertyName: string }) => field.propertyName),
+    [data],
+  );
 
   return (
     <LoadingPanel
@@ -163,6 +170,7 @@ export function SessionProperties({ websiteId }: { websiteId: string }) {
               propertyName={propertyName}
               propertyKeys={scopedPropertyKeys}
               propertyFilters={propertyFilters}
+              dateKeys={dateKeys}
             />
           </Panel>
         )}
