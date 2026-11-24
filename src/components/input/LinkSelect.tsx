@@ -72,7 +72,7 @@ export function LinkSelect({
         ...buttonProps,
         style: {
           minHeight: 40,
-          justifyContent: isCollapsed ? 'start' : undefined,
+          justifyContent: isCollapsed ? 'start' : 'space-between',
           ...buttonProps?.style,
         },
       }}

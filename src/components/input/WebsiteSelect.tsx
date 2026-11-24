@@ -83,7 +83,7 @@ export function WebsiteSelect({
         ...buttonProps,
         variant: 'ghost',
         style: {
-          justifyContent: isCollapsed ? 'start' : undefined,
+          justifyContent: isCollapsed ? 'start' : 'space-between',
           ...buttonProps?.style,
         },
       }}
