@@ -119,53 +119,54 @@ async function relationalQuery(
     );
   }
 
+  // Revenue is credited to the session's first event in the range, preferring an event that
+  // matches the traffic-source filters so a filtered breakdown agrees with the filter.
+  const attributedQuery = `
+    session_revenue as (
+      select revenue.session_id, sum(revenue.revenue) as value
+      from revenue
+      join filtered_sessions
+        on filtered_sessions.website_id = revenue.website_id
+       and filtered_sessions.session_id = revenue.session_id
+      where revenue.website_id = {{websiteId::uuid}}
+        and revenue.created_at between {{startDate}} and {{endDate}}
+        and upper(revenue.currency) = {{currency}}
+      group by revenue.session_id
+    ),
+    first_event as (
+      select distinct on (session_id)
+        session_id, referrer_domain, url_query, utm_medium, utm_source, hostname
+      from website_event
+      where website_id = {{websiteId::uuid}}
+        and created_at between {{startDate}} and {{endDate}}
+        and session_id in (select session_id from session_revenue)
+      order by session_id, case when ${getAttributionMatch(filters, parseFilters)} then 0 else 1 end, created_at
+    ),
+    attributed as (
+      select
+        session_revenue.value,
+        first_event.referrer_domain,
+        first_event.url_query,
+        first_event.utm_medium,
+        first_event.utm_source,
+        first_event.hostname
+      from session_revenue
+      join first_event
+        on first_event.session_id = session_revenue.session_id
+    )
+  `;
+
   if (type === 'referrer') {
     return rawQuery(
       `
       with
       ${filteredSessionsQuery},
-      events as (
-        select
-          revenue.website_id,
-          revenue.session_id,
-          sum(revenue.revenue) as "value"
-        from revenue
-        join filtered_sessions
-          on filtered_sessions.website_id = revenue.website_id
-         and filtered_sessions.session_id = revenue.session_id
-        where revenue.website_id = {{websiteId::uuid}}
-          and revenue.created_at between {{startDate}} and {{endDate}}
-          and upper(revenue.currency) = {{currency}}
-        group by revenue.website_id, revenue.session_id),
-
-      revenue_data as (
-        select
-          e.website_id,
-          e.session_id,
-          e.value,
-          we.min_date as created_at
-        from events e
-        join (
-          select session_id, min(created_at) as min_date
-          from website_event
-          where website_id = {{websiteId::uuid}}
-            and created_at between {{startDate}} and {{endDate}}
-          group by session_id
-        ) we on we.session_id = e.session_id)
-
+      ${attributedQuery}
       select
-        we.referrer_domain as "name",
-        sum(revenue_data.value) as "value"
-      from revenue_data
-      join (
-        select website_id, session_id, referrer_domain, created_at
-        from website_event
-        where website_id = {{websiteId::uuid}}
-          and created_at between {{startDate}} and {{endDate}}) we
-      on we.website_id = revenue_data.website_id
-        and we.session_id = revenue_data.session_id
-        and we.created_at = revenue_data.created_at
-      group by we.referrer_domain
+        referrer_domain as "name",
+        sum(value) as "value"
+      from attributed
+      group by referrer_domain
       order by value desc
       `,
       queryParams,
@@ -176,56 +177,20 @@ async function relationalQuery(
     `
     with
     ${filteredSessionsQuery},
-    events as (
-      select
-        revenue.website_id,
-        revenue.session_id,
-        sum(revenue.revenue) as "value"
-      from revenue
-      join filtered_sessions
-        on filtered_sessions.website_id = revenue.website_id
-       and filtered_sessions.session_id = revenue.session_id
-      where revenue.website_id = {{websiteId::uuid}}
-        and revenue.created_at between {{startDate}} and {{endDate}}
-        and upper(revenue.currency) = {{currency}}
-      group by revenue.website_id, revenue.session_id),
-
-    revenue_data as (
-      select
-        e.website_id,
-        e.session_id,
-        e.value,
-        we.min_date as created_at
-      from events e
-      join (
-        select session_id, min(created_at) as min_date
-        from website_event
-        where website_id = {{websiteId::uuid}}
-          and created_at between {{startDate}} and {{endDate}}
-        group by session_id
-      ) we on we.session_id = e.session_id),
-
+    ${attributedQuery},
     revenue_prefix as (
       select
-        case when we.utm_medium ilike '%cp%' OR
-              we.utm_medium ilike '%ppc%' OR
-              we.utm_medium ilike '%retargeting%' OR
-              we.utm_medium ilike '%paid%' then 'paid' else 'organic' end AS prefix,
-        coalesce(we.referrer_domain, '') as referrer_domain,
-        coalesce(we.url_query, '') as url_query,
-        we.utm_medium,
-        we.utm_source,
-        we.hostname,
-        r.value
-      from revenue_data r
-      join (
-        select website_id, session_id, referrer_domain, url_query, utm_medium, utm_source, hostname, created_at
-        from website_event
-        where website_id = {{websiteId::uuid}}
-          and created_at between {{startDate}} and {{endDate}}) we
-      on we.website_id = r.website_id
-        and we.session_id = r.session_id
-        and we.created_at = r.created_at),
+        case when utm_medium ilike '%cp%' OR
+              utm_medium ilike '%ppc%' OR
+              utm_medium ilike '%retargeting%' OR
+              utm_medium ilike '%paid%' then 'paid' else 'organic' end AS prefix,
+        coalesce(referrer_domain, '') as referrer_domain,
+        coalesce(url_query, '') as url_query,
+        utm_medium,
+        utm_source,
+        hostname,
+        value
+      from attributed),
 
     channels AS (
       select
@@ -345,8 +310,10 @@ async function clickhouseQuery(
     );
   }
 
-  // Revenue is credited to the session's first tracked event in the range. Imported events
-  // are not visits, so a session with nothing else (tracked = 0) has no referrer or channel.
+  // Revenue is credited to the session's first tracked event in the range, preferring an event
+  // that matches the traffic-source filters so a filtered breakdown agrees with the filter.
+  // Imported events are not visits, so a session with nothing else (tracked = 0) has no
+  // referrer or channel.
   const attributedQuery = `
     session_revenue as (
       select session_id, sum(revenue) as value
@@ -358,7 +325,7 @@ async function clickhouseQuery(
         session_id,
         argMin(
           tuple(referrer_domain, url_query, utm_medium, utm_source, hostname),
-          created_at
+          tuple(if(${getAttributionMatch(filters, parseFilters)}, 0, 1), created_at)
         ) as first,
         1 as tracked
       from website_event
@@ -448,6 +415,34 @@ async function clickhouseQuery(
     `,
     queryParams,
   );
+}
+
+// Filters on a visit's traffic source. Other filters (path, event, location...) only select
+// sessions and do not move the credit away from where the visit came from.
+const ATTRIBUTION_FILTERS = [
+  'referrer',
+  'domain',
+  'query',
+  'utmSource',
+  'utmMedium',
+  'utmCampaign',
+  'utmContent',
+  'utmTerm',
+];
+
+// SQL condition that is true for events matching the traffic-source filters (always true
+// when there are none). Its placeholders reuse the params of the full filter set.
+function getAttributionMatch(
+  filters: QueryFilters,
+  parseFilters: (filters: Record<string, any>) => { filterQuery: string },
+) {
+  const attributionFilters = Object.fromEntries(
+    Object.entries(filters).filter(
+      ([key]) => key === 'match' || ATTRIBUTION_FILTERS.includes(key.replace(/\d+$/, '')),
+    ),
+  );
+
+  return `(1 = 1 ${parseFilters(attributionFilters).filterQuery})`;
 }
 
 function toClickHouseStringArray(arr: string[]): string {
