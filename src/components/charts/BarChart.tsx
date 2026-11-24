@@ -74,6 +74,8 @@ function BarChartComponent({
   const onBarClickRef = useRef(onBarClick);
   onBarClickRef.current = onBarClick;
   const isClickable = !!onBarClick;
+  // Touch has no hover, so the first tap on a bar shows its tooltip and a second tap drills in.
+  const tappedTimeRef = useRef<number | null>(null);
 
   const chartOptions: any = useMemo(() => {
     const min = formatDate(minDate, DATE_FORMATS[unit], locale);
@@ -82,16 +84,30 @@ function BarChartComponent({
     return {
       __id: Date.now(),
       ...(isClickable && {
-        onClick: (event: { native?: { target?: HTMLElement } }, elements: { index: number }[]) => {
-          if (elements.length) {
-            // The canvas is reused, and the next view may not be clickable.
-            if (event.native?.target) {
-              event.native.target.style.cursor = 'default';
-            }
-            // Buckets are generated from minDate, so the index gives the bar's date.
-            const { add, start } = DATE_FUNCTIONS[unit];
-            onBarClickRef.current?.(add(start(minDate), elements[0].index));
+        onClick: (
+          event: { native?: { target?: HTMLElement; pointerType?: string } },
+          elements: { index: number }[],
+        ) => {
+          if (!elements.length) {
+            tappedTimeRef.current = null;
+            return;
           }
+
+          // Buckets are generated from minDate, so the index gives the bar's date.
+          const { add, start } = DATE_FUNCTIONS[unit];
+          const date = add(start(minDate), elements[0].index);
+
+          if (isTouch(event.native) && tappedTimeRef.current !== date.getTime()) {
+            tappedTimeRef.current = date.getTime();
+            return;
+          }
+
+          tappedTimeRef.current = null;
+          // The canvas is reused, and the next view may not be clickable.
+          if (event.native?.target) {
+            event.native.target.style.cursor = 'default';
+          }
+          onBarClickRef.current?.(date);
         },
         onHover: (event: { native?: { target?: HTMLElement } }, elements: unknown[]) => {
           if (event.native?.target) {
@@ -206,6 +222,16 @@ function BarChartComponent({
       {tooltip && <ChartTooltip {...tooltip} />}
     </>
   );
+}
+
+// Click events are PointerEvents in current browsers. Older ones only say whether the device
+// can hover.
+function isTouch(event?: { pointerType?: string }) {
+  if (event?.pointerType) {
+    return event.pointerType === 'touch';
+  }
+
+  return typeof window !== 'undefined' && window.matchMedia?.('(hover: none)').matches;
 }
 
 export const BarChart = memo(BarChartComponent);
