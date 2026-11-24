@@ -1,3 +1,4 @@
+import { SidebarProvider } from '@umami/react-zen';
 import type { ReactNode } from 'react';
 import { beforeEach, expect, test, vi } from 'vitest';
 import { render, screen } from '@/test/render';
@@ -7,7 +8,11 @@ const mockUseNavigation = vi.fn();
 
 vi.mock('@/components/hooks', async importOriginal => {
   const actual = await importOriginal<typeof import('@/components/hooks')>();
-  return { ...actual, useNavigation: () => mockUseNavigation() };
+  return {
+    ...actual,
+    useConfig: () => ({ cloudMode: false }),
+    useNavigation: () => mockUseNavigation(),
+  };
 });
 
 vi.mock('@/components/input/MobileMenuButton', () => ({
@@ -20,6 +25,15 @@ vi.mock('@/components/input/UserButton', () => ({
   UserButton: () => null,
 }));
 
+// MobileNav renders SidebarMenuButtons, which need a SidebarProvider (App provides it).
+function renderMobileNav() {
+  return render(
+    <SidebarProvider>
+      <MobileNav />
+    </SidebarProvider>,
+  );
+}
+
 beforeEach(() => {
   mockUseNavigation.mockReturnValue({
     pathname: '/',
@@ -30,7 +44,7 @@ beforeEach(() => {
 });
 
 test('shows the dashboard link outside a team', () => {
-  render(<MobileNav />);
+  renderMobileNav();
 
   expect(screen.getByRole('link', { name: /dashboard/i })).toHaveAttribute('href', '/dashboard');
 });
@@ -43,7 +57,13 @@ test('hides the dashboard link inside a team', () => {
     renderUrl: (path: string) => path,
   });
 
-  render(<MobileNav />);
+  renderMobileNav();
 
   expect(screen.queryByRole('link', { name: /dashboard/i })).not.toBeInTheDocument();
+});
+
+test('shows a settings link above the user button', () => {
+  renderMobileNav();
+
+  expect(screen.getByRole('link', { name: /^settings$/i })).toHaveAttribute('href', '/settings');
 });

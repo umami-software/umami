@@ -19,6 +19,7 @@ import { IconLabel } from '@/components/common/IconLabel';
 import Link from '@/components/common/Link';
 import {
   useAdminNavItems,
+  useConfig,
   useMessages,
   useNavigation,
   useSettingsNavItems,
@@ -31,6 +32,7 @@ import {
   LayoutDashboard,
   LinkIcon,
   PanelsLeftBottom,
+  Settings,
 } from '@/components/icons';
 import { UserButton } from '@/components/input/UserButton';
 import { Logo } from '@/components/svg';
@@ -49,8 +51,11 @@ interface NavGroup {
 
 export function SideNav() {
   const { pathname, websiteId } = useNavigation();
+  const { cloudMode } = useConfig();
+  const { t, labels } = useMessages();
   const { state } = useSidebar();
   const isCollapsed = state === 'collapsed';
+  const settingsUrl = cloudMode ? `${process.env.cloudUrl}/settings` : '/settings';
 
   return (
     <Sidebar variant="sidebar" collapsible="icon">
@@ -81,9 +86,20 @@ export function SideNav() {
         )}
       </SidebarContent>
       <SidebarFooter>
-        <Row justifyContent={isCollapsed ? 'center' : undefined}>
-          <UserButton showText={!isCollapsed} />
-        </Row>
+        <SidebarMenu>
+          <NavMenuItem
+            item={{
+              id: 'settings',
+              label: t(labels.settings),
+              path: settingsUrl,
+              icon: <Settings />,
+            }}
+            isActive={!cloudMode && pathname.includes('/settings')}
+          />
+          <SidebarMenuItem>
+            <UserButton showText={!isCollapsed} />
+          </SidebarMenuItem>
+        </SidebarMenu>
       </SidebarFooter>
     </Sidebar>
   );

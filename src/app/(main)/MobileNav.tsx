@@ -1,9 +1,16 @@
-import { Column, Grid, Row, Text } from '@umami/react-zen';
+import { Column, Grid, Row, SidebarMenuButton, Text } from '@umami/react-zen';
 import { WebsiteNav } from '@/app/(main)/websites/[websiteId]/WebsiteNav';
 import { IconLabel } from '@/components/common/IconLabel';
 import Link from '@/components/common/Link';
-import { useMessages, useNavigation } from '@/components/hooks';
-import { Globe, Grid2x2, LayoutDashboard, LinkIcon, PanelsLeftBottom } from '@/components/icons';
+import { useConfig, useMessages, useNavigation } from '@/components/hooks';
+import {
+  Globe,
+  Grid2x2,
+  LayoutDashboard,
+  LinkIcon,
+  PanelsLeftBottom,
+  Settings,
+} from '@/components/icons';
 import { MobileMenuButton } from '@/components/input/MobileMenuButton';
 import { UserButton } from '@/components/input/UserButton';
 import { Logo } from '@/components/svg';
@@ -13,6 +20,8 @@ import { SettingsNav } from './settings/SettingsNav';
 export function MobileNav() {
   const { t, labels } = useMessages();
   const { pathname, websiteId, teamId, renderUrl } = useNavigation();
+  const { cloudMode } = useConfig();
+  const settingsUrl = cloudMode ? `${process.env.cloudUrl}/settings` : '/settings';
   const isAdmin = pathname.includes('/admin');
   const isSettings = pathname.includes('/settings');
   const isMain = !websiteId && !isAdmin && !isSettings;
@@ -73,9 +82,13 @@ export function MobileNav() {
               {websiteId && <WebsiteNav websiteId={websiteId} onItemClick={close} />}
               {isAdmin && <AdminNav onItemClick={close} />}
               {isSettings && <SettingsNav onItemClick={close} />}
-              <Row style={{ marginTop: 'auto' }}>
+              <Column style={{ marginTop: 'auto' }}>
+                <SidebarMenuButton render={<Link href={settingsUrl} onClick={close} />}>
+                  <Settings />
+                  <span>{t(labels.settings)}</span>
+                </SidebarMenuButton>
                 <UserButton onClose={close} />
-              </Row>
+              </Column>
             </Column>
           );
         }}

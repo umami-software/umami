@@ -1,5 +1,4 @@
 import {
-  Button,
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
@@ -12,6 +11,7 @@ import {
   DropdownMenuTrigger,
   Icon,
   Row,
+  SidebarMenuButton,
   Text,
   Tooltip,
   TooltipContent,
@@ -28,7 +28,6 @@ import {
   LockKeyhole,
   LogOut,
   Moon,
-  Settings,
   Sun,
   SunMoon,
   UserCircle,
@@ -108,47 +107,16 @@ export function UserButton({ showText = true, onClose }: UserButtonProps) {
     <DropdownMenu>
       <DropdownMenuTrigger
         render={
-          <Button
+          <SidebarMenuButton
             data-test="button-profile"
-            variant="ghost"
-            className="h-auto hover:bg-transparent"
             aria-label={showText ? undefined : user.username}
-            style={{
-              display: 'flex',
-              padding: 0,
-              width: '100%',
-              flexGrow: 1,
-              justifyContent: 'flex-start',
-            }}
-          />
+          >
+            <UserCircle />
+            {showText && <span>{user.username}</span>}
+          </SidebarMenuButton>
         }
-      >
-        <Row
-          alignItems="center"
-          flexGrow={1}
-          width="100%"
-          hover={{ backgroundColor: 'muted' }}
-          borderRadius
-          minHeight="40px"
-          style={{ textWrap: 'nowrap', overflow: 'hidden' }}
-        >
-          <Row alignItems="center" gap padding>
-            <Icon>
-              <UserCircle />
-            </Icon>
-            {showText && <Text>{user.username}</Text>}
-          </Row>
-        </Row>
-      </DropdownMenuTrigger>
+      />
       <DropdownMenuContent side="top" align="start" style={{ width: 'auto', minWidth: 200 }}>
-        <DropdownMenuItem onClick={() => handleNavigate(getUrl('/settings'))}>
-          <Row alignItems="center" gap>
-            <Icon>
-              <Settings />
-            </Icon>
-            <Text>{t(labels.settings)}</Text>
-          </Row>
-        </DropdownMenuItem>
         <DropdownMenuSub>
           <DropdownMenuSubTrigger>
             <Row alignItems="center" gap>

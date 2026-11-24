@@ -7,7 +7,11 @@ const mockUseNavigation = vi.fn();
 
 vi.mock('@/components/hooks', async importOriginal => {
   const actual = await importOriginal<typeof import('@/components/hooks')>();
-  return { ...actual, useNavigation: () => mockUseNavigation() };
+  return {
+    ...actual,
+    useConfig: () => ({ cloudMode: false }),
+    useNavigation: () => mockUseNavigation(),
+  };
 });
 
 vi.mock('@/components/input/UserButton', () => ({
@@ -69,4 +73,10 @@ test('collapses to icons when toggled', async () => {
   await user.click(screen.getByRole('button', { name: /toggle sidebar/i }));
 
   expect(screen.queryByText('umami')).not.toBeInTheDocument();
+});
+
+test('shows a settings link in the footer', () => {
+  renderSideNav();
+
+  expect(screen.getByRole('link', { name: /^settings$/i })).toHaveAttribute('href', '/settings');
 });
