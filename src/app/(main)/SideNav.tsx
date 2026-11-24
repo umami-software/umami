@@ -1,45 +1,105 @@
 import {
-  Button,
-  Column,
-  Icon,
   Row,
+  Sidebar,
+  SidebarContent,
+  SidebarFooter,
+  SidebarGroup,
+  SidebarGroupContent,
+  SidebarGroupLabel,
+  SidebarHeader,
+  SidebarMenu,
+  SidebarMenuButton,
+  SidebarMenuItem,
+  SidebarTrigger,
   Text,
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
+  useSidebar,
 } from '@umami/react-zen';
-import type { ComponentProps } from 'react';
-import { AdminNav } from '@/app/(main)/admin/AdminNav';
-import { SettingsNav } from '@/app/(main)/settings/SettingsNav';
-import { WebsiteNav } from '@/app/(main)/websites/[websiteId]/WebsiteNav';
+import type { ReactNode } from 'react';
 import { IconLabel } from '@/components/common/IconLabel';
 import Link from '@/components/common/Link';
-import { OverlayScrollArea } from '@/components/common/OverlayScrollArea';
-import styles from '@/components/common/OverlayScrollArea.module.css';
-import { useGlobalState, useMessages, useNavigation } from '@/components/hooks';
 import {
+  useAdminNavItems,
+  useMessages,
+  useNavigation,
+  useSettingsNavItems,
+  useWebsiteNavItems,
+} from '@/components/hooks';
+import {
+  ArrowLeft,
   Globe,
   Grid2x2,
   LayoutDashboard,
   LinkIcon,
-  PanelLeft,
   PanelsLeftBottom,
 } from '@/components/icons';
 import { UserButton } from '@/components/input/UserButton';
 import { Logo } from '@/components/svg';
 
-export function SideNav(props: any) {
-  const { t, labels } = useMessages();
-  const { pathname, renderUrl, websiteId, teamId } = useNavigation();
-  const [isCollapsed] = useGlobalState('sidenav-collapsed', false);
+interface NavItem {
+  id: string;
+  label: string;
+  path: string;
+  icon: ReactNode;
+}
 
-  const links = [
+interface NavGroup {
+  label?: string;
+  items: NavItem[];
+}
+
+export function SideNav() {
+  const { pathname, websiteId } = useNavigation();
+  const { state } = useSidebar();
+  const isCollapsed = state === 'collapsed';
+
+  return (
+    <Sidebar variant="floating" collapsible="icon">
+      <SidebarHeader>
+        <Row
+          alignItems="center"
+          justifyContent={isCollapsed ? 'center' : 'space-between'}
+          minHeight="9"
+          paddingLeft={isCollapsed ? undefined : '2'}
+        >
+          {!isCollapsed && (
+            <IconLabel icon={<Logo />}>
+              <Text weight="bold">umami</Text>
+            </IconLabel>
+          )}
+          <SidebarTrigger />
+        </Row>
+      </SidebarHeader>
+      <SidebarContent>
+        {websiteId ? (
+          <WebsiteGroups websiteId={websiteId} />
+        ) : pathname.includes('/settings') ? (
+          <SettingsGroups />
+        ) : pathname.includes('/admin') ? (
+          <AdminGroups />
+        ) : (
+          <MainGroups />
+        )}
+      </SidebarContent>
+      <SidebarFooter>
+        <Row justifyContent={isCollapsed ? 'center' : undefined}>
+          <UserButton showText={!isCollapsed} />
+        </Row>
+      </SidebarFooter>
+    </Sidebar>
+  );
+}
+
+function MainGroups() {
+  const { t, labels } = useMessages();
+  const { pathname, renderUrl, teamId } = useNavigation();
+
+  const items: NavItem[] = [
     ...(!teamId
       ? [
           {
             id: 'dashboard',
             label: t(labels.dashboard),
-            path: '/dashboard',
+            path: renderUrl('/dashboard', false),
             icon: <PanelsLeftBottom />,
           },
         ]
@@ -47,139 +107,107 @@ export function SideNav(props: any) {
     {
       id: 'boards',
       label: t(labels.boards),
-      path: '/boards',
+      path: renderUrl('/boards', false),
       icon: <LayoutDashboard />,
     },
     {
       id: 'websites',
       label: t(labels.websites),
-      path: '/websites',
+      path: renderUrl('/websites', false),
       icon: <Globe />,
     },
     {
       id: 'links',
       label: t(labels.links),
-      path: '/links',
+      path: renderUrl('/links', false),
       icon: <LinkIcon />,
     },
     {
       id: 'pixels',
       label: t(labels.pixels),
-      path: '/pixels',
+      path: renderUrl('/pixels', false),
       icon: <Grid2x2 />,
     },
   ];
 
+  const selectedKey = items.find(({ path }) => pathname.startsWith(path))?.id;
+
+  return <NavGroups groups={[{ items }]} selectedKey={selectedKey} />;
+}
+
+function WebsiteGroups({ websiteId }: { websiteId: string }) {
+  const { items, selectedKey } = useWebsiteNavItems(websiteId);
+
+  return <NavGroups groups={items} selectedKey={selectedKey} showBack />;
+}
+
+function SettingsGroups() {
+  const { items, selectedKey } = useSettingsNavItems();
+
+  return <NavGroups groups={items} selectedKey={selectedKey} showBack />;
+}
+
+function AdminGroups() {
+  const { items, selectedKey } = useAdminNavItems();
+
+  return <NavGroups groups={items} selectedKey={selectedKey} showBack />;
+}
+
+function NavGroups({
+  groups,
+  selectedKey,
+  showBack,
+}: {
+  groups: NavGroup[];
+  selectedKey?: string;
+  showBack?: boolean;
+}) {
+  const { t, labels } = useMessages();
+  const { renderUrl } = useNavigation();
+
   return (
-    <Column
-      {...props}
-      backgroundColor="sidebar"
-      border
-      borderRadius
-      padding="2"
-      flexGrow="1"
-      minHeight="0"
-      margin="2"
-      style={{
-        width: isCollapsed ? '60px' : '240px',
-        transition: 'width 0.2s ease-in-out',
-        overflow: 'hidden',
-      }}
-    >
-      <Row
-        alignItems="center"
-        justifyContent="space-between"
-        minHeight="9"
-        style={{ flexShrink: 0 }}
-      >
-        <Row
-          padding="3"
-          alignItems="center"
-          justifyContent={isCollapsed ? 'center' : 'space-between'}
-          flexGrow="1"
-        >
-          {!isCollapsed && (
-            <IconLabel icon={<Logo />}>
-              <Text weight="bold">umami</Text>
-            </IconLabel>
-          )}
-          <PanelButton />
-        </Row>
-      </Row>
-      <OverlayScrollArea
-        showScrollIndicators
-        className={isCollapsed ? styles.collapsed : undefined}
-        style={{ flexGrow: 1, minHeight: 0 }}
-      >
-        {websiteId ? (
-          <WebsiteNav websiteId={websiteId} isCollapsed={isCollapsed} />
-        ) : pathname.includes('/settings') ? (
-          <SettingsNav isCollapsed={isCollapsed} />
-        ) : pathname.includes('/admin') ? (
-          <AdminNav />
-        ) : (
-          <Column gap="2">
-            {links.map(({ id, path, label, icon }) => {
-              const isSelected = pathname.startsWith(renderUrl(path, false));
-              const content = (
-                <Row
-                  tabIndex={0}
-                  alignItems="center"
-                  justifyContent={isCollapsed ? 'center' : undefined}
-                  hover={{ backgroundColor: 'muted' }}
-                  backgroundColor={isSelected ? 'muted' : undefined}
-                  borderRadius
-                  minHeight="9"
-                >
-                  <IconLabel
-                    icon={icon}
-                    label={isCollapsed ? '' : label}
-                    weight={isSelected ? 'bold' : undefined}
-                    padding
-                  />
-                </Row>
-              );
-              return (
-                <Link key={id} href={renderUrl(path, false)} role="button">
-                  {isCollapsed ? (
-                    <Tooltip>
-                      <TooltipTrigger delay={0} render={content} />
-                      <TooltipContent side="right">{label}</TooltipContent>
-                    </Tooltip>
-                  ) : (
-                    content
-                  )}
-                </Link>
-              );
-            })}
-          </Column>
-        )}
-      </OverlayScrollArea>
-      <Row
-        paddingTop="2"
-        width="100%"
-        justifyContent={isCollapsed ? 'center' : undefined}
-        style={{ flexShrink: 0 }}
-      >
-        <UserButton showText={!isCollapsed} />
-      </Row>
-    </Column>
+    <>
+      {showBack && (
+        <SidebarGroup>
+          <SidebarMenu>
+            <NavMenuItem
+              item={{
+                id: 'back',
+                label: t(labels.back),
+                path: renderUrl('/websites', false),
+                icon: <ArrowLeft />,
+              }}
+            />
+          </SidebarMenu>
+        </SidebarGroup>
+      )}
+      {groups.map(({ label, items }, index) => (
+        <SidebarGroup key={`${label}${index}`}>
+          {label && <SidebarGroupLabel>{label}</SidebarGroupLabel>}
+          <SidebarGroupContent>
+            <SidebarMenu>
+              {items.map(item => (
+                <NavMenuItem key={item.id} item={item} isActive={item.id === selectedKey} />
+              ))}
+            </SidebarMenu>
+          </SidebarGroupContent>
+        </SidebarGroup>
+      ))}
+    </>
   );
 }
 
-const PanelButton = (props: ComponentProps<typeof Button>) => {
-  const [isCollapsed, setIsCollapsed] = useGlobalState('sidenav-collapsed', false);
+function NavMenuItem({ item, isActive }: { item: NavItem; isActive?: boolean }) {
   return (
-    <Button
-      onClick={() => setIsCollapsed(!isCollapsed)}
-      variant="ghost"
-      className="hover:bg-transparent"
-      {...props}
-      style={{ padding: 0 }}
-    >
-      <Icon strokeColor="muted-foreground">
-        <PanelLeft />
-      </Icon>
-    </Button>
+    <SidebarMenuItem>
+      <SidebarMenuButton
+        render={<Link href={item.path} />}
+        isActive={isActive}
+        tooltip={item.label}
+      >
+        {item.icon}
+        <span>{item.label}</span>
+      </SidebarMenuButton>
+    </SidebarMenuItem>
   );
-};
+}

@@ -12,6 +12,13 @@
   --primary-foreground: oklch(98.5% 0 0);
 }
 
+/* Page surface: the theme background tinted slightly toward the foreground, so the page is
+   never pure white/black and cards (--card) stand out from it in both light and dark mode. */
+:root,
+.dark {
+  --page: color-mix(in oklch, var(--background) 97%, var(--foreground));
+}
+
 /* Zen's rem-based typography and spacing assume the browser's default root size. */
 html {
   font-size: 100%;
@@ -20,6 +27,7 @@ html {
 html,
 body {
   font-family: var(--font-sans);
+  background-color: var(--page);
   width: 100%;
   min-height: 100vh;
 }

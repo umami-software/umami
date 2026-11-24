@@ -1,125 +1,51 @@
-import { Column, Row, Text, Tooltip, TooltipContent, TooltipTrigger } from '@umami/react-zen';
+import { Column, Row, Text } from '@umami/react-zen';
 import { IconLabel } from '@/components/common/IconLabel';
 import Link from '@/components/common/Link';
-import { useMessages, useNavigation } from '@/components/hooks';
-import { ArrowLeft, KeyRound, Settings2, ShieldCheck, UserCircle, Users } from '@/components/icons';
+import { useMessages, useNavigation, useSettingsNavItems } from '@/components/hooks';
+import { ArrowLeft } from '@/components/icons';
 
-export function SettingsNav({
-  isCollapsed,
-  onItemClick,
-}: {
-  isCollapsed?: boolean;
-  onItemClick?: () => void;
-}) {
+export function SettingsNav({ onItemClick }: { onItemClick?: () => void }) {
   const { t, labels } = useMessages();
-  const { renderUrl, pathname } = useNavigation();
-
-  const items = [
-    {
-      label: t(labels.settings),
-      items: [
-        {
-          id: 'preferences',
-          label: t(labels.preferences),
-          path: renderUrl('/settings/preferences'),
-          icon: <Settings2 />,
-        },
-        {
-          id: 'profile',
-          label: t(labels.profile),
-          path: renderUrl('/settings/profile'),
-          icon: <UserCircle />,
-        },
-        {
-          id: 'teams',
-          label: t(labels.teams),
-          path: renderUrl('/settings/teams'),
-          icon: <Users />,
-        },
-        {
-          id: 'security',
-          label: t(labels.security),
-          path: renderUrl('/settings/security'),
-          icon: <ShieldCheck />,
-        },
-        {
-          id: 'api-keys',
-          label: t(labels.apiKeys),
-          path: renderUrl('/settings/api-keys'),
-          icon: <KeyRound />,
-        },
-      ],
-    },
-  ];
-
-  const selectedKey = items
-    .flatMap(e => e.items)
-    .find(({ path }) => path && pathname.includes(path.split('?')[0]))?.id;
+  const { renderUrl } = useNavigation();
+  const { items, selectedKey } = useSettingsNavItems();
 
   return (
     <Column gap="2">
       <Link href={renderUrl('/websites', false)} role="button" onClick={onItemClick}>
-        {(() => {
-          const content = (
-            <Row
-              tabIndex={0}
-              alignItems="center"
-              justifyContent={isCollapsed ? 'center' : undefined}
-              hover={{ backgroundColor: 'muted' }}
-              borderRadius
-              minHeight="9"
-            >
-              <IconLabel icon={<ArrowLeft />} label={isCollapsed ? '' : t(labels.back)} padding />
-            </Row>
-          );
-
-          return isCollapsed ? (
-            <Tooltip>
-              <TooltipTrigger delay={0} render={content} />
-              <TooltipContent side="right">{t(labels.back)}</TooltipContent>
-            </Tooltip>
-          ) : (
-            content
-          );
-        })()}
+        <Row
+          tabIndex={0}
+          alignItems="center"
+          hover={{ backgroundColor: 'muted' }}
+          borderRadius
+          minHeight="9"
+        >
+          <IconLabel icon={<ArrowLeft />} label={t(labels.back)} padding />
+        </Row>
       </Link>
       {items.map(({ label: sectionLabel, items: sectionItems }, index) => (
         <Column key={`${sectionLabel}${index}`} gap="1" marginBottom="1">
-          {!isCollapsed && (
-            <Row paddingX="3" marginTop="2">
-              <Text weight="bold">{sectionLabel}</Text>
-            </Row>
-          )}
+          <Row paddingX="3" marginTop="2">
+            <Text weight="bold">{sectionLabel}</Text>
+          </Row>
           {sectionItems.map(({ id, path, label, icon }) => {
             const isSelected = selectedKey === id;
-            const content = (
-              <Row
-                tabIndex={0}
-                alignItems="center"
-                justifyContent={isCollapsed ? 'center' : undefined}
-                hover={{ backgroundColor: 'muted' }}
-                backgroundColor={isSelected ? 'muted' : undefined}
-                borderRadius
-                minHeight="9"
-              >
-                <IconLabel
-                  icon={icon}
-                  label={isCollapsed ? '' : label}
-                  weight={isSelected ? 'bold' : undefined}
-                  padding
-                />
-              </Row>
-            );
             return (
               <Link key={id} href={path} role="button" onClick={onItemClick}>
-                {isCollapsed ? (
-                  <Tooltip>
-                    <TooltipTrigger delay={0} render={content} />
-                    <TooltipContent side="right">{label}</TooltipContent>
-                  </Tooltip>
-                ) : (
-                  content
-                )}
+                <Row
+                  tabIndex={0}
+                  alignItems="center"
+                  hover={{ backgroundColor: 'muted' }}
+                  backgroundColor={isSelected ? 'muted' : undefined}
+                  borderRadius
+                  minHeight="9"
+                >
+                  <IconLabel
+                    icon={icon}
+                    label={label}
+                    weight={isSelected ? 'bold' : undefined}
+                    padding
+                  />
+                </Row>
               </Link>
             );
           })}

@@ -1,5 +1,5 @@
 'use client';
-import { Column, Grid, Loading, Row, Text } from '@umami/react-zen';
+import { Column, Grid, Loading, Row, SidebarProvider, Text } from '@umami/react-zen';
 import Script from 'next/script';
 import { useEffect } from 'react';
 import { MobileNav } from '@/app/(main)/MobileNav';
@@ -76,10 +76,52 @@ export function App({ children }) {
 
   if (isBlockedTeam) {
     return (
+      <SidebarProvider>
+        <Grid
+          columns={{ base: '1fr', lg: 'auto 1fr' }}
+          rows={{ base: 'auto 1fr', lg: '1fr' }}
+          height="screen"
+          flexGrow="1"
+          minWidth="0"
+        >
+          <Row display={{ base: 'flex', lg: 'none' }} alignItems="center" gap padding="3">
+            <MobileNav />
+          </Row>
+          <Column
+            display={{ base: 'none', lg: 'flex' }}
+            minHeight="0"
+            style={{ overflow: 'hidden' }}
+          >
+            <SideNav />
+          </Column>
+          <Column
+            alignItems="center"
+            justifyContent="center"
+            padding="6"
+            textAlign="center"
+            gap="2"
+          >
+            <Text size="lg" weight="bold">
+              This team is temporarily unavailable.
+            </Text>
+            <Text color="muted-foreground">
+              This team&apos;s subscription payment is overdue. Please contact the team owner to
+              restore access.
+            </Text>
+          </Column>
+        </Grid>
+      </SidebarProvider>
+    );
+  }
+
+  return (
+    <SidebarProvider>
       <Grid
         columns={{ base: '1fr', lg: 'auto 1fr' }}
         rows={{ base: 'auto 1fr', lg: '1fr' }}
         height="screen"
+        flexGrow="1"
+        minWidth="0"
       >
         <Row display={{ base: 'flex', lg: 'none' }} alignItems="center" gap padding="3">
           <MobileNav />
@@ -87,65 +129,41 @@ export function App({ children }) {
         <Column display={{ base: 'none', lg: 'flex' }} minHeight="0" style={{ overflow: 'hidden' }}>
           <SideNav />
         </Column>
-        <Column alignItems="center" justifyContent="center" padding="6" textAlign="center" gap="2">
-          <Text size="lg" weight="bold">
-            This team is temporarily unavailable.
-          </Text>
-          <Text color="muted-foreground">
-            This team&apos;s subscription payment is overdue. Please contact the team owner to
-            restore access.
-          </Text>
+        <Column overflowX="hidden" minHeight="0" position="relative">
+          <TopNav />
+          <Column
+            alignItems="center"
+            aria-hidden={accessBlocked || undefined}
+            style={accessBlocked ? { pointerEvents: 'none' } : undefined}
+          >
+            {children}
+          </Column>
         </Column>
+        {needsTwoFactorSetup && <TwoFactorSetupModal required={true} />}
+        {passwordChangeRequired && !needsTwoFactorSetup && <PasswordChangeRequiredModal />}
+        <UpdateNotice user={user} config={config} />
+        {process.env.NODE_ENV === 'production' && !pathname.includes('/share/') && (
+          <Script src={`${process.env.basePath || ''}/telemetry.js`} />
+        )}
+        {process.env.selfTrack && (
+          <Script
+            async
+            data-website-id={process.env.selfTrack}
+            src={`${process.env.basePath || ''}/script.js`}
+            data-cache="true"
+            data-performance="true"
+            data-errors="true"
+          />
+        )}
+        {process.env.selfRecord && (
+          <Script
+            async
+            data-website-id={process.env.selfRecord}
+            data-sample-rate="1"
+            src={`${process.env.basePath || ''}/recorder.js`}
+          />
+        )}
       </Grid>
-    );
-  }
-
-  return (
-    <Grid
-      columns={{ base: '1fr', lg: 'auto 1fr' }}
-      rows={{ base: 'auto 1fr', lg: '1fr' }}
-      height="screen"
-    >
-      <Row display={{ base: 'flex', lg: 'none' }} alignItems="center" gap padding="3">
-        <MobileNav />
-      </Row>
-      <Column display={{ base: 'none', lg: 'flex' }} minHeight="0" style={{ overflow: 'hidden' }}>
-        <SideNav />
-      </Column>
-      <Column overflowX="hidden" minHeight="0" position="relative">
-        <TopNav />
-        <Column
-          alignItems="center"
-          aria-hidden={accessBlocked || undefined}
-          style={accessBlocked ? { pointerEvents: 'none' } : undefined}
-        >
-          {children}
-        </Column>
-      </Column>
-      {needsTwoFactorSetup && <TwoFactorSetupModal required={true} />}
-      {passwordChangeRequired && !needsTwoFactorSetup && <PasswordChangeRequiredModal />}
-      <UpdateNotice user={user} config={config} />
-      {process.env.NODE_ENV === 'production' && !pathname.includes('/share/') && (
-        <Script src={`${process.env.basePath || ''}/telemetry.js`} />
-      )}
-      {process.env.selfTrack && (
-        <Script
-          async
-          data-website-id={process.env.selfTrack}
-          src={`${process.env.basePath || ''}/script.js`}
-          data-cache="true"
-          data-performance="true"
-          data-errors="true"
-        />
-      )}
-      {process.env.selfRecord && (
-        <Script
-          async
-          data-website-id={process.env.selfRecord}
-          data-sample-rate="1"
-          src={`${process.env.basePath || ''}/recorder.js`}
-        />
-      )}
-    </Grid>
+    </SidebarProvider>
   );
 }
