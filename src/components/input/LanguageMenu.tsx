@@ -1,4 +1,4 @@
-import { DropdownMenuRadioGroup, DropdownMenuRadioItem, Text } from '@umami/react-zen';
+import { DropdownMenuRadioGroup, DropdownMenuRadioItem, ScrollArea, Text } from '@umami/react-zen';
 import { useLocale } from '@/components/hooks';
 import { languages } from '@/lib/lang';
 
@@ -21,17 +21,19 @@ export function LanguageMenu({ onSelect }: LanguageMenuProps) {
   };
 
   return (
-    <DropdownMenuRadioGroup value={locale} style={{ maxHeight: 300, overflow: 'auto' }}>
-      {languageItems.map(({ value, label }) => (
-        <DropdownMenuRadioItem
-          key={value}
-          value={value}
-          closeOnClick
-          onClick={() => handleSelect(value)}
-        >
-          <Text weight={value === locale ? 'bold' : undefined}>{label}</Text>
-        </DropdownMenuRadioItem>
-      ))}
-    </DropdownMenuRadioGroup>
+    <ScrollArea style={{ height: 'min(300px, calc(var(--available-height, 300px) - 8px))' }}>
+      <DropdownMenuRadioGroup value={locale}>
+        {languageItems.map(({ value, label }) => (
+          <DropdownMenuRadioItem
+            key={value}
+            value={value}
+            closeOnClick
+            onClick={() => handleSelect(value)}
+          >
+            <Text weight={value === locale ? 'bold' : undefined}>{label}</Text>
+          </DropdownMenuRadioItem>
+        ))}
+      </DropdownMenuRadioGroup>
+    </ScrollArea>
   );
 }
