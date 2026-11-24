@@ -7,6 +7,7 @@ import {
   Row,
   Select,
   SelectContent,
+  SelectGroup,
   SelectItem,
   SelectTrigger,
   SelectValue,
@@ -175,11 +176,13 @@ export function CompareTables({ websiteId }: { websiteId: string }) {
               <SelectValue />
             </SelectTrigger>
             <SelectContent alignItemWithTrigger={false} style={{ width: 200, maxHeight: 480 }}>
-              {items.map(({ id, label }) => (
-                <SelectItem key={id} value={id}>
-                  {label}
-                </SelectItem>
-              ))}
+              <SelectGroup>
+                {items.map(({ id, label }) => (
+                  <SelectItem key={id} value={id}>
+                    {label}
+                  </SelectItem>
+                ))}
+              </SelectGroup>
             </SelectContent>
           </Select>
         </Field>

@@ -5,6 +5,7 @@ import {
   Row,
   Select,
   SelectContent,
+  SelectGroup,
   SelectItem,
   SelectTrigger,
   SelectValue,
@@ -106,11 +107,13 @@ export function Revenue({ websiteId, startDate, endDate, unit }: RevenueProps) {
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent side="bottom" align="end" alignItemWithTrigger={false}>
-                    {revenueChartModeItems.map(item => (
-                      <SelectItem key={item.value} value={item.value}>
-                        {item.label}
-                      </SelectItem>
-                    ))}
+                    <SelectGroup>
+                      {revenueChartModeItems.map(item => (
+                        <SelectItem key={item.value} value={item.value}>
+                          {item.label}
+                        </SelectItem>
+                      ))}
+                    </SelectGroup>
                   </SelectContent>
                 </Select>
               </Row>

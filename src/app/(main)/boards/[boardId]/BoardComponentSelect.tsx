@@ -4,6 +4,7 @@ import {
   Row,
   Select,
   SelectContent,
+  SelectGroup,
   SelectItem,
   SelectTrigger,
   SelectValue,
@@ -331,11 +332,13 @@ export function BoardComponentSelect({
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent alignItemWithTrigger={false}>
-                    {entityTypeItems.map(item => (
-                      <SelectItem key={item.value} value={item.value}>
-                        {item.label}
-                      </SelectItem>
-                    ))}
+                    <SelectGroup>
+                      {entityTypeItems.map(item => (
+                        <SelectItem key={item.value} value={item.value}>
+                          {item.label}
+                        </SelectItem>
+                      ))}
+                    </SelectGroup>
                   </SelectContent>
                 </Select>
               </Column>
@@ -408,13 +411,15 @@ export function BoardComponentSelect({
                         alignItemWithTrigger={false}
                         style={{ width: 220, maxHeight: 300 }}
                       >
-                        {(field.optionsByEntityType?.[activeEntityType] ?? field.options)?.map(
-                          option => (
-                            <SelectItem key={option.value} value={option.value}>
-                              {option.label}
-                            </SelectItem>
-                          ),
-                        )}
+                        <SelectGroup>
+                          {(field.optionsByEntityType?.[activeEntityType] ?? field.options)?.map(
+                            option => (
+                              <SelectItem key={option.value} value={option.value}>
+                                {option.label}
+                              </SelectItem>
+                            ),
+                          )}
+                        </SelectGroup>
                       </SelectContent>
                     </Select>
                   )}
@@ -460,11 +465,13 @@ export function BoardComponentSelect({
                           alignItemWithTrigger={false}
                           style={{ width: 220, maxHeight: 300 }}
                         >
-                          {(reportOptionsByType[field.reportType ?? ''] ?? []).map(option => (
-                            <SelectItem key={option.id} value={option.id}>
-                              {option.name}
-                            </SelectItem>
-                          ))}
+                          <SelectGroup>
+                            {(reportOptionsByType[field.reportType ?? ''] ?? []).map(option => (
+                              <SelectItem key={option.id} value={option.id}>
+                                {option.name}
+                              </SelectItem>
+                            ))}
+                          </SelectGroup>
                         </SelectContent>
                       </Select>
                       {isLoadingReportOptions && (

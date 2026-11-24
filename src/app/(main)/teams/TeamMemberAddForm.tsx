@@ -6,6 +6,7 @@ import {
   FormSubmitButton,
   Select,
   SelectContent,
+  SelectGroup,
   SelectItem,
   SelectTrigger,
   SelectValue,
@@ -59,11 +60,13 @@ export function TeamMemberAddForm({
             <SelectValue />
           </SelectTrigger>
           <SelectContent alignItemWithTrigger={false}>
-            {roles.map(value => (
-              <SelectItem key={value} value={value}>
-                {renderRole(value)}
-              </SelectItem>
-            ))}
+            <SelectGroup>
+              {roles.map(value => (
+                <SelectItem key={value} value={value}>
+                  {renderRole(value)}
+                </SelectItem>
+              ))}
+            </SelectGroup>
           </SelectContent>
         </Select>
       </FormField>

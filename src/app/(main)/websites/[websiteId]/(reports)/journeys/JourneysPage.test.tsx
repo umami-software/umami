@@ -44,6 +44,7 @@ vi.mock('@umami/react-zen', async importOriginal => {
     SelectTrigger: () => null,
     SelectValue: () => null,
     SelectContent: ({ children }: { children: ReactNode }) => <>{children}</>,
+    SelectGroup: ({ children }: { children: ReactNode }) => <>{children}</>,
     SelectItem: ({ value, children }: { value: string | number; children: ReactNode }) => (
       <option value={value}>{children}</option>
     ),

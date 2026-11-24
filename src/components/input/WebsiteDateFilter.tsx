@@ -4,6 +4,7 @@ import {
   Row,
   Select,
   SelectContent,
+  SelectGroup,
   SelectItem,
   SelectTrigger,
   SelectValue,
@@ -112,11 +113,13 @@ export function WebsiteDateFilter({
                 <SelectValue />
               </SelectTrigger>
               <SelectContent alignItemWithTrigger={false} style={{ width: 200 }}>
-                {compareItems.map(({ value, label }) => (
-                  <SelectItem key={value} value={value}>
-                    {label}
-                  </SelectItem>
-                ))}
+                <SelectGroup>
+                  {compareItems.map(({ value, label }) => (
+                    <SelectItem key={value} value={value}>
+                      {label}
+                    </SelectItem>
+                  ))}
+                </SelectGroup>
               </SelectContent>
             </Select>
           </Row>

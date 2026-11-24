@@ -7,6 +7,7 @@ import {
   Row,
   Select,
   SelectContent,
+  SelectGroup,
   SelectItem,
   SelectTrigger,
   SelectValue,
@@ -61,11 +62,13 @@ export function JourneysPage({ websiteId }: { websiteId: string }) {
               <SelectValue />
             </SelectTrigger>
             <SelectContent alignItemWithTrigger={false}>
-              {JOURNEY_STEPS.map(step => (
-                <SelectItem key={step} value={step}>
-                  {step}
-                </SelectItem>
-              ))}
+              <SelectGroup>
+                {JOURNEY_STEPS.map(step => (
+                  <SelectItem key={step} value={step}>
+                    {step}
+                  </SelectItem>
+                ))}
+              </SelectGroup>
             </SelectContent>
           </Select>
         </Field>

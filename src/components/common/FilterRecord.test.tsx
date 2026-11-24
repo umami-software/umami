@@ -12,6 +12,7 @@ vi.mock('@umami/react-zen', () => ({
   Loading: () => <div>Loading</div>,
   Select: ({ children }: { children: ReactNode }) => <div>{children}</div>,
   SelectContent: ({ children }: { children: ReactNode }) => <div>{children}</div>,
+  SelectGroup: ({ children }: { children: ReactNode }) => <>{children}</>,
   SelectItem: ({ children }: { children: ReactNode }) => <div>{children}</div>,
   SelectTrigger: ({ children }: { children: ReactNode }) => <div>{children}</div>,
   SelectValue: () => null,

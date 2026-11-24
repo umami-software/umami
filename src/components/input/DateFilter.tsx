@@ -3,6 +3,7 @@ import {
   DialogContent,
   Select,
   SelectContent,
+  SelectGroup,
   SelectItem,
   SelectSeparator,
   SelectTrigger,
@@ -129,14 +130,16 @@ export function DateFilter({
           align={align === 'top' ? 'start' : align === 'bottom' ? 'end' : (align as any)}
           style={{ minWidth: 200 }}
         >
-          {options.map(({ label, value, divider }: any) => {
-            return (
-              <Fragment key={label}>
-                {divider && <SelectSeparator />}
-                <SelectItem value={value}>{label}</SelectItem>
-              </Fragment>
-            );
-          })}
+          <SelectGroup>
+            {options.map(({ label, value, divider }: any) => {
+              return (
+                <Fragment key={label}>
+                  {divider && <SelectSeparator />}
+                  <SelectItem value={value}>{label}</SelectItem>
+                </Fragment>
+              );
+            })}
+          </SelectGroup>
         </SelectContent>
       </Select>
       <Dialog open={showPicker} onOpenChange={setShowPicker}>

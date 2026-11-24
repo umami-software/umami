@@ -7,6 +7,7 @@ import {
   PasswordField,
   Select,
   SelectContent,
+  SelectGroup,
   SelectItem,
   SelectTrigger,
   SelectValue,
@@ -59,11 +60,13 @@ export function UserAddForm({ onSave, onClose }) {
             <SelectValue />
           </SelectTrigger>
           <SelectContent alignItemWithTrigger={false}>
-            {roles.map(({ value, label, test }) => (
-              <SelectItem key={value} value={value} data-test={`dropdown-item-${test}`}>
-                {label}
-              </SelectItem>
-            ))}
+            <SelectGroup>
+              {roles.map(({ value, label, test }) => (
+                <SelectItem key={value} value={value} data-test={`dropdown-item-${test}`}>
+                  {label}
+                </SelectItem>
+              ))}
+            </SelectGroup>
           </SelectContent>
         </Select>
       </FormField>

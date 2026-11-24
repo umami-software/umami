@@ -13,6 +13,7 @@ import {
   Row,
   Select,
   SelectContent,
+  SelectGroup,
   SelectItem,
   SelectTrigger,
   SelectValue,
@@ -582,22 +583,24 @@ function ScreenWidthSelect({
           <SelectValue>{() => <ScreenWidthValue width={value} />}</SelectValue>
         </SelectTrigger>
         <SelectContent alignItemWithTrigger={false} style={{ width: 176, maxHeight: 420 }}>
-          {SCREEN_WIDTH_BUCKETS.map(width => {
-            const bucket = bucketsByWidth.get(width);
+          <SelectGroup>
+            {SCREEN_WIDTH_BUCKETS.map(width => {
+              const bucket = bucketsByWidth.get(width);
 
-            return (
-              <SelectItem key={width} value={width} disabled={!bucket}>
-                <Row alignItems="center" justifyContent="space-between" gap="2">
-                  <ScreenWidthValue width={width} />
-                  {bucket && (
-                    <Text color="muted-foreground" className={styles.screenWidthCount}>
-                      {formatLongNumber(bucket.count)}
-                    </Text>
-                  )}
-                </Row>
-              </SelectItem>
-            );
-          })}
+              return (
+                <SelectItem key={width} value={width} disabled={!bucket}>
+                  <Row alignItems="center" justifyContent="space-between" gap="2">
+                    <ScreenWidthValue width={width} />
+                    {bucket && (
+                      <Text color="muted-foreground" className={styles.screenWidthCount}>
+                        {formatLongNumber(bucket.count)}
+                      </Text>
+                    )}
+                  </Row>
+                </SelectItem>
+              );
+            })}
+          </SelectGroup>
         </SelectContent>
       </Select>
     </Row>

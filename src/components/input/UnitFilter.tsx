@@ -2,6 +2,7 @@ import {
   Row,
   Select,
   SelectContent,
+  SelectGroup,
   SelectItem,
   SelectTrigger,
   SelectValue,
@@ -70,11 +71,13 @@ export function UnitFilter() {
           <SelectValue />
         </SelectTrigger>
         <SelectContent side="bottom" align="end" alignItemWithTrigger={false}>
-          {options.map(({ value, label }) => (
-            <SelectItem key={value} value={value}>
-              {label}
-            </SelectItem>
-          ))}
+          <SelectGroup>
+            {options.map(({ value, label }) => (
+              <SelectItem key={value} value={value}>
+                {label}
+              </SelectItem>
+            ))}
+          </SelectGroup>
         </SelectContent>
       </Select>
     </Row>

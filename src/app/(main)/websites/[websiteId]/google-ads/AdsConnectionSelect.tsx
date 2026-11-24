@@ -4,6 +4,7 @@ import {
   Grid,
   Select,
   SelectContent,
+  SelectGroup,
   SelectItem,
   SelectTrigger,
   SelectValue,
@@ -59,11 +60,13 @@ export function AdsConnectionSelect({ websiteId }: { websiteId: string }) {
             <SelectValue />
           </SelectTrigger>
           <SelectContent alignItemWithTrigger={false}>
-            {connections.map(item => (
-              <SelectItem key={item.id} value={item.id}>
-                {getLabel(item)}
-              </SelectItem>
-            ))}
+            <SelectGroup>
+              {connections.map(item => (
+                <SelectItem key={item.id} value={item.id}>
+                  {getLabel(item)}
+                </SelectItem>
+              ))}
+            </SelectGroup>
           </SelectContent>
         </Select>
       </Field>

@@ -2,6 +2,7 @@ import {
   Row,
   Select,
   SelectContent,
+  SelectGroup,
   SelectItem,
   SelectTrigger,
   SelectValue,
@@ -42,11 +43,13 @@ export function MonthSelect({ date = new Date(), onChange }) {
           <SelectValue />
         </SelectTrigger>
         <SelectContent alignItemWithTrigger={false}>
-          {months.map(({ value, label }) => (
-            <SelectItem key={value} value={value}>
-              {label}
-            </SelectItem>
-          ))}
+          <SelectGroup>
+            {months.map(({ value, label }) => (
+              <SelectItem key={value} value={value}>
+                {label}
+              </SelectItem>
+            ))}
+          </SelectGroup>
         </SelectContent>
       </Select>
       <Select items={years} value={year} onValueChange={value => handleYearChange(value)}>
@@ -54,11 +57,13 @@ export function MonthSelect({ date = new Date(), onChange }) {
           <SelectValue />
         </SelectTrigger>
         <SelectContent alignItemWithTrigger={false}>
-          {years.map(({ value, label }) => (
-            <SelectItem key={value} value={value}>
-              {label}
-            </SelectItem>
-          ))}
+          <SelectGroup>
+            {years.map(({ value, label }) => (
+              <SelectItem key={value} value={value}>
+                {label}
+              </SelectItem>
+            ))}
+          </SelectGroup>
         </SelectContent>
       </Select>
     </Row>

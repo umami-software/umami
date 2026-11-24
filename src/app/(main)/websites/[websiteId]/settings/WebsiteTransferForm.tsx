@@ -7,6 +7,7 @@ import {
   Loading,
   Select,
   SelectContent,
+  SelectGroup,
   SelectItem,
   SelectTrigger,
   SelectValue,
@@ -90,13 +91,15 @@ export function WebsiteTransferForm({
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent alignItemWithTrigger={false}>
-                      {items.map(({ id, name }) => {
-                        return (
-                          <SelectItem key={`${id}`} value={`${id}`}>
-                            {name}
-                          </SelectItem>
-                        );
-                      })}
+                      <SelectGroup>
+                        {items.map(({ id, name }) => {
+                          return (
+                            <SelectItem key={`${id}`} value={`${id}`}>
+                              {name}
+                            </SelectItem>
+                          );
+                        })}
+                      </SelectGroup>
                     </SelectContent>
                   </Select>
                 )
