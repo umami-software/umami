@@ -48,7 +48,7 @@ export function WebsiteExpandedView({
             <WebsiteExpandedMenu excludedIds={excludedIds} />
           </OverlayScrollArea>
         </Column>
-        <Column id="metrics-expanded-table" overflow="hidden">
+        <Column id="metrics-expanded-table" overflow="hidden" padding="1">
           <MetricsExpandedTable title={title} type={view} websiteId={websiteId} onClose={onClose} />
         </Column>
       </Grid>

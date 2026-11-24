@@ -97,7 +97,7 @@ export function BoardEditColumn({
           position="absolute"
           top="50%"
           left="50%"
-          zIndex={100}
+          zIndex={30}
           style={{ transform: 'translate(-50%, -50%)' }}
         >
           <Row

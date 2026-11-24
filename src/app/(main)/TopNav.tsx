@@ -45,7 +45,7 @@ export function TopNav() {
       paddingX="3"
       paddingRight="5"
       width="100%"
-      zIndex={100}
+      zIndex={30}
       backgroundColor="muted"
     >
       <Row alignItems="center">

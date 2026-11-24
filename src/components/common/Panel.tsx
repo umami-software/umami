@@ -28,7 +28,7 @@ const fullscreenStyles = {
   top: 0,
   left: 0,
   border: 'none',
-  zIndex: 9999,
+  zIndex: 45,
 } as any;
 
 export function Panel({

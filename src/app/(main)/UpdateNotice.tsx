@@ -53,7 +53,7 @@ export function UpdateNotice({ user, config }) {
       position="fixed"
       top="10px"
       width="100%"
-      zIndex={200}
+      zIndex={40}
       pointerEvents="none"
     >
       <Row width="600px" pointerEvents="auto">
