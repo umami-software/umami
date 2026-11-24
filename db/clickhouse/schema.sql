@@ -307,6 +307,15 @@ PARTITION BY toYYYYMM(created_at)
 ORDER BY (replay_id, website_id, session_id, visit_id, chunk_index)
 SETTINGS index_granularity = 8192;
 
+-- Replay lists filter by website and time. Leaves out the recorded events to stay small.
+ALTER TABLE umami.session_replay
+ADD PROJECTION session_replay_website_projection (
+    SELECT replay_id, website_id, session_id, visit_id, chunk_index, event_count, started_at, ended_at, created_at
+    ORDER BY (website_id, created_at)
+);
+
+ALTER TABLE umami.session_replay MATERIALIZE PROJECTION session_replay_website_projection;
+
 -- Create event_data_pivot
 CREATE TABLE IF NOT EXISTS umami.event_data_pivot
 (
