@@ -33,17 +33,41 @@ export function isApiKey(token?: string | null): token is string {
   return typeof token === 'string' && token.startsWith(API_KEY_PREFIX);
 }
 
-// next.config.ts rewrites /teams/:teamId/:path* and a relative API_URL onto the API routes, but
-// request.url keeps the path the client sent. Undo those rewrites (Next matches them
-// case-insensitively) so the check sees the route that handles the request.
+// request.url keeps the path the client sent, which can differ from the route that handles it:
+// it may be percent-encoded, contain repeated slashes or differ in case, and still match.
+// Normalize it (returns null for malformed encoding).
+function normalizePath(pathname: string) {
+  try {
+    return decodeURIComponent(pathname)
+      .replace(/[\\/]+/g, '/')
+      .toLowerCase();
+  } catch {
+    return null;
+  }
+}
+
+function toPrefix(value: string) {
+  return `/${value.replace(/^\/+|\/+$/g, '')}`.toLowerCase();
+}
+
+// next.config.ts applies BASE_PATH and rewrites /teams/:teamId/:path* and a relative API_URL
+// onto the API routes. Undo those so the check sees the route that handles the request.
 function getRewrittenPath(pathname: string) {
-  const path = pathname.replace(/^\/teams\/[^/]+(?=\/)/i, '');
+  const basePath = toPrefix(process.env.basePath || '');
+  let path = pathname;
+
+  if (basePath !== '/' && path.startsWith(`${basePath}/`)) {
+    path = path.slice(basePath.length);
+  }
+
+  path = path.replace(/^\/teams\/[^/]+(?=\/)/, '');
+
   const apiUrl = process.env.API_URL || '';
 
   if (apiUrl && !/^https?:\/\//i.test(apiUrl)) {
-    const prefix = `/${apiUrl.replace(/^\/+|\/+$/g, '')}`.toLowerCase();
+    const prefix = toPrefix(apiUrl);
 
-    if (prefix !== '/' && prefix !== '/api' && path.toLowerCase().startsWith(`${prefix}/`)) {
+    if (prefix !== '/' && prefix !== '/api' && path.startsWith(`${prefix}/`)) {
       return `/api${path.slice(prefix.length)}`;
     }
   }
@@ -52,7 +76,13 @@ function getRewrittenPath(pathname: string) {
 }
 
 export function isApiKeyBlockedPath(pathname: string) {
-  const path = getRewrittenPath(pathname);
+  const normalized = normalizePath(pathname);
+
+  if (normalized === null) {
+    return true;
+  }
+
+  const path = getRewrittenPath(normalized);
 
   return API_KEY_BLOCKED_PATHS.some(blocked => path === blocked || path.startsWith(`${blocked}/`));
 }

@@ -93,6 +93,35 @@ describe('isApiKeyBlockedPath', () => {
     expect(isApiKeyBlockedPath('/umami-apiusers')).toBe(false);
   });
 
+  // request.url keeps BASE_PATH, so without stripping it no blocked route ever matches.
+  test('blocks credential and admin routes under BASE_PATH', () => {
+    vi.stubEnv('basePath', '/umami');
+
+    expect(isApiKeyBlockedPath('/umami/api/me/api-keys')).toBe(true);
+    expect(isApiKeyBlockedPath('/umami/api/users')).toBe(true);
+    expect(isApiKeyBlockedPath('/umami/teams/abc/api/admin/users')).toBe(true);
+    expect(isApiKeyBlockedPath('/umami/api/me')).toBe(false);
+    expect(isApiKeyBlockedPath('/umami/api/websites/abc/stats')).toBe(false);
+  });
+
+  // The router can resolve these forms to the blocked handlers, so they must not slip past
+  // a literal prefix match.
+  test('blocks percent-encoded, repeated-slash and mixed-case forms', () => {
+    expect(isApiKeyBlockedPath('/api/me/%61pi-keys')).toBe(true);
+    expect(isApiKeyBlockedPath('/api/%75sers')).toBe(true);
+    expect(isApiKeyBlockedPath('/api/%61dmin/users')).toBe(true);
+    expect(isApiKeyBlockedPath('/api%2fusers')).toBe(true);
+    expect(isApiKeyBlockedPath('/api//admin/users')).toBe(true);
+    expect(isApiKeyBlockedPath('/teams/x//api/admin/users')).toBe(true);
+    expect(isApiKeyBlockedPath('/api\\users')).toBe(true);
+    expect(isApiKeyBlockedPath('/API/Users')).toBe(true);
+    expect(isApiKeyBlockedPath('/api/%6De/websites')).toBe(false);
+  });
+
+  test('blocks malformed percent-encoding', () => {
+    expect(isApiKeyBlockedPath('/api/%zz')).toBe(true);
+  });
+
   test('ignores an absolute API_URL, which is not rewritten', () => {
     vi.stubEnv('API_URL', 'https://api.example.com');
 
