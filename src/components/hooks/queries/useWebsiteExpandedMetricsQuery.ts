@@ -40,7 +40,7 @@ export function useWebsiteExpandedMetricsQuery(
         ...filters,
         ...params,
       }),
-    enabled: !!websiteId,
+    enabled: !!websiteId && !!params.type,
     placeholderData: keepPreviousData,
     ...options,
   });
