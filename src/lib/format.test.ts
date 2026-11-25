@@ -16,9 +16,16 @@ test('formatTime', () => {
 });
 
 test('formatShortTime', () => {
-  expect(format.formatShortTime(3600 + 60 + 1)).toBe('1m1s');
+  expect(format.formatShortTime(60 + 1)).toBe('1m1s');
+  expect(format.formatShortTime(3600 + 60 + 1)).toBe('61m1s');
+  expect(format.formatShortTime(86400 + 3600 + 60 + 1, ['m', 's'], ' ')).toBe('1501m 1s ');
 
   expect(format.formatShortTime(3600 + 60 + 1, ['h', 'm', 's'])).toBe('1h1m1s');
+  expect(format.formatShortTime(86400 + 3600 + 60 + 1, ['h', 'm', 's'])).toBe('25h1m1s');
+  expect(format.formatShortTime(86400 + 3600 + 60 + 1, ['d', 'h', 'm', 's'])).toBe('1d1h1m1s');
+
+  expect(format.formatShortTime(0)).toBe('0s');
+  expect(format.formatShortTime(3600)).toBe('60m');
 });
 
 test('formatNumber', () => {
