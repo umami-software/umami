@@ -65,13 +65,13 @@ function ReplayFilterForm({ minDuration, onClose }: { minDuration: string; onClo
       </Column>
       <DialogFooter>
         <Button
-          variant="secondary"
+          variant="outline"
           onClick={handleReset}
           style={isMobile ? undefined : { marginRight: 'auto' }}
         >
           {t(labels.reset)}
         </Button>
-        <Button variant="secondary" onClick={onClose}>
+        <Button variant="outline" onClick={onClose}>
           {t(labels.cancel)}
         </Button>
         <Button onClick={handleApply}>{t(labels.apply)}</Button>

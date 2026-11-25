@@ -17,7 +17,7 @@ export default function RouteError({ error, retry }: { error: unknown; retry: ()
     >
       <h1>{t(messages.error)}</h1>
       {digest && <Text color="muted-foreground">{digest}</Text>}
-      <Button variant="secondary" onClick={() => retry()}>
+      <Button variant="outline" onClick={() => retry()}>
         {t(labels.refresh)}
       </Button>
     </Column>

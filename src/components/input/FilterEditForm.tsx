@@ -202,13 +202,13 @@ export function FilterEditForm({ websiteId, onChange, onClose }: FilterEditFormP
       </Tabs>
       <DialogFooter>
         <Button
-          variant="secondary"
+          variant="outline"
           onClick={handleReset}
           style={isMobile ? undefined : { marginRight: 'auto' }}
         >
           {t(labels.reset)}
         </Button>
-        <Button variant="secondary" onClick={onClose}>
+        <Button variant="outline" onClick={onClose}>
           {t(labels.cancel)}
         </Button>
         <Button onClick={handleSave}>{t(labels.apply)}</Button>

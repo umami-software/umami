@@ -140,7 +140,7 @@ export function LinkEditForm({
 
             <Row justifyContent="flex-end" paddingTop="3" gap="3">
               {onClose && (
-                <Button variant="secondary" disabled={isPending} onClick={onClose}>
+                <Button variant="outline" disabled={isPending} onClick={onClose}>
                   {t(labels.cancel)}
                 </Button>
               )}

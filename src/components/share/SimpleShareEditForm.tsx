@@ -126,7 +126,7 @@ export function SimpleShareEditForm({
           </Row>
           <DialogFooter>
             {onClose && (
-              <Button variant="secondary" disabled={isPending} onClick={onClose}>
+              <Button variant="outline" disabled={isPending} onClick={onClose}>
                 {t(labels.cancel)}
               </Button>
             )}

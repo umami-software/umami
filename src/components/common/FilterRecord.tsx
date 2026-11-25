@@ -137,7 +137,7 @@ export function FilterRecord({
           )}
         </Grid>
         <Column justifyContent="flex-start">
-          <Button variant="secondary" onClick={() => onRemove?.(name)}>
+          <Button variant="outline" onClick={() => onRemove?.(name)}>
             <Icon>
               <X />
             </Icon>

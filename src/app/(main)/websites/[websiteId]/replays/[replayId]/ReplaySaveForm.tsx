@@ -45,7 +45,7 @@ export function ReplaySaveForm({
         <TextField autoFocus />
       </FormField>
       <FormButtons>
-        <Button variant="secondary" disabled={isPending} onClick={onClose}>
+        <Button variant="outline" disabled={isPending} onClick={onClose}>
           {t(labels.cancel)}
         </Button>
         <FormSubmitButton disabled={isPending}>{t(labels.save)}</FormSubmitButton>

@@ -113,7 +113,7 @@ export function PropertyFilters({
       >
         <Row display={{ base: 'flex', md: 'none' }} alignItems="flex-start">
           <DropdownMenu>
-            <DropdownMenuTrigger render={<Button variant="secondary" size="sm" />}>
+            <DropdownMenuTrigger render={<Button variant="outline" size="sm" />}>
               <Icon>
                 <Plus />
               </Icon>

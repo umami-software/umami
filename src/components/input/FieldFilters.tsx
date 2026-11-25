@@ -96,7 +96,7 @@ export function FieldFilters({
     <Grid columns={{ base: '1fr', md: '180px 1fr' }} overflow="hidden" gapY="6">
       <Row display={{ base: 'flex', md: 'none' }} alignItems="flex-start">
         <DropdownMenu>
-          <DropdownMenuTrigger render={<Button variant="secondary" size="sm" />}>
+          <DropdownMenuTrigger render={<Button variant="outline" size="sm" />}>
             <Icon>
               <Plus />
             </Icon>

@@ -88,7 +88,7 @@ function StepRow({
             </FormField>
             {valueField}
           </Column>
-          <Button variant="secondary" onClick={onRemove}>
+          <Button variant="outline" onClick={onRemove}>
             <Icon size="sm">
               <X />
             </Icon>
@@ -102,7 +102,7 @@ function StepRow({
             </FormField>
           </Column>
           <Column>{valueField}</Column>
-          <Button variant="secondary" onClick={onRemove}>
+          <Button variant="outline" onClick={onRemove}>
             <Icon size="sm">
               <X />
             </Icon>
@@ -250,7 +250,7 @@ export function FunnelEditForm({
               <ListSeparator />
               <Row>
                 <Button
-                  variant="secondary"
+                  variant="outline"
                   onClick={() => append({ type: 'path', value: '', filters: [] })}
                   disabled={fields.length >= FUNNEL_STEPS_MAX}
                 >
@@ -265,7 +265,7 @@ export function FunnelEditForm({
         }}
       </FormFieldArray>
       <DialogFooter>
-        <Button variant="secondary" onClick={onClose} disabled={isPending}>
+        <Button variant="outline" onClick={onClose} disabled={isPending}>
           {t(labels.cancel)}
         </Button>
         <FormSubmitButton>{t(labels.save)}</FormSubmitButton>

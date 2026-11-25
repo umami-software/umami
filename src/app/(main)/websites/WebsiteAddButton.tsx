@@ -73,7 +73,7 @@ function TrackingCodeStep({ websiteId, onClose }: { websiteId: string; onClose: 
     <Column gap="4">
       <WebsiteTrackingCode websiteId={websiteId} showHeader={false} />
       <DialogFooter>
-        <Button variant="secondary" onClick={onClose}>
+        <Button variant="outline" onClick={onClose}>
           {t(labels.close)}
         </Button>
       </DialogFooter>

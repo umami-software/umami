@@ -106,7 +106,7 @@ export function WebsiteTransferForm({
               }
             </FormField>
             <DialogFooter>
-              <Button variant="secondary" onClick={onClose}>
+              <Button variant="outline" onClick={onClose}>
                 {t(labels.cancel)}
               </Button>
               <FormSubmitButton loading={isPending} disabled={!isTeamWebsite && !selectedTeamId}>

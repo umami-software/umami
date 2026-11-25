@@ -61,7 +61,7 @@ export function UpdateNotice({ user, config }) {
           <AlertTitle>{t(messages.newVersionAvailable, { version: `v${latest}` })}</AlertTitle>
           <Row gap="3" paddingTop="2">
             <Button onClick={handleViewClick}>{t(labels.viewDetails)}</Button>
-            <Button variant="secondary" onClick={handleDismissClick}>
+            <Button variant="outline" onClick={handleDismissClick}>
               {t(labels.dismiss)}
             </Button>
           </Row>

@@ -38,7 +38,7 @@ export function LanguageSetting() {
         renderValue={<Text truncate>{languages[locale]?.label ?? locale}</Text>}
         triggerProps={{ className: 'justify-between', style: { minWidth: '250px' } }}
       />
-      <Button variant="secondary" onClick={handleReset}>
+      <Button variant="outline" onClick={handleReset}>
         {t(labels.reset)}
       </Button>
     </Row>

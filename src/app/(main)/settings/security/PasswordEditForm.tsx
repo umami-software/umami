@@ -73,7 +73,7 @@ export function PasswordEditForm({
       </FormField>
       <DialogFooter>
         {!required && (
-          <Button variant="secondary" onClick={onClose}>
+          <Button variant="outline" onClick={onClose}>
             {t(labels.cancel)}
           </Button>
         )}

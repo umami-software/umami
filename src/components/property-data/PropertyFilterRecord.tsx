@@ -257,7 +257,7 @@ export function PropertyFilterRecord({
           )}
         </Grid>
         <Column justifyContent="flex-start">
-          <Button variant="secondary" onClick={onRemove}>
+          <Button variant="outline" onClick={onRemove}>
             <Icon>
               <X />
             </Icon>
@@ -291,7 +291,7 @@ function DateValuePicker({
     <Popover open={showPicker} onOpenChange={handleOpenChange}>
       <PopoverTrigger
         render={
-          <Button variant="secondary" style={{ width: '100%', justifyContent: 'flex-start' }} />
+          <Button variant="outline" style={{ width: '100%', justifyContent: 'flex-start' }} />
         }
       >
         <DateDisplay startDate={selectedDate} endDate={selectedDate} />
@@ -307,7 +307,7 @@ function DateValuePicker({
             required
           />
           <Row justifyContent="end" gap>
-            <Button variant="secondary" onClick={() => setShowPicker(false)}>
+            <Button variant="outline" onClick={() => setShowPicker(false)}>
               {t(labels.cancel)}
             </Button>
             <Button

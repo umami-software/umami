@@ -31,7 +31,7 @@ export function UserDeleteForm({
     <Column gap="4">
       <Row gap="1">{t(messages.confirmDelete, { target: username })}</Row>
       <DialogFooter>
-        <Button variant="secondary" onClick={onClose}>
+        <Button variant="outline" onClick={onClose}>
           {t(labels.cancel)}
         </Button>
         <Button variant="destructive" onClick={handleConfirm}>

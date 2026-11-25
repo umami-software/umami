@@ -24,7 +24,7 @@ export function ThemeModeSelector({
       {options.map(({ id, icon, label }) => (
         <Button
           key={id}
-          variant={value === id ? 'default' : 'secondary'}
+          variant={value === id ? 'default' : 'outline'}
           onClick={() => onChange(id)}
           aria-label={label}
         >

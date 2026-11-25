@@ -57,7 +57,7 @@ export function WebsiteAddForm({
       </FormField>
       <DialogFooter>
         {onClose && (
-          <Button variant="secondary" disabled={isPending} onClick={onClose}>
+          <Button variant="outline" disabled={isPending} onClick={onClose}>
             {t(labels.cancel)}
           </Button>
         )}

@@ -46,7 +46,7 @@ export function TypeConfirmationForm({
         <TextField autoComplete="off" />
       </FormField>
       <DialogFooter>
-        <Button variant="secondary" onClick={onClose}>
+        <Button variant="outline" onClick={onClose}>
           {t(labels.cancel)}
         </Button>
         <FormSubmitButton loading={isLoading} variant={buttonVariant}>

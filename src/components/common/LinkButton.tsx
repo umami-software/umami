@@ -14,7 +14,7 @@ export interface LinkButtonProps extends ComponentProps<typeof Button> {
 
 export function LinkButton({
   href,
-  variant = 'secondary',
+  variant = 'outline',
   scroll = true,
   target,
   prefetch,

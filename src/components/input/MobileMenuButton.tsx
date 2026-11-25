@@ -32,7 +32,7 @@ export function MobileMenuButton({
 
   return (
     <Sheet open={isOpen} onOpenChange={handleOpenChange}>
-      <SheetTrigger render={<Button variant="secondary" />}>
+      <SheetTrigger render={<Button variant="outline" />}>
         <Icon>
           <Menu />
         </Icon>

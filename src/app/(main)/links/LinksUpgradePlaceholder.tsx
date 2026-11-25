@@ -29,7 +29,7 @@ export function LinksUpgradePlaceholder({ onClose }: { onClose?: () => void }) {
     <Column gap="6">
       <EmptyPlaceholder icon={<Link />} title={t(messages.upgradeRequired, { plan: 'Pro' })} />
       <DialogFooter>
-        <Button variant="secondary" onClick={onClose}>
+        <Button variant="outline" onClick={onClose}>
           {t(labels.cancel)}
         </Button>
         {upgradeButton}

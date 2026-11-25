@@ -32,7 +32,7 @@ export function TeamJoinForm({ onSave, onClose }: { onSave: () => void; onClose:
         <TextField autoComplete="off" />
       </FormField>
       <DialogFooter>
-        <Button variant="secondary" onClick={onClose}>
+        <Button variant="outline" onClick={onClose}>
           {t(labels.cancel)}
         </Button>
         <FormSubmitButton>{t(labels.join)}</FormSubmitButton>

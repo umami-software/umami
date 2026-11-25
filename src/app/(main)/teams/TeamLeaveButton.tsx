@@ -28,7 +28,7 @@ export function TeamLeaveButton({ teamId, teamName }: { teamId: string; teamName
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger render={<Button variant="secondary" />}>
+      <DialogTrigger render={<Button variant="outline" />}>
         <Icon>
           <LogOut />
         </Icon>

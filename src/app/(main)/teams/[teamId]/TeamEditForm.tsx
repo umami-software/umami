@@ -59,7 +59,7 @@ export function TeamEditForm({
                 </FormField>
                 {allowEdit && (
                   <Button
-                    variant="secondary"
+                    variant="outline"
                     onClick={() => setValue('accessCode', generateId(), { shouldDirty: true })}
                   >
                     <IconLabel icon={<RefreshCw />} label={t(labels.regenerate)} />

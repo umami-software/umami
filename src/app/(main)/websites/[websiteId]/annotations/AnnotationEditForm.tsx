@@ -111,7 +111,7 @@ export function AnnotationEditForm({
               </Column>
             </Column>
             <DialogFooter>
-              <Button variant="secondary" disabled={isPending} onClick={onClose}>
+              <Button variant="outline" disabled={isPending} onClick={onClose}>
                 {t(labels.cancel)}
               </Button>
               <FormSubmitButton disabled={isPending}>{t(labels.save)}</FormSubmitButton>

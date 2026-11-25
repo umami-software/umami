@@ -27,7 +27,7 @@ export function ConfirmationForm({
     <Form onSubmit={onConfirm} error={getErrorMessage(error)}>
       {message && <Box marginY="4">{message}</Box>}
       <DialogFooter>
-        <Button variant="secondary" onClick={onClose}>
+        <Button variant="outline" onClick={onClose}>
           {t(labels.cancel)}
         </Button>
         <FormSubmitButton

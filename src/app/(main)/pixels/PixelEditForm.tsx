@@ -105,7 +105,7 @@ export function PixelEditForm({
                   style={{ width: '100%' }}
                 />
                 <Button
-                  variant="secondary"
+                  variant="outline"
                   onClick={() => setValue('slug', handleSlug(), { shouldDirty: true })}
                 >
                   <Icon>
@@ -118,7 +118,7 @@ export function PixelEditForm({
             {/* In a dialog (onClose), the buttons go in its footer; on the edit page, a plain row. */}
             {onClose ? (
               <DialogFooter>
-                <Button variant="secondary" disabled={isPending} onClick={onClose}>
+                <Button variant="outline" disabled={isPending} onClick={onClose}>
                   {t(labels.cancel)}
                 </Button>
                 <FormSubmitButton disabled={false}>{t(labels.save)}</FormSubmitButton>

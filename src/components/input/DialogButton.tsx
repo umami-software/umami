@@ -41,7 +41,7 @@ export function DialogButton({
   dialogClassName,
   open,
   onOpenChange,
-  variant = 'secondary',
+  variant = 'outline',
   children,
   ...props
 }: DialogButtonProps) {

@@ -140,7 +140,7 @@ export function DatePickerForm({
         </TabsContent>
       </Tabs>
       <DialogFooter>
-        <Button variant="secondary" onClick={onClose}>
+        <Button variant="outline" onClick={onClose}>
           {t(labels.cancel)}
         </Button>
         <Button onClick={handleSave} disabled={disabled}>

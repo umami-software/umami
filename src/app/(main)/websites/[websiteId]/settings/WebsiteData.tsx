@@ -63,7 +63,7 @@ export function WebsiteData({ websiteId, onSave }: { websiteId: string; onSave?:
       {!isAdmin && (
         <ActionForm label={t(labels.transferWebsite)} description={t(messages.transferWebsite)}>
           <Dialog open={showTransfer} onOpenChange={setShowTransfer}>
-            <DialogTrigger render={<Button variant="secondary" disabled={!canTransferWebsite} />}>
+            <DialogTrigger render={<Button variant="outline" disabled={!canTransferWebsite} />}>
               {t(labels.transfer)}
             </DialogTrigger>
             <DialogContent showCloseButton={false} style={{ width: 400 }}>
@@ -82,7 +82,7 @@ export function WebsiteData({ websiteId, onSave }: { websiteId: string; onSave?:
 
       <ActionForm label={t(labels.resetWebsite)} description={t(messages.resetWebsiteWarning)}>
         <Dialog open={showReset} onOpenChange={setShowReset}>
-          <DialogTrigger render={<Button variant="secondary" />}>{t(labels.reset)}</DialogTrigger>
+          <DialogTrigger render={<Button variant="outline" />}>{t(labels.reset)}</DialogTrigger>
           <DialogContent showCloseButton={false} style={{ width: 400 }}>
             <DialogHeader>
               <DialogTitle>{t(labels.resetWebsite)}</DialogTitle>

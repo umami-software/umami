@@ -92,7 +92,7 @@ export function ErrorIssuePage({ websiteId, issueId }: { websiteId: string; issu
                     .filter(status => status !== issue.data.status)
                     .map(status => (
                       <Button
-                        variant="secondary"
+                        variant="outline"
                         key={status}
                         disabled={mutation.isPending}
                         onClick={() => mutation.mutate(status)}

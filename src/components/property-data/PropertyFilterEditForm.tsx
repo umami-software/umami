@@ -41,13 +41,13 @@ export function PropertyFilterEditForm({
       </Column>
       <DialogFooter>
         <Button
-          variant="secondary"
+          variant="outline"
           onClick={() => setFilters([])}
           style={isMobile ? undefined : { marginRight: 'auto' }}
         >
           {t(labels.reset)}
         </Button>
-        <Button variant="secondary" onClick={onClose}>
+        <Button variant="outline" onClick={onClose}>
           {t(labels.cancel)}
         </Button>
         <Button

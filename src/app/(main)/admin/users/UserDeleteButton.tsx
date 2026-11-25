@@ -30,7 +30,7 @@ export function UserDeleteButton({
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger
         render={
-          <Button variant="secondary" disabled={userId === user?.id} data-test="button-delete" />
+          <Button variant="outline" disabled={userId === user?.id} data-test="button-delete" />
         }
       >
         <Icon size="sm">

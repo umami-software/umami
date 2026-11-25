@@ -46,7 +46,7 @@ export function TimeFormatSetting() {
           </SelectGroup>
         </SelectContent>
       </Select>
-      <Button variant="secondary" onClick={() => saveTimeFormat(DEFAULT_TIME_FORMAT)}>
+      <Button variant="outline" onClick={() => saveTimeFormat(DEFAULT_TIME_FORMAT)}>
         {t(labels.reset)}
       </Button>
     </Row>

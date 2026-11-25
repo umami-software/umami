@@ -27,7 +27,7 @@ export function TeamsJoinButton() {
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger render={<Button variant="secondary" />}>
+      <DialogTrigger render={<Button variant="outline" />}>
         <Icon>
           <UserPlus />
         </Icon>

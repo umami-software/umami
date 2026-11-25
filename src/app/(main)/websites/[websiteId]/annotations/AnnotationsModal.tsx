@@ -126,7 +126,7 @@ export function AnnotationsModal({
         <DataTable data={rows} displayMode={isMobile ? 'cards' : 'table'}>
           <DataColumn id="date" label={t(labels.date)} width="200px">
             {(row: Annotation) => (
-              <Button variant="secondary" onClick={() => handleSelect(row)}>
+              <Button variant="outline" onClick={() => handleSelect(row)}>
                 {formatAnnotationDate(
                   { id: row.id, date: toLocalDate(row), label: row.note, allDay: row.allDay },
                   locale,
@@ -159,7 +159,7 @@ export function AnnotationsModal({
       )}
       {onClose && (
         <DialogFooter style={{ marginTop: 'auto' }}>
-          <Button variant="secondary" onClick={onClose}>
+          <Button variant="outline" onClick={onClose}>
             {t(labels.close)}
           </Button>
         </DialogFooter>

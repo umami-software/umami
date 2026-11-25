@@ -85,7 +85,7 @@ export function SimpleShareCreateForm({
           </Row>
           <Row justifyContent="flex-end" gap="3">
             {onCancel && (
-              <Button variant="secondary" disabled={isPending} onClick={onCancel}>
+              <Button variant="outline" disabled={isPending} onClick={onCancel}>
                 {t(labels.cancel)}
               </Button>
             )}

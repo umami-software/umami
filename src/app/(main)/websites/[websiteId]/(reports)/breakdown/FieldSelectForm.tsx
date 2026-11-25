@@ -57,7 +57,7 @@ export function FieldSelectForm({
         </List>
       </Column>
       <DialogFooter>
-        <Button variant="secondary" onClick={onClose}>
+        <Button variant="outline" onClick={onClose}>
           {t(labels.cancel)}
         </Button>
         <Button onClick={handleApply}>{t(labels.apply)}</Button>

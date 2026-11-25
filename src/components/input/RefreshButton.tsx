@@ -22,7 +22,7 @@ export function RefreshButton({
   return (
     <Tooltip>
       <TooltipTrigger
-        render={<LoadingButton variant="secondary" loading={isLoading} onClick={handleClick} />}
+        render={<LoadingButton variant="outline" loading={isLoading} onClick={handleClick} />}
       >
         <Icon>
           <RefreshCw />

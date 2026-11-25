@@ -192,7 +192,7 @@ export function EventDataFilterRow({
             <ValueSelect websiteId={websiteId} eventName={eventName} propertyName={propertyName} />
           </FormField>
         </Column>
-        <Button variant="secondary" onClick={onRemove}>
+        <Button variant="outline" onClick={onRemove}>
           <Icon size="sm">
             <X />
           </Icon>
@@ -225,7 +225,7 @@ export function EventDataFilterRow({
           <ValueSelect websiteId={websiteId} eventName={eventName} propertyName={propertyName} />
         </FormField>
       </Column>
-      <Button variant="secondary" onClick={onRemove}>
+      <Button variant="outline" onClick={onRemove}>
         <Icon size="sm">
           <X />
         </Icon>
