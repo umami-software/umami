@@ -3472,8 +3472,8 @@ export interface components {
     WebsiteStats: {
       /** @description Number of visits with only one pageview. */
       bounces: number;
-      /** @description The same totals for the comparison period (previous period by default). */
-      comparison: components['schemas']['WebsiteStatsValues'];
+      /** @description The same totals for the comparison period (previous period by default). Omitted when `compare` is none. */
+      comparison?: components['schemas']['WebsiteStatsValues'];
       /** @description Pageview counts for the selected period. */
       pageviews: number;
       /** @description Total visit duration in seconds. */
@@ -24817,8 +24817,8 @@ export interface operations {
         city?: string;
         /** @description ID of a saved cohort used to filter visitors. */
         cohort?: string;
-        /** @description Comparison period: prev for the previous period or yoy for the same period last year. */
-        compare?: 'prev' | 'yoy';
+        /** @description Comparison period: prev (default) or yoy. Use none to skip the comparison query and omit `comparison` from the response. */
+        compare?: 'prev' | 'yoy' | 'none';
         /** @description Country code of the visitor. */
         country?: string;
         /** @description Device category used by the visitor. */
@@ -24901,7 +24901,7 @@ export interface operations {
     };
     requestBody?: never;
     responses: {
-      /** @description Summary stats with comparison. */
+      /** @description Summary stats, with the comparison unless `compare` is none. */
       200: {
         headers: {
           [name: string]: unknown;

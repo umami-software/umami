@@ -9,6 +9,14 @@ export const analyticsQuerySchema = withDateRange({ ...filterParams }).meta({
     'Date range (startAt/endAt in milliseconds, startDate/endDate ISO, or a period preset) plus optional filters. Period supports today, 24h, 7d, 30d, and the DateFilter presets (0day, 24hour, 0week, 7day, 0month, 30day, 90day, 0year, 6month, 12month). Calendar presets use timezone or UTC when omitted. Filter values match exactly unless prefixed with an operator such as `neq.`, `c.` (contains) or `re.`.',
 });
 
+export const websiteStatsQuerySchema = withDateRange({
+  ...filterParams,
+  compare: z.enum(['prev', 'yoy', 'none']).optional().meta({
+    description:
+      'Comparison period: prev (default) or yoy. Use none to skip the comparison query and omit `comparison` from the response.',
+  }),
+}).meta({ id: 'WebsiteStatsQuery' });
+
 export const pagedAnalyticsQuerySchema = withDateRange({
   ...filterParams,
   ...pagingParams,
@@ -38,8 +46,9 @@ export const websiteStatsValuesSchema = z
 
 export const websiteStatsSchema = websiteStatsValuesSchema
   .extend({
-    comparison: websiteStatsValuesSchema.meta({
-      description: 'The same totals for the comparison period (previous period by default).',
+    comparison: websiteStatsValuesSchema.optional().meta({
+      description:
+        'The same totals for the comparison period (previous period by default). Omitted when `compare` is none.',
     }),
   })
   .meta({ id: 'WebsiteStats' });
