@@ -106,4 +106,36 @@ describe('filtersObjectToArray', () => {
     expect(filter.paramName).toBe('path1');
     expect(filter.value).toBe('/a');
   });
+
+  // prefix and column are concatenated into the column expression, so a client value
+  // there is raw SQL. Only operator and value may come from the request body.
+  test('ignores client-supplied prefix and column in object filters', () => {
+    const [filter] = filtersObjectToArray({
+      path1: {
+        name: 'path',
+        operator: OPERATORS.equals,
+        value: '/a',
+        prefix: injection,
+        column: injection,
+      },
+    } as any);
+
+    expect(filter).toEqual({
+      name: 'path',
+      paramName: 'path1',
+      column: 'url_path',
+      operator: OPERATORS.equals,
+      value: '/a',
+      prefix: undefined,
+    });
+  });
+
+  test('keeps server-supplied prefix for object filters', () => {
+    const [filter] = filtersObjectToArray(
+      { path: { name: 'path', operator: OPERATORS.equals, value: '/a', prefix: injection } } as any,
+      { prefix: 'e.' },
+    );
+
+    expect(filter.prefix).toBe('e.');
+  });
 });
