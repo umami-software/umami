@@ -20,6 +20,7 @@ import {
 import { afterEach, beforeEach, describe, expect, test, vi } from 'vitest';
 import {
   alignCompareSeries,
+  formatBackendDate,
   formatDate,
   generateTimeSeries,
   getAllowedUnits,
@@ -758,5 +759,49 @@ describe('parseBackendDate', () => {
     expect(parsed.getFullYear()).toBe(2026);
     expect(parsed.getMonth()).toBe(9);
     expect(parsed.getDate()).toBe(1);
+  });
+});
+
+describe('formatBackendDate', () => {
+  // The values the event/session data pivot queries return for a date property stored as
+  // 2026-11-05T10:00:00Z. Postgres stamps the zone-shifted value with a literal Z; ClickHouse does not.
+  test.each([
+    ['Asia/Kolkata (Postgres)', '2026-11-05T15:30:00Z', '2026-11-05 15:30:00'],
+    ['Asia/Kolkata (ClickHouse)', '2026-11-05T15:30:00', '2026-11-05 15:30:00'],
+    ['UTC (Postgres)', '2026-11-05T10:00:00Z', '2026-11-05 10:00:00'],
+    ['UTC (ClickHouse)', '2026-11-05T10:00:00', '2026-11-05 10:00:00'],
+    ['America/New_York (Postgres)', '2026-11-05T05:00:00Z', '2026-11-05 05:00:00'],
+    ['America/New_York (ClickHouse)', '2026-11-05T05:00:00', '2026-11-05 05:00:00'],
+  ])('shows the %s value as its wall-clock time without converting again', (_, value, expected) => {
+    expect(formatBackendDate(value, 'yyyy-MM-dd HH:mm:ss')).toBe(expected);
+  });
+
+  test('formats with the table pattern and drops the Z', () => {
+    setHour12(true);
+    try {
+      expect(formatBackendDate('2026-11-05T15:30:00Z', 'PPpp')).toBe('Nov 5, 2026, 3:30:00 PM');
+    } finally {
+      setHour12(undefined);
+    }
+  });
+
+  test('returns the raw value when it cannot be parsed', () => {
+    expect(formatBackendDate('not a date', 'PPpp')).toBe('not a date');
+  });
+
+  test('returns values that are not in the backend date shape unchanged', () => {
+    expect(formatBackendDate('2026', 'PPpp')).toBe('2026');
+    expect(formatBackendDate('349.3300', 'PPpp')).toBe('349.3300');
+    expect(formatBackendDate('2026-11-05', 'PPpp')).toBe('2026-11-05');
+    expect(formatBackendDate('2026-11-05T15:30:00.000Z', 'PPpp')).toBe('2026-11-05T15:30:00.000Z');
+  });
+
+  test('uses the 24-hour preference', () => {
+    setHour12(false);
+    try {
+      expect(formatBackendDate('2026-11-05T15:30:00Z', 'PPpp')).toBe('Nov 5, 2026, 15:30:00');
+    } finally {
+      setHour12(undefined);
+    }
   });
 });

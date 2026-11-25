@@ -10,10 +10,13 @@ import { Pager } from '@/components/common/Pager';
 import {
   useEventDataPivotQuery,
   useEventDataPropertiesQuery,
+  useLocale,
   useMessages,
   useMobile,
   useNavigation,
 } from '@/components/hooks';
+import { DATA_TYPE } from '@/lib/constants';
+import { formatBackendDate } from '@/lib/date';
 import type { EventPropertyFilter } from '@/lib/types';
 
 export function EventDataPivotTable({
@@ -28,6 +31,7 @@ export function EventDataPivotTable({
   const { t, labels } = useMessages();
   const { router, updateParams } = useNavigation();
   const { isMobile } = useMobile();
+  const { locale } = useLocale();
 
   const propertiesQuery = useEventDataPropertiesQuery(websiteId);
   const pivotQuery = useEventDataPivotQuery(websiteId, eventName, eventFilters);
@@ -39,6 +43,21 @@ export function EventDataPivotTable({
       .map((e: { propertyName: string }) => e.propertyName);
     return [...new Set<string>(keys)];
   }, [propertiesQuery.data, eventName]);
+
+  const dateKeys = useMemo(() => {
+    if (!propertiesQuery.data || !eventName) return new Set<string>();
+    const keys = propertiesQuery.data
+      .filter(
+        (e: { eventName: string; dataType: number }) =>
+          e.eventName === eventName && e.dataType === DATA_TYPE.date,
+      )
+      .map((e: { propertyName: string }) => e.propertyName);
+    return new Set<string>(keys);
+  }, [propertiesQuery.data, eventName]);
+
+  // Date values arrive already shifted to the selected timezone, so format them as wall-clock time.
+  const getPropertyValue = (row: any, key: string) =>
+    dateKeys.has(key) && row[key] ? formatBackendDate(row[key], 'PPpp', locale) : (row[key] ?? '');
 
   const tableMinWidth = useMemo(() => {
     return `${72 + 220 + 180 + propertyKeys.length * 160}px`;
@@ -113,7 +132,7 @@ export function EventDataPivotTable({
               </DataColumn>
               {propertyKeys.map(key => (
                 <DataColumn key={key} id={key} label={key} width="160px">
-                  {(row: any) => renderTruncatedText(row[key] ?? '')}
+                  {(row: any) => renderTruncatedText(getPropertyValue(row, key))}
                 </DataColumn>
               ))}
               <DataColumn id="createdAt" label={t(labels.created)} width="180px">
@@ -138,7 +157,7 @@ export function EventDataPivotTable({
                   </DataColumn>
                   {propertyKeys.map(key => (
                     <DataColumn key={key} id={key} label={key} width="160px">
-                      {(row: any) => renderTruncatedText(row[key] ?? '')}
+                      {(row: any) => renderTruncatedText(getPropertyValue(row, key))}
                     </DataColumn>
                   ))}
                   <DataColumn id="createdAt" label={t(labels.created)} width="180px">

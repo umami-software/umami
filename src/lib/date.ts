@@ -443,6 +443,21 @@ export function parseBackendDate(value: string | number | Date): Date {
     : new Date(value);
 }
 
+const BACKEND_DATE_REGEX = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z?$/;
+
+// Formats a zone-shifted backend value (see parseBackendDate) as the wall-clock time it
+// already represents. Anything not in the backend date shape, or not a valid date, is
+// returned raw.
+export function formatBackendDate(value: string, dateFormat: string, locale?: string) {
+  if (!BACKEND_DATE_REGEX.test(value)) {
+    return value;
+  }
+
+  const date = parseBackendDate(value);
+
+  return isInvalidDate(date) ? value : formatDate(date, dateFormat, locale);
+}
+
 export function generateTimeSeries(
   data: { x: string; y: number; d?: string }[],
   minDate: Date,
