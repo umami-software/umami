@@ -1,6 +1,7 @@
 import type { AnyToolDefinition } from '../lib/tool';
 import { getAnnotations } from './annotations';
 import { getWebsiteDateRange } from './daterange';
+import { getErrorIssue, getErrorStats, getErrors } from './errors';
 import { getEventProperties } from './event-properties';
 import { getEventSeries, getEventStats } from './event-stats';
 import { getEvents } from './events';
@@ -49,10 +50,16 @@ export const reportTools: AnyToolDefinition[] = [
   getPerformance,
 ];
 
-export const allTools: AnyToolDefinition[] = [...coreTools, ...reportTools];
+/** Error tracking tools. */
+export const errorTools: AnyToolDefinition[] = [getErrors, getErrorIssue, getErrorStats];
+
+export const allTools: AnyToolDefinition[] = [...coreTools, ...reportTools, ...errorTools];
 
 export {
   getAnnotations,
+  getErrorIssue,
+  getErrorStats,
+  getErrors,
   getEventProperties,
   getEventSeries,
   getEventStats,
