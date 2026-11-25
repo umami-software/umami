@@ -55,6 +55,11 @@ export function isEqualsOperator(operator: any) {
   return [OPERATORS.equals, OPERATORS.notEquals].includes(operator);
 }
 
+// Operators that test whether a field has a value at all, so they take no value.
+export function isPresenceOperator(operator: any) {
+  return [OPERATORS.set, OPERATORS.notSet].includes(operator);
+}
+
 export function isSearchOperator(operator: any) {
   return [
     OPERATORS.contains,
