@@ -102,6 +102,8 @@ export const OPERATION_ID_OVERRIDES: Record<string, string> = {
   'GET /api/websites/{websiteId}/values': 'getWebsiteValues',
   'GET /api/websites/{websiteId}/export': 'exportWebsite',
   'POST /api/websites/{websiteId}/reset': 'resetWebsite',
+  'GET /api/websites/{websiteId}/clear': 'getWebsiteClearPreview',
+  'POST /api/websites/{websiteId}/clear': 'clearWebsiteData',
   'POST /api/websites/{websiteId}/transfer': 'transferWebsite',
   'GET /api/websites/{websiteId}/shares': 'getWebsiteShares',
   'POST /api/websites/{websiteId}/shares': 'createWebsiteShare',
