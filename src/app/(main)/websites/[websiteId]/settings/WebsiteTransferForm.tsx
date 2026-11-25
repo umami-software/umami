@@ -1,7 +1,7 @@
 import {
   Button,
+  DialogFooter,
   Form,
-  FormButtons,
   FormField,
   FormSubmitButton,
   Loading,
@@ -105,14 +105,14 @@ export function WebsiteTransferForm({
                 )
               }
             </FormField>
-            <FormButtons>
+            <DialogFooter>
               <Button variant="secondary" onClick={onClose}>
                 {t(labels.cancel)}
               </Button>
               <FormSubmitButton loading={isPending} disabled={!isTeamWebsite && !selectedTeamId}>
                 {t(labels.transfer)}
               </FormSubmitButton>
-            </FormButtons>
+            </DialogFooter>
           </>
         );
       }}

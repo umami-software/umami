@@ -1,7 +1,7 @@
 import {
   Button,
+  DialogFooter,
   Form,
-  FormButtons,
   FormField,
   FormSubmitButton,
   TextField,
@@ -31,12 +31,12 @@ export function TeamJoinForm({ onSave, onClose }: { onSave: () => void; onClose:
       >
         <TextField autoComplete="off" />
       </FormField>
-      <FormButtons>
+      <DialogFooter>
         <Button variant="secondary" onClick={onClose}>
           {t(labels.cancel)}
         </Button>
         <FormSubmitButton>{t(labels.join)}</FormSubmitButton>
-      </FormButtons>
+      </DialogFooter>
     </Form>
   );
 }

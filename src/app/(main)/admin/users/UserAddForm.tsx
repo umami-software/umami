@@ -1,7 +1,7 @@
 import {
   Button,
+  DialogFooter,
   Form,
-  FormButtons,
   FormField,
   FormSubmitButton,
   PasswordField,
@@ -70,14 +70,14 @@ export function UserAddForm({ onSave, onClose }) {
           </SelectContent>
         </Select>
       </FormField>
-      <FormButtons>
+      <DialogFooter>
         <Button variant="secondary" disabled={isPending} onClick={onClose}>
           {t(labels.cancel)}
         </Button>
         <FormSubmitButton data-test="button-submit" disabled={false}>
           {t(labels.save)}
         </FormSubmitButton>
-      </FormButtons>
+      </DialogFooter>
     </Form>
   );
 }

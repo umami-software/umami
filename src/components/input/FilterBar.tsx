@@ -192,7 +192,8 @@ export function FilterBar({ websiteId }: { websiteId?: string }) {
           </Tooltip>
         )}
         <Dialog open={showSaveSegment} onOpenChange={setShowSaveSegment}>
-          <DialogContent showCloseButton={false}
+          <DialogContent
+            showCloseButton={false}
             style={{
               width: isMobile ? '100%' : '800px',
               height: isMobile ? '100%' : undefined,
@@ -201,7 +202,6 @@ export function FilterBar({ websiteId }: { websiteId?: string }) {
               maxHeight: isMobile ? '100%' : 'calc(100dvh - 40px)',
               borderRadius: isMobile ? 0 : undefined,
               overflowY: 'auto',
-              padding: '32px',
             }}
           >
             <DialogHeader>

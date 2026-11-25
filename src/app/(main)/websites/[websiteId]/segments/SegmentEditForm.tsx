@@ -1,8 +1,8 @@
 import {
   Button,
   Column,
+  DialogFooter,
   Form,
-  FormButtons,
   FormField,
   FormSubmitButton,
   Loading,
@@ -113,15 +113,15 @@ export function SegmentEditForm({
             </Column>
           </Column>
         )}
-        <FormButtons>
-          <Button variant="secondary" disabled={isPending} onClick={onClose}>
-            {t(labels.cancel)}
-          </Button>
-          <FormSubmitButton data-test="button-submit" disabled={isPending}>
-            {t(labels.save)}
-          </FormSubmitButton>
-        </FormButtons>
       </Column>
+      <DialogFooter>
+        <Button variant="secondary" disabled={isPending} onClick={onClose}>
+          {t(labels.cancel)}
+        </Button>
+        <FormSubmitButton data-test="button-submit" disabled={isPending}>
+          {t(labels.save)}
+        </FormSubmitButton>
+      </DialogFooter>
     </Form>
   );
 }

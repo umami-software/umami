@@ -4,10 +4,10 @@ import {
   Column,
   Dialog,
   DialogContent,
+  DialogFooter,
   DialogHeader,
   DialogTitle,
   Form,
-  FormButtons,
   FormField,
   FormSubmitButton,
   PasswordField,
@@ -58,7 +58,7 @@ export function TwoFactorDisableModal({ onClose, onSuccess }: TwoFactorDisableMo
                 disabled={isPending}
               />
             </Column>
-            <FormButtons>
+            <DialogFooter>
               <Button variant="outline" onClick={onClose} disabled={isPending}>
                 {t(labels.cancel)}
               </Button>
@@ -68,7 +68,7 @@ export function TwoFactorDisableModal({ onClose, onSuccess }: TwoFactorDisableMo
               >
                 {t(labels.twoFactorDisable)}
               </FormSubmitButton>
-            </FormButtons>
+            </DialogFooter>
           </Form>
         </Column>
       </DialogContent>

@@ -9,6 +9,7 @@ import {
   Column,
   Dialog,
   DialogContent,
+  DialogFooter,
   DialogHeader,
   DialogTitle,
   Icon,
@@ -204,21 +205,20 @@ export function TwoFactorSetupModal({ required, onClose }: TwoFactorSetupModalPr
               <AlertTitle>{error}</AlertTitle>
             </Alert>
           )}
-
-          <Row gap="2" justifyContent="flex-end">
-            {!required && (
-              <Button variant="outline" onClick={handleCancel} disabled={isConfirming}>
-                {t(labels.cancel)}
-              </Button>
-            )}
-            <Button
-              onClick={() => handleConfirm()}
-              disabled={otpValue.length !== 6 || isConfirming || !!error}
-            >
-              {t(labels.confirm)}
-            </Button>
-          </Row>
         </Column>
+        <DialogFooter>
+          {!required && (
+            <Button variant="outline" onClick={handleCancel} disabled={isConfirming}>
+              {t(labels.cancel)}
+            </Button>
+          )}
+          <Button
+            onClick={() => handleConfirm()}
+            disabled={otpValue.length !== 6 || isConfirming || !!error}
+          >
+            {t(labels.confirm)}
+          </Button>
+        </DialogFooter>
       </DialogContent>
     </Dialog>
   );

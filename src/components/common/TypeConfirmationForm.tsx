@@ -1,7 +1,7 @@
 import {
   Button,
+  DialogFooter,
   Form,
-  FormButtons,
   FormField,
   FormSubmitButton,
   TextField,
@@ -45,14 +45,14 @@ export function TypeConfirmationForm({
       >
         <TextField autoComplete="off" />
       </FormField>
-      <FormButtons>
+      <DialogFooter>
         <Button variant="secondary" onClick={onClose}>
           {t(labels.cancel)}
         </Button>
         <FormSubmitButton loading={isLoading} variant={buttonVariant}>
           {buttonLabel || t(labels.ok)}
         </FormSubmitButton>
-      </FormButtons>
+      </DialogFooter>
     </Form>
   );
 }

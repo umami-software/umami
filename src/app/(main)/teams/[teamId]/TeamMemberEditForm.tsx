@@ -1,7 +1,7 @@
 import {
   Button,
+  DialogFooter,
   Form,
-  FormButtons,
   FormField,
   FormSubmitButton,
   Select,
@@ -64,12 +64,12 @@ export function TeamMemberEditForm({
         </Select>
       </FormField>
 
-      <FormButtons>
+      <DialogFooter>
         <Button variant="secondary" disabled={isPending} onClick={onClose}>
           {t(labels.cancel)}
         </Button>
         <FormSubmitButton disabled={false}>{t(labels.save)}</FormSubmitButton>
-      </FormButtons>
+      </DialogFooter>
     </Form>
   );
 }

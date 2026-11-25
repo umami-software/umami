@@ -4,6 +4,7 @@ import {
   Column,
   Dialog,
   DialogContent,
+  DialogFooter,
   DialogHeader,
   DialogTitle,
   Row,
@@ -85,13 +86,12 @@ export function TwoFactorSuccessModal({ backupCodes, onClose }: TwoFactorSuccess
               <Text>{t(labels.twoFactorSavedCodes)}</Text>
             </label>
           </Row>
-
-          <Row justifyContent="flex-end">
-            <Button onClick={onClose} disabled={!saved}>
-              {t(labels.close)}
-            </Button>
-          </Row>
         </Column>
+        <DialogFooter>
+          <Button onClick={onClose} disabled={!saved}>
+            {t(labels.close)}
+          </Button>
+        </DialogFooter>
       </DialogContent>
     </Dialog>
   );

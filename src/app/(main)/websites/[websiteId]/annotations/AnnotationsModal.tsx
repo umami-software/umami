@@ -3,6 +3,7 @@ import {
   Column,
   DataColumn,
   DataTable,
+  DialogFooter,
   Heading,
   Loading,
   Row,
@@ -157,11 +158,11 @@ export function AnnotationsModal({
         <Pager page={page} pageSize={PAGE_SIZE} count={data.count} onPageChange={setPage} />
       )}
       {onClose && (
-        <Row justifyContent="flex-end" style={{ marginTop: 'auto' }}>
+        <DialogFooter style={{ marginTop: 'auto' }}>
           <Button variant="secondary" onClick={onClose}>
             {t(labels.close)}
           </Button>
-        </Row>
+        </DialogFooter>
       )}
     </Column>
   );

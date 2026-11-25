@@ -1,7 +1,7 @@
 import {
   Button,
+  DialogFooter,
   Form,
-  FormButtons,
   FormField,
   FormSubmitButton,
   TextField,
@@ -40,12 +40,12 @@ export function TeamAddForm({
           <UserSelect buttonProps={{ style: { outline: 'none' } }} />
         </FormField>
       )}
-      <FormButtons>
+      <DialogFooter>
         <Button variant="secondary" disabled={isPending} onClick={onClose}>
           {t(labels.cancel)}
         </Button>
         <FormSubmitButton disabled={isPending}>{t(labels.save)}</FormSubmitButton>
-      </FormButtons>
+      </DialogFooter>
     </Form>
   );
 }

@@ -1,11 +1,11 @@
-import { Button, Column, Row } from '@umami/react-zen';
+import { Button, Column, DialogFooter } from '@umami/react-zen';
 import { EmptyPlaceholder } from '@/components/common/EmptyPlaceholder';
 import { useMessages } from '@/components/hooks';
 import { Link } from '@/components/icons';
 
 /**
- * Pass onClose when shown in a dialog: the buttons move to a bottom-right footer with Cancel,
- * like the link form, and Upgrade closes the dialog too.
+ * Pass onClose when shown in a dialog: the buttons move to the dialog footer with Cancel,
+ * and Upgrade closes the dialog too.
  */
 export function LinksUpgradePlaceholder({ onClose }: { onClose?: () => void }) {
   const { t, labels, messages } = useMessages();
@@ -26,14 +26,14 @@ export function LinksUpgradePlaceholder({ onClose }: { onClose?: () => void }) {
   }
 
   return (
-    <Column>
+    <Column gap="6">
       <EmptyPlaceholder icon={<Link />} title={t(messages.upgradeRequired, { plan: 'Pro' })} />
-      <Row justifyContent="flex-end" paddingTop="8" gap="3">
+      <DialogFooter>
         <Button variant="secondary" onClick={onClose}>
           {t(labels.cancel)}
         </Button>
         {upgradeButton}
-      </Row>
+      </DialogFooter>
     </Column>
   );
 }

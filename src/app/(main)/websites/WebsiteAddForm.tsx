@@ -1,4 +1,11 @@
-import { Button, Form, FormField, FormSubmitButton, Row, TextField } from '@umami/react-zen';
+import {
+  Button,
+  DialogFooter,
+  Form,
+  FormField,
+  FormSubmitButton,
+  TextField,
+} from '@umami/react-zen';
 import { useMessages, useUpdateQuery } from '@/components/hooks';
 import { DOMAIN_REGEX } from '@/lib/constants';
 
@@ -48,7 +55,7 @@ export function WebsiteAddForm({
       >
         <TextField autoComplete="off" />
       </FormField>
-      <Row justifyContent="flex-end" paddingTop="3" gap="3">
+      <DialogFooter>
         {onClose && (
           <Button variant="secondary" disabled={isPending} onClick={onClose}>
             {t(labels.cancel)}
@@ -57,7 +64,7 @@ export function WebsiteAddForm({
         <FormSubmitButton data-test="button-submit" disabled={false}>
           {t(labels.save)}
         </FormSubmitButton>
-      </Row>
+      </DialogFooter>
     </Form>
   );
 }

@@ -3,8 +3,8 @@ import {
   AlertTitle,
   Button,
   Column,
+  DialogFooter,
   Form,
-  FormButtons,
   FormField,
   FormSubmitButton,
   Icon,
@@ -43,9 +43,9 @@ export function ApiKeyAddForm({ onSave, onClose }: { onSave: () => void; onClose
           <TextField value={createdKey} readOnly style={{ flex: 1, fontFamily: 'monospace' }} />
           <CopyButton value={createdKey} label={t(labels.copy)} />
         </Row>
-        <Row justifyContent="flex-end">
+        <DialogFooter>
           <Button onClick={onClose}>{t(labels.close)}</Button>
-        </Row>
+        </DialogFooter>
       </Column>
     );
   }
@@ -55,12 +55,12 @@ export function ApiKeyAddForm({ onSave, onClose }: { onSave: () => void; onClose
       <FormField name="name" label={t(labels.name)}>
         <TextField autoComplete="off" autoFocus />
       </FormField>
-      <FormButtons>
+      <DialogFooter>
         <Button variant="secondary" disabled={isPending} onClick={onClose}>
           {t(labels.cancel)}
         </Button>
         <FormSubmitButton disabled={isPending}>{t(labels.save)}</FormSubmitButton>
-      </FormButtons>
+      </DialogFooter>
     </Form>
   );
 }

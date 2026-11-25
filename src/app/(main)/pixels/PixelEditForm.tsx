@@ -1,6 +1,7 @@
 import {
   Button,
   Column,
+  DialogFooter,
   Form,
   FormField,
   FormSubmitButton,
@@ -114,14 +115,19 @@ export function PixelEditForm({
               </Row>
             </Column>
 
-            <Row justifyContent="flex-end" paddingTop="3" gap="3">
-              {onClose && (
+            {/* In a dialog (onClose), the buttons go in its footer; on the edit page, a plain row. */}
+            {onClose ? (
+              <DialogFooter>
                 <Button variant="secondary" disabled={isPending} onClick={onClose}>
                   {t(labels.cancel)}
                 </Button>
-              )}
-              <FormSubmitButton disabled={false}>{t(labels.save)}</FormSubmitButton>
-            </Row>
+                <FormSubmitButton disabled={false}>{t(labels.save)}</FormSubmitButton>
+              </DialogFooter>
+            ) : (
+              <Row justifyContent="flex-end" paddingTop="3">
+                <FormSubmitButton disabled={false}>{t(labels.save)}</FormSubmitButton>
+              </Row>
+            )}
           </>
         );
       }}

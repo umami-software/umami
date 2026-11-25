@@ -44,7 +44,8 @@ export function SharesTable({ data = [] }: { data?: any[] }) {
         )}
       />
       <Dialog open={!!editShareId} onOpenChange={isOpen => !isOpen && setEditShareId(null)}>
-        <DialogContent showCloseButton={false}
+        <DialogContent
+          showCloseButton={false}
           style={{
             width: isMobile ? '100%' : '600px',
             height: isMobile ? '100%' : undefined,
@@ -52,7 +53,6 @@ export function SharesTable({ data = [] }: { data?: any[] }) {
             maxHeight: isMobile ? '100%' : 'min(80dvh, calc(100dvh - 40px))',
             borderRadius: isMobile ? 0 : undefined,
             overflowY: 'auto',
-            padding: '32px',
           }}
         >
           <DialogHeader>
@@ -105,12 +105,12 @@ function ShareDeleteDialog({
 
   return (
     <Dialog open={!!share} onOpenChange={isOpen => !isOpen && onClose()}>
-      <DialogContent showCloseButton={false}
+      <DialogContent
+        showCloseButton={false}
         style={{
           width: '400px',
           maxHeight: 'min(80dvh, calc(100dvh - 40px))',
           overflowY: 'auto',
-          padding: '32px',
         }}
       >
         <DialogHeader>

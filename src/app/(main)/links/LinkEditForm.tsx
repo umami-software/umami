@@ -1,5 +1,6 @@
 import {
   Button,
+  DialogFooter,
   Form,
   FormField,
   FormSubmitButton,
@@ -131,14 +132,19 @@ export function LinkEditForm({
               allowCopy
             />
 
-            <Row justifyContent="flex-end" paddingTop="3" gap="3">
-              {onClose && (
+            {/* In a dialog (onClose), the buttons go in its footer; on the edit page, a plain row. */}
+            {onClose ? (
+              <DialogFooter>
                 <Button variant="secondary" disabled={isPending} onClick={onClose}>
                   {t(labels.cancel)}
                 </Button>
-              )}
-              <FormSubmitButton>{t(labels.save)}</FormSubmitButton>
-            </Row>
+                <FormSubmitButton>{t(labels.save)}</FormSubmitButton>
+              </DialogFooter>
+            ) : (
+              <Row justifyContent="flex-end" paddingTop="3">
+                <FormSubmitButton>{t(labels.save)}</FormSubmitButton>
+              </Row>
+            )}
           </>
         );
       }}

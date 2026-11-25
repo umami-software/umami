@@ -9,6 +9,7 @@ import {
 import { type ComponentProps, type CSSProperties, type ReactNode, useState } from 'react';
 import { IconLabel } from '@/components/common/IconLabel';
 import { useMobile } from '@/components/hooks';
+import styles from './DialogButton.module.css';
 
 export interface DialogRenderProps {
   close: () => void;
@@ -66,7 +67,6 @@ export function DialogButton({
     maxWidth: 'calc(100% - 2rem)',
     maxHeight: 'min(80dvh, calc(100dvh - 40px))',
     overflowY: 'auto',
-    padding: '32px',
   };
 
   if (isMobile) {
@@ -88,7 +88,11 @@ export function DialogButton({
           <IconLabel icon={icon} label={label} />
         </DialogTrigger>
       )}
-      <DialogContent showCloseButton={false} className={dialogClassName} style={style}>
+      <DialogContent
+        showCloseButton={false}
+        className={[styles.dialog, dialogClassName].filter(Boolean).join(' ')}
+        style={style}
+      >
         {dialogTitle && (
           <DialogHeader>
             <DialogTitle>{dialogTitle}</DialogTitle>

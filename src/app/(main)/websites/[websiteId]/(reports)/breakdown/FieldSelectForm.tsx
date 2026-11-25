@@ -1,4 +1,4 @@
-import { Button, Column, Grid, List, ListItem, ListSection } from '@umami/react-zen';
+import { Button, Column, DialogFooter, List, ListItem, ListSection } from '@umami/react-zen';
 import { useState } from 'react';
 import { type FieldGroup, useFields, useMessages } from '@/components/hooks';
 
@@ -56,12 +56,12 @@ export function FieldSelectForm({
           })}
         </List>
       </Column>
-      <Grid columns="1fr 1fr" gap>
+      <DialogFooter>
         <Button variant="secondary" onClick={onClose}>
           {t(labels.cancel)}
         </Button>
         <Button onClick={handleApply}>{t(labels.apply)}</Button>
-      </Grid>
+      </DialogFooter>
     </Column>
   );
 }

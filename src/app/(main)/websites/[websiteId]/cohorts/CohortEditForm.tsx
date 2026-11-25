@@ -1,8 +1,8 @@
 import {
   Button,
   Column,
+  DialogFooter,
   Form,
-  FormButtons,
   FormField,
   FormSubmitButton,
   Grid,
@@ -86,70 +86,78 @@ export function CohortEditForm({
         const type = watch('parameters.action.type');
 
         return (
-          <Column gap="4">
-            <FormField name="name" label={t(labels.name)} rules={{ required: t(labels.required) }}>
-              <TextField autoFocus />
-            </FormField>
-
-            <Column gap="2">
-              <Label>{t(labels.action)}</Label>
-              <Grid columns={{ base: '1fr', md: '1fr 1fr' }} gap>
-                <Column>
-                  <FormField name="parameters.action.type" rules={{ required: t(labels.required) }}>
-                    <ActionSelect />
-                  </FormField>
-                </Column>
-                <Column>
-                  <FormField
-                    name="parameters.action.value"
-                    rules={{ required: t(labels.required) }}
-                  >
-                    {({ field }) => {
-                      return <LookupField websiteId={websiteId} type={type} {...field} />;
-                    }}
-                  </FormField>
-                </Column>
-              </Grid>
-            </Column>
-
-            <Column width="260px" gap="2">
-              <Label>{t(labels.dateRange)}</Label>
-              <FormField name="parameters.dateRange" rules={{ required: t(labels.required) }}>
-                {({ field }) => (
-                  <DateFilter
-                    placement="bottom start"
-                    value={field.value}
-                    onChange={field.onChange}
-                  />
-                )}
+          <>
+            <Column gap="4">
+              <FormField
+                name="name"
+                label={t(labels.name)}
+                rules={{ required: t(labels.required) }}
+              >
+                <TextField autoFocus />
               </FormField>
-            </Column>
 
-            <Column gap="2">
-              <Text weight="bold">{t(labels.filters)}</Text>
-              <FormField name="parameters.filters">
-                {({ field }) => (
-                  <FieldFilters
-                    websiteId={websiteId}
-                    exclude={['path', 'event']}
-                    value={field.value}
-                    onChange={field.onChange}
-                    match={currentMatch}
-                    onMatchChange={setCurrentMatch}
-                  />
-                )}
-              </FormField>
-            </Column>
+              <Column gap="2">
+                <Label>{t(labels.action)}</Label>
+                <Grid columns={{ base: '1fr', md: '1fr 1fr' }} gap>
+                  <Column>
+                    <FormField
+                      name="parameters.action.type"
+                      rules={{ required: t(labels.required) }}
+                    >
+                      <ActionSelect />
+                    </FormField>
+                  </Column>
+                  <Column>
+                    <FormField
+                      name="parameters.action.value"
+                      rules={{ required: t(labels.required) }}
+                    >
+                      {({ field }) => {
+                        return <LookupField websiteId={websiteId} type={type} {...field} />;
+                      }}
+                    </FormField>
+                  </Column>
+                </Grid>
+              </Column>
 
-            <FormButtons>
+              <Column width="260px" gap="2">
+                <Label>{t(labels.dateRange)}</Label>
+                <FormField name="parameters.dateRange" rules={{ required: t(labels.required) }}>
+                  {({ field }) => (
+                    <DateFilter
+                      placement="bottom start"
+                      value={field.value}
+                      onChange={field.onChange}
+                    />
+                  )}
+                </FormField>
+              </Column>
+
+              <Column gap="2">
+                <Text weight="bold">{t(labels.filters)}</Text>
+                <FormField name="parameters.filters">
+                  {({ field }) => (
+                    <FieldFilters
+                      websiteId={websiteId}
+                      exclude={['path', 'event']}
+                      value={field.value}
+                      onChange={field.onChange}
+                      match={currentMatch}
+                      onMatchChange={setCurrentMatch}
+                    />
+                  )}
+                </FormField>
+              </Column>
+            </Column>
+            <DialogFooter>
               <Button variant="secondary" disabled={isPending} onClick={onClose}>
                 {t(labels.cancel)}
               </Button>
               <FormSubmitButton data-test="button-submit" disabled={isPending}>
                 {t(labels.save)}
               </FormSubmitButton>
-            </FormButtons>
-          </Column>
+            </DialogFooter>
+          </>
         );
       }}
     </Form>

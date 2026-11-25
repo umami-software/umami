@@ -1,5 +1,5 @@
 'use client';
-import { Button, Column, Row } from '@umami/react-zen';
+import { Button, Column, DialogFooter } from '@umami/react-zen';
 import { useState } from 'react';
 import { useMessages, useMobile } from '@/components/hooks';
 import type { PropertyDataSource } from '@/components/hooks/queries/usePropertyFieldsQuery';
@@ -39,24 +39,26 @@ export function PropertyFilterEditForm({
           onChange={setFilters}
         />
       </Column>
-      <Row alignItems="center" justifyContent="space-between" gap>
-        <Button variant="secondary" onClick={() => setFilters([])}>
+      <DialogFooter>
+        <Button
+          variant="secondary"
+          onClick={() => setFilters([])}
+          style={isMobile ? undefined : { marginRight: 'auto' }}
+        >
           {t(labels.reset)}
         </Button>
-        <Row gap>
-          <Button variant="secondary" onClick={onClose}>
-            {t(labels.cancel)}
-          </Button>
-          <Button
-            onClick={() => {
-              onApply(filters);
-              onClose();
-            }}
-          >
-            {t(labels.apply)}
-          </Button>
-        </Row>
-      </Row>
+        <Button variant="secondary" onClick={onClose}>
+          {t(labels.cancel)}
+        </Button>
+        <Button
+          onClick={() => {
+            onApply(filters);
+            onClose();
+          }}
+        >
+          {t(labels.apply)}
+        </Button>
+      </DialogFooter>
     </Column>
   );
 }

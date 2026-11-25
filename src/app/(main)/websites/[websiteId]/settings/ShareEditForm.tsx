@@ -2,6 +2,7 @@ import {
   Button,
   Checkbox,
   Column,
+  DialogFooter,
   Field,
   FieldLabel,
   Form,
@@ -10,7 +11,6 @@ import {
   Grid,
   ListSeparator,
   Loading,
-  Row,
   Switch,
   Text,
   TextField,
@@ -175,7 +175,7 @@ export function ShareEditForm({
                 </Column>
               ))}
             </Grid>
-            <Row justifyContent="flex-end" paddingTop="3" gap="3">
+            <DialogFooter>
               {onClose && (
                 <Button variant="secondary" disabled={isPending} onClick={onClose}>
                   {t(labels.cancel)}
@@ -184,7 +184,7 @@ export function ShareEditForm({
               <FormSubmitButton disabled={isPending || !hasSelection || !values.name}>
                 {t(labels.save)}
               </FormSubmitButton>
-            </Row>
+            </DialogFooter>
           </Column>
         );
       }}

@@ -2,8 +2,8 @@ import {
   Button,
   Column,
   DatePicker,
+  DialogFooter,
   Form,
-  FormButtons,
   FormField,
   FormSubmitButton,
   Text,
@@ -75,47 +75,48 @@ export function AnnotationEditForm({
         const isOverLimit = noteLength > 500;
 
         return (
-          <Column gap>
-            <DatePicker
-              triggerProps={{ style: { width: '100%', maxWidth: 280 } }}
-              label={t(labels.date)}
-              value={date}
-              locale={locale}
-              onValueChange={value => {
-                if (value) {
-                  setDate(value);
-                }
-              }}
-            />
-
-            <Column gap="1">
-              <FormField
-                name="note"
-                label={t(labels.note)}
-                rules={{
-                  required: t(labels.required),
-                  maxLength: { value: 500, message: t(messages.maxLength, { n: '500' }) },
+          <>
+            <Column gap>
+              <DatePicker
+                triggerProps={{ style: { width: '100%', maxWidth: 280 } }}
+                label={t(labels.date)}
+                value={date}
+                locale={locale}
+                onValueChange={value => {
+                  if (value) {
+                    setDate(value);
+                  }
                 }}
-              >
-                <TextField asTextArea autoFocus style={{ minHeight: 128 }} />
-              </FormField>
-              <Text
-                size="sm"
-                color="muted-foreground"
-                align="right"
-                style={isOverLimit ? { color: 'var(--destructive)' } : undefined}
-              >
-                {noteLength} / 500
-              </Text>
-            </Column>
+              />
 
-            <FormButtons>
+              <Column gap="1">
+                <FormField
+                  name="note"
+                  label={t(labels.note)}
+                  rules={{
+                    required: t(labels.required),
+                    maxLength: { value: 500, message: t(messages.maxLength, { n: '500' }) },
+                  }}
+                >
+                  <TextField asTextArea autoFocus style={{ minHeight: 128 }} />
+                </FormField>
+                <Text
+                  size="sm"
+                  color="muted-foreground"
+                  align="right"
+                  style={isOverLimit ? { color: 'var(--destructive)' } : undefined}
+                >
+                  {noteLength} / 500
+                </Text>
+              </Column>
+            </Column>
+            <DialogFooter>
               <Button variant="secondary" disabled={isPending} onClick={onClose}>
                 {t(labels.cancel)}
               </Button>
               <FormSubmitButton disabled={isPending}>{t(labels.save)}</FormSubmitButton>
-            </FormButtons>
-          </Column>
+            </DialogFooter>
+          </>
         );
       }}
     </Form>

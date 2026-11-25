@@ -1,7 +1,7 @@
 import {
   Button,
+  DialogFooter,
   Form,
-  FormButtons,
   FormField,
   FormSubmitButton,
   PasswordField,
@@ -71,14 +71,14 @@ export function PasswordEditForm({
       >
         <PasswordField autoComplete="confirm-password" />
       </FormField>
-      <FormButtons>
+      <DialogFooter>
         {!required && (
           <Button variant="secondary" onClick={onClose}>
             {t(labels.cancel)}
           </Button>
         )}
         <FormSubmitButton disabled={isPending}>{t(labels.save)}</FormSubmitButton>
-      </FormButtons>
+      </DialogFooter>
     </Form>
   );
 }

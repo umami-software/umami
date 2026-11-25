@@ -1,4 +1,4 @@
-import { Box, Button, Form, FormButtons, FormSubmitButton } from '@umami/react-zen';
+import { Box, Button, DialogFooter, Form, FormSubmitButton } from '@umami/react-zen';
 import type { ComponentProps, ReactNode } from 'react';
 import { useMessages } from '@/components/hooks';
 
@@ -26,7 +26,7 @@ export function ConfirmationForm({
   return (
     <Form onSubmit={onConfirm} error={getErrorMessage(error)}>
       {message && <Box marginY="4">{message}</Box>}
-      <FormButtons>
+      <DialogFooter>
         <Button variant="secondary" onClick={onClose}>
           {t(labels.cancel)}
         </Button>
@@ -38,7 +38,7 @@ export function ConfirmationForm({
         >
           {buttonLabel || t(labels.ok)}
         </FormSubmitButton>
-      </FormButtons>
+      </DialogFooter>
     </Form>
   );
 }

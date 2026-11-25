@@ -1,8 +1,8 @@
 'use client';
 
-import { Button, Column, Label, Row, Text, TextField } from '@umami/react-zen';
+import { Button, Column, DialogFooter, Label, Text, TextField } from '@umami/react-zen';
 import { useState } from 'react';
-import { useMessages, useNavigation } from '@/components/hooks';
+import { useMessages, useMobile, useNavigation } from '@/components/hooks';
 import { ListFilter } from '@/components/icons';
 import { DialogButton } from '@/components/input/DialogButton';
 
@@ -24,6 +24,7 @@ function ReplayFilterForm({ minDuration, onClose }: { minDuration: string; onClo
   const { t, labels, messages } = useMessages();
   const { router, updateParams } = useNavigation();
   const [value, setValue] = useState(minDuration);
+  const { isMobile } = useMobile();
 
   const handleChange = (nextValue: string) => {
     if (/^\d*$/.test(nextValue)) {
@@ -62,17 +63,19 @@ function ReplayFilterForm({ minDuration, onClose }: { minDuration: string; onClo
           placeholder="10"
         />
       </Column>
-      <Row alignItems="center" justifyContent="space-between" gap>
-        <Button variant="secondary" onClick={handleReset}>
+      <DialogFooter>
+        <Button
+          variant="secondary"
+          onClick={handleReset}
+          style={isMobile ? undefined : { marginRight: 'auto' }}
+        >
           {t(labels.reset)}
         </Button>
-        <Row alignItems="center" justifyContent="flex-end" gap>
-          <Button variant="secondary" onClick={onClose}>
-            {t(labels.cancel)}
-          </Button>
-          <Button onClick={handleApply}>{t(labels.apply)}</Button>
-        </Row>
-      </Row>
+        <Button variant="secondary" onClick={onClose}>
+          {t(labels.cancel)}
+        </Button>
+        <Button onClick={handleApply}>{t(labels.apply)}</Button>
+      </DialogFooter>
     </Column>
   );
 }

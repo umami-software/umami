@@ -1,0 +1,18 @@
+/*
+ * When the dialog is taller than its content (a fixed height or min height, or full screen on
+ * mobile), the last child grows to fill it and the footer is pushed to the bottom. Only grows,
+ * never forces a shrink, so content taller than the dialog still scrolls.
+ */
+.dialog {
+  display: flex;
+  flex-direction: column;
+}
+
+.dialog > :last-child {
+  flex-grow: 1;
+}
+
+/* Out-ranks Zen's `[data-slot="dialog-content"] [data-slot="dialog-footer"]` margin shorthand. */
+.dialog[data-slot="dialog-content"] [data-slot="dialog-footer"] {
+  margin-top: auto;
+}

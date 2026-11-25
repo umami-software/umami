@@ -106,7 +106,10 @@ export function PropertyFilters({
         columns={{ base: '1fr', md: '180px 1fr' }}
         overflow="hidden"
         gapY="6"
-        style={{ minHeight: isMobile ? undefined : '100%', alignContent: 'start' }}
+        style={{
+          minHeight: isMobile ? undefined : '100%',
+          alignContent: isMobile ? 'start' : 'stretch',
+        }}
       >
         <Row display={{ base: 'flex', md: 'none' }} alignItems="flex-start">
           <DropdownMenu>

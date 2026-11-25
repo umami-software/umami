@@ -1,11 +1,11 @@
 import {
   Box,
   Button,
+  DialogFooter,
   Form,
   FormField,
   FormSubmitButton,
   Loading,
-  Row,
   Text,
   TextField,
 } from '@umami/react-zen';
@@ -154,14 +154,14 @@ export function BoardCloneForm({
                 )}
               </FormField>
             )}
-            <Row justifyContent="flex-end" paddingTop="3" gap="3">
+            <DialogFooter>
               {onClose && (
                 <Button variant="secondary" disabled={isPending} onClick={onClose}>
                   {t(labels.cancel)}
                 </Button>
               )}
               <FormSubmitButton disabled={isPending}>Clone</FormSubmitButton>
-            </Row>
+            </DialogFooter>
           </>
         );
       }}

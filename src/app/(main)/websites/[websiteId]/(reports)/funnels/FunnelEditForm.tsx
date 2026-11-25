@@ -1,8 +1,8 @@
 import {
   Button,
   Column,
+  DialogFooter,
   Form,
-  FormButtons,
   FormField,
   FormFieldArray,
   FormSubmitButton,
@@ -264,12 +264,12 @@ export function FunnelEditForm({
           );
         }}
       </FormFieldArray>
-      <FormButtons style={{ paddingBottom: '16px' }}>
+      <DialogFooter>
         <Button variant="secondary" onClick={onClose} disabled={isPending}>
           {t(labels.cancel)}
         </Button>
         <FormSubmitButton>{t(labels.save)}</FormSubmitButton>
-      </FormButtons>
+      </DialogFooter>
     </Form>
   );
 }

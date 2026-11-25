@@ -1,6 +1,7 @@
 import {
   Button,
   Column,
+  DialogFooter,
   Row,
   Select,
   SelectContent,
@@ -572,14 +573,14 @@ export function BoardComponentSelect({
         </Column>
       </Row>
 
-      <Row justifyContent="flex-end" gap="2" paddingTop="4">
+      <DialogFooter>
         <Button variant="ghost" onClick={onClose}>
           {t(labels.cancel)}
         </Button>
         <Button onClick={handleAdd} disabled={!canSave}>
           {t(labels.save)}
         </Button>
-      </Row>
+      </DialogFooter>
     </Column>
   );
 }

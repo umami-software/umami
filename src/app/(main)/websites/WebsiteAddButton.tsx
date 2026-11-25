@@ -1,4 +1,4 @@
-import { Button, Column, Row, useToast } from '@umami/react-zen';
+import { Button, Column, DialogFooter, useToast } from '@umami/react-zen';
 import { useState } from 'react';
 import { IconLabel } from '@/components/common/IconLabel';
 import { useConfig, useMessages, useModified } from '@/components/hooks';
@@ -72,11 +72,11 @@ function TrackingCodeStep({ websiteId, onClose }: { websiteId: string; onClose: 
   return (
     <Column gap="4">
       <WebsiteTrackingCode websiteId={websiteId} showHeader={false} />
-      <Row justifyContent="flex-end" paddingTop="2">
+      <DialogFooter>
         <Button variant="secondary" onClick={onClose}>
           {t(labels.close)}
         </Button>
-      </Row>
+      </DialogFooter>
     </Column>
   );
 }

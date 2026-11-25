@@ -144,12 +144,12 @@ export function BoardEditColumn({
         <Empty message="Selected item is no longer available." />
       )}
       <Dialog open={showSelect} onOpenChange={setShowSelect}>
-        <DialogContent showCloseButton={false}
+        <DialogContent
+          showCloseButton={false}
           style={{
             width: '1200px',
             maxWidth: 'calc(100vw - 40px)',
             maxHeight: 'calc(100dvh - 40px)',
-            padding: '32px',
           }}
         >
           <DialogHeader>

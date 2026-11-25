@@ -1,4 +1,12 @@
-import { Button, Column, Row, Tabs, TabsContent, TabsList, TabsTrigger } from '@umami/react-zen';
+import {
+  Button,
+  Column,
+  DialogFooter,
+  Tabs,
+  TabsContent,
+  TabsList,
+  TabsTrigger,
+} from '@umami/react-zen';
 import { useState } from 'react';
 import { useFilters, useMessages, useMobile, useNavigation } from '@/components/hooks';
 import { FieldFilters } from '@/components/input/FieldFilters';
@@ -192,22 +200,19 @@ export function FilterEditForm({ websiteId, onChange, onClose }: FilterEditFormP
           </TabsContent>
         )}
       </Tabs>
-      <Row
-        alignItems="center"
-        justifyContent="space-between"
-        gap
-        style={isMobile ? { paddingBottom: '16px' } : undefined}
-      >
-        <Button variant="secondary" onClick={handleReset}>
+      <DialogFooter>
+        <Button
+          variant="secondary"
+          onClick={handleReset}
+          style={isMobile ? undefined : { marginRight: 'auto' }}
+        >
           {t(labels.reset)}
         </Button>
-        <Row alignItems="center" justifyContent="flex-end" gridColumn="span 2" gap>
-          <Button variant="secondary" onClick={onClose}>
-            {t(labels.cancel)}
-          </Button>
-          <Button onClick={handleSave}>{t(labels.apply)}</Button>
-        </Row>
-      </Row>
+        <Button variant="secondary" onClick={onClose}>
+          {t(labels.cancel)}
+        </Button>
+        <Button onClick={handleSave}>{t(labels.apply)}</Button>
+      </DialogFooter>
     </Column>
   );
 }

@@ -81,7 +81,7 @@ export function WebsiteFilterButton({
         return (
           <>
             {(isOverview || allowBounceFilter) && (
-              <Row position="absolute" top="30px" right="30px">
+              <Row position="absolute" top="22px" right="24px">
                 <Field orientation="horizontal" style={{ marginTop: '3px' }}>
                   <Checkbox
                     id={checkboxId}

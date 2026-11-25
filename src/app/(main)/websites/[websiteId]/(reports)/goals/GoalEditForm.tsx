@@ -1,8 +1,8 @@
 import {
   Button,
   Column,
+  DialogFooter,
   Form,
-  FormButtons,
   FormField,
   FormSubmitButton,
   Grid,
@@ -109,12 +109,12 @@ export function GoalEditForm({
               )}
             </Column>
 
-            <FormButtons>
+            <DialogFooter>
               <Button variant="secondary" onClick={onClose} disabled={isPending}>
                 {t(labels.cancel)}
               </Button>
               <FormSubmitButton>{t(labels.save)}</FormSubmitButton>
-            </FormButtons>
+            </DialogFooter>
           </>
         );
       }}

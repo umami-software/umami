@@ -1,6 +1,7 @@
 import {
   Button,
   Column,
+  DialogFooter,
   Field,
   FieldLabel,
   Form,
@@ -123,14 +124,14 @@ export function SimpleShareEditForm({
               />
             </FormField>
           </Row>
-          <Row justifyContent="flex-end" paddingTop="3" gap="3">
+          <DialogFooter>
             {onClose && (
               <Button variant="secondary" disabled={isPending} onClick={onClose}>
                 {t(labels.cancel)}
               </Button>
             )}
             <FormSubmitButton disabled={isPending}>{t(labels.save)}</FormSubmitButton>
-          </Row>
+          </DialogFooter>
         </Column>
       )}
     </Form>
