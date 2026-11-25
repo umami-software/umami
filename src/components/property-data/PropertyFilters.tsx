@@ -116,7 +116,7 @@ export function PropertyFilters({
               </Icon>
             </Button>
             <Popover side="bottom" align="start">
-              <Menu style={{ maxHeight: 'calc(100vh - 2rem)', overflowY: 'auto' }}>
+              <Menu>
                 {(fields as any[]).map(field => (
                   <MenuItem
                     key={`${field.propertyName}:${field.dataType}`}
