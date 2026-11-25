@@ -97,6 +97,7 @@ export const languages = {
   'sl-SI': { label: 'Slovenščina', dateLocale: sl },
   'sv-SE': { label: 'Svenska', dateLocale: sv },
   'ta-IN': { label: 'தமிழ்', dateLocale: ta },
+  'tg-TJ': { label: 'Тоҷикӣ' },
   'th-TH': { label: 'ภาษาไทย', dateLocale: th },
   'tr-TR': { label: 'Türkçe', dateLocale: tr },
   'uk-UA': { label: 'українська', dateLocale: uk },
