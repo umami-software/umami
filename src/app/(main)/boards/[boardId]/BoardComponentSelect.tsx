@@ -1,4 +1,4 @@
-import { Button, Column, ListItem, Row, Select, Text, TextField } from '@umami/react-zen';
+import { Button, Column, ListItem, Loading, Row, Select, Text, TextField } from '@umami/react-zen';
 import { useEffect, useMemo, useState } from 'react';
 import { useApi, useEventDataPropertiesQuery, useMessages } from '@/components/hooks';
 import { useModified } from '@/components/hooks/useModified';
@@ -440,9 +440,7 @@ export function BoardComponentSelect({
                         onChange={handleConfigPatch}
                       />
                       {field.type === 'event' && isLoadingEventDataProperties && (
-                        <Text size="xs" color="muted">
-                          Loading options...
-                        </Text>
+                        <Loading icon="dots" />
                       )}
                     </>
                   )}
@@ -461,11 +459,7 @@ export function BoardComponentSelect({
                           </ListItem>
                         ))}
                       </Select>
-                      {isLoadingReportOptions && (
-                        <Text size="xs" color="muted">
-                          Loading options...
-                        </Text>
-                      )}
+                      {isLoadingReportOptions && <Loading icon="dots" />}
                       {!isLoadingReportOptions &&
                         resolvedEntityId &&
                         (reportOptionsByType[field.reportType ?? '']?.length ?? 0) === 0 && (

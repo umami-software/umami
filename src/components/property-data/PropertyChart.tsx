@@ -1,7 +1,7 @@
 'use client';
 import { Column, Grid } from '@umami/react-zen';
 import { colord } from 'colord';
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useMemo } from 'react';
 import { BarChart } from '@/components/charts/BarChart';
 import { PieChart } from '@/components/charts/PieChart';
 import { LoadingPanel } from '@/components/common/LoadingPanel';
@@ -11,19 +11,14 @@ import {
   useMessages,
   usePropertyArraySeriesQuery,
   usePropertySeriesQuery,
-  usePropertyValuesQuery,
   useTimezone,
 } from '@/components/hooks';
 import type { PropertyDataSource } from '@/components/hooks/queries/usePropertyFieldsQuery';
 import { ListTable } from '@/components/metrics/ListTable';
-import { getPropertyTableData } from '@/components/property-data/getPropertyTableData';
 import { renderDateLabels } from '@/lib/charts';
-import { CHART_COLORS, DATA_TYPE } from '@/lib/constants';
+import { CHART_COLORS } from '@/lib/constants';
 import { generateTimeSeries } from '@/lib/date';
 import type { EventDataSeriesPoint, PropertyFilter } from '@/lib/types';
-
-// Below this width the board view stacks the list above the pie, like the UTM board component.
-const STACKED_LAYOUT_WIDTH = 900;
 
 export function PropertyChart({
   source,
@@ -32,8 +27,6 @@ export function PropertyChart({
   propertyFilters = [],
   eventName,
   seriesType = 'property',
-  showSeriesChart = true,
-  limit,
 }: {
   source: PropertyDataSource;
   websiteId: string;
@@ -41,12 +34,8 @@ export function PropertyChart({
   propertyFilters?: PropertyFilter[];
   eventName?: string;
   seriesType?: 'property' | 'array';
-  showSeriesChart?: boolean;
-  limit?: number;
 }) {
   const { t, labels } = useMessages();
-  const wrapperRef = useRef<HTMLDivElement>(null);
-  const [isStacked, setIsStacked] = useState(false);
   const { timezone } = useTimezone();
   const {
     dateRange: { startDate, endDate, unit },
@@ -58,7 +47,7 @@ export function PropertyChart({
     propertyName,
     propertyFilters,
     eventName,
-    { enabled: showSeriesChart && seriesType === 'property' },
+    { enabled: seriesType === 'property' },
   );
   const arraySeriesQuery = usePropertyArraySeriesQuery(
     source,
@@ -66,46 +55,21 @@ export function PropertyChart({
     propertyName,
     propertyFilters,
     eventName,
-    { enabled: showSeriesChart && seriesType === 'array' },
+    { enabled: seriesType === 'array' },
   );
-  // Without the series chart only the value totals are needed. The values endpoint covers every
-  // data type, while the series endpoint only returns strings and booleans.
-  const valuesQuery = usePropertyValuesQuery(
-    source,
-    websiteId,
-    propertyName,
-    seriesType === 'array' ? DATA_TYPE.array : undefined,
-    propertyFilters,
-    eventName,
-    { enabled: !showSeriesChart && !!(websiteId && propertyName) },
-  );
-  const seriesQuery = seriesType === 'array' ? arraySeriesQuery : propertySeriesQuery;
-  const { data, isLoading, isFetching, error } = showSeriesChart ? seriesQuery : valuesQuery;
+  const { data, isLoading, isFetching, error } =
+    seriesType === 'array' ? arraySeriesQuery : propertySeriesQuery;
 
   const aggregated = useMemo(() => {
     if (!data) return [];
-
-    if (!showSeriesChart) {
-      return (data as { value: string; total: number }[])
-        .map(({ value, total }) => ({ value: String(value), total: Number(total) }))
-        .sort((a, b) => b.total - a.total);
-    }
-
-    const totals = (data as EventDataSeriesPoint[]).reduce(
-      (obj: Record<string, number>, { x, y }) => {
-        obj[x] = (obj[x] ?? 0) + y;
-        return obj;
-      },
-      {},
-    );
+    const totals = data.reduce((obj: Record<string, number>, { x, y }) => {
+      obj[x] = (obj[x] ?? 0) + y;
+      return obj;
+    }, {});
     return Object.entries(totals)
       .map(([value, total]) => ({ value, total: total as number }))
       .sort((a, b) => b.total - a.total);
-  }, [data, showSeriesChart]);
-  const limited = useMemo(
-    () => (limit ? aggregated.slice(0, limit) : aggregated),
-    [aggregated, limit],
-  );
+  }, [data]);
 
   const valueLabels = useMemo(() => aggregated.map(({ value }) => value), [aggregated]);
   const colorMap = useMemo(
@@ -121,16 +85,13 @@ export function PropertyChart({
   );
 
   const chartData = useMemo(() => {
-    if (!data || !showSeriesChart) return;
+    if (!data) return;
 
-    const map = (data as EventDataSeriesPoint[]).reduce(
-      (obj: Record<string, EventDataSeriesPoint[]>, { x, t, y }) => {
-        if (!obj[x]) obj[x] = [];
-        obj[x].push({ x, t, y });
-        return obj;
-      },
-      {},
-    );
+    const map = data.reduce((obj: Record<string, EventDataSeriesPoint[]>, { x, t, y }) => {
+      if (!obj[x]) obj[x] = [];
+      obj[x].push({ x, t, y });
+      return obj;
+    }, {});
 
     if (!Object.keys(map).length) {
       return {
@@ -168,69 +129,34 @@ export function PropertyChart({
         };
       }),
     };
-  }, [data, showSeriesChart, startDate, endDate, unit, dateLocale, valueLabels, colorMap]);
-
-  useEffect(() => {
-    if (showSeriesChart || typeof ResizeObserver === 'undefined' || !wrapperRef.current) {
-      return;
-    }
-
-    const element = wrapperRef.current;
-    const resizeObserver = new ResizeObserver(() => {
-      const width = element.clientWidth;
-      setIsStacked(width > 0 && width < STACKED_LAYOUT_WIDTH);
-    });
-
-    resizeObserver.observe(element);
-
-    return () => resizeObserver.disconnect();
-  }, [showSeriesChart]);
+  }, [data, startDate, endDate, unit, dateLocale, valueLabels, colorMap]);
 
   const renderXLabel = useCallback(renderDateLabels(unit, locale), [unit, locale]);
-  const tableData = useMemo(() => getPropertyTableData(aggregated, limit), [aggregated, limit]);
+  const propertySum = useMemo(
+    () => aggregated.reduce((sum, { total }) => sum + total, 0),
+    [aggregated],
+  );
+  const tableData = useMemo(() => {
+    if (!aggregated.length || propertySum === 0) return [];
+    return aggregated.map(({ value, total }) => ({
+      label: value,
+      count: total,
+      percent: 100 * (total / propertySum),
+    }));
+  }, [aggregated, propertySum]);
   const pieChartData = useMemo(() => {
-    if (!limited.length) return null;
+    if (!aggregated.length) return null;
     return {
-      labels: limited.map(({ value }) => value),
+      labels: valueLabels,
       datasets: [
         {
-          data: limited.map(({ total }) => total),
-          backgroundColor: limited.map(({ value }) => colorMap[value]),
+          data: aggregated.map(({ total }) => total),
+          backgroundColor: valueLabels.map(label => colorMap[label]),
           borderWidth: 0,
         },
       ],
     };
-  }, [limited, colorMap]);
-
-  const breakdown = (
-    <LoadingPanel
-      data={tableData}
-      isLoading={isLoading}
-      isFetching={isFetching}
-      error={error}
-      minHeight="300px"
-    >
-      <Grid
-        columns={
-          showSeriesChart
-            ? { base: '1fr', md: '1fr 1fr' }
-            : isStacked
-              ? 'minmax(0, 1fr)'
-              : 'minmax(0, 1fr) minmax(0, 1fr)'
-        }
-        gap
-        padding="2"
-        alignItems="start"
-      >
-        <ListTable title={propertyName} metric={t(labels.count)} data={tableData} />
-        {pieChartData && <PieChart type="doughnut" chartData={pieChartData} />}
-      </Grid>
-    </LoadingPanel>
-  );
-
-  if (!showSeriesChart) {
-    return <div ref={wrapperRef}>{breakdown}</div>;
-  }
+  }, [aggregated, valueLabels, colorMap]);
 
   return (
     <Column gap="6">
@@ -247,7 +173,18 @@ export function PropertyChart({
           />
         )}
       </LoadingPanel>
-      {breakdown}
+      <LoadingPanel
+        data={tableData}
+        isLoading={isLoading}
+        isFetching={isFetching}
+        error={error}
+        minHeight="300px"
+      >
+        <Grid columns={{ base: '1fr', md: '1fr 1fr' }} gap padding="2" alignItems="start">
+          <ListTable title={propertyName} metric={t(labels.count)} data={tableData} />
+          {pieChartData && <PieChart type="doughnut" chartData={pieChartData} />}
+        </Grid>
+      </LoadingPanel>
     </Column>
   );
 }
