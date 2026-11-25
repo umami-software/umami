@@ -1,6 +1,6 @@
 import { z } from 'zod';
 import { DOMAIN_REGEX } from '@/lib/constants';
-import { pagingParams, searchParams, sortingParams } from '@/lib/schema';
+import { pagingParams, searchParams, sortingParams, timezoneParam } from '@/lib/schema';
 
 export const replayConfigInputSchema = z
   .object({
@@ -19,6 +19,7 @@ export const listWebsitesQuerySchema = z
     ...pagingParams,
     ...searchParams,
     ...sortingParams,
+    timezone: timezoneParam.optional(),
     includeTeams: z.string().optional().meta({
       description: 'When present, include websites accessible through team membership.',
     }),
