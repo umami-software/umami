@@ -41,8 +41,8 @@ test.describe('Sessions', () => {
     expect(response.body.data).toHaveLength(5);
     expect(response.body.count).toBeGreaterThan(5);
     expect(response.body.data[0]).toMatchObject({ ...sessionShape, websiteId: seed.website.id });
-    // `distinctId` is omitted from rows for anonymous sessions.
-    for (const key of ['browser', 'os', 'device', 'screen', 'language', 'country']) {
+    // Anonymous sessions carry a null/empty `distinctId`.
+    for (const key of ['distinctId', 'browser', 'os', 'device', 'screen', 'language', 'country']) {
       expect(response.body.data[0]).toHaveProperty(key);
     }
     expect(response.body.data.map((s: any) => s.id)).not.toContain(second.body.data[0].id);
@@ -66,6 +66,7 @@ test.describe('Sessions', () => {
     expect(filtered.body.data.length).toBeGreaterThan(0);
     expect(filtered.body.count).toBeLessThan(unfiltered.body.count);
     expect(filtered.body.data[0]).toMatchObject({ ...sessionShape, websiteId: seed.website.id });
+    expect(filtered.body.data.every((s: any) => s.distinctId === distinctId)).toBe(true);
     expect(searched.status).toBe(200);
     expect(searched.body.data.length).toBeGreaterThan(0);
     expect(none.body.data).toHaveLength(0);
