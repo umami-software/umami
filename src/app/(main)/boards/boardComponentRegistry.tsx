@@ -8,6 +8,7 @@ import { BoardRevenueChart } from '@/app/(main)/websites/[websiteId]/(reports)/r
 import { BoardRevenueMetricsBar } from '@/app/(main)/websites/[websiteId]/(reports)/revenue/BoardRevenueMetricsBar';
 import { BoardRevenueMetricsTable } from '@/app/(main)/websites/[websiteId]/(reports)/revenue/BoardRevenueMetricsTable';
 import { BoardUTM } from '@/app/(main)/websites/[websiteId]/(reports)/utm/BoardUTM';
+import { BoardEventProperties } from '@/app/(main)/websites/[websiteId]/events/BoardEventProperties';
 import { EventsMetricsBar } from '@/app/(main)/websites/[websiteId]/events/EventsMetricsBar';
 import { BoardRealtimeActiveUsers } from '@/app/(main)/websites/[websiteId]/realtime/BoardRealtimeActiveUsers';
 import { BoardRealtimeChart } from '@/app/(main)/websites/[websiteId]/realtime/BoardRealtimeChart';
@@ -36,7 +37,7 @@ import { CURRENCIES, DEFAULT_CURRENCY } from '@/lib/constants';
 export interface ConfigField {
   name: string;
   label: string;
-  type: 'select' | 'number' | 'text' | 'textarea' | 'report';
+  type: 'select' | 'number' | 'text' | 'textarea' | 'report' | 'event' | 'eventProperty';
   options?: { label: string; value: string }[];
   optionsByEntityType?: Record<string, { label: string; value: string }[]>;
   defaultValue?: any;
@@ -372,6 +373,37 @@ const componentDefinitions: ComponentDefinition[] = [
     group: 'Events',
     icon: ChartPie,
     component: EventsChart,
+  },
+  {
+    type: 'EventProperties',
+    name: 'Event properties',
+    description: 'List and pie chart for one property of an event',
+    category: 'visualization',
+    group: 'Events',
+    icon: ChartPie,
+    component: BoardEventProperties,
+    defaultProps: { limit: 10 },
+    configFields: [
+      {
+        name: 'eventName',
+        label: 'Event',
+        type: 'event',
+        required: true,
+      },
+      {
+        name: 'propertyName',
+        label: 'Property',
+        type: 'eventProperty',
+        required: true,
+      },
+      {
+        name: 'limit',
+        label: 'Rows',
+        type: 'select',
+        options: LIMIT_OPTIONS,
+        defaultValue: '10',
+      },
+    ],
   },
 
   // Content

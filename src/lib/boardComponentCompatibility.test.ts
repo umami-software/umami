@@ -27,6 +27,12 @@ describe('isBoardComponentSupportedByEntityType', () => {
     expect(isBoardComponentSupportedByEntityType('Funnel')).toBe(true);
   });
 
+  test('limits event properties to websites', () => {
+    expect(isBoardComponentSupportedByEntityType('EventProperties', 'website')).toBe(true);
+    expect(isBoardComponentSupportedByEntityType('EventProperties', 'pixel')).toBe(false);
+    expect(isBoardComponentSupportedByEntityType('EventProperties', 'link')).toBe(false);
+  });
+
   test('returns true for components without a compatibility entry', () => {
     expect(isBoardComponentSupportedByEntityType('Unknown', 'website')).toBe(true);
   });

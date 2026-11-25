@@ -3,6 +3,7 @@ import type { BoardEntityType } from './boards';
 export const BOARD_COMPONENT_COMPATIBILITY_MATRIX = {
   EventsMetricsBar: ['website'],
   EventsChart: ['website'],
+  EventProperties: ['website'],
   Funnel: ['website'],
   Goal: ['website'],
   RealtimeActiveUsers: ['website'],
