@@ -1,6 +1,6 @@
 import { Button, Column, ListItem, Row, Select, Text, TextField } from '@umami/react-zen';
 import { useEffect, useMemo, useState } from 'react';
-import { useApi, useMessages } from '@/components/hooks';
+import { useApi, useEventDataPropertiesQuery, useMessages } from '@/components/hooks';
 import { useModified } from '@/components/hooks/useModified';
 import { LinkSelect } from '@/components/input/LinkSelect';
 import { PixelSelect } from '@/components/input/PixelSelect';
@@ -14,11 +14,13 @@ import {
   isOpenBoardType,
 } from '@/lib/boards';
 import type { BoardComponentConfig } from '@/lib/types';
+import { BoardEventPropertyField } from '../BoardEventPropertyField';
 import {
   type ComponentDefinition,
   type ConfigField,
   getComponentDefinitions,
 } from '../boardComponentRegistry';
+import { resetEventPropertyValues } from '../eventPropertyConfig';
 import { BoardComponentRenderer } from './BoardComponentRenderer';
 
 const COMPONENT_GROUP_ORDER: string[] = [
@@ -142,6 +144,17 @@ export function BoardComponentSelect({
     setConfigValues(prev => ({ ...prev, [name]: value }));
   };
 
+  const handleConfigPatch = (patch: Record<string, any>) => {
+    setConfigValues(prev => ({ ...prev, ...patch }));
+  };
+
+  // Only the website picker calls this. Loading a saved config sets the website from the effect
+  // above, so a saved event, property and dataType are kept.
+  const handleWebsiteChange = (value: string) => {
+    setConfigValues(prev => resetEventPropertyValues(prev, selectedEntityId, value));
+    setSelectedEntityId(value);
+  };
+
   const needsWebsite = selectedDef?.requiresWebsite !== false;
   const isOpenType = isOpenBoardType(boardType);
   const hasSelectedEntity = isOpenType ? !!selectedEntityId : !!boardEntityId;
@@ -188,6 +201,13 @@ export function BoardComponentSelect({
     enabled: !!resolvedEntityId && !!reportFields?.length,
   });
   const reportOptionsByType = reportOptionsData ?? {};
+  const hasEventFields = !!selectedDef?.configFields?.some(
+    field => field.type === 'event' || field.type === 'eventProperty',
+  );
+  const { data: eventDataProperties, isLoading: isLoadingEventDataProperties } =
+    useEventDataPropertiesQuery(resolvedEntityId, {
+      enabled: hasEventFields && !!resolvedEntityId,
+    });
   const hasRequiredConfig = selectedDef
     ? (selectedDef.configFields ?? []).every(field => {
         if (!field.required) {
@@ -341,7 +361,7 @@ export function BoardComponentSelect({
                     websiteId={selectedEntityId}
                     teamId={teamId}
                     placeholder={t(labels.selectWebsite)}
-                    onChange={value => setSelectedEntityId(value as string)}
+                    onChange={value => handleWebsiteChange(value as string)}
                   />
                 )}
               </Column>
@@ -409,6 +429,22 @@ export function BoardComponentSelect({
                       onChange={(value: string) => handleConfigChange(field.name, value)}
                       style={{ minHeight: 200 }}
                     />
+                  )}
+
+                  {(field.type === 'event' || field.type === 'eventProperty') && (
+                    <>
+                      <BoardEventPropertyField
+                        fieldType={field.type}
+                        data={eventDataProperties}
+                        values={configValues}
+                        onChange={handleConfigPatch}
+                      />
+                      {field.type === 'event' && isLoadingEventDataProperties && (
+                        <Text size="xs" color="muted">
+                          Loading options...
+                        </Text>
+                      )}
+                    </>
                   )}
 
                   {field.type === 'report' && (
@@ -502,7 +538,12 @@ export function BoardComponentSelect({
 
         <Column gap="3" flexGrow={1} height="100%" style={{ minWidth: 0 }}>
           <Text weight="bold">Preview</Text>
-          <Column border="left" paddingLeft="4" height="100%" style={{ minWidth: 0 }}>
+          <Column
+            border="left"
+            paddingLeft="4"
+            height="100%"
+            style={{ minWidth: 0, minHeight: 0, overflowY: 'auto' }}
+          >
             {hasSelectedEntity && previewConfig && (!needsWebsite || resolvedEntityId) ? (
               <BoardComponentRenderer
                 config={previewConfig}
