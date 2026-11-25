@@ -20,6 +20,7 @@ import {
   type ConfigField,
   getComponentDefinitions,
 } from '../boardComponentRegistry';
+import { resetEventPropertyValues } from '../eventPropertyConfig';
 import { BoardComponentRenderer } from './BoardComponentRenderer';
 
 const COMPONENT_GROUP_ORDER: string[] = [
@@ -145,6 +146,13 @@ export function BoardComponentSelect({
 
   const handleConfigPatch = (patch: Record<string, any>) => {
     setConfigValues(prev => ({ ...prev, ...patch }));
+  };
+
+  // Only the website picker calls this. Loading a saved config sets the website from the effect
+  // above, so a saved event, property and dataType are kept.
+  const handleWebsiteChange = (value: string) => {
+    setConfigValues(prev => resetEventPropertyValues(prev, selectedEntityId, value));
+    setSelectedEntityId(value);
   };
 
   const needsWebsite = selectedDef?.requiresWebsite !== false;
@@ -353,7 +361,7 @@ export function BoardComponentSelect({
                     websiteId={selectedEntityId}
                     teamId={teamId}
                     placeholder={t(labels.selectWebsite)}
-                    onChange={value => setSelectedEntityId(value as string)}
+                    onChange={value => handleWebsiteChange(value as string)}
                   />
                 )}
               </Column>

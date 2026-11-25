@@ -3,6 +3,7 @@ import {
   getEventNames,
   getPropertyDataType,
   getPropertyNames,
+  resetEventPropertyValues,
   withSavedOption,
 } from './eventPropertyConfig';
 
@@ -42,5 +43,37 @@ describe('event property options', () => {
   test('resolves the data type of a property', () => {
     expect(getPropertyDataType(data, 'link_click', 'tags')).toBe(5);
     expect(getPropertyDataType(data, 'link_click', 'amount')).toBeUndefined();
+  });
+});
+
+describe('resetEventPropertyValues', () => {
+  const saved = {
+    eventName: 'link_click',
+    propertyName: 'tags',
+    dataType: 5,
+    limit: '10',
+  };
+
+  test('clears the event, property and data type when the website changes', () => {
+    expect(resetEventPropertyValues(saved, 'website-a', 'website-b')).toEqual({ limit: '10' });
+  });
+
+  test('clears them when the first website is picked for a component', () => {
+    expect(resetEventPropertyValues(saved, undefined, 'website-a')).toEqual({ limit: '10' });
+  });
+
+  test('keeps a saved config when the website is unchanged', () => {
+    expect(resetEventPropertyValues(saved, 'website-a', 'website-a')).toBe(saved);
+  });
+
+  test('does not mutate the values it is given', () => {
+    resetEventPropertyValues(saved, 'website-a', 'website-b');
+
+    expect(saved).toEqual({
+      eventName: 'link_click',
+      propertyName: 'tags',
+      dataType: 5,
+      limit: '10',
+    });
   });
 });
