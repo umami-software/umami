@@ -29,6 +29,13 @@
   --sidebar: var(--page);
 }
 
+/* Zen's light --sidebar-accent is nearly identical to --page, so hover/active items vanish on the
+   page-colored sidebar. Derive it from --page instead. Dark mode keeps Zen's (already distinct). */
+:root:not(.dark),
+[data-palette]:not(.dark) {
+  --sidebar-accent: color-mix(in oklch, var(--page) 94%, var(--foreground));
+}
+
 /* Zen's rem-based typography and spacing assume the browser's default root size. */
 html {
   font-size: 100%;

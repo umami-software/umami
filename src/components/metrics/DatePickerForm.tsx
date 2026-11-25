@@ -1,4 +1,13 @@
-import { Button, Calendar, Column, Row, ToggleGroup, ToggleGroupItem } from '@umami/react-zen';
+import {
+  Button,
+  Calendar,
+  DialogFooter,
+  Row,
+  Tabs,
+  TabsContent,
+  TabsList,
+  TabsTrigger,
+} from '@umami/react-zen';
 import {
   endOfDay,
   isAfter,
@@ -9,7 +18,7 @@ import {
   startOfDay,
   subMonths,
 } from 'date-fns';
-import { useState } from 'react';
+import { type ReactNode, useState } from 'react';
 import { useMessages } from '@/components/hooks';
 
 const FILTER_DAY = 'filter-day';
@@ -20,9 +29,11 @@ export function DatePickerForm({
   endDate: defaultEndDate,
   minDate,
   maxDate,
+  title,
   onChange,
   onClose,
 }: {
+  title?: ReactNode;
   startDate: Date;
   endDate: Date;
   minDate?: Date;
@@ -30,13 +41,13 @@ export function DatePickerForm({
   onChange: (value: string) => void;
   onClose: () => void;
 }) {
-  const [selected, setSelected] = useState<any>([
+  const [selected, setSelected] = useState<string>(
     isValid(defaultStartDate) &&
-    isValid(defaultEndDate) &&
-    isSameDay(defaultStartDate, defaultEndDate)
+      isValid(defaultEndDate) &&
+      isSameDay(defaultStartDate, defaultEndDate)
       ? FILTER_DAY
       : FILTER_RANGE,
-  ]);
+  );
   const [date, setDate] = useState(isValid(defaultStartDate) ? defaultStartDate : new Date());
   const [startDate, setStartDate] = useState(
     isValid(defaultStartDate) ? defaultStartDate : new Date(),
@@ -58,20 +69,21 @@ export function DatePickerForm({
     ...(maxDate ? [{ after: maxDate }] : []),
   ];
 
-  const disabled = selected.includes(FILTER_DAY)
-    ? isInvalidDate ||
-      Boolean(minDate && isBefore(startOfDay(date), startOfDay(minDate))) ||
-      Boolean(maxDate && isAfter(startOfDay(date), startOfDay(maxDate)))
-    : isInvalidRange ||
-      Boolean(minDate && isBefore(startOfDay(startDate), startOfDay(minDate))) ||
-      Boolean(maxDate && isAfter(startOfDay(rangeEndDate), startOfDay(maxDate)));
+  const disabled =
+    selected === FILTER_DAY
+      ? isInvalidDate ||
+        Boolean(minDate && isBefore(startOfDay(date), startOfDay(minDate))) ||
+        Boolean(maxDate && isAfter(startOfDay(date), startOfDay(maxDate)))
+      : isInvalidRange ||
+        Boolean(minDate && isBefore(startOfDay(startDate), startOfDay(minDate))) ||
+        Boolean(maxDate && isAfter(startOfDay(rangeEndDate), startOfDay(maxDate)));
 
   const handleSave = () => {
     if (disabled) {
       return;
     }
 
-    if (selected.includes(FILTER_DAY)) {
+    if (selected === FILTER_DAY) {
       if (!isValid(date)) {
         return;
       }
@@ -85,22 +97,20 @@ export function DatePickerForm({
   };
 
   return (
-    <Column gap>
-      <Row justifyContent="center">
-        <ToggleGroup
-          value={selected}
-          onValueChange={value => {
-            if (value.length) {
-              setSelected(value);
-            }
-          }}
-        >
-          <ToggleGroupItem value={FILTER_DAY}>{t(labels.singleDay)}</ToggleGroupItem>
-          <ToggleGroupItem value={FILTER_RANGE}>{t(labels.dateRange)}</ToggleGroupItem>
-        </ToggleGroup>
-      </Row>
-      <Column>
-        {selected.includes(FILTER_DAY) && (
+    <>
+      <Tabs
+        value={selected}
+        onValueChange={value => setSelected(value as string)}
+        style={{ gap: '1.5rem' }}
+      >
+        <Row alignItems="center" justifyContent="space-between" gap wrap="wrap">
+          {title}
+          <TabsList>
+            <TabsTrigger value={FILTER_DAY}>{t(labels.singleDay)}</TabsTrigger>
+            <TabsTrigger value={FILTER_RANGE}>{t(labels.dateRange)}</TabsTrigger>
+          </TabsList>
+        </Row>
+        <TabsContent value={FILTER_DAY}>
           <Calendar
             mode="single"
             selected={date}
@@ -108,9 +118,10 @@ export function DatePickerForm({
             disabled={disabledDays}
             onSelect={setDate}
             required
+            style={{ margin: '0 auto' }}
           />
-        )}
-        {selected.includes(FILTER_RANGE) && (
+        </TabsContent>
+        <TabsContent value={FILTER_RANGE}>
           <Calendar
             mode="range"
             numberOfMonths={2}
@@ -126,16 +137,16 @@ export function DatePickerForm({
             required
             style={{ margin: '0 auto' }}
           />
-        )}
-      </Column>
-      <Row justifyContent="end" gap>
+        </TabsContent>
+      </Tabs>
+      <DialogFooter>
         <Button variant="secondary" onClick={onClose}>
           {t(labels.cancel)}
         </Button>
         <Button onClick={handleSave} disabled={disabled}>
           {t(labels.apply)}
         </Button>
-      </Row>
-    </Column>
+      </DialogFooter>
+    </>
   );
 }

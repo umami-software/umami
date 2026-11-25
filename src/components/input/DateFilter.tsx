@@ -1,6 +1,7 @@
 import {
   Dialog,
   DialogContent,
+  DialogTitle,
   Select,
   SelectContent,
   SelectGroup,
@@ -143,9 +144,18 @@ export function DateFilter({
         </SelectContent>
       </Select>
       <Dialog open={showPicker} onOpenChange={setShowPicker}>
-        <DialogContent showCloseButton={false} style={{ width: 'auto', maxWidth: 'calc(100% - 2rem)' }}>
+        <DialogContent
+          showCloseButton={false}
+          style={{
+            width: 'auto',
+            // Fits the two-month range calendar, so switching to a single day doesn't resize it.
+            minWidth: 'min(536px, calc(100% - 2rem))',
+            maxWidth: 'calc(100% - 2rem)',
+          }}
+        >
           {showPicker && (
             <DatePickerForm
+              title={<DialogTitle>{t(labels.selectDate)}</DialogTitle>}
               startDate={startDate}
               endDate={endDate}
               minDate={new Date(2000, 0, 1)}

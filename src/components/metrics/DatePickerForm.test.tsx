@@ -149,7 +149,7 @@ describe('DatePickerForm', () => {
     );
 
     const selectedDays = [
-      ...container.querySelectorAll('[aria-selected="true"]:not([data-hidden])'),
+      ...container.querySelectorAll('[data-day][aria-selected="true"]:not([data-hidden])'),
     ].map(cell => cell.getAttribute('data-day'));
 
     expect(selectedDays).toEqual([
