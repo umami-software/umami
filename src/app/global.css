@@ -12,28 +12,16 @@
   --primary-foreground: oklch(98.5% 0 0);
 }
 
-/* Page surface: the theme background tinted slightly toward the foreground, so the page is
-   never pure white/black and cards (--card) stand out from it in both light and dark mode. */
-:root,
-.dark {
-  --page: color-mix(in oklch, var(--background) 97%, var(--foreground));
-}
-
-/* Sidebar sits on the page surface (separated by its border) rather than its own tinted panel.
-   Matches Zen's palette selectors so it wins over every palette's --sidebar. */
+/* Page surface: Zen's --page (white/black) tinted slightly toward the foreground, so the page is
+   never pure white/black and cards (--card) stand out from it. Zen derives the body and sidebar
+   backgrounds from it. Matches Zen's selectors and loads after them, so it wins in every palette;
+   redeclared on .dark so a nested .dark resolves it from the dark tokens. */
 :root,
 .dark,
 [data-palette],
 [data-palette].dark,
 [data-palette] .dark {
-  --sidebar: var(--page);
-}
-
-/* Zen's light --sidebar-accent is nearly identical to --page, so hover/active items vanish on the
-   page-colored sidebar. Derive it from --page instead. Dark mode keeps Zen's (already distinct). */
-:root:not(.dark),
-[data-palette]:not(.dark) {
-  --sidebar-accent: color-mix(in oklch, var(--page) 94%, var(--foreground));
+  --page: color-mix(in oklch, var(--background) 97%, var(--foreground));
 }
 
 /* Zen's rem-based typography and spacing assume the browser's default root size. */
@@ -44,7 +32,6 @@ html {
 html,
 body {
   font-family: var(--font-sans);
-  background-color: var(--page);
   width: 100%;
   min-height: 100vh;
 }
