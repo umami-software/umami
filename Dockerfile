@@ -11,9 +11,10 @@ ARG PNPM_VERSION
 RUN apk add --no-cache libc6-compat
 WORKDIR /app
 COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
-# Workspace packages (@umami/api-client, @umami/mcp) must be present for a frozen install.
+# Workspace packages (@umami/api-client, @umami/mcp, @umami/tracker) must be present for a frozen install.
 COPY packages/api-client/package.json ./packages/api-client/
 COPY packages/mcp/package.json ./packages/mcp/
+COPY packages/tracker/package.json ./packages/tracker/
 COPY packages/mcp/bin ./packages/mcp/bin/
 RUN npm install -g pnpm@${PNPM_VERSION}
 
@@ -30,6 +31,7 @@ RUN npm install -g pnpm@${PNPM_VERSION}
 COPY --from=deps /app/node_modules ./node_modules
 COPY --from=deps /app/packages/api-client/node_modules ./packages/api-client/node_modules
 COPY --from=deps /app/packages/mcp/node_modules ./packages/mcp/node_modules
+COPY --from=deps /app/packages/tracker/node_modules ./packages/tracker/node_modules
 COPY . .
 COPY docker/proxy.ts ./src
 
