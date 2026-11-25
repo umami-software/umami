@@ -1,5 +1,4 @@
 import { List, ListItem } from '@umami/react-zen';
-import { Empty } from '@/components/common/Empty';
 import { IconLabel } from '@/components/common/IconLabel';
 import { LoadingPanel } from '@/components/common/LoadingPanel';
 import { useWebsiteSegmentsQuery } from '@/components/hooks';
@@ -25,8 +24,13 @@ export function SegmentFilters({
   };
 
   return (
-    <LoadingPanel data={data} isLoading={isLoading} isFetching={isFetching} overflowY="auto">
-      {data?.data?.length === 0 && <Empty />}
+    <LoadingPanel
+      data={data}
+      isLoading={isLoading}
+      isFetching={isFetching}
+      isEmpty={!data?.data?.length}
+      overflowY="auto"
+    >
       <List selectionMode="single" value={[segmentId]} onValueChange={ids => handleChange(ids[0])}>
         {data?.data?.map(item => {
           return (

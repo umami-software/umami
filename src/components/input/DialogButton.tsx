@@ -59,7 +59,7 @@ export function DialogButton({
   const close = () => setOpen(false);
 
   const style: CSSProperties = {
-    width,
+    width: width ?? 'fit-content',
     height,
     minWidth,
     minHeight,

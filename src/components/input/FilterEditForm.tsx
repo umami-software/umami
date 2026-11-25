@@ -88,7 +88,12 @@ export function FilterEditForm({ websiteId, onChange, onClose }: FilterEditFormP
     setCurrentCohort(type === 'cohort' ? id : undefined);
   };
 
-  const panelStyle = { overflowY: 'auto' as const, minHeight: 0 };
+  // Grid so the panel's content (including the loading state) stretches to fill the min height.
+  const panelStyle = {
+    display: 'grid',
+    overflowY: 'auto',
+    minHeight: isMobile ? 0 : 'min(400px, 50dvh)',
+  } as const;
   const mobileTabListStyle = isMobile
     ? ({
         overflowX: 'auto',
