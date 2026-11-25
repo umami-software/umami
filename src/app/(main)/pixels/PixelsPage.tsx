@@ -2,7 +2,6 @@
 import { Column } from '@umami/react-zen';
 import { PageBody } from '@/components/common/PageBody';
 import { PageHeader } from '@/components/common/PageHeader';
-import { Panel } from '@/components/common/Panel';
 import { useLoginQuery, useMessages, useNavigation, useTeamMembersQuery } from '@/components/hooks';
 import { ROLES } from '@/lib/constants';
 import { PixelAddButton } from './PixelAddButton';
@@ -26,9 +25,7 @@ export function PixelsPage() {
         <PageHeader title={t(labels.pixels)}>
           {showActions && user.role !== ROLES.viewOnly && <PixelAddButton teamId={teamId} />}
         </PageHeader>
-        <Panel>
-          <PixelsDataTable showActions={showActions} />
-        </Panel>
+        <PixelsDataTable showActions={showActions} />
       </Column>
     </PageBody>
   );

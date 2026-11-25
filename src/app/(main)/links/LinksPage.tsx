@@ -3,7 +3,6 @@ import { Column } from '@umami/react-zen';
 import { LinksDataTable } from '@/app/(main)/links/LinksDataTable';
 import { PageBody } from '@/components/common/PageBody';
 import { PageHeader } from '@/components/common/PageHeader';
-import { Panel } from '@/components/common/Panel';
 import {
   useLinksQuery,
   useLoginQuery,
@@ -44,9 +43,7 @@ export function LinksPage() {
             <LinkAddButton teamId={teamId} upgradeRequired={upgradeRequired} />
           )}
         </PageHeader>
-        <Panel>
-          {showUpgrade ? <LinksUpgradePlaceholder /> : <LinksDataTable showActions={showActions} />}
-        </Panel>
+        {showUpgrade ? <LinksUpgradePlaceholder /> : <LinksDataTable showActions={showActions} />}
       </Column>
     </PageBody>
   );

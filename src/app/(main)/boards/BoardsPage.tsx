@@ -2,7 +2,6 @@
 import { Column } from '@umami/react-zen';
 import { PageBody } from '@/components/common/PageBody';
 import { PageHeader } from '@/components/common/PageHeader';
-import { Panel } from '@/components/common/Panel';
 import { useLoginQuery, useMessages, useNavigation, useTeamMembersQuery } from '@/components/hooks';
 import { ROLES } from '@/lib/constants';
 import { BoardAddButton } from './BoardAddButton';
@@ -24,9 +23,7 @@ export function BoardsPage() {
     <PageBody>
       <Column margin="2">
         <PageHeader title={t(labels.boards)}>{canCreate && <BoardAddButton />}</PageHeader>
-        <Panel>
-          <BoardsDataTable />
-        </Panel>
+        <BoardsDataTable />
       </Column>
     </PageBody>
   );

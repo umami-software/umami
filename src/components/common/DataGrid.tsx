@@ -48,7 +48,7 @@ export interface DataGridProps {
 export function DataGrid({
   query,
   searchDelay = 600,
-  searchWidth,
+  searchWidth = 280,
   allowSearch,
   allowPaging = true,
   autoFocus,
@@ -147,7 +147,7 @@ export function DataGrid({
     <Column gap="4" minHeight="300px">
       <Row alignItems="center" wrap="wrap" gap>
         {allowSearch && (
-          <div className="w-full max-w-md" style={{ maxWidth: searchWidth }}>
+          <div style={{ width: '100%', maxWidth: searchWidth }}>
             <SearchField
               value={search}
               onSearch={handleSearch}

@@ -2,7 +2,6 @@
 import { Column } from '@umami/react-zen';
 import { PageBody } from '@/components/common/PageBody';
 import { PageHeader } from '@/components/common/PageHeader';
-import { Panel } from '@/components/common/Panel';
 import { useLoginQuery, useMessages, useNavigation, useTeamMembersQuery } from '@/components/hooks';
 import { ROLES } from '@/lib/constants';
 import { WebsiteAddButton } from './WebsiteAddButton';
@@ -26,9 +25,7 @@ export function WebsitesPage() {
         <PageHeader title={t(labels.websites)}>
           {showActions && user.role !== ROLES.viewOnly && <WebsiteAddButton teamId={teamId} />}
         </PageHeader>
-        <Panel>
-          <WebsitesDataTable teamId={teamId} showActions={showActions} />
-        </Panel>
+        <WebsitesDataTable teamId={teamId} showActions={showActions} />
       </Column>
     </PageBody>
   );

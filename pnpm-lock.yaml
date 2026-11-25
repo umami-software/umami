@@ -78,8 +78,8 @@ importers:
         specifier: workspace:*
         version: link:packages/mcp
       '@umami/react-zen':
-        specifier: ^1.0.2
-        version: 1.0.2(@date-fns/tz@1.5.0)(@types/react-dom@19.3.0(@types/react@19.3.0))(@types/react@19.3.0)(immer@11.2.10)(react-dom@19.3.1(react@19.3.1))(react@19.3.1)(tailwindcss@4.1.18)(use-sync-external-store@1.6.0(react@19.3.1))
+        specifier: ^1.0.3
+        version: 1.0.3(@date-fns/tz@1.5.0)(@types/react-dom@19.3.0(@types/react@19.3.0))(@types/react@19.3.0)(immer@11.2.10)(react-dom@19.3.1(react@19.3.1))(react@19.3.1)(tailwindcss@4.1.18)(use-sync-external-store@1.6.0(react@19.3.1))
       bcryptjs:
         specifier: ^3.0.2
         version: 3.0.3
@@ -2772,8 +2772,8 @@ packages:
   '@umami/api-client@0.81.0':
     resolution: {integrity: sha512-cwkQbe8U/m+zEgfe+nNExU0AoY8BSd+x4Qs7i5nfR2gGrktfoH6Y375e237OFYpmvhJr5BJdML1Vzuu6v7+kmw==}
 
-  '@umami/react-zen@1.0.2':
-    resolution: {integrity: sha512-I86EXI0FlvuW2KT/6sovGp04US8SteqExVdWqILl0W3UURFYE1Ctus0RnJN3TmZEEXv3qeuOBAVoWhSvSNQ0Sg==}
+  '@umami/react-zen@1.0.3':
+    resolution: {integrity: sha512-cpC85b24QGn9iti2+kY09b3zQmFvGe5bHITSYjz7nP24GblNPAfMfdTEOl4xgeXtu9/ekL0jXDhzUivnIV+P9A==}
     peerDependencies:
       react: ^18.0.0 || ^19.0.0
       react-dom: ^18.0.0 || ^19.0.0
@@ -8158,7 +8158,7 @@ snapshots:
 
   '@umami/api-client@0.81.0': {}
 
-  '@umami/react-zen@1.0.2(@date-fns/tz@1.5.0)(@types/react-dom@19.3.0(@types/react@19.3.0))(@types/react@19.3.0)(immer@11.2.10)(react-dom@19.3.1(react@19.3.1))(react@19.3.1)(tailwindcss@4.1.18)(use-sync-external-store@1.6.0(react@19.3.1))':
+  '@umami/react-zen@1.0.3(@date-fns/tz@1.5.0)(@types/react-dom@19.3.0(@types/react@19.3.0))(@types/react@19.3.0)(immer@11.2.10)(react-dom@19.3.1(react@19.3.1))(react@19.3.1)(tailwindcss@4.1.18)(use-sync-external-store@1.6.0(react@19.3.1))':
     dependencies:
       '@base-ui/react': 1.8.0(@date-fns/tz@1.5.0)(@types/react@19.3.0)(date-fns@4.4.0)(react-dom@19.3.1(react@19.3.1))(react@19.3.1)
       '@react-spring/web': 9.7.5(react-dom@19.3.1(react@19.3.1))(react@19.3.1)
