@@ -354,6 +354,9 @@
     "term": "खोज शब्द",
     "terms": "शर्तें",
     "theme": "थीम",
+    "system": "सिस्टम",
+    "light": "लाइट",
+    "dark": "डार्क",
     "this-month": "इस महीने",
     "this-week": "इस सप्ताह",
     "this-year": "इस साल",
@@ -456,6 +459,11 @@
     "deny": "अस्वीकार करें"
   },
   "message": {
+    "default-date-range-description": "डैशबोर्ड खोलने पर चुनी गई तारीख सीमा।",
+    "timezone-description": "तारीख और समय दिखाने के लिए इस्तेमाल होने वाला समय क्षेत्र।",
+    "time-format-description": "समय को 12-घंटे या 24-घंटे प्रारूप में दिखाएं।",
+    "language-description": "पूरे ऐप में इस्तेमाल होने वाली भाषा।",
+    "theme-description": "लाइट या डार्क रूप का उपयोग करें, या सिस्टम सेटिंग का पालन करें।",
     "action-confirmation": "पुष्टि करने के लिए नीचे बॉक्स में {confirmation} टाइप करें।",
     "active-users": "{x} मौजूद {x, plural, one {आगंतुक} other {आगंतुकों}}",
     "bad-request": "अमान्य अनुरोध",

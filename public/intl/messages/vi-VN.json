@@ -354,6 +354,9 @@
     "term": "Từ khóa",
     "terms": "Điều khoản",
     "theme": "Chủ đề",
+    "system": "Hệ thống",
+    "light": "Sáng",
+    "dark": "Tối",
     "this-month": "Tháng này",
     "this-week": "Tuần này",
     "this-year": "Năm nay",
@@ -456,6 +459,11 @@
     "deny": "Từ chối"
   },
   "message": {
+    "default-date-range-description": "Khoảng thời gian được chọn khi bạn mở bảng điều khiển.",
+    "timezone-description": "Múi giờ dùng để hiển thị ngày và giờ.",
+    "time-format-description": "Hiển thị giờ theo định dạng 12 giờ hoặc 24 giờ.",
+    "language-description": "Ngôn ngữ được sử dụng trong toàn bộ ứng dụng.",
+    "theme-description": "Dùng giao diện sáng hoặc tối, hoặc theo cài đặt hệ thống.",
     "action-confirmation": "Nhập {confirmation} vào ô bên dưới để xác nhận.",
     "active-users": "{x} {x, plural, other {người dùng}} đang hoạt động",
     "bad-request": "Yêu cầu không hợp lệ",

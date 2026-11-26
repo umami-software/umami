@@ -1,4 +1,5 @@
-import { Column, Label } from '@umami/react-zen';
+import { ActionForm } from '@/components/common/ActionForm';
+import { ActionList } from '@/components/common/ActionList';
 import { useLoginQuery, useMessages } from '@/components/hooks';
 import { DateRangeSetting } from './DateRangeSetting';
 import { LanguageSetting } from './LanguageSetting';
@@ -9,38 +10,35 @@ import { VersionSetting } from './VersionSetting';
 
 export function PreferenceSettings() {
   const { user } = useLoginQuery();
-  const { t, labels } = useMessages();
+  const { t, labels, messages } = useMessages();
 
   if (!user) {
     return null;
   }
 
   return (
-    <Column gap="6">
-      <Column gap="2">
-        <Label>{t(labels.defaultDateRange)}</Label>
+    <ActionList>
+      <ActionForm
+        label={t(labels.defaultDateRange)}
+        description={t(messages.defaultDateRangeDescription)}
+      >
         <DateRangeSetting />
-      </Column>
-      <Column gap="2">
-        <Label>{t(labels.timezone)}</Label>
+      </ActionForm>
+      <ActionForm label={t(labels.timezone)} description={t(messages.timezoneDescription)}>
         <TimezoneSetting />
-      </Column>
-      <Column gap="2">
-        <Label>{t(labels.timeFormat)}</Label>
+      </ActionForm>
+      <ActionForm label={t(labels.timeFormat)} description={t(messages.timeFormatDescription)}>
         <TimeFormatSetting />
-      </Column>
-      <Column gap="2">
-        <Label>{t(labels.language)}</Label>
+      </ActionForm>
+      <ActionForm label={t(labels.language)} description={t(messages.languageDescription)}>
         <LanguageSetting />
-      </Column>
-      <Column gap="2">
-        <Label>{t(labels.theme)}</Label>
+      </ActionForm>
+      <ActionForm label={t(labels.theme)} description={t(messages.themeDescription)}>
         <ThemeSetting />
-      </Column>
-      <Column gap="2">
-        <Label>{t(labels.version)}</Label>
+      </ActionForm>
+      <ActionForm label={t(labels.version)}>
         <VersionSetting />
-      </Column>
-    </Column>
+      </ActionForm>
+    </ActionList>
   );
 }

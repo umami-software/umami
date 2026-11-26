@@ -354,6 +354,9 @@
     "term": "Keresőkifejezés",
     "terms": "Kifejezések",
     "theme": "Téma",
+    "system": "Rendszer",
+    "light": "Világos",
+    "dark": "Sötét",
     "this-month": "Ezen hónap",
     "this-week": "Ezen hét",
     "this-year": "Ezen év",
@@ -456,6 +459,11 @@
     "deny": "Elutasítás"
   },
   "message": {
+    "default-date-range-description": "Az irányítópult megnyitásakor kiválasztott dátumtartomány.",
+    "timezone-description": "A dátumok és időpontok megjelenítéséhez használt időzóna.",
+    "time-format-description": "Az idő megjelenítése 12 vagy 24 órás formátumban.",
+    "language-description": "Az alkalmazásban használt nyelv.",
+    "theme-description": "Használjon világos vagy sötét megjelenést, vagy kövesse a rendszerbeállítást.",
     "action-confirmation": "Írja be a(z) {confirmation} szót az alábbi mezőbe a megerősítéshez.",
     "active-users": "{x} {x, plural, one {látogató} other {latógató}} jelenleg",
     "bad-request": "Hibás kérés",

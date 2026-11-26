@@ -354,6 +354,9 @@
     "term": "Søkeord",
     "terms": "Vilkår",
     "theme": "Tema",
+    "system": "System",
+    "light": "Lys",
+    "dark": "Mørk",
     "this-month": "Denne måneden",
     "this-week": "Denne uka",
     "this-year": "I år",
@@ -456,6 +459,11 @@
     "deny": "Avslå"
   },
   "message": {
+    "default-date-range-description": "Datoperioden som velges når du åpner et dashbord.",
+    "timezone-description": "Tidssonen som brukes til å vise datoer og klokkeslett.",
+    "time-format-description": "Vis klokkeslett i 12- eller 24-timersformat.",
+    "language-description": "Språket som brukes i hele appen.",
+    "theme-description": "Bruk lyst eller mørkt utseende, eller følg systeminnstillingen.",
     "action-confirmation": "Skriv {confirmation} i feltet nedenfor for å bekrefte.",
     "active-users": "{x} {x, plural, one {besøkende} other {besøkende}} nå",
     "bad-request": "Ugyldig forespørsel",

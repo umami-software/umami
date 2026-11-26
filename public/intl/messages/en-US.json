@@ -354,6 +354,9 @@
     "term": "Term",
     "terms": "Terms",
     "theme": "Theme",
+    "system": "System",
+    "light": "Light",
+    "dark": "Dark",
     "this-month": "This month",
     "this-week": "This week",
     "this-year": "This year",
@@ -456,6 +459,11 @@
     "deny": "Deny"
   },
   "message": {
+    "default-date-range-description": "The date range selected when you open a dashboard.",
+    "timezone-description": "The timezone used to display dates and times.",
+    "time-format-description": "Show times in 12-hour or 24-hour format.",
+    "language-description": "The language used throughout the app.",
+    "theme-description": "Use a light or dark appearance, or match your system setting.",
     "action-confirmation": "Type {confirmation} in the box below to confirm.",
     "active-users": "{x} current {x, plural, one {visitor} other {visitors}}",
     "bad-request": "Bad request",

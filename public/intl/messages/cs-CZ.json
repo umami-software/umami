@@ -354,6 +354,9 @@
     "term": "Hledaný výraz",
     "terms": "Termíny",
     "theme": "Téma",
+    "system": "Systém",
+    "light": "Světlý",
+    "dark": "Tmavý",
     "this-month": "Tento měsíc",
     "this-week": "Tento týden",
     "this-year": "Tento rok",
@@ -456,6 +459,11 @@
     "deny": "Zamítnout"
   },
   "message": {
+    "default-date-range-description": "Časové období vybrané při otevření nástěnky.",
+    "timezone-description": "Časové pásmo pro zobrazení data a času.",
+    "time-format-description": "Zobrazovat čas ve 12hodinovém nebo 24hodinovém formátu.",
+    "language-description": "Jazyk používaný v celé aplikaci.",
+    "theme-description": "Použijte světlý nebo tmavý vzhled, nebo nastavení systému.",
     "action-confirmation": "Zadejte {confirmation} do pole níže pro potvrzení.",
     "active-users": "{x} aktuálně {x, plural, one {návštěvník} other {návštěvníci}}",
     "bad-request": "Neplatný požadavek",

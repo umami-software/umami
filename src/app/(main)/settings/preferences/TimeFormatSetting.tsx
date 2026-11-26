@@ -31,7 +31,7 @@ export function TimeFormatSetting() {
   };
 
   return (
-    <Row gap>
+    <Row gap wrap="wrap">
       <Select items={items} value={timeFormat} onValueChange={val => saveTimeFormat(val as string)}>
         <SelectTrigger style={{ minWidth: '250px' }}>
           <SelectValue />

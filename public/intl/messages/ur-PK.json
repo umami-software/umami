@@ -354,6 +354,9 @@
     "term": "اصطلاح",
     "terms": "شرائط",
     "theme": "تھیم",
+    "system": "سسٹم",
+    "light": "لائٹ",
+    "dark": "ڈارک",
     "this-month": "اس مہینے",
     "this-week": "اس ہفتے",
     "this-year": "اس سال",
@@ -456,6 +459,11 @@
     "deny": "مسترد کریں"
   },
   "message": {
+    "default-date-range-description": "ڈیش بورڈ کھولنے پر منتخب ہونے والی تاریخوں کی حد۔",
+    "timezone-description": "تاریخیں اور اوقات دکھانے کے لیے استعمال ہونے والا ٹائم زون۔",
+    "time-format-description": "وقت کو 12 گھنٹے یا 24 گھنٹے کے فارمیٹ میں دکھائیں۔",
+    "language-description": "پوری ایپ میں استعمال ہونے والی زبان۔",
+    "theme-description": "لائٹ یا ڈارک ظاہری شکل استعمال کریں، یا سسٹم کی ترتیب کی پیروی کریں۔",
     "action-confirmation": "تصدیق کے لیے نیچے دیے گئے خانے میں {confirmation} ٹائپ کریں۔",
     "active-users": "{x} موجودہ {x, plural, one {زائر} other {زائرین}}",
     "bad-request": "غلط درخواست",

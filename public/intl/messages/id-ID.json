@@ -354,6 +354,9 @@
     "term": "Kata kunci",
     "terms": "Ketentuan",
     "theme": "Tema",
+    "system": "Sistem",
+    "light": "Terang",
+    "dark": "Gelap",
     "this-month": "Bulan ini",
     "this-week": "Minggu ini",
     "this-year": "Tahun ini",
@@ -456,6 +459,11 @@
     "deny": "Tolak"
   },
   "message": {
+    "default-date-range-description": "Rentang tanggal yang dipilih saat Anda membuka dasbor.",
+    "timezone-description": "Zona waktu yang digunakan untuk menampilkan tanggal dan waktu.",
+    "time-format-description": "Tampilkan waktu dalam format 12 jam atau 24 jam.",
+    "language-description": "Bahasa yang digunakan di seluruh aplikasi.",
+    "theme-description": "Gunakan tampilan terang atau gelap, atau ikuti pengaturan sistem.",
     "action-confirmation": "Ketik {confirmation} pada kotak di bawah untuk mengonfirmasi.",
     "active-users": "{x} pengunjung saat ini",
     "bad-request": "Permintaan tidak valid",

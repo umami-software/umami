@@ -354,6 +354,9 @@
     "term": "מונח חיפוש",
     "terms": "תנאים",
     "theme": "ערכת נושא",
+    "system": "מערכת",
+    "light": "בהיר",
+    "dark": "כהה",
     "this-month": "החודש",
     "this-week": "השבוע",
     "this-year": "השנה",
@@ -456,6 +459,11 @@
     "deny": "דחייה"
   },
   "message": {
+    "default-date-range-description": "טווח התאריכים שנבחר כשפותחים לוח בקרה.",
+    "timezone-description": "אזור הזמן להצגת תאריכים ושעות.",
+    "time-format-description": "הצגת שעות בפורמט של 12 או 24 שעות.",
+    "language-description": "השפה שבה נעשה שימוש בכל האפליקציה.",
+    "theme-description": "השתמשו במראה בהיר או כהה, או בהגדרת המערכת.",
     "action-confirmation": "הקלידו {confirmation} בתיבה למטה לאישור.",
     "active-users": "{x} נוכחיים {x, plural, one {מבקר} other {מבקרים}}",
     "bad-request": "בקשה שגויה",

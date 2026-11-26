@@ -354,6 +354,9 @@
     "term": "Terme",
     "terms": "Termes",
     "theme": "Tema",
+    "system": "Sistema",
+    "light": "Clar",
+    "dark": "Fosc",
     "this-month": "Aquest mes",
     "this-week": "Aquesta setmana",
     "this-year": "Aquest any",
@@ -456,6 +459,11 @@
     "deny": "Denega"
   },
   "message": {
+    "default-date-range-description": "L'interval de dates seleccionat quan obriu un tauler.",
+    "timezone-description": "La zona horària utilitzada per mostrar dates i hores.",
+    "time-format-description": "Mostra les hores en format de 12 o 24 hores.",
+    "language-description": "La llengua utilitzada a tota l'aplicació.",
+    "theme-description": "Utilitzeu un aspecte clar o fosc, o seguiu la configuració del sistema.",
     "action-confirmation": "Escrigui {confirmation} al cuadre inferior per confirmar.",
     "active-users": "{x} {x, plural, one {visitant actual} other {visitants actuals}}",
     "bad-request": "Sol·licitud incorrecta",

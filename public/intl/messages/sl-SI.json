@@ -354,6 +354,9 @@
     "term": "Iskalni izraz",
     "terms": "Pogoji",
     "theme": "Tema",
+    "system": "Sistem",
+    "light": "Svetla",
+    "dark": "Temna",
     "this-month": "Ta mesec",
     "this-week": "Ta teden",
     "this-year": "To leto",
@@ -456,6 +459,11 @@
     "deny": "Zavrni"
   },
   "message": {
+    "default-date-range-description": "Časovno obdobje, izbrano ob odprtju nadzorne plošče.",
+    "timezone-description": "Časovni pas za prikaz datumov in časov.",
+    "time-format-description": "Prikaz časa v 12- ali 24-urni obliki.",
+    "language-description": "Jezik, ki se uporablja v celotni aplikaciji.",
+    "theme-description": "Uporabite svetel ali temen videz ali sledite sistemski nastavitvi.",
     "action-confirmation": "Za potrditev v spodnje polje vnesite {confirmation}.",
     "active-users": "{x} trenutni {x, plural, one {obiskovalec} other {obiskovalcev}}",
     "bad-request": "Napačna zahteva",

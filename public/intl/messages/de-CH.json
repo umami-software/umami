@@ -354,6 +354,9 @@
     "term": "Suchbegriff",
     "terms": "Bedingige",
     "theme": "Thema",
+    "system": "System",
+    "light": "Hell",
+    "dark": "Dunkel",
     "this-month": "Dä Monet",
     "this-week": "Diä Wuuche",
     "this-year": "Das Johr",
@@ -456,6 +459,11 @@
     "deny": "Ablehnen"
   },
   "message": {
+    "default-date-range-description": "Der Datumsbereich, der beim Öffnen eines Dashboards ausgewählt ist.",
+    "timezone-description": "Die Zeitzone für die Anzeige von Datum und Uhrzeit.",
+    "time-format-description": "Uhrzeiten im 12- oder 24-Stunden-Format anzeigen.",
+    "language-description": "Die Sprache, die in der gesamten App verwendet wird.",
+    "theme-description": "Helles oder dunkles Erscheinungsbild verwenden oder der Systemeinstellung folgen.",
     "action-confirmation": "Typed Sie {confirmation} is Feld underhalb um z bestätige.",
     "active-users": "{x} {x, plural, one {aktive Bsuecher} other {aktivi Bsuecher}}",
     "bad-request": "Ungültige Anfrage",

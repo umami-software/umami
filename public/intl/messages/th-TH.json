@@ -354,6 +354,9 @@
     "term": "คำค้นหา",
     "terms": "เงื่อนไข",
     "theme": "ธีม",
+    "system": "ระบบ",
+    "light": "สว่าง",
+    "dark": "มืด",
     "this-month": "เดือนปัจจุบัน",
     "this-week": "สัปดาห์ปัจจุบัน",
     "this-year": "ปีปัจจุบัน",
@@ -456,6 +459,11 @@
     "deny": "ปฏิเสธ"
   },
   "message": {
+    "default-date-range-description": "ช่วงวันที่ที่เลือกไว้เมื่อคุณเปิดแดชบอร์ด",
+    "timezone-description": "เขตเวลาที่ใช้แสดงวันที่และเวลา",
+    "time-format-description": "แสดงเวลาในรูปแบบ 12 ชั่วโมงหรือ 24 ชั่วโมง",
+    "language-description": "ภาษาที่ใช้ทั่วทั้งแอป",
+    "theme-description": "ใช้ธีมสว่างหรือมืด หรือตามการตั้งค่าของระบบ",
     "action-confirmation": "พิมพ์ {confirmation} ในช่องด้านล่างเพื่อยืนยัน",
     "active-users": "มีผู้ใช้งาน {x} {x, plural, other {คนในขณะนี้}}",
     "bad-request": "คำขอไม่ถูกต้อง",

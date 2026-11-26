@@ -354,6 +354,9 @@
     "term": "搜索词",
     "terms": "搜索词",
     "theme": "主题",
+    "system": "跟随系统",
+    "light": "浅色",
+    "dark": "深色",
     "this-month": "本月",
     "this-week": "本周",
     "this-year": "今年",
@@ -456,6 +459,11 @@
     "deny": "拒绝"
   },
   "message": {
+    "default-date-range-description": "打开仪表板时默认选择的日期范围。",
+    "timezone-description": "用于显示日期和时间的时区。",
+    "time-format-description": "以 12 小时制或 24 小时制显示时间。",
+    "language-description": "整个应用使用的语言。",
+    "theme-description": "使用浅色或深色外观，或跟随系统设置。",
     "action-confirmation": "请在下方输入框中输入 {confirmation} 以确认操作。",
     "active-users": "当前在线 {x} 位访客",
     "bad-request": "请求错误",

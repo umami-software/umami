@@ -354,6 +354,9 @@
     "term": "Terme",
     "terms": "Mots clés",
     "theme": "Thème",
+    "system": "Système",
+    "light": "Clair",
+    "dark": "Sombre",
     "this-month": "Ce mois",
     "this-week": "Cette semaine",
     "this-year": "Cette année",
@@ -456,6 +459,11 @@
     "deny": "Refuser"
   },
   "message": {
+    "default-date-range-description": "La période sélectionnée à l'ouverture d'un tableau de bord.",
+    "timezone-description": "Le fuseau horaire utilisé pour afficher les dates et les heures.",
+    "time-format-description": "Afficher l'heure au format 12 heures ou 24 heures.",
+    "language-description": "La langue utilisée dans toute l'application.",
+    "theme-description": "Utilisez une apparence claire ou sombre, ou suivez le réglage du système.",
     "action-confirmation": "Taper {confirmation} ci-dessous pour confirmer.",
     "active-users": "{x} {x, plural, one {visiteur} other {visiteurs}} actuellement",
     "bad-request": "Requête incorrecte",

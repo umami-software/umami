@@ -354,6 +354,9 @@
     "term": "යෙදුම",
     "terms": "නියම",
     "theme": "තේමාව",
+    "system": "පද්ධතිය",
+    "light": "ආලෝකමත්",
+    "dark": "අඳුරු",
     "this-month": "මෙ මාසය",
     "this-week": "මේ සතිය",
     "this-year": "මේ අවුරුද්ද",
@@ -456,6 +459,11 @@
     "deny": "ප්‍රතික්ෂේප කරන්න"
   },
   "message": {
+    "default-date-range-description": "ඔබ උපකරණ පුවරුවක් විවෘත කරන විට තෝරා ගන්නා දින පරාසය.",
+    "timezone-description": "දින සහ වේලාවන් පෙන්වීමට භාවිත කරන වේලා කලාපය.",
+    "time-format-description": "වේලාව පැය 12 හෝ පැය 24 ආකෘතියෙන් පෙන්වන්න.",
+    "language-description": "යෙදුම පුරා භාවිත වන භාෂාව.",
+    "theme-description": "ආලෝකමත් හෝ අඳුරු පෙනුමක් භාවිත කරන්න, නැතහොත් පද්ධති සැකසුම අනුගමනය කරන්න.",
     "action-confirmation": "තහවුරු කිරීමට පහත කොටුවේ {confirmation} ටයිප් කරන්න.",
     "active-users": "{x} දැන් {x, plural, one {අමුත්තා} other {අමුත්තන්}}",
     "bad-request": "වලංගු නොවන ඉල්ලීමක්",

@@ -354,6 +354,9 @@
     "term": "Zoekterm",
     "terms": "Voorwaarden",
     "theme": "Thema",
+    "system": "Systeem",
+    "light": "Licht",
+    "dark": "Donker",
     "this-month": "Deze maand",
     "this-week": "Deze week",
     "this-year": "Dit jaar",
@@ -456,6 +459,11 @@
     "deny": "Weigeren"
   },
   "message": {
+    "default-date-range-description": "Het datumbereik dat wordt geselecteerd wanneer je een dashboard opent.",
+    "timezone-description": "De tijdzone voor het weergeven van datums en tijden.",
+    "time-format-description": "Toon tijden in 12- of 24-uursnotatie.",
+    "language-description": "De taal die in de hele app wordt gebruikt.",
+    "theme-description": "Gebruik een lichte of donkere weergave, of volg de systeeminstelling.",
     "action-confirmation": "Typ {confirmation} in het veld hieronder om te bevestigen.",
     "active-users": "{x} actieve {x, plural, one {bezoeker} other {bezoekers}}",
     "bad-request": "Ongeldig verzoek",

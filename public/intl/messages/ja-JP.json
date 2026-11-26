@@ -354,6 +354,9 @@
     "term": "検索語句",
     "terms": "利用規約",
     "theme": "テーマ",
+    "system": "システム",
+    "light": "ライト",
+    "dark": "ダーク",
     "this-month": "今月",
     "this-week": "今週",
     "this-year": "今年",
@@ -456,6 +459,11 @@
     "deny": "拒否"
   },
   "message": {
+    "default-date-range-description": "ダッシュボードを開いたときに選択される期間。",
+    "timezone-description": "日付と時刻の表示に使用するタイムゾーン。",
+    "time-format-description": "時刻を12時間形式または24時間形式で表示します。",
+    "language-description": "アプリ全体で使用される言語。",
+    "theme-description": "ライトまたはダークの外観を使用するか、システム設定に合わせます。",
     "action-confirmation": "承認する場合は、下のフォームに「{confirmation}」と入力してください。",
     "active-users": "{x} {x, plural, other {アクティブな訪問者}}",
     "bad-request": "不正なリクエスト",

@@ -354,6 +354,9 @@
     "term": "Paieškos terminas",
     "terms": "Sąlygos",
     "theme": "Spalvų tema",
+    "system": "Sistema",
+    "light": "Šviesi",
+    "dark": "Tamsi",
     "this-month": "Šis mėnuo",
     "this-week": "Ši savaitė",
     "this-year": "Šie metai",
@@ -456,6 +459,11 @@
     "deny": "Atmesti"
   },
   "message": {
+    "default-date-range-description": "Datų intervalas, pasirenkamas atidarius skydelį.",
+    "timezone-description": "Laiko juosta, naudojama datoms ir laikui rodyti.",
+    "time-format-description": "Rodyti laiką 12 arba 24 valandų formatu.",
+    "language-description": "Visoje programėlėje naudojama kalba.",
+    "theme-description": "Naudokite šviesią ar tamsią išvaizdą arba sistemos nustatymą.",
     "action-confirmation": "Įrašykite {confirmation} žemiau, kad patvirtintumėte.",
     "active-users": "{x, plural, one {# aktyvus vartotojas} other {# aktyvūs vartotojai}}",
     "bad-request": "Netinkama užklausa",

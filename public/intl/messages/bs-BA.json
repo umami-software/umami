@@ -354,6 +354,9 @@
     "term": "Pojam pretrage",
     "terms": "Pojmovi",
     "theme": "Teme",
+    "system": "Sistem",
+    "light": "Svijetla",
+    "dark": "Tamna",
     "this-month": "Ovaj mjesec",
     "this-week": "Ova sedmica",
     "this-year": "Ova godina",
@@ -456,6 +459,11 @@
     "deny": "Odbij"
   },
   "message": {
+    "default-date-range-description": "Raspon datuma odabran kada otvorite kontrolnu ploču.",
+    "timezone-description": "Vremenska zona za prikaz datuma i vremena.",
+    "time-format-description": "Prikaz vremena u 12-satnom ili 24-satnom formatu.",
+    "language-description": "Jezik koji se koristi u cijeloj aplikaciji.",
+    "theme-description": "Koristite svijetli ili tamni izgled ili pratite postavku sistema.",
     "action-confirmation": "Unesite {confirmation} ispod da potvrdite.",
     "active-users": "{x} trenutno {x, plural, one {posjetitelj} other {posjetitelja}}",
     "bad-request": "Neispravan zahtjev",

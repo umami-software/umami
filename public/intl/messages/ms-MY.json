@@ -354,6 +354,9 @@
     "term": "Kata kunci",
     "terms": "Syarat",
     "theme": "Tema",
+    "system": "Sistem",
+    "light": "Cerah",
+    "dark": "Gelap",
     "this-month": "Bulan ini",
     "this-week": "Minggu ini",
     "this-year": "Tahun ini",
@@ -456,6 +459,11 @@
     "deny": "Tolak"
   },
   "message": {
+    "default-date-range-description": "Julat tarikh yang dipilih apabila anda membuka papan pemuka.",
+    "timezone-description": "Zon waktu yang digunakan untuk memaparkan tarikh dan masa.",
+    "time-format-description": "Paparkan masa dalam format 12 jam atau 24 jam.",
+    "language-description": "Bahasa yang digunakan di seluruh aplikasi.",
+    "theme-description": "Gunakan rupa cerah atau gelap, atau ikut tetapan sistem.",
     "action-confirmation": "Taip {confirmation} dalam kotak di bawah untuk mengesahkan.",
     "active-users": "{x} semasa {x, plural, other {pelawat}}",
     "bad-request": "Permintaan tidak sah",

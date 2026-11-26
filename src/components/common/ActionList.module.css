@@ -1,0 +1,13 @@
+.list > * {
+  padding: calc(var(--spacing) * 5) calc(var(--spacing) * 3);
+}
+
+@media (min-width: 48rem) {
+  .list > * {
+    padding-inline: calc(var(--spacing) * 6);
+  }
+}
+
+.list > * + * {
+  border-top: 1px solid var(--border);
+}

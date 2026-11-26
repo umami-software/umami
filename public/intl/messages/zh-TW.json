@@ -354,6 +354,9 @@
     "term": "搜尋詞",
     "terms": "條款",
     "theme": "主題",
+    "system": "跟隨系統",
+    "light": "淺色",
+    "dark": "深色",
     "this-month": "本月",
     "this-week": "本週",
     "this-year": "今年",
@@ -456,6 +459,11 @@
     "deny": "拒絕"
   },
   "message": {
+    "default-date-range-description": "開啟儀表板時預設選取的日期範圍。",
+    "timezone-description": "用於顯示日期和時間的時區。",
+    "time-format-description": "以 12 小時制或 24 小時制顯示時間。",
+    "language-description": "整個應用程式使用的語言。",
+    "theme-description": "使用淺色或深色外觀，或跟隨系統設定。",
     "action-confirmation": "請在下方欄位輸入 {confirmation} 以確認。",
     "active-users": "目前有 {x} 位訪客",
     "bad-request": "錯誤的請求",

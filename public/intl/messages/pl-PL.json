@@ -354,6 +354,9 @@
     "term": "Wyszukiwane hasło",
     "terms": "Warunki",
     "theme": "Motyw",
+    "system": "System",
+    "light": "Jasny",
+    "dark": "Ciemny",
     "this-month": "W tym miesiącu",
     "this-week": "W tym tygodniu",
     "this-year": "W tym roku",
@@ -456,6 +459,11 @@
     "deny": "Odmów"
   },
   "message": {
+    "default-date-range-description": "Zakres dat wybierany po otwarciu pulpitu.",
+    "timezone-description": "Strefa czasowa używana do wyświetlania dat i godzin.",
+    "time-format-description": "Wyświetlaj godziny w formacie 12- lub 24-godzinnym.",
+    "language-description": "Język używany w całej aplikacji.",
+    "theme-description": "Użyj jasnego lub ciemnego wyglądu albo ustawienia systemowego.",
     "action-confirmation": "Wpisz {confirmation}, aby potwierdzić.",
     "active-users": "{x} aktualnie {x, plural, one {odwiedzający} other {odwiedzających}}",
     "bad-request": "Nieprawidłowe żądanie",

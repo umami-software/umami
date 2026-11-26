@@ -354,6 +354,9 @@
     "term": "Sökord",
     "terms": "Villkor",
     "theme": "Tema",
+    "system": "System",
+    "light": "Ljust",
+    "dark": "Mörkt",
     "this-month": "Denna månad",
     "this-week": "Denna vecka",
     "this-year": "Detta år",
@@ -456,6 +459,11 @@
     "deny": "Neka"
   },
   "message": {
+    "default-date-range-description": "Datumintervallet som väljs när du öppnar en instrumentpanel.",
+    "timezone-description": "Tidszonen som används för att visa datum och tider.",
+    "time-format-description": "Visa tider i 12- eller 24-timmarsformat.",
+    "language-description": "Språket som används i hela appen.",
+    "theme-description": "Använd ett ljust eller mörkt utseende, eller följ systeminställningen.",
     "action-confirmation": "Skriv {confirmation} i rutan nedan för att bekräfta.",
     "active-users": "{x} {x, plural, one {besökare} other {besökare}} just nu",
     "bad-request": "Ogiltig förfrågan",

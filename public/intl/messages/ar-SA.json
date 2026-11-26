@@ -354,6 +354,9 @@
     "term": "مصطلح البحث",
     "terms": "مصطلحات",
     "theme": "السمة",
+    "system": "النظام",
+    "light": "فاتح",
+    "dark": "داكن",
     "this-month": "الشهر الحالي",
     "this-week": "الاسبوع الحالي",
     "this-year": "السنة الحالية",
@@ -456,6 +459,11 @@
     "deny": "رفض"
   },
   "message": {
+    "default-date-range-description": "نطاق التاريخ المحدد عند فتح لوحة المعلومات.",
+    "timezone-description": "المنطقة الزمنية المستخدمة لعرض التواريخ والأوقات.",
+    "time-format-description": "عرض الأوقات بتنسيق 12 ساعة أو 24 ساعة.",
+    "language-description": "اللغة المستخدمة في جميع أنحاء التطبيق.",
+    "theme-description": "استخدم مظهرًا فاتحًا أو داكنًا، أو اتبع إعدادات النظام.",
     "action-confirmation": "اكتب {confirmation} في المربع أدناه للتأكيد.",
     "active-users": "{x} حاليا {x, plural, one {زائر واحد} other {زوار}}",
     "bad-request": "طلب غير صالح",

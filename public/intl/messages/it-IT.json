@@ -354,6 +354,9 @@
     "term": "Termine",
     "terms": "Termini",
     "theme": "Tema",
+    "system": "Sistema",
+    "light": "Chiaro",
+    "dark": "Scuro",
     "this-month": "Questo mese",
     "this-week": "Questa settimana",
     "this-year": "Quest'anno",
@@ -456,6 +459,11 @@
     "deny": "Nega"
   },
   "message": {
+    "default-date-range-description": "L'intervallo di date selezionato all'apertura di una dashboard.",
+    "timezone-description": "Il fuso orario usato per mostrare date e orari.",
+    "time-format-description": "Mostra gli orari nel formato a 12 o 24 ore.",
+    "language-description": "La lingua utilizzata in tutta l'app.",
+    "theme-description": "Usa un aspetto chiaro o scuro, oppure segui l'impostazione di sistema.",
     "action-confirmation": "Digita {confirmation} nella casella sottostante per confermare.",
     "active-users": "{x} {x, plural, one {visitatore} other {visitatori}} online",
     "bad-request": "Richiesta non valida",

@@ -354,6 +354,9 @@
     "term": "Término",
     "terms": "Términos",
     "theme": "Tema",
+    "system": "Sistema",
+    "light": "Claro",
+    "dark": "Oscuro",
     "this-month": "Este mes",
     "this-week": "Esta semana",
     "this-year": "Este año",
@@ -456,6 +459,11 @@
     "deny": "Denegar"
   },
   "message": {
+    "default-date-range-description": "El rango de fechas seleccionado al abrir un panel.",
+    "timezone-description": "La zona horaria utilizada para mostrar fechas y horas.",
+    "time-format-description": "Muestra las horas en formato de 12 o 24 horas.",
+    "language-description": "El idioma utilizado en toda la aplicación.",
+    "theme-description": "Usa una apariencia clara u oscura, o sigue la configuración del sistema.",
     "action-confirmation": "Escriba {confirmation} en el cuadro a continuación para confirmar.",
     "active-users": "{x} {x, plural, one {activo} other {activos}}",
     "bad-request": "Solicitud incorrecta",

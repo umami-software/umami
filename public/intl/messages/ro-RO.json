@@ -354,6 +354,9 @@
     "term": "Termen",
     "terms": "Termeni",
     "theme": "Temă",
+    "system": "Sistem",
+    "light": "Luminoasă",
+    "dark": "Întunecată",
     "this-month": "Această lună",
     "this-week": "Această săptămână",
     "this-year": "Acest an",
@@ -456,6 +459,11 @@
     "deny": "Refuză"
   },
   "message": {
+    "default-date-range-description": "Intervalul de date selectat când deschideți un tablou de bord.",
+    "timezone-description": "Fusul orar folosit pentru afișarea datelor și orelor.",
+    "time-format-description": "Afișați ora în format de 12 sau 24 de ore.",
+    "language-description": "Limba folosită în întreaga aplicație.",
+    "theme-description": "Folosiți un aspect luminos sau întunecat ori urmați setarea sistemului.",
     "action-confirmation": "Scrie {confirmation} în câmpul de mai jos pentru a confirma.",
     "active-users": "{x} {x, plural, one {vizitator activ} other {vizitatori activi}}",
     "bad-request": "Cerere incorectă",

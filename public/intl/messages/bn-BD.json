@@ -354,6 +354,9 @@
     "term": "অনুসন্ধান শব্দ",
     "terms": "শর্তাবলী",
     "theme": "থিম",
+    "system": "সিস্টেম",
+    "light": "লাইট",
+    "dark": "ডার্ক",
     "this-month": "এই মাস",
     "this-week": "এই সপ্তাহ",
     "this-year": "এই বছর",
@@ -456,6 +459,11 @@
     "deny": "প্রত্যাখ্যান করুন"
   },
   "message": {
+    "default-date-range-description": "ড্যাশবোর্ড খুললে যে তারিখের পরিসর নির্বাচিত থাকে।",
+    "timezone-description": "তারিখ ও সময় দেখাতে ব্যবহৃত টাইমজোন।",
+    "time-format-description": "সময় ১২-ঘণ্টা বা ২৪-ঘণ্টা ফরম্যাটে দেখান।",
+    "language-description": "অ্যাপ জুড়ে ব্যবহৃত ভাষা।",
+    "theme-description": "লাইট বা ডার্ক চেহারা ব্যবহার করুন, অথবা সিস্টেম সেটিং অনুসরণ করুন।",
     "action-confirmation": "নিশ্চিত করতে নিচের বক্সে {confirmation} টাইপ করুন।",
     "active-users": "{x} বর্তমান  {x, plural, one {visitor} other {visitors}}",
     "bad-request": "অবৈধ অনুরোধ",

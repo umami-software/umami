@@ -20,7 +20,7 @@ export function DateRangeSetting() {
   };
 
   return (
-    <Row gap="3">
+    <Row gap wrap="wrap">
       <DateFilter
         value={date}
         onChange={handleChange}

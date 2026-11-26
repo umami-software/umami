@@ -352,6 +352,9 @@
     "term": "عبارت جستجو",
     "terms": "شرایط",
     "theme": "تم",
+    "system": "سیستم",
+    "light": "روشن",
+    "dark": "تیره",
     "this-month": "این ماه",
     "this-week": "این هفته",
     "this-year": "امسال",
@@ -456,6 +459,11 @@
     "replay-enabled": "بازپخش فعال است"
   },
   "message": {
+    "default-date-range-description": "بازه تاریخی که هنگام باز کردن داشبورد انتخاب می‌شود.",
+    "timezone-description": "منطقه زمانی برای نمایش تاریخ‌ها و زمان‌ها.",
+    "time-format-description": "نمایش زمان در قالب ۱۲ یا ۲۴ ساعته.",
+    "language-description": "زبانی که در سراسر برنامه استفاده می‌شود.",
+    "theme-description": "از ظاهر روشن یا تیره استفاده کنید، یا از تنظیمات سیستم پیروی کنید.",
     "action-confirmation": "برای تأیید این عملیات، لطفاً {confirmation} را تایپ کنید.",
     "active-users": "{x} فعلی {x, plural, one {یک} other {از میان}}",
     "bad-request": "درخواست نامعتبر",

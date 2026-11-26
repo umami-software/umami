@@ -27,7 +27,7 @@ export function LanguageSetting() {
   };
 
   return (
-    <Row gap>
+    <Row gap wrap="wrap">
       <SearchSelect
         value={locale}
         items={items.map(item => ({ id: item, name: languages[item].label }))}

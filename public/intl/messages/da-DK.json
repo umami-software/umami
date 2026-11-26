@@ -354,6 +354,9 @@
     "term": "Søgeord",
     "terms": "Vilkår",
     "theme": "Tema",
+    "system": "System",
+    "light": "Lys",
+    "dark": "Mørk",
     "this-month": "Denne måned",
     "this-week": "Denne uge",
     "this-year": "Dette år",
@@ -456,6 +459,11 @@
     "deny": "Afvis"
   },
   "message": {
+    "default-date-range-description": "Det datointerval, der vælges, når du åbner et dashboard.",
+    "timezone-description": "Tidszonen, der bruges til at vise datoer og klokkeslæt.",
+    "time-format-description": "Vis klokkeslæt i 12- eller 24-timers format.",
+    "language-description": "Sproget, der bruges i hele appen.",
+    "theme-description": "Brug et lyst eller mørkt udseende, eller følg systemindstillingen.",
     "action-confirmation": "Skriv {confirmation} i feltet herunder for at bekræfte.",
     "active-users": "{x} nuværende {x, plural, one {bruger} other {brugere}}",
     "bad-request": "Ugyldig forespørgsel",

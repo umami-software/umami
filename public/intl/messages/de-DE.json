@@ -354,6 +354,9 @@
     "term": "Suchbegriff",
     "terms": "Bedingungen",
     "theme": "Thema",
+    "system": "System",
+    "light": "Hell",
+    "dark": "Dunkel",
     "this-month": "Diesen Monat",
     "this-week": "Diese Woche",
     "this-year": "Dieses Jahr",
@@ -456,6 +459,11 @@
     "deny": "Ablehnen"
   },
   "message": {
+    "default-date-range-description": "Der Datumsbereich, der beim Öffnen eines Dashboards ausgewählt ist.",
+    "timezone-description": "Die Zeitzone für die Anzeige von Datum und Uhrzeit.",
+    "time-format-description": "Uhrzeiten im 12- oder 24-Stunden-Format anzeigen.",
+    "language-description": "Die Sprache, die in der gesamten App verwendet wird.",
+    "theme-description": "Helles oder dunkles Erscheinungsbild verwenden oder der Systemeinstellung folgen.",
     "action-confirmation": "Schreibe {confirmation} in die Box zur bestätigung.",
     "active-users": "{x} {x, plural, one {aktiver Besucher} other {aktive Besucher}}",
     "bad-request": "Ungültige Anfrage",

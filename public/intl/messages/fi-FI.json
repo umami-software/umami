@@ -354,6 +354,9 @@
     "term": "Hakusana",
     "terms": "Ehdot",
     "theme": "Teema",
+    "system": "Järjestelmä",
+    "light": "Vaalea",
+    "dark": "Tumma",
     "this-month": "Tämä kuukausi",
     "this-week": "Tämä viikko",
     "this-year": "Tämä vuosi",
@@ -456,6 +459,11 @@
     "deny": "Hylkää"
   },
   "message": {
+    "default-date-range-description": "Aikaväli, joka valitaan, kun avaat koontinäytön.",
+    "timezone-description": "Aikavyöhyke päivämäärien ja aikojen näyttämiseen.",
+    "time-format-description": "Näytä ajat 12 tai 24 tunnin muodossa.",
+    "language-description": "Sovelluksessa käytettävä kieli.",
+    "theme-description": "Käytä vaaleaa tai tummaa ulkoasua tai seuraa järjestelmän asetusta.",
     "action-confirmation": "Kirjoita {confirmation} alla olevaan kenttään vahvistaaksesi.",
     "active-users": "{x} {x, plural, one {vierailija} other {vierailijaa}}",
     "bad-request": "Virheellinen pyyntö",

@@ -354,6 +354,9 @@
     "term": "Arama terimi",
     "terms": "Koşullar",
     "theme": "Tema",
+    "system": "Sistem",
+    "light": "Açık",
+    "dark": "Koyu",
     "this-month": "Bu ay",
     "this-week": "Bu hafta",
     "this-year": "Bu yıl",
@@ -456,6 +459,11 @@
     "deny": "Reddet"
   },
   "message": {
+    "default-date-range-description": "Bir panoyu açtığınızda seçili olan tarih aralığı.",
+    "timezone-description": "Tarih ve saatleri göstermek için kullanılan saat dilimi.",
+    "time-format-description": "Saatleri 12 veya 24 saat biçiminde gösterin.",
+    "language-description": "Uygulama genelinde kullanılan dil.",
+    "theme-description": "Açık veya koyu görünüm kullanın ya da sistem ayarını izleyin.",
     "action-confirmation": "Onaylamak için aşağıdaki kutuya {confirmation} yazın.",
     "active-users": "{x} aktif ziyaretçi",
     "bad-request": "Geçersiz istek",

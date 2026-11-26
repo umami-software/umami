@@ -23,7 +23,7 @@ export function TimezoneSetting() {
   };
 
   return (
-    <Row gap>
+    <Row gap wrap="wrap">
       <SearchSelect
         value={timezone}
         items={items.map(item => ({ id: item, name: item }))}

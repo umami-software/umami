@@ -354,6 +354,9 @@
     "term": "Qidiruv iborasi",
     "terms": "Shartlar",
     "theme": "Mavzu",
+    "system": "Tizim",
+    "light": "Yorug‘",
+    "dark": "Qorong‘i",
     "this-month": "Shu oy",
     "this-week": "Shu hafta",
     "this-year": "Shu yil",
@@ -456,6 +459,11 @@
     "deny": "Rad etish"
   },
   "message": {
+    "default-date-range-description": "Boshqaruv panelini ochganingizda tanlanadigan sana oralig‘i.",
+    "timezone-description": "Sana va vaqtlarni ko‘rsatish uchun ishlatiladigan vaqt mintaqasi.",
+    "time-format-description": "Vaqtni 12 yoki 24 soatlik formatda ko‘rsatish.",
+    "language-description": "Ilova bo‘ylab ishlatiladigan til.",
+    "theme-description": "Yorug‘ yoki qorong‘i ko‘rinishdan foydalaning yoki tizim sozlamasiga amal qiling.",
     "action-confirmation": "Tasdiqlash uchun pastdagi qutiga **{confirmation}** yozing.",
     "active-users": "{x} joriy {x, plural, one {tashrif buyuruvchi} other {tashrif buyuruvchilar}}",
     "bad-request": "Notoʻgʻri soʻrov",

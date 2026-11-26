@@ -354,6 +354,9 @@
     "term": "Leitorð",
     "terms": "Treytir",
     "theme": "Evni",
+    "system": "Kervi",
+    "light": "Ljóst",
+    "dark": "Myrkt",
     "this-month": "Hendan mánan",
     "this-week": "Hesa vikuna",
     "this-year": "Hetta árið",
@@ -456,6 +459,11 @@
     "deny": "Nokta"
   },
   "message": {
+    "default-date-range-description": "Dagfestingarbilið, sum er valt, tá ið tú letur eitt yvirlit upp.",
+    "timezone-description": "Tíðarøkið, sum verður brúkt til at vísa dagfestingar og tíðir.",
+    "time-format-description": "Vís tíðir í 12- ella 24-tíma sniði.",
+    "language-description": "Málið, sum verður brúkt í allari appini.",
+    "theme-description": "Brúka ljósa ella myrka útsjónd, ella fylg kervisstillingini.",
     "action-confirmation": "Skriva {confirmation} í teigin niðanfyri at vátta.",
     "active-users": "{x} í løtuni {x, plural, one {vitjandi} other { vitjandi }}",
     "bad-request": "Ógild umbøn",

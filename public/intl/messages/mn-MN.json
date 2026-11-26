@@ -354,6 +354,9 @@
     "term": "Хайлтын нөхцөл",
     "terms": "Нөхцөл",
     "theme": "Загвар",
+    "system": "Систем",
+    "light": "Цайвар",
+    "dark": "Бараан",
     "this-month": "Энэ сар",
     "this-week": "Энэ долоо хоног",
     "this-year": "Энэ жил",
@@ -456,6 +459,11 @@
     "deny": "Татгалзах"
   },
   "message": {
+    "default-date-range-description": "Хянах самбарыг нээхэд сонгогдох огнооны хүрээ.",
+    "timezone-description": "Огноо, цагийг харуулахад ашиглах цагийн бүс.",
+    "time-format-description": "Цагийг 12 эсвэл 24 цагийн форматаар харуулах.",
+    "language-description": "Аппликейшн даяар ашиглагдах хэл.",
+    "theme-description": "Цайвар эсвэл бараан загвар ашиглах, эсвэл системийн тохиргоог дагах.",
     "action-confirmation": "Доорх хэсэгт {confirmation} гэж бичин баталгаажуулна уу.",
     "active-users": "одоо {x} {x, plural, one {зочин} other {зочин}} байна",
     "bad-request": "Буруу хүсэлт",

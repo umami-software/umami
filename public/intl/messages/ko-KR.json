@@ -354,6 +354,9 @@
     "term": "검색어",
     "terms": "약관",
     "theme": "테마",
+    "system": "시스템",
+    "light": "라이트",
+    "dark": "다크",
     "this-month": "이번 달",
     "this-week": "이번 주",
     "this-year": "올해",
@@ -456,6 +459,11 @@
     "deny": "거부"
   },
   "message": {
+    "default-date-range-description": "대시보드를 열 때 선택되는 기간입니다.",
+    "timezone-description": "날짜와 시간을 표시하는 데 사용되는 시간대입니다.",
+    "time-format-description": "시간을 12시간 또는 24시간 형식으로 표시합니다.",
+    "language-description": "앱 전체에서 사용되는 언어입니다.",
+    "theme-description": "라이트 또는 다크 모드를 사용하거나 시스템 설정을 따릅니다.",
     "action-confirmation": "확인을 위해 아래 상자에 {confirmation}을(를) 입력하세요.",
     "active-users": "현재 방문자 {x}명",
     "bad-request": "잘못된 요청",

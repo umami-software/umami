@@ -354,6 +354,9 @@
     "term": "Търсене",
     "terms": "Термини",
     "theme": "Тема",
+    "system": "Системна",
+    "light": "Светла",
+    "dark": "Тъмна",
     "this-month": "Този месец",
     "this-week": "Тази седмица",
     "this-year": "Тази година",
@@ -456,6 +459,11 @@
     "deny": "Откажи"
   },
   "message": {
+    "default-date-range-description": "Периодът, избран при отваряне на табло.",
+    "timezone-description": "Часовата зона за показване на дати и часове.",
+    "time-format-description": "Показване на часа в 12- или 24-часов формат.",
+    "language-description": "Езикът, използван в цялото приложение.",
+    "theme-description": "Използвайте светъл или тъмен изглед или следвайте системната настройка.",
     "action-confirmation": "Въведете {confirmation} в полето по-долу, за да потвърдите.",
     "active-users": "{x} {x, plural, one {активен един} other {активни други}}",
     "bad-request": "Невалидна заявка",
