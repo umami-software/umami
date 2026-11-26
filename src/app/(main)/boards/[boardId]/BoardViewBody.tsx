@@ -9,7 +9,7 @@ export function BoardViewBody({ showEntityBadges = true }: { showEntityBadges?: 
   return (
     <Column gap="3">
       {rows.map(row => (
-        <BoardViewRow key={row.id} columns={row.columns} showEntityBadges={showEntityBadges} />
+        <BoardViewRow key={row.id} row={row} showEntityBadges={showEntityBadges} />
       ))}
     </Column>
   );
