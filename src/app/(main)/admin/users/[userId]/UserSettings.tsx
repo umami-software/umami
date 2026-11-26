@@ -1,4 +1,5 @@
 import { Column, Tabs, TabsContent, TabsList, TabsTrigger } from '@umami/react-zen';
+import { Panel } from '@/components/common/Panel';
 import { useMessages } from '@/components/hooks';
 import { UserEditForm } from './UserEditForm';
 import { UserTwoFactorSettings } from './UserTwoFactorSettings';
@@ -15,14 +16,22 @@ export function UserSettings({ userId }: { userId: string }) {
           <TabsTrigger value="websites">{t(labels.websites)}</TabsTrigger>
           <TabsTrigger value="security">{t(labels.security)}</TabsTrigger>
         </TabsList>
-        <TabsContent value="details" style={{ width: 500 }}>
-          <UserEditForm userId={userId} />
+        <TabsContent value="details">
+          <Panel>
+            <Column maxWidth="500px">
+              <UserEditForm userId={userId} />
+            </Column>
+          </Panel>
         </TabsContent>
         <TabsContent value="websites">
           <UserWebsites userId={userId} />
         </TabsContent>
-        <TabsContent value="security" style={{ width: 500 }}>
-          <UserTwoFactorSettings userId={userId} />
+        <TabsContent value="security">
+          <Panel>
+            <Column maxWidth="500px">
+              <UserTwoFactorSettings userId={userId} />
+            </Column>
+          </Panel>
         </TabsContent>
       </Tabs>
     </Column>

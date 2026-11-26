@@ -137,68 +137,64 @@ function SearchConsoleReport({ websiteId }: { websiteId: string }) {
             </LoadingPanel>
           </Panel>
           <GridRow layout="two">
-            <Panel>
-              <Tabs>
-                <Row alignItems="center" justifyContent="space-between" gap="3" wrap="wrap">
-                  <Heading size="2xl">{t('searches')}</Heading>
-                  <TabsList>
-                    <TabsTrigger className="text-xs" value="query">
-                      {t('queries')}
-                    </TabsTrigger>
-                    <TabsTrigger className="text-xs" value="page">
-                      {t('pages')}
-                    </TabsTrigger>
-                  </TabsList>
-                </Row>
-                <TabsContent value="query">
-                  <SearchConsoleTable
-                    websiteId={websiteId}
-                    startDate={startDate}
-                    endDate={endDate}
-                    dimension="query"
-                  />
-                </TabsContent>
-                <TabsContent value="page">
-                  <SearchConsoleTable
-                    websiteId={websiteId}
-                    startDate={startDate}
-                    endDate={endDate}
-                    dimension="page"
-                  />
-                </TabsContent>
-              </Tabs>
-            </Panel>
-            <Panel>
-              <Tabs>
-                <Row alignItems="center" justifyContent="space-between" gap="3" wrap="wrap">
-                  <Heading size="2xl">{tm(labels.audience)}</Heading>
-                  <TabsList>
-                    <TabsTrigger className="text-xs" value="country">
-                      {t('countries')}
-                    </TabsTrigger>
-                    <TabsTrigger className="text-xs" value="device">
-                      {t('devices')}
-                    </TabsTrigger>
-                  </TabsList>
-                </Row>
-                <TabsContent value="country">
-                  <SearchConsoleTable
-                    websiteId={websiteId}
-                    startDate={startDate}
-                    endDate={endDate}
-                    dimension="country"
-                  />
-                </TabsContent>
-                <TabsContent value="device">
-                  <SearchConsoleTable
-                    websiteId={websiteId}
-                    startDate={startDate}
-                    endDate={endDate}
-                    dimension="device"
-                  />
-                </TabsContent>
-              </Tabs>
-            </Panel>
+            <Tabs>
+              <Row alignItems="center" justifyContent="space-between" gap="3" wrap="wrap">
+                <Heading size="2xl">{t('searches')}</Heading>
+                <TabsList>
+                  <TabsTrigger className="text-xs" value="query">
+                    {t('queries')}
+                  </TabsTrigger>
+                  <TabsTrigger className="text-xs" value="page">
+                    {t('pages')}
+                  </TabsTrigger>
+                </TabsList>
+              </Row>
+              <TabsContent value="query">
+                <SearchConsoleTable
+                  websiteId={websiteId}
+                  startDate={startDate}
+                  endDate={endDate}
+                  dimension="query"
+                />
+              </TabsContent>
+              <TabsContent value="page">
+                <SearchConsoleTable
+                  websiteId={websiteId}
+                  startDate={startDate}
+                  endDate={endDate}
+                  dimension="page"
+                />
+              </TabsContent>
+            </Tabs>
+            <Tabs>
+              <Row alignItems="center" justifyContent="space-between" gap="3" wrap="wrap">
+                <Heading size="2xl">{tm(labels.audience)}</Heading>
+                <TabsList>
+                  <TabsTrigger className="text-xs" value="country">
+                    {t('countries')}
+                  </TabsTrigger>
+                  <TabsTrigger className="text-xs" value="device">
+                    {t('devices')}
+                  </TabsTrigger>
+                </TabsList>
+              </Row>
+              <TabsContent value="country">
+                <SearchConsoleTable
+                  websiteId={websiteId}
+                  startDate={startDate}
+                  endDate={endDate}
+                  dimension="country"
+                />
+              </TabsContent>
+              <TabsContent value="device">
+                <SearchConsoleTable
+                  websiteId={websiteId}
+                  startDate={startDate}
+                  endDate={endDate}
+                  dimension="device"
+                />
+              </TabsContent>
+            </Tabs>
           </GridRow>
         </>
       )}

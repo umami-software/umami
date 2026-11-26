@@ -64,20 +64,18 @@ export function ReplaysPage({ websiteId }: { websiteId: string }) {
   return (
     <Column gap="3">
       <WebsiteControls websiteId={websiteId} />
-      <Panel>
-        <Tabs value={tab} onValueChange={handleSelect}>
-          <TabsList>
-            <TabsTrigger value="replays">{t(labels.replays)}</TabsTrigger>
-            <TabsTrigger value="saved">{t(labels.saved)}</TabsTrigger>
-          </TabsList>
-          <TabsContent value="replays">
-            <ReplaysDataTable websiteId={websiteId} />
-          </TabsContent>
-          <TabsContent value="saved">
-            <SavedReplaysDataTable websiteId={websiteId} />
-          </TabsContent>
-        </Tabs>
-      </Panel>
+      <Tabs value={tab} onValueChange={handleSelect}>
+        <TabsList>
+          <TabsTrigger value="replays">{t(labels.replays)}</TabsTrigger>
+          <TabsTrigger value="saved">{t(labels.saved)}</TabsTrigger>
+        </TabsList>
+        <TabsContent value="replays">
+          <ReplaysDataTable websiteId={websiteId} />
+        </TabsContent>
+        <TabsContent value="saved">
+          <SavedReplaysDataTable websiteId={websiteId} />
+        </TabsContent>
+      </Tabs>
       <SessionModal websiteId={websiteId} />
       <ReplayModal websiteId={websiteId} replaySource={tab} />
     </Column>

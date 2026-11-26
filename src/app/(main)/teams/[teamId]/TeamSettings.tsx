@@ -39,13 +39,13 @@ export function TeamSettings({ teamId }: { teamId: string }) {
       <Panel>
         <TeamEditForm teamId={teamId} allowEdit={canEdit} showAccessCode={canEdit} />
       </Panel>
-      <Panel>
+      <Column gap>
         <Row alignItems="center" justifyContent="space-between">
           <Heading size="base">{t(labels.members)}</Heading>
           {isAdmin && <TeamsMemberAddButton teamId={teamId} />}
         </Row>
         <TeamMembersDataTable teamId={teamId} allowEdit={canEdit} />
-      </Panel>
+      </Column>
       {isAdmin && (
         <Panel>
           <TeamTwoFactorSettings teamId={teamId} />

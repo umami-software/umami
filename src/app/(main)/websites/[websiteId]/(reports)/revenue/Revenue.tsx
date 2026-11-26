@@ -207,10 +207,10 @@ export function Revenue({ websiteId, startDate, endDate, unit }: RevenueProps) {
                 </Panel>
               </GridRow>
             </Grid>
-            <Panel>
+            <Column gap>
               <Heading size="2xl">{t(labels.customers)}</Heading>
               <RevenueSessionsDataTable websiteId={websiteId} currency={currency} />
-            </Panel>
+            </Column>
           </Column>
         )}
       </LoadingPanel>

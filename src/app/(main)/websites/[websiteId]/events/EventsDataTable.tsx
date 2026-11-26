@@ -1,4 +1,4 @@
-import { Column, Tabs, TabsList, TabsTrigger } from '@umami/react-zen';
+import { Tabs, TabsList, TabsTrigger } from '@umami/react-zen';
 import { useState } from 'react';
 import { DataGrid } from '@/components/common/DataGrid';
 import { useMessages, useWebsiteEventsQuery } from '@/components/hooks';
@@ -15,20 +15,27 @@ export function EventsDataTable({ websiteId }: { websiteId: string }) {
     { id: 'events', label: t(labels.events) },
   ];
 
+  const renderActions = () => (
+    <Tabs value={view} onValueChange={value => setView(String(value))}>
+      <TabsList className="border">
+        {tabs.map(({ id, label }) => (
+          <TabsTrigger key={id} value={id}>
+            {label}
+          </TabsTrigger>
+        ))}
+      </TabsList>
+    </Tabs>
+  );
+
   return (
-    <Column gap="3" minWidth="0">
-      <Tabs value={view} onValueChange={value => setView(String(value))}>
-        <TabsList>
-          {tabs.map(({ id, label }) => (
-            <TabsTrigger key={id} value={id}>
-              {label}
-            </TabsTrigger>
-          ))}
-        </TabsList>
-      </Tabs>
-      <DataGrid query={query} allowSearch={true} autoFocus={false} allowPaging={true}>
-        {({ data }) => <EventsTable data={data} />}
-      </DataGrid>
-    </Column>
+    <DataGrid
+      query={query}
+      allowSearch={true}
+      autoFocus={false}
+      allowPaging={true}
+      renderActions={renderActions}
+    >
+      {({ data }) => <EventsTable data={data} />}
+    </DataGrid>
   );
 }

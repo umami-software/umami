@@ -2,7 +2,6 @@ import { Column, Grid, Row } from '@umami/react-zen';
 import { useMemo, useState } from 'react';
 import { ComboBox } from '@/components/common/ComboBox';
 import { LoadingPanel } from '@/components/common/LoadingPanel';
-import { Panel } from '@/components/common/Panel';
 import {
   useMessages,
   usePropertyFieldsQuery,
@@ -152,14 +151,12 @@ export function SessionProperties({ websiteId }: { websiteId: string }) {
           />
         )}
         {propertyName && (
-          <Panel minWidth="0" width="100%">
-            <SessionDataPivotTable
-              websiteId={websiteId}
-              propertyName={propertyName}
-              propertyKeys={scopedPropertyKeys}
-              propertyFilters={propertyFilters}
-            />
-          </Panel>
+          <SessionDataPivotTable
+            websiteId={websiteId}
+            propertyName={propertyName}
+            propertyKeys={scopedPropertyKeys}
+            propertyFilters={propertyFilters}
+          />
         )}
       </Column>
     </LoadingPanel>

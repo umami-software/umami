@@ -3,7 +3,6 @@ import { Column, Field, FieldLabel, Grid, Row, Text } from '@umami/react-zen';
 import { useMemo, useState } from 'react';
 import { ComboBox } from '@/components/common/ComboBox';
 import { LoadingPanel } from '@/components/common/LoadingPanel';
-import { Panel } from '@/components/common/Panel';
 import { SearchSelect } from '@/components/common/SearchSelect';
 import { useEventDataPropertiesQuery, useMessages } from '@/components/hooks';
 import { PropertyChart } from '@/components/property-data/PropertyChart';
@@ -201,13 +200,11 @@ export function EventProperties({ websiteId }: { websiteId: string }) {
           </Column>
         )}
         {eventName && (
-          <Panel minWidth="0" width="100%">
-            <EventDataPivotTable
-              websiteId={websiteId}
-              eventName={eventName}
-              eventFilters={propertyFilters}
-            />
-          </Panel>
+          <EventDataPivotTable
+            websiteId={websiteId}
+            eventName={eventName}
+            eventFilters={propertyFilters}
+          />
         )}
       </Column>
     </LoadingPanel>

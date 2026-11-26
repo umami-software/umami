@@ -28,8 +28,9 @@ export function PropertyFilterEditForm({
   const [filters, setFilters] = useState<PropertyFilter[]>(value);
 
   return (
-    <Column width={isMobile ? 'auto' : '800px'} gap="6">
-      <Column minHeight="400px">
+    <Column width={isMobile ? 'auto' : '800px'} gap="6" style={{ flex: 1, minHeight: 0 }}>
+      {/* Grows to fill the dialog; as a grid, it stretches the filters to its full height. */}
+      <Column style={{ display: 'grid', flex: 1, minHeight: isMobile ? 0 : 'min(400px, 50dvh)' }}>
         <PropertyFilters
           source={source}
           websiteId={websiteId}

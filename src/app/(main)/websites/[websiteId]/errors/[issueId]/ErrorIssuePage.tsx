@@ -7,6 +7,7 @@ import {
   DataColumn,
   DataTable,
   Grid,
+  Heading,
   Label,
   Row,
   Text,
@@ -108,7 +109,8 @@ export function ErrorIssuePage({ websiteId, issueId }: { websiteId: string; issu
           </Column>
         )}
       </LoadingPanel>
-      <Panel title={t('occurrences')}>
+      <Column gap>
+        <Heading>{t('occurrences')}</Heading>
         <ErrorFilters websiteId={websiteId} issueId={issueId} />
         <DataGrid query={events} allowSearch searchWidth={280} autoFocus={false}>
           {({ data }) => (
@@ -148,7 +150,7 @@ export function ErrorIssuePage({ websiteId, issueId }: { websiteId: string; issu
             </DataTable>
           )}
         </DataGrid>
-      </Panel>
+      </Column>
       {eventId && (
         <LoadingPanel
           data={event}

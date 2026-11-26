@@ -269,83 +269,79 @@ function GoogleAdsReport({ websiteId }: { websiteId: string }) {
               )}
             </LoadingPanel>
           </Panel>
-          <Panel>
-            <GoogleAdsConversionsTable
-              websiteId={websiteId}
-              startDate={startDate}
-              endDate={endDate}
-            />
-          </Panel>
+          <GoogleAdsConversionsTable
+            websiteId={websiteId}
+            startDate={startDate}
+            endDate={endDate}
+          />
           <Heading size="2xl">{t('ads')}</Heading>
-          <Panel>
-            <Tabs value={tab} onValueChange={setTab}>
-              <TabsList>
-                <TabsTrigger value="campaign">{t('campaigns')}</TabsTrigger>
-                <TabsTrigger value="ad_group">{t('adGroups')}</TabsTrigger>
-                <TabsTrigger value="keyword">{t('keywords')}</TabsTrigger>
-                <TabsTrigger value="search_term">{t('searchTerms')}</TabsTrigger>
-                <TabsTrigger value="landing_page">{t('landingPages')}</TabsTrigger>
-                <TabsTrigger value="device">{t('devices')}</TabsTrigger>
-                <TabsTrigger value="network">{t('networks')}</TabsTrigger>
-              </TabsList>
-              <TabsContent value="campaign">
+          <Tabs value={tab} onValueChange={setTab}>
+            <TabsList>
+              <TabsTrigger value="campaign">{t('campaigns')}</TabsTrigger>
+              <TabsTrigger value="ad_group">{t('adGroups')}</TabsTrigger>
+              <TabsTrigger value="keyword">{t('keywords')}</TabsTrigger>
+              <TabsTrigger value="search_term">{t('searchTerms')}</TabsTrigger>
+              <TabsTrigger value="landing_page">{t('landingPages')}</TabsTrigger>
+              <TabsTrigger value="device">{t('devices')}</TabsTrigger>
+              <TabsTrigger value="network">{t('networks')}</TabsTrigger>
+            </TabsList>
+            <TabsContent value="campaign">
+              <GoogleAdsTable
+                websiteId={websiteId}
+                startDate={startDate}
+                endDate={endDate}
+                dimension="campaign"
+                onDrill={row => {
+                  setFilter({ type: 'campaign', id: row.key, name: row.name });
+                  setTab('ad_group');
+                }}
+              />
+            </TabsContent>
+            <TabsContent value="ad_group">
+              <GoogleAdsTable
+                websiteId={websiteId}
+                startDate={startDate}
+                endDate={endDate}
+                dimension="ad_group"
+                filter={filter}
+                onClearFilter={() => setFilter(null)}
+                onDrill={row => {
+                  setFilter({ type: 'adGroup', id: row.key, name: row.name });
+                  setTab('keyword');
+                }}
+              />
+            </TabsContent>
+            <TabsContent value="keyword">
+              <GoogleAdsTable
+                websiteId={websiteId}
+                startDate={startDate}
+                endDate={endDate}
+                dimension="keyword"
+                filter={filter}
+                onClearFilter={() => setFilter(null)}
+              />
+            </TabsContent>
+            <TabsContent value="search_term">
+              <GoogleAdsTable
+                websiteId={websiteId}
+                startDate={startDate}
+                endDate={endDate}
+                dimension="search_term"
+                filter={filter}
+                onClearFilter={() => setFilter(null)}
+              />
+            </TabsContent>
+            {(['landing_page', 'device', 'network'] as const).map(dimension => (
+              <TabsContent key={dimension} value={dimension}>
                 <GoogleAdsTable
                   websiteId={websiteId}
                   startDate={startDate}
                   endDate={endDate}
-                  dimension="campaign"
-                  onDrill={row => {
-                    setFilter({ type: 'campaign', id: row.key, name: row.name });
-                    setTab('ad_group');
-                  }}
+                  dimension={dimension}
                 />
               </TabsContent>
-              <TabsContent value="ad_group">
-                <GoogleAdsTable
-                  websiteId={websiteId}
-                  startDate={startDate}
-                  endDate={endDate}
-                  dimension="ad_group"
-                  filter={filter}
-                  onClearFilter={() => setFilter(null)}
-                  onDrill={row => {
-                    setFilter({ type: 'adGroup', id: row.key, name: row.name });
-                    setTab('keyword');
-                  }}
-                />
-              </TabsContent>
-              <TabsContent value="keyword">
-                <GoogleAdsTable
-                  websiteId={websiteId}
-                  startDate={startDate}
-                  endDate={endDate}
-                  dimension="keyword"
-                  filter={filter}
-                  onClearFilter={() => setFilter(null)}
-                />
-              </TabsContent>
-              <TabsContent value="search_term">
-                <GoogleAdsTable
-                  websiteId={websiteId}
-                  startDate={startDate}
-                  endDate={endDate}
-                  dimension="search_term"
-                  filter={filter}
-                  onClearFilter={() => setFilter(null)}
-                />
-              </TabsContent>
-              {(['landing_page', 'device', 'network'] as const).map(dimension => (
-                <TabsContent key={dimension} value={dimension}>
-                  <GoogleAdsTable
-                    websiteId={websiteId}
-                    startDate={startDate}
-                    endDate={endDate}
-                    dimension={dimension}
-                  />
-                </TabsContent>
-              ))}
-            </Tabs>
-          </Panel>
+            ))}
+          </Tabs>
         </>
       )}
     </Column>

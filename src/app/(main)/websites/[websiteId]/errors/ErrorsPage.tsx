@@ -1,12 +1,11 @@
 'use client';
-import { Column, DataColumn, DataTable, Text } from '@umami/react-zen';
+import { Column, DataColumn, DataTable, Heading, Text } from '@umami/react-zen';
 import { useTranslations } from 'next-intl';
 import { Badge } from '@/components/common/Badge';
 import { DataGrid } from '@/components/common/DataGrid';
 import { DateDistance } from '@/components/common/DateDistance';
 import Link from '@/components/common/Link';
 import { LoadingPanel } from '@/components/common/LoadingPanel';
-import { Panel } from '@/components/common/Panel';
 import { useNavigation } from '@/components/hooks/useNavigation';
 import { WebsiteControls } from '../WebsiteControls';
 import { ErrorFilters, ErrorStats, useErrorFilters, useErrorQuery } from './ErrorShared';
@@ -29,7 +28,8 @@ export function ErrorsPage({ websiteId }: { websiteId: string }) {
       >
         {stats.data && <ErrorStats data={stats.data} {...filters} />}
       </LoadingPanel>
-      <Panel title={t('title')}>
+      <Column gap>
+        <Heading>{t('title')}</Heading>
         <ErrorFilters websiteId={websiteId} />
         <DataGrid query={issues} allowSearch searchWidth={280} autoFocus={false}>
           {({ data }) => (
@@ -79,7 +79,7 @@ export function ErrorsPage({ websiteId }: { websiteId: string }) {
             </DataTable>
           )}
         </DataGrid>
-      </Panel>
+      </Column>
     </Column>
   );
 }

@@ -100,7 +100,7 @@ export function FilterBar({ websiteId }: { websiteId?: string }) {
   }
 
   return (
-    <Row gap alignItems="center" justifyContent="space-between" paddingY="2" wrap="wrap">
+    <Row gap alignItems="center" justifyContent="space-between" wrap="wrap">
       <Row alignItems="center" gap="2" wrap="wrap" width={{ base: '100%', md: 'auto' }}>
         {segment && !isLoading && (
           <FilterItem

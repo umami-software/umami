@@ -27,6 +27,11 @@ export function BreakdownPage({ websiteId }: { websiteId: string }) {
         <FieldsButton value={fields} onChange={setFields} />
       </Row>
       <Panel
+        backgroundColor="page"
+        border="none"
+        borderRadius="none"
+        paddingX="0"
+        paddingY="0"
         height="900px"
         overflow="auto"
         allowFullscreen
