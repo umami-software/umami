@@ -16212,6 +16212,7 @@ export interface operations {
         };
         content: {
           'application/json': {
+            grandTotal: number;
             total: number;
             value: string;
           }[];
