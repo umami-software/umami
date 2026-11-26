@@ -8,6 +8,7 @@ afterEach(() => {
   delete (document as Document & { readyState?: DocumentReadyState }).readyState;
   delete (document as Document & { visibilityState?: DocumentVisibilityState }).visibilityState;
   delete (document as Document & { prerendering?: boolean }).prerendering;
+  delete (navigator as Navigator & { globalPrivacyControl?: unknown }).globalPrivacyControl;
   vi.restoreAllMocks();
   vi.unstubAllGlobals();
   vi.resetModules();
@@ -943,4 +944,107 @@ test('records LCP and FCP relative to activation for a prerendered page', async 
     .pop()?.payload;
 
   expect(perfPayload).toMatchObject({ fcp: 0, lcp: 300 });
+});
+
+test('disables tracking when data-global-privacy-control is true and navigator.globalPrivacyControl is true', async () => {
+  const script = document.createElement('script');
+  script.src = 'https://analytics.example.com/script.js';
+  script.dataset.websiteId = 'website-id';
+  script.dataset.globalPrivacyControl = 'true';
+
+  Object.defineProperties(document, {
+    currentScript: { configurable: true, value: script },
+    readyState: { configurable: true, value: 'complete' },
+  });
+
+  Object.defineProperty(navigator, 'globalPrivacyControl', {
+    configurable: true,
+    value: true,
+  });
+
+  const fetchMock = vi.fn().mockResolvedValue({ json: vi.fn().mockResolvedValue({}) });
+  vi.stubGlobal('fetch', fetchMock);
+
+  await import('./index');
+  await window.umami.track('test-event');
+
+  expect(fetchMock).not.toHaveBeenCalled();
+});
+
+test('disables tracking when data-do-not-track is true and navigator.globalPrivacyControl is true', async () => {
+  const script = document.createElement('script');
+  script.src = 'https://analytics.example.com/script.js';
+  script.dataset.websiteId = 'website-id';
+  script.dataset.doNotTrack = 'true';
+
+  Object.defineProperties(document, {
+    currentScript: { configurable: true, value: script },
+    readyState: { configurable: true, value: 'complete' },
+  });
+
+  Object.defineProperty(navigator, 'globalPrivacyControl', {
+    configurable: true,
+    value: true,
+  });
+
+  const fetchMock = vi.fn().mockResolvedValue({ json: vi.fn().mockResolvedValue({}) });
+  vi.stubGlobal('fetch', fetchMock);
+
+  await import('./index');
+  await window.umami.track('test-event');
+
+  expect(fetchMock).not.toHaveBeenCalled();
+});
+
+test('allows tracking when data-global-privacy-control is true but navigator.globalPrivacyControl is not true', async () => {
+  const script = document.createElement('script');
+  script.src = 'https://analytics.example.com/script.js';
+  script.dataset.websiteId = 'website-id';
+  script.dataset.globalPrivacyControl = 'true';
+
+  Object.defineProperties(document, {
+    currentScript: { configurable: true, value: script },
+    readyState: { configurable: true, value: 'complete' },
+  });
+
+  Object.defineProperty(navigator, 'globalPrivacyControl', {
+    configurable: true,
+    value: false,
+  });
+
+  const fetchMock = vi.fn().mockResolvedValue({ json: vi.fn().mockResolvedValue({}) });
+  vi.stubGlobal('fetch', fetchMock);
+
+  await import('./index');
+  await window.umami.track('test-event');
+
+  expect(fetchMock).toHaveBeenCalled();
+});
+
+test('disables tracking when umamiConfig.globalPrivacyControl is true and navigator.globalPrivacyControl is true', async () => {
+  const script = document.createElement('script');
+  script.src = 'https://analytics.example.com/script.js';
+  script.dataset.websiteId = 'website-id';
+
+  Object.defineProperties(document, {
+    currentScript: { configurable: true, value: script },
+    readyState: { configurable: true, value: 'complete' },
+  });
+
+  window.umamiConfig = {
+    globalPrivacyControl: true,
+  };
+
+  Object.defineProperty(navigator, 'globalPrivacyControl', {
+    configurable: true,
+    value: true,
+  });
+
+  const fetchMock = vi.fn().mockResolvedValue({ json: vi.fn().mockResolvedValue({}) });
+  vi.stubGlobal('fetch', fetchMock);
+
+  await import('./index');
+  await window.umami.track('test-event');
+
+  expect(fetchMock).not.toHaveBeenCalled();
 });

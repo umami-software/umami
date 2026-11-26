@@ -26,6 +26,7 @@ export const operations = [
         '200': jsonResponse(
           z.union([
             z.object({ beep: z.string() }),
+            z.object({ disabled: z.literal(true) }),
             z.object({ cache: z.string(), sessionId: z.string(), visitId: z.string() }),
             z.object({
               ok: z.literal(true),
