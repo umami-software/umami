@@ -32,10 +32,10 @@ async function relationalQuery(websiteId: string, filters: QueryFilters) {
   return rawQuery(
     `
     WITH prefix AS (
-      select case when website_event.utm_medium LIKE 'p%' OR
-          website_event.utm_medium LIKE '%ppc%' OR
-          website_event.utm_medium LIKE '%retargeting%' OR
-          website_event.utm_medium LIKE '%paid%' then 'paid' else 'organic' end prefix,
+      select case when website_event.utm_medium ilike '%cp%' OR
+          website_event.utm_medium ilike '%ppc%' OR
+          website_event.utm_medium ilike '%retargeting%' OR
+          website_event.utm_medium ilike '%paid%' then 'paid' else 'organic' end prefix,
           website_event.referrer_domain,
           website_event.url_query,
           website_event.utm_medium,
