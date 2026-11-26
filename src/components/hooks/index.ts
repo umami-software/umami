@@ -79,6 +79,8 @@ export * from './queries/useUsersQuery';
 export * from './queries/useUserTeamsQuery';
 export * from './queries/useUserWebsitesQuery';
 export * from './queries/useUTMMetricsQuery';
+export * from './queries/useWebsiteAlertsQuery';
+export * from './queries/useWebsiteFiltersQuery';
 export * from './queries/useWebsiteAnnotationsQuery';
 export * from './queries/useWebsiteCohortQuery';
 export * from './queries/useWebsiteCohortsQuery';

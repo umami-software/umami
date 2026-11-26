@@ -122,6 +122,9 @@ model Website {
   sessionReplays      SessionReplay[]
   sessionReplaysSaved SessionReplaySaved[]
   heatmapEvents       HeatmapEvent[]
+  alertRules          AlertRule[]
+  alertNotifications  AlertNotification[]
+  filterRules         WebsiteFilterRule[]
 
   @@index([userId])
   @@index([teamId])
@@ -581,4 +584,66 @@ model ErrorRateLimit {
   count     Int
 
   @@map("error_rate_limit")
+}
+
+
+model AlertRule {
+  id              String    @id() @map("alert_rule_id") @db.Uuid
+  websiteId       String    @map("website_id") @db.Uuid
+  name            String    @db.VarChar(100)
+  type            String    @db.VarChar(50)
+  metric          String    @db.VarChar(50)
+  threshold       Decimal   @db.Decimal(19, 4)
+  windowMinutes   Int       @default(15) @map("window_minutes") @db.Integer
+  channelType     String    @map("channel_type") @db.VarChar(50)
+  channelConfig   Json      @map("channel_config")
+  isEnabled       Boolean   @default(true) @map("is_enabled")
+  lastTriggeredAt DateTime? @map("last_triggered_at") @db.Timestamptz(6)
+  createdAt       DateTime? @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt       DateTime? @updatedAt @map("updated_at") @db.Timestamptz(6)
+
+  website            Website             @relation(fields: [websiteId], references: [id], onDelete: Cascade)
+  alertNotifications AlertNotification[]
+
+  @@index([websiteId])
+  @@index([websiteId, isEnabled])
+  @@map("alert_rule")
+}
+
+model AlertNotification {
+  id          String    @id() @map("notification_id") @db.Uuid
+  alertRuleId String    @map("alert_rule_id") @db.Uuid
+  websiteId   String    @map("website_id") @db.Uuid
+  title       String    @db.VarChar(200)
+  message     String    @db.VarChar(2000)
+  channelType String    @map("channel_type") @db.VarChar(50)
+  status      String    @db.VarChar(20)
+  details     Json?     @map("details")
+  createdAt   DateTime? @default(now()) @map("created_at") @db.Timestamptz(6)
+
+  website   Website   @relation(fields: [websiteId], references: [id], onDelete: Cascade)
+  alertRule AlertRule @relation(fields: [alertRuleId], references: [id], onDelete: Cascade)
+
+  @@index([websiteId, createdAt])
+  @@index([alertRuleId, createdAt])
+  @@map("alert_notification")
+}
+
+
+model WebsiteFilterRule {
+  id          String    @id() @map("rule_id") @db.Uuid
+  websiteId   String    @map("website_id") @db.Uuid
+  name        String    @db.VarChar(100)
+  type        String    @db.VarChar(50)
+  value       String    @db.VarChar(500)
+  action      String    @default("exclude") @db.VarChar(50)
+  isEnabled   Boolean   @default(true) @map("is_enabled")
+  createdAt   DateTime? @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt   DateTime? @updatedAt @map("updated_at") @db.Timestamptz(6)
+
+  website Website @relation(fields: [websiteId], references: [id], onDelete: Cascade)
+
+  @@index([websiteId])
+  @@index([websiteId, isEnabled])
+  @@map("website_filter_rule")
 }
