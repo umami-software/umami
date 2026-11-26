@@ -341,8 +341,11 @@ const operation1 = defineOperation({
                   total: {
                     type: 'number',
                   },
+                  grandTotal: {
+                    type: 'number',
+                  },
                 },
-                required: ['value', 'total'],
+                required: ['value', 'total', 'grandTotal'],
               },
             },
           },

@@ -9,6 +9,8 @@ const FUNCTION_NAME = 'getEventDataValues';
 interface WebsiteEventData {
   value: string;
   total: number;
+  // Sum of every value's total, taken before the top-100 limit, so callers can compute real shares.
+  grandTotal: number;
 }
 
 export async function getEventDataValues(
@@ -42,7 +44,8 @@ async function relationalQuery(
       `
       select
         array_item.value as "value",
-        count(*) as "total"
+        count(*) as "total",
+        (sum(count(*)) over ())::bigint as "grandTotal"
       from event_data
       join website_event on website_event.event_id = event_data.website_event_id
         and website_event.website_id = {{websiteId::uuid}}
@@ -74,7 +77,8 @@ async function relationalQuery(
         when data_type = 4 then ${getDateSQL('date_value', 'hour')}
         else string_value
       end as "value",
-      count(*) as "total"
+      count(*) as "total",
+      (sum(count(*)) over ())::bigint as "grandTotal"
     from event_data
     join website_event on website_event.event_id = event_data.website_event_id
       and website_event.website_id = {{websiteId::uuid}}
@@ -101,7 +105,7 @@ async function clickhouseQuery(
   websiteId: string,
   eventName: string | undefined,
   filters: QueryFilters & { propertyName?: string; dataType?: number },
-): Promise<{ value: string; total: number }[]> {
+): Promise<WebsiteEventData[]> {
   const { rawQuery, parseFilters } = clickhouse;
   const { dataType } = filters;
   const { filterQuery, cohortQuery, queryParams } = parseFilters({ ...filters, websiteId });
@@ -113,7 +117,8 @@ async function clickhouseQuery(
       `
       select
         arrayJoin(JSONExtract(ifNull(event_data.string_value, '[]'), 'Array(String)')) as "value",
-        count(*) as "total"
+        count(*) as "total",
+        sum(count(*)) over () as "grandTotal"
       from event_data
       any left join (
             select *
@@ -147,7 +152,8 @@ async function clickhouseQuery(
       multiIf(data_type = 2, replaceAll(string_value, '.0000', ''),
               data_type = 4, toString(date_trunc('hour', date_value)),
               string_value) as "value",
-      count(*) as "total"
+      count(*) as "total",
+      sum(count(*)) over () as "grandTotal"
     from event_data
     any left join (
           select *
