@@ -10,15 +10,18 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
+  SidebarMenuSub,
+  SidebarMenuSubButton,
+  SidebarMenuSubItem,
   SidebarTrigger,
   Text,
   useSidebar,
 } from '@umami/react-zen';
-import type { ReactNode } from 'react';
 import { IconLabel } from '@/components/common/IconLabel';
 import Link from '@/components/common/Link';
 import {
   isMetricsPath,
+  type NavItem,
   useAdminNavItems,
   useConfig,
   useMessages,
@@ -38,13 +41,6 @@ import {
 } from '@/components/icons';
 import { UserButton } from '@/components/input/UserButton';
 import { Logo } from '@/components/svg';
-
-interface NavItem {
-  id: string;
-  label: string;
-  path: string;
-  icon: ReactNode;
-}
 
 interface NavGroup {
   label?: string;
@@ -215,7 +211,7 @@ function NavGroups({
           <SidebarGroupContent>
             <SidebarMenu>
               {items.map(item => (
-                <NavMenuItem key={item.id} item={item} isActive={item.id === selectedKey} />
+                <NavMenuItem key={item.id} item={item} selectedKey={selectedKey} />
               ))}
             </SidebarMenu>
           </SidebarGroupContent>
@@ -225,17 +221,39 @@ function NavGroups({
   );
 }
 
-function NavMenuItem({ item, isActive }: { item: NavItem; isActive?: boolean }) {
+function NavMenuItem({
+  item,
+  selectedKey,
+  isActive,
+}: {
+  item: NavItem;
+  selectedKey?: string;
+  isActive?: boolean;
+}) {
   return (
     <SidebarMenuItem>
       <SidebarMenuButton
         render={<Link href={item.path} />}
-        isActive={isActive}
+        isActive={isActive ?? item.id === selectedKey}
         tooltip={item.label}
       >
         {item.icon}
         <span>{item.label}</span>
       </SidebarMenuButton>
+      {item.children?.length > 0 && (
+        <SidebarMenuSub>
+          {item.children.map(child => (
+            <SidebarMenuSubItem key={child.id}>
+              <SidebarMenuSubButton
+                render={<Link href={child.path} />}
+                isActive={child.id === selectedKey}
+              >
+                <span>{child.label}</span>
+              </SidebarMenuSubButton>
+            </SidebarMenuSubItem>
+          ))}
+        </SidebarMenuSub>
+      )}
     </SidebarMenuItem>
   );
 }

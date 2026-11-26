@@ -1,26 +1,15 @@
 import { Column, Row, Text } from '@umami/react-zen';
-import type { ReactNode } from 'react';
 import { IconLabel } from '@/components/common/IconLabel';
 import Link from '@/components/common/Link';
 import {
+  type NavItem,
+  type NavSection,
   useMessages,
   useMetricsNavItems,
   useNavigation,
   useWebsiteNavItems,
 } from '@/components/hooks';
 import { ArrowLeft } from '@/components/icons';
-
-interface NavItem {
-  id: string;
-  label: string;
-  path: string;
-  icon: ReactNode;
-}
-
-interface NavSection {
-  label: string;
-  items: NavItem[];
-}
 
 export function WebsiteNav({
   websiteId,
@@ -85,29 +74,57 @@ function SectionNav({
           <Row paddingX="3" marginTop="2">
             <Text weight="bold">{sectionLabel}</Text>
           </Row>
-          {sectionItems.map(({ id, path, label, icon }) => {
-            const isSelected = selectedKey === id;
-            return (
-              <Link key={id} href={path} role="button" onClick={onItemClick}>
-                <Row
-                  alignItems="center"
-                  hover={{ backgroundColor: 'muted' }}
-                  backgroundColor={isSelected ? 'muted' : undefined}
-                  borderRadius
-                  minHeight="9"
-                >
-                  <IconLabel
-                    icon={icon}
-                    label={label}
-                    weight={isSelected ? 'bold' : undefined}
-                    padding
-                  />
-                </Row>
-              </Link>
-            );
-          })}
+          {sectionItems.map(item => (
+            <Column key={item.id} gap="1">
+              <SectionNavLink item={item} selectedKey={selectedKey} onItemClick={onItemClick} />
+              {item.children?.length > 0 && (
+                <Column gap="1" marginLeft="6" paddingLeft="2" border="left">
+                  {item.children.map(child => (
+                    <SectionNavLink
+                      key={child.id}
+                      item={child}
+                      selectedKey={selectedKey}
+                      onItemClick={onItemClick}
+                    />
+                  ))}
+                </Column>
+              )}
+            </Column>
+          ))}
         </Column>
       ))}
     </Column>
+  );
+}
+
+function SectionNavLink({
+  item: { id, path, label, icon },
+  selectedKey,
+  onItemClick,
+}: {
+  item: NavItem;
+  selectedKey?: string;
+  onItemClick?: () => void;
+}) {
+  const isSelected = selectedKey === id;
+
+  return (
+    <Link href={path} role="button" onClick={onItemClick}>
+      <Row
+        alignItems="center"
+        hover={{ backgroundColor: 'muted' }}
+        backgroundColor={isSelected ? 'muted' : undefined}
+        borderRadius
+        minHeight="9"
+      >
+        {icon ? (
+          <IconLabel icon={icon} label={label} weight={isSelected ? 'bold' : undefined} padding />
+        ) : (
+          <Row padding>
+            <Text weight={isSelected ? 'bold' : undefined}>{label}</Text>
+          </Row>
+        )}
+      </Row>
+    </Link>
   );
 }

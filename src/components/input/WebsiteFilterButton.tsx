@@ -9,6 +9,7 @@ import {
   serializeSessionPropertyFilters,
   serializeUniversalEventPropertyFilters,
 } from '@/lib/params';
+import { isEventsPagePath } from '@/lib/url';
 import styles from './WebsiteFilterButton.module.css';
 
 export function WebsiteFilterButton({
@@ -24,7 +25,7 @@ export function WebsiteFilterButton({
   const checkboxId = useId();
   const { updateParams, pathname, router, query } = useNavigation();
   const { filters: currentFilters } = useFilters();
-  const isEventsPath = pathname.endsWith('/events');
+  const isEventsPath = isEventsPagePath(pathname);
   const [excludeBounce, setExcludeBounce] = useState(!!query.excludeBounce);
   const isOverview =
     /^\/teams\/[^/]+\/websites\/[^/]+$/.test(pathname) || /^\/share\/[^/]+$/.test(pathname);

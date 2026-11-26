@@ -13,6 +13,7 @@ import { FieldFilters } from '@/components/input/FieldFilters';
 import { SegmentFilters } from '@/components/input/SegmentFilters';
 import { PropertyFilters } from '@/components/property-data/PropertyFilters';
 import type { EventPropertyFilter, SessionPropertyFilter } from '@/lib/types';
+import { isEventsPagePath } from '@/lib/url';
 
 export interface FilterEditFormProps {
   websiteId?: string;
@@ -44,9 +45,9 @@ export function FilterEditForm({ websiteId, onChange, onClose }: FilterEditFormP
   const [currentMatch, setCurrentMatch] = useState<string>(match || 'all');
   const { isMobile } = useMobile();
   const isPixelLink = !websiteId || pathname.includes('/pixels') || pathname.includes('/links');
-  const isEventsPath = pathname.endsWith('/events');
+  const isEventsPath = isEventsPagePath(pathname);
   const excludeEvent =
-    !pathname.endsWith('/events') &&
+    !isEventsPagePath(pathname) &&
     !pathname.endsWith('/replays') &&
     !pathname.endsWith('/heatmaps');
   const isPerformance = pathname.includes('/performance');

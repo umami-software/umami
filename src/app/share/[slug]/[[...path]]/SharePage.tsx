@@ -17,7 +17,9 @@ import { RetentionPage } from '@/app/(main)/websites/[websiteId]/(reports)/reten
 import { RevenuePage } from '@/app/(main)/websites/[websiteId]/(reports)/revenue/RevenuePage';
 import { UTMPage } from '@/app/(main)/websites/[websiteId]/(reports)/utm/UTMPage';
 import { ComparePage } from '@/app/(main)/websites/[websiteId]/compare/ComparePage';
+import { EventsActivityPage } from '@/app/(main)/websites/[websiteId]/events/activity/EventsActivityPage';
 import { EventsPage } from '@/app/(main)/websites/[websiteId]/events/EventsPage';
+import { EventsPropertiesPage } from '@/app/(main)/websites/[websiteId]/events/properties/EventsPropertiesPage';
 import { WebsiteMetricsPage } from '@/app/(main)/websites/[websiteId]/metrics/WebsiteMetricsPage';
 import { RealtimePage } from '@/app/(main)/websites/[websiteId]/realtime/RealtimePage';
 import { SessionsPage } from '@/app/(main)/websites/[websiteId]/sessions/SessionsPage';
@@ -37,6 +39,8 @@ const PAGE_COMPONENTS: Record<string, React.ComponentType<{ websiteId: string }>
   overview: WebsitePage,
   metrics: WebsiteMetricsPage,
   events: EventsPage,
+  'events/activity': EventsActivityPage,
+  'events/properties': EventsPropertiesPage,
   sessions: SessionsPage,
   realtime: RealtimePage,
   performance: PerformancePage,
@@ -52,15 +56,14 @@ const PAGE_COMPONENTS: Record<string, React.ComponentType<{ websiteId: string }>
 };
 
 function getSharePath(pathname: string) {
-  const segments = pathname.split('/');
-  const firstSegment = segments[3];
+  const segments = pathname.split('/').slice(3).filter(Boolean);
 
   // If first segment looks like a domain name, skip it
-  if (firstSegment?.includes('.')) {
-    return segments[4];
+  if (segments[0]?.includes('.')) {
+    segments.shift();
   }
 
-  return firstSegment;
+  return segments.join('/');
 }
 
 export function SharePage() {
@@ -95,7 +98,8 @@ export function SharePage() {
   const isAllowed =
     pageKey === '' ||
     isMetrics ||
-    (Object.hasOwn(PAGE_COMPONENTS, pageKey) && parameters[pageKey] === true);
+    // Sub-pages (e.g. events/activity) are allowed whenever their parent page is.
+    (Object.hasOwn(PAGE_COMPONENTS, pageKey) && parameters[pageKey.split('/')[0]] === true);
 
   // A link or pixel's metrics page is laid out like a website page, with the metrics in the nav.
   const entityMetricsPage = !isMetrics ? null : shareType === ENTITY_TYPE.pixel && pixelId ? (

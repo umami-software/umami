@@ -87,3 +87,8 @@ export function isValidLinkUrl(url: string, cloudMode = false) {
 
   return true;
 }
+
+/** The events page and its sub-pages (activity, properties). */
+export function isEventsPagePath(pathname: string) {
+  return /\/events(\/(activity|properties))?\/?$/.test(pathname);
+}

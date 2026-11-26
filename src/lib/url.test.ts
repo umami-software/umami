@@ -2,6 +2,7 @@ import { describe, expect, test } from 'vitest';
 import {
   buildPath,
   getQueryString,
+  isEventsPagePath,
   isValidLinkUrl,
   isValidUrl,
   safeDecodeURI,
@@ -134,5 +135,20 @@ describe('isValidLinkUrl', () => {
     }
 
     expect(isValidLinkUrl('https://203-0-113-7.example.com', true)).toBe(true);
+  });
+});
+
+describe('isEventsPagePath', () => {
+  test('matches the events page and its sub-pages', () => {
+    expect(isEventsPagePath('/teams/t/websites/w/events')).toBe(true);
+    expect(isEventsPagePath('/websites/w/events/activity')).toBe(true);
+    expect(isEventsPagePath('/share/slug/events/properties')).toBe(true);
+  });
+
+  test('does not match other pages', () => {
+    expect(isEventsPagePath('/websites/w')).toBe(false);
+    expect(isEventsPagePath('/websites/w/sessions')).toBe(false);
+    expect(isEventsPagePath('/websites/w/events/other')).toBe(false);
+    expect(isEventsPagePath('/websites/w/event-data')).toBe(false);
   });
 });

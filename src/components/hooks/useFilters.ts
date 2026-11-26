@@ -1,6 +1,6 @@
 import { FILTER_COLUMNS, OPERATORS } from '@/lib/constants';
 import { parseSessionPropertyFilters, parseUniversalEventPropertyFilters } from '@/lib/params';
-import { safeDecodeURIComponent } from '@/lib/url';
+import { isEventsPagePath, safeDecodeURIComponent } from '@/lib/url';
 import { useShare } from './context/useShare';
 import { useFields } from './useFields';
 import { useMessages } from './useMessages';
@@ -87,7 +87,7 @@ export function useFilters() {
       }, [])
     : [];
   const eventPropertyFilters =
-    allowFilter && pathname.endsWith('/events') ? parseUniversalEventPropertyFilters(query) : [];
+    allowFilter && isEventsPagePath(pathname) ? parseUniversalEventPropertyFilters(query) : [];
   const sessionPropertyFilters = allowFilter ? parseSessionPropertyFilters(query) : [];
 
   const getFilters = (type: string) => {

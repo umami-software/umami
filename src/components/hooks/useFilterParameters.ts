@@ -1,5 +1,6 @@
 import { useMemo } from 'react';
 import { FILTER_COLUMNS } from '@/lib/constants';
+import { isEventsPagePath } from '@/lib/url';
 import { useShare } from './context/useShare';
 import { useNavigation } from './useNavigation';
 
@@ -11,7 +12,7 @@ export function useFilterParameters({
   const { pathname, query } = useNavigation();
   const share = useShare();
   const allowFilter = share?.parameters?.allowFilter !== false;
-  const isEventsPath = pathname.endsWith('/events');
+  const isEventsPath = isEventsPagePath(pathname);
 
   return useMemo(() => {
     const filterParams: Record<string, any> = {};

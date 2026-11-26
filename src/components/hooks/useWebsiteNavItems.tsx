@@ -1,3 +1,4 @@
+import type { ReactNode } from 'react';
 import {
   AlignEndHorizontal,
   Bug,
@@ -18,6 +19,19 @@ import { useConfig } from './useConfig';
 import { useMessages } from './useMessages';
 import { useNavigation } from './useNavigation';
 
+export interface NavItem {
+  id: string;
+  label: string;
+  path: string;
+  icon?: ReactNode;
+  children?: NavItem[];
+}
+
+export interface NavSection {
+  label: string;
+  items: NavItem[];
+}
+
 export function useWebsiteNavItems(websiteId: string) {
   const { t, labels } = useMessages();
   const { pathname, renderUrl } = useNavigation();
@@ -37,7 +51,7 @@ export function useWebsiteNavItems(websiteId: string) {
       excludeBounce: undefined,
     });
 
-  const items = [
+  const items: NavSection[] = [
     {
       label: t(labels.traffic),
       items: [
@@ -52,6 +66,23 @@ export function useWebsiteNavItems(websiteId: string) {
           label: t(labels.events),
           icon: <Lightning />,
           path: renderPath('/events'),
+          children: [
+            {
+              id: 'events-chart',
+              label: t(labels.chart),
+              path: renderPath('/events'),
+            },
+            {
+              id: 'events-activity',
+              label: t(labels.activity),
+              path: renderPath('/events/activity'),
+            },
+            {
+              id: 'events-properties',
+              label: t(labels.properties),
+              path: renderPath('/events/properties'),
+            },
+          ],
         },
         {
           id: 'sessions',
@@ -201,8 +232,10 @@ export function useWebsiteNavItems(websiteId: string) {
     },
   ];
 
+  // Sub-items come before their parent so they win when they share its path.
   const selectedKey = items
     .flatMap(e => e.items)
+    .flatMap((item: NavItem) => [...(item.children ?? []), item])
     .find(
       ({ path }) =>
         path &&

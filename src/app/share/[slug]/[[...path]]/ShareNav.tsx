@@ -13,6 +13,8 @@ import { IconLabel } from '@/components/common/IconLabel';
 import Link from '@/components/common/Link';
 import {
   isMetricsPath,
+  type NavItem,
+  type NavSection,
   useMessages,
   useMetricsNavItems,
   useNavigation,
@@ -59,13 +61,31 @@ export function ShareNav({
       excludeBounce: undefined,
     });
 
-  const allItems = [
+  const allItems: (NavSection & { section: string })[] = [
     {
       section: 'traffic',
       label: t(labels.traffic),
       items: [
         { id: 'overview', label: t(labels.overview), icon: <Eye />, path: renderPath('') },
-        { id: 'events', label: t(labels.events), icon: <Lightning />, path: renderPath('/events') },
+        {
+          id: 'events',
+          label: t(labels.events),
+          icon: <Lightning />,
+          path: renderPath('/events'),
+          children: [
+            { id: 'events-chart', label: t(labels.chart), path: renderPath('/events') },
+            {
+              id: 'events-activity',
+              label: t(labels.activity),
+              path: renderPath('/events/activity'),
+            },
+            {
+              id: 'events-properties',
+              label: t(labels.properties),
+              path: renderPath('/events/properties'),
+            },
+          ],
+        },
         {
           id: 'sessions',
           label: t(labels.sessions),
@@ -150,10 +170,13 @@ export function ShareNav({
         }))
         .filter(section => section.items.length > 0);
 
+  // Sub-items come before their parent so they win when they share its path.
   const selectedKey = isMetrics
     ? metrics.selectedKey
-    : items.flatMap(e => e.items).find(({ path }) => path && pathname.endsWith(path.split('?')[0]))
-        ?.id;
+    : items
+        .flatMap(e => e.items)
+        .flatMap((item: NavItem) => [...(item.children ?? []), item])
+        .find(({ path }) => path && pathname.endsWith(path.split('?')[0]))?.id;
 
   const isMobile = !!onItemClick;
 
@@ -190,47 +213,84 @@ export function ShareNav({
                 <Text weight="bold">{sectionLabel}</Text>
               </Row>
             )}
-            {sectionItems.map(({ id, path, label, icon }) => {
-              const isSelected = selectedKey === id;
+            {sectionItems.map(({ id, path, label, icon, children }) => {
+              // When collapsed the sub-items are hidden, so the parent shows their selection.
+              const isSelected =
+                selectedKey === id ||
+                (collapsed && !!children?.some(child => child.id === selectedKey));
               return (
-                <Link key={id} href={path} role="button" onClick={onItemClick}>
-                  {collapsed ? (
-                    <Tooltip>
-                      <TooltipTrigger
-                        delay={0}
-                        render={
-                          <Row
-                            tabIndex={0}
-                            alignItems="center"
-                            justifyContent="center"
-                            hover={{ backgroundColor: 'muted' }}
-                            backgroundColor={isSelected ? 'muted' : undefined}
-                            borderRadius
-                            minHeight="40px"
+                <Column key={id} gap="1">
+                  <Link href={path} role="button" onClick={onItemClick}>
+                    {collapsed ? (
+                      <Tooltip>
+                        <TooltipTrigger
+                          delay={0}
+                          render={
+                            <Row
+                              tabIndex={0}
+                              alignItems="center"
+                              justifyContent="center"
+                              hover={{ backgroundColor: 'muted' }}
+                              backgroundColor={isSelected ? 'muted' : undefined}
+                              borderRadius
+                              minHeight="40px"
+                            />
+                          }
+                        >
+                          <IconLabel
+                            icon={icon}
+                            label=""
+                            weight={isSelected ? 'bold' : undefined}
                           />
-                        }
+                        </TooltipTrigger>
+                        <TooltipContent side="right">{label}</TooltipContent>
+                      </Tooltip>
+                    ) : (
+                      <Row
+                        alignItems="center"
+                        hover={{ backgroundColor: 'muted' }}
+                        backgroundColor={isSelected ? 'muted' : undefined}
+                        borderRadius
+                        minHeight="40px"
                       >
-                        <IconLabel icon={icon} label="" weight={isSelected ? 'bold' : undefined} />
-                      </TooltipTrigger>
-                      <TooltipContent side="right">{label}</TooltipContent>
-                    </Tooltip>
-                  ) : (
-                    <Row
-                      alignItems="center"
-                      hover={{ backgroundColor: 'muted' }}
-                      backgroundColor={isSelected ? 'muted' : undefined}
-                      borderRadius
-                      minHeight="40px"
-                    >
-                      <IconLabel
-                        icon={icon}
-                        label={label}
-                        weight={isSelected ? 'bold' : undefined}
-                        padding
-                      />
-                    </Row>
+                        <IconLabel
+                          icon={icon}
+                          label={label}
+                          weight={isSelected ? 'bold' : undefined}
+                          padding
+                        />
+                      </Row>
+                    )}
+                  </Link>
+                  {!collapsed && children?.length > 0 && (
+                    <Column gap="1" marginLeft="6" paddingLeft="2" border="left">
+                      {children.map(child => {
+                        const isChildSelected = selectedKey === child.id;
+                        return (
+                          <Link
+                            key={child.id}
+                            href={child.path}
+                            role="button"
+                            onClick={onItemClick}
+                          >
+                            <Row
+                              alignItems="center"
+                              hover={{ backgroundColor: 'muted' }}
+                              backgroundColor={isChildSelected ? 'muted' : undefined}
+                              borderRadius
+                              minHeight="9"
+                              padding
+                            >
+                              <Text weight={isChildSelected ? 'bold' : undefined}>
+                                {child.label}
+                              </Text>
+                            </Row>
+                          </Link>
+                        );
+                      })}
+                    </Column>
                   )}
-                </Link>
+                </Column>
               );
             })}
           </Column>

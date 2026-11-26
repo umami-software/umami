@@ -100,6 +100,14 @@ vi.mock('@/app/(main)/websites/[websiteId]/events/EventsPage', () => ({
   EventsPage: () => <div>events page</div>,
 }));
 
+vi.mock('@/app/(main)/websites/[websiteId]/events/activity/EventsActivityPage', () => ({
+  EventsActivityPage: () => <div>events activity page</div>,
+}));
+
+vi.mock('@/app/(main)/websites/[websiteId]/events/properties/EventsPropertiesPage', () => ({
+  EventsPropertiesPage: () => <div>events properties page</div>,
+}));
+
 vi.mock('@/app/(main)/websites/[websiteId]/realtime/RealtimePage', () => ({
   RealtimePage: () => <div>realtime page</div>,
 }));
@@ -159,5 +167,19 @@ describe('SharePage', () => {
     expect(screen.getByText('website header')).toBeInTheDocument();
     expect(screen.getByText('events page')).toBeInTheDocument();
     expect(initTheme).toHaveBeenCalled();
+  });
+
+  test.each([
+    ['/share/slug/events/activity', 'events activity page'],
+    ['/share/slug/events/properties', 'events properties page'],
+  ])('renders the events sub-page at %s', (route, text) => {
+    render(
+      <ShareProvider slug="slug">
+        <SharePage />
+      </ShareProvider>,
+      { route },
+    );
+
+    expect(screen.getByText(text)).toBeInTheDocument();
   });
 });
