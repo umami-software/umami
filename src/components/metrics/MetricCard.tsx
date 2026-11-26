@@ -104,7 +104,7 @@ export const MetricCard = ({
     >
       {showLabel && (
         <Row justifyContent="space-between" alignItems="center">
-          <Text weight="bold" wrap="nowrap">
+          <Text weight="medium" color="muted" wrap="nowrap">
             {label}
           </Text>
           {tooltip && (

@@ -10,6 +10,8 @@ export function FilterButtons({ items, value, onChange }: FilterButtonsProps) {
   return (
     <Box>
       <ToggleGroup
+        variant="outline"
+        spacing={0}
         value={[value]}
         onValueChange={e => {
           const nextValue = e[0];

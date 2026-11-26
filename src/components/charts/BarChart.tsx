@@ -11,11 +11,13 @@ import {
   Bar,
   CartesianGrid,
   ComposedChart,
+  DefaultZIndexes,
   Line,
   type MouseHandlerDataParam,
   usePlotArea,
   XAxis,
   YAxis,
+  ZIndexLayer,
 } from 'recharts';
 import {
   Chart,
@@ -79,6 +81,45 @@ interface Series {
   hidden: boolean;
 }
 
+interface BandCursorProps {
+  /** Number of buckets on the x axis. */
+  count: number;
+  // Passed in by Recharts when it renders the cursor.
+  points?: { x: number; y: number }[];
+  top?: number;
+  width?: number;
+  height?: number;
+}
+
+/**
+ * Highlights the hovered bucket with a band the width of the bucket. Recharts only draws a band
+ * for BarChart; ComposedChart gets a line, drawn above the bars. The band goes in the cursor
+ * rectangle layer, which is below the bars.
+ */
+function BandCursor({ count, points, top, width, height }: BandCursorProps) {
+  const x = points?.[0]?.x;
+
+  if (x === undefined || !count || !width) {
+    return null;
+  }
+
+  const bandWidth = width / count;
+
+  return (
+    <ZIndexLayer zIndex={DefaultZIndexes.cursorRectangle}>
+      <rect
+        x={x - bandWidth / 2}
+        y={top}
+        width={bandWidth}
+        height={height}
+        fill="var(--foreground)"
+        fillOpacity={0.05}
+        pointerEvents="none"
+      />
+    </ZIndexLayer>
+  );
+}
+
 /** Reports the plot area's position, so annotation markers can be placed over the buckets. */
 function PlotAreaReporter({ onChange }: { onChange: (area: PlotArea) => void }) {
   const area = usePlotArea();
@@ -99,6 +140,7 @@ function BarChartComponent({
   unit,
   stacked = false,
   minDate,
+  maxDate: _maxDate,
   currency,
   formatValue,
   onBarClick,
@@ -317,6 +359,7 @@ function BarChartComponent({
             }
           />
           <ChartTooltip
+            cursor={<BandCursor count={rows.length} />}
             content={
               <ChartTooltipContent
                 labelFormatter={(_, payload) => {

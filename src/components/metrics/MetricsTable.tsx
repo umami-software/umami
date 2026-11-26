@@ -1,10 +1,9 @@
-import { Grid, Row } from '@umami/react-zen';
+import { Grid, Icon, Row, Text } from '@umami/react-zen';
 import { useEffect, useMemo } from 'react';
-import { IconLabel } from '@/components/common/IconLabel';
 import { LinkButton } from '@/components/common/LinkButton';
 import { LoadingPanel } from '@/components/common/LoadingPanel';
 import { useMessages, useNavigation, useWebsiteMetricsQuery } from '@/components/hooks';
-import { Maximize } from '@/components/icons';
+import { ArrowRight } from '@/components/icons';
 import { MetricLabel } from '@/components/metrics/MetricLabel';
 import { percentFilter } from '@/lib/filters';
 import { ListTable, type ListTableProps } from './ListTable';
@@ -71,19 +70,18 @@ export function MetricsTable({
   };
 
   return (
-    <LoadingPanel
-      data={data}
-      isFetching={isFetching}
-      isLoading={isLoading}
-      error={error}
-      minHeight="400px"
-    >
-      <Grid padding="2">
+    <LoadingPanel data={data} isFetching={isFetching} isLoading={isLoading} error={error}>
+      <Grid>
         {data && <ListTable {...props} data={filteredData} renderLabel={renderLabel} />}
         {showMore && limit && (
-          <Row justifyContent="center" alignItems="flex-end" paddingTop="4">
+          <Row justifyContent="end" paddingTop="4">
             <LinkButton href={updateParams({ view: type })} variant="ghost">
-              <IconLabel icon={<Maximize />}>{t(labels.more)}</IconLabel>
+              <Row alignItems="center" gap="2">
+                <Text>{t(labels.more)}</Text>
+                <Icon>
+                  <ArrowRight />
+                </Icon>
+              </Row>
             </LinkButton>
           </Row>
         )}

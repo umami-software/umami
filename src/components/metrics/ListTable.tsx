@@ -76,8 +76,10 @@ export function ListTable({
         paddingLeft="2"
         columns={'1fr 100px'}
       >
-        <Text weight="bold">{title}</Text>
-        <Text weight="bold" align="center">
+        <Text weight="medium" color="muted">
+          {title}
+        </Text>
+        <Text weight="medium" color="muted" align="center">
           {metric}
         </Text>
       </Grid>

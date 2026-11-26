@@ -15,16 +15,15 @@ export function WebsitePanels({ websiteId }: { websiteId: string }) {
     showMore: true,
     metric: t(labels.visitors),
   };
-  const rowProps = { minHeight: '570px' };
   const { isMobile } = useMobile();
 
   return (
     <Grid gap="3">
-      <GridRow layout="two" {...rowProps}>
+      <GridRow layout="two">
         <Panel>
           <Tabs>
             <Row alignItems="center" justifyContent="space-between" gap="3" wrap="wrap">
-              <Heading size="2xl">{t(labels.pages)}</Heading>
+              <Heading size="base">{t(labels.pages)}</Heading>
               <TabsList>
                 <TabsTrigger className="text-xs" value="path">
                   {t(labels.path)}
@@ -57,7 +56,7 @@ export function WebsitePanels({ websiteId }: { websiteId: string }) {
         <Panel>
           <Tabs>
             <Row alignItems="center" justifyContent="space-between" gap="3" wrap="wrap">
-              <Heading size="2xl">{t(labels.sources)}</Heading>
+              <Heading size="base">{t(labels.sources)}</Heading>
               <TabsList>
                 <TabsTrigger className="text-xs" value="referrer">
                   {t(labels.referrers)}
@@ -77,11 +76,11 @@ export function WebsitePanels({ websiteId }: { websiteId: string }) {
         </Panel>
       </GridRow>
 
-      <GridRow layout="two" {...rowProps}>
+      <GridRow layout="two">
         <Panel>
           <Tabs>
             <Row alignItems="center" justifyContent="space-between" gap="3" wrap="wrap">
-              <Heading size="2xl">{t(labels.environment)}</Heading>
+              <Heading size="base">{t(labels.environment)}</Heading>
               <TabsList>
                 <TabsTrigger className="text-xs" value="browser">
                   {t(labels.browsers)}
@@ -109,7 +108,7 @@ export function WebsitePanels({ websiteId }: { websiteId: string }) {
         <Panel>
           <Tabs>
             <Row alignItems="center" justifyContent="space-between" gap="3" wrap="wrap">
-              <Heading size="2xl">{t(labels.location)}</Heading>
+              <Heading size="base">{t(labels.location)}</Heading>
               <TabsList>
                 <TabsTrigger className="text-xs" value="country">
                   {t(labels.countries)}
@@ -135,13 +134,13 @@ export function WebsitePanels({ websiteId }: { websiteId: string }) {
         </Panel>
       </GridRow>
 
-      <GridRow layout="two-one" {...rowProps}>
+      <GridRow layout="two-one">
         <Panel paddingX="0" paddingY="0" style={{ gridColumn: isMobile ? 'span 1' : 'span 2' }}>
           <WorldMap websiteId={websiteId} />
         </Panel>
 
         <Panel>
-          <Heading size="2xl">{t(labels.traffic)}</Heading>
+          <Heading size="base">{t(labels.traffic)}</Heading>
           <Row border="bottom" marginBottom="4" />
           <WeeklyTraffic websiteId={websiteId} />
         </Panel>
