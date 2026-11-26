@@ -22,11 +22,15 @@ export function getPropertyTableData(totals: PropertyTotal[], limit?: number, gr
 }
 
 // What the pie's "Other" slice holds: everything not in the displayed rows, including values the
-// server left out past its top-100 limit when grandTotal is given.
-export function getOtherTotal(totals: PropertyTotal[], limit: number, grandTotal?: number) {
+// server left out past its top-100 limit when grandTotal is given. Like getPropertyTableData, a
+// limit of 0 or undefined shows every row.
+export function getOtherTotal(totals: PropertyTotal[], limit?: number, grandTotal?: number) {
   const rowsSum = totals.reduce((acc, { total }) => acc + total, 0);
   const sum = grandTotal && grandTotal >= rowsSum ? grandTotal : rowsSum;
-  const shown = totals.slice(0, limit).reduce((acc, { total }) => acc + total, 0);
+  const shown = (limit ? totals.slice(0, limit) : totals).reduce(
+    (acc, { total }) => acc + total,
+    0,
+  );
 
   return sum - shown;
 }

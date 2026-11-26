@@ -76,6 +76,15 @@ describe('getOtherTotal', () => {
   test('covers only the rows past the limit when the grand total is missing', () => {
     expect(getOtherTotal(totals, 2)).toBe(20);
   });
+
+  test('treats a limit of 0 or undefined as showing every row, like getPropertyTableData', () => {
+    // Every row is in the table, so Other only holds what the server left out.
+    expect(getPropertyTableData(totals, 0, 120)).toHaveLength(4);
+    expect(getOtherTotal(totals, 0, 120)).toBe(20);
+    expect(getOtherTotal(totals, undefined, 120)).toBe(20);
+    expect(getOtherTotal(totals, 0)).toBe(0);
+    expect(getOtherTotal(truncated, 0, 150)).toBe(30);
+  });
 });
 
 // Edge cases for the grand total: every case below also checks that Other is never negative and
