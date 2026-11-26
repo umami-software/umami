@@ -1,7 +1,6 @@
 'use client';
 import { Column, Row } from '@umami/react-zen';
 import { useState } from 'react';
-import { ExpandedViewModal } from '@/app/(main)/websites/[websiteId]/ExpandedViewModal';
 import { Panel } from '@/components/common/Panel';
 import { DialogButton } from '@/components/input/DialogButton';
 import { UnitFilter } from '@/components/input/UnitFilter';
@@ -33,7 +32,6 @@ export function WebsitePage({ websiteId }: { websiteId: string }) {
         />
       </Panel>
       <WebsitePanels websiteId={websiteId} />
-      <ExpandedViewModal websiteId={websiteId} />
       <DialogButton
         open={!!annotationRange}
         onOpenChange={isOpen => !isOpen && setAnnotationRange(null)}

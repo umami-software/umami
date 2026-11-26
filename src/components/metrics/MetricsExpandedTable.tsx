@@ -1,10 +1,8 @@
-import { Button, Column, DataColumn, DataTable, Icon, Row, SearchField } from '@umami/react-zen';
+import { Column, DataColumn, DataTable, Row, SearchField } from '@umami/react-zen';
 import { type ReactNode, useEffect, useState } from 'react';
 import { LoadingPanel } from '@/components/common/LoadingPanel';
-import { OverlayScrollArea } from '@/components/common/OverlayScrollArea';
 import { Pager } from '@/components/common/Pager';
 import { useMessages, useWebsiteExpandedMetricsQuery } from '@/components/hooks';
-import { X } from '@/components/icons';
 import { DownloadButton } from '@/components/input/DownloadButton';
 import { MetricLabel } from '@/components/metrics/MetricLabel';
 import { DEFAULT_PAGE_SIZE, SESSION_COLUMNS } from '@/lib/constants';
@@ -20,7 +18,6 @@ export interface MetricsExpandedTableProps {
   allowSearch?: boolean;
   allowDownload?: boolean;
   renderLabel?: (row: any, index: number) => ReactNode;
-  onClose?: () => void;
   children?: ReactNode;
 }
 
@@ -31,7 +28,6 @@ export function MetricsExpandedTable({
   params,
   allowSearch = true,
   allowDownload = true,
-  onClose,
   children,
 }: MetricsExpandedTableProps) {
   const [search, setSearch] = useState('');
@@ -67,13 +63,6 @@ export function MetricsExpandedTable({
         <Row justifyContent="flex-end" flexGrow={1} gap>
           {children}
           {allowDownload && <DownloadButton filename={type} data={data} />}
-          {onClose && (
-            <Button onClick={onClose} variant="ghost">
-              <Icon>
-                <X />
-              </Icon>
-            </Button>
-          )}
         </Row>
       </Row>
       <LoadingPanel
@@ -81,68 +70,58 @@ export function MetricsExpandedTable({
         isFetching={isFetching}
         isLoading={isLoading}
         error={error}
-        height="100%"
+        minHeight="300px"
         loadingIcon="spinner"
       >
-        <OverlayScrollArea
-          orientation="both"
-          style={{
-            height: '100%',
-            minHeight: 0,
-            ['--overlay-scrollbar-viewport-padding-right' as string]: '14px',
-            ['--overlay-scrollbar-vertical-margin-right' as string]: '6px',
-          }}
-        >
-          <Column paddingRight="3">
-            {pageItems && (
-              <DataTable data={pageItems}>
-                <DataColumn id="label" label={title} width="minmax(200px, 2fr)" align="start">
-                  {row => (
-                    <Row overflow="hidden">
-                      <MetricLabel type={type} data={row} />
-                    </Row>
-                  )}
-                </DataColumn>
-                <DataColumn id="visitors" label={t(labels.visitors)} align="end" width="120px">
-                  {row => row?.visitors?.toLocaleString()}
-                </DataColumn>
-                <DataColumn id="visits" label={t(labels.visits)} align="end" width="120px">
-                  {row => row?.visits?.toLocaleString()}
-                </DataColumn>
-                <DataColumn id="pageviews" label={t(labels.views)} align="end" width="120px">
-                  {row => row?.pageviews?.toLocaleString()}
-                </DataColumn>
-                {showBounceDuration && [
-                  <DataColumn
-                    key="bounceRate"
-                    id="bounceRate"
-                    label={t(labels.bounceRate)}
-                    align="end"
-                    width="120px"
-                  >
-                    {row => {
-                      const n = (Math.min(row?.visits, row?.bounces) / row?.visits) * 100;
-                      return `${Math.round(+n)}%`;
-                    }}
-                  </DataColumn>,
+        <Column overflowX="auto">
+          {pageItems && (
+            <DataTable data={pageItems}>
+              <DataColumn id="label" label={title} width="minmax(200px, 2fr)" align="start">
+                {row => (
+                  <Row overflow="hidden">
+                    <MetricLabel type={type} data={row} />
+                  </Row>
+                )}
+              </DataColumn>
+              <DataColumn id="visitors" label={t(labels.visitors)} align="end" width="120px">
+                {row => row?.visitors?.toLocaleString()}
+              </DataColumn>
+              <DataColumn id="visits" label={t(labels.visits)} align="end" width="120px">
+                {row => row?.visits?.toLocaleString()}
+              </DataColumn>
+              <DataColumn id="pageviews" label={t(labels.views)} align="end" width="120px">
+                {row => row?.pageviews?.toLocaleString()}
+              </DataColumn>
+              {showBounceDuration && [
+                <DataColumn
+                  key="bounceRate"
+                  id="bounceRate"
+                  label={t(labels.bounceRate)}
+                  align="end"
+                  width="120px"
+                >
+                  {row => {
+                    const n = (Math.min(row?.visits, row?.bounces) / row?.visits) * 100;
+                    return `${Math.round(+n)}%`;
+                  }}
+                </DataColumn>,
 
-                  <DataColumn
-                    key="visitDuration"
-                    id="visitDuration"
-                    label={t(labels.visitDuration)}
-                    align="end"
-                    width="120px"
-                  >
-                    {row => {
-                      const n = row?.totaltime / row?.visits;
-                      return `${+n < 0 ? '-' : ''}${formatShortTime(Math.abs(~~n), ['m', 's'], ' ')}`;
-                    }}
-                  </DataColumn>,
-                ]}
-              </DataTable>
-            )}
-          </Column>
-        </OverlayScrollArea>
+                <DataColumn
+                  key="visitDuration"
+                  id="visitDuration"
+                  label={t(labels.visitDuration)}
+                  align="end"
+                  width="120px"
+                >
+                  {row => {
+                    const n = row?.totaltime / row?.visits;
+                    return `${+n < 0 ? '-' : ''}${formatShortTime(Math.abs(~~n), ['m', 's'], ' ')}`;
+                  }}
+                </DataColumn>,
+              ]}
+            </DataTable>
+          )}
+        </Column>
       </LoadingPanel>
       {items && items.length > 0 && (
         <Row paddingTop="3">

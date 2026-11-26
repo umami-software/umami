@@ -1,6 +1,5 @@
 import { Column, Grid, Row } from '@umami/react-zen';
 import { WebsiteExpandedMenu } from '@/app/(main)/websites/[websiteId]/WebsiteExpandedMenu';
-import { OverlayScrollArea } from '@/components/common/OverlayScrollArea';
 import { useMessages, useNavigation } from '@/components/hooks';
 import { MobileMenuButton } from '@/components/input/MobileMenuButton';
 import { MetricsExpandedTable } from '@/components/metrics/MetricsExpandedTable';
@@ -8,48 +7,37 @@ import { MetricsExpandedTable } from '@/components/metrics/MetricsExpandedTable'
 export function WebsiteExpandedView({
   websiteId,
   excludedIds = [],
-  onClose,
+  defaultView = 'path',
 }: {
   websiteId: string;
   excludedIds?: string[];
-  onClose?: () => void;
+  /** Shown when the URL has no `view` param. */
+  defaultView?: string;
 }) {
   const { t, labels } = useMessages();
-  const {
-    query: { view },
-  } = useNavigation();
+  const { query } = useNavigation();
+  const view = query.view || defaultView;
   const title = view === 'fullPath' ? t(labels.url) : t(labels[view]);
 
   return (
-    <Column height="100%" overflow="hidden" gap>
-      <Row id="expanded-mobile-menu-button" display={{ base: 'flex', md: 'none' }}>
+    <Column gap>
+      <Row display={{ base: 'flex', md: 'none' }}>
         <MobileMenuButton>
           {({ close }) => {
             return (
               <Column padding="3">
-                <WebsiteExpandedMenu excludedIds={excludedIds} onItemClick={close} />
+                <WebsiteExpandedMenu view={view} excludedIds={excludedIds} onItemClick={close} />
               </Column>
             );
           }}
         </MobileMenuButton>
       </Row>
-      <Grid columns={{ base: '1fr', md: 'auto 1fr' }} gap="6" overflow="hidden">
-        <Column
-          id="metrics-expanded-menu"
-          display={{ base: 'none', md: 'flex' }}
-          width="240px"
-          gap="6"
-          border="right"
-          paddingRight="3"
-          minHeight="0"
-          overflow="hidden"
-        >
-          <OverlayScrollArea style={{ height: '100%' }}>
-            <WebsiteExpandedMenu excludedIds={excludedIds} />
-          </OverlayScrollArea>
+      <Grid columns={{ base: '1fr', md: 'auto 1fr' }} gap="6">
+        <Column display={{ base: 'none', md: 'flex' }} width="240px">
+          <WebsiteExpandedMenu view={view} excludedIds={excludedIds} />
         </Column>
-        <Column id="metrics-expanded-table" overflow="hidden" padding="1">
-          <MetricsExpandedTable title={title} type={view} websiteId={websiteId} onClose={onClose} />
+        <Column minWidth="0" alignSelf="start">
+          <MetricsExpandedTable title={title} type={view} websiteId={websiteId} />
         </Column>
       </Grid>
     </Column>

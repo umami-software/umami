@@ -4,6 +4,8 @@ import { usePathname, useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { BoardViewPage } from '@/app/(main)/boards/[boardId]/BoardViewPage';
 import { LinkPage } from '@/app/(main)/links/[linkId]/LinkPage';
+import { LinkMetricsPage } from '@/app/(main)/links/[linkId]/metrics/LinkMetricsPage';
+import { PixelMetricsPage } from '@/app/(main)/pixels/[pixelId]/metrics/PixelMetricsPage';
 import { PixelPage } from '@/app/(main)/pixels/[pixelId]/PixelPage';
 import { AttributionPage } from '@/app/(main)/websites/[websiteId]/(reports)/attribution/AttributionPage';
 import { BreakdownPage } from '@/app/(main)/websites/[websiteId]/(reports)/breakdown/BreakdownPage';
@@ -16,6 +18,7 @@ import { RevenuePage } from '@/app/(main)/websites/[websiteId]/(reports)/revenue
 import { UTMPage } from '@/app/(main)/websites/[websiteId]/(reports)/utm/UTMPage';
 import { ComparePage } from '@/app/(main)/websites/[websiteId]/compare/ComparePage';
 import { EventsPage } from '@/app/(main)/websites/[websiteId]/events/EventsPage';
+import { WebsiteMetricsPage } from '@/app/(main)/websites/[websiteId]/metrics/WebsiteMetricsPage';
 import { RealtimePage } from '@/app/(main)/websites/[websiteId]/realtime/RealtimePage';
 import { SessionsPage } from '@/app/(main)/websites/[websiteId]/sessions/SessionsPage';
 import { WebsiteHeader } from '@/app/(main)/websites/[websiteId]/WebsiteHeader';
@@ -32,6 +35,7 @@ import { ShareNav } from './ShareNav';
 const PAGE_COMPONENTS: Record<string, React.ComponentType<{ websiteId: string }>> = {
   '': WebsitePage,
   overview: WebsitePage,
+  metrics: WebsiteMetricsPage,
   events: EventsPage,
   sessions: SessionsPage,
   realtime: RealtimePage,
@@ -84,18 +88,30 @@ export function SharePage() {
     };
   }, [shareTheme, initTheme]);
 
-  // Check if the requested path is allowed
+  // Check if the requested path is allowed. The metrics page is the overview's full lists, so it
+  // is allowed whenever the overview is.
   const pageKey = path || '';
+  const isMetrics = pageKey === 'metrics';
   const isAllowed =
-    pageKey === '' || (Object.hasOwn(PAGE_COMPONENTS, pageKey) && parameters[pageKey] === true);
+    pageKey === '' ||
+    isMetrics ||
+    (Object.hasOwn(PAGE_COMPONENTS, pageKey) && parameters[pageKey] === true);
 
   const entityPage =
     shareType === ENTITY_TYPE.board && boardId ? (
       <BoardViewPage boardId={boardId} showActions={false} />
     ) : shareType === ENTITY_TYPE.pixel && pixelId ? (
-      <PixelPage pixelId={pixelId} showHeaderActions={false} />
+      isMetrics ? (
+        <PixelMetricsPage pixelId={pixelId} showHeaderActions={false} />
+      ) : (
+        <PixelPage pixelId={pixelId} showHeaderActions={false} />
+      )
     ) : shareType === ENTITY_TYPE.link && linkId ? (
-      <LinkPage linkId={linkId} showHeaderActions={false} />
+      isMetrics ? (
+        <LinkMetricsPage linkId={linkId} showHeaderActions={false} />
+      ) : (
+        <LinkPage linkId={linkId} showHeaderActions={false} />
+      )
     ) : null;
 
   useEffect(() => {

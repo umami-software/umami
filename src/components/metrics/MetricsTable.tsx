@@ -2,10 +2,11 @@ import { Grid, Icon, Row, Text } from '@umami/react-zen';
 import { useEffect, useMemo } from 'react';
 import { LinkButton } from '@/components/common/LinkButton';
 import { LoadingPanel } from '@/components/common/LoadingPanel';
-import { useMessages, useNavigation, useWebsiteMetricsQuery } from '@/components/hooks';
+import { useMessages, useNavigation, useShare, useWebsiteMetricsQuery } from '@/components/hooks';
 import { ArrowRight } from '@/components/icons';
 import { MetricLabel } from '@/components/metrics/MetricLabel';
 import { percentFilter } from '@/lib/filters';
+import { buildPath } from '@/lib/url';
 import { ListTable, type ListTableProps } from './ListTable';
 
 export interface MetricsTableProps extends ListTableProps {
@@ -30,7 +31,8 @@ export function MetricsTable({
   onDataLoad,
   ...props
 }: MetricsTableProps) {
-  const { updateParams } = useNavigation();
+  const { query, renderUrl, linkId, pixelId } = useNavigation();
+  const share = useShare();
   const { t, labels } = useMessages();
   const { data, isLoading, isFetching, error } = useWebsiteMetricsQuery(websiteId, {
     type,
@@ -65,6 +67,21 @@ export function MetricsTable({
     }
   }, [data]);
 
+  // The full list for this metric, on the metrics page of the website, link or pixel.
+  const getMoreUrl = () => {
+    if (share) {
+      return buildPath(`/share/${share.slug}/metrics`, { ...query, view: type });
+    }
+
+    const path = linkId
+      ? `/links/${linkId}`
+      : pixelId
+        ? `/pixels/${pixelId}`
+        : `/websites/${websiteId}`;
+
+    return renderUrl(`${path}/metrics`, { view: type });
+  };
+
   const renderLabel = (row: any) => {
     return filterLink ? <MetricLabel type={type} data={row} /> : row.label;
   };
@@ -75,7 +92,7 @@ export function MetricsTable({
         {data && <ListTable {...props} data={filteredData} renderLabel={renderLabel} />}
         {showMore && limit && (
           <Row justifyContent="end" paddingTop="4">
-            <LinkButton href={updateParams({ view: type })} variant="ghost">
+            <LinkButton href={getMoreUrl()} variant="ghost">
               <Row alignItems="center" gap="2">
                 <Text>{t(labels.more)}</Text>
                 <Icon>

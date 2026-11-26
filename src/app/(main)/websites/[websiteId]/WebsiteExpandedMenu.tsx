@@ -30,17 +30,16 @@ import {
 import { Lightning } from '@/components/svg';
 
 export function WebsiteExpandedMenu({
+  view,
   excludedIds = [],
   onItemClick,
 }: {
+  view: string;
   excludedIds?: string[];
   onItemClick?: () => void;
 }) {
   const { t, labels } = useMessages();
-  const {
-    updateParams,
-    query: { view },
-  } = useNavigation();
+  const { updateParams } = useNavigation();
 
   const filterExcluded = (item: { id: string }) => !excludedIds.includes(item.id);
 

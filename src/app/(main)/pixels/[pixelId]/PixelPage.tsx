@@ -5,12 +5,9 @@ import { PixelHeader } from '@/app/(main)/pixels/[pixelId]/PixelHeader';
 import { PixelMetricsBar } from '@/app/(main)/pixels/[pixelId]/PixelMetricsBar';
 import { PixelPanels } from '@/app/(main)/pixels/[pixelId]/PixelPanels';
 import { PixelProvider } from '@/app/(main)/pixels/PixelProvider';
-import { ExpandedViewModal } from '@/app/(main)/websites/[websiteId]/ExpandedViewModal';
 import { WebsiteChart } from '@/app/(main)/websites/[websiteId]/WebsiteChart';
 import { PageBody } from '@/components/common/PageBody';
 import { Panel } from '@/components/common/Panel';
-
-const excludedIds = ['path', 'fullPath', 'entry', 'exit', 'title', 'language', 'screen', 'event'];
 
 export function PixelPage({
   pixelId,
@@ -32,7 +29,6 @@ export function PixelPage({
             </Panel>
             <PixelPanels pixelId={pixelId} />
           </PageBody>
-          <ExpandedViewModal websiteId={pixelId} excludedIds={excludedIds} />
         </Column>
       </Grid>
     </PixelProvider>

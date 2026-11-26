@@ -140,9 +140,11 @@ export function ShareNav({
     }))
     .filter(section => section.items.length > 0);
 
-  const selectedKey = items
-    .flatMap(e => e.items)
-    .find(({ path }) => path && pathname.endsWith(path.split('?')[0]))?.id;
+  // The metrics page lists the overview's tables in full, so it counts as the overview.
+  const selectedKey = pathname.endsWith(`/share/${slug}/metrics`)
+    ? 'overview'
+    : items.flatMap(e => e.items).find(({ path }) => path && pathname.endsWith(path.split('?')[0]))
+        ?.id;
 
   const isMobile = !!onItemClick;
 
