@@ -1,4 +1,3 @@
-import { produce } from 'immer';
 import semver from 'semver';
 import { create } from 'zustand';
 import { CURRENT_VERSION, UPDATES_URL, VERSION_CHECK } from '@/lib/constants';
@@ -14,42 +13,51 @@ const initialState = {
 
 const store = create(() => ({ ...initialState }));
 
-export async function checkVersion() {
-  const { current } = store.getState();
+export async function getVersionUpdate(current = CURRENT_VERSION) {
+  if (!semver.valid(current)) {
+    return null;
+  }
 
-  const data = await fetch(`${UPDATES_URL}?v=${current}`, {
-    method: 'GET',
-    headers: {
-      Accept: 'application/json',
-    },
-  }).then(res => {
-    if (res.ok) {
-      return res.json();
+  try {
+    const response = await fetch(`${UPDATES_URL}?v=${encodeURIComponent(current)}`, {
+      headers: { Accept: 'application/json' },
+    });
+
+    if (!response.ok) {
+      return null;
     }
 
-    return null;
-  });
+    const data = await response.json();
+    const latest = semver.valid(data?.latest);
 
-  if (!data) {
+    if (!latest) {
+      return null;
+    }
+
+    return {
+      latest,
+      hasUpdate: semver.gt(latest, current),
+      releaseUrl: typeof data.url === 'string' ? data.url : null,
+    };
+  } catch {
+    return null;
+  }
+}
+
+export async function checkVersion() {
+  const { current } = store.getState();
+  const result = await getVersionUpdate(current);
+
+  if (!result) {
     return;
   }
 
-  store.setState(
-    produce(state => {
-      const { latest, url } = data;
-      const lastCheck = getItem(VERSION_CHECK);
-
-      const hasUpdate = !!(latest && lastCheck?.version !== latest && semver.gt(latest, current));
-
-      state.current = current;
-      state.latest = latest;
-      state.hasUpdate = hasUpdate;
-      state.checked = true;
-      state.releaseUrl = url;
-
-      return state;
-    }),
-  );
+  const lastCheck = getItem(VERSION_CHECK);
+  store.setState({
+    ...result,
+    hasUpdate: result.hasUpdate && lastCheck?.version !== result.latest,
+    checked: true,
+  });
 }
 
 export const useVersion = store;
