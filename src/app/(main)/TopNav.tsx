@@ -62,6 +62,7 @@ export function TopNav() {
                 includeTeams={!teamId}
                 onChange={handleWebsiteChange}
                 buttonProps={{
+                  className: 'hover:bg-input dark:hover:bg-input',
                   style: { minWidth: 200, maxWidth: 200 },
                 }}
               />

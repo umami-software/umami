@@ -133,7 +133,7 @@ export function DataGrid({
         render={
           <Button
             variant="ghost"
-            className="hover:bg-transparent"
+            className="hover:bg-input dark:hover:bg-input"
             onClick={handleToggleDisplayMode}
           />
         }

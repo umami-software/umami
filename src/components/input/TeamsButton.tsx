@@ -54,7 +54,9 @@ export function TeamsButton() {
 
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger render={<Button variant="ghost" />}>
+      <DropdownMenuTrigger
+        render={<Button variant="ghost" className="hover:bg-input dark:hover:bg-input" />}
+      >
         <Row
           alignItems="center"
           position="relative"
