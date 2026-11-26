@@ -64,12 +64,13 @@ test('hides the dashboard link inside a team', () => {
 });
 
 test('shows settings navigation with a way back and no footer Settings shortcut', () => {
-  navigateTo('/settings/profile');
+  navigateTo('/settings/security');
 
-  renderSideNav('/settings/profile');
+  renderSideNav('/settings/security');
 
   expect(screen.getByRole('link', { name: /back/i })).toHaveAttribute('href', '/websites');
-  expect(screen.getByRole('link', { name: /profile/i })).toHaveAttribute('data-active');
+  expect(screen.getByRole('link', { name: /security/i })).toHaveAttribute('data-active');
+  expect(screen.queryByRole('link', { name: /^profile$/i })).not.toBeInTheDocument();
   expect(screen.queryByRole('link', { name: /^settings$/i })).not.toBeInTheDocument();
 });
 
@@ -110,15 +111,18 @@ test('links to local Settings when enabled in Cloud mode', () => {
   expect(screen.getByRole('link', { name: /^settings$/i })).toHaveAttribute('href', '/settings');
 });
 
-test('hides API keys and the Settings shortcut on a local Settings page in Cloud mode', () => {
+test('shows the API keys link and hides the Settings shortcut on a local Settings page in Cloud mode', () => {
   vi.stubEnv('CLOUD_MODE', '1');
   vi.stubEnv('ENABLE_SETTINGS', '1');
-  navigateTo('/settings/profile');
+  navigateTo('/settings/security');
 
-  renderSideNav('/settings/profile');
+  renderSideNav('/settings/security');
 
   expect(screen.queryByRole('link', { name: /^settings$/i })).not.toBeInTheDocument();
-  expect(screen.queryByRole('link', { name: /api keys/i })).not.toBeInTheDocument();
+  expect(screen.getByRole('link', { name: /api keys/i })).toHaveAttribute(
+    'href',
+    '/settings/api-keys',
+  );
 });
 
 test('shows the metrics, with a way back to the overview, on the metrics page', () => {

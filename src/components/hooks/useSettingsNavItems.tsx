@@ -1,12 +1,10 @@
-import { KeyRound, Settings2, ShieldCheck, UserCircle, Users } from '@/components/icons';
-import { useConfig } from './useConfig';
+import { KeyRound, Settings2, ShieldCheck, Users } from '@/components/icons';
 import { useMessages } from './useMessages';
 import { useNavigation } from './useNavigation';
 
 export function useSettingsNavItems() {
   const { t, labels } = useMessages();
   const { pathname, renderUrl } = useNavigation();
-  const { cloudMode } = useConfig();
 
   const items = [
     {
@@ -17,12 +15,6 @@ export function useSettingsNavItems() {
           label: t(labels.preferences),
           path: renderUrl('/settings/preferences'),
           icon: <Settings2 />,
-        },
-        {
-          id: 'profile',
-          label: t(labels.profile),
-          path: renderUrl('/settings/profile'),
-          icon: <UserCircle />,
         },
         {
           id: 'teams',
@@ -36,16 +28,12 @@ export function useSettingsNavItems() {
           path: renderUrl('/settings/security'),
           icon: <ShieldCheck />,
         },
-        ...(!cloudMode
-          ? [
-              {
-                id: 'api-keys',
-                label: t(labels.apiKeys),
-                path: renderUrl('/settings/api-keys'),
-                icon: <KeyRound />,
-              },
-            ]
-          : []),
+        {
+          id: 'api-keys',
+          label: t(labels.apiKeys),
+          path: renderUrl('/settings/api-keys'),
+          icon: <KeyRound />,
+        },
       ],
     },
   ];

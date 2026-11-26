@@ -2,17 +2,12 @@
 import { Column } from '@umami/react-zen';
 import { PageBody } from '@/components/common/PageBody';
 import { PageHeader } from '@/components/common/PageHeader';
-import { useConfig, useMessages } from '@/components/hooks';
+import { useMessages } from '@/components/hooks';
 import { ApiKeyAddButton } from './ApiKeyAddButton';
 import { ApiKeysTable } from './ApiKeysTable';
 
 export function ApiKeysPage() {
   const { t, labels } = useMessages();
-  const { cloudMode } = useConfig();
-
-  if (cloudMode) {
-    return null;
-  }
 
   return (
     <PageBody>

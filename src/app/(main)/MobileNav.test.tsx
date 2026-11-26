@@ -77,11 +77,12 @@ test('shows a settings link above the user button', () => {
 });
 
 test('hides the Settings shortcut on a Settings page', () => {
-  mockUseNavigation.mockReturnValue({ ...mockUseNavigation(), pathname: '/settings/profile' });
+  mockUseNavigation.mockReturnValue({ ...mockUseNavigation(), pathname: '/settings/security' });
 
-  renderMobileNav('/settings/profile');
+  renderMobileNav('/settings/security');
 
-  expect(screen.getByRole('button', { name: /profile/i })).toBeInTheDocument();
+  expect(screen.getByRole('button', { name: /security/i })).toBeInTheDocument();
+  expect(screen.queryByRole('button', { name: /^profile$/i })).not.toBeInTheDocument();
   expect(screen.queryByRole('link', { name: /^settings$/i })).not.toBeInTheDocument();
 });
 

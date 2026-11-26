@@ -18,15 +18,9 @@ import { LockKeyhole, LogOut, UserCircle } from '@/components/icons';
 export function ProfileButton() {
   const { t, labels } = useMessages();
   const { user } = useLoginQuery();
-  const { renderUrl, router } = useNavigation();
+  const { router } = useNavigation();
 
   const items = [
-    {
-      id: 'settings',
-      label: t(labels.profile),
-      path: renderUrl('/settings/profile'),
-      icon: <UserCircle />,
-    },
     user.isAdmin &&
       !process.env.cloudMode && {
         id: 'admin',
@@ -54,10 +48,10 @@ export function ProfileButton() {
         <DropdownMenuGroup>
           <DropdownMenuLabel>{user.username}</DropdownMenuLabel>
           <DropdownMenuSeparator />
-          {items.map(({ id, path, label, icon, separator }) => {
+          {items.map(({ id, path, label, icon, separator }, index) => {
             return (
               <Fragment key={id}>
-                {separator && <DropdownMenuSeparator />}
+                {separator && index > 0 && <DropdownMenuSeparator />}
                 <DropdownMenuItem onClick={() => router.push(path)}>
                   <Row alignItems="center" gap>
                     <Icon>{icon}</Icon>

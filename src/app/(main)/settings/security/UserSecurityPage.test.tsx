@@ -1,16 +1,15 @@
-import { expect, test, vi } from 'vitest';
+import { afterEach, expect, test, vi } from 'vitest';
+import { ConfigContext } from '@/components/hooks/useConfig';
+import { getConfig } from '@/lib/config';
 import { render, screen } from '@/test/render';
+import Layout from '../layout';
 import { UserSecurityPage } from './UserSecurityPage';
-
-const mockUseConfig = vi.fn();
-const mockUseTwoFactorStatusQuery = vi.fn();
 
 vi.mock('@/components/hooks', async () => {
   const actual = await vi.importActual<typeof import('@/components/hooks')>('@/components/hooks');
 
   return {
     ...actual,
-    useConfig: () => mockUseConfig(),
     useMessages: () => ({
       t: (value: string) => value,
       labels: {
@@ -26,7 +25,10 @@ vi.mock('@/components/hooks', async () => {
         twoFactorUserDescription: 'Protect your account with two-factor authentication.',
       },
     }),
-    useTwoFactorStatusQuery: () => mockUseTwoFactorStatusQuery(),
+    useTwoFactorStatusQuery: () => ({
+      data: { isEnabled: false, isRequired: false, isConfigured: true },
+      isLoading: false,
+    }),
   };
 });
 
@@ -34,30 +36,27 @@ vi.mock('./PasswordChangeButton', () => ({
   PasswordChangeButton: () => <button data-test="password-change-button">Change password</button>,
 }));
 
-test('renders password change panel and 2fa panel when cloudMode is disabled', () => {
-  mockUseConfig.mockReturnValue({ cloudMode: false });
-  mockUseTwoFactorStatusQuery.mockReturnValue({
-    data: { isEnabled: false, isRequired: false, isConfigured: true },
-    isLoading: false,
-  });
+afterEach(() => vi.unstubAllEnvs());
 
-  render(<UserSecurityPage />);
+test.each([
+  { cloudMode: undefined, enableSettings: undefined, visible: true },
+  { cloudMode: '1', enableSettings: undefined, visible: false },
+  { cloudMode: '1', enableSettings: '1', visible: true },
+])(
+  'renders the security panels=$visible with CLOUD_MODE=$cloudMode and ENABLE_SETTINGS=$enableSettings',
+  ({ cloudMode, enableSettings, visible }) => {
+    vi.stubEnv('CLOUD_MODE', cloudMode);
+    vi.stubEnv('ENABLE_SETTINGS', enableSettings);
 
-  expect(screen.getByText('Security')).toBeInTheDocument();
-  expect(screen.getByText('Password')).toBeInTheDocument();
-  expect(screen.getByTestId('password-change-button')).toBeInTheDocument();
-  expect(screen.getByText('Two-factor authentication')).toBeInTheDocument();
-});
+    render(
+      <ConfigContext.Provider value={getConfig()}>
+        <Layout>
+          <UserSecurityPage />
+        </Layout>
+      </ConfigContext.Provider>,
+    );
 
-test('hides password panel when cloudMode is enabled', () => {
-  mockUseConfig.mockReturnValue({ cloudMode: true });
-  mockUseTwoFactorStatusQuery.mockReturnValue({
-    data: { isEnabled: false, isRequired: false, isConfigured: true },
-    isLoading: false,
-  });
-
-  render(<UserSecurityPage />);
-
-  expect(screen.queryByTestId('password-change-button')).not.toBeInTheDocument();
-  expect(screen.getByText('Two-factor authentication')).toBeInTheDocument();
-});
+    expect(!!screen.queryByTestId('password-change-button')).toBe(visible);
+    expect(!!screen.queryByText('Two-factor authentication')).toBe(visible);
+  },
+);

@@ -14,14 +14,13 @@ import { Badge } from '@/components/common/Badge';
 import { PageBody } from '@/components/common/PageBody';
 import { PageHeader } from '@/components/common/PageHeader';
 import { Panel } from '@/components/common/Panel';
-import { useConfig, useMessages, useTwoFactorStatusQuery } from '@/components/hooks';
+import { useMessages, useTwoFactorStatusQuery } from '@/components/hooks';
 import { TwoFactorDisableModal } from '@/components/modals/TwoFactorDisableModal';
 import { TwoFactorSetupModal } from '@/components/modals/TwoFactorSetupModal';
 import { PasswordChangeButton } from './PasswordChangeButton';
 
 export function UserSecurityPage() {
   const { t, labels, messages } = useMessages();
-  const { cloudMode } = useConfig();
   const { data: status, isLoading } = useTwoFactorStatusQuery(true);
   const queryClient = useQueryClient();
   const [showSetup, setShowSetup] = useState(false);
@@ -56,18 +55,16 @@ export function UserSecurityPage() {
     <PageBody>
       <PageHeader title={t(labels.security)} />
       <Column gap="6">
-        {!cloudMode && (
-          <Panel>
-            <Column gap="4">
-              <Row alignItems="center" gap="3">
-                <Text weight="bold">{t(labels.password)}</Text>
-              </Row>
-              <Row>
-                <PasswordChangeButton />
-              </Row>
-            </Column>
-          </Panel>
-        )}
+        <Panel>
+          <Column gap="4">
+            <Row alignItems="center" gap="3">
+              <Text weight="bold">{t(labels.password)}</Text>
+            </Row>
+            <Row>
+              <PasswordChangeButton />
+            </Row>
+          </Column>
+        </Panel>
         <Panel>
           <Column gap="4">
             <Row alignItems="center" gap="3">

@@ -12,6 +12,7 @@ import {
 } from '@umami/react-zen';
 import { type ComponentProps, type CSSProperties, type ReactNode, useMemo, useState } from 'react';
 import { useMessages } from '@/components/hooks';
+import styles from './SearchSelect.module.css';
 
 export interface SearchSelectItem {
   id: string;
@@ -86,16 +87,15 @@ export function SearchSelect({
         {renderValue}
       </ComboboxTrigger>
       <ComboboxContent style={contentStyle}>
-        <div style={{ padding: 4 }}>
-          <ComboboxPrimitive.Input
-            render={
-              <SearchField
-                placeholder={placeholder ?? t(labels.search)}
-                onValueChange={value => value === '' && handleSearch('')}
-              />
-            }
-          />
-        </div>
+        <ComboboxPrimitive.Input
+          render={
+            <SearchField
+              className={styles.searchField}
+              placeholder={placeholder ?? t(labels.search)}
+              onValueChange={value => value === '' && handleSearch('')}
+            />
+          }
+        />
         {isLoading ? (
           <Loading icon="dots" placement="center" size="sm" style={{ padding: '32px 0' }} />
         ) : (

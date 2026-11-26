@@ -17,7 +17,8 @@ test('searches with the search field and selects an option with the keyboard', a
   await user.click(screen.getByRole('combobox'));
 
   const search = await screen.findByRole('combobox', { name: 'Search' });
-  await user.type(search, 'be');
+  expect(search).toHaveFocus();
+  await user.keyboard('be');
 
   expect(onSearch).toHaveBeenLastCalledWith('be');
 
