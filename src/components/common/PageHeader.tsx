@@ -34,7 +34,7 @@ export function PageHeader({
         {label}
         <Row alignItems="center" gap="3">
           {icon && (
-            <Icon size="md" color="muted-foreground">
+            <Icon size="md" color="muted">
               {icon}
             </Icon>
           )}
@@ -52,7 +52,7 @@ export function PageHeader({
           )}
         </Row>
         {description && (
-          <Text color="muted-foreground" truncate style={{ maxWidth: 600 }} title={description}>
+          <Text color="muted" truncate style={{ maxWidth: 600 }} title={description}>
             {description}
           </Text>
         )}

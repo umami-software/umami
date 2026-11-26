@@ -260,7 +260,7 @@ const FilterItem = ({ name, label, operator, value, onRemove }) => {
           <Text color="foreground" weight="bold">
             {label}
           </Text>
-          <Text color="muted-foreground">{operator}</Text>
+          <Text color="muted">{operator}</Text>
           <Text
             color="foreground"
             weight="bold"

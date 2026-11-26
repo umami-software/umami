@@ -33,7 +33,7 @@ export function ApiKeysTable() {
             row.lastUsedAt ? (
               <DateDistance date={new Date(row.lastUsedAt)} />
             ) : (
-              <Text color="muted-foreground">{t(labels.never)}</Text>
+              <Text color="muted">{t(labels.never)}</Text>
             )
           }
         </DataColumn>

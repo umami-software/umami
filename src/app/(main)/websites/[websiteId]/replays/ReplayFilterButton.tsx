@@ -53,7 +53,7 @@ function ReplayFilterForm({ minDuration, onClose }: { minDuration: string; onClo
     <Column width="320px" gap="4">
       <Column gap="2">
         <Label>{t(labels.minDurationSeconds)}</Label>
-        <Text color="muted-foreground">{t(messages.replayMinDurationDescription)}</Text>
+        <Text color="muted">{t(messages.replayMinDurationDescription)}</Text>
         <TextField
           value={value}
           onValueChange={handleChange}

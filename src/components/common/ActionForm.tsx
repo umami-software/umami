@@ -5,7 +5,7 @@ export function ActionForm({ label, description, children }) {
     <Row alignItems="center" justifyContent="space-between" gap>
       <Column gap="2">
         <Text weight="bold">{label}</Text>
-        <Text color="muted-foreground">{description}</Text>
+        <Text color="muted">{description}</Text>
       </Column>
       <Row alignItems="center" gap>
         {children}

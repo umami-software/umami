@@ -16,7 +16,7 @@ export function ExternalLink({
           {children}
         </Link>
       </Text>
-      <Icon size="sm" strokeColor="muted-foreground">
+      <Icon size="sm" strokeColor="muted">
         <LinkIcon />
       </Icon>
     </Row>

@@ -169,7 +169,7 @@ export function ErrorIssuePage({ websiteId, issueId }: { websiteId: string; issu
                     {t('viewReplay')}
                   </Link>
                 ) : (
-                  <Text color="muted-foreground">{t('noReplay')}</Text>
+                  <Text color="muted">{t('noReplay')}</Text>
                 )}
               </Row>
               <Column gap="1">

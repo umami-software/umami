@@ -124,7 +124,7 @@ export function UserSecurityPage() {
             ) : null}
 
             {isConfigured === true && isEnabled && isRequired && (
-              <Text size="sm" color="muted-foreground">
+              <Text size="sm" color="muted">
                 {t(messages.twoFactorRequiredMessage)}
               </Text>
             )}

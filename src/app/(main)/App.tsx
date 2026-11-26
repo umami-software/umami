@@ -104,7 +104,7 @@ export function App({ children }) {
             <Text size="lg" weight="bold">
               This team is temporarily unavailable.
             </Text>
-            <Text color="muted-foreground">
+            <Text color="muted">
               This team&apos;s subscription payment is overdue. Please contact the team owner to
               restore access.
             </Text>

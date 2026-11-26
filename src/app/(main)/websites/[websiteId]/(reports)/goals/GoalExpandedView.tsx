@@ -95,10 +95,10 @@ function GoalExpandedView({
         <Column gap="2" minWidth="0">
           <Heading size="2xl">{name}</Heading>
           <Row alignItems="center" gap="2" minWidth="0">
-            <Icon size="sm" color="muted-foreground">
+            <Icon size="sm" color="muted">
               {type === 'path' ? <File /> : <Lightning />}
             </Icon>
-            <Text color="muted-foreground" truncate title={value}>
+            <Text color="muted" truncate title={value}>
               {value}
             </Text>
           </Row>
@@ -132,7 +132,7 @@ function GoalExpandedView({
                 {formatLongNumber(summary.completions)}
               </Text>
               {num > 0 && (
-                <Text color="muted-foreground" wrap="nowrap">
+                <Text color="muted" wrap="nowrap">
                   {`${Number((summary.completions / num).toFixed(1))} ${t(labels.perVisitor)}`}
                 </Text>
               )}

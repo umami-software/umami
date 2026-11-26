@@ -50,7 +50,7 @@ export function PixelSelect({
         <Icon>
           <Grid2x2 />
         </Icon>
-        <Text truncate color={name ? undefined : 'muted-foreground'}>
+        <Text truncate color={name ? undefined : 'muted'}>
           {value}
         </Text>
       </Row>

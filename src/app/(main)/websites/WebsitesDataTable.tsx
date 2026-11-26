@@ -20,7 +20,7 @@ export function WebsitesDataTable({
 
   const renderLink = (row: any) => (
     <Row alignItems="center" gap="3" minWidth="0" width="100%">
-      <Icon size="md" color="muted-foreground" style={{ flexShrink: 0 }}>
+      <Icon size="md" color="muted" style={{ flexShrink: 0 }}>
         <Favicon domain={row.domain} />
       </Icon>
       <Text truncate title={row.name} style={{ maxWidth: '100%' }}>

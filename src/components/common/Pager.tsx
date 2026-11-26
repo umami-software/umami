@@ -34,7 +34,7 @@ export function Pager({ page, pageSize, count, isCapped, onPageChange }: PagerPr
 
   return (
     <Row alignItems="center" justifyContent="space-between" gap="3" flexGrow={1} wrap="wrap">
-      <Text color="muted-foreground">{t(labels.numberOfRecords, { x: displayCount })}</Text>
+      <Text color="muted">{t(labels.numberOfRecords, { x: displayCount })}</Text>
       <Row
         alignItems="center"
         justifyContent="flex-end"
@@ -44,7 +44,7 @@ export function Pager({ page, pageSize, count, isCapped, onPageChange }: PagerPr
       >
         {showNavigation && (
           <>
-            <Text color="muted-foreground">
+            <Text color="muted">
               {t(labels.pageOf, {
                 current: page.toLocaleString(),
                 total: maxPage.toLocaleString(),

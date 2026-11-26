@@ -198,7 +198,7 @@ export function FieldFilters({
         {!value.length &&
           (isMobile ? (
             <Row
-              color="muted-foreground"
+              color="muted"
               justifyContent="center"
               width="100%"
               minHeight="70px"

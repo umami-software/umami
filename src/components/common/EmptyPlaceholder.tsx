@@ -26,7 +26,7 @@ export function EmptyPlaceholder({
       minHeight={minHeight}
     >
       {icon && (
-        <Icon color="muted-foreground" size="xl">
+        <Icon color="muted" size="xl">
           {icon}
         </Icon>
       )}
@@ -37,7 +37,7 @@ export function EmptyPlaceholder({
       )}
       {description && (
         <Box maxWidth="560px">
-          <Text as="div" color="muted-foreground" align="center">
+          <Text as="div" color="muted" align="center">
             {description}
           </Text>
         </Box>

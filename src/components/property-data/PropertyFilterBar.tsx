@@ -117,7 +117,7 @@ function FilterPill({
         <Text color="foreground" weight="bold">
           {label}
         </Text>
-        <Text color="muted-foreground">{operator}</Text>
+        <Text color="muted">{operator}</Text>
         <Text
           color="foreground"
           weight="bold"

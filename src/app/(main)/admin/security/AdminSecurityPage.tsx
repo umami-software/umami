@@ -46,7 +46,7 @@ export function AdminSecurityPage() {
           </Row>
 
           {isConfigured === true && isGlobalRequired && (
-            <Text size="sm" color="muted-foreground">
+            <Text size="sm" color="muted">
               {t(messages.twoFactorOverrideNote)}
             </Text>
           )}

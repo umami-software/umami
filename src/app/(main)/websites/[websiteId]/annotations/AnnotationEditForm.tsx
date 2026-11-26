@@ -102,7 +102,7 @@ export function AnnotationEditForm({
                 </FormField>
                 <Text
                   size="sm"
-                  color="muted-foreground"
+                  color="muted"
                   align="right"
                   style={isOverLimit ? { color: 'var(--destructive)' } : undefined}
                 >

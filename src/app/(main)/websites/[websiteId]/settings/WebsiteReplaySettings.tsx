@@ -210,7 +210,7 @@ export function WebsiteReplaySettings({ websiteId }: { websiteId: string }) {
       {(replayEnabled || heatmapEnabled) && (
         <>
           <Label>{t(labels.recorderCode)}</Label>
-          <Text color="muted-foreground">{t(messages.trackingCode)}</Text>
+          <Text color="muted">{t(messages.trackingCode)}</Text>
           <TextField
             value={recorderCode}
             readOnly

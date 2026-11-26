@@ -62,7 +62,7 @@ export function Panel({
       style={{ ...style, ...(isFullscreen ? fullscreenStyles : { height, width }) }}
     >
       {title && <Heading>{title}</Heading>}
-      {description && <Text color="muted-foreground">{description}</Text>}
+      {description && <Text color="muted">{description}</Text>}
       {(allowFullscreen || toolbar) && (
         <Row justifyContent="flex-end" alignItems="center" gap>
           {toolbar}

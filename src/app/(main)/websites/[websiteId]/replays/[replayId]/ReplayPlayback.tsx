@@ -147,7 +147,7 @@ export function ReplayPlayback({
                 <Avatar seed={replay.sessionId} size={48} />
                 <Column minWidth="0">
                   <Text weight="bold">{t(labels.replay)}</Text>
-                  <Text color="muted-foreground">
+                  <Text color="muted">
                     {replay.eventCount} {t(labels.actions).toLowerCase()}
                   </Text>
                 </Column>

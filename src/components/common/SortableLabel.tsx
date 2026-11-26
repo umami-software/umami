@@ -85,7 +85,7 @@ export function SortableLabel({
             transformOrigin: 'center',
           }}
         >
-          <Icon size="sm" color={direction === 'asc' ? undefined : 'muted-foreground'}>
+          <Icon size="sm" color={direction === 'asc' ? undefined : 'muted'}>
             <ChevronUp />
           </Icon>
         </span>
@@ -98,7 +98,7 @@ export function SortableLabel({
             transformOrigin: 'center',
           }}
         >
-          <Icon size="sm" color={direction === 'desc' ? undefined : 'muted-foreground'}>
+          <Icon size="sm" color={direction === 'desc' ? undefined : 'muted'}>
             <ChevronDown />
           </Icon>
         </span>

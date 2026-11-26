@@ -170,10 +170,10 @@ function FunnelExpandedView({
                 {`-${formatPercent(data[bottleneck].dropoff)}`}
               </Text>
               <Row alignItems="center" gap="2" minWidth="0">
-                <Icon size="sm" color="muted-foreground">
+                <Icon size="sm" color="muted">
                   {data[bottleneck].type === 'path' ? <File /> : <Lightning />}
                 </Icon>
-                <Text color="muted-foreground" truncate title={data[bottleneck].value}>
+                <Text color="muted" truncate title={data[bottleneck].value}>
                   {data[bottleneck].value}
                 </Text>
               </Row>
@@ -210,10 +210,10 @@ function FunnelExpandedView({
                   </ChangeLabel>
                   {times?.steps[index] != null && (
                     <Row alignItems="center" gap="1" title={t(labels.medianTimeToConvert)}>
-                      <Icon size="sm" color="muted-foreground">
+                      <Icon size="sm" color="muted">
                         <Clock />
                       </Icon>
-                      <Text color="muted-foreground">{formatDuration(times.steps[index])}</Text>
+                      <Text color="muted">{formatDuration(times.steps[index])}</Text>
                     </Row>
                   )}
                 </Row>
@@ -235,7 +235,7 @@ function FunnelExpandedView({
                 <Text weight="bold" size="3xl">
                   {formatPercent(percent || 0)}
                 </Text>
-                <Text color="muted-foreground" title={visitors.toString()} transform="lowercase">
+                <Text color="muted" title={visitors.toString()} transform="lowercase">
                   {`${formatLongNumber(visitors)} ${t(labels.visitors)}`}
                 </Text>
               </Column>

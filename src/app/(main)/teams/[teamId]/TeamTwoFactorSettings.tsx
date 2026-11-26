@@ -52,7 +52,7 @@ export function TeamTwoFactorSettings({ teamId }: { teamId: string }) {
       <Text weight="bold">{t(labels.twoFactorAuth)}</Text>
 
       {showConfigurationError && (
-        <Text size="sm" color="muted-foreground">
+        <Text size="sm" color="muted">
           {t(messages.twoFactorErrorNotConfigured)}
         </Text>
       )}
@@ -66,7 +66,7 @@ export function TeamTwoFactorSettings({ teamId }: { teamId: string }) {
         toggle
       )}
 
-      <Text size="sm" color="muted-foreground">
+      <Text size="sm" color="muted">
         {t(messages.twoFactorRequireTeamDescription)}
       </Text>
     </Column>

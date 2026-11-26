@@ -35,7 +35,7 @@ export function WebsiteTrackingCode({
   return (
     <Column gap>
       {showHeader && <Label>{t(labels.trackingCode)}</Label>}
-      <Text color="muted-foreground">{t(messages.trackingCode)}</Text>
+      <Text color="muted">{t(messages.trackingCode)}</Text>
       <TextField
         value={code}
         readOnly

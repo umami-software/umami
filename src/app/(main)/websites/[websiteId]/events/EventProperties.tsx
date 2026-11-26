@@ -124,7 +124,7 @@ export function EventProperties({ websiteId }: { websiteId: string }) {
                     eventName ? (
                       <span style={selectValueStyle}>{eventName}</span>
                     ) : (
-                      <Text color="muted-foreground" truncate>
+                      <Text color="muted" truncate>
                         {t(labels.selectEvent)}
                       </Text>
                     )

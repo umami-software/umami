@@ -73,7 +73,7 @@ export function SettingsButton() {
                 '/docs',
                 <BookText />,
                 t(labels.documentation),
-                <Icon color="muted-foreground">
+                <Icon color="muted">
                   <ExternalLink />
                 </Icon>,
               )}

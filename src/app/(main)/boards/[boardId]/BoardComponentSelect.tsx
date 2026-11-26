@@ -321,7 +321,7 @@ export function BoardComponentSelect({
           {needsWebsite && isOpenType && (
             <>
               <Column gap="2">
-                <Text size="sm" color="muted-foreground">
+                <Text size="sm" color="muted">
                   {t(labels.type)}
                 </Text>
                 <Select
@@ -344,7 +344,7 @@ export function BoardComponentSelect({
                 </Select>
               </Column>
               <Column gap="2">
-                <Text size="sm" color="muted-foreground">
+                <Text size="sm" color="muted">
                   {selectedEntityType === BOARD_ENTITY_TYPES.pixel
                     ? t(labels.pixel)
                     : selectedEntityType === BOARD_ENTITY_TYPES.link
@@ -378,14 +378,14 @@ export function BoardComponentSelect({
           )}
 
           <Column gap="2">
-            <Text size="sm" color="muted-foreground">
+            <Text size="sm" color="muted">
               {t(labels.title)}
             </Text>
             <TextField value={title} onValueChange={setTitle} autoComplete="off" />
           </Column>
 
           <Column gap="2">
-            <Text size="sm" color="muted-foreground">
+            <Text size="sm" color="muted">
               {t(labels.description)}
             </Text>
             <TextField value={description} onValueChange={setDescription} autoComplete="off" />
@@ -395,7 +395,7 @@ export function BoardComponentSelect({
             <Column gap="3">
               {selectedDef.configFields.map((field: ConfigField) => (
                 <Column key={field.name} gap="2">
-                  <Text size="sm" color="muted-foreground">
+                  <Text size="sm" color="muted">
                     {field.label}
                   </Text>
 
@@ -476,14 +476,14 @@ export function BoardComponentSelect({
                         </SelectContent>
                       </Select>
                       {isLoadingReportOptions && (
-                        <Text size="xs" color="muted-foreground">
+                        <Text size="xs" color="muted">
                           Loading options...
                         </Text>
                       )}
                       {!isLoadingReportOptions &&
                         resolvedEntityId &&
                         (reportOptionsByType[field.reportType ?? '']?.length ?? 0) === 0 && (
-                          <Text size="xs" color="muted-foreground">
+                          <Text size="xs" color="muted">
                             No saved items found.
                           </Text>
                         )}
@@ -502,7 +502,7 @@ export function BoardComponentSelect({
               <Column gap="1" height="100%" style={{ overflowY: 'auto', minHeight: 0 }}>
                 {groupedDefinitions.map(({ group, definitions }) => (
                   <Column key={group} gap="1" paddingBottom="2">
-                    <Text size="sm" color="muted-foreground" weight="bold">
+                    <Text size="sm" color="muted" weight="bold">
                       {group}
                     </Text>
                     {definitions.map(def => {
@@ -530,7 +530,7 @@ export function BoardComponentSelect({
                             >
                               {def.name}
                             </Text>
-                            <Text size="xs" color="muted-foreground">
+                            <Text size="xs" color="muted">
                               {def.description}
                             </Text>
                           </Column>
@@ -542,7 +542,7 @@ export function BoardComponentSelect({
               </Column>
             ) : (
               <Column alignItems="center" justifyContent="center" height="100%">
-                <Text color="muted-foreground">{t(messages.selectBoardEntityFirst)}</Text>
+                <Text color="muted">{t(messages.selectBoardEntityFirst)}</Text>
               </Column>
             )}
           </Column>
@@ -560,7 +560,7 @@ export function BoardComponentSelect({
               />
             ) : (
               <Column alignItems="center" justifyContent="center" height="100%">
-                <Text color="muted-foreground">
+                <Text color="muted">
                   {!hasSelectedEntity
                     ? t(messages.selectBoardEntityFirst)
                     : resolvedEntityId

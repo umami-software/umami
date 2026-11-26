@@ -159,7 +159,7 @@ const AnimatedRow = ({
           position="relative"
           border="left"
           borderColor="input"
-          color="muted-foreground"
+          color="muted"
           paddingLeft="3"
         >
           <AnimatedDiv>{animate ? widthText : `${percent?.toFixed?.(0)}%`}</AnimatedDiv>

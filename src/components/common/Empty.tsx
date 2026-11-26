@@ -10,7 +10,7 @@ export function Empty({ message }: EmptyProps) {
 
   return (
     <Row
-      color="muted-foreground"
+      color="muted"
       alignItems="center"
       justifyContent="center"
       width="100%"

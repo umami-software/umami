@@ -380,7 +380,7 @@ function RowName({
         name
       )}
       {details && (
-        <Text truncate={!isPhone} size="sm" color="muted-foreground" title={details}>
+        <Text truncate={!isPhone} size="sm" color="muted" title={details}>
           {details}
         </Text>
       )}

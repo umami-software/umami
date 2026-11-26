@@ -165,7 +165,7 @@ export function ShareNav({
         {!collapsed && <ShareBranding size="md" />}
         {!onItemClick && (
           <Button variant="ghost" onClick={() => onCollapse?.(!collapsed)}>
-            <Icon color="muted-foreground">
+            <Icon color="muted">
               <PanelLeft />
             </Icon>
           </Button>

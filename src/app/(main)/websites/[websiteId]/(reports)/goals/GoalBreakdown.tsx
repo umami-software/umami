@@ -83,7 +83,7 @@ export function GoalBreakdown({ websiteId, id }: { websiteId: string; id: string
                   <Column gap="1" width="100%" paddingRight="6">
                     <Row alignItems="baseline" justifyContent="space-between" gap="2">
                       <Text weight="bold">{formatPercent(ratio)}</Text>
-                      <Text color="muted-foreground" title={String(row.converted)}>
+                      <Text color="muted" title={String(row.converted)}>
                         {formatLongNumber(row.converted)}
                       </Text>
                     </Row>

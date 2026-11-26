@@ -113,10 +113,10 @@ export function Funnel({
                 </Column>
                 <Column gap>
                   <Row alignItems="center" justifyContent="space-between" gap>
-                    <Text color="muted-foreground">
+                    <Text color="muted">
                       {t(isPage ? labels.viewedPage : labels.triggeredEvent)}
                     </Text>
-                    <Text color="muted-foreground">{t(labels.conversionRate)}</Text>
+                    <Text color="muted">{t(labels.conversionRate)}</Text>
                   </Row>
                   <Row alignItems="center" justifyContent="space-between" gap>
                     <Column gap="1">
@@ -126,11 +126,11 @@ export function Funnel({
                       </Row>
                       {filters?.map((f, i) => (
                         <Row key={i} gap="1" style={{ paddingLeft: 28 }}>
-                          <Text color="muted-foreground">{f.property}</Text>
-                          <Text color="muted-foreground" transform="lowercase">
+                          <Text color="muted">{f.property}</Text>
+                          <Text color="muted" transform="lowercase">
                             {operatorLabels[f.operator] ?? f.operator}
                           </Text>
-                          <Text color="muted-foreground">{f.value}</Text>
+                          <Text color="muted">{f.value}</Text>
                         </Row>
                       ))}
                     </Column>

@@ -52,12 +52,7 @@ export function TopNav() {
         <TeamsButton />
         {(websiteId || linkId || pixelId || boardId) && (
           <>
-            <Icon
-              size="sm"
-              color="muted-foreground"
-              rotate={90}
-              style={{ opacity: 0.7, margin: '0 6px' }}
-            >
+            <Icon size="sm" color="muted" rotate={90} style={{ opacity: 0.7, margin: '0 6px' }}>
               <Minus />
             </Icon>
             {websiteId && (

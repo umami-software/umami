@@ -87,12 +87,12 @@ export function UserTwoFactorSettings({ userId }: { userId: string }) {
           </Badge>
         </Row>
 
-        <Text size="sm" color="muted-foreground">
+        <Text size="sm" color="muted">
           {t(messages.twoFactorRequireUserDescription)}
         </Text>
 
         {showConfigurationError && (
-          <Text size="sm" color="muted-foreground">
+          <Text size="sm" color="muted">
             {t(messages.twoFactorErrorNotConfigured)}
           </Text>
         )}
@@ -109,7 +109,7 @@ export function UserTwoFactorSettings({ userId }: { userId: string }) {
         {twoFactorEnabled && (
           <Column gap="3">
             <Text weight="bold">{t(labels.twoFactorReset)}</Text>
-            <Text size="sm" color="muted-foreground">
+            <Text size="sm" color="muted">
               {t(messages.twoFactorResetDescription)}
             </Text>
             <Row>

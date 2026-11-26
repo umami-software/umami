@@ -50,7 +50,7 @@ export function LinkSelect({
         <Icon>
           <Link />
         </Icon>
-        <Text truncate color={name ? undefined : 'muted-foreground'}>
+        <Text truncate color={name ? undefined : 'muted'}>
           {value}
         </Text>
       </Row>

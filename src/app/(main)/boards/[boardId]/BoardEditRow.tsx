@@ -169,7 +169,7 @@ export function BoardEditRow({
                 />
               }
             >
-              <Icon rotate={180} color={moveUpDisabled ? 'muted-foreground' : undefined}>
+              <Icon rotate={180} color={moveUpDisabled ? 'muted' : undefined}>
                 <ChevronDown />
               </Icon>
             </TooltipTrigger>
@@ -187,7 +187,7 @@ export function BoardEditRow({
                 />
               }
             >
-              <Icon color={addColumnDisabled ? 'muted-foreground' : undefined}>
+              <Icon color={addColumnDisabled ? 'muted' : undefined}>
                 <Plus />
               </Icon>
             </TooltipTrigger>
@@ -216,7 +216,7 @@ export function BoardEditRow({
                 />
               }
             >
-              <Icon color={moveDownDisabled ? 'muted-foreground' : undefined}>
+              <Icon color={moveDownDisabled ? 'muted' : undefined}>
                 <ChevronDown />
               </Icon>
             </TooltipTrigger>

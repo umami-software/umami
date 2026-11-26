@@ -54,7 +54,7 @@ function PixelShareFormContent({
         (hasShares ? (
           <SimpleSharesTable data={shares} />
         ) : (
-          <Text color="muted-foreground">{t(messages.noDataAvailable)}</Text>
+          <Text color="muted">{t(messages.noDataAvailable)}</Text>
         ))}
     </Column>
   );

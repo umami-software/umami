@@ -31,7 +31,7 @@ export function FilterLink({
     <Row
       alignItems="center"
       gap
-      color={active && !selected ? 'muted-foreground' : undefined}
+      color={active && !selected ? 'muted' : undefined}
       onMouseOver={() => setShowLink(true)}
       onMouseOut={() => setShowLink(false)}
     >
@@ -50,7 +50,7 @@ export function FilterLink({
       )}
       {externalUrl && showLink && (
         <a href={externalUrl} target="_blank" rel="noreferrer noopener">
-          <Icon color="muted-foreground">
+          <Icon color="muted">
             <ExternalLink />
           </Icon>
         </a>

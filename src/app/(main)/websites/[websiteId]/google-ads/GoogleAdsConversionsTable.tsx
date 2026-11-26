@@ -75,7 +75,7 @@ function ActionName({ row }: { row: GoogleAdsRow }) {
         {row.name}
       </Text>
       {category && (
-        <Text truncate={!isPhone} size="sm" color="muted-foreground">
+        <Text truncate={!isPhone} size="sm" color="muted">
           {category}
         </Text>
       )}

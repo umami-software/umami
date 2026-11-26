@@ -70,7 +70,7 @@ function InsightCard({ label, value, hint }: { label: string; value: string; hin
         {value}
       </Text>
       {hint && (
-        <Text color="muted-foreground" style={{ overflowWrap: 'anywhere' }}>
+        <Text color="muted" style={{ overflowWrap: 'anywhere' }}>
           {hint}
         </Text>
       )}

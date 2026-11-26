@@ -181,7 +181,7 @@ export function UserButton({ showText = true, onClose }: UserButtonProps) {
                 <Icon>{icon}</Icon>
                 <Text>{label}</Text>
                 {external && (
-                  <Icon color="muted-foreground" size="sm">
+                  <Icon color="muted" size="sm">
                     <ExternalLink />
                   </Icon>
                 )}

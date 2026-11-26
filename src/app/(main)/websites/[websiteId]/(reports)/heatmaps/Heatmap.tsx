@@ -144,7 +144,7 @@ export function Heatmap({ websiteId, urlPath, onUrlPathChange, mode, search }: H
               gap
               className={styles.mobilePageHeader}
             >
-              <Text color="muted-foreground" className={styles.mobileSectionLabel}>
+              <Text color="muted" className={styles.mobileSectionLabel}>
                 Selected page
               </Text>
               <Button variant="outline" onClick={() => setIsPagePickerOpen(true)}>
@@ -159,7 +159,7 @@ export function Heatmap({ websiteId, urlPath, onUrlPathChange, mode, search }: H
               >
                 <Row alignItems="center" justifyContent="space-between" gap="3">
                   <Text truncate>{selectedPage.urlPath}</Text>
-                  <Text color="muted-foreground" className={styles.pageMetric}>
+                  <Text color="muted" className={styles.pageMetric}>
                     {formatLongNumber(selectedPage.sessions)}
                   </Text>
                 </Row>
@@ -188,7 +188,8 @@ export function Heatmap({ websiteId, urlPath, onUrlPathChange, mode, search }: H
           )}
 
           <Dialog open={isPagePickerOpen} onOpenChange={isOpen => setIsPagePickerOpen(isOpen)}>
-            <DialogContent showCloseButton
+            <DialogContent
+              showCloseButton
               style={{
                 width: '100%',
                 height: '100%',
@@ -278,7 +279,7 @@ function PageList({
     <Column className={styles.pageList} gap="1">
       {showHeading && <Heading size="lg">Pages</Heading>}
       <Column className={styles.pageListItems} gap="2">
-        {pages.length === 0 && hasSearch && <Text color="muted-foreground">No matching pages</Text>}
+        {pages.length === 0 && hasSearch && <Text color="muted">No matching pages</Text>}
         {pages.map(page => (
           <button
             key={page.urlPath}
@@ -289,11 +290,7 @@ function PageList({
           >
             <Row alignItems="center" justifyContent="space-between" gap="2">
               <Text truncate>{page.urlPath}</Text>
-              <Text
-                color="muted-foreground"
-                className={styles.pageMetric}
-                title={getPageMetricTitle(page)}
-              >
+              <Text color="muted" className={styles.pageMetric} title={getPageMetricTitle(page)}>
                 {formatLongNumber(page.sessions)}
               </Text>
             </Row>
@@ -575,7 +572,7 @@ function ScreenWidthSelect({
 
   return (
     <Row alignItems="center" gap="2" className={styles.screenWidthControl}>
-      <Text color="muted-foreground" className={styles.screenWidthLabel}>
+      <Text color="muted" className={styles.screenWidthLabel}>
         Screen width:
       </Text>
       <Select value={value} onValueChange={nextValue => onChange(Number(nextValue))}>
@@ -592,7 +589,7 @@ function ScreenWidthSelect({
                   <Row alignItems="center" justifyContent="space-between" gap="2">
                     <ScreenWidthValue width={width} />
                     {bucket && (
-                      <Text color="muted-foreground" className={styles.screenWidthCount}>
+                      <Text color="muted" className={styles.screenWidthCount}>
                         {formatLongNumber(bucket.count)}
                       </Text>
                     )}
@@ -691,14 +688,14 @@ function ClickHeatmapView({
       <Column gap="2" className={styles.summaryHeader}>
         {!isPhone && (
           <Row alignItems="center" justifyContent="space-between" gap>
-            <Text color="muted-foreground" title={urlPath} className={styles.summaryPath}>
+            <Text color="muted" title={urlPath} className={styles.summaryPath}>
               {urlPath}
             </Text>
           </Row>
         )}
         {showLoading ? (
           <Row alignItems="center" gap className={styles.summaryStats}>
-            <Text color="muted-foreground" className={styles.summaryStat}>
+            <Text color="muted" className={styles.summaryStat}>
               Loading Heatmap...
             </Text>
           </Row>
@@ -717,7 +714,7 @@ function ClickHeatmapView({
             gap
             className={styles.summaryStats}
           >
-            <Text color="muted-foreground" className={styles.summaryStat} title={bucketDescription}>
+            <Text color="muted" className={styles.summaryStat} title={bucketDescription}>
               {viewport
                 ? `${visible.length} positions - ${formatLongNumber(totalClicks)} clicks`
                 : 'No click data for this page yet.'}
@@ -876,13 +873,13 @@ function ScrollHeatmapView({
   return (
     <Column gap>
       {!isPhone && (
-        <Text color="muted-foreground" title={urlPath} className={styles.summaryPath}>
+        <Text color="muted" title={urlPath} className={styles.summaryPath}>
           {urlPath}
         </Text>
       )}
       {showLoading ? (
         <Row alignItems="center" gap className={styles.summaryStats}>
-          <Text color="muted-foreground" className={styles.summaryStat}>
+          <Text color="muted" className={styles.summaryStat}>
             Loading Heatmap...
           </Text>
         </Row>
@@ -901,7 +898,7 @@ function ScrollHeatmapView({
           gap
           className={styles.summaryHeader}
         >
-          <Text color="muted-foreground" className={styles.summaryStat} title={bucketDescription}>
+          <Text color="muted" className={styles.summaryStat} title={bucketDescription}>
             {hasScrollData
               ? `${formatLongNumber(totalSessions)} sessions - page ${pageW}x${pageH}${viewportH ? ` - viewport ${viewportW}x${viewportH}` : ''}`
               : 'No scroll data for this page yet.'}
@@ -1067,9 +1064,7 @@ function EmptyState({ message }: { message?: string } = {}) {
   return (
     <Column alignItems="center" justifyContent="center" minHeight="360px" gap>
       {!message && <Heading size="lg">Select a page</Heading>}
-      <Text color="muted-foreground">
-        {message ?? 'Choose a page from the list to view its heatmap.'}
-      </Text>
+      <Text color="muted">{message ?? 'Choose a page from the list to view its heatmap.'}</Text>
     </Column>
   );
 }

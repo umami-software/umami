@@ -90,10 +90,8 @@ export function Goal({
       </Grid>
       <LoadingPanel data={data} isLoading={isLoading} isFetching={isFetching} error={error}>
         <Row alignItems="center" justifyContent="space-between" gap>
-          <Text color="muted-foreground">
-            {t(isPage ? labels.viewedPage : labels.triggeredEvent)}
-          </Text>
-          <Text color="muted-foreground">{t(labels.conversionRate)}</Text>
+          <Text color="muted">{t(isPage ? labels.viewedPage : labels.triggeredEvent)}</Text>
+          <Text color="muted">{t(labels.conversionRate)}</Text>
         </Row>
         <Row alignItems="center" justifyContent="space-between" gap>
           <Row alignItems="center" gap>
