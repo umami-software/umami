@@ -30,6 +30,8 @@ import type { PageResult } from '@/lib/types';
 
 const DEFAULT_SEARCH_DELAY = 600;
 const DISPLAY_MODE_STORAGE_KEY = 'umami.datagrid.displayMode';
+// Cards fill as many columns as fit at this width; narrow screens get one.
+const DEFAULT_CARD_MIN_WIDTH = '360px';
 
 type DisplayMode = 'table' | 'cards';
 
@@ -42,6 +44,8 @@ export interface DataGridProps {
   autoFocus?: boolean;
   renderActions?: () => ReactNode;
   renderEmpty?: () => ReactNode;
+  /** In card view, the minimum width of a card. Cards fill as many columns as fit. */
+  cardMinWidth?: string;
   children: ReactNode | ((data: any) => ReactNode);
 }
 
@@ -54,6 +58,7 @@ export function DataGrid({
   autoFocus,
   renderActions,
   renderEmpty = () => <Empty />,
+  cardMinWidth = DEFAULT_CARD_MIN_WIDTH,
   children,
 }: DataGridProps) {
   const { t, labels } = useMessages();
@@ -186,7 +191,7 @@ export function DataGrid({
           >
             <Column>
               {isValidElement(child)
-                ? cloneElement(child as ReactElement<any>, { displayMode })
+                ? cloneElement(child as ReactElement<any>, { displayMode, cardMinWidth })
                 : child}
             </Column>
           </div>
