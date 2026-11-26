@@ -1,4 +1,4 @@
-import { Column, Row, Text } from '@umami/react-zen';
+import { Column, Icon, Row, Text } from '@umami/react-zen';
 import { IconLabel } from '@/components/common/IconLabel';
 import Link from '@/components/common/Link';
 import {
@@ -6,10 +6,11 @@ import {
   type NavSection,
   useMessages,
   useMetricsNavItems,
+  useNavGroupOpen,
   useNavigation,
   useWebsiteNavItems,
 } from '@/components/hooks';
-import { ArrowLeft } from '@/components/icons';
+import { ArrowLeft, ChevronRight } from '@/components/icons';
 
 export function WebsiteNav({
   websiteId,
@@ -74,25 +75,83 @@ function SectionNav({
           <Row paddingX="3" marginTop="2">
             <Text weight="bold">{sectionLabel}</Text>
           </Row>
-          {sectionItems.map(item => (
-            <Column key={item.id} gap="1">
-              <SectionNavLink item={item} selectedKey={selectedKey} onItemClick={onItemClick} />
-              {item.children?.length > 0 && (
-                <Column gap="1" marginLeft="6" paddingLeft="2" border="left">
-                  {item.children.map(child => (
-                    <SectionNavLink
-                      key={child.id}
-                      item={child}
-                      selectedKey={selectedKey}
-                      onItemClick={onItemClick}
-                    />
-                  ))}
-                </Column>
-              )}
-            </Column>
-          ))}
+          {sectionItems.map(item =>
+            item.children?.length > 0 ? (
+              <SectionNavGroup
+                key={item.id}
+                item={item}
+                selectedKey={selectedKey}
+                onItemClick={onItemClick}
+              />
+            ) : (
+              <SectionNavLink
+                key={item.id}
+                item={item}
+                selectedKey={selectedKey}
+                onItemClick={onItemClick}
+              />
+            ),
+          )}
         </Column>
       ))}
+    </Column>
+  );
+}
+
+/** A nav item whose sub-items expand and collapse beneath it. */
+export function SectionNavGroup({
+  item,
+  selectedKey,
+  onItemClick,
+  minHeight = '9',
+}: {
+  item: NavItem;
+  selectedKey?: string;
+  onItemClick?: () => void;
+  minHeight?: string;
+}) {
+  const { open, setOpen } = useNavGroupOpen(item, selectedKey);
+  const toggle = () => setOpen(!open);
+
+  return (
+    <Column gap="1">
+      <Row
+        role="button"
+        tabIndex={0}
+        aria-expanded={open}
+        onClick={toggle}
+        onKeyDown={e => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            toggle();
+          }
+        }}
+        alignItems="center"
+        justifyContent="space-between"
+        hover={{ backgroundColor: 'muted' }}
+        borderRadius
+        minHeight={minHeight}
+        paddingRight="3"
+        style={{ cursor: 'pointer' }}
+      >
+        <IconLabel icon={item.icon} label={item.label} padding />
+        <Icon size="sm" color="muted" rotate={open ? 90 : 0}>
+          <ChevronRight />
+        </Icon>
+      </Row>
+      {open && (
+        <Column gap="1" marginLeft="6" paddingLeft="2" border="left">
+          {item.children.map(child => (
+            <SectionNavLink
+              key={child.id}
+              item={child}
+              selectedKey={selectedKey}
+              onItemClick={onItemClick}
+              minHeight={minHeight}
+            />
+          ))}
+        </Column>
+      )}
     </Column>
   );
 }
@@ -101,10 +160,12 @@ function SectionNavLink({
   item: { id, path, label, icon },
   selectedKey,
   onItemClick,
+  minHeight = '9',
 }: {
   item: NavItem;
   selectedKey?: string;
   onItemClick?: () => void;
+  minHeight?: string;
 }) {
   const isSelected = selectedKey === id;
 
@@ -115,7 +176,7 @@ function SectionNavLink({
         hover={{ backgroundColor: 'muted' }}
         backgroundColor={isSelected ? 'muted' : undefined}
         borderRadius
-        minHeight="9"
+        minHeight={minHeight}
       >
         {icon ? (
           <IconLabel icon={icon} label={label} weight={isSelected ? 'bold' : undefined} padding />

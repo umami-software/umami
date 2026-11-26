@@ -1,4 +1,7 @@
 import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
   Row,
   Sidebar,
   SidebarContent,
@@ -26,12 +29,14 @@ import {
   useConfig,
   useMessages,
   useMetricsNavItems,
+  useNavGroupOpen,
   useNavigation,
   useSettingsNavItems,
   useWebsiteNavItems,
 } from '@/components/hooks';
 import {
   ArrowLeft,
+  ChevronRight,
   Globe,
   Grid2x2,
   LayoutDashboard,
@@ -230,6 +235,10 @@ function NavMenuItem({
   selectedKey?: string;
   isActive?: boolean;
 }) {
+  if (item.children?.length > 0) {
+    return <NavGroupItem item={item} selectedKey={selectedKey} />;
+  }
+
   return (
     <SidebarMenuItem>
       <SidebarMenuButton
@@ -240,20 +249,46 @@ function NavMenuItem({
         {item.icon}
         <span>{item.label}</span>
       </SidebarMenuButton>
-      {item.children?.length > 0 && (
-        <SidebarMenuSub>
-          {item.children.map(child => (
-            <SidebarMenuSubItem key={child.id}>
-              <SidebarMenuSubButton
-                render={<Link href={child.path} />}
-                isActive={child.id === selectedKey}
-              >
-                <span>{child.label}</span>
-              </SidebarMenuSubButton>
-            </SidebarMenuSubItem>
-          ))}
-        </SidebarMenuSub>
-      )}
+    </SidebarMenuItem>
+  );
+}
+
+/** A nav item whose sub-items expand and collapse beneath it. */
+function NavGroupItem({ item, selectedKey }: { item: NavItem; selectedKey?: string }) {
+  const { state } = useSidebar();
+  const { open, setOpen, hasSelectedChild } = useNavGroupOpen(item, selectedKey);
+
+  // An icon-only sidebar has no room for sub-items, so the item links to its first page.
+  if (state === 'collapsed') {
+    return <NavMenuItem item={{ ...item, children: undefined }} isActive={hasSelectedChild} />;
+  }
+
+  return (
+    <SidebarMenuItem>
+      <Collapsible open={open} onOpenChange={setOpen}>
+        <SidebarMenuButton render={<CollapsibleTrigger />} isActive={item.id === selectedKey}>
+          {item.icon}
+          <span>{item.label}</span>
+          <ChevronRight
+            className="ml-auto transition-transform"
+            style={{ transform: open ? 'rotate(90deg)' : undefined }}
+          />
+        </SidebarMenuButton>
+        <CollapsibleContent>
+          <SidebarMenuSub>
+            {item.children.map(child => (
+              <SidebarMenuSubItem key={child.id}>
+                <SidebarMenuSubButton
+                  render={<Link href={child.path} />}
+                  isActive={child.id === selectedKey}
+                >
+                  <span>{child.label}</span>
+                </SidebarMenuSubButton>
+              </SidebarMenuSubItem>
+            ))}
+          </SidebarMenuSub>
+        </CollapsibleContent>
+      </Collapsible>
     </SidebarMenuItem>
   );
 }

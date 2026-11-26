@@ -1,4 +1,4 @@
-import type { ReactNode } from 'react';
+import { type ReactNode, useEffect, useState } from 'react';
 import {
   AlignEndHorizontal,
   Bug,
@@ -244,4 +244,21 @@ export function useWebsiteNavItems(websiteId: string) {
     )?.id;
 
   return { items, selectedKey, renderPath };
+}
+
+/**
+ * Open state for a nav item with sub-items. Collapsed by default, and opens itself when one of
+ * its sub-items becomes the selected page so the selection is never hidden.
+ */
+export function useNavGroupOpen(item: NavItem, selectedKey?: string) {
+  const hasSelectedChild = !!item.children?.some(child => child.id === selectedKey);
+  const [open, setOpen] = useState(hasSelectedChild);
+
+  useEffect(() => {
+    if (hasSelectedChild) {
+      setOpen(true);
+    }
+  }, [hasSelectedChild]);
+
+  return { open, setOpen, hasSelectedChild };
 }

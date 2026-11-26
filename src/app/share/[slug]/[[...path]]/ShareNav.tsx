@@ -9,6 +9,7 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from '@umami/react-zen';
+import { SectionNavGroup } from '@/app/(main)/websites/[websiteId]/WebsiteNav';
 import { IconLabel } from '@/components/common/IconLabel';
 import Link from '@/components/common/Link';
 import {
@@ -218,79 +219,57 @@ export function ShareNav({
               const isSelected =
                 selectedKey === id ||
                 (collapsed && !!children?.some(child => child.id === selectedKey));
+              if (!collapsed && children?.length > 0) {
+                return (
+                  <SectionNavGroup
+                    key={id}
+                    item={{ id, path, label, icon, children }}
+                    selectedKey={selectedKey}
+                    onItemClick={onItemClick}
+                    minHeight="40px"
+                  />
+                );
+              }
+
               return (
-                <Column key={id} gap="1">
-                  <Link href={path} role="button" onClick={onItemClick}>
-                    {collapsed ? (
-                      <Tooltip>
-                        <TooltipTrigger
-                          delay={0}
-                          render={
-                            <Row
-                              tabIndex={0}
-                              alignItems="center"
-                              justifyContent="center"
-                              hover={{ backgroundColor: 'muted' }}
-                              backgroundColor={isSelected ? 'muted' : undefined}
-                              borderRadius
-                              minHeight="40px"
-                            />
-                          }
-                        >
-                          <IconLabel
-                            icon={icon}
-                            label=""
-                            weight={isSelected ? 'bold' : undefined}
+                <Link key={id} href={path} role="button" onClick={onItemClick}>
+                  {collapsed ? (
+                    <Tooltip>
+                      <TooltipTrigger
+                        delay={0}
+                        render={
+                          <Row
+                            tabIndex={0}
+                            alignItems="center"
+                            justifyContent="center"
+                            hover={{ backgroundColor: 'muted' }}
+                            backgroundColor={isSelected ? 'muted' : undefined}
+                            borderRadius
+                            minHeight="40px"
                           />
-                        </TooltipTrigger>
-                        <TooltipContent side="right">{label}</TooltipContent>
-                      </Tooltip>
-                    ) : (
-                      <Row
-                        alignItems="center"
-                        hover={{ backgroundColor: 'muted' }}
-                        backgroundColor={isSelected ? 'muted' : undefined}
-                        borderRadius
-                        minHeight="40px"
+                        }
                       >
-                        <IconLabel
-                          icon={icon}
-                          label={label}
-                          weight={isSelected ? 'bold' : undefined}
-                          padding
-                        />
-                      </Row>
-                    )}
-                  </Link>
-                  {!collapsed && children?.length > 0 && (
-                    <Column gap="1" marginLeft="6" paddingLeft="2" border="left">
-                      {children.map(child => {
-                        const isChildSelected = selectedKey === child.id;
-                        return (
-                          <Link
-                            key={child.id}
-                            href={child.path}
-                            role="button"
-                            onClick={onItemClick}
-                          >
-                            <Row
-                              alignItems="center"
-                              hover={{ backgroundColor: 'muted' }}
-                              backgroundColor={isChildSelected ? 'muted' : undefined}
-                              borderRadius
-                              minHeight="9"
-                              padding
-                            >
-                              <Text weight={isChildSelected ? 'bold' : undefined}>
-                                {child.label}
-                              </Text>
-                            </Row>
-                          </Link>
-                        );
-                      })}
-                    </Column>
+                        <IconLabel icon={icon} label="" weight={isSelected ? 'bold' : undefined} />
+                      </TooltipTrigger>
+                      <TooltipContent side="right">{label}</TooltipContent>
+                    </Tooltip>
+                  ) : (
+                    <Row
+                      alignItems="center"
+                      hover={{ backgroundColor: 'muted' }}
+                      backgroundColor={isSelected ? 'muted' : undefined}
+                      borderRadius
+                      minHeight="40px"
+                    >
+                      <IconLabel
+                        icon={icon}
+                        label={label}
+                        weight={isSelected ? 'bold' : undefined}
+                        padding
+                      />
+                    </Row>
                   )}
-                </Column>
+                </Link>
               );
             })}
           </Column>

@@ -9,7 +9,7 @@ export function EventsPage({ websiteId }: { websiteId: string }) {
   const { t, labels } = useMessages();
 
   return (
-    <EventsLayout websiteId={websiteId}>
+    <EventsLayout websiteId={websiteId} showMetrics>
       <Column gap="6">
         <Column border="bottom" paddingBottom="6">
           <EventsChart websiteId={websiteId} limit={50} allowBarDrill={true} />
