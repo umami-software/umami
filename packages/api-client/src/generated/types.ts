@@ -13552,6 +13552,10 @@ export interface operations {
         language?: string;
         /** @description Whether records must match all filters or any filter. */
         match?: 'all' | 'any';
+        /** @description Only include visits that lasted at most this many seconds. */
+        maxVisitDuration?: number;
+        /** @description Only include visits that lasted at least this many seconds. */
+        minVisitDuration?: number;
         /** @description Operating system used by the visitor. */
         os?: string;
         /** @description Filter by page URL path. */
@@ -19281,6 +19285,10 @@ export interface operations {
         language?: string;
         /** @description Whether records must match all filters or any filter. */
         match?: 'all' | 'any';
+        /** @description Only include visits that lasted at most this many seconds. */
+        maxVisitDuration?: number;
+        /** @description Only include visits that lasted at least this many seconds. */
+        minVisitDuration?: number;
         mode?: 'click' | 'scroll';
         /** @description Operating system used by the visitor. */
         os?: string;
@@ -19635,6 +19643,10 @@ export interface operations {
         limit?: number;
         /** @description Whether records must match all filters or any filter. */
         match?: 'all' | 'any';
+        /** @description Only include visits that lasted at most this many seconds. */
+        maxVisitDuration?: number;
+        /** @description Only include visits that lasted at least this many seconds. */
+        minVisitDuration?: number;
         /** @description Number of rows to skip before returning results. */
         offset?: number;
         /** @description Operating system used by the visitor. */
@@ -19783,6 +19795,10 @@ export interface operations {
         limit?: number;
         /** @description Whether records must match all filters or any filter. */
         match?: 'all' | 'any';
+        /** @description Only include visits that lasted at most this many seconds. */
+        maxVisitDuration?: number;
+        /** @description Only include visits that lasted at least this many seconds. */
+        minVisitDuration?: number;
         /** @description Number of rows to skip before returning results. */
         offset?: number;
         /** @description Operating system used by the visitor. */
@@ -19926,6 +19942,10 @@ export interface operations {
         language?: string;
         /** @description Whether records must match all filters or any filter. */
         match?: 'all' | 'any';
+        /** @description Only include visits that lasted at most this many seconds. */
+        maxVisitDuration?: number;
+        /** @description Only include visits that lasted at least this many seconds. */
+        minVisitDuration?: number;
         /** @description Operating system used by the visitor. */
         os?: string;
         /** @description Filter by page URL path. */
@@ -24420,6 +24440,10 @@ export interface operations {
         language?: string;
         /** @description Whether records must match all filters or any filter. */
         match?: 'all' | 'any';
+        /** @description Only include visits that lasted at most this many seconds. */
+        maxVisitDuration?: number;
+        /** @description Only include visits that lasted at least this many seconds. */
+        minVisitDuration?: number;
         /** @description Operating system used by the visitor. */
         os?: string;
         /** @description Filter by page URL path. */
@@ -24841,6 +24865,10 @@ export interface operations {
         language?: string;
         /** @description Whether records must match all filters or any filter. */
         match?: 'all' | 'any';
+        /** @description Only include visits that lasted at most this many seconds. */
+        maxVisitDuration?: number;
+        /** @description Only include visits that lasted at least this many seconds. */
+        minVisitDuration?: number;
         /** @description Operating system used by the visitor. */
         os?: string;
         /** @description Filter by page URL path. */

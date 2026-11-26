@@ -206,6 +206,14 @@ export async function getQueryFilters(
     if (resolvedParams.excludeBounce) {
       Object.assign(filters, { excludeBounce: true });
     }
+
+    for (const key of ['minVisitDuration', 'maxVisitDuration'] as const) {
+      const value = Number(resolvedParams[key]);
+
+      if (resolvedParams[key] !== undefined && Number.isInteger(value) && value >= 0) {
+        Object.assign(filters, { [key]: value });
+      }
+    }
   }
 
   return {

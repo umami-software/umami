@@ -76,6 +76,8 @@ const fieldDescriptions: Record<string, string> = {
   segment: 'ID of a saved segment used to filter results.',
   cohort: 'ID of a saved cohort used to filter visitors.',
   excludeBounce: 'Set a non-empty value to exclude visits with only one pageview.',
+  minVisitDuration: 'Only include visits that lasted at least this many seconds.',
+  maxVisitDuration: 'Only include visits that lasted at most this many seconds.',
   hostname: 'Hostname on which the activity occurred.',
   browser: 'Browser used by the visitor.',
   os: 'Operating system used by the visitor.',

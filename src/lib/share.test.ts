@@ -42,6 +42,8 @@ describe('excludeShareFilterParam', () => {
     expect(excludeShareFilterParam('cohort')).toBe(true);
     expect(excludeShareFilterParam('match')).toBe(true);
     expect(excludeShareFilterParam('excludeBounce')).toBe(true);
+    expect(excludeShareFilterParam('minVisitDuration')).toBe(true);
+    expect(excludeShareFilterParam('maxVisitDuration')).toBe(true);
   });
 
   test('returns false for unrelated keys', () => {

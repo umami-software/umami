@@ -245,8 +245,41 @@ function getCohortQuery(filters: QueryFilters = {}) {
     `;
 }
 
+function getVisitDurationSQL() {
+  // Same definition as the visit time shown in the website stats: from the first to the last
+  // event of the visit, ignoring custom (2) and performance (5) events.
+  return getTimestampDiffSQL(
+    'min(case when event_type NOT IN (2, 5) then created_at end)',
+    'max(case when event_type NOT IN (2, 5) then created_at end)',
+  );
+}
+
+/**
+ * Visit-level filters (exclude bounces, visit duration) are applied by joining to the visits
+ * that satisfy all of them.
+ */
 function getExcludeBounceQuery(filters: Record<string, any>) {
-  if (filters.excludeBounce !== true) {
+  const havingClauses: string[] = [];
+
+  if (filters.excludeBounce === true) {
+    havingClauses.push(`(
+      sum(case when event_type NOT IN (2, 5) then 1 else 0 end) > 1
+      or (
+        sum(case when event_type NOT IN (2, 5) then 1 else 0 end) = 1
+        and sum(case when event_type = 2 then 1 else 0 end) > 0
+      )
+    )`);
+  }
+
+  if (filters.minVisitDuration !== undefined) {
+    havingClauses.push(`${getVisitDurationSQL()} >= {{minVisitDuration::integer}}`);
+  }
+
+  if (filters.maxVisitDuration !== undefined) {
+    havingClauses.push(`${getVisitDurationSQL()} <= {{maxVisitDuration::integer}}`);
+  }
+
+  if (havingClauses.length === 0) {
     return '';
   }
 
@@ -257,11 +290,7 @@ function getExcludeBounceQuery(filters: Record<string, any>) {
       and created_at between {{startDate}} and {{endDate}}
       and event_type != 5
     group by session_id, visit_id
-    having sum(case when event_type NOT IN (2, 5) then 1 else 0 end) > 1
-      or (
-        sum(case when event_type NOT IN (2, 5) then 1 else 0 end) = 1
-        and sum(case when event_type = 2 then 1 else 0 end) > 0
-      )
+    having ${havingClauses.join('\n      and ')}
     ) excludeBounce
     on excludeBounce.session_id = website_event.session_id
       and excludeBounce.visit_id = website_event.visit_id

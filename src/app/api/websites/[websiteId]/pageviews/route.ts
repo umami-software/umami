@@ -1,7 +1,7 @@
 import { getCompareDate } from '@/lib/date';
 import { getQueryFilters, parseRequest } from '@/lib/request';
 import { json, unauthorized } from '@/lib/response';
-import { filterParams, withDateRange } from '@/lib/schema';
+import { filterParams, visitFilterParams, withDateRange } from '@/lib/schema';
 import { canViewWebsiteSection } from '@/permissions';
 import { getPageviewStats, getSessionStats } from '@/queries/sql';
 
@@ -11,6 +11,7 @@ export async function GET(
 ) {
   const schema = withDateRange({
     ...filterParams,
+    ...visitFilterParams,
   });
 
   const { auth, query, error } = await parseRequest(request, schema);

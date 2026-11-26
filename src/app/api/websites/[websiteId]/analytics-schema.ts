@@ -1,9 +1,15 @@
 import { z } from 'zod';
-import { filterParams, pagingParams, searchParams, withDateRange } from '@/lib/schema';
+import {
+  filterParams,
+  pagingParams,
+  searchParams,
+  visitFilterParams,
+  withDateRange,
+} from '@/lib/schema';
 
 /** Shared request/response schemas for the analytics routes under /api/websites/{websiteId}. */
 
-export const analyticsQuerySchema = withDateRange({ ...filterParams }).meta({
+export const analyticsQuerySchema = withDateRange({ ...filterParams, ...visitFilterParams }).meta({
   id: 'AnalyticsQuery',
   description:
     'Date range (startAt/endAt in milliseconds, startDate/endDate ISO, or a period preset) plus optional filters. Period supports today, 24h, 7d, 30d, and the DateFilter presets (0day, 24hour, 0week, 7day, 0month, 30day, 90day, 0year, 6month, 12month). Calendar presets use timezone or UTC when omitted. Filter values match exactly unless prefixed with an operator such as `neq.`, `c.` (contains) or `re.`.',
@@ -24,6 +30,7 @@ export const metricsQuerySchema = withDateRange({
   offset: z.coerce.number().optional(),
   ...searchParams,
   ...filterParams,
+  ...visitFilterParams,
 }).meta({ id: 'MetricsQuery' });
 
 export const websiteStatsValuesSchema = z
