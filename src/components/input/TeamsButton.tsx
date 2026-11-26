@@ -15,7 +15,13 @@ import {
 } from '@umami/react-zen';
 import { ArrowRight } from 'lucide-react';
 import { IconLabel } from '@/components/common/IconLabel';
-import { useLoginQuery, useMessages, useMobile, useNavigation } from '@/components/hooks';
+import {
+  useConfig,
+  useLoginQuery,
+  useMessages,
+  useMobile,
+  useNavigation,
+} from '@/components/hooks';
 import { ChevronRight, User, Users } from '@/components/icons';
 import { LAST_TEAM_CONFIG } from '@/lib/constants';
 import { removeItem } from '@/lib/storage';
@@ -25,19 +31,16 @@ export function TeamsButton() {
   const { t, labels } = useMessages();
   const { teamId, router } = useNavigation();
   const { isPhone } = useMobile();
+  const { settingsEnabled } = useConfig();
   const team = user?.teams?.find(({ id }) => id === teamId);
   const selectedKey = teamId || 'user';
   const label = teamId ? team?.name : user.username;
 
   const cloudMode = !!process.env.cloudMode;
 
-  const getUrl = (url: string) => {
-    return cloudMode ? `${process.env.cloudUrl}${url}` : url;
-  };
-
-  const handleNavigate = (url: string) => {
-    if (cloudMode) {
-      window.location.href = url;
+  const handleNavigate = (url: string, external = cloudMode) => {
+    if (external) {
+      window.location.href = `${process.env.cloudUrl}${url}`;
     } else {
       router.push(url);
     }
@@ -90,7 +93,7 @@ export function TeamsButton() {
                 key={id}
                 value={id}
                 closeOnClick
-                onClick={() => handleNavigate(getUrl(`/teams/${id}`))}
+                onClick={() => handleNavigate(`/teams/${id}`)}
                 style={billingStatus === 'past_due' ? { opacity: 0.5 } : undefined}
               >
                 <IconLabel icon={<Users />}>
@@ -100,7 +103,7 @@ export function TeamsButton() {
             ))}
           </DropdownMenuRadioGroup>
           <DropdownMenuSeparator />
-          <DropdownMenuItem onClick={() => handleNavigate(getUrl('/settings/teams'))}>
+          <DropdownMenuItem onClick={() => handleNavigate('/settings/teams', !settingsEnabled)}>
             <Row alignItems="center" justifyContent="space-between" gap width="100%">
               <Text align="center">Manage teams</Text>
               <Icon>

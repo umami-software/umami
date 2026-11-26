@@ -20,8 +20,8 @@ import { SettingsNav } from './settings/SettingsNav';
 export function MobileNav() {
   const { t, labels } = useMessages();
   const { pathname, websiteId, teamId, renderUrl } = useNavigation();
-  const { cloudMode } = useConfig();
-  const settingsUrl = cloudMode ? `${process.env.cloudUrl}/settings` : '/settings';
+  const { settingsEnabled } = useConfig();
+  const settingsUrl = settingsEnabled ? '/settings' : `${process.env.cloudUrl}/settings`;
   const isAdmin = pathname.includes('/admin');
   const isSettings = pathname.includes('/settings');
   const isMetrics = isMetricsPath(pathname);
@@ -88,10 +88,12 @@ export function MobileNav() {
               {isAdmin && <AdminNav onItemClick={close} />}
               {isSettings && <SettingsNav onItemClick={close} />}
               <Column style={{ marginTop: 'auto' }}>
-                <SidebarMenuButton render={<Link href={settingsUrl} onClick={close} />}>
-                  <Settings />
-                  <span>{t(labels.settings)}</span>
-                </SidebarMenuButton>
+                {!isSettings && (
+                  <SidebarMenuButton render={<Link href={settingsUrl} onClick={close} />}>
+                    <Settings />
+                    <span>{t(labels.settings)}</span>
+                  </SidebarMenuButton>
+                )}
                 <UserButton onClose={close} />
               </Column>
             </Column>

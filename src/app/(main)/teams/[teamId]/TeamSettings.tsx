@@ -32,30 +32,32 @@ export function TeamSettings({ teamId }: { teamId: string }) {
       user.role !== ROLES.viewOnly);
 
   return (
-    <Column gap="6">
+    <Column gap={isAdmin ? '6' : undefined}>
       <PageHeader title={team?.name} icon={<Users />}>
         {!isTeamOwner && !isAdmin && <TeamLeaveButton teamId={team.id} teamName={team.name} />}
       </PageHeader>
-      <Panel>
-        <TeamEditForm teamId={teamId} allowEdit={canEdit} showAccessCode={canEdit} />
-      </Panel>
-      <Column gap>
-        <Row alignItems="center" justifyContent="space-between">
-          <Heading size="base">{t(labels.members)}</Heading>
-          {isAdmin && <TeamsMemberAddButton teamId={teamId} />}
-        </Row>
-        <TeamMembersDataTable teamId={teamId} allowEdit={canEdit} />
+      <Column gap="6">
+        <Panel>
+          <TeamEditForm teamId={teamId} allowEdit={canEdit} showAccessCode={canEdit} />
+        </Panel>
+        <Column gap>
+          <Row alignItems="center" justifyContent="space-between">
+            <Heading size="base">{t(labels.members)}</Heading>
+            {isAdmin && <TeamsMemberAddButton teamId={teamId} />}
+          </Row>
+          <TeamMembersDataTable teamId={teamId} allowEdit={canEdit} />
+        </Column>
+        {isAdmin && (
+          <Panel>
+            <TeamTwoFactorSettings teamId={teamId} />
+          </Panel>
+        )}
+        {isTeamOwner && (
+          <Panel>
+            <TeamManage teamId={teamId} />
+          </Panel>
+        )}
       </Column>
-      {isAdmin && (
-        <Panel>
-          <TeamTwoFactorSettings teamId={teamId} />
-        </Panel>
-      )}
-      {isTeamOwner && (
-        <Panel>
-          <TeamManage teamId={teamId} />
-        </Panel>
-      )}
     </Column>
   );
 }

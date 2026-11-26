@@ -54,11 +54,12 @@ interface NavGroup {
 
 export function SideNav() {
   const { pathname, websiteId } = useNavigation();
-  const { cloudMode } = useConfig();
+  const { settingsEnabled } = useConfig();
   const { t, labels } = useMessages();
   const { state } = useSidebar();
   const isCollapsed = state === 'collapsed';
-  const settingsUrl = cloudMode ? `${process.env.cloudUrl}/settings` : '/settings';
+  const isSettings = pathname.includes('/settings');
+  const settingsUrl = settingsEnabled ? '/settings' : `${process.env.cloudUrl}/settings`;
 
   return (
     <Sidebar variant="sidebar" collapsible="icon">
@@ -82,7 +83,7 @@ export function SideNav() {
           <MetricsGroups />
         ) : websiteId ? (
           <WebsiteGroups websiteId={websiteId} />
-        ) : pathname.includes('/settings') ? (
+        ) : isSettings ? (
           <SettingsGroups />
         ) : pathname.includes('/admin') ? (
           <AdminGroups />
@@ -92,15 +93,16 @@ export function SideNav() {
       </SidebarContent>
       <SidebarFooter className="border-t">
         <SidebarMenu>
-          <NavMenuItem
-            item={{
-              id: 'settings',
-              label: t(labels.settings),
-              path: settingsUrl,
-              icon: <Settings />,
-            }}
-            isActive={!cloudMode && pathname.includes('/settings')}
-          />
+          {!isSettings && (
+            <NavMenuItem
+              item={{
+                id: 'settings',
+                label: t(labels.settings),
+                path: settingsUrl,
+                icon: <Settings />,
+              }}
+            />
+          )}
           <SidebarMenuItem>
             <UserButton showText={!isCollapsed} />
           </SidebarMenuItem>

@@ -11,7 +11,7 @@ export function PreferencesPage() {
 
   return (
     <PageBody>
-      <Column gap="6">
+      <Column>
         <PageHeader title={t(labels.preferences)} />
         <Panel>
           <PreferenceSettings />

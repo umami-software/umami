@@ -1,10 +1,12 @@
 import { KeyRound, Settings2, ShieldCheck, UserCircle, Users } from '@/components/icons';
+import { useConfig } from './useConfig';
 import { useMessages } from './useMessages';
 import { useNavigation } from './useNavigation';
 
 export function useSettingsNavItems() {
   const { t, labels } = useMessages();
   const { pathname, renderUrl } = useNavigation();
+  const { cloudMode } = useConfig();
 
   const items = [
     {
@@ -34,12 +36,16 @@ export function useSettingsNavItems() {
           path: renderUrl('/settings/security'),
           icon: <ShieldCheck />,
         },
-        {
-          id: 'api-keys',
-          label: t(labels.apiKeys),
-          path: renderUrl('/settings/api-keys'),
-          icon: <KeyRound />,
-        },
+        ...(!cloudMode
+          ? [
+              {
+                id: 'api-keys',
+                label: t(labels.apiKeys),
+                path: renderUrl('/settings/api-keys'),
+                icon: <KeyRound />,
+              },
+            ]
+          : []),
       ],
     },
   ];

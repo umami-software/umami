@@ -1,6 +1,8 @@
 import { SidebarProvider } from '@umami/react-zen';
 import type { ReactNode } from 'react';
-import { beforeEach, expect, test, vi } from 'vitest';
+import { afterEach, beforeEach, expect, test, vi } from 'vitest';
+import { ConfigContext } from '@/components/hooks/useConfig';
+import { getConfig } from '@/lib/config';
 import { render, screen } from '@/test/render';
 import { MobileNav } from './MobileNav';
 
@@ -10,7 +12,6 @@ vi.mock('@/components/hooks', async importOriginal => {
   const actual = await importOriginal<typeof import('@/components/hooks')>();
   return {
     ...actual,
-    useConfig: () => ({ cloudMode: false }),
     useNavigation: () => mockUseNavigation(),
   };
 });
@@ -26,15 +27,20 @@ vi.mock('@/components/input/UserButton', () => ({
 }));
 
 // MobileNav renders SidebarMenuButtons, which need a SidebarProvider (App provides it).
-function renderMobileNav() {
+function renderMobileNav(route?: string) {
   return render(
-    <SidebarProvider>
-      <MobileNav />
-    </SidebarProvider>,
+    <ConfigContext.Provider value={getConfig()}>
+      <SidebarProvider>
+        <MobileNav />
+      </SidebarProvider>
+    </ConfigContext.Provider>,
+    { route },
   );
 }
 
 beforeEach(() => {
+  vi.stubEnv('CLOUD_MODE', undefined);
+  vi.stubEnv('ENABLE_SETTINGS', undefined);
   mockUseNavigation.mockReturnValue({
     pathname: '/',
     websiteId: undefined,
@@ -42,6 +48,8 @@ beforeEach(() => {
     renderUrl: (path: string) => path,
   });
 });
+
+afterEach(() => vi.unstubAllEnvs());
 
 test('shows the dashboard link outside a team', () => {
   renderMobileNav();
@@ -66,4 +74,26 @@ test('shows a settings link above the user button', () => {
   renderMobileNav();
 
   expect(screen.getByRole('link', { name: /^settings$/i })).toHaveAttribute('href', '/settings');
+});
+
+test('hides the Settings shortcut on a Settings page', () => {
+  mockUseNavigation.mockReturnValue({ ...mockUseNavigation(), pathname: '/settings/profile' });
+
+  renderMobileNav('/settings/profile');
+
+  expect(screen.getByRole('button', { name: /profile/i })).toBeInTheDocument();
+  expect(screen.queryByRole('link', { name: /^settings$/i })).not.toBeInTheDocument();
+});
+
+test.each([
+  [undefined, 'https://cloud.example.com/settings'],
+  ['1', '/settings'],
+])('uses the configured Settings link in Cloud mode with ENABLE_SETTINGS=%s', (value, href) => {
+  vi.stubEnv('CLOUD_MODE', '1');
+  vi.stubEnv('ENABLE_SETTINGS', value);
+  vi.stubEnv('cloudUrl', 'https://cloud.example.com');
+
+  renderMobileNav();
+
+  expect(screen.getByRole('link', { name: /^settings$/i })).toHaveAttribute('href', href);
 });

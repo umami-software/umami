@@ -1,8 +1,9 @@
 import type { Metadata } from 'next';
+import { getConfig } from '@/lib/config';
 import { SettingsLayout } from './SettingsLayout';
 
 export default function ({ children }) {
-  if (process.env.cloudMode) {
+  if (!getConfig().settingsEnabled) {
     return null;
   }
 

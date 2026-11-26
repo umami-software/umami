@@ -8,7 +8,7 @@ export function WebsitesSettingsPage({ teamId }: { teamId: string }) {
   const { t, labels } = useMessages();
 
   return (
-    <Column gap>
+    <Column>
       <SectionHeader title={t(labels.websites)} />
       <WebsitesDataTable teamId={teamId} />
     </Column>

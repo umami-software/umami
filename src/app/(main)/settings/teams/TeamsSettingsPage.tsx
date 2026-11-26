@@ -5,7 +5,7 @@ import { TeamsHeader } from '@/app/(main)/teams/TeamsHeader';
 
 export function TeamsSettingsPage() {
   return (
-    <Column gap="6">
+    <Column>
       <TeamsHeader />
       <TeamsDataTable />
     </Column>

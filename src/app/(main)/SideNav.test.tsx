@@ -1,5 +1,7 @@
 import { SidebarProvider } from '@umami/react-zen';
-import { beforeEach, expect, test, vi } from 'vitest';
+import { afterEach, beforeEach, expect, test, vi } from 'vitest';
+import { ConfigContext } from '@/components/hooks/useConfig';
+import { getConfig } from '@/lib/config';
 import { render, screen } from '@/test/render';
 import { SideNav } from './SideNav';
 
@@ -9,7 +11,6 @@ vi.mock('@/components/hooks', async importOriginal => {
   const actual = await importOriginal<typeof import('@/components/hooks')>();
   return {
     ...actual,
-    useConfig: () => ({ cloudMode: false }),
     useNavigation: () => mockUseNavigation(),
   };
 });
@@ -30,16 +31,22 @@ function navigateTo(pathname: string, extra: Record<string, unknown> = {}) {
 
 function renderSideNav(route?: string) {
   return render(
-    <SidebarProvider>
-      <SideNav />
-    </SidebarProvider>,
+    <ConfigContext.Provider value={getConfig()}>
+      <SidebarProvider>
+        <SideNav />
+      </SidebarProvider>
+    </ConfigContext.Provider>,
     { route },
   );
 }
 
 beforeEach(() => {
+  vi.stubEnv('CLOUD_MODE', undefined);
+  vi.stubEnv('ENABLE_SETTINGS', undefined);
   navigateTo('/websites');
 });
+
+afterEach(() => vi.unstubAllEnvs());
 
 test('marks the current section as active', () => {
   renderSideNav();
@@ -56,13 +63,14 @@ test('hides the dashboard link inside a team', () => {
   expect(screen.queryByRole('link', { name: /dashboard/i })).not.toBeInTheDocument();
 });
 
-test('shows settings links with a way back', () => {
+test('shows settings navigation with a way back and no footer Settings shortcut', () => {
   navigateTo('/settings/profile');
 
   renderSideNav('/settings/profile');
 
   expect(screen.getByRole('link', { name: /back/i })).toHaveAttribute('href', '/websites');
   expect(screen.getByRole('link', { name: /profile/i })).toHaveAttribute('data-active');
+  expect(screen.queryByRole('link', { name: /^settings$/i })).not.toBeInTheDocument();
 });
 
 test('collapses to icons when toggled', async () => {
@@ -79,6 +87,38 @@ test('shows a settings link in the footer', () => {
   renderSideNav();
 
   expect(screen.getByRole('link', { name: /^settings$/i })).toHaveAttribute('href', '/settings');
+});
+
+test('links to Cloud Settings by default in Cloud mode', () => {
+  vi.stubEnv('CLOUD_MODE', '1');
+  vi.stubEnv('cloudUrl', 'https://cloud.example.com');
+
+  renderSideNav();
+
+  expect(screen.getByRole('link', { name: /^settings$/i })).toHaveAttribute(
+    'href',
+    'https://cloud.example.com/settings',
+  );
+});
+
+test('links to local Settings when enabled in Cloud mode', () => {
+  vi.stubEnv('CLOUD_MODE', '1');
+  vi.stubEnv('ENABLE_SETTINGS', '1');
+
+  renderSideNav();
+
+  expect(screen.getByRole('link', { name: /^settings$/i })).toHaveAttribute('href', '/settings');
+});
+
+test('hides API keys and the Settings shortcut on a local Settings page in Cloud mode', () => {
+  vi.stubEnv('CLOUD_MODE', '1');
+  vi.stubEnv('ENABLE_SETTINGS', '1');
+  navigateTo('/settings/profile');
+
+  renderSideNav('/settings/profile');
+
+  expect(screen.queryByRole('link', { name: /^settings$/i })).not.toBeInTheDocument();
+  expect(screen.queryByRole('link', { name: /api keys/i })).not.toBeInTheDocument();
 });
 
 test('shows the metrics, with a way back to the overview, on the metrics page', () => {

@@ -11,7 +11,7 @@ export function ProfilePage() {
 
   return (
     <PageBody>
-      <Column gap="6">
+      <Column>
         <PageHeader title={t(labels.profile)} />
         <Panel>
           <ProfileSettings />

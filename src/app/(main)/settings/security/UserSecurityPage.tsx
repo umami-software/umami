@@ -54,8 +54,8 @@ export function UserSecurityPage() {
 
   return (
     <PageBody>
+      <PageHeader title={t(labels.security)} />
       <Column gap="6">
-        <PageHeader title={t(labels.security)} />
         {!cloudMode && (
           <Panel>
             <Column gap="4">
