@@ -1,11 +1,12 @@
 import { DataColumn, DataTable, Row } from '@umami/react-zen';
 import { useMemo } from 'react';
 import { LoadingPanel } from '@/components/common/LoadingPanel';
+import { PercentageBar } from '@/components/common/PercentageBar';
 import { useMessages, useWebsiteMetricsQuery } from '@/components/hooks';
 import { MetricLabel } from '@/components/metrics/MetricLabel';
 import { percentFilter } from '@/lib/filters';
 
-/** Each event's count and share of all events, with the name linking to a filter. */
+/** Each event's count and share of the table total, with the name linking to a filter. */
 export function EventCountsTable({ websiteId, limit }: { websiteId: string; limit?: number }) {
   const { t, labels } = useMessages();
   const { data, isLoading, isFetching, error } = useWebsiteMetricsQuery(websiteId, {
@@ -33,18 +34,18 @@ export function EventCountsTable({ websiteId, limit }: { websiteId: string; limi
       minHeight="300px"
     >
       <DataTable data={rows}>
-        <DataColumn id="label" label={t(labels.event)} width="minmax(200px, 1fr)">
+        <DataColumn id="label" label={t(labels.event)} width="minmax(96px, 1fr)">
           {(row: any) => (
             <Row overflow="hidden">
               <MetricLabel type="event" data={row} />
             </Row>
           )}
         </DataColumn>
-        <DataColumn id="count" label={t(labels.count)} align="end" width="120px">
-          {(row: any) => row.count.toLocaleString()}
+        <DataColumn id="percent" label="%" align="center" width="minmax(0, 2fr)">
+          {(row: { percent: number }) => <PercentageBar value={row.percent} />}
         </DataColumn>
-        <DataColumn id="percent" label="%" align="end" width="100px">
-          {(row: any) => `${Math.round(row.percent)}%`}
+        <DataColumn id="count" label={t(labels.count)} align="end" width="minmax(96px, 1fr)">
+          {(row: any) => row.count.toLocaleString()}
         </DataColumn>
       </DataTable>
     </LoadingPanel>
