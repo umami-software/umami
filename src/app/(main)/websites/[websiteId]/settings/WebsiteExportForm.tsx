@@ -1,0 +1,130 @@
+import { FormButtons } from '@umami/react-zen';
+import { Column, Text, LoadingButton, useToast } from '@umami/react-zen';
+import { useState } from 'react';
+import { useMessages, useTimezone, useDateRangeQuery } from '@/components/hooks';
+import { DateFilter } from '@/components/input/DateFilter';
+import { parseDateRange, getDateRangeValue } from '@/lib/date';
+import { getApiUrl } from '@/lib/api-url';
+import { getClientAuthToken } from '@/lib/client';
+import { useApp } from '@/store/app';
+
+export function WebsiteExportForm({
+  websiteId,
+  onClose,
+}: {
+  websiteId: string;
+  onClose: () => void;
+}) {
+  const { t, labels, messages } = useMessages();
+  const { toast } = useToast();
+  const [dateRange, setDateRange] = useState('24hour');
+  const [isLoading, setIsLoading] = useState(false);
+  const { localToUtc } = useTimezone();
+  const websiteDateRange = useDateRangeQuery(websiteId);
+  const hasData = !!(websiteDateRange?.startDate && websiteDateRange?.endDate);
+  const shareId = useApp(state => state.share?.shareId);
+  const shareToken = useApp(state => state.shareToken?.token);
+
+  const handleDateChange = (value: string) => {
+    if (value === 'all' && hasData) {
+      setDateRange(`${getDateRangeValue(websiteDateRange.startDate, websiteDateRange.endDate)}:all`);
+    } else {
+      setDateRange(value);
+    }
+  };
+
+  const handleExport = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsLoading(true);
+
+    try {
+      const parsed = parseDateRange(dateRange);
+      if (parsed) {
+        const startAt = +localToUtc(parsed.startDate);
+        const endAt = +localToUtc(parsed.endDate);
+
+        let url = getApiUrl(`/websites/${websiteId}/export?startAt=${startAt}&endAt=${endAt}`);
+
+        const token = getClientAuthToken();
+        if (token) url += `&token=${encodeURIComponent(token)}`;
+        if (shareId && shareToken) url += `&shareToken=${encodeURIComponent(shareToken)}`;
+
+        const tokenRes = await fetch(
+          getApiUrl(`/websites/${websiteId}/export/token?startAt=${startAt}&endAt=${endAt}`) +
+            (token ? `&token=${encodeURIComponent(token)}` : '') +
+            (shareId && shareToken ? `&shareToken=${encodeURIComponent(shareToken)}` : ''),
+          { method: 'POST' },
+        );
+
+        if (!tokenRes.ok) {
+          const text = await tokenRes.text();
+          let msg = 'Export failed';
+          try {
+            msg = JSON.parse(text).error?.message || msg;
+          } catch {
+            /* ignore */
+          }
+          throw new Error(msg);
+        }
+
+        const { downloadToken } = await tokenRes.json();
+
+        // Fetch the ZIP stream so we can detect mid-stream failures (database
+        // errors, ClickHouse timeouts, etc.).  A fire-and-forget <a> click
+        // would silently produce a truncated file on server errors.
+        const exportUrl = `${url}&downloadToken=${encodeURIComponent(downloadToken)}`;
+        const exportRes = await fetch(exportUrl);
+
+        if (!exportRes.ok) {
+          const text = await exportRes.text();
+          let msg = 'Export failed';
+          try {
+            msg = JSON.parse(text).error?.message || msg;
+          } catch {
+            /* ignore */
+          }
+          throw new Error(msg);
+        }
+
+        const blob = await exportRes.blob();
+
+        if (blob.size === 0) {
+          throw new Error('Export produced an empty file');
+        }
+
+        // Trigger the browser download from the fully-received blob.
+        const blobUrl = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = blobUrl;
+        a.download = `umami_export_${websiteId}.zip`;
+        a.style.display = 'none';
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        URL.revokeObjectURL(blobUrl);
+
+        onClose();
+      }
+    } catch (error: any) {
+      toast(error?.message || t(messages.error));
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  return (
+    <form onSubmit={handleExport}>
+      <Column gap="4" paddingBottom="4">
+        <Text weight="bold">{t(labels.dateRange)}</Text>
+        <DateFilter value={dateRange} onChange={handleDateChange} showAllTime={hasData} />
+      </Column>
+      <FormButtons>
+        <LoadingButton onClick={handleExport} variant="primary" isLoading={isLoading}>
+          {t(labels.export)}
+        </LoadingButton>
+        <LoadingButton onClick={onClose} variant="quiet">{t(labels.cancel)}</LoadingButton>
+      </FormButtons>
+    </form>
+  );
+}
+

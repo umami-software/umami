@@ -66,4 +66,5 @@ export * from './sessions/saveSessionData';
 export * from './sessions/saveSessionLink';
 export * from './sessions/tryClaimAnonymousSession';
 export * from './sessions/updateSession';
+export * from './export';
 export * from './utm/getUTM';
