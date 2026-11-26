@@ -1,13 +1,18 @@
 import { Row, StatusLight, Text } from '@umami/react-zen';
-import type { LegendItem } from 'chart.js/auto';
 import { colord } from 'colord';
+
+export interface LegendItem {
+  text: string;
+  color?: string;
+  hidden?: boolean;
+}
 
 export function Legend({
   items = [],
   onClick,
 }: {
-  items: any[];
-  onClick: (index: LegendItem) => void;
+  items: LegendItem[];
+  onClick?: (item: LegendItem) => void;
 }) {
   if (!items.find(({ text }) => text)) {
     return null;
@@ -16,15 +21,19 @@ export function Legend({
   return (
     <Row gap wrap="wrap" justifyContent="center">
       {items.map(item => {
-        const { text, fillStyle, hidden } = item;
-        const color = colord(fillStyle);
+        const { text, color: fill, hidden } = item;
+        const color = colord(fill || '#999');
 
         return (
-          <Row key={text} onClick={() => onClick(item)}>
+          <Row
+            key={text}
+            onClick={onClick ? () => onClick(item) : undefined}
+            style={onClick ? { cursor: 'pointer' } : undefined}
+          >
             <StatusLight color={color.alpha(color.alpha() + 0.2).toHex()}>
               <Text
                 size="sm"
-                color={hidden ? 'muted-foreground' : undefined}
+                color={hidden ? 'muted' : undefined}
                 truncate={true}
                 style={{ maxWidth: '300px' }}
               >

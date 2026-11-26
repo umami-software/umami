@@ -87,7 +87,6 @@ export function SearchConsoleChart({ rows, minDate, maxDate, unit }: SearchConso
     <BarChart
       chartData={chartData}
       unit={chartUnit}
-      fitSinglePeriod
       minDate={minDate}
       maxDate={maxDate}
       renderXLabel={renderXLabel}

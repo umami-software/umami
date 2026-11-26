@@ -91,7 +91,6 @@ export function GoogleAdsChart({
     <BarChart
       chartData={chartData}
       unit={chartUnit}
-      fitSinglePeriod
       minDate={minDate}
       maxDate={maxDate}
       renderXLabel={renderXLabel}

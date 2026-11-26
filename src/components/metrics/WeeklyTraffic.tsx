@@ -1,4 +1,4 @@
-import { Box, Grid, Row, Text, Tooltip, TooltipContent, TooltipTrigger } from '@umami/react-zen';
+import { Grid, Row, Text, Tooltip, TooltipContent, TooltipTrigger } from '@umami/react-zen';
 import { addHours, format, startOfDay } from 'date-fns';
 import { Fragment } from 'react';
 import { LoadingPanel } from '@/components/common/LoadingPanel';
@@ -61,7 +61,7 @@ export function WeeklyTraffic({ websiteId }: { websiteId: string }) {
                   );
                   return (
                     <Row key={i} justifyContent="flex-end">
-                      <Text color="muted-foreground" size="sm">
+                      <Text color="muted" size="sm">
                         {label}
                       </Text>
                     </Row>
@@ -109,16 +109,8 @@ export function WeeklyTraffic({ websiteId }: { websiteId: string }) {
                     return (
                       <Tooltip key={j}>
                         <TooltipTrigger delay={0} render={cell} />
-                        <TooltipContent side="right" className="tooltip-bare bg-transparent p-0">
-                          <Box
-                            padding
-                            borderRadius="md"
-                            style={{ backgroundColor: 'rgba(0,0,0,0.8)', color: 'white' }}
-                          >
-                            <Text size="sm">
-                              {`${t(labels.visitors)}: ${formatLongNumber(count)}`}
-                            </Text>
-                          </Box>
+                        <TooltipContent side="right">
+                          {`${t(labels.visitors)}: ${formatLongNumber(count)}`}
                         </TooltipContent>
                       </Tooltip>
                     );

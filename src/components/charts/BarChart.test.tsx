@@ -4,8 +4,15 @@ import { BarChart } from './BarChart';
 
 const chartProps = vi.hoisted(() => ({ current: null as any }));
 
-vi.mock('@/components/charts/Chart', () => ({
-  Chart: (props: any) => {
+// Render the chart's children directly and capture the recharts chart's props.
+vi.mock('@umami/react-zen', async importOriginal => ({
+  ...(await importOriginal<typeof import('@umami/react-zen')>()),
+  ChartContainer: ({ children }: any) => children,
+}));
+
+vi.mock('recharts', async importOriginal => ({
+  ...(await importOriginal<typeof import('recharts')>()),
+  ComposedChart: (props: any) => {
     chartProps.current = props;
     return null;
   },
@@ -14,6 +21,14 @@ vi.mock('@/components/charts/Chart', () => ({
 beforeEach(() => {
   chartProps.current = null;
 });
+
+/** A click on a time bucket, as recharts reports it. `index` is undefined for empty space. */
+function click(index?: number, pointerType?: string) {
+  chartProps.current.onClick(
+    { activeTooltipIndex: index === undefined ? null : String(index) },
+    { nativeEvent: pointerType ? { pointerType } : {} },
+  );
+}
 
 test('reports the date of the clicked bar', () => {
   // Bars are positional, so the date must come from the bucket index. Empty buckets have no date.
@@ -28,16 +43,12 @@ test('reports the date of the clicked bar', () => {
     />,
   );
 
-  chartProps.current.chartOptions.onClick({}, [{ index: 2 }]);
+  click(2);
 
   expect(onBarClick).toHaveBeenCalledWith(new Date(2026, 2, 1));
 });
 
-test('resets the pointer cursor when a click changes the range', () => {
-  // The canvas is reused and an hourly view has no hover handler to reset it.
-  const canvas = document.createElement('canvas');
-  canvas.style.cursor = 'pointer';
-
+test('shows a pointer over clickable charts', () => {
   render(
     <BarChart
       unit="day"
@@ -47,9 +58,7 @@ test('resets the pointer cursor when a click changes the range', () => {
     />,
   );
 
-  chartProps.current.chartOptions.onClick({ native: { target: canvas } }, [{ index: 0 }]);
-
-  expect(canvas.style.cursor).toBe('default');
+  expect(chartProps.current.style).toEqual({ cursor: 'pointer' });
 });
 
 test('ignores clicks that miss every bar', () => {
@@ -64,7 +73,7 @@ test('ignores clicks that miss every bar', () => {
     />,
   );
 
-  chartProps.current.chartOptions.onClick({}, []);
+  click();
 
   expect(onBarClick).not.toHaveBeenCalled();
 });
@@ -72,7 +81,6 @@ test('ignores clicks that miss every bar', () => {
 // Touch has no hover, so drilling in on the first tap would hide the value being read (#4802).
 test('a touch shows the bar first and drills in on a second tap of the same bar', () => {
   const onBarClick = vi.fn();
-  const touch = { native: { pointerType: 'touch' } };
 
   render(
     <BarChart
@@ -83,23 +91,20 @@ test('a touch shows the bar first and drills in on a second tap of the same bar'
     />,
   );
 
-  const { onClick } = chartProps.current.chartOptions;
-
-  onClick(touch, [{ index: 2 }]);
+  click(2, 'touch');
   expect(onBarClick).not.toHaveBeenCalled();
 
   // Moving to another bar only shows that bar's value.
-  onClick(touch, [{ index: 4 }]);
+  click(4, 'touch');
   expect(onBarClick).not.toHaveBeenCalled();
 
-  onClick(touch, [{ index: 4 }]);
+  click(4, 'touch');
   expect(onBarClick).toHaveBeenCalledOnce();
   expect(onBarClick).toHaveBeenCalledWith(new Date(2026, 0, 5));
 });
 
 test('a touch on empty space clears the selected bar', () => {
   const onBarClick = vi.fn();
-  const touch = { native: { pointerType: 'touch' } };
 
   render(
     <BarChart
@@ -110,11 +115,9 @@ test('a touch on empty space clears the selected bar', () => {
     />,
   );
 
-  const { onClick } = chartProps.current.chartOptions;
-
-  onClick(touch, [{ index: 2 }]);
-  onClick(touch, []);
-  onClick(touch, [{ index: 2 }]);
+  click(2, 'touch');
+  click(undefined, 'touch');
+  click(2, 'touch');
 
   expect(onBarClick).not.toHaveBeenCalled();
 });
@@ -131,7 +134,7 @@ test('a mouse click still drills in at once', () => {
     />,
   );
 
-  chartProps.current.chartOptions.onClick({ native: { pointerType: 'mouse' } }, [{ index: 2 }]);
+  click(2, 'mouse');
 
   expect(onBarClick).toHaveBeenCalledWith(new Date(2026, 0, 3));
 });
@@ -139,6 +142,6 @@ test('a mouse click still drills in at once', () => {
 test('leaves charts without a click handler unclickable', () => {
   render(<BarChart unit="day" minDate={new Date(2026, 0, 1)} maxDate={new Date(2026, 0, 31)} />);
 
-  expect(chartProps.current.chartOptions.onClick).toBeUndefined();
-  expect(chartProps.current.chartOptions.onHover).toBeUndefined();
+  expect(chartProps.current.onClick).toBeUndefined();
+  expect(chartProps.current.style).toBeUndefined();
 });

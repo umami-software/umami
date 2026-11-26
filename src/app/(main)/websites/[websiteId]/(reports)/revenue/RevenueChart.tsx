@@ -80,20 +80,7 @@ export function RevenueChart({
             type: 'line',
             label: t(labels.revenue),
             data: timeseries,
-            backgroundColor: (context: any) => {
-              const { chart } = context;
-              const { ctx, chartArea } = chart;
-
-              if (!chartArea) {
-                return color.alpha(0.18).toRgbString();
-              }
-
-              const gradient = ctx.createLinearGradient(0, chartArea.top, 0, chartArea.bottom);
-              gradient.addColorStop(0, color.alpha(0.22).toRgbString());
-              gradient.addColorStop(1, color.alpha(0.02).toRgbString());
-
-              return gradient;
-            },
+            backgroundColor: color.alpha(0.18).toRgbString(),
             borderColor: color.alpha(0.95).toRgbString(),
             borderWidth: 2,
             pointRadius: 2,
