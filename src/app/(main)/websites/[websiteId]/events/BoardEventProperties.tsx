@@ -5,7 +5,10 @@ import { Empty } from '@/components/common/Empty';
 import { LoadingPanel } from '@/components/common/LoadingPanel';
 import { useMessages, usePropertyValuesQuery } from '@/components/hooks';
 import { ListTable } from '@/components/metrics/ListTable';
-import { getPropertyTableData } from '@/components/property-data/getPropertyTableData';
+import {
+  getOtherTotal,
+  getPropertyTableData,
+} from '@/components/property-data/getPropertyTableData';
 import { CHART_COLORS, DATA_TYPE } from '@/lib/constants';
 
 const STACKED_LAYOUT_WIDTH = 900;
@@ -38,14 +41,17 @@ export function BoardEventProperties({
   );
 
   // The values endpoint covers every data type; the series endpoint only returns strings and booleans.
-  const totals = ((data ?? []) as { value: string; total: number }[])
+  const rows = (data ?? []) as { value: string; total: number; grandTotal?: number }[];
+  const totals = rows
     .map(({ value, total }) => ({ value: String(value), total: Number(total) }))
     .sort((a, b) => b.total - a.total);
+  // The server returns its top 100 values; grandTotal also counts the ones past that limit.
+  const grandTotal = rows.length ? Number(rows[0].grandTotal) || undefined : undefined;
   const itemLimit = Number(limit) || 10;
-  const items = getPropertyTableData(totals, itemLimit);
+  const items = getPropertyTableData(totals, itemLimit, grandTotal);
 
-  // The pie gets an "Other" slice for the values past the limit, so its shares match the table's.
-  const otherTotal = totals.slice(itemLimit).reduce((sum, { total }) => sum + total, 0);
+  // The pie gets an "Other" slice for everything not shown, so its shares match the table's.
+  const otherTotal = getOtherTotal(totals, itemLimit, grandTotal);
   const chartData = {
     labels: [...items.map(({ label }) => label), ...(otherTotal ? [t(labels.other)] : [])],
     datasets: [
