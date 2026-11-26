@@ -5,7 +5,7 @@ import { WebsiteExpandedView } from '@/app/(main)/websites/[websiteId]/WebsiteEx
 
 export function WebsiteMetricsPage({ websiteId }: { websiteId: string }) {
   return (
-    <Column gap="6">
+    <Column gap>
       <WebsiteControls websiteId={websiteId} allowBounceFilter={true} />
       <WebsiteExpandedView websiteId={websiteId} />
     </Column>

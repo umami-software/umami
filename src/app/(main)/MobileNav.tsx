@@ -1,8 +1,8 @@
 import { Column, Grid, Row, SidebarMenuButton, Text } from '@umami/react-zen';
-import { WebsiteNav } from '@/app/(main)/websites/[websiteId]/WebsiteNav';
+import { MetricsNav, WebsiteNav } from '@/app/(main)/websites/[websiteId]/WebsiteNav';
 import { IconLabel } from '@/components/common/IconLabel';
 import Link from '@/components/common/Link';
-import { useConfig, useMessages, useNavigation } from '@/components/hooks';
+import { isMetricsPath, useConfig, useMessages, useNavigation } from '@/components/hooks';
 import {
   Globe,
   Grid2x2,
@@ -24,7 +24,8 @@ export function MobileNav() {
   const settingsUrl = cloudMode ? `${process.env.cloudUrl}/settings` : '/settings';
   const isAdmin = pathname.includes('/admin');
   const isSettings = pathname.includes('/settings');
-  const isMain = !websiteId && !isAdmin && !isSettings;
+  const isMetrics = isMetricsPath(pathname);
+  const isMain = !websiteId && !isMetrics && !isAdmin && !isSettings;
 
   const links = [
     ...(!teamId
@@ -79,7 +80,11 @@ export function MobileNav() {
                     </Row>
                   );
                 })}
-              {websiteId && <WebsiteNav websiteId={websiteId} onItemClick={close} />}
+              {isMetrics ? (
+                <MetricsNav onItemClick={close} />
+              ) : (
+                websiteId && <WebsiteNav websiteId={websiteId} onItemClick={close} />
+              )}
               {isAdmin && <AdminNav onItemClick={close} />}
               {isSettings && <SettingsNav onItemClick={close} />}
               <Column style={{ marginTop: 'auto' }}>

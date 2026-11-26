@@ -97,22 +97,20 @@ export function SharePage() {
     isMetrics ||
     (Object.hasOwn(PAGE_COMPONENTS, pageKey) && parameters[pageKey] === true);
 
-  const entityPage =
-    shareType === ENTITY_TYPE.board && boardId ? (
-      <BoardViewPage boardId={boardId} showActions={false} />
-    ) : shareType === ENTITY_TYPE.pixel && pixelId ? (
-      isMetrics ? (
-        <PixelMetricsPage pixelId={pixelId} showHeaderActions={false} />
-      ) : (
-        <PixelPage pixelId={pixelId} showHeaderActions={false} />
-      )
-    ) : shareType === ENTITY_TYPE.link && linkId ? (
-      isMetrics ? (
-        <LinkMetricsPage linkId={linkId} showHeaderActions={false} />
-      ) : (
-        <LinkPage linkId={linkId} showHeaderActions={false} />
-      )
-    ) : null;
+  // A link or pixel's metrics page is laid out like a website page, with the metrics in the nav.
+  const entityMetricsPage = !isMetrics ? null : shareType === ENTITY_TYPE.pixel && pixelId ? (
+    <PixelMetricsPage pixelId={pixelId} showHeaderActions={false} />
+  ) : shareType === ENTITY_TYPE.link && linkId ? (
+    <LinkMetricsPage linkId={linkId} showHeaderActions={false} />
+  ) : null;
+
+  const entityPage = entityMetricsPage ? null : shareType === ENTITY_TYPE.board && boardId ? (
+    <BoardViewPage boardId={boardId} showActions={false} />
+  ) : shareType === ENTITY_TYPE.pixel && pixelId ? (
+    <PixelPage pixelId={pixelId} showHeaderActions={false} />
+  ) : shareType === ENTITY_TYPE.link && linkId ? (
+    <LinkPage linkId={linkId} showHeaderActions={false} />
+  ) : null;
 
   useEffect(() => {
     if (!isAllowed) {
@@ -147,14 +145,16 @@ export function SharePage() {
       <Column display={{ base: 'none', lg: 'flex' }} marginRight="2">
         <ShareNav collapsed={navCollapsed} onCollapse={handleCollapse} />
       </Column>
-      <PageBody gap>
-        <WebsiteProvider websiteId={websiteId}>
-          <Column>
-            <WebsiteHeader showActions={false} allowLink={false} />
-            <PageComponent websiteId={websiteId} />
-          </Column>
-        </WebsiteProvider>
-      </PageBody>
+      {entityMetricsPage ?? (
+        <PageBody gap>
+          <WebsiteProvider websiteId={websiteId}>
+            <Column>
+              <WebsiteHeader showActions={false} allowLink={false} />
+              <PageComponent websiteId={websiteId} />
+            </Column>
+          </WebsiteProvider>
+        </PageBody>
+      )}
     </Grid>
   );
 }

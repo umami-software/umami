@@ -100,14 +100,7 @@ export function FilterBar({ websiteId }: { websiteId?: string }) {
   }
 
   return (
-    <Row
-      gap
-      alignItems="center"
-      justifyContent="space-between"
-      padding="2"
-      backgroundColor="muted"
-      wrap="wrap"
-    >
+    <Row gap alignItems="center" justifyContent="space-between" paddingY="2" wrap="wrap">
       <Row alignItems="center" gap="2" wrap="wrap" width={{ base: '100%', md: 'auto' }}>
         {segment && !isLoading && (
           <FilterItem
@@ -201,7 +194,9 @@ export function FilterBar({ websiteId }: { websiteId?: string }) {
               maxWidth: isMobile ? '100%' : 'calc(100% - 2rem)',
               maxHeight: isMobile ? '100%' : 'calc(100dvh - 40px)',
               borderRadius: isMobile ? 0 : undefined,
-              overflowY: 'auto',
+              display: 'flex',
+              flexDirection: 'column',
+              overflow: 'hidden',
             }}
           >
             <DialogHeader>
@@ -242,14 +237,12 @@ export function FilterBar({ websiteId }: { websiteId?: string }) {
 const FilterItem = ({ name, label, operator, value, onRemove }) => {
   return (
     <Row
+      paddingX="2"
+      paddingY="1"
       border
-      padding="2"
-      color
-      backgroundColor
       borderRadius
       alignItems="center"
       justifyContent="space-between"
-      theme="dark"
     >
       <Row alignItems="center" gap="4">
         <Row
@@ -257,21 +250,25 @@ const FilterItem = ({ name, label, operator, value, onRemove }) => {
           gap="2"
           style={{ maxWidth: 'min(500px, calc(100vw - 10rem))', minWidth: 0, overflow: 'hidden' }}
         >
-          <Text color="foreground" weight="bold">
-            {label}
-          </Text>
+          <Text weight="medium">{label}</Text>
           <Text color="muted">{operator}</Text>
           <Text
-            color="foreground"
-            weight="bold"
+            weight="medium"
             style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}
           >
             {value}
           </Text>
         </Row>
-        <Icon onClick={() => onRemove(name)} size="xs" style={{ cursor: 'pointer' }}>
-          <X />
-        </Icon>
+        <Row
+          color="muted"
+          hover={{ color: 'foreground' }}
+          onClick={() => onRemove(name)}
+          style={{ cursor: 'pointer' }}
+        >
+          <Icon>
+            <X />
+          </Icon>
+        </Row>
       </Row>
     </Row>
   );

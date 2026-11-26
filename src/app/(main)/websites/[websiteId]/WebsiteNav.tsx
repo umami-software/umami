@@ -1,8 +1,26 @@
 import { Column, Row, Text } from '@umami/react-zen';
+import type { ReactNode } from 'react';
 import { IconLabel } from '@/components/common/IconLabel';
 import Link from '@/components/common/Link';
-import { useMessages, useNavigation, useWebsiteNavItems } from '@/components/hooks';
+import {
+  useMessages,
+  useMetricsNavItems,
+  useNavigation,
+  useWebsiteNavItems,
+} from '@/components/hooks';
 import { ArrowLeft } from '@/components/icons';
+
+interface NavItem {
+  id: string;
+  label: string;
+  path: string;
+  icon: ReactNode;
+}
+
+interface NavSection {
+  label: string;
+  items: NavItem[];
+}
 
 export function WebsiteNav({
   websiteId,
@@ -16,13 +34,53 @@ export function WebsiteNav({
   const { items, selectedKey } = useWebsiteNavItems(websiteId);
 
   return (
+    <SectionNav
+      backItem={{
+        id: 'back',
+        label: t(labels.back),
+        path: renderUrl('/websites', false),
+        icon: <ArrowLeft />,
+      }}
+      sections={items}
+      selectedKey={selectedKey}
+      onItemClick={onItemClick}
+    />
+  );
+}
+
+/** The metrics page's metrics, with a way back to the overview. */
+export function MetricsNav({ onItemClick }: { onItemClick?: () => void }) {
+  const { items, selectedKey, backItem } = useMetricsNavItems();
+
+  return (
+    <SectionNav
+      backItem={backItem}
+      sections={items}
+      selectedKey={selectedKey}
+      onItemClick={onItemClick}
+    />
+  );
+}
+
+function SectionNav({
+  backItem,
+  sections,
+  selectedKey,
+  onItemClick,
+}: {
+  backItem: NavItem;
+  sections: NavSection[];
+  selectedKey?: string;
+  onItemClick?: () => void;
+}) {
+  return (
     <Column gap="2">
-      <Link href={renderUrl('/websites', false)} role="button" onClick={onItemClick}>
+      <Link href={backItem.path} role="button" onClick={onItemClick}>
         <Row alignItems="center" hover={{ backgroundColor: 'muted' }} borderRadius minHeight="9">
-          <IconLabel icon={<ArrowLeft />} label={t(labels.back)} padding />
+          <IconLabel icon={backItem.icon} label={backItem.label} padding />
         </Row>
       </Link>
-      {items.map(({ label: sectionLabel, items: sectionItems }, index) => (
+      {sections.map(({ label: sectionLabel, items: sectionItems }, index) => (
         <Column key={`${sectionLabel}${index}`} gap="1" marginBottom="1">
           <Row paddingX="3" marginTop="2">
             <Text weight="bold">{sectionLabel}</Text>

@@ -18,9 +18,11 @@ import type { ReactNode } from 'react';
 import { IconLabel } from '@/components/common/IconLabel';
 import Link from '@/components/common/Link';
 import {
+  isMetricsPath,
   useAdminNavItems,
   useConfig,
   useMessages,
+  useMetricsNavItems,
   useNavigation,
   useSettingsNavItems,
   useWebsiteNavItems,
@@ -59,7 +61,7 @@ export function SideNav() {
 
   return (
     <Sidebar variant="sidebar" collapsible="icon">
-      <SidebarHeader>
+      <SidebarHeader className="border-b">
         <Row
           alignItems="center"
           justifyContent={isCollapsed ? 'center' : 'space-between'}
@@ -75,7 +77,9 @@ export function SideNav() {
         </Row>
       </SidebarHeader>
       <SidebarContent>
-        {websiteId ? (
+        {isMetricsPath(pathname) ? (
+          <MetricsGroups />
+        ) : websiteId ? (
           <WebsiteGroups websiteId={websiteId} />
         ) : pathname.includes('/settings') ? (
           <SettingsGroups />
@@ -85,7 +89,7 @@ export function SideNav() {
           <MainGroups />
         )}
       </SidebarContent>
-      <SidebarFooter>
+      <SidebarFooter className="border-t">
         <SidebarMenu>
           <NavMenuItem
             item={{
@@ -157,6 +161,12 @@ function WebsiteGroups({ websiteId }: { websiteId: string }) {
   return <NavGroups groups={items} selectedKey={selectedKey} showBack />;
 }
 
+function MetricsGroups() {
+  const { items, selectedKey, backItem } = useMetricsNavItems();
+
+  return <NavGroups groups={items} selectedKey={selectedKey} backItem={backItem} />;
+}
+
 function SettingsGroups() {
   const { items, selectedKey } = useSettingsNavItems();
 
@@ -173,27 +183,29 @@ function NavGroups({
   groups,
   selectedKey,
   showBack,
+  backItem,
 }: {
   groups: NavGroup[];
   selectedKey?: string;
   showBack?: boolean;
+  /** Replaces the default back item, which goes to the websites list. */
+  backItem?: NavItem;
 }) {
   const { t, labels } = useMessages();
   const { renderUrl } = useNavigation();
+  const back = backItem ?? {
+    id: 'back',
+    label: t(labels.back),
+    path: renderUrl('/websites', false),
+    icon: <ArrowLeft />,
+  };
 
   return (
     <>
-      {showBack && (
+      {(showBack || backItem) && (
         <SidebarGroup>
           <SidebarMenu>
-            <NavMenuItem
-              item={{
-                id: 'back',
-                label: t(labels.back),
-                path: renderUrl('/websites', false),
-                icon: <ArrowLeft />,
-              }}
-            />
+            <NavMenuItem item={back} />
           </SidebarMenu>
         </SidebarGroup>
       )}

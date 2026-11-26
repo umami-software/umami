@@ -34,7 +34,9 @@ export function SegmentSaveButton({ websiteId }: { websiteId: string }) {
           maxWidth: isMobile ? '100%' : 'calc(100% - 2rem)',
           maxHeight: isMobile ? '100%' : 'calc(100dvh - 40px)',
           borderRadius: isMobile ? 0 : undefined,
-          overflowY: 'auto',
+          display: 'flex',
+          flexDirection: 'column',
+          overflow: 'hidden',
         }}
       >
         <DialogHeader>

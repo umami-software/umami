@@ -119,6 +119,7 @@ export * from './useGlobalState';
 export * from './useLanguageNames';
 export * from './useLocale';
 export * from './useMessages';
+export * from './useMetricsNavItems';
 export * from './useMobile';
 export * from './useModified';
 export * from './useNavigation';

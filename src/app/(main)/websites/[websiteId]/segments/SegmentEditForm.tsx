@@ -1,19 +1,24 @@
 import {
   Button,
-  Column,
   DialogFooter,
   Form,
   FormField,
   FormSubmitButton,
   Loading,
-  Text,
+  Tabs,
+  TabsContent,
+  TabsList,
+  TabsTrigger,
   TextField,
 } from '@umami/react-zen';
-import { useEffect, useState } from 'react';
+import { type CSSProperties, useEffect, useState } from 'react';
 import { useMessages, useUpdateQuery, useWebsiteSegmentQuery } from '@/components/hooks';
 import { FieldFilters } from '@/components/input/FieldFilters';
 import { PropertyFilters } from '@/components/property-data/PropertyFilters';
 import type { SessionPropertyFilter } from '@/lib/types';
+
+// The padding keeps focus rings from being clipped by the scroll area.
+const scrollStyle: CSSProperties = { minHeight: 0, overflowY: 'auto', margin: -4, padding: 4 };
 
 export function SegmentEditForm({
   segmentId,
@@ -76,44 +81,46 @@ export function SegmentEditForm({
       onSubmit={handleSubmit}
       defaultValues={data || { name: '', parameters: { filters, sessionPropertyFilters } }}
       error={getErrorMessage(error)}
+      // Fills the dialog so only the fields scroll, keeping the footer in view.
+      style={{ flexGrow: 1, minHeight: 0 }}
     >
-      <Column gap="4">
-        <FormField name="name" label={t(labels.name)} rules={{ required: t(labels.required) }}>
-          <TextField autoFocus={!segmentId} />
-        </FormField>
-        {showFilters && (
-          <Column gap="4">
-            <Column gap="1">
-              <Text weight="bold">{t(labels.filters)}</Text>
-              <FormField name="parameters.filters">
-                {({ field }) => (
-                  <FieldFilters
-                    websiteId={websiteId}
-                    value={field.value}
-                    onChange={field.onChange}
-                    match={currentMatch}
-                    onMatchChange={setCurrentMatch}
-                  />
-                )}
-              </FormField>
-            </Column>
-
-            <Column gap="1">
-              <Text weight="bold">{t(labels.sessionData)}</Text>
-              <FormField name="parameters.sessionPropertyFilters">
-                {({ field }) => (
-                  <PropertyFilters
-                    source="session"
-                    websiteId={websiteId}
-                    value={field.value ?? []}
-                    onChange={field.onChange}
-                  />
-                )}
-              </FormField>
-            </Column>
-          </Column>
-        )}
-      </Column>
+      <FormField name="name" label={t(labels.name)} rules={{ required: t(labels.required) }}>
+        <TextField autoFocus={!segmentId} />
+      </FormField>
+      {showFilters && (
+        // Only the open tab's content scrolls, so the tabs and footer stay in view.
+        <Tabs defaultValue="filters" style={{ flexGrow: 1, minHeight: 0 }}>
+          <TabsList>
+            <TabsTrigger value="filters">{t(labels.filters)}</TabsTrigger>
+            <TabsTrigger value="sessionData">{t(labels.sessionData)}</TabsTrigger>
+          </TabsList>
+          <TabsContent value="filters" style={scrollStyle}>
+            <FormField name="parameters.filters">
+              {({ field }) => (
+                <FieldFilters
+                  websiteId={websiteId}
+                  value={field.value}
+                  onChange={field.onChange}
+                  match={currentMatch}
+                  onMatchChange={setCurrentMatch}
+                />
+              )}
+            </FormField>
+          </TabsContent>
+          <TabsContent value="sessionData" style={scrollStyle}>
+            <FormField name="parameters.sessionPropertyFilters">
+              {({ field }) => (
+                <PropertyFilters
+                  source="session"
+                  websiteId={websiteId}
+                  value={field.value ?? []}
+                  onChange={field.onChange}
+                />
+              )}
+            </FormField>
+          </TabsContent>
+        </Tabs>
+      )}
       <DialogFooter>
         <Button variant="outline" disabled={isPending} onClick={onClose}>
           {t(labels.cancel)}

@@ -50,15 +50,12 @@ export function MetricsExpandedTable({
   const pageItems = items?.slice((page - 1) * DEFAULT_PAGE_SIZE, page * DEFAULT_PAGE_SIZE);
 
   return (
-    <>
-      <Row alignItems="center" paddingBottom="3">
+    <Column gap>
+      <Row alignItems="center">
         {allowSearch && (
-          <SearchField
-            value={search}
-            onSearch={setSearch}
-            delay={300}
-            className="w-full max-w-md"
-          />
+          <Row width="280px">
+            <SearchField value={search} onSearch={setSearch} delay={300} className="w-full" />
+          </Row>
         )}
         <Row justifyContent="flex-end" flexGrow={1} gap>
           {children}
@@ -124,7 +121,7 @@ export function MetricsExpandedTable({
         </Column>
       </LoadingPanel>
       {items && items.length > 0 && (
-        <Row paddingTop="3">
+        <Row>
           <Pager
             page={page}
             pageSize={DEFAULT_PAGE_SIZE}
@@ -133,6 +130,6 @@ export function MetricsExpandedTable({
           />
         </Row>
       )}
-    </>
+    </Column>
   );
 }

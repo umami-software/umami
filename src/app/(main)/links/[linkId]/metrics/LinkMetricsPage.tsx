@@ -6,8 +6,6 @@ import { LinkProvider } from '@/app/(main)/links/LinkProvider';
 import { WebsiteExpandedView } from '@/app/(main)/websites/[websiteId]/WebsiteExpandedView';
 import { PageBody } from '@/components/common/PageBody';
 
-const excludedIds = ['path', 'fullPath', 'entry', 'exit', 'title', 'language', 'screen', 'event'];
-
 export function LinkMetricsPage({
   linkId,
   showHeaderActions = true,
@@ -21,13 +19,9 @@ export function LinkMetricsPage({
         <Column margin="2">
           <PageBody gap>
             <LinkHeader showActions={showHeaderActions} />
-            <Column gap="6">
+            <Column gap>
               <LinkControls linkId={linkId} />
-              <WebsiteExpandedView
-                websiteId={linkId}
-                excludedIds={excludedIds}
-                defaultView="referrer"
-              />
+              <WebsiteExpandedView websiteId={linkId} />
             </Column>
           </PageBody>
         </Column>

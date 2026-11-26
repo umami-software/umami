@@ -6,8 +6,6 @@ import { PixelProvider } from '@/app/(main)/pixels/PixelProvider';
 import { WebsiteExpandedView } from '@/app/(main)/websites/[websiteId]/WebsiteExpandedView';
 import { PageBody } from '@/components/common/PageBody';
 
-const excludedIds = ['path', 'fullPath', 'entry', 'exit', 'title', 'language', 'screen', 'event'];
-
 export function PixelMetricsPage({
   pixelId,
   showHeaderActions = true,
@@ -21,13 +19,9 @@ export function PixelMetricsPage({
         <Column margin="2">
           <PageBody gap>
             <PixelHeader showActions={showHeaderActions} />
-            <Column gap="6">
+            <Column gap>
               <PixelControls pixelId={pixelId} />
-              <WebsiteExpandedView
-                websiteId={pixelId}
-                excludedIds={excludedIds}
-                defaultView="referrer"
-              />
+              <WebsiteExpandedView websiteId={pixelId} />
             </Column>
           </PageBody>
         </Column>

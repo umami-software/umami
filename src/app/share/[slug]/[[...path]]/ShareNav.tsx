@@ -11,7 +11,13 @@ import {
 } from '@umami/react-zen';
 import { IconLabel } from '@/components/common/IconLabel';
 import Link from '@/components/common/Link';
-import { useMessages, useNavigation, useShare } from '@/components/hooks';
+import {
+  isMetricsPath,
+  useMessages,
+  useMetricsNavItems,
+  useNavigation,
+  useShare,
+} from '@/components/hooks';
 import { AlignEndHorizontal, Clock, Eye, PanelLeft, Sheet, Tag, User } from '@/components/icons';
 import { LanguageButton } from '@/components/input/LanguageButton';
 import { PreferencesButton } from '@/components/input/PreferencesButton';
@@ -32,6 +38,8 @@ export function ShareNav({
   const share = useShare();
   const { t, labels } = useMessages();
   const { pathname, query } = useNavigation();
+  const isMetrics = isMetricsPath(pathname);
+  const metrics = useMetricsNavItems();
   const { slug, parameters } = share;
   const allowFilter = allowShareFilter(parameters);
   const shareTheme = getShareTheme(parameters);
@@ -132,17 +140,18 @@ export function ShareNav({
     },
   ];
 
-  // Filter items based on parameters
-  const items = allItems
-    .map(section => ({
-      label: section.label,
-      items: section.items.filter(item => parameters[item.id] === true),
-    }))
-    .filter(section => section.items.length > 0);
+  // On the metrics page, the metrics replace the share's pages, under a way back to the overview.
+  const items = isMetrics
+    ? [{ label: '', items: [metrics.backItem] }, ...metrics.items]
+    : allItems
+        .map(section => ({
+          label: section.label,
+          items: section.items.filter(item => parameters[item.id] === true),
+        }))
+        .filter(section => section.items.length > 0);
 
-  // The metrics page lists the overview's tables in full, so it counts as the overview.
-  const selectedKey = pathname.endsWith(`/share/${slug}/metrics`)
-    ? 'overview'
+  const selectedKey = isMetrics
+    ? metrics.selectedKey
     : items.flatMap(e => e.items).find(({ path }) => path && pathname.endsWith(path.split('?')[0]))
         ?.id;
 
@@ -176,7 +185,7 @@ export function ShareNav({
       <Column flexGrow={1} marginTop="2" overflowY="auto" gap="2">
         {items.map(({ label: sectionLabel, items: sectionItems }, index) => (
           <Column key={`${sectionLabel}${index}`} gap="1" marginBottom="1">
-            {!collapsed && (
+            {!collapsed && sectionLabel && (
               <Row paddingX="3" marginTop="2">
                 <Text weight="bold">{sectionLabel}</Text>
               </Row>

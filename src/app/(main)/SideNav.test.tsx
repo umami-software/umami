@@ -80,3 +80,20 @@ test('shows a settings link in the footer', () => {
 
   expect(screen.getByRole('link', { name: /^settings$/i })).toHaveAttribute('href', '/settings');
 });
+
+test('shows the metrics, with a way back to the overview, on the metrics page', () => {
+  const websiteId = '0f9a3c2e-1b4d-4e8a-9c7f-2d6b5a4e3f10';
+  const path = `/websites/${websiteId}/metrics`;
+
+  navigateTo(path, { websiteId });
+
+  renderSideNav(`${path}?view=browser&date=24h`);
+
+  // Back keeps the date but drops the metric.
+  expect(screen.getByRole('link', { name: /back/i })).toHaveAttribute(
+    'href',
+    `/websites/${websiteId}?date=24h`,
+  );
+  expect(screen.getByRole('link', { name: /browser/i })).toHaveAttribute('data-active');
+  expect(screen.queryByRole('link', { name: /overview/i })).not.toBeInTheDocument();
+});

@@ -201,17 +201,14 @@ export function useWebsiteNavItems(websiteId: string) {
     },
   ];
 
-  // The metrics page lists the overview's tables in full, so it counts as the overview.
-  const selectedKey = pathname.endsWith(`/websites/${websiteId}/metrics`)
-    ? 'overview'
-    : items
-        .flatMap(e => e.items)
-        .find(
-          ({ path }) =>
-            path &&
-            (pathname.endsWith(path.split('?')[0]) ||
-              (path.split('?')[0].endsWith('/errors') && pathname.includes('/errors/'))),
-        )?.id;
+  const selectedKey = items
+    .flatMap(e => e.items)
+    .find(
+      ({ path }) =>
+        path &&
+        (pathname.endsWith(path.split('?')[0]) ||
+          (path.split('?')[0].endsWith('/errors') && pathname.includes('/errors/'))),
+    )?.id;
 
   return { items, selectedKey, renderPath };
 }
