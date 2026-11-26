@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { min } from 'date-fns';
 import { fromZonedTime } from 'date-fns-tz';
 import { EVENT_TYPE } from '@/lib/constants';
 import { parseDateRange } from '@/lib/date';
@@ -31,7 +32,12 @@ export async function GET(request: Request) {
   const startDate = hasDateRange
     ? new Date(query.startAt)
     : fromZonedTime(defaultRange.startDate, timezone);
-  const endDate = hasDateRange ? new Date(query.endAt) : fromZonedTime(defaultRange.endDate, timezone);
+  // The default range runs to the end of today; stop at now so the hours still
+  // to come don't show up as an empty bucket at the end of the sparkline
+  const endDate = min([
+    hasDateRange ? new Date(query.endAt) : fromZonedTime(defaultRange.endDate, timezone),
+    new Date(),
+  ]);
 
   const linkIds = (
     await Promise.all(
