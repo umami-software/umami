@@ -171,3 +171,65 @@ test('ClickHouse revenue locations keep revenue whose session has no event row',
   expect(query).toContain("event_name in ('stripe:payment'");
   expect(query).toContain('any left join revenue_session');
 });
+
+test('getRevenueMetrics applies filters when selecting attributed referrer and channel events', async () => {
+  parseFiltersMock.mockReturnValue({
+    queryParams: {},
+    filterQuery: 'and website_event.referrer_domain = ANY({{referrer}})',
+    cohortQuery: 'join cohort on cohort.session_id = website_event.session_id',
+    joinSessionQuery:
+      'inner join session on website_event.session_id = session.session_id and website_event.website_id = session.website_id',
+    dateQuery: 'and website_event.created_at between {{startDate}} and {{endDate}}',
+  });
+
+  for (const metricType of ['referrer', 'channel'] as const) {
+    rawQueryMock.mockReset();
+    rawQueryMock.mockResolvedValue([]);
+
+    await getRevenueMetrics(
+      'website-1',
+      parameters,
+      { referrer: 'com.openai.chatgpt' },
+      metricType,
+    );
+
+    const [query] = rawQueryMock.mock.calls[0];
+
+    expect(query).toContain('filtered_events as');
+    expect(query).toContain('row_number() over');
+    expect(query).toContain('join cohort on cohort.session_id = website_event.session_id');
+    expect(query).toContain('inner join session on website_event.session_id = session.session_id');
+    expect(query).toContain('and website_event.referrer_domain = ANY({{referrer}})');
+    expect(query).not.toContain('min(created_at) as min_date');
+  }
+});
+
+test('ClickHouse revenue referrer and channel attribution filters first_event by query filters', async () => {
+  db.mode = 'clickhouse';
+  parseFiltersMock.mockReturnValue({
+    queryParams: {},
+    filterQuery: 'and referrer_domain = {referrer:String}',
+    cohortQuery: 'join cohort on cohort.cohort_session_id = website_event.session_id',
+    dateQuery: 'and created_at between {startDate:DateTime64} and {endDate:DateTime64}',
+  });
+
+  for (const metricType of ['referrer', 'channel'] as const) {
+    rawQueryMock.mockReset();
+    rawQueryMock.mockResolvedValue([]);
+
+    await getRevenueMetrics(
+      'website-1',
+      parameters,
+      { referrer: 'com.openai.chatgpt' },
+      metricType,
+    );
+
+    const [query] = rawQueryMock.mock.calls[0];
+    const firstEventSection = query.slice(query.indexOf('first_event as'));
+
+    expect(firstEventSection).toContain(
+      'join cohort on cohort.cohort_session_id = website_event.session_id',
+    );
+    expect(firstEventSection).toContain('and referrer_domain = {referrer:String}');
+  }
+});
