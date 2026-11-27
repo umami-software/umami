@@ -16,7 +16,8 @@ import {
   parseUniversalEventPropertyFilters,
 } from '@/lib/params';
 import { badRequest, forbidden, unauthorized } from '@/lib/response';
-import type { Auth, Filter, Operator, QueryFilters } from '@/lib/types';
+import type { Auth, Filter, Operator, QueryFilters, SessionPropertyFilter } from '@/lib/types';
+import { getShareParametersForWebsite } from '@/permissions';
 import { getWebsiteSegment } from '@/queries/prisma';
 
 export async function parseRequest(
@@ -196,8 +197,7 @@ export async function getQueryFilters(
   websiteId?: string,
   auth?: Auth | null,
 ): Promise<QueryFilters> {
-  const shareParams =
-    auth?.authType === 'share' && !auth.user ? auth.shareToken?.parameters : undefined;
+  const shareParams = await getShareParametersForWebsite(auth, websiteId);
 
   const clientParams =
     shareParams?.allowFilter === false ? stripClientFilterParams(params) : params;
@@ -263,27 +263,37 @@ export async function getQueryFilters(
     }
   }
 
+  const lockedFilterMap: Record<string, any> = {};
+  const lockedSessionPropertyFilters: SessionPropertyFilter[] = [];
+  let lockedMatch: 'all' | 'any' | undefined;
+
   if (shareParams) {
-    mergeFiltersWithoutCollision(filters, shareParams.filters);
+    mergeFiltersWithoutCollision(lockedFilterMap, shareParams.filters);
 
     if (shareParams.match) {
-      match = shareParams.match;
+      lockedMatch = shareParams.match;
     }
 
     if (shareParams.segment && websiteId) {
-      const segmentParams = (await getWebsiteSegment(websiteId, shareParams.segment))
-        ?.parameters as Record<string, any> | undefined;
+      const segment = await getWebsiteSegment(websiteId, shareParams.segment);
 
-      if (segmentParams) {
-        mergeFiltersWithoutCollision(filters, segmentParams.filters);
-        sessionPropertyFilters.push(...(segmentParams.sessionPropertyFilters ?? []));
+      if (!segment) {
+        throw new Error('Share segment not found.');
+      }
 
-        if (segmentParams.match) {
-          match = segmentParams.match;
-        }
+      const segmentParams = segment.parameters as Record<string, any>;
+
+      mergeFiltersWithoutCollision(lockedFilterMap, segmentParams.filters);
+      lockedSessionPropertyFilters.push(...(segmentParams.sessionPropertyFilters ?? []));
+
+      if (segmentParams.match) {
+        lockedMatch = segmentParams.match;
       }
     }
   }
+
+  const hasLockedFilters =
+    Object.keys(lockedFilterMap).length > 0 || lockedSessionPropertyFilters.length > 0;
 
   return {
     ...dateRange,
@@ -292,6 +302,15 @@ export async function getQueryFilters(
     minDuration: resolvedParams?.minDuration,
     eventPropertyFilters,
     sessionPropertyFilters,
+    ...(hasLockedFilters && {
+      lockedFilters: {
+        filters: lockedFilterMap,
+        ...(lockedMatch && { match: lockedMatch }),
+        ...(lockedSessionPropertyFilters.length > 0 && {
+          sessionPropertyFilters: lockedSessionPropertyFilters,
+        }),
+      },
+    }),
     page: resolvedParams?.page,
     pageSize: resolvedParams?.pageSize ? resolvedParams?.pageSize || DEFAULT_PAGE_SIZE : undefined,
     orderBy: resolvedParams?.orderBy,

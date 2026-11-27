@@ -3,7 +3,11 @@ import { uuid } from '@/lib/crypto';
 import { getQueryFilters, parseRequest } from '@/lib/request';
 import { badRequest, json, unauthorized } from '@/lib/response';
 import { searchParams, segmentParamSchema, segmentTypeParam } from '@/lib/schema';
-import { canUpdateWebsite, canViewSharedWebsiteFilters } from '@/permissions';
+import {
+  canUpdateWebsite,
+  canViewSharedWebsiteFilters,
+  getShareParametersForWebsite,
+} from '@/permissions';
 import { createSegment, getWebsiteSegment, getWebsiteSegments } from '@/queries/prisma';
 
 export async function GET(
@@ -28,11 +32,11 @@ export async function GET(
     return unauthorized();
   }
 
-  if (auth?.authType === 'share' && !auth.user && auth.shareToken?.parameters?.segment) {
+  const shareParams = await getShareParametersForWebsite(auth, websiteId);
+
+  if (shareParams?.segment) {
     const lockedSegment =
-      type === 'segment'
-        ? await getWebsiteSegment(websiteId, auth.shareToken.parameters.segment)
-        : null;
+      type === 'segment' ? await getWebsiteSegment(websiteId, shareParams.segment) : null;
     const data = lockedSegment && lockedSegment.type === type ? [lockedSegment] : [];
 
     return json({ data, count: data.length, page: 1, pageSize: 10 });

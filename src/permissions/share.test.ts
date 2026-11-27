@@ -6,6 +6,7 @@ import {
   canViewSharedWebsiteFilters,
   canViewWebsiteSection,
   canViewWebsiteSectionRows,
+  getShareParametersForWebsite,
 } from './share';
 import { canViewWebsite } from './website';
 
@@ -278,4 +279,33 @@ test('a website owner keeps full access when a share token is also sent', async 
   await expect(canViewWebsiteSection(auth, 'website-1', 'sessions')).resolves.toBe(true);
   await expect(canViewWebsiteSectionRows(auth, 'website-1', 'events')).resolves.toBe(true);
   await expect(canViewAuthenticatedWebsite(auth, 'website-1')).resolves.toBe(true);
+});
+
+test('getShareParametersForWebsite returns share parameters for anonymous and non-owner sessions, and undefined for owners', async () => {
+  const parameters = { allowFilter: false, segment: 'seg-1' };
+  const shareToken = { shareType: ENTITY_TYPE.website, websiteId: 'website-1', parameters };
+
+  await expect(getShareParametersForWebsite({ shareToken }, undefined)).resolves.toBeUndefined();
+  await expect(
+    getShareParametersForWebsite({ user: { id: 'user-1' } } as any, 'website-1'),
+  ).resolves.toBeUndefined();
+  await expect(getShareParametersForWebsite({ shareToken }, 'website-1')).resolves.toEqual(
+    parameters,
+  );
+
+  vi.mocked(canViewWebsite).mockReset().mockResolvedValue(false);
+  await expect(
+    getShareParametersForWebsite(
+      { authType: 'session', user: { id: 'other-user' }, shareToken } as any,
+      'website-1',
+    ),
+  ).resolves.toEqual(parameters);
+
+  vi.mocked(canViewWebsite).mockReset().mockResolvedValue(true);
+  await expect(
+    getShareParametersForWebsite(
+      { authType: 'session', user: { id: 'owner' }, shareToken } as any,
+      'website-1',
+    ),
+  ).resolves.toBeUndefined();
 });

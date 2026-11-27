@@ -2,7 +2,12 @@ import { z } from 'zod';
 import { parseRequest } from '@/lib/request';
 import { badRequest, json, notFound, ok, unauthorized } from '@/lib/response';
 import { segmentParamSchema, segmentTypeParam } from '@/lib/schema';
-import { canDeleteWebsite, canUpdateWebsite, canViewSharedWebsite } from '@/permissions';
+import {
+  canDeleteWebsite,
+  canUpdateWebsite,
+  canViewSharedWebsite,
+  getShareParametersForWebsite,
+} from '@/permissions';
 import { deleteSegment, getWebsiteSegment, updateSegment } from '@/queries/prisma';
 
 export async function GET(
@@ -21,14 +26,16 @@ export async function GET(
     return unauthorized();
   }
 
-  if (auth?.authType === 'share' && !auth.user) {
-    const lockedSegment = auth.shareToken?.parameters?.segment;
+  const shareParams = await getShareParametersForWebsite(auth, websiteId);
+
+  if (shareParams) {
+    const lockedSegment = shareParams.segment;
 
     if (lockedSegment) {
       if (segmentId !== lockedSegment) {
         return unauthorized();
       }
-    } else if (auth.shareToken?.parameters?.allowFilter === false) {
+    } else if (shareParams.allowFilter === false) {
       return unauthorized();
     }
   }

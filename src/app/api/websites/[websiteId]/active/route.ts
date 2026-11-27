@@ -1,6 +1,6 @@
 import { getQueryFilters, parseRequest } from '@/lib/request';
 import { json, unauthorized } from '@/lib/response';
-import { canViewWebsiteSection } from '@/permissions';
+import { canViewWebsiteSection, getShareParametersForWebsite } from '@/permissions';
 import { getActiveVisitors } from '@/queries/sql';
 
 export async function GET(
@@ -19,8 +19,7 @@ export async function GET(
     return unauthorized();
   }
 
-  const shareParams =
-    auth?.authType === 'share' && !auth.user ? auth.shareToken?.parameters : undefined;
+  const shareParams = await getShareParametersForWebsite(auth, websiteId);
 
   const filters =
     shareParams?.filters?.length || shareParams?.segment

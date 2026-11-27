@@ -1,6 +1,7 @@
 import { beforeEach, expect, test, vi } from 'vitest';
 import { checkAuth } from '@/lib/auth';
 import { fetchWebsite } from '@/lib/load';
+import { canViewWebsite } from '@/permissions/website';
 import { getWebsiteSegment } from '@/queries/prisma';
 import { getQueryFilters, parseRequest, resolvePeriodDateRange } from './request';
 
@@ -18,17 +19,23 @@ vi.mock('@/lib/load', () => ({
   fetchWebsite: vi.fn(),
 }));
 
+vi.mock('@/permissions/website', () => ({
+  canViewWebsite: vi.fn(),
+}));
+
 vi.mock('@/queries/prisma', () => ({
   getWebsiteSegment: vi.fn(),
 }));
 
 const checkAuthMock = vi.mocked(checkAuth);
 const fetchWebsiteMock = vi.mocked(fetchWebsite);
+const canViewWebsiteMock = vi.mocked(canViewWebsite);
 const getWebsiteSegmentMock = vi.mocked(getWebsiteSegment);
 
 beforeEach(() => {
   checkAuthMock.mockReset();
   fetchWebsiteMock.mockReset();
+  canViewWebsiteMock.mockReset().mockResolvedValue(false);
   getWebsiteSegmentMock.mockReset();
   fetchWebsiteMock.mockResolvedValue({ id: 'website-1' } as any);
 });
@@ -256,19 +263,25 @@ test('getQueryFilters applies locked share filters when client passes no filters
     },
   );
 
-  expect(filters).toMatchObject({
-    path: 's./blog',
-    country: 'eq.US',
+  expect(filters.lockedFilters).toEqual({
+    filters: {
+      path: 's./blog',
+      country: 'eq.US',
+    },
     match: 'any',
   });
+  expect(filters.path).toBeUndefined();
+  expect(filters.country).toBeUndefined();
+  expect(filters.match).toBeUndefined();
 });
 
-test('getQueryFilters merges locked share filters without overwriting client filters', async () => {
+test('getQueryFilters isolates locked share filters from client filters and client match', async () => {
   const filters = await getQueryFilters(
     {
       startAt: String(+new Date('2026-09-01T00:00:00.000Z')),
       endAt: String(+new Date('2026-09-02T00:00:00.000Z')),
       path: 'eq./admin',
+      match: 'any',
     },
     'website-1',
     {
@@ -282,9 +295,10 @@ test('getQueryFilters merges locked share filters without overwriting client fil
     },
   );
 
-  expect(filters).toMatchObject({
-    path: 'eq./admin',
-    path1: 's./blog',
+  expect(filters.path).toBe('eq./admin');
+  expect(filters.match).toBe('any');
+  expect(filters.lockedFilters).toEqual({
+    filters: { path: 's./blog' },
   });
 });
 
@@ -325,7 +339,10 @@ test('getQueryFilters strips client filters when allowFilter is false while keep
     },
   );
 
-  expect(filters.path).toBe('s./blog');
+  expect(filters.lockedFilters).toEqual({
+    filters: { path: 's./blog' },
+  });
+  expect(filters.path).toBeUndefined();
   expect((filters as any).path1).toBeUndefined();
   expect((filters as any).browser1).toBeUndefined();
   expect((filters as any).excludeBounce).toBeUndefined();
@@ -347,7 +364,7 @@ test('getQueryFilters strips client filters when allowFilter is false while keep
   });
 });
 
-test('getQueryFilters applies locked share segment filters and sessionPropertyFilters without overwriting client filters', async () => {
+test('getQueryFilters isolates locked share segment filters and sessionPropertyFilters from client filters', async () => {
   getWebsiteSegmentMock.mockResolvedValue({
     parameters: {
       filters: [{ name: 'path', operator: 's', value: '/docs' }],
@@ -376,13 +393,66 @@ test('getQueryFilters applies locked share segment filters and sessionPropertyFi
   );
 
   expect(getWebsiteSegmentMock).toHaveBeenCalledWith('website-1', 'segment-locked');
-  expect(filters).toMatchObject({
-    path: 'eq./docs/intro',
-    path1: 's./docs',
-    match: 'any',
-  });
+  expect(filters.path).toBe('eq./docs/intro');
+  expect(filters.match).toBeUndefined();
   expect(filters.sessionPropertyFilters).toEqual([
     { propertyName: 'country', dataType: 1, operator: 'eq', value: 'US' },
-    { propertyName: 'plan', dataType: 1, operator: 'eq', value: 'pro' },
   ]);
+  expect(filters.lockedFilters).toEqual({
+    filters: { path: 's./docs' },
+    match: 'any',
+    sessionPropertyFilters: [{ propertyName: 'plan', dataType: 1, operator: 'eq', value: 'pro' }],
+  });
+});
+
+test('getQueryFilters still enforces locked share filters for a signed-in non-owner with a shareToken', async () => {
+  canViewWebsiteMock.mockResolvedValue(false);
+
+  const filters = await getQueryFilters(
+    {
+      startAt: String(+new Date('2026-09-01T00:00:00.000Z')),
+      endAt: String(+new Date('2026-09-02T00:00:00.000Z')),
+      path: 'eq./admin',
+    },
+    'website-1',
+    {
+      authType: 'session',
+      user: { id: 'other-user', username: 'other', role: 'user', isAdmin: false },
+      shareToken: {
+        websiteId: 'website-1',
+        parameters: {
+          allowFilter: false,
+          filters: [{ name: 'path', operator: 's', value: '/blog' }],
+        },
+      },
+    },
+  );
+
+  expect(filters.path).toBeUndefined();
+  expect(filters.lockedFilters).toEqual({
+    filters: { path: 's./blog' },
+  });
+});
+
+test('getQueryFilters throws when a locked share segment has been deleted', async () => {
+  getWebsiteSegmentMock.mockResolvedValue(null);
+
+  await expect(
+    getQueryFilters(
+      {
+        startAt: String(+new Date('2026-09-01T00:00:00.000Z')),
+        endAt: String(+new Date('2026-09-02T00:00:00.000Z')),
+      },
+      'website-1',
+      {
+        authType: 'share',
+        shareToken: {
+          websiteId: 'website-1',
+          parameters: {
+            segment: 'deleted-segment',
+          },
+        },
+      },
+    ),
+  ).rejects.toThrow('Share segment not found.');
 });

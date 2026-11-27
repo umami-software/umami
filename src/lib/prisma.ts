@@ -282,32 +282,39 @@ function getDateQuery(filters: Record<string, any>) {
   return '';
 }
 
-function getQueryParams(filters: Record<string, any>) {
+function getQueryParams(filters: Record<string, any>, paramPrefix?: string) {
+  const baseParams = paramPrefix ? {} : filters;
+
   return {
-    ...filters,
-    ...filtersObjectToArray(filters).reduce((obj, { name, column, operator, value, paramName }) => {
-      const resolvedColumn =
-        column || (name?.startsWith('cohort_') && FILTER_COLUMNS[name.slice('cohort_'.length)]);
+    ...baseParams,
+    ...filtersObjectToArray(filters, { paramPrefix }).reduce(
+      (obj, { name, column, operator, value, paramName }) => {
+        const resolvedColumn =
+          column || (name?.startsWith('cohort_') && FILTER_COLUMNS[name.slice('cohort_'.length)]);
 
-      if (!resolvedColumn) return obj;
+        if (!resolvedColumn) return obj;
 
-      const key = paramName ?? name;
+        const key = paramName ?? name;
 
-      if (SEARCH_OPERATORS.includes(operator)) {
-        obj[key] = `%${value}%`;
-      } else if (EQUALITY_OPERATORS.includes(operator)) {
-        obj[key] = Array.isArray(value) ? value : [value];
-      } else {
-        obj[key] = value;
-      }
+        if (SEARCH_OPERATORS.includes(operator)) {
+          obj[key] = `%${value}%`;
+        } else if (EQUALITY_OPERATORS.includes(operator)) {
+          obj[key] = Array.isArray(value) ? value : [value];
+        } else {
+          obj[key] = value;
+        }
 
-      return obj;
-    }, {}),
+        return obj;
+      },
+      {},
+    ),
   };
 }
 
 function parseFilters(filters: Record<string, any>, options?: QueryOptions) {
-  const joinSession = Object.keys(filters).find(key => {
+  const { lockedFilters } = filters as QueryFilters;
+  const filterKeys = [...Object.keys(filters), ...Object.keys(lockedFilters?.filters ?? {})];
+  const joinSession = filterKeys.find(key => {
     const baseName = key.replace(/\d+$/, '');
     return ['referrer', ...SESSION_COLUMNS].includes(baseName);
   });
@@ -322,6 +329,21 @@ function parseFilters(filters: Record<string, any>, options?: QueryOptions) {
       (filters as QueryFilters).sessionPropertyFilters,
       filters.timezone,
     );
+  const lockedFilterQuery = lockedFilters?.filters
+    ? getFilterQuery(
+        { ...lockedFilters.filters, match: lockedFilters.match },
+        { ...options, paramPrefix: 'locked_' },
+      )
+    : '';
+  const lockedFilterParams = lockedFilters?.filters
+    ? getQueryParams(lockedFilters.filters, 'locked_')
+    : {};
+  const { sql: lockedSessionPropertyFilterQuery, params: lockedSessionPropertyFilterParams } =
+    getSessionPropertyFilterQuery(
+      lockedFilters?.sessionPropertyFilters,
+      filters.timezone,
+      'locked_spf_',
+    );
 
   return {
     joinSessionQuery:
@@ -333,6 +355,8 @@ function parseFilters(filters: Record<string, any>, options?: QueryOptions) {
       getFilterQuery(filters, options),
       eventPropertyFilterQuery,
       sessionPropertyFilterQuery,
+      lockedFilterQuery,
+      lockedSessionPropertyFilterQuery,
     ]
       .filter(Boolean)
       .join('\n'),
@@ -340,6 +364,8 @@ function parseFilters(filters: Record<string, any>, options?: QueryOptions) {
       ...getQueryParams(filters),
       ...eventPropertyFilterParams,
       ...sessionPropertyFilterParams,
+      ...lockedFilterParams,
+      ...lockedSessionPropertyFilterParams,
     },
     cohortQuery: getCohortQuery(cohortFilters),
     excludeBounceQuery: getExcludeBounceQuery(filters),
@@ -350,6 +376,7 @@ function getPropertyFilterQuery(
   filters: PropertyFilter[] = [],
   propertyType: 'event' | 'session' = 'event',
   timezone?: string,
+  paramPrefix: string = 'pf_',
 ): {
   sql: string;
   params: Record<string, any>;
@@ -366,8 +393,8 @@ function getPropertyFilterQuery(
     propertyType === 'event' ? `and created_at between {{startDate}} and {{endDate}}` : '';
 
   filters.forEach(({ propertyName, dataType, operator, value }, i) => {
-    const keyParam = `pf_key_${i}`;
-    const valParam = `pf_val_${i}`;
+    const keyParam = `${paramPrefix}key_${i}`;
+    const valParam = `${paramPrefix}val_${i}`;
     params[keyParam] = propertyName;
 
     let condition: string;
@@ -602,6 +629,7 @@ function getEventPropertyFilterQuery(
 function getSessionPropertyFilterQuery(
   filters: PropertyFilter[] = [],
   timezone?: string,
+  paramPrefix: string = 'spf_',
 ): {
   sql: string;
   params: Record<string, any>;
@@ -615,8 +643,8 @@ function getSessionPropertyFilterQuery(
   const params: Record<string, any> = {};
 
   filters.forEach(({ propertyName, dataType, operator, value }, index) => {
-    const keyParam = `spf_key_${index}`;
-    const valParam = `spf_val_${index}`;
+    const keyParam = `${paramPrefix}key_${index}`;
+    const valParam = `${paramPrefix}val_${index}`;
     params[keyParam] = propertyName;
     keyRefs.push(`{{${keyParam}}}`);
 
@@ -776,18 +804,18 @@ async function pagedQuery<T>(model: string, criteria: T, filters?: QueryFilters)
   // Independent queries; run concurrently (mirrors pagedRawQuery).
   const [data, count] = await Promise.all([
     client[model].findMany({
-    ...criteria,
-    ...{
-      ...(size > 0 && { take: +size, skip: +size * (+page - 1) }),
-      ...(orderBy && {
-        orderBy: [
-          {
-            [orderBy]: sortDescending ? 'desc' : 'asc',
-          },
-        ],
-      }),
-    },
-  }),
+      ...criteria,
+      ...{
+        ...(size > 0 && { take: +size, skip: +size * (+page - 1) }),
+        ...(orderBy && {
+          orderBy: [
+            {
+              [orderBy]: sortDescending ? 'desc' : 'asc',
+            },
+          ],
+        }),
+      },
+    }),
     client[model].count({ where: (criteria as any).where }),
   ]);
 

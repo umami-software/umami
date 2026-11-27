@@ -135,9 +135,16 @@ export interface QueryOptions {
   columns?: Record<string, string>;
   limit?: number;
   prefix?: string;
+  paramPrefix?: string;
   isCohort?: boolean;
   cohortMatch?: string;
   cohortActionName?: string;
+}
+
+export interface LockedFilterGroup {
+  filters: Record<string, any>;
+  match?: 'all' | 'any';
+  sessionPropertyFilters?: SessionPropertyFilter[];
 }
 
 export interface QueryFilters
@@ -150,6 +157,7 @@ export interface QueryFilters
   cohortFilters?: QueryFilters;
   eventPropertyFilters?: EventPropertyFilter[];
   sessionPropertyFilters?: SessionPropertyFilter[];
+  lockedFilters?: LockedFilterGroup;
 }
 
 export interface DateParams {

@@ -39,3 +39,46 @@ describe('getDateSQL bucket formatting', () => {
     );
   });
 });
+
+describe('parseFilters lockedFilters isolation', () => {
+  test('keeps lockedFilters ANDed with viewer filters even when viewer uses match=any and colliding keys', () => {
+    const parsed = clickhouse.parseFilters({
+      path: 'eq./admin',
+      browser: 'eq.chrome',
+      match: 'any',
+      sessionPropertyFilters: [
+        { propertyName: 'tier', dataType: 1, operator: 'eq', value: 'free' },
+      ],
+      lockedFilters: {
+        filters: {
+          path: 'c./blog',
+          country: 'eq.US',
+        },
+        match: 'all',
+        sessionPropertyFilters: [
+          { propertyName: 'plan', dataType: 1, operator: 'eq', value: 'pro' },
+        ],
+      },
+    });
+
+    expect(parsed.filterQuery).toContain(
+      'and (\n  url_path IN {path:Array(String)}\n  or browser IN {browser:Array(String)}\n)',
+    );
+    expect(parsed.filterQuery).toContain(
+      'and positionCaseInsensitive(url_path, {locked_path:String}) > 0',
+    );
+    expect(parsed.filterQuery).toContain('and country IN {locked_country:Array(String)}');
+    expect(parsed.filterQuery).toContain('data_key = {spf_key_0:String}');
+    expect(parsed.filterQuery).toContain('data_key = {locked_spf_key_0:String}');
+    expect(parsed.queryParams).toMatchObject({
+      path: ['/admin'],
+      browser: ['chrome'],
+      locked_path: '/blog',
+      locked_country: ['US'],
+      spf_key_0: 'tier',
+      spf_val_0: ['free'],
+      locked_spf_key_0: 'plan',
+      locked_spf_val_0: ['pro'],
+    });
+  });
+});

@@ -1,11 +1,11 @@
 import { DATA_TYPE, FILTER_COLUMNS, OPERATORS } from '@/lib/constants';
 import type {
+  EventPropertyFilter,
   Filter,
   Operator,
   PropertyFilter,
   QueryFilters,
   QueryOptions,
-  EventPropertyFilter,
   SessionPropertyFilter,
 } from '@/lib/types';
 
@@ -77,7 +77,8 @@ export function filtersObjectToArray(filters: QueryFilters, options: QueryOption
     }
 
     const baseName = key.replace(/\d+$/, '');
-    const paramName = key !== baseName ? key : undefined;
+    const paramPrefix = options?.paramPrefix ?? '';
+    const paramName = paramPrefix || key !== baseName ? `${paramPrefix}${key}` : undefined;
 
     // Object filters come from request bodies. Only operator and value are taken from the
     // client; everything else is derived server-side because it ends up in SQL text.
@@ -155,10 +156,7 @@ export function parsePropertyFilters(
     const rawOperator = prefixedDotMatch ? prefixedDotMatch[2] : untypedDotMatch?.[1];
     const operator = resolveOperator(rawOperator);
 
-    if (
-      !operator ||
-      (explicitDataType !== undefined && !isValidEventDataType(explicitDataType))
-    ) {
+    if (!operator || (explicitDataType !== undefined && !isValidEventDataType(explicitDataType))) {
       return [];
     }
 
