@@ -1,4 +1,4 @@
-import { DATA_TYPE, FILTER_COLUMNS, OPERATORS } from '@/lib/constants';
+import { DATA_TYPE, EVENT_COLUMNS, FILTER_COLUMNS, OPERATORS } from '@/lib/constants';
 import type {
   EventPropertyFilter,
   Filter,
@@ -279,6 +279,16 @@ export function serializeUniversalEventPropertyFilters(filters: EventPropertyFil
       `${filter.dataType}.${filter.operator}.${encodePropertyName(filter.propertyName)}.${filter.value}`,
     ]),
   );
+}
+
+export function hasEventFilters(filters?: QueryFilters): boolean {
+  if (!filters) {
+    return false;
+  }
+
+  const keys = [...Object.keys(filters), ...Object.keys(filters.lockedFilters?.filters ?? {})];
+
+  return keys.some(key => EVENT_COLUMNS.includes(key.replace(/\d+$/, '')));
 }
 
 export function serializeSessionPropertyFilters(filters: SessionPropertyFilter[]) {

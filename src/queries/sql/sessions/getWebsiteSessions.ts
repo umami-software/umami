@@ -1,6 +1,7 @@
 import clickhouse from '@/lib/clickhouse';
-import { EVENT_COLUMNS, EVENT_TYPE, FILTER_COLUMNS } from '@/lib/constants';
+import { EVENT_TYPE, FILTER_COLUMNS } from '@/lib/constants';
 import { CLICKHOUSE, PRISMA, runQuery } from '@/lib/db';
+import { hasEventFilters } from '@/lib/params';
 import prisma from '@/lib/prisma';
 import type { PageResult, QueryFilters, WebsiteSession } from '@/lib/types';
 
@@ -110,7 +111,7 @@ async function clickhouseQuery(websiteId: string, filters: QueryFilters) {
 
   let sql = '';
 
-  if (EVENT_COLUMNS.some(item => Object.keys(filters).includes(item))) {
+  if (hasEventFilters(filters)) {
     sql = `
     select
       session_id as id,
