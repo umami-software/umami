@@ -1,5 +1,6 @@
-import { Button, Icon, Text, Tooltip, TooltipContent, TooltipTrigger } from '@umami/react-zen';
+import { Button } from '@umami/react-zen';
 import Papa from 'papaparse';
+import { IconLabel } from '@/components/common/IconLabel';
 import { useMessages } from '@/components/hooks';
 import { Download } from '@/components/icons';
 
@@ -18,21 +19,9 @@ export function DownloadButton({
   };
 
   return (
-    <Tooltip>
-      <TooltipTrigger
-        delay={0}
-        render={
-          <Button variant="ghost" onClick={handleClick} disabled={!data || data.length === 0} />
-        }
-      >
-        <Icon>
-          <Download />
-        </Icon>
-      </TooltipTrigger>
-      <TooltipContent>
-        <Text size="sm">{t(labels.download)}</Text>
-      </TooltipContent>
-    </Tooltip>
+    <Button variant="outline" onClick={handleClick} disabled={!data || data.length === 0}>
+      <IconLabel icon={<Download />} label={t(labels.download)} />
+    </Button>
   );
 }
 

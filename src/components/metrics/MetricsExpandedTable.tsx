@@ -1,6 +1,7 @@
 import { Column, DataColumn, DataTable, Row, SearchField } from '@umami/react-zen';
 import { type ReactNode, useEffect, useState } from 'react';
-import { LoadingPanel } from '@/components/common/LoadingPanel';
+import { Empty } from '@/components/common/Empty';
+import { ErrorMessage } from '@/components/common/ErrorMessage';
 import { Pager } from '@/components/common/Pager';
 import { useMessages, useWebsiteExpandedMetricsQuery } from '@/components/hooks';
 import { DownloadButton } from '@/components/input/DownloadButton';
@@ -48,13 +49,15 @@ export function MetricsExpandedTable({
 
   const items = data?.map(({ name, ...props }) => ({ label: name, ...props }));
   const pageItems = items?.slice((page - 1) * DEFAULT_PAGE_SIZE, page * DEFAULT_PAGE_SIZE);
+  const isPending = isLoading || isFetching;
 
   return (
     <Column gap>
       <Row alignItems="center">
         {allowSearch && (
           <Row width="280px">
-            <SearchField value={search} onSearch={setSearch} delay={300} className="w-full" />
+            {/* Uncontrolled: `search` only updates after the delay, so binding it to the box would undo each keystroke. */}
+            <SearchField onSearch={setSearch} delay={300} className="w-full" />
           </Row>
         )}
         <Row justifyContent="flex-end" flexGrow={1} gap>
@@ -62,17 +65,19 @@ export function MetricsExpandedTable({
           {allowDownload && <DownloadButton filename={type} data={data} />}
         </Row>
       </Row>
-      <LoadingPanel
-        data={data}
-        isFetching={isFetching}
-        isLoading={isLoading}
-        error={error}
-        minHeight="300px"
-        loadingIcon="spinner"
-      >
+      {error && !isPending ? (
+        <ErrorMessage />
+      ) : !isPending && items?.length === 0 ? (
+        <Empty />
+      ) : (
         <Column overflowX="auto">
-          {pageItems && (
-            <DataTable data={pageItems}>
+          {(pageItems || isPending) && (
+            <DataTable
+              data={pageItems ?? []}
+              loading={isPending}
+              // Keep the height steady when refetching a page that already has rows.
+              loadingRows={pageItems?.length || undefined}
+            >
               <DataColumn id="label" label={title} width="minmax(200px, 2fr)" align="start">
                 {row => (
                   <Row overflow="hidden">
@@ -119,7 +124,7 @@ export function MetricsExpandedTable({
             </DataTable>
           )}
         </Column>
-      </LoadingPanel>
+      )}
       {items && items.length > 0 && (
         <Row>
           <Pager

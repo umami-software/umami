@@ -5,7 +5,15 @@ import {
   ChartTooltipContent,
 } from '@umami/react-zen';
 import { colord } from 'colord';
-import { memo, useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import {
+  memo,
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+  useSyncExternalStore,
+} from 'react';
 import {
   Area,
   Bar,
@@ -26,7 +34,11 @@ import {
   getDatasetColor,
   getPointValue,
 } from '@/components/charts/Chart';
-import type { AnnotationMarker } from '@/components/charts/ChartAnnotationMarkers';
+import {
+  type AnnotationMarker,
+  type ChartAnnotation,
+  ChartAnnotationMarkers,
+} from '@/components/charts/ChartAnnotationMarkers';
 import { ChartTooltipRow } from '@/components/charts/ChartTooltip';
 import { useLocale } from '@/components/hooks';
 import type { LegendItem } from '@/components/metrics/Legend';
@@ -133,6 +145,96 @@ function PlotAreaReporter({ onChange }: { onChange: (area: PlotArea) => void }) 
   return null;
 }
 
+interface PlotAreaStore {
+  get: () => PlotArea | null;
+  set: (area: PlotArea) => void;
+  subscribe: (listener: () => void) => () => void;
+}
+
+/**
+ * Holds the plot area outside React state. Recharts re-registers its axes whenever the chart
+ * re-renders, which resets an auto-width y axis and moves the plot area again. If a move
+ * re-rendered the chart, the two would loop. Here a move only re-renders the marker overlay.
+ */
+function createPlotAreaStore(): PlotAreaStore {
+  let area: PlotArea | null = null;
+  const listeners = new Set<() => void>();
+
+  return {
+    get: () => area,
+    set: next => {
+      if (
+        area &&
+        area.x === next.x &&
+        area.y === next.y &&
+        area.width === next.width &&
+        area.height === next.height
+      ) {
+        return;
+      }
+
+      area = next;
+      listeners.forEach(listener => listener());
+    },
+    subscribe: listener => {
+      listeners.add(listener);
+      return () => {
+        listeners.delete(listener);
+      };
+    },
+  };
+}
+
+/** Places annotation markers over their buckets, following the plot area as it moves. */
+function AnnotationMarkersOverlay({
+  store,
+  annotations,
+  timestamps,
+  onClick,
+  onMoreClick,
+}: {
+  store: PlotAreaStore;
+  annotations: ChartAnnotation[];
+  timestamps: number[];
+  onClick?: (annotations: ChartAnnotation[]) => void;
+  onMoreClick?: (annotations: ChartAnnotation[]) => void;
+}) {
+  const plotArea = useSyncExternalStore(store.subscribe, store.get, store.get);
+
+  const markers = useMemo(() => {
+    if (!plotArea || !timestamps.length) {
+      return [];
+    }
+
+    const groups = new Map<number, AnnotationMarker>();
+
+    for (const annotation of annotations) {
+      const index = getChartBucketIndex(timestamps, annotation.markerDate || annotation.date);
+
+      if (index < 0) {
+        continue;
+      }
+
+      const x = Math.round(plotArea.x + (plotArea.width * (index + 0.5)) / timestamps.length);
+      const group = groups.get(x);
+
+      if (group) {
+        group.annotations.push(annotation);
+      } else {
+        groups.set(x, { annotations: [annotation], x, y: plotArea.y + plotArea.height });
+      }
+    }
+
+    return [...groups.values()];
+  }, [annotations, plotArea, timestamps]);
+
+  if (!markers.length) {
+    return null;
+  }
+
+  return <ChartAnnotationMarkers markers={markers} onClick={onClick} onMoreClick={onMoreClick} />;
+}
+
 function BarChartComponent({
   chartData,
   renderXLabel,
@@ -155,7 +257,7 @@ function BarChartComponent({
 }: BarChartProps) {
   const { locale } = useLocale();
   const [legendHidden, setLegendHidden] = useState<Set<string>>(() => new Set());
-  const [plotArea, setPlotArea] = useState<PlotArea | null>(null);
+  const [plotAreaStore] = useState(createPlotAreaStore);
   // Touch has no hover, so the first tap on a bar shows its tooltip and a second tap drills in.
   const tappedTimeRef = useRef<number | null>(null);
   const datasets = chartData?.datasets ?? [];
@@ -266,33 +368,7 @@ function BarChartComponent({
     [onBarClick, minDate, unit],
   );
 
-  const markers = useMemo(() => {
-    if (!annotations?.length || !plotArea || !rows.length) {
-      return [];
-    }
-
-    const timestamps = rows.map(({ ts }) => ts);
-    const groups = new Map<number, AnnotationMarker>();
-
-    for (const annotation of annotations) {
-      const index = getChartBucketIndex(timestamps, annotation.markerDate || annotation.date);
-
-      if (index < 0) {
-        continue;
-      }
-
-      const x = Math.round(plotArea.x + (plotArea.width * (index + 0.5)) / rows.length);
-      const group = groups.get(x);
-
-      if (group) {
-        group.annotations.push(annotation);
-      } else {
-        groups.set(x, { annotations: [annotation], x, y: plotArea.y + plotArea.height });
-      }
-    }
-
-    return [...groups.values()];
-  }, [annotations, plotArea, rows]);
+  const timestamps = useMemo(() => rows.map(({ ts }) => ts), [rows]);
 
   const xLabel = useMemo(
     () => renderXLabel ?? renderDateLabels(unit, locale),
@@ -308,9 +384,17 @@ function BarChartComponent({
       legendItems={legendItems}
       onLegendItemClick={handleLegendClick}
       legendActions={legendActions}
-      markers={markers}
-      onAnnotationClick={onAnnotationClick}
-      onAnnotationMoreClick={onAnnotationMoreClick}
+      overlay={
+        annotations?.length ? (
+          <AnnotationMarkersOverlay
+            store={plotAreaStore}
+            annotations={annotations}
+            timestamps={timestamps}
+            onClick={onAnnotationClick}
+            onMoreClick={onAnnotationMoreClick}
+          />
+        ) : null
+      }
     >
       <ChartContainer
         config={config}
@@ -426,7 +510,7 @@ function BarChartComponent({
               />
             );
           })}
-          {annotations?.length ? <PlotAreaReporter onChange={setPlotArea} /> : null}
+          {annotations?.length ? <PlotAreaReporter onChange={plotAreaStore.set} /> : null}
         </ComposedChart>
       </ChartContainer>
     </Chart>

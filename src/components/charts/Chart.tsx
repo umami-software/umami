@@ -1,10 +1,6 @@
 import { Box, type BoxProps, Column, Skeleton } from '@umami/react-zen';
 import type { ReactNode } from 'react';
-import {
-  type AnnotationMarker,
-  type ChartAnnotation,
-  ChartAnnotationMarkers,
-} from '@/components/charts/ChartAnnotationMarkers';
+import type { ChartAnnotation } from '@/components/charts/ChartAnnotationMarkers';
 import { Legend, type LegendItem } from '@/components/metrics/Legend';
 
 export type ChartPoint = { x: string | number; y: number | null; d?: string; r?: number };
@@ -57,9 +53,8 @@ export interface ChartFrameProps extends Omit<BoxProps, 'children'> {
   legendItems?: LegendItem[];
   onLegendItemClick?: (item: LegendItem) => void;
   legendActions?: ReactNode;
-  markers?: AnnotationMarker[];
-  onAnnotationClick?: (annotations: ChartAnnotation[]) => void;
-  onAnnotationMoreClick?: (annotations: ChartAnnotation[]) => void;
+  /** Drawn over the plot, such as annotation markers. Hidden while loading. */
+  overlay?: ReactNode;
   /** Shows a placeholder in place of the plot, keeping the chart's size and legend. */
   loading?: boolean;
   children: ReactNode;
@@ -82,16 +77,14 @@ export function getDatasetColor(dataset: ChartDataset) {
 }
 
 /**
- * Lays out a chart with its legend below, and annotation markers over the plot. The chart itself
- * (a Zen ChartContainer) is passed as children.
+ * Lays out a chart with its legend below, and an overlay (such as annotation markers) over the
+ * plot. The chart itself (a Zen ChartContainer) is passed as children.
  */
 export function Chart({
   legendItems = [],
   onLegendItemClick,
   legendActions,
-  markers = [],
-  onAnnotationClick,
-  onAnnotationMoreClick,
+  overlay,
   loading,
   children,
   ...props
@@ -107,13 +100,7 @@ export function Chart({
           ) : (
             children
           )}
-          {!loading && markers.length > 0 && (
-            <ChartAnnotationMarkers
-              markers={markers}
-              onClick={onAnnotationClick}
-              onMoreClick={onAnnotationMoreClick}
-            />
-          )}
+          {!loading && overlay}
         </div>
       </Box>
       {legendActions ? (
