@@ -77,6 +77,7 @@ test('uses linked session months to widen stitched activity without scanning eve
       endAt: +endOfMonth(linkedEnd),
     },
     'website-1',
+    {},
   );
   expect(getSessionActivityMock).toHaveBeenCalledWith(
     'website-1',

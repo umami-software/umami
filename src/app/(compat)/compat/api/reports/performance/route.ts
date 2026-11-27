@@ -22,7 +22,7 @@ export async function POST(request: Request) {
   }
 
   const parameters = await setWebsiteDate(websiteId, body.parameters);
-  const filters = await getQueryFilters(body.filters, websiteId);
+  const filters = await getQueryFilters(body.filters, websiteId, auth);
 
   const [{ chart, summary }, pages, pageTitles, devices, browsers] = await Promise.all([
     getPerformance(websiteId, parameters as PerformanceParameters, filters),

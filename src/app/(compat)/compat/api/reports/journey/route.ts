@@ -22,7 +22,7 @@ export async function POST(request: Request) {
     filters.eventType = eventType;
   }
 
-  const queryFilters = await getQueryFilters(filters, websiteId);
+  const queryFilters = await getQueryFilters(filters, websiteId, auth);
 
   const data = await getJourney(websiteId, parameters, queryFilters);
 

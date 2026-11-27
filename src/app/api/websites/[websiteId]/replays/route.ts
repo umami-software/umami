@@ -33,7 +33,7 @@ export async function GET(
     return unauthorized();
   }
 
-  const filters = await getQueryFilters(query, websiteId);
+  const filters = await getQueryFilters(query, websiteId, auth);
 
   const data = await getSessionReplays(websiteId, filters);
   const distinctIds = await getReplayDistinctIds(

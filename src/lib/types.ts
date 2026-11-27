@@ -46,10 +46,19 @@ export interface Auth {
 
 export type ShareTheme = 'light' | 'dark';
 
+export interface ShareFilter {
+  name: string;
+  operator: Operator;
+  value: string;
+}
+
 export interface ShareParameters {
   allowFilter?: boolean;
   theme?: ShareTheme;
-  [key: string]: boolean | ShareTheme | undefined;
+  segment?: string;
+  filters?: ShareFilter[];
+  match?: 'all' | 'any';
+  [key: string]: boolean | ShareTheme | string | ShareFilter[] | undefined;
 }
 
 export interface PropertyFilter {

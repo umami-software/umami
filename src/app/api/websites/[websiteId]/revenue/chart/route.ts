@@ -27,7 +27,7 @@ export async function GET(
   }
 
   const { currency } = query;
-  const filters = await getQueryFilters(query, websiteId);
+  const filters = await getQueryFilters(query, websiteId, auth);
   const parameters = { ...filters, currency } as RevenuParameters;
 
   return json(await getRevenueChart(websiteId, parameters, filters));

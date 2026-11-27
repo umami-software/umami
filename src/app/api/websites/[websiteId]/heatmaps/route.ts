@@ -12,7 +12,7 @@ export async function GET(
   if (error) return error();
   const { websiteId } = await params;
   if (!(await canViewAuthenticatedWebsite(auth, websiteId))) return unauthorized();
-  const filters = await getQueryFilters(query, websiteId);
+  const filters = await getQueryFilters(query, websiteId, auth);
   const parameters = { ...query, ...filters } as HeatmapParameters;
   return json(await getHeatmap(websiteId, parameters));
 }

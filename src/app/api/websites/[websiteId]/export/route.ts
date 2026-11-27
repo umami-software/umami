@@ -26,7 +26,7 @@ export async function GET(
     return unauthorized();
   }
 
-  const filters = await getQueryFilters(query, websiteId);
+  const filters = await getQueryFilters(query, websiteId, auth);
 
   const [events, pages, referrers, browsers, os, devices, countries] = await Promise.all([
     getEventMetrics(websiteId, { type: 'event' }, filters),

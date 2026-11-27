@@ -29,7 +29,7 @@ export async function GET(
   }
 
   const { currency, ...rest } = query;
-  const filters = await getQueryFilters(rest, websiteId);
+  const filters = await getQueryFilters(rest, websiteId, auth);
 
   const data = await getRevenueSessions(websiteId, currency, filters);
 

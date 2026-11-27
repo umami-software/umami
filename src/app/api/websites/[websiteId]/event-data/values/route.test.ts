@@ -54,7 +54,7 @@ test('uses eventName as the explicit event selector and leaves event filter expr
     },
   );
 
-  expect(getQueryFiltersMock).toHaveBeenCalledWith(query, 'website-1');
+  expect(getQueryFiltersMock).toHaveBeenCalledWith(query, 'website-1', {});
   expect(getEventDataValuesMock).toHaveBeenCalledWith('website-1', 'revenue-demo', {
     ...filters,
     propertyName: 'currency',

@@ -54,7 +54,7 @@ test('uses eventName as the explicit event selector for property fields', async 
     },
   );
 
-  expect(getQueryFiltersMock).toHaveBeenCalledWith(query, 'website-1');
+  expect(getQueryFiltersMock).toHaveBeenCalledWith(query, 'website-1', {});
   expect(getEventDataFieldsMock).toHaveBeenCalledWith('website-1', 'revenue-demo', filters);
   expect(response.status).toBe(200);
 });

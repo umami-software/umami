@@ -36,7 +36,7 @@ export async function GET(
   }
 
   const { type, limit, offset, search } = query;
-  const filters = await getQueryFilters(query, websiteId);
+  const filters = await getQueryFilters(query, websiteId, auth);
 
   if (search) {
     filters[type] = `c.${search}`;

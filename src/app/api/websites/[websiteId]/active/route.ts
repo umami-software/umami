@@ -1,4 +1,4 @@
-import { parseRequest } from '@/lib/request';
+import { getQueryFilters, parseRequest } from '@/lib/request';
 import { json, unauthorized } from '@/lib/response';
 import { canViewWebsiteSection } from '@/permissions';
 import { getActiveVisitors } from '@/queries/sql';
@@ -19,7 +19,15 @@ export async function GET(
     return unauthorized();
   }
 
-  const visitors = await getActiveVisitors(websiteId);
+  const shareParams =
+    auth?.authType === 'share' && !auth.user ? auth.shareToken?.parameters : undefined;
+
+  const filters =
+    shareParams?.filters?.length || shareParams?.segment
+      ? await getQueryFilters({}, websiteId, auth)
+      : undefined;
+
+  const visitors = await getActiveVisitors(websiteId, filters);
 
   return json(visitors);
 }

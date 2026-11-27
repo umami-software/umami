@@ -424,3 +424,13 @@ export const segmentParamSchema = z.object({
     })
     .optional(),
 });
+
+export const shareParametersSchema = z
+  .object({
+    allowFilter: z.boolean().optional(),
+    theme: z.enum(['light', 'dark']).optional(),
+    segment: z.uuid().optional(),
+    filters: segmentParamSchema.shape.filters,
+    match: z.enum(['all', 'any']).optional(),
+  })
+  .catchall(z.boolean());

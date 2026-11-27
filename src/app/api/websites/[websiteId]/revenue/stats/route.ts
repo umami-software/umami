@@ -29,7 +29,7 @@ export async function GET(
   }
 
   const { currency } = query;
-  const filters = await getQueryFilters(query, websiteId);
+  const filters = await getQueryFilters(query, websiteId, auth);
   const parameters = { ...filters, currency } as RevenuParameters;
   const { compare = 'prev' } = parameters;
   const { startDate, endDate } = getCompareDate(

@@ -3,10 +3,10 @@ import { ENTITY_TYPE } from '@/lib/constants';
 import { uuid } from '@/lib/crypto';
 import { getRandomChars } from '@/lib/generate';
 import { parseRequest } from '@/lib/request';
-import { json, unauthorized } from '@/lib/response';
-import { anyObjectParam, filterParams, pagingParams } from '@/lib/schema';
+import { badRequest, json, unauthorized } from '@/lib/response';
+import { filterParams, pagingParams, shareParametersSchema } from '@/lib/schema';
 import { canUpdateWebsite, canViewAuthenticatedWebsite } from '@/permissions';
-import { createShare, getSharesByEntityId } from '@/queries/prisma';
+import { createShare, getSharesByEntityId, getWebsiteSegment } from '@/queries/prisma';
 
 export async function GET(
   request: Request,
@@ -45,7 +45,7 @@ export async function POST(
 ) {
   const schema = z.object({
     name: z.string().max(200),
-    parameters: anyObjectParam.optional(),
+    parameters: shareParametersSchema.optional(),
   });
 
   const { auth, body, error } = await parseRequest(request, schema);
@@ -60,6 +60,14 @@ export async function POST(
 
   if (!(await canUpdateWebsite(auth, websiteId))) {
     return unauthorized();
+  }
+
+  if (shareParameters.segment) {
+    const segment = await getWebsiteSegment(websiteId, shareParameters.segment);
+
+    if (!segment) {
+      return badRequest({ message: 'Invalid segment.' });
+    }
   }
 
   const slug = getRandomChars(16);

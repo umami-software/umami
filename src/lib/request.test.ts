@@ -233,3 +233,156 @@ test('parseRequest allows ordinary sessions on every route', async () => {
 
   expect(error).toBeUndefined();
 });
+
+test('getQueryFilters applies locked share filters when client passes no filters', async () => {
+  const filters = await getQueryFilters(
+    {
+      startAt: String(+new Date('2026-09-01T00:00:00.000Z')),
+      endAt: String(+new Date('2026-09-02T00:00:00.000Z')),
+    },
+    'website-1',
+    {
+      authType: 'share',
+      shareToken: {
+        websiteId: 'website-1',
+        parameters: {
+          filters: [
+            { name: 'path', operator: 's', value: '/blog' },
+            { name: 'country', operator: 'eq', value: 'US' },
+          ],
+          match: 'any',
+        },
+      },
+    },
+  );
+
+  expect(filters).toMatchObject({
+    path: 's./blog',
+    country: 'eq.US',
+    match: 'any',
+  });
+});
+
+test('getQueryFilters merges locked share filters without overwriting client filters', async () => {
+  const filters = await getQueryFilters(
+    {
+      startAt: String(+new Date('2026-09-01T00:00:00.000Z')),
+      endAt: String(+new Date('2026-09-02T00:00:00.000Z')),
+      path: 'eq./admin',
+    },
+    'website-1',
+    {
+      authType: 'share',
+      shareToken: {
+        websiteId: 'website-1',
+        parameters: {
+          filters: [{ name: 'path', operator: 's', value: '/blog' }],
+        },
+      },
+    },
+  );
+
+  expect(filters).toMatchObject({
+    path: 'eq./admin',
+    path1: 's./blog',
+  });
+});
+
+test('getQueryFilters strips client filters when allowFilter is false while keeping locked filters and query options', async () => {
+  const filters = await getQueryFilters(
+    {
+      startAt: String(+new Date('2026-09-01T00:00:00.000Z')),
+      endAt: String(+new Date('2026-09-02T00:00:00.000Z')),
+      timezone: 'America/New_York',
+      unit: 'day',
+      compare: 'prev',
+      page: 2,
+      pageSize: 25,
+      orderBy: 'views',
+      sortDescending: true,
+      search: 'home',
+      maxResults: 100,
+      minDuration: 5,
+      path: 'eq./admin',
+      browser1: 'eq.firefox',
+      segment: 'client-segment',
+      cohort: 'client-cohort',
+      epf0: '1.eq.plan.free',
+      spf0: '1.eq.tier.basic',
+      excludeBounce: true,
+      match: 'any',
+    },
+    'website-1',
+    {
+      authType: 'share',
+      shareToken: {
+        websiteId: 'website-1',
+        parameters: {
+          allowFilter: false,
+          filters: [{ name: 'path', operator: 's', value: '/blog' }],
+        },
+      },
+    },
+  );
+
+  expect(filters.path).toBe('s./blog');
+  expect((filters as any).path1).toBeUndefined();
+  expect((filters as any).browser1).toBeUndefined();
+  expect((filters as any).excludeBounce).toBeUndefined();
+  expect(filters.match).toBeUndefined();
+  expect(filters.eventPropertyFilters).toEqual([]);
+  expect(filters.sessionPropertyFilters).toEqual([]);
+  expect(getWebsiteSegmentMock).not.toHaveBeenCalled();
+  expect(filters).toMatchObject({
+    timezone: 'America/New_York',
+    unit: 'day',
+    compare: 'prev',
+    page: 2,
+    pageSize: 25,
+    orderBy: 'views',
+    sortDescending: true,
+    search: 'home',
+    maxResults: 100,
+    minDuration: 5,
+  });
+});
+
+test('getQueryFilters applies locked share segment filters and sessionPropertyFilters without overwriting client filters', async () => {
+  getWebsiteSegmentMock.mockResolvedValue({
+    parameters: {
+      filters: [{ name: 'path', operator: 's', value: '/docs' }],
+      sessionPropertyFilters: [{ propertyName: 'plan', dataType: 1, operator: 'eq', value: 'pro' }],
+      match: 'any',
+    },
+  } as any);
+
+  const filters = await getQueryFilters(
+    {
+      startAt: String(+new Date('2026-09-01T00:00:00.000Z')),
+      endAt: String(+new Date('2026-09-02T00:00:00.000Z')),
+      path: 'eq./docs/intro',
+      spf0: '1.eq.country.US',
+    },
+    'website-1',
+    {
+      authType: 'share',
+      shareToken: {
+        websiteId: 'website-1',
+        parameters: {
+          segment: 'segment-locked',
+        },
+      },
+    },
+  );
+
+  expect(getWebsiteSegmentMock).toHaveBeenCalledWith('website-1', 'segment-locked');
+  expect(filters).toMatchObject({
+    path: 'eq./docs/intro',
+    path1: 's./docs',
+    match: 'any',
+  });
+  expect(filters.sessionPropertyFilters).toEqual([
+    { propertyName: 'country', dataType: 1, operator: 'eq', value: 'US' },
+    { propertyName: 'plan', dataType: 1, operator: 'eq', value: 'pro' },
+  ]);
+});

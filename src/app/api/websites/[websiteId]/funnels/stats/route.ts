@@ -13,7 +13,7 @@ export async function GET(
   if (error) return error();
   const { websiteId } = await params;
   if (!(await canViewWebsiteSection(auth, websiteId, 'funnels'))) return unauthorized();
-  const filters = await getQueryFilters(query, websiteId);
+  const filters = await getQueryFilters(query, websiteId, auth);
   const parameters = { ...query, ...filters } as FunnelParameters;
   return json(await getFunnel(websiteId, parameters, filters));
 }

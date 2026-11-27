@@ -31,7 +31,7 @@ export async function GET(
   }
 
   const { type, currency } = query;
-  const filters = await getQueryFilters(query, websiteId);
+  const filters = await getQueryFilters(query, websiteId, auth);
 
   if (!type) {
     return badRequest();

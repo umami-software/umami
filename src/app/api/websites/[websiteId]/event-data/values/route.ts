@@ -31,7 +31,7 @@ export async function GET(
   }
 
   const { eventName, propertyName, dataType } = query;
-  const filters = await getQueryFilters(query, websiteId);
+  const filters = await getQueryFilters(query, websiteId, auth);
 
   const data = await getEventDataValues(websiteId, eventName, {
     ...filters,

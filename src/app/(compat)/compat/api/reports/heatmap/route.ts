@@ -26,6 +26,7 @@ export async function POST(request: Request) {
       unit: body.parameters.unit,
     },
     websiteId,
+    auth,
   );
 
   const parameters = {

@@ -2,12 +2,12 @@ import { subMinutes } from 'date-fns';
 import clickhouse from '@/lib/clickhouse';
 import { CLICKHOUSE, PRISMA, runQuery } from '@/lib/db';
 import prisma from '@/lib/prisma';
-import type { ActiveVisitors } from '@/lib/types';
+import type { ActiveVisitors, QueryFilters } from '@/lib/types';
 
 const FUNCTION_NAME = 'getActiveVisitors';
 
 export async function getActiveVisitors(
-  ...args: [websiteId: string]
+  ...args: [websiteId: string, filters?: QueryFilters]
 ): Promise<ActiveVisitors | null> {
   return runQuery({
     [PRISMA]: () => relationalQuery(...args),
@@ -15,37 +15,60 @@ export async function getActiveVisitors(
   });
 }
 
-async function relationalQuery(websiteId: string) {
-  const { rawQuery } = prisma;
+async function relationalQuery(websiteId: string, filters?: QueryFilters) {
+  const { rawQuery, parseFilters } = prisma;
   const startDate = subMinutes(new Date(), 5);
+  const { filterQuery, joinSessionQuery, cohortQuery, queryParams } = filters
+    ? parseFilters({ ...filters, websiteId, startDate })
+    : {
+        filterQuery: '',
+        joinSessionQuery: '',
+        cohortQuery: '',
+        queryParams: { websiteId, startDate },
+      };
 
   const result = await rawQuery(
     `
-    select count(distinct session_id) as "visitors"
+    select count(distinct website_event.session_id) as "visitors"
     from website_event
-    where website_id = {{websiteId::uuid}}
-    and created_at >= {{startDate}}
+    ${cohortQuery}
+    ${joinSessionQuery}
+    where website_event.website_id = {{websiteId::uuid}}
+    and website_event.created_at >= {{startDate}}
+    ${filterQuery}
     `,
-    { websiteId, startDate },
+    queryParams,
     FUNCTION_NAME,
   );
 
   return result?.[0] ?? null;
 }
 
-async function clickhouseQuery(websiteId: string): Promise<ActiveVisitors | null> {
-  const { rawQuery } = clickhouse;
+async function clickhouseQuery(
+  websiteId: string,
+  filters?: QueryFilters,
+): Promise<ActiveVisitors | null> {
+  const { rawQuery, parseFilters } = clickhouse;
   const startDate = subMinutes(new Date(), 5);
+  const { filterQuery, cohortQuery, queryParams } = filters
+    ? parseFilters({ ...filters, websiteId, startDate })
+    : {
+        filterQuery: '',
+        cohortQuery: '',
+        queryParams: { websiteId, startDate },
+      };
 
   const result = await rawQuery(
     `
     select
       count(distinct session_id) as "visitors"
     from website_event
+    ${cohortQuery}
     where website_id = {websiteId:UUID}
       and created_at >= {startDate:DateTime64}
+      ${filterQuery}
     `,
-    { websiteId, startDate },
+    queryParams,
     FUNCTION_NAME,
   );
 

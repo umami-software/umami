@@ -33,7 +33,7 @@ export async function GET(
   }
 
   const { propertyName, metric, ...rest } = query;
-  const filters = await getQueryFilters(rest, websiteId);
+  const filters = await getQueryFilters(rest, websiteId, auth);
   const propertyFilters = parsePropertyFilters(query);
   const data = await getSessionDataNumericSeries(
     websiteId,

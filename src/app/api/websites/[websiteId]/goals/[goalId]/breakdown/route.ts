@@ -18,7 +18,7 @@ export async function GET(
   if (!(await canViewReport(auth, report))) return unauthorized();
   const parsed = goalParametersSchema.safeParse(report.parameters);
   if (!parsed.success) return badRequest();
-  const filters = await getQueryFilters(query, websiteId);
+  const filters = await getQueryFilters(query, websiteId, auth);
   const parameters = {
     ...parsed.data,
     ...filters,
