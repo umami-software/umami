@@ -8,6 +8,7 @@ export type Config = {
   privateMode: boolean;
   sessionDeletionEnabled: boolean;
   settingsEnabled: boolean;
+  settingsOverride: boolean;
   telemetryDisabled: boolean;
   trackerScriptName?: string;
   updatesDisabled: boolean;
@@ -19,7 +20,7 @@ export type Config = {
  */
 export function getConfig(): Config {
   const cloudMode = !!process.env.CLOUD_MODE;
-  const enableSettings = ['1', 'true'].includes(process.env.ENABLE_SETTINGS);
+  const settingsOverride = ['1', 'true'].includes(process.env.ENABLE_SETTINGS);
 
   return {
     cloudMode,
@@ -28,7 +29,8 @@ export function getConfig(): Config {
     pixelsUrl: process.env.PIXELS_URL,
     privateMode: !!process.env.PRIVATE_MODE,
     sessionDeletionEnabled: isRelationalOnly(),
-    settingsEnabled: !cloudMode || enableSettings,
+    settingsEnabled: !cloudMode || settingsOverride,
+    settingsOverride,
     telemetryDisabled: !!process.env.DISABLE_TELEMETRY,
     trackerScriptName: process.env.TRACKER_SCRIPT_NAME,
     updatesDisabled: !!process.env.DISABLE_UPDATES,

@@ -27,7 +27,7 @@ function renderVersionSetting(overrides: Partial<Config> = {}) {
   );
 }
 
-test('checks on demand and reports an update even after its automatic notice was dismissed', async () => {
+test('checks on demand and reports an update after its automatic notice was dismissed', async () => {
   const { promise, resolve } = Promise.withResolvers<Response>();
   const fetch = vi.fn().mockReturnValue(promise);
   vi.stubGlobal('fetch', fetch);
@@ -38,6 +38,7 @@ test('checks on demand and reports an update even after its automatic notice was
   const button = screen.getByRole('button', { name: 'Check for updates' });
 
   expect(fetch).not.toHaveBeenCalled();
+  expect(screen.queryByRole('link')).not.toBeInTheDocument();
   await user.click(button);
   expect(button).toBeDisabled();
   expect(fetch).toHaveBeenCalledWith(`${UPDATES_URL}?v=1.0.0`, expect.anything());
@@ -45,10 +46,10 @@ test('checks on demand and reports an update even after its automatic notice was
   const url = 'https://github.com/umami-software/umami/releases/tag/v2.0.0';
   resolve(Response.json({ latest: '2.0.0', url }));
 
-  expect(await screen.findByRole('link', { name: 'View details' })).toHaveAttribute('href', url);
-  expect(screen.getByRole('status')).toHaveTextContent(
-    'A new version of Umami v2.0.0 is available!',
-  );
+  expect(
+    await screen.findByText('A new version of Umami v2.0.0 is available!'),
+  ).toBeInTheDocument();
+  expect(screen.queryByRole('link')).not.toBeInTheDocument();
   expect(button).toBeEnabled();
   expect(useVersion.getState()).toBe(noticeState);
 });

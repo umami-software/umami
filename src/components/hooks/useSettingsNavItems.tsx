@@ -1,10 +1,14 @@
-import { KeyRound, Settings2, ShieldCheck, Users } from '@/components/icons';
+import { KeyRound, Server, Settings2, ShieldCheck, Users } from '@/components/icons';
+import { useApp } from '@/store/app';
+import { useConfig } from './useConfig';
 import { useMessages } from './useMessages';
 import { useNavigation } from './useNavigation';
 
 export function useSettingsNavItems() {
   const { t, labels } = useMessages();
   const { pathname, renderUrl } = useNavigation();
+  const { settingsEnabled, settingsOverride } = useConfig();
+  const user = useApp(state => state.user);
 
   const items = [
     {
@@ -34,6 +38,16 @@ export function useSettingsNavItems() {
           path: renderUrl('/settings/api-keys'),
           icon: <KeyRound />,
         },
+        ...(settingsEnabled && user && (settingsOverride || user.isAdmin)
+          ? [
+              {
+                id: 'installation',
+                label: t(labels.installation),
+                path: renderUrl('/settings/installation'),
+                icon: <Server />,
+              },
+            ]
+          : []),
       ],
     },
   ];

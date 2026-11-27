@@ -2,6 +2,7 @@ import { SidebarProvider } from '@umami/react-zen';
 import { afterEach, beforeEach, expect, test, vi } from 'vitest';
 import { ConfigContext } from '@/components/hooks/useConfig';
 import { getConfig } from '@/lib/config';
+import { setUser } from '@/store/app';
 import { render, screen } from '@/test/render';
 import { SideNav } from './SideNav';
 
@@ -46,7 +47,10 @@ beforeEach(() => {
   navigateTo('/websites');
 });
 
-afterEach(() => vi.unstubAllEnvs());
+afterEach(() => {
+  setUser(null);
+  vi.unstubAllEnvs();
+});
 
 test('marks the current section as active', () => {
   renderSideNav();
@@ -73,6 +77,27 @@ test('shows settings navigation with a way back and no footer Settings shortcut'
   expect(screen.queryByRole('link', { name: /^profile$/i })).not.toBeInTheDocument();
   expect(screen.queryByRole('link', { name: /^settings$/i })).not.toBeInTheDocument();
 });
+
+test.each([
+  { cloudMode: undefined, enableSettings: undefined, isAdmin: true, visible: true },
+  { cloudMode: undefined, enableSettings: undefined, isAdmin: false, visible: false },
+  { cloudMode: undefined, enableSettings: 'true', isAdmin: false, visible: true },
+  { cloudMode: '1', enableSettings: undefined, isAdmin: true, visible: false },
+  { cloudMode: '1', enableSettings: '1', isAdmin: false, visible: true },
+])(
+  'shows Installation=$visible with CLOUD_MODE=$cloudMode, ENABLE_SETTINGS=$enableSettings and isAdmin=$isAdmin',
+  ({ cloudMode, enableSettings, isAdmin, visible }) => {
+    vi.stubEnv('CLOUD_MODE', cloudMode);
+    vi.stubEnv('ENABLE_SETTINGS', enableSettings);
+    setUser({ isAdmin });
+    navigateTo('/settings/security');
+
+    renderSideNav('/settings/security');
+
+    const link = screen.queryByRole('link', { name: 'Installation' });
+    expect(link?.getAttribute('href')).toBe(visible ? '/settings/installation' : undefined);
+  },
+);
 
 test('collapses to icons when toggled', async () => {
   const { user } = renderSideNav();

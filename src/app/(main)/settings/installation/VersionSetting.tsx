@@ -1,9 +1,8 @@
 'use client';
-
 import { Column, LoadingButton, Row, Text } from '@umami/react-zen';
 import { useState } from 'react';
 import { useConfig, useMessages } from '@/components/hooks';
-import { CURRENT_VERSION, REPO_URL } from '@/lib/constants';
+import { CURRENT_VERSION } from '@/lib/constants';
 import { getVersionUpdate } from '@/store/version';
 
 export function VersionSetting() {
@@ -45,16 +44,6 @@ export function VersionSetting() {
         {statusMessage && (
           <Row alignItems="center" justifyContent="end" gap="2" marginTop="2" wrap="wrap">
             <Text color="muted">{statusMessage}</Text>
-            {result?.hasUpdate && (
-              <a
-                href={result.releaseUrl || `${REPO_URL}/releases`}
-                target="_blank"
-                rel="noreferrer"
-                className="underline"
-              >
-                {t(labels.viewDetails)}
-              </a>
-            )}
           </Row>
         )}
       </div>

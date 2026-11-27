@@ -6,7 +6,6 @@ import { LanguageSetting } from './LanguageSetting';
 import { ThemeSetting } from './ThemeSetting';
 import { TimeFormatSetting } from './TimeFormatSetting';
 import { TimezoneSetting } from './TimezoneSetting';
-import { VersionSetting } from './VersionSetting';
 
 export function PreferenceSettings() {
   const { user } = useLoginQuery();
@@ -35,9 +34,6 @@ export function PreferenceSettings() {
       </ActionForm>
       <ActionForm label={t(labels.theme)} description={t(messages.themeDescription)}>
         <ThemeSetting />
-      </ActionForm>
-      <ActionForm label={t(labels.version)}>
-        <VersionSetting />
       </ActionForm>
     </ActionList>
   );
