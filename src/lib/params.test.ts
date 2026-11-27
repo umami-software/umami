@@ -2,6 +2,7 @@ import { describe, expect, test } from 'vitest';
 import { DATA_TYPE, OPERATORS } from './constants';
 import {
   filtersObjectToArray,
+  hasEventFilters,
   parseSessionPropertyFilters,
   parseUniversalEventPropertyFilters,
   serializeSessionPropertyFilters,
@@ -137,5 +138,28 @@ describe('filtersObjectToArray', () => {
     );
 
     expect(filter.prefix).toBe('e.');
+  });
+});
+
+describe('hasEventFilters', () => {
+  test('detects top-level and numbered event filter keys', () => {
+    expect(hasEventFilters({ path: '/blog' })).toBe(true);
+    expect(hasEventFilters({ path1: '/blog' } as any)).toBe(true);
+  });
+
+  test('detects event filter keys inside lockedFilters', () => {
+    expect(hasEventFilters({ lockedFilters: { filters: { path: 'c./blog' } } })).toBe(true);
+    expect(hasEventFilters({ lockedFilters: { filters: { path1: 'c./blog' } } })).toBe(true);
+  });
+
+  test('returns false when only non-event or empty filters are present', () => {
+    expect(hasEventFilters()).toBe(false);
+    expect(hasEventFilters({})).toBe(false);
+    expect(
+      hasEventFilters({
+        browser: 'chrome',
+        lockedFilters: { filters: { country: 'US' } },
+      }),
+    ).toBe(false);
   });
 });

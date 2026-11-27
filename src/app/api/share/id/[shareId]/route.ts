@@ -1,9 +1,10 @@
 import z from 'zod';
+import { ENTITY_TYPE } from '@/lib/constants';
 import { parseRequest } from '@/lib/request';
 import { badRequest, json, notFound, ok, serverError, unauthorized } from '@/lib/response';
-import { anyObjectParam } from '@/lib/schema';
+import { shareParametersSchema } from '@/lib/schema';
 import { canDeleteEntity, canUpdateEntity, canViewEntity } from '@/permissions';
-import { deleteShare, getShare, updateShare } from '@/queries/prisma';
+import { deleteShare, getShare, getWebsiteSegment, updateShare } from '@/queries/prisma';
 
 export async function GET(request: Request, { params }: { params: Promise<{ shareId: string }> }) {
   const { auth, error } = await parseRequest(request);
@@ -31,7 +32,7 @@ export async function POST(request: Request, { params }: { params: Promise<{ sha
   const schema = z.object({
     name: z.string().max(200),
     slug: z.string().max(100),
-    parameters: anyObjectParam,
+    parameters: shareParametersSchema,
   });
 
   const { auth, body, error } = await parseRequest(request, schema);
@@ -51,6 +52,18 @@ export async function POST(request: Request, { params }: { params: Promise<{ sha
 
   if (!(await canUpdateEntity(auth, share.entityId))) {
     return unauthorized();
+  }
+
+  if ((parameters.segment || parameters.filters?.length) && share.shareType !== ENTITY_TYPE.website) {
+    return badRequest({ message: 'Invalid segment.' });
+  }
+
+  if (parameters.segment) {
+    const segment = await getWebsiteSegment(share.entityId, parameters.segment);
+
+    if (!segment) {
+      return badRequest({ message: 'Invalid segment.' });
+    }
   }
 
   try {

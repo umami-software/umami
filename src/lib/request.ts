@@ -16,7 +16,8 @@ import {
   parseUniversalEventPropertyFilters,
 } from '@/lib/params';
 import { badRequest, forbidden, unauthorized } from '@/lib/response';
-import type { QueryFilters } from '@/lib/types';
+import type { Auth, Filter, Operator, QueryFilters, SessionPropertyFilter } from '@/lib/types';
+import { getShareParametersForWebsite } from '@/permissions';
 import { getWebsiteSegment } from '@/queries/prisma';
 
 export async function parseRequest(
@@ -143,11 +144,65 @@ export async function setWebsiteDate(websiteId: string, data: Record<string, any
   return data;
 }
 
+const STRIPPED_FILTER_KEYS = new Set(['segment', 'cohort', 'excludeBounce', 'match']);
+
+function stripClientFilterParams(params: Record<string, any>) {
+  const result: Record<string, any> = {};
+
+  for (const [key, value] of Object.entries(params)) {
+    const baseName = key.replace(/\d+$/, '');
+    if (
+      baseName in FILTER_COLUMNS ||
+      STRIPPED_FILTER_KEYS.has(key) ||
+      /^epf\d+$/.test(key) ||
+      /^spf\d+$/.test(key) ||
+      /^pf_/.test(key)
+    ) {
+      continue;
+    }
+    result[key] = value;
+  }
+
+  return result;
+}
+
+function mergeFiltersWithoutCollision(
+  target: Record<string, any>,
+  filtersList: Array<{ name: string; operator: Operator; value: string | string[] }> | undefined,
+) {
+  if (!filtersList?.length) {
+    return;
+  }
+
+  // Stored filter names are free-form, so keep only real filter columns. Otherwise a filter
+  // named e.g. "timezone" would replace the validated request value on its way into SQL.
+  const safeObj = getRequestFilters(filtersArrayToObject(filtersList as Filter[]));
+
+  for (const [key, value] of Object.entries(safeObj)) {
+    const baseName = key.replace(/\d+$/, '');
+    let destKey = baseName;
+    let idx = 1;
+
+    while (destKey in target) {
+      destKey = `${baseName}${idx}`;
+      idx++;
+    }
+
+    target[destKey] = value;
+  }
+}
+
 export async function getQueryFilters(
   params: Record<string, any>,
   websiteId?: string,
+  auth?: Auth | null,
 ): Promise<QueryFilters> {
-  const resolvedParams = resolvePeriodDateRange(params);
+  const shareParams = await getShareParametersForWebsite(auth, websiteId);
+
+  const clientParams =
+    shareParams?.allowFilter === false ? stripClientFilterParams(params) : params;
+
+  const resolvedParams = resolvePeriodDateRange(clientParams);
   const dateRange = getRequestDateRange(resolvedParams);
   const filters = getRequestFilters(resolvedParams);
   const eventPropertyFilters = parseUniversalEventPropertyFilters(resolvedParams);
@@ -158,7 +213,7 @@ export async function getQueryFilters(
   if (websiteId) {
     await setWebsiteDate(websiteId, dateRange);
 
-    if (resolvedParams.segment) {
+    if (resolvedParams.segment && resolvedParams.segment !== shareParams?.segment) {
       const segmentParams = (await getWebsiteSegment(websiteId, resolvedParams.segment))
         ?.parameters as Record<string, any>;
 
@@ -208,6 +263,38 @@ export async function getQueryFilters(
     }
   }
 
+  const lockedFilterMap: Record<string, any> = {};
+  const lockedSessionPropertyFilters: SessionPropertyFilter[] = [];
+  let lockedMatch: 'all' | 'any' | undefined;
+
+  if (shareParams) {
+    mergeFiltersWithoutCollision(lockedFilterMap, shareParams.filters);
+
+    if (shareParams.match) {
+      lockedMatch = shareParams.match;
+    }
+
+    if (shareParams.segment && websiteId) {
+      const segment = await getWebsiteSegment(websiteId, shareParams.segment);
+
+      if (!segment) {
+        throw new Error('Share segment not found.');
+      }
+
+      const segmentParams = segment.parameters as Record<string, any>;
+
+      mergeFiltersWithoutCollision(lockedFilterMap, segmentParams.filters);
+      lockedSessionPropertyFilters.push(...(segmentParams.sessionPropertyFilters ?? []));
+
+      if (segmentParams.match) {
+        lockedMatch = segmentParams.match;
+      }
+    }
+  }
+
+  const hasLockedFilters =
+    Object.keys(lockedFilterMap).length > 0 || lockedSessionPropertyFilters.length > 0;
+
   return {
     ...dateRange,
     ...filters,
@@ -215,6 +302,15 @@ export async function getQueryFilters(
     minDuration: resolvedParams?.minDuration,
     eventPropertyFilters,
     sessionPropertyFilters,
+    ...(hasLockedFilters && {
+      lockedFilters: {
+        filters: lockedFilterMap,
+        ...(lockedMatch && { match: lockedMatch }),
+        ...(lockedSessionPropertyFilters.length > 0 && {
+          sessionPropertyFilters: lockedSessionPropertyFilters,
+        }),
+      },
+    }),
     page: resolvedParams?.page,
     pageSize: resolvedParams?.pageSize ? resolvedParams?.pageSize || DEFAULT_PAGE_SIZE : undefined,
     orderBy: resolvedParams?.orderBy,

@@ -16,42 +16,64 @@ export async function getSessionActivity(
 }
 
 async function relationalQuery(websiteId: string, sessionIds: string[], filters: QueryFilters) {
-  const { rawQuery } = prisma;
-  const { startDate, endDate } = filters;
+  const { rawQuery, parseFilters } = prisma;
+  const { startDate, endDate, lockedFilters, timezone } = filters;
+  const {
+    joinSessionQuery = '',
+    filterQuery = '',
+    queryParams = {},
+  } = lockedFilters
+    ? parseFilters({
+        lockedFilters,
+        startDate,
+        endDate,
+        timezone,
+      })
+    : {};
 
   return rawQuery(
     `
     select
-      created_at as "createdAt",
-      url_path as "urlPath",
-      url_query as "urlQuery",
-      referrer_domain as "referrerDomain",
-      event_id as "eventId",
-      event_type as "eventType",
-      event_name as "eventName",
-      visit_id as "visitId",
-      hostname,
+      website_event.created_at as "createdAt",
+      website_event.url_path as "urlPath",
+      website_event.url_query as "urlQuery",
+      website_event.referrer_domain as "referrerDomain",
+      website_event.event_id as "eventId",
+      website_event.event_type as "eventType",
+      website_event.event_name as "eventName",
+      website_event.visit_id as "visitId",
+      website_event.hostname,
       EXISTS (select 1
               from event_data d
-              where d.website_event_id = e.event_id
+              where d.website_event_id = website_event.event_id
                 and d.website_id = {{websiteId::uuid}}
                 and d.created_at between {{startDate}} and {{endDate}}) AS "hasData"
-    from website_event e
-    where website_id = {{websiteId::uuid}}
-      and session_id = any({{sessionIds}}::uuid[])
-      and event_type != ${EVENT_TYPE.performance}
-      and created_at between {{startDate}} and {{endDate}}
-    order by created_at desc
+    from website_event
+    ${joinSessionQuery}
+    where website_event.website_id = {{websiteId::uuid}}
+      and website_event.session_id = any({{sessionIds}}::uuid[])
+      and website_event.event_type != ${EVENT_TYPE.performance}
+      and website_event.created_at between {{startDate}} and {{endDate}}
+      ${filterQuery}
+    order by website_event.created_at desc
     limit 500
     `,
-    { websiteId, sessionIds, startDate, endDate },
+    { websiteId, sessionIds, startDate, endDate, ...queryParams },
     FUNCTION_NAME,
   );
 }
 
 async function clickhouseQuery(websiteId: string, sessionIds: string[], filters: QueryFilters) {
-  const { rawQuery } = clickhouse;
-  const { startDate, endDate } = filters;
+  const { rawQuery, parseFilters } = clickhouse;
+  const { startDate, endDate, lockedFilters, timezone } = filters;
+  const { filterQuery = '', queryParams = {} } = lockedFilters
+    ? parseFilters({
+        lockedFilters,
+        startDate,
+        endDate,
+        timezone,
+      })
+    : {};
 
   return rawQuery(
     `
@@ -75,10 +97,11 @@ async function clickhouseQuery(websiteId: string, sessionIds: string[], filters:
       and session_id in {sessionIds:Array(UUID)}
       and event_type != ${EVENT_TYPE.performance}
       and created_at between {startDate:DateTime64} and {endDate:DateTime64}
+      ${filterQuery}
     order by created_at desc
     limit 500
     `,
-    { websiteId, sessionIds, startDate, endDate },
+    { websiteId, sessionIds, startDate, endDate, ...queryParams },
     FUNCTION_NAME,
   );
 }

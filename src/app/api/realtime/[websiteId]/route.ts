@@ -39,6 +39,7 @@ export async function GET(
       endAt: Date.now(),
     },
     websiteId,
+    auth,
   );
 
   const data = await getRealtimeData(websiteId, filters);

@@ -1,6 +1,7 @@
 import clickhouse from '@/lib/clickhouse';
-import { EVENT_COLUMNS, FILTER_COLUMNS, SESSION_COLUMNS } from '@/lib/constants';
+import { FILTER_COLUMNS, SESSION_COLUMNS } from '@/lib/constants';
 import { CLICKHOUSE, PRISMA, runQuery } from '@/lib/db';
+import { hasEventFilters } from '@/lib/params';
 import prisma from '@/lib/prisma';
 import type { QueryFilters } from '@/lib/types';
 
@@ -129,7 +130,7 @@ async function clickhouseQuery(
 
   let sql = '';
   let excludeDomain = '';
-  if (type === 'fullPath' || EVENT_COLUMNS.some(item => Object.keys(filters).includes(item))) {
+  if (type === 'fullPath' || hasEventFilters(filters)) {
     let entryExitQuery = '';
     let selectColumn = column;
 

@@ -4,10 +4,11 @@ import { hash } from '@/lib/crypto';
 import { createSecureToken, parseSecureToken, parseToken } from '@/lib/jwt';
 import redis from '@/lib/redis';
 import { getApiKeyByHash, updateApiKeyLastUsed } from '@/queries/prisma/apiKey';
+import { getWebsiteSegment } from '@/queries/prisma/segment';
 import { getShare } from '@/queries/prisma/share';
 import { getUser } from '@/queries/prisma/user';
 import { hashApiKey } from './api-key';
-import { checkAuth, createSessionToken, hasPermission } from './auth';
+import { checkAuth, createSessionToken, hasPermission, parseShareToken } from './auth';
 
 vi.hoisted(() => {
   process.env.APP_SECRET ??= 'test-app-secret';
@@ -25,6 +26,10 @@ vi.mock('@/queries/prisma/user', () => ({
 
 vi.mock('@/queries/prisma/share', () => ({
   getShare: vi.fn(),
+}));
+
+vi.mock('@/queries/prisma/segment', () => ({
+  getWebsiteSegment: vi.fn(),
 }));
 
 vi.mock('@/queries/prisma/apiKey', () => ({
@@ -69,6 +74,7 @@ const createSecureTokenMock = vi.mocked(createSecureToken);
 const parseSecureTokenMock = vi.mocked(parseSecureToken);
 const parseTokenMock = vi.mocked(parseToken);
 const getShareMock = vi.mocked(getShare);
+const getWebsiteSegmentMock = vi.mocked(getWebsiteSegment);
 const getUserMock = vi.mocked(getUser);
 const getApiKeyByHashMock = vi.mocked(getApiKeyByHash);
 const updateApiKeyLastUsedMock = vi.mocked(updateApiKeyLastUsed);
@@ -106,6 +112,7 @@ beforeEach(() => {
   parseTokenMock.mockReset();
   parseTokenMock.mockReturnValue(null);
   getShareMock.mockReset();
+  getWebsiteSegmentMock.mockReset();
   getUserMock.mockReset();
   getApiKeyByHashMock.mockReset();
   updateApiKeyLastUsedMock.mockClear();
@@ -712,4 +719,58 @@ describe('createSessionToken', () => {
 test('hasPermission returns a boolean synchronously', () => {
   expect(hasPermission('view-only', 'website:update')).toBe(false);
   expect(hasPermission('user', 'website:update')).toBe(true);
+});
+
+describe('parseShareToken locked segment validation', () => {
+  test('rejects a website share token whose locked segment was deleted', async () => {
+    parseTokenMock.mockReturnValue({
+      type: 'share',
+      shareId: 'share-1',
+      shareType: 1,
+      websiteId: 'website-1',
+    } as any);
+    getShareMock.mockResolvedValue({
+      id: 'share-1',
+      shareType: 1,
+      entityId: 'website-1',
+      parameters: { segment: 'deleted-segment' },
+    } as any);
+    getWebsiteSegmentMock.mockResolvedValue(null);
+
+    const result = await parseShareToken(
+      new Request('http://localhost/api/websites/website-1/stats', {
+        headers: { 'x-umami-share-token': 'signed-share-token' },
+      }),
+    );
+
+    expect(getWebsiteSegmentMock).toHaveBeenCalledWith('website-1', 'deleted-segment');
+    expect(result).toBeNull();
+  });
+
+  test('accepts a website share token whose locked segment still exists', async () => {
+    parseTokenMock.mockReturnValue({
+      type: 'share',
+      shareId: 'share-1',
+      shareType: 1,
+      websiteId: 'website-1',
+    } as any);
+    getShareMock.mockResolvedValue({
+      id: 'share-1',
+      shareType: 1,
+      entityId: 'website-1',
+      parameters: { segment: 'segment-1' },
+    } as any);
+    getWebsiteSegmentMock.mockResolvedValue({ id: 'segment-1' } as any);
+
+    const result = await parseShareToken(
+      new Request('http://localhost/api/websites/website-1/stats', {
+        headers: { 'x-umami-share-token': 'signed-share-token' },
+      }),
+    );
+
+    expect(result).toMatchObject({
+      shareId: 'share-1',
+      parameters: { segment: 'segment-1' },
+    });
+  });
 });

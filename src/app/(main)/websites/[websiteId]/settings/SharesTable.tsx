@@ -1,15 +1,9 @@
-import {
-  Button,
-  Dialog,
-  Icon,
-  Modal,
-  Row,
-} from '@umami/react-zen';
-import { useState } from 'react';
-import { ControlledDialog } from '@/components/common/ControlledDialog';
-import { ConfirmationForm } from '@/components/common/ConfirmationForm';
-import { useDeleteQuery, useMessages, useMobile, useModified } from '@/components/hooks';
+import { Button, Dialog, Icon, Modal, Row } from '@umami/react-zen';
 import { Edit, Trash } from 'lucide-react';
+import { useState } from 'react';
+import { ConfirmationForm } from '@/components/common/ConfirmationForm';
+import { ControlledDialog } from '@/components/common/ControlledDialog';
+import { useDeleteQuery, useMessages, useMobile, useModified } from '@/components/hooks';
 import { SharedSharesTable } from '@/components/share/SharedSharesTable';
 import { ShareEditForm } from './ShareEditForm';
 
@@ -43,11 +37,15 @@ export function SharesTable({ data = [] }: { data?: any[] }) {
         )}
       />
       <ControlledDialog>
-        <Modal isOpen={!!editShareId} onOpenChange={isOpen => !isOpen && setEditShareId(null)}>
+        <Modal
+          placement={isMobile ? 'fullscreen' : 'center'}
+          isOpen={!!editShareId}
+          onOpenChange={isOpen => !isOpen && setEditShareId(null)}
+        >
           <Dialog
             title={t(labels.share)}
             style={{
-              width: isMobile ? '100%' : '600px',
+              width: isMobile ? '100%' : 'min(800px, calc(100vw - 32px))',
               height: isMobile ? '100%' : undefined,
               maxHeight: isMobile ? '100%' : 'min(80dvh, calc(100dvh - 40px))',
               overflowY: 'auto',

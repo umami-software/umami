@@ -30,7 +30,7 @@ export async function GET(
   }
 
   const { propertyName, dataType } = query;
-  const filters = await getQueryFilters(query, websiteId);
+  const filters = await getQueryFilters(query, websiteId, auth);
 
   const data = await getSessionDataValues(websiteId, {
     ...filters,

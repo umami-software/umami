@@ -33,7 +33,7 @@ export async function GET(
   }
 
   const { eventName, ...rest } = query;
-  const filters = await getQueryFilters(rest, websiteId);
+  const filters = await getQueryFilters(rest, websiteId, auth);
   const eventFilters = parseEventPropertyFilters(query);
   const result = await getEventDataPivot(websiteId, eventName, filters, eventFilters);
 

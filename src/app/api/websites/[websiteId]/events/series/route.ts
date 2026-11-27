@@ -31,7 +31,7 @@ export async function GET(
   }
 
   const { limit } = query;
-  const filters = await getQueryFilters(query, websiteId);
+  const filters = await getQueryFilters(query, websiteId, auth);
 
   const data = await getEventStats(websiteId, { limit }, filters);
 

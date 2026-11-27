@@ -8,11 +8,7 @@ const parseFiltersResult = {
   excludeBounceQuery: 'join excludeBounce on excludeBounce.visit_id = website_event.visit_id',
 };
 
-async function loadModule({
-  mode,
-}: {
-  mode: 'prisma' | 'clickhouse';
-}) {
+async function loadModule({ mode }: { mode: 'prisma' | 'clickhouse' }) {
   vi.resetModules();
 
   const state = { mode };
@@ -66,7 +62,9 @@ describe('getWebsiteStats default bounce path', () => {
     const [query] = prismaRawQuery.mock.calls[0];
 
     expect(query).toContain('t.c = 1 and t.has_custom_event = 0');
-    expect(query).toContain('max(case when website_event.event_type = 2 then 1 else 0 end) as "has_custom_event"');
+    expect(query).toContain(
+      'max(case when website_event.event_type = 2 then 1 else 0 end) as "has_custom_event"',
+    );
     expect(query).not.toContain('left join (');
   });
 
@@ -116,6 +114,19 @@ describe('getWebsiteStats filtered bounce path', () => {
     expect(query.match(/from website_event\b/g)).toHaveLength(1);
     expect(query).toContain('sumIf(1, t.c = 1 and t.has_custom_event = 0) as "bounces"');
     expect(query).toContain('max(if(event_type = 2, 1, 0)) has_custom_event');
+  });
+
+  test('clickhouse uses website_event instead of website_event_stats_hourly when lockedFilters has event columns', async () => {
+    const { getWebsiteStats, clickhouseRawQuery } = await loadModule({ mode: 'clickhouse' });
+
+    await getWebsiteStats('website-1', {
+      lockedFilters: { filters: { path: 'c./blog' } },
+    } as any);
+
+    const [query] = clickhouseRawQuery.mock.calls[0];
+
+    expect(query).not.toContain('website_event_stats_hourly');
+    expect(query).toContain('from website_event');
   });
 });
 

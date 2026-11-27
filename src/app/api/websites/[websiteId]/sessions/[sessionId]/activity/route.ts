@@ -53,7 +53,7 @@ export async function GET(
     }
   }
 
-  const filters = await getQueryFilters({ ...query, period: undefined, startAt, endAt }, websiteId);
+  const filters = await getQueryFilters({ ...query, period: undefined, startAt, endAt }, websiteId, auth);
 
   const data = (await getSessionActivity(websiteId, sessionIds, filters)) as SessionActivity[];
 

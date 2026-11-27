@@ -2,7 +2,12 @@ import { z } from 'zod';
 import { parseRequest } from '@/lib/request';
 import { badRequest, json, notFound, ok, unauthorized } from '@/lib/response';
 import { segmentParamSchema, segmentTypeParam } from '@/lib/schema';
-import { canDeleteWebsite, canUpdateWebsite, canViewSharedWebsiteFilters } from '@/permissions';
+import {
+  canDeleteWebsite,
+  canUpdateWebsite,
+  canViewSharedWebsite,
+  getShareParametersForWebsite,
+} from '@/permissions';
 import { deleteSegment, getWebsiteSegment, updateSegment } from '@/queries/prisma';
 
 export async function GET(
@@ -17,8 +22,22 @@ export async function GET(
 
   const { websiteId, segmentId } = await params;
 
-  if (!(await canViewSharedWebsiteFilters(auth, websiteId))) {
+  if (!(await canViewSharedWebsite(auth, websiteId))) {
     return unauthorized();
+  }
+
+  const shareParams = await getShareParametersForWebsite(auth, websiteId);
+
+  if (shareParams) {
+    const lockedSegment = shareParams.segment;
+
+    if (lockedSegment) {
+      if (segmentId !== lockedSegment) {
+        return unauthorized();
+      }
+    } else if (shareParams.allowFilter === false) {
+      return unauthorized();
+    }
   }
 
   const segment = await getWebsiteSegment(websiteId, segmentId);

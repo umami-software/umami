@@ -1,6 +1,6 @@
 import clickhouse from '@/lib/clickhouse';
-import { EVENT_COLUMNS } from '@/lib/constants';
 import { CLICKHOUSE, PRISMA, runQuery } from '@/lib/db';
+import { hasEventFilters } from '@/lib/params';
 import prisma from '@/lib/prisma';
 import type { QueryFilters } from '@/lib/types';
 
@@ -55,7 +55,7 @@ async function clickhouseQuery(websiteId: string, filters: QueryFilters) {
 
   let sql = '';
 
-  if (EVENT_COLUMNS.some(item => Object.keys(filters).includes(item))) {
+  if (hasEventFilters(filters)) {
     sql = `
     select
       formatDateTime(toDateTime(created_at, '${timezone}'), '%w:%H') as time,

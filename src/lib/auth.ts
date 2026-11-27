@@ -22,8 +22,10 @@ import { createSecureToken, parseSecureToken, parseToken } from '@/lib/jwt';
 import { hasDefaultPassword } from '@/lib/password';
 import prisma from '@/lib/prisma';
 import redis from '@/lib/redis';
+import type { ShareParameters } from '@/lib/types';
 import { ensureArray } from '@/lib/utils';
 import { getApiKeyByHash, updateApiKeyLastUsed } from '@/queries/prisma/apiKey';
+import { getWebsiteSegment } from '@/queries/prisma/segment';
 import { getShare } from '@/queries/prisma/share';
 import { getUser } from '@/queries/prisma/user';
 
@@ -308,6 +310,17 @@ export async function parseShareToken(request: Request) {
     if (!share || share.shareType !== token.shareType || share.entityId !== entityId) {
       log('Share token rejected: share not found');
       return null;
+    }
+
+    const shareParams = share.parameters as ShareParameters | null | undefined;
+
+    if (share.shareType === ENTITY_TYPE.website && shareParams?.segment) {
+      const segment = await getWebsiteSegment(share.entityId, shareParams.segment);
+
+      if (!segment) {
+        log('Share token rejected: locked segment not found');
+        return null;
+      }
     }
 
     // Use the current parameters rather than the ones captured at mint time, so

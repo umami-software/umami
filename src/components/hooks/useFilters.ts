@@ -14,6 +14,12 @@ export function useFilters() {
   const operatorLabels = useOperatorLabels();
   const share = useShare();
   const allowFilter = share?.parameters?.allowFilter !== false;
+  const lockedSegment = share?.parameters?.segment;
+  const lockedFilters = (share?.parameters?.filters ?? []).map(filter => ({
+    ...filter,
+    type: filter.name,
+    label: fields.find(({ name }) => name === filter.name)?.label,
+  }));
 
   const operators = [
     { name: 'eq', type: 'string', label: t(labels.is) },
@@ -104,6 +110,8 @@ export function useFilters() {
     fields,
     operators,
     filters,
+    lockedFilters,
+    lockedSegment,
     eventPropertyFilters,
     sessionPropertyFilters,
     operatorLabels,

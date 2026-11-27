@@ -1,6 +1,6 @@
-import { parseRequest } from '@/lib/request';
+import { getQueryFilters, parseRequest } from '@/lib/request';
 import { json, unauthorized } from '@/lib/response';
-import { canViewWebsiteSection } from '@/permissions';
+import { canViewWebsiteSection, getShareParametersForWebsite } from '@/permissions';
 import { getActiveVisitors } from '@/queries/sql';
 
 export async function GET(
@@ -19,7 +19,14 @@ export async function GET(
     return unauthorized();
   }
 
-  const visitors = await getActiveVisitors(websiteId);
+  const shareParams = await getShareParametersForWebsite(auth, websiteId);
+
+  const filters =
+    shareParams?.filters?.length || shareParams?.segment
+      ? await getQueryFilters({}, websiteId, auth)
+      : undefined;
+
+  const visitors = await getActiveVisitors(websiteId, filters);
 
   return json(visitors);
 }

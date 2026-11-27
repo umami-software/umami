@@ -56,7 +56,7 @@ export async function GET(
       value: segment.name,
     }));
   } else {
-    const filters = await getQueryFilters(query, websiteId);
+    const filters = await getQueryFilters(query, websiteId, auth);
     values = await getValues(websiteId, FILTER_COLUMNS[type], filters);
   }
 

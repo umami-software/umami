@@ -245,25 +245,30 @@ function getDateQuery(filters: Record<string, any>) {
   return '';
 }
 
-function getQueryParams(filters: Record<string, any>) {
+function getQueryParams(filters: Record<string, any>, paramPrefix?: string) {
+  const baseParams = paramPrefix ? {} : filters;
+
   return {
-    ...filters,
-    ...filtersObjectToArray(filters).reduce((obj, { name, column, operator, value, paramName }) => {
-      const resolvedColumn =
-        column || (name?.startsWith('cohort_') && FILTER_COLUMNS[name.slice('cohort_'.length)]);
+    ...baseParams,
+    ...filtersObjectToArray(filters, { paramPrefix }).reduce(
+      (obj, { name, column, operator, value, paramName }) => {
+        const resolvedColumn =
+          column || (name?.startsWith('cohort_') && FILTER_COLUMNS[name.slice('cohort_'.length)]);
 
-      if (!resolvedColumn || !name || value === undefined) return obj;
+        if (!resolvedColumn || !name || value === undefined) return obj;
 
-      const key = paramName ?? name;
+        const key = paramName ?? name;
 
-      obj[key] = EQUALITY_OPERATORS.includes(operator)
-        ? Array.isArray(value)
-          ? value
-          : [value]
-        : value;
+        obj[key] = EQUALITY_OPERATORS.includes(operator)
+          ? Array.isArray(value)
+            ? value
+            : [value]
+          : value;
 
-      return obj;
-    }, {}),
+        return obj;
+      },
+      {},
+    ),
   };
 }
 
@@ -271,6 +276,7 @@ function parseFilters(rawFilters: Record<string, any>, options?: QueryOptions) {
   const filters = rawFilters.timezone
     ? { ...rawFilters, timezone: normalizeTimezone(rawFilters.timezone) }
     : rawFilters;
+  const { lockedFilters } = filters as QueryFilters;
   const cohortFilters = Object.fromEntries(
     Object.entries(filters).filter(([key]) => key.startsWith('cohort_')),
   );
@@ -281,12 +287,29 @@ function parseFilters(rawFilters: Record<string, any>, options?: QueryOptions) {
       (filters as QueryFilters).sessionPropertyFilters,
       filters.timezone,
     );
+  const lockedFilterQuery = lockedFilters?.filters
+    ? getFilterQuery(
+        { ...lockedFilters.filters, match: lockedFilters.match },
+        { ...options, paramPrefix: 'locked_' },
+      )
+    : '';
+  const lockedFilterParams = lockedFilters?.filters
+    ? getQueryParams(lockedFilters.filters, 'locked_')
+    : {};
+  const { sql: lockedSessionPropertyFilterQuery, params: lockedSessionPropertyFilterParams } =
+    getSessionPropertyFilterQuery(
+      lockedFilters?.sessionPropertyFilters,
+      filters.timezone,
+      'locked_spf_',
+    );
 
   return {
     filterQuery: [
       getFilterQuery(filters, options),
       eventPropertyFilterQuery,
       sessionPropertyFilterQuery,
+      lockedFilterQuery,
+      lockedSessionPropertyFilterQuery,
     ]
       .filter(Boolean)
       .join('\n'),
@@ -295,6 +318,8 @@ function parseFilters(rawFilters: Record<string, any>, options?: QueryOptions) {
       ...getQueryParams(filters),
       ...eventPropertyFilterParams,
       ...sessionPropertyFilterParams,
+      ...lockedFilterParams,
+      ...lockedSessionPropertyFilterParams,
     },
     cohortQuery: getCohortQuery(cohortFilters),
     excludeBounceQuery: getExcludeBounceQuery(filters),
@@ -305,6 +330,7 @@ function getPropertyFilterQuery(
   filters: PropertyFilter[] = [],
   propertyType: 'event' | 'session' = 'event',
   timezone?: string,
+  paramPrefix: string = 'pf_',
 ): {
   sql: string;
   params: Record<string, any>;
@@ -322,8 +348,8 @@ function getPropertyFilterQuery(
       : '';
 
   filters.forEach(({ propertyName, dataType, operator, value }, i) => {
-    const keyParam = `pf_key_${i}`;
-    const valParam = `pf_val_${i}`;
+    const keyParam = `${paramPrefix}key_${i}`;
+    const valParam = `${paramPrefix}val_${i}`;
     params[keyParam] = propertyName;
 
     let condition: string;
@@ -551,6 +577,7 @@ function getEventPropertyFilterQuery(
 function getSessionPropertyFilterQuery(
   filters: PropertyFilter[] = [],
   timezone?: string,
+  paramPrefix: string = 'spf_',
 ): {
   sql: string;
   params: Record<string, any>;
@@ -564,8 +591,8 @@ function getSessionPropertyFilterQuery(
   const params: Record<string, any> = {};
 
   filters.forEach(({ propertyName, dataType, operator, value }, index) => {
-    const keyParam = `spf_key_${index}`;
-    const valParam = `spf_val_${index}`;
+    const keyParam = `${paramPrefix}key_${index}`;
+    const valParam = `${paramPrefix}val_${index}`;
     params[keyParam] = propertyName;
     keyRefs.push(`{${keyParam}:String}`);
 

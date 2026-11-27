@@ -1,6 +1,7 @@
 import clickhouse from '@/lib/clickhouse';
-import { EVENT_COLUMNS, EVENT_TYPE } from '@/lib/constants';
+import { EVENT_TYPE } from '@/lib/constants';
 import { CLICKHOUSE, PRISMA, runQuery } from '@/lib/db';
+import { hasEventFilters } from '@/lib/params';
 import prisma from '@/lib/prisma';
 import type { QueryFilters } from '@/lib/types';
 
@@ -64,7 +65,7 @@ async function clickhouseQuery(
 
   let sql = '';
 
-  if (EVENT_COLUMNS.some(item => Object.keys(filters).includes(item))) {
+  if (hasEventFilters(filters)) {
     sql = `
     select
       sumIf(1, event_type = ${EVENT_TYPE.pageView}) as "pageviews",

@@ -1,5 +1,5 @@
 import { ENTITY_TYPE } from '@/lib/constants';
-import type { Auth } from '@/lib/types';
+import type { Auth, ShareParameters } from '@/lib/types';
 import { canViewWebsite } from './website';
 
 export type ShareSection =
@@ -124,4 +124,19 @@ export async function canViewAuthenticatedWebsite(
   websiteId: string,
 ) {
   return canUserViewWebsite(auth, websiteId);
+}
+
+export async function getShareParametersForWebsite(
+  auth: Auth | null | undefined,
+  websiteId?: string,
+): Promise<ShareParameters | undefined> {
+  if (!websiteId || !auth?.shareToken?.parameters) {
+    return undefined;
+  }
+
+  if (await canUserViewWebsite(auth, websiteId)) {
+    return undefined;
+  }
+
+  return auth.shareToken.parameters;
 }

@@ -1,6 +1,7 @@
 import clickhouse from '@/lib/clickhouse';
-import { EVENT_COLUMNS, EVENT_TYPE } from '@/lib/constants';
+import { EVENT_TYPE } from '@/lib/constants';
 import { CLICKHOUSE, PRISMA, runQuery } from '@/lib/db';
+import { hasEventFilters } from '@/lib/params';
 import prisma from '@/lib/prisma';
 import type { QueryFilters } from '@/lib/types';
 
@@ -81,14 +82,10 @@ async function clickhouseQuery(
 
   let sql = '';
   const { excludeBounce } = filters;
-  const hasEventFilters =
-    EVENT_COLUMNS.some(item => Object.keys(filters).includes(item)) ||
-    !!filters.eventPropertyFilters?.length;
-  const bounceQuery = excludeBounce
-    ? '0'
-    : 'sumIf(1, t.c = 1 and t.has_custom_event = 0)';
+  const useRawEvents = hasEventFilters(filters) || !!filters.eventPropertyFilters?.length;
+  const bounceQuery = excludeBounce ? '0' : 'sumIf(1, t.c = 1 and t.has_custom_event = 0)';
 
-  if (hasEventFilters) {
+  if (useRawEvents) {
     sql = `
     select
       sum(t.c) as "pageviews",

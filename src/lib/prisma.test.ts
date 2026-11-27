@@ -259,3 +259,45 @@ describe('paged query concurrency', () => {
     }
   });
 });
+
+describe('parseFilters lockedFilters isolation', () => {
+  test('keeps lockedFilters ANDed with viewer filters even when viewer uses match=any and colliding keys', () => {
+    const parsed = prisma.parseFilters({
+      path: 'eq./admin',
+      browser: 'eq.chrome',
+      match: 'any',
+      sessionPropertyFilters: [
+        { propertyName: 'tier', dataType: 1, operator: 'eq', value: 'free' },
+      ],
+      lockedFilters: {
+        filters: {
+          path: 'c./blog',
+          country: 'eq.US',
+        },
+        match: 'all',
+        sessionPropertyFilters: [
+          { propertyName: 'plan', dataType: 1, operator: 'eq', value: 'pro' },
+        ],
+      },
+    });
+
+    expect(parsed.joinSessionQuery).toContain('inner join session');
+    expect(parsed.filterQuery).toContain(
+      'and (\n  website_event.url_path = ANY({{path}})\n  or session.browser = ANY({{browser}})\n)',
+    );
+    expect(parsed.filterQuery).toContain('and website_event.url_path ilike {{locked_path}}');
+    expect(parsed.filterQuery).toContain('and session.country = ANY({{locked_country}})');
+    expect(parsed.filterQuery).toContain('data_key = {{spf_key_0}}');
+    expect(parsed.filterQuery).toContain('data_key = {{locked_spf_key_0}}');
+    expect(parsed.queryParams).toMatchObject({
+      path: ['/admin'],
+      browser: ['chrome'],
+      locked_path: '%/blog%',
+      locked_country: ['US'],
+      spf_key_0: 'tier',
+      spf_val_0: ['free'],
+      locked_spf_key_0: 'plan',
+      locked_spf_val_0: ['pro'],
+    });
+  });
+});

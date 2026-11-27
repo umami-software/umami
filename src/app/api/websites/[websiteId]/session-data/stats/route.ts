@@ -32,7 +32,7 @@ export async function GET(
   }
 
   const { propertyName, ...rest } = query;
-  const filters = await getQueryFilters(rest, websiteId);
+  const filters = await getQueryFilters(rest, websiteId, auth);
   const propertyFilters = parsePropertyFilters(query);
   const result = await getSessionDataActivityStats(
     websiteId,
