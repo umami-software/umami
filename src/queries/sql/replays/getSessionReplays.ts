@@ -148,8 +148,13 @@ async function clickhouseQuery(websiteId: string, filters: QueryFilters, session
       select visit_id, argMin(url_path, created_at) as entry_path
       from website_event
       where website_id = {websiteId:UUID}
-        and created_at between {startDate:DateTime64} and {endDate:DateTime64}
         and event_type = ${EVENT_TYPE.pageView}
+        and visit_id in (
+          select visit_id
+          from session_replay
+          where website_id = {websiteId:UUID}
+            and created_at between {startDate:DateTime64} and {endDate:DateTime64}
+        )
       group by visit_id
     ) entry_page
     on entry_page.visit_id = session_replay.visit_id

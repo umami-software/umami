@@ -1,5 +1,5 @@
 import { describe, expect, test, vi } from 'vitest';
-import { render, screen } from '@/test/render';
+import { render, screen, within } from '@/test/render';
 import { ReplaysTable } from './ReplaysTable';
 
 vi.mock('@/components/hooks', () => ({
@@ -52,8 +52,13 @@ describe('ReplaysTable', () => {
   test('renders an empty cell when the visit has no pageview', () => {
     render(<ReplaysTable websiteId="website-1" data={[{ ...replay, entryPath: null }]} />);
 
-    expect(screen.getByText('Entry page')).toBeInTheDocument();
-    expect(screen.queryByTitle('/pricing')).not.toBeInTheDocument();
-    expect(screen.getByText('1:05')).toBeInTheDocument();
+    const headers = screen.getAllByRole('columnheader');
+    const entryIndex = headers.findIndex(header => header.textContent === 'Entry page');
+    const [row] = screen.getAllByRole('row').slice(1);
+    const entryCell = within(row).getAllByRole('cell')[entryIndex];
+
+    expect(entryIndex).toBeGreaterThan(-1);
+    expect(entryCell).toBeEmptyDOMElement();
+    expect(within(row).getByText('1:05')).toBeInTheDocument();
   });
 });

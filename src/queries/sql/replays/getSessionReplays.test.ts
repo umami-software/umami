@@ -75,14 +75,27 @@ describe('getSessionReplays', () => {
       expect(sql).toContain('as entryPath');
     });
 
-    test('limits the entry page subquery to the website and date range', async () => {
+    test('does not cut pageviews before the date range out of the entry page lookup', async () => {
       await getSessionReplays('website-1', filters);
 
       const sql: string = clickhousePagedRawQueryMock.mock.calls[0][0];
       const entrySubquery = sql.slice(sql.indexOf('argMin(url_path'), sql.indexOf(') entry_page'));
+      const pageviewFilter = entrySubquery.slice(0, entrySubquery.indexOf('visit_id in ('));
 
       expect(entrySubquery).toContain('website_id = {websiteId:UUID}');
-      expect(entrySubquery).toContain(
+      expect(pageviewFilter).not.toContain('{startDate:DateTime64}');
+    });
+
+    test('limits the entry page lookup to visits with a replay in the date range', async () => {
+      await getSessionReplays('website-1', filters);
+
+      const sql: string = clickhousePagedRawQueryMock.mock.calls[0][0];
+      const entrySubquery = sql.slice(sql.indexOf('argMin(url_path'), sql.indexOf(') entry_page'));
+      const replayedVisits = entrySubquery.slice(entrySubquery.indexOf('visit_id in ('));
+
+      expect(replayedVisits).toContain('from session_replay');
+      expect(replayedVisits).toContain('website_id = {websiteId:UUID}');
+      expect(replayedVisits).toContain(
         'created_at between {startDate:DateTime64} and {endDate:DateTime64}',
       );
     });
