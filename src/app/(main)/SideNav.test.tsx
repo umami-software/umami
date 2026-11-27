@@ -166,3 +166,39 @@ test('shows the metrics, with a way back to the overview, on the metrics page', 
   expect(screen.getByRole('link', { name: /browser/i })).toHaveAttribute('data-active');
   expect(screen.queryByRole('link', { name: /overview/i })).not.toBeInTheDocument();
 });
+
+test('expands Sessions in the sidebar to reveal Activity and Properties links', async () => {
+  const websiteId = '0f9a3c2e-1b4d-4e8a-9c7f-2d6b5a4e3f10';
+  const path = `/websites/${websiteId}`;
+
+  navigateTo(path, { websiteId });
+
+  const { user } = renderSideNav(path);
+
+  expect(screen.queryByRole('link', { name: /properties/i })).not.toBeInTheDocument();
+
+  await user.click(screen.getByRole('button', { name: /sessions/i }));
+
+  expect(screen.getByRole('link', { name: /activity/i })).toHaveAttribute(
+    'href',
+    `/websites/${websiteId}/sessions`,
+  );
+  expect(screen.getByRole('link', { name: /properties/i })).toHaveAttribute(
+    'href',
+    `/websites/${websiteId}/sessions/properties`,
+  );
+});
+
+test.each([
+  { suffix: '/sessions', activeLabel: /activity/i },
+  { suffix: '/sessions/properties', activeLabel: /properties/i },
+])('auto-expands Sessions and marks $activeLabel active on $suffix', ({ suffix, activeLabel }) => {
+  const websiteId = '0f9a3c2e-1b4d-4e8a-9c7f-2d6b5a4e3f10';
+  const path = `/websites/${websiteId}${suffix}`;
+
+  navigateTo(path, { websiteId });
+
+  renderSideNav(path);
+
+  expect(screen.getByRole('link', { name: activeLabel })).toHaveAttribute('data-active');
+});

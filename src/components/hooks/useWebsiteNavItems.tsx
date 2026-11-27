@@ -89,6 +89,18 @@ export function useWebsiteNavItems(websiteId: string) {
           label: t(labels.sessions),
           icon: <User />,
           path: renderPath('/sessions'),
+          children: [
+            {
+              id: 'sessions-activity',
+              label: t(labels.activity),
+              path: renderPath('/sessions'),
+            },
+            {
+              id: 'sessions-properties',
+              label: t(labels.properties),
+              path: renderPath('/sessions/properties'),
+            },
+          ],
         },
         {
           id: 'compare',

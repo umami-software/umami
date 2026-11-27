@@ -15,7 +15,7 @@ export function SessionsTable({
 
   return (
     <DataTable {...props}>
-      <DataColumn id="id" label={t(labels.session)} width="100px">
+      <DataColumn id="id" label={t(labels.session)} width="80px">
         {(row: any) => (
           <Link
             href={
@@ -30,7 +30,7 @@ export function SessionsTable({
       <DataColumn id="visits" label={t(labels.visits)} width="80px" />
       <DataColumn id="views" label={t(labels.views)} width="80px" />
       <DataColumn id="events" label={t(labels.events)} width="80px" />
-      <DataColumn id="location" label={t(labels.location)} width="200px">
+      <DataColumn id="location" label={t(labels.location)} width="minmax(180px, 2fr)">
         {(row: any) => (
           <TypeIcon type="country" value={row.country}>
             {row.city ? `${row.city}, ` : ''}
@@ -38,28 +38,28 @@ export function SessionsTable({
           </TypeIcon>
         )}
       </DataColumn>
-      <DataColumn id="browser" label={t(labels.browser)} width="140px">
+      <DataColumn id="browser" label={t(labels.browser)} width="minmax(130px, 1fr)">
         {(row: any) => (
           <TypeIcon type="browser" value={row.browser}>
             {formatValue(row.browser, 'browser')}
           </TypeIcon>
         )}
       </DataColumn>
-      <DataColumn id="os" label={t(labels.os)} width="140px">
+      <DataColumn id="os" label={t(labels.os)} width="minmax(120px, 1fr)">
         {(row: any) => (
           <TypeIcon type="os" value={row.os}>
             {formatValue(row.os, 'os')}
           </TypeIcon>
         )}
       </DataColumn>
-      <DataColumn id="device" label={t(labels.device)} width="140px">
+      <DataColumn id="device" label={t(labels.device)} width="minmax(110px, 1fr)">
         {(row: any) => (
           <TypeIcon type="device" value={row.device}>
             {formatValue(row.device, 'device')}
           </TypeIcon>
         )}
       </DataColumn>
-      <DataColumn id="lastAt" label={t(labels.lastSeen)} width="140px">
+      <DataColumn id="lastAt" label={t(labels.lastSeen)} width="160px">
         {(row: any) => <DateDistance date={new Date(row.createdAt)} />}
       </DataColumn>
     </DataTable>

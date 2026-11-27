@@ -14,6 +14,7 @@ const mockShare = vi.hoisted(() => ({
   token: 'share-token',
   parameters: {
     events: true,
+    sessions: true,
   },
 }));
 
@@ -116,6 +117,10 @@ vi.mock('@/app/(main)/websites/[websiteId]/sessions/SessionsPage', () => ({
   SessionsPage: () => <div>sessions page</div>,
 }));
 
+vi.mock('@/app/(main)/websites/[websiteId]/sessions/properties/SessionsPropertiesPage', () => ({
+  SessionsPropertiesPage: () => <div>sessions properties page</div>,
+}));
+
 vi.mock('@/app/(main)/websites/[websiteId]/WebsiteHeader', () => ({
   WebsiteHeader: () => <div>website header</div>,
 }));
@@ -172,7 +177,9 @@ describe('SharePage', () => {
   test.each([
     ['/share/slug/events/activity', 'events activity page'],
     ['/share/slug/events/properties', 'events properties page'],
-  ])('renders the events sub-page at %s', (route, text) => {
+    ['/share/slug/sessions', 'sessions page'],
+    ['/share/slug/sessions/properties', 'sessions properties page'],
+  ])('renders the sub-page at %s', (route, text) => {
     render(
       <ShareProvider slug="slug">
         <SharePage />

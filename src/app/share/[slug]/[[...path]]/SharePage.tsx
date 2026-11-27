@@ -22,6 +22,7 @@ import { EventsPage } from '@/app/(main)/websites/[websiteId]/events/EventsPage'
 import { EventsPropertiesPage } from '@/app/(main)/websites/[websiteId]/events/properties/EventsPropertiesPage';
 import { WebsiteMetricsPage } from '@/app/(main)/websites/[websiteId]/metrics/WebsiteMetricsPage';
 import { RealtimePage } from '@/app/(main)/websites/[websiteId]/realtime/RealtimePage';
+import { SessionsPropertiesPage } from '@/app/(main)/websites/[websiteId]/sessions/properties/SessionsPropertiesPage';
 import { SessionsPage } from '@/app/(main)/websites/[websiteId]/sessions/SessionsPage';
 import { WebsiteHeader } from '@/app/(main)/websites/[websiteId]/WebsiteHeader';
 import { WebsitePage } from '@/app/(main)/websites/[websiteId]/WebsitePage';
@@ -42,6 +43,7 @@ const PAGE_COMPONENTS: Record<string, React.ComponentType<{ websiteId: string }>
   'events/activity': EventsActivityPage,
   'events/properties': EventsPropertiesPage,
   sessions: SessionsPage,
+  'sessions/properties': SessionsPropertiesPage,
   realtime: RealtimePage,
   performance: PerformancePage,
   compare: ComparePage,
