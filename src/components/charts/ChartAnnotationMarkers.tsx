@@ -1,18 +1,8 @@
-import {
-  Button,
-  Column,
-  Text,
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-  useTheme,
-} from '@umami/react-zen';
+import { Button, Column, Text, Tooltip, TooltipContent, TooltipTrigger } from '@umami/react-zen';
 import { isSameDay } from 'date-fns';
-import { useMemo } from 'react';
 import { IconLabel } from '@/components/common/IconLabel';
 import { useLocale, useMessages } from '@/components/hooks';
 import { Maximize } from '@/components/icons';
-import { getThemeColors } from '@/lib/colors';
 import { formatDate } from '@/lib/date';
 import styles from './ChartAnnotationMarkers.module.css';
 
@@ -47,10 +37,8 @@ export function ChartAnnotationMarkers({
   onClick?: (annotations: ChartAnnotation[]) => void;
   onMoreClick?: (annotations: ChartAnnotation[]) => void;
 }) {
-  const { theme } = useTheme();
   const { locale } = useLocale();
   const { t, labels } = useMessages();
-  const { colors } = useMemo(() => getThemeColors(theme), [theme]);
 
   return (
     <>
@@ -76,7 +64,7 @@ export function ChartAnnotationMarkers({
                     left: x,
                     top: y,
                     cursor: isClickable ? 'pointer' : 'default',
-                    backgroundColor: colors.chart.views.hoverBorderColor,
+                    backgroundColor: 'var(--success)',
                   }}
                   aria-label={annotations.map(({ label }) => label).join(', ')}
                   onClick={isClickable ? () => onClick?.(annotations) : undefined}
@@ -120,6 +108,7 @@ export function ChartAnnotationMarkers({
                 {onMoreClick && (
                   <Button
                     variant="ghost"
+                    size="xs"
                     className={styles.moreButton}
                     onClick={() => onMoreClick(annotations)}
                   >

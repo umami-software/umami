@@ -57,8 +57,6 @@
 
 .moreButton {
   align-self: center;
-  min-height: 0;
-  padding: 2px 4px;
   border-radius: 4px;
   color: inherit;
   opacity: 0.8;
@@ -68,4 +66,12 @@
 .moreButton:focus-visible {
   background-color: rgba(255, 255, 255, 0.15);
   opacity: 1;
+}
+
+/*
+ * While a note is open, hide the chart's hover tooltip. The note is translucent, so the bar
+ * tooltip would show through it. The markers sit right after the chart in the same container.
+ */
+:global([data-slot='chart']):has(~ .marker[data-popup-open]) :global(.recharts-tooltip-wrapper) {
+  visibility: hidden !important;
 }
