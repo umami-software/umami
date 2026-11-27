@@ -23,9 +23,27 @@ export function FilterBar({ websiteId }: { websiteId?: string }) {
   const { formatValue } = useFormat();
   const { router, pathname, updateParams, replaceParams, query } = useNavigation();
   const { segment, cohort } = query;
-  const { filters, eventPropertyFilters, sessionPropertyFilters, operatorLabels } = useFilters();
+  const {
+    filters,
+    lockedFilters,
+    lockedSegment,
+    eventPropertyFilters,
+    sessionPropertyFilters,
+    operatorLabels,
+  } = useFilters();
   const { data, isLoading } = useWebsiteSegmentQuery(websiteId, segment || cohort);
+  const { data: lockedSegmentData, isLoading: isLockedSegmentLoading } = useWebsiteSegmentQuery(
+    websiteId,
+    lockedSegment,
+  );
   const [showSaveSegment, setShowSaveSegment] = useState(false);
+  const hasRemovableFilters =
+    filters.length > 0 ||
+    eventPropertyFilters.length > 0 ||
+    sessionPropertyFilters.length > 0 ||
+    !!segment ||
+    !!cohort;
+  const hasLockedFilters = lockedFilters.length > 0 || !!lockedSegment;
   const canSaveSegment =
     !!websiteId &&
     (filters.length > 0 || sessionPropertyFilters.length > 0) &&
@@ -78,13 +96,7 @@ export function FilterBar({ websiteId }: { websiteId?: string }) {
     router.push(updateParams({ [type]: undefined }));
   };
 
-  if (
-    !filters.length &&
-    !eventPropertyFilters.length &&
-    !sessionPropertyFilters.length &&
-    !segment &&
-    !cohort
-  ) {
+  if (!hasRemovableFilters && !hasLockedFilters) {
     return null;
   }
 
@@ -98,6 +110,33 @@ export function FilterBar({ websiteId }: { websiteId?: string }) {
       wrap="wrap"
     >
       <Row alignItems="center" gap="2" wrap="wrap" width={{ base: '100%', md: 'auto' }}>
+        {lockedSegment && !isLockedSegmentLoading && (
+          <FilterItem
+            name="locked-segment"
+            label={t(labels.segment)}
+            value={lockedSegmentData?.name || lockedSegment}
+            operator={operatorLabels.eq}
+          />
+        )}
+        {lockedFilters.map((filter, index) => {
+          const { name, type, label, operator, value } = filter;
+          const paramValue = isSearchOperator(operator)
+            ? value
+            : String(value)
+                .split(',')
+                .map(v => formatValue(v, type || name))
+                .join(', ');
+
+          return (
+            <FilterItem
+              key={`locked-${name}-${index}`}
+              name={name}
+              label={label}
+              operator={operatorLabels[operator]}
+              value={paramValue}
+            />
+          );
+        })}
         {segment && !isLoading && (
           <FilterItem
             name="segment"
@@ -205,22 +244,36 @@ export function FilterBar({ websiteId }: { websiteId?: string }) {
             </Dialog>
           </Modal>
         </ControlledDialog>
-        <TooltipTrigger delay={0}>
-          <Button variant="zero" onPress={handleResetFilter}>
-            <Icon>
-              <X />
-            </Icon>
-          </Button>
-          <Tooltip>
-            <Text>{t(labels.clearAll)}</Text>
-          </Tooltip>
-        </TooltipTrigger>
+        {hasRemovableFilters && (
+          <TooltipTrigger delay={0}>
+            <Button variant="zero" onPress={handleResetFilter}>
+              <Icon>
+                <X />
+              </Icon>
+            </Button>
+            <Tooltip>
+              <Text>{t(labels.clearAll)}</Text>
+            </Tooltip>
+          </TooltipTrigger>
+        )}
       </Row>
     </Row>
   );
 }
 
-const FilterItem = ({ name, label, operator, value, onRemove }) => {
+const FilterItem = ({
+  name,
+  label,
+  operator,
+  value,
+  onRemove,
+}: {
+  name: string;
+  label?: string;
+  operator?: string;
+  value?: string;
+  onRemove?: (name: string) => void;
+}) => {
   return (
     <Row
       border
@@ -250,9 +303,11 @@ const FilterItem = ({ name, label, operator, value, onRemove }) => {
             {value}
           </Text>
         </Row>
-        <Icon onClick={() => onRemove(name)} size="xs" style={{ cursor: 'pointer' }}>
-          <X />
-        </Icon>
+        {onRemove && (
+          <Icon onClick={() => onRemove(name)} size="xs" style={{ cursor: 'pointer' }}>
+            <X />
+          </Icon>
+        )}
       </Row>
     </Row>
   );

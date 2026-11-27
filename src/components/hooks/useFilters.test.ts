@@ -168,4 +168,35 @@ describe('useFilters', () => {
     expect(operators).toContainEqual({ name: 'gt', type: 'number', label: 'greaterThan' });
     expect(operators.filter(o => o.type === 'boolean')).toHaveLength(2);
   });
+
+  describe('locked share filters', () => {
+    test('normalizes lockedFilters with field labels and returns lockedSegment', () => {
+      shareValue = {
+        parameters: {
+          allowFilter: false,
+          segment: 'seg-123',
+          filters: [
+            { name: 'country', operator: 'eq', value: 'US' },
+            { name: 'path', operator: 'c', value: '/blog' },
+          ],
+        },
+      };
+
+      const { lockedFilters, lockedSegment, filters } = setup();
+
+      expect(lockedSegment).toBe('seg-123');
+      expect(lockedFilters).toEqual([
+        { name: 'country', type: 'country', operator: 'eq', value: 'US', label: 'Country' },
+        { name: 'path', type: 'path', operator: 'c', value: '/blog', label: 'Path' },
+      ]);
+      expect(filters).toEqual([]);
+    });
+
+    test('returns empty lockedFilters and undefined lockedSegment when not configured', () => {
+      const { lockedFilters, lockedSegment } = setup();
+
+      expect(lockedSegment).toBeUndefined();
+      expect(lockedFilters).toEqual([]);
+    });
+  });
 });

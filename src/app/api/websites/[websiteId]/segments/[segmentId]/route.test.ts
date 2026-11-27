@@ -1,8 +1,8 @@
 import { beforeEach, expect, test, vi } from 'vitest';
 import { parseRequest } from '@/lib/request';
-import { canUpdateWebsite } from '@/permissions';
+import { canUpdateWebsite, canViewSharedWebsite } from '@/permissions';
 import { getWebsiteSegment, updateSegment } from '@/queries/prisma';
-import { POST } from './route';
+import { GET, POST } from './route';
 
 vi.mock('@/lib/request', () => ({
   parseRequest: vi.fn(),
@@ -11,7 +11,7 @@ vi.mock('@/lib/request', () => ({
 vi.mock('@/permissions', () => ({
   canDeleteWebsite: vi.fn(),
   canUpdateWebsite: vi.fn(),
-  canViewSharedWebsiteFilters: vi.fn(),
+  canViewSharedWebsite: vi.fn(),
 }));
 
 vi.mock('@/queries/prisma', () => ({
@@ -22,6 +22,7 @@ vi.mock('@/queries/prisma', () => ({
 
 const parseRequestMock = vi.mocked(parseRequest);
 const canUpdateWebsiteMock = vi.mocked(canUpdateWebsite);
+const canViewSharedWebsiteMock = vi.mocked(canViewSharedWebsite);
 const getWebsiteSegmentMock = vi.mocked(getWebsiteSegment);
 const updateSegmentMock = vi.mocked(updateSegment);
 
@@ -41,6 +42,7 @@ function post(body: Record<string, any>) {
 beforeEach(() => {
   parseRequestMock.mockReset();
   canUpdateWebsiteMock.mockReset().mockResolvedValue(true);
+  canViewSharedWebsiteMock.mockReset().mockResolvedValue(true);
   getWebsiteSegmentMock.mockReset().mockResolvedValue({ id: 'segment-1' } as any);
   updateSegmentMock.mockReset().mockResolvedValue({ id: 'segment-1' } as any);
 });
@@ -74,4 +76,67 @@ test('updates a complete cohort', async () => {
 
   expect(response.status).toBe(200);
   expect(updateSegmentMock).toHaveBeenCalledTimes(1);
+});
+
+test('allows a share viewer to fetch their locked segment even when allowFilter is false', async () => {
+  parseRequestMock.mockResolvedValue({
+    auth: {
+      authType: 'share',
+      shareToken: {
+        websiteId: 'website-1',
+        parameters: { allowFilter: false, segment: 'segment-1' },
+      },
+    },
+    error: undefined,
+  } as any);
+
+  const response = await GET(
+    new Request('http://localhost/api/websites/website-1/segments/segment-1'),
+    { params: Promise.resolve({ websiteId: 'website-1', segmentId: 'segment-1' }) },
+  );
+
+  expect(response.status).toBe(200);
+  expect(getWebsiteSegmentMock).toHaveBeenCalledWith('website-1', 'segment-1');
+});
+
+test('rejects a share viewer fetching a different segment than their locked segment', async () => {
+  parseRequestMock.mockResolvedValue({
+    auth: {
+      authType: 'share',
+      shareToken: {
+        websiteId: 'website-1',
+        parameters: { allowFilter: true, segment: 'segment-locked' },
+      },
+    },
+    error: undefined,
+  } as any);
+
+  const response = await GET(
+    new Request('http://localhost/api/websites/website-1/segments/segment-other'),
+    { params: Promise.resolve({ websiteId: 'website-1', segmentId: 'segment-other' }) },
+  );
+
+  expect(response.status).toBe(401);
+  expect(getWebsiteSegmentMock).not.toHaveBeenCalled();
+});
+
+test('rejects a share viewer without a locked segment when allowFilter is false', async () => {
+  parseRequestMock.mockResolvedValue({
+    auth: {
+      authType: 'share',
+      shareToken: {
+        websiteId: 'website-1',
+        parameters: { allowFilter: false },
+      },
+    },
+    error: undefined,
+  } as any);
+
+  const response = await GET(
+    new Request('http://localhost/api/websites/website-1/segments/segment-1'),
+    { params: Promise.resolve({ websiteId: 'website-1', segmentId: 'segment-1' }) },
+  );
+
+  expect(response.status).toBe(401);
+  expect(getWebsiteSegmentMock).not.toHaveBeenCalled();
 });

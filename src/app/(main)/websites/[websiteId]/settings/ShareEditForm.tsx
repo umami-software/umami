@@ -6,16 +6,26 @@ import {
   FormField,
   FormSubmitButton,
   Grid,
+  ListItem,
   ListSeparator,
   Loading,
   Row,
+  Select,
   Switch,
   Text,
   TextField,
 } from '@umami/react-zen';
 import { useEffect, useState } from 'react';
-import { useApi, useConfig, useMessages, useModified } from '@/components/hooks';
+import {
+  useApi,
+  useConfig,
+  useMessages,
+  useModified,
+  useWebsiteSegmentsQuery,
+} from '@/components/hooks';
+import { FieldFilters } from '@/components/input/FieldFilters';
 import { ThemeModeSelector } from '@/components/input/ThemeModeSelector';
+import { ENTITY_TYPE } from '@/lib/constants';
 import { SHARE_NAV_ITEMS } from './constants';
 
 export function ShareEditForm({
@@ -38,12 +48,20 @@ export function ShareEditForm({
   const [isLoading, setIsLoading] = useState(!!shareId);
   const [isPending, setIsPending] = useState(false);
   const [error, setError] = useState<any>(null);
+  const [currentMatch, setCurrentMatch] = useState<string>('all');
 
   const isEditing = !!shareId;
+  const targetWebsiteId =
+    websiteId || (share?.shareType === ENTITY_TYPE.website ? share?.entityId : undefined);
+  const { data: segmentsData } = useWebsiteSegmentsQuery(targetWebsiteId, { type: 'segment' });
 
   const getUrl = (slug: string) => {
     return `${cloudMode ? process.env.cloudUrl : window?.location.origin}${process.env.basePath || ''}/share/${slug}`;
   };
+
+  useEffect(() => {
+    setCurrentMatch(share?.parameters?.match || 'all');
+  }, [share]);
 
   useEffect(() => {
     if (!shareId) return;
@@ -61,7 +79,7 @@ export function ShareEditForm({
   }, [shareId, modified]);
 
   const handleSubmit = async (data: any) => {
-    const parameters: Record<string, boolean | string | undefined> = {};
+    const parameters: Record<string, any> = {};
     SHARE_NAV_ITEMS.forEach(section => {
       section.items.forEach(item => {
         parameters[item.id] = data[item.id] ?? false;
@@ -69,6 +87,12 @@ export function ShareEditForm({
     });
     parameters.allowFilter = data.allowFilter ?? true;
     parameters.theme = data.theme === 'system' ? undefined : data.theme;
+
+    if (targetWebsiteId) {
+      parameters.segment = data.segment || undefined;
+      parameters.filters = data.filters?.length ? data.filters : undefined;
+      parameters.match = currentMatch !== 'all' ? currentMatch : undefined;
+    }
 
     setIsPending(true);
     setError(null);
@@ -107,6 +131,9 @@ export function ShareEditForm({
     name: share?.name || '',
     allowFilter: share?.parameters?.allowFilter ?? true,
     theme: share?.parameters?.theme || 'system',
+    segment: share?.parameters?.segment || '',
+    filters: share?.parameters?.filters || [],
+    match: share?.parameters?.match || 'all',
   };
   SHARE_NAV_ITEMS.forEach(section => {
     section.items.forEach(item => {
@@ -162,6 +189,31 @@ export function ShareEditForm({
                 </Column>
               ))}
             </Grid>
+            {targetWebsiteId && (
+              <>
+                <ListSeparator />
+                <FormField label={t(labels.segment)} name="segment">
+                  <Select>
+                    <ListItem id="">{t(labels.none)}</ListItem>
+                    {segmentsData?.data?.map((item: { id: string; name: string }) => (
+                      <ListItem key={item.id} id={item.id}>
+                        {item.name}
+                      </ListItem>
+                    ))}
+                  </Select>
+                </FormField>
+                <Column gap="1">
+                  <Text weight="bold">{t(labels.filters)}</Text>
+                  <FormField name="filters">
+                    <FieldFilters
+                      websiteId={targetWebsiteId}
+                      match={currentMatch}
+                      onMatchChange={setCurrentMatch}
+                    />
+                  </FormField>
+                </Column>
+              </>
+            )}
             <Row justifyContent="flex-end" paddingTop="3" gap="3">
               {onClose && (
                 <Button isDisabled={isPending} onPress={onClose}>
