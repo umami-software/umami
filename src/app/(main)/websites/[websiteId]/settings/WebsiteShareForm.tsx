@@ -28,7 +28,7 @@ export function WebsiteShareForm({ websiteId }: WebsiteShareFormProps) {
             label={t(labels.add)}
             title={t(labels.share)}
             variant="primary"
-            width="600px"
+            width="min(800px, calc(100vw - 32px))"
           >
             {({ close }) => <ShareEditForm websiteId={websiteId} onClose={close} />}
           </DialogButton>
