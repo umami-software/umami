@@ -1,4 +1,5 @@
 import clickhouse from '@/lib/clickhouse';
+import { EVENT_TYPE } from '@/lib/constants';
 import { CLICKHOUSE, PRISMA, runQuery } from '@/lib/db';
 import prisma from '@/lib/prisma';
 import type { PageResult, QueryFilters, SessionReplaySummary } from '@/lib/types';
@@ -68,7 +69,14 @@ async function relationalQuery(websiteId: string, filters: QueryFilters, session
       min(sr.started_at) as "startedAt",
       max(sr.ended_at) as "endedAt",
       (extract(epoch from max(sr.ended_at) - min(sr.started_at)) * 1000)::bigint as "duration",
-      max(sr.created_at) as "createdAt"
+      max(sr.created_at) as "createdAt",
+      (select website_event.url_path
+        from website_event
+        where website_event.website_id = sr.website_id
+          and website_event.visit_id = sr.visit_id
+          and website_event.event_type = ${EVENT_TYPE.pageView}
+        order by website_event.created_at asc
+        limit 1) as "entryPath"
     from session_replay sr
     join session on session.session_id = sr.session_id
       and session.website_id = sr.website_id
@@ -133,8 +141,23 @@ async function clickhouseQuery(websiteId: string, filters: QueryFilters, session
       min(session_replay.started_at) as startedAt,
       max(session_replay.ended_at) as endedAt,
       toInt64(toUnixTimestamp64Milli(max(session_replay.ended_at)) - toUnixTimestamp64Milli(min(session_replay.started_at))) as duration,
-      max(session_replay.created_at) as createdAt
+      max(session_replay.created_at) as createdAt,
+      any(entry_page.entry_path) as entryPath
     from session_replay
+    left join (
+      select visit_id, argMin(url_path, created_at) as entry_path
+      from website_event
+      where website_id = {websiteId:UUID}
+        and event_type = ${EVENT_TYPE.pageView}
+        and visit_id in (
+          select visit_id
+          from session_replay
+          where website_id = {websiteId:UUID}
+            and created_at between {startDate:DateTime64} and {endDate:DateTime64}
+        )
+      group by visit_id
+    ) entry_page
+    on entry_page.visit_id = session_replay.visit_id
     join (
       select distinct website_id, session_id, visit_id, browser, os, device, country, city
       from website_event
