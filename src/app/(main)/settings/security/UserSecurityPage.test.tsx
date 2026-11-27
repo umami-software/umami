@@ -10,31 +10,12 @@ vi.mock('@/components/hooks', async () => {
 
   return {
     ...actual,
-    useMessages: () => ({
-      t: (value: string) => value,
-      labels: {
-        security: 'Security',
-        password: 'Password',
-        changePassword: 'Change password',
-        twoFactorAuth: 'Two-factor authentication',
-        twoFactorActive: 'Active',
-        twoFactorStatusNotConfigured: 'Not configured',
-        twoFactorEnable: 'Enable',
-      },
-      messages: {
-        twoFactorUserDescription: 'Protect your account with two-factor authentication.',
-      },
-    }),
     useTwoFactorStatusQuery: () => ({
       data: { isEnabled: false, isRequired: false, isConfigured: true },
       isLoading: false,
     }),
   };
 });
-
-vi.mock('./PasswordChangeButton', () => ({
-  PasswordChangeButton: () => <button data-test="password-change-button">Change password</button>,
-}));
 
 afterEach(() => vi.unstubAllEnvs());
 
@@ -56,7 +37,8 @@ test.each([
       </ConfigContext.Provider>,
     );
 
-    expect(!!screen.queryByTestId('password-change-button')).toBe(visible);
+    expect(!!screen.queryByRole('button', { name: 'Change password' })).toBe(visible);
+    expect(!!screen.queryByText('Update the password you use to sign in to Umami.')).toBe(visible);
     expect(!!screen.queryByText('Two-factor authentication')).toBe(visible);
   },
 );

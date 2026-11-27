@@ -10,6 +10,8 @@ import {
   TooltipTrigger,
 } from '@umami/react-zen';
 import { useState } from 'react';
+import { ActionForm } from '@/components/common/ActionForm';
+import { ActionList } from '@/components/common/ActionList';
 import { Badge } from '@/components/common/Badge';
 import { PageBody } from '@/components/common/PageBody';
 import { PageHeader } from '@/components/common/PageHeader';
@@ -55,16 +57,11 @@ export function UserSecurityPage() {
     <PageBody>
       <PageHeader title={t(labels.security)} />
       <Column gap="6">
-        <Panel>
-          <Column gap="4">
-            <Row alignItems="center" gap="3">
-              <Text weight="bold">{t(labels.password)}</Text>
-            </Row>
-            <Row>
-              <PasswordChangeButton />
-            </Row>
-          </Column>
-        </Panel>
+        <ActionList>
+          <ActionForm label={t(labels.password)} description={t(messages.passwordDescription)}>
+            <PasswordChangeButton />
+          </ActionForm>
+        </ActionList>
         <Panel>
           <Column gap="4">
             <Row alignItems="center" gap="3">
