@@ -29,7 +29,6 @@ vi.mock('@/queries/prisma', () => ({
 const checkAuthMock = vi.mocked(checkAuth);
 const fetchWebsiteMock = vi.mocked(fetchWebsite);
 const getWebsiteSegmentMock = vi.mocked(getWebsiteSegment);
-const checkAuthMock = vi.mocked(checkAuth);
 
 beforeEach(() => {
   checkAuthMock.mockReset();
