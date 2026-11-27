@@ -21,9 +21,23 @@ export async function getValues(
 }
 
 async function relationalQuery(websiteId: string, column: string, filters: QueryFilters) {
-  const { rawQuery, getSearchSQL } = prisma;
+  const { rawQuery, getSearchSQL, parseFilters } = prisma;
   const params = {};
-  const { startDate, endDate, search } = filters;
+  const { startDate, endDate, search, lockedFilters, timezone } = filters;
+  const isSessionColumn = SESSION_DB_COLUMNS.has(column);
+  const searchColumn = isSessionColumn ? column : `website_event.${column}`;
+  const {
+    joinSessionQuery = '',
+    filterQuery = '',
+    queryParams = {},
+  } = lockedFilters
+    ? parseFilters({
+        lockedFilters,
+        startDate,
+        endDate,
+        timezone,
+      })
+    : {};
 
   let searchQuery = '';
   let excludeDomain = '';
@@ -43,15 +57,19 @@ async function relationalQuery(websiteId: string, column: string, filters: Query
 
           params[key] = `%${escapeLikeValue(value)}%`;
 
-          return getSearchSQL(column, key).replace('and ', '');
+          return getSearchSQL(searchColumn, key).replace('and ', '');
         })
         .join(' OR ')})`;
     } else {
-      searchQuery = getSearchSQL(column);
+      searchQuery = getSearchSQL(searchColumn);
     }
   }
 
-  if (SESSION_DB_COLUMNS.has(column)) {
+  if (isSessionColumn) {
+    const lockedSessionFilter = filterQuery
+      ? `and session.session_id in (select website_event.session_id from website_event ${joinSessionQuery} where website_event.website_id = {{websiteId::uuid}} and website_event.created_at between {{startDate}} and {{endDate}} ${filterQuery})`
+      : '';
+
     return rawQuery(
       `
       select ${column} as "value", count(*) as "count"
@@ -59,36 +77,61 @@ async function relationalQuery(websiteId: string, column: string, filters: Query
       where website_id = {{websiteId::uuid}}
         and created_at between {{startDate}} and {{endDate}}
         ${searchQuery}
+        ${lockedSessionFilter}
       group by 1
       order by 2 desc
       limit 10
       `,
-      { websiteId, startDate, endDate, search: `%${escapeLikeValue(search ?? '')}%`, ...params },
+      {
+        websiteId,
+        startDate,
+        endDate,
+        search: `%${escapeLikeValue(search ?? '')}%`,
+        ...params,
+        ...queryParams,
+      },
       FUNCTION_NAME,
     );
   }
 
   return rawQuery(
     `
-    select ${column} as "value", count(*) as "count"
+    select website_event.${column} as "value", count(*) as "count"
     from website_event
+    ${joinSessionQuery}
     where website_event.website_id = {{websiteId::uuid}}
       and website_event.created_at between {{startDate}} and {{endDate}}
       ${searchQuery}
       ${excludeDomain}
+      ${filterQuery}
     group by 1
     order by 2 desc
     limit 10
     `,
-    { websiteId, startDate, endDate, search: `%${escapeLikeValue(search ?? '')}%`, ...params },
+    {
+      websiteId,
+      startDate,
+      endDate,
+      search: `%${escapeLikeValue(search ?? '')}%`,
+      ...params,
+      ...queryParams,
+    },
     FUNCTION_NAME,
   );
 }
 
 async function clickhouseQuery(websiteId: string, column: string, filters: QueryFilters) {
-  const { rawQuery, getSearchSQL } = clickhouse;
+  const { rawQuery, getSearchSQL, parseFilters } = clickhouse;
   const params = {};
-  const { startDate, endDate, search } = filters;
+  const { startDate, endDate, search, lockedFilters, timezone } = filters;
+  const { filterQuery = '', queryParams = {} } = lockedFilters
+    ? parseFilters({
+        lockedFilters,
+        startDate,
+        endDate,
+        timezone,
+      })
+    : {};
 
   let searchQuery = '';
   let excludeDomain = '';
@@ -123,6 +166,7 @@ async function clickhouseQuery(websiteId: string, column: string, filters: Query
       and created_at between {startDate:DateTime64} and {endDate:DateTime64}
       ${searchQuery}
       ${excludeDomain}
+      ${filterQuery}
     group by 1
     order by 2 desc
     limit 10
@@ -133,6 +177,7 @@ async function clickhouseQuery(websiteId: string, column: string, filters: Query
       endDate,
       search,
       ...params,
+      ...queryParams,
     },
     FUNCTION_NAME,
   );
