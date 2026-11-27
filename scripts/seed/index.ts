@@ -50,6 +50,8 @@ export interface SeedResult {
   events: number;
   eventData: number;
   revenue: number;
+  segments: number;
+  shares: number;
 }
 
 async function batchInsertSessions(
@@ -180,6 +182,7 @@ async function clearDemoData(prisma: PrismaClient): Promise<void> {
   await prisma.websiteEvent.deleteMany({ where: { websiteId: { in: websiteIds } } });
   await prisma.session.deleteMany({ where: { websiteId: { in: websiteIds } } });
   await prisma.segment.deleteMany({ where: { websiteId: { in: websiteIds } } });
+  await prisma.share.deleteMany({ where: { entityId: { in: websiteIds } } });
   await prisma.report.deleteMany({ where: { websiteId: { in: websiteIds } } });
   await prisma.website.deleteMany({ where: { id: { in: websiteIds } } });
 
@@ -193,6 +196,7 @@ interface SiteGeneratorConfig {
   getSiteConfig: () => ReturnType<typeof getBlogSiteConfig>;
   getJourney: () => string[];
   revenueConfigs?: RevenueConfig[];
+  segmentFilter?: { name: string; pathPrefix: string };
 }
 
 async function generateSiteData(
@@ -201,7 +205,14 @@ async function generateSiteData(
   days: Date[],
   adminUserId: string,
   verbose: boolean,
-): Promise<{ sessions: number; events: number; eventData: number; revenue: number }> {
+): Promise<{
+  sessions: number;
+  events: number;
+  eventData: number;
+  revenue: number;
+  segments: number;
+  shares: number;
+}> {
   console.log(`\nGenerating data for ${config.name}...`);
 
   const websiteId = await createWebsite(prisma, config.name, config.domain, adminUserId);
@@ -261,11 +272,70 @@ async function generateSiteData(
     await batchInsertRevenue(prisma, allRevenue as RevenueCreateInput[], verbose);
   }
 
+  let segments = 0;
+  let shares = 0;
+
+  if (config.segmentFilter) {
+    const segmentId = uuid();
+    const filter = { name: 'path', operator: 'c', value: config.segmentFilter.pathPrefix };
+
+    await prisma.segment.create({
+      data: {
+        id: segmentId,
+        websiteId,
+        type: 'segment',
+        name: config.segmentFilter.name,
+        parameters: { filters: [filter] },
+      },
+    });
+    segments += 1;
+
+    const filterShareSlug = uuid().replace(/-/g, '').slice(0, 16);
+    await prisma.share.create({
+      data: {
+        id: uuid(),
+        entityId: websiteId,
+        shareType: 1,
+        name: `${config.segmentFilter.name} (Locked Filter)`,
+        slug: filterShareSlug,
+        parameters: {
+          overview: true,
+          events: true,
+          allowFilter: true,
+          filters: [filter],
+        },
+      },
+    });
+    shares += 1;
+    console.log(`  Created share (locked filter): /share/${filterShareSlug}`);
+
+    const segmentShareSlug = uuid().replace(/-/g, '').slice(0, 16);
+    await prisma.share.create({
+      data: {
+        id: uuid(),
+        entityId: websiteId,
+        shareType: 1,
+        name: `${config.segmentFilter.name} (Locked Segment)`,
+        slug: segmentShareSlug,
+        parameters: {
+          overview: true,
+          events: true,
+          allowFilter: false,
+          segment: segmentId,
+        },
+      },
+    });
+    shares += 1;
+    console.log(`  Created share (locked segment): /share/${segmentShareSlug}`);
+  }
+
   return {
     sessions: allSessions.length,
     events: allEvents.length,
     eventData: allEventData.length,
     revenue: allRevenue.length,
+    segments,
+    shares,
   };
 }
 
@@ -331,6 +401,7 @@ export async function seed(config: SeedConfig): Promise<SeedResult> {
         sessionsPerDay: BLOG_SESSIONS_PER_DAY,
         getSiteConfig: getBlogSiteConfig,
         getJourney: getBlogJourney,
+        segmentFilter: { name: 'Blog Posts', pathPrefix: '/blog' },
       },
       days,
       adminUserId,
@@ -347,6 +418,7 @@ export async function seed(config: SeedConfig): Promise<SeedResult> {
         getSiteConfig: getSaasSiteConfig,
         getJourney: getSaasJourney,
         revenueConfigs: saasRevenueConfigs,
+        segmentFilter: { name: 'Documentation', pathPrefix: '/docs' },
       },
       days,
       adminUserId,
@@ -359,6 +431,8 @@ export async function seed(config: SeedConfig): Promise<SeedResult> {
       events: blogResults.events + saasResults.events,
       eventData: blogResults.eventData + saasResults.eventData,
       revenue: blogResults.revenue + saasResults.revenue,
+      segments: blogResults.segments + saasResults.segments,
+      shares: blogResults.shares + saasResults.shares,
     };
 
     console.log(`\n${'─'.repeat(50)}`);
@@ -369,6 +443,8 @@ export async function seed(config: SeedConfig): Promise<SeedResult> {
     console.log(`  Events:     ${formatNumber(result.events)}`);
     console.log(`  Event Data: ${formatNumber(result.eventData)}`);
     console.log(`  Revenue:    ${formatNumber(result.revenue)}`);
+    console.log(`  Segments:   ${formatNumber(result.segments)}`);
+    console.log(`  Shares:     ${formatNumber(result.shares)}`);
     console.log(`${'─'.repeat(50)}\n`);
 
     return result;
