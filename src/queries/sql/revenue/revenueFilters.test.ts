@@ -194,12 +194,27 @@ test('getRevenueMetrics applies filters when selecting attributed referrer and c
     );
 
     const [query] = rawQueryMock.mock.calls[0];
+    const filteredEventsStart = query.indexOf('filtered_events as');
+    const attributedEventsStart = query.indexOf('attributed_events as');
 
-    expect(query).toContain('filtered_events as');
-    expect(query).toContain('row_number() over');
-    expect(query).toContain('join cohort on cohort.session_id = website_event.session_id');
-    expect(query).toContain('inner join session on website_event.session_id = session.session_id');
-    expect(query).toContain('and website_event.referrer_domain = ANY({{referrer}})');
+    expect(filteredEventsStart).toBeGreaterThan(-1);
+    expect(attributedEventsStart).toBeGreaterThan(filteredEventsStart);
+
+    const filteredEventsSection = query.slice(filteredEventsStart, attributedEventsStart);
+
+    expect(filteredEventsSection).toContain('row_number() over');
+    expect(filteredEventsSection).toContain(
+      'join cohort on cohort.session_id = website_event.session_id',
+    );
+    expect(filteredEventsSection).toContain(
+      'inner join session on website_event.session_id = session.session_id',
+    );
+    expect(filteredEventsSection).toContain(
+      'and website_event.created_at between {{startDate}} and {{endDate}}',
+    );
+    expect(filteredEventsSection).toContain(
+      'and website_event.referrer_domain = ANY({{referrer}})',
+    );
     expect(query).not.toContain('min(created_at) as min_date');
   }
 });
