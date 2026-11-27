@@ -38,7 +38,7 @@ test.each([
     );
 
     expect(!!screen.queryByRole('button', { name: 'Change password' })).toBe(visible);
-    expect(!!screen.queryByText('Update the password you use to sign in to Umami.')).toBe(visible);
+    expect(!!screen.queryByText('Update the password you use to sign in.')).toBe(visible);
     expect(!!screen.queryByText('Two-factor authentication')).toBe(visible);
   },
 );
