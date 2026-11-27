@@ -1,0 +1,3 @@
+/* Scan the app's own source rather than the whole repository. */
+@import "tailwindcss" source("../");
+@import "@umami/react-zen/styles.css";

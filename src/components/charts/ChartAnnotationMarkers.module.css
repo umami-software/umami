@@ -72,6 +72,6 @@
  * While a note is open, hide the chart's hover tooltip. The note is translucent, so the bar
  * tooltip would show through it. The markers sit right after the chart in the same container.
  */
-:global([data-slot='chart']):has(~ .marker[data-popup-open]) :global(.recharts-tooltip-wrapper) {
+:global([data-slot="chart"]):has(~ .marker[data-popup-open]) :global(.recharts-tooltip-wrapper) {
   visibility: hidden !important;
 }
