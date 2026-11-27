@@ -315,9 +315,6 @@ importers:
       tsx:
         specifier: ^4.23.15
         version: 4.23.15
-      tw-animate-css:
-        specifier: ^1.4.0
-        version: 1.4.0
       typescript:
         specifier: ^6.0.3
         version: 6.0.3
