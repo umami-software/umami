@@ -3,6 +3,7 @@ import {
   Column,
   Icon,
   Row,
+  Skeleton,
   Text,
   Tooltip,
   TooltipContent,
@@ -35,6 +36,8 @@ export interface MetricCardProps {
   /** Makes the card selectable, e.g. to choose which metric a chart shows. */
   onClick?: () => void;
   selected?: boolean;
+  /** Shows placeholders for the value and change, keeping the card's size. */
+  loading?: boolean;
 }
 
 export const MetricCard = ({
@@ -50,6 +53,7 @@ export const MetricCard = ({
   footer,
   onClick,
   selected = false,
+  loading = false,
 }: MetricCardProps) => {
   const joined = useMetricsBarJoined();
   const bordered = borderedProp ?? !joined;
@@ -122,11 +126,27 @@ export const MetricCard = ({
         </Row>
       )}
       <Text size="4xl" weight="bold" wrap="nowrap">
-        <AnimatedDiv title={value?.toString()}>
-          {reducedMotion ? formatValue(x) : valueText}
-        </AnimatedDiv>
+        {loading ? (
+          // Inline and 1em tall, so the line keeps the height the number would have.
+          <Skeleton
+            data-test="metric-skeleton"
+            style={{
+              display: 'inline-block',
+              width: '4ch',
+              height: '1em',
+              verticalAlign: 'middle',
+            }}
+          />
+        ) : (
+          <AnimatedDiv title={value?.toString()}>
+            {reducedMotion ? formatValue(x) : valueText}
+          </AnimatedDiv>
+        )}
       </Text>
-      {showChange && (
+      {showChange && loading && (
+        <Skeleton style={{ width: '48px', height: '20px', borderRadius: '9999px' }} />
+      )}
+      {showChange && !loading && (
         <ChangeLabel value={change} title={formatValue(change)} reverseColors={reverseColors}>
           <AnimatedDiv>{reducedMotion ? `${Math.abs(~~p)}%` : pctText}</AnimatedDiv>
         </ChangeLabel>

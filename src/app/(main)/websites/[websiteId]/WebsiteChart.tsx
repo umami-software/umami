@@ -1,7 +1,7 @@
 import { isSameDay } from 'date-fns';
 import { type ReactNode, useCallback, useMemo } from 'react';
 import type { ChartAnnotation } from '@/components/charts/ChartAnnotationMarkers';
-import { LoadingPanel } from '@/components/common/LoadingPanel';
+import { ErrorMessage } from '@/components/common/ErrorMessage';
 import {
   useBarDrillDown,
   useDateParameters,
@@ -144,20 +144,25 @@ export function WebsiteChart({
     [toUtc, onAnnotationMoreClick, unit],
   );
 
+  const isPending = isLoading || isFetching;
+
+  if (error && !isPending) {
+    return <ErrorMessage />;
+  }
+
   return (
-    <LoadingPanel data={data} isFetching={isFetching} isLoading={isLoading} error={error}>
-      <PageviewsChart
-        key={value}
-        data={chartData}
-        legendActions={legendActions}
-        minDate={startDate}
-        maxDate={endDate}
-        unit={unit}
-        annotations={annotations}
-        onAnnotationClick={handleAnnotationClick}
-        onAnnotationMoreClick={onAnnotationMoreClick ? handleAnnotationMoreClick : undefined}
-        onBarClick={handleBarClick}
-      />
-    </LoadingPanel>
+    <PageviewsChart
+      key={value}
+      data={chartData}
+      legendActions={legendActions}
+      minDate={startDate}
+      maxDate={endDate}
+      unit={unit}
+      annotations={annotations}
+      onAnnotationClick={handleAnnotationClick}
+      onAnnotationMoreClick={onAnnotationMoreClick ? handleAnnotationMoreClick : undefined}
+      onBarClick={handleBarClick}
+      loading={isPending}
+    />
   );
 }

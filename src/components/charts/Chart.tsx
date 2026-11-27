@@ -1,4 +1,4 @@
-import { Box, type BoxProps, Column } from '@umami/react-zen';
+import { Box, type BoxProps, Column, Skeleton } from '@umami/react-zen';
 import type { ReactNode } from 'react';
 import {
   type AnnotationMarker,
@@ -49,6 +49,8 @@ export interface ChartProps extends Omit<BoxProps, 'children'> {
   annotations?: ChartAnnotation[];
   onAnnotationClick?: (annotations: ChartAnnotation[]) => void;
   onAnnotationMoreClick?: (annotations: ChartAnnotation[]) => void;
+  /** Shows a placeholder in place of the plot, keeping the chart's size and legend. */
+  loading?: boolean;
 }
 
 export interface ChartFrameProps extends Omit<BoxProps, 'children'> {
@@ -58,6 +60,8 @@ export interface ChartFrameProps extends Omit<BoxProps, 'children'> {
   markers?: AnnotationMarker[];
   onAnnotationClick?: (annotations: ChartAnnotation[]) => void;
   onAnnotationMoreClick?: (annotations: ChartAnnotation[]) => void;
+  /** Shows a placeholder in place of the plot, keeping the chart's size and legend. */
+  loading?: boolean;
   children: ReactNode;
 }
 
@@ -88,6 +92,7 @@ export function Chart({
   markers = [],
   onAnnotationClick,
   onAnnotationMoreClick,
+  loading,
   children,
   ...props
 }: ChartFrameProps) {
@@ -97,8 +102,12 @@ export function Chart({
     <Column gap="6">
       <Box {...props}>
         <div style={{ position: 'relative', width: '100%', height: '100%' }}>
-          {children}
-          {markers.length > 0 && (
+          {loading ? (
+            <Skeleton data-test="chart-skeleton" style={{ width: '100%', height: '100%' }} />
+          ) : (
+            children
+          )}
+          {!loading && markers.length > 0 && (
             <ChartAnnotationMarkers
               markers={markers}
               onClick={onAnnotationClick}

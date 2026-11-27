@@ -1,14 +1,14 @@
 import { Grid, Row, Text, Tooltip, TooltipContent, TooltipTrigger } from '@umami/react-zen';
 import { addHours, format, startOfDay } from 'date-fns';
 import { Fragment } from 'react';
-import { LoadingPanel } from '@/components/common/LoadingPanel';
+import { ErrorMessage } from '@/components/common/ErrorMessage';
 import { useLocale, useMessages, useWeeklyTrafficQuery } from '@/components/hooks';
 import { TIME_FORMATS } from '@/lib/constants';
 import { getDayOfWeekAsDate } from '@/lib/date';
 import { formatLongNumber } from '@/lib/format';
 
 export function WeeklyTraffic({ websiteId }: { websiteId: string }) {
-  const { data, isLoading, error } = useWeeklyTrafficQuery(websiteId);
+  const { data, isLoading, isFetching, error } = useWeeklyTrafficQuery(websiteId);
   const { dateLocale, timeFormat } = useLocale();
   const { labels, t } = useMessages();
   const { weekStartsOn } = dateLocale.options;
@@ -37,90 +37,94 @@ export function WeeklyTraffic({ websiteId }: { websiteId: string }) {
       }, [])
     : [];
 
+  const isPending = isLoading || isFetching;
+
+  if (error && !isPending) {
+    return <ErrorMessage />;
+  }
+
+  // The grid does not depend on the data, so it stays in place while loading, with empty dots.
+  const emptyDay = Array(24).fill(0);
+
   return (
-    <LoadingPanel data={data} isLoading={isLoading} error={error}>
-      <Grid columns="repeat(8, 1fr)" gap>
-        {data && (
-          <>
-            <Row>&nbsp;</Row>
-            {daysOfWeek.map((index: number) => (
-              <Row key={index} alignItems="center" justifyContent="center">
-                <Text weight="bold" align="center">
-                  {format(getDayOfWeekAsDate(index), 'EEE', { locale: dateLocale })}
+    <Grid columns="repeat(8, 1fr)" gap aria-busy={isPending}>
+      <Row>&nbsp;</Row>
+      {daysOfWeek.map((index: number) => (
+        <Row key={index} alignItems="center" justifyContent="center">
+          <Text weight="bold" align="center">
+            {format(getDayOfWeekAsDate(index), 'EEE', { locale: dateLocale })}
+          </Text>
+        </Row>
+      ))}
+      <Grid rows="repeat(24, 16px)" gap="1">
+        {Array(24)
+          .fill(null)
+          .map((_, i) => {
+            const label = format(
+              addHours(startOfDay(new Date()), i),
+              timeFormat === TIME_FORMATS.h24 ? 'H' : 'haaa',
+              { locale: dateLocale },
+            );
+            return (
+              <Row key={i} justifyContent="flex-end">
+                <Text color="muted" size="sm">
+                  {label}
                 </Text>
               </Row>
-            ))}
-            <Grid rows="repeat(24, 16px)" gap="1">
-              {Array(24)
-                .fill(null)
-                .map((_, i) => {
-                  const label = format(
-                    addHours(startOfDay(new Date()), i),
-                    timeFormat === TIME_FORMATS.h24 ? 'H' : 'haaa',
-                    { locale: dateLocale },
-                  );
-                  return (
-                    <Row key={i} justifyContent="flex-end">
-                      <Text color="muted" size="sm">
-                        {label}
-                      </Text>
-                    </Row>
-                  );
-                })}
-            </Grid>
-            {daysOfWeek.map((index: number) => {
-              const day = data[index];
-              return (
-                <Grid
-                  rows="repeat(24, 16px)"
-                  justifyContent="center"
+            );
+          })}
+      </Grid>
+      {daysOfWeek.map((index: number) => {
+        const day = isPending || !data ? emptyDay : data[index];
+        return (
+          <Grid
+            rows="repeat(24, 16px)"
+            justifyContent="center"
+            alignItems="center"
+            key={index}
+            gap="1"
+          >
+            {day?.map((count: number, j) => {
+              const pct = max ? count / max : 0;
+              const cell = (
+                <Row
+                  tabIndex={0}
                   alignItems="center"
-                  key={index}
-                  gap="1"
+                  justifyContent="center"
+                  backgroundColor="muted"
+                  width="16px"
+                  height="16px"
+                  borderRadius="full"
+                  style={{ margin: '0 auto' }}
+                  className={isPending ? 'animate-pulse' : undefined}
+                  role="button"
                 >
-                  {day?.map((count: number, j) => {
-                    const pct = max ? count / max : 0;
-                    const cell = (
-                      <Row
-                        tabIndex={0}
-                        alignItems="center"
-                        justifyContent="center"
-                        backgroundColor="muted"
-                        width="16px"
-                        height="16px"
-                        borderRadius="full"
-                        style={{ margin: '0 auto' }}
-                        role="button"
-                      >
-                        <Row
-                          backgroundColor="primary"
-                          width="16px"
-                          height="16px"
-                          borderRadius="full"
-                          style={{ opacity: pct, transform: `scale(${pct})` }}
-                        />
-                      </Row>
-                    );
+                  <Row
+                    backgroundColor="primary"
+                    width="16px"
+                    height="16px"
+                    borderRadius="full"
+                    style={{ opacity: pct, transform: `scale(${pct})` }}
+                  />
+                </Row>
+              );
 
-                    if (count <= 0) {
-                      return <Fragment key={j}>{cell}</Fragment>;
-                    }
+              if (count <= 0) {
+                return <Fragment key={j}>{cell}</Fragment>;
+              }
 
-                    return (
-                      <Tooltip key={j}>
-                        <TooltipTrigger delay={0} render={cell} />
-                        <TooltipContent side="right">
-                          {`${t(labels.visitors)}: ${formatLongNumber(count)}`}
-                        </TooltipContent>
-                      </Tooltip>
-                    );
-                  })}
-                </Grid>
+              return (
+                <Tooltip key={j}>
+                  <TooltipTrigger delay={0} render={cell} />
+                  <TooltipContent side="right">
+                    {`${t(labels.visitors)}: ${formatLongNumber(count)}`}
+                  </TooltipContent>
+                </Tooltip>
               );
             })}
-          </>
-        )}
-      </Grid>
-    </LoadingPanel>
+          </Grid>
+        );
+      })}
+    </Grid>
   );
 }

@@ -1,7 +1,7 @@
 import { Grid, Icon, Row, Text } from '@umami/react-zen';
 import { useEffect, useMemo } from 'react';
+import { ErrorMessage } from '@/components/common/ErrorMessage';
 import { LinkButton } from '@/components/common/LinkButton';
-import { LoadingPanel } from '@/components/common/LoadingPanel';
 import { useMessages, useNavigation, useShare, useWebsiteMetricsQuery } from '@/components/hooks';
 import { ArrowRight } from '@/components/icons';
 import { MetricLabel } from '@/components/metrics/MetricLabel';
@@ -86,23 +86,36 @@ export function MetricsTable({
     return filterLink ? <MetricLabel type={type} data={row} /> : row.label;
   };
 
+  const isPending = isLoading || isFetching;
+
+  if (error && !isPending) {
+    return <ErrorMessage />;
+  }
+
   return (
-    <LoadingPanel data={data} isFetching={isFetching} isLoading={isLoading} error={error}>
-      <Grid>
-        {data && <ListTable {...props} data={filteredData} renderLabel={renderLabel} />}
-        {showMore && limit && (
-          <Row justifyContent="end" paddingTop="4">
-            <LinkButton href={getMoreUrl()} variant="ghost">
-              <Row alignItems="center" gap="2">
-                <Text>{t(labels.more)}</Text>
-                <Icon>
-                  <ArrowRight />
-                </Icon>
-              </Row>
-            </LinkButton>
-          </Row>
-        )}
-      </Grid>
-    </LoadingPanel>
+    <Grid aria-busy={isPending}>
+      {(data || isPending) && (
+        <ListTable
+          {...props}
+          data={filteredData}
+          renderLabel={renderLabel}
+          loading={isPending}
+          // Keep the height steady when refetching a list that already has rows.
+          loadingRows={filteredData.length || limit || undefined}
+        />
+      )}
+      {showMore && limit && (
+        <Row justifyContent="end" paddingTop="4">
+          <LinkButton href={getMoreUrl()} variant="ghost">
+            <Row alignItems="center" gap="2">
+              <Text>{t(labels.more)}</Text>
+              <Icon>
+                <ArrowRight />
+              </Icon>
+            </Row>
+          </LinkButton>
+        </Row>
+      )}
+    </Grid>
   );
 }

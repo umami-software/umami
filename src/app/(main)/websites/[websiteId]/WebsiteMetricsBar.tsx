@@ -1,4 +1,4 @@
-import { LoadingPanel } from '@/components/common/LoadingPanel';
+import { ErrorMessage } from '@/components/common/ErrorMessage';
 import { useDateRange, useMessages, useTimezone } from '@/components/hooks';
 import { useWebsiteStatsQuery } from '@/components/hooks/queries/useWebsiteStatsQuery';
 import { MetricCard } from '@/components/metrics/MetricCard';
@@ -24,7 +24,7 @@ export function WebsiteMetricsBar({
 }) {
   const { timezone } = useTimezone();
   const { isAllTime, dateCompare, hasComparison } = useDateRange({ timezone });
-  const { t, labels, getErrorMessage } = useMessages();
+  const { t, labels } = useMessages();
   const { data, isLoading, isFetching, error } = useWebsiteStatsQuery({
     websiteId,
     compare: compareMode ? dateCompare?.compare : undefined,
@@ -73,30 +73,45 @@ export function WebsiteMetricsBar({
       ]
     : null;
 
+  const isPending = isLoading || isFetching;
+
+  if (error && !isPending) {
+    return <ErrorMessage />;
+  }
+
+  if (!isPending && !metrics) {
+    return null;
+  }
+
+  // While loading, show the same cards with placeholders so the bar keeps its size.
+  const cards: Partial<WebsiteMetric>[] =
+    !isPending && metrics
+      ? metrics
+      : [
+          t(labels.visitors),
+          t(labels.visits),
+          t(labels.views),
+          t(labels.bounceRate),
+          t(labels.visitDuration),
+        ].map(label => ({ label }));
+
   return (
-    <LoadingPanel
-      data={metrics}
-      isLoading={isLoading}
-      isFetching={isFetching}
-      error={getErrorMessage(error)}
-      minHeight="136px"
-    >
-      <MetricsBar>
-        {metrics?.map(({ label, value, prev, change, formatValue, reverseColors }) => {
-          return (
-            <MetricCard
-              key={label}
-              value={value}
-              previousValue={prev}
-              label={label}
-              change={change}
-              formatValue={formatValue}
-              reverseColors={reverseColors}
-              showChange={!isAllTime && hasComparison}
-            />
-          );
-        })}
-      </MetricsBar>
-    </LoadingPanel>
+    <MetricsBar aria-busy={isPending}>
+      {cards.map(({ label, value, prev, change, formatValue, reverseColors }) => {
+        return (
+          <MetricCard
+            key={label}
+            value={value}
+            previousValue={prev}
+            label={label}
+            change={change}
+            formatValue={formatValue}
+            reverseColors={reverseColors}
+            showChange={!isAllTime && hasComparison}
+            loading={isPending}
+          />
+        );
+      })}
+    </MetricsBar>
   );
 }

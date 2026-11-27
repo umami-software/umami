@@ -1,4 +1,4 @@
-import { Column, Grid, Row, Text } from '@umami/react-zen';
+import { Column, Grid, Row, Skeleton, Text } from '@umami/react-zen';
 import { useSpring, useTransform } from 'motion/react';
 import { type ReactNode, useEffect } from 'react';
 import { List, type RowComponentProps } from 'react-window';
@@ -9,6 +9,19 @@ import { useReducedMotion } from '@/components/hooks/useReducedMotion';
 import { formatLongNumber } from '@/lib/format';
 
 const ITEM_SIZE = 30;
+// Varied label widths so placeholder rows read as a list rather than a block.
+const SKELETON_LABEL_WIDTHS = [
+  '70%',
+  '55%',
+  '62%',
+  '48%',
+  '66%',
+  '52%',
+  '58%',
+  '44%',
+  '60%',
+  '50%',
+];
 
 interface ListData {
   label: string;
@@ -28,6 +41,10 @@ export interface ListTableProps {
   showPercentage?: boolean;
   itemCount?: number;
   formatCount?: (n: number) => string;
+  /** Shows placeholder rows in place of the data, keeping the header. */
+  loading?: boolean;
+  /** Number of placeholder rows while `loading` (default: 10). */
+  loadingRows?: number;
 }
 
 export function ListTable({
@@ -41,6 +58,8 @@ export function ListTable({
   showPercentage = true,
   itemCount = 10,
   formatCount,
+  loading = false,
+  loadingRows = 10,
 }: ListTableProps) {
   const { t, labels } = useMessages();
   const { isPhone } = useMobile();
@@ -84,8 +103,13 @@ export function ListTable({
         </Text>
       </Grid>
       <Column gap="1">
-        {data?.length === 0 && <Empty />}
-        {virtualize && data.length > 0 ? (
+        {loading ? (
+          Array.from({ length: loadingRows }, (_, index) => (
+            <SkeletonRow key={index} index={index} showPercentage={showPercentage} />
+          ))
+        ) : data?.length === 0 ? (
+          <Empty />
+        ) : virtualize ? (
           <List
             style={{ width: '100%', height: itemCount * ITEM_SIZE }}
             defaultHeight={itemCount * ITEM_SIZE}
@@ -99,6 +123,34 @@ export function ListTable({
         )}
       </Column>
     </Column>
+  );
+}
+
+function SkeletonRow({ index, showPercentage }: { index: number; showPercentage: boolean }) {
+  return (
+    <Grid
+      data-test="list-skeleton-row"
+      columns={showPercentage ? '1fr 50px 50px' : '1fr 100px'}
+      paddingLeft="2"
+      alignItems="center"
+      gap
+      style={{ height: ITEM_SIZE }}
+    >
+      <Skeleton
+        style={{
+          width: SKELETON_LABEL_WIDTHS[index % SKELETON_LABEL_WIDTHS.length],
+          height: 14,
+        }}
+      />
+      <Row justifyContent={showPercentage ? 'flex-end' : 'center'}>
+        <Skeleton style={{ width: 32, height: 14 }} />
+      </Row>
+      {showPercentage && (
+        <Row paddingLeft="3" border="left" borderColor="input" height="100%" alignItems="center">
+          <Skeleton style={{ width: 28, height: 14 }} />
+        </Row>
+      )}
+    </Grid>
   );
 }
 

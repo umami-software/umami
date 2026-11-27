@@ -7,6 +7,7 @@ const mocks = vi.hoisted(() => ({
   updateParams: vi.fn((params: Record<string, unknown>) => params),
   unit: 'day',
   chartProps: null as any,
+  query: null as any,
 }));
 
 vi.mock('@/components/hooks', async importOriginal => ({
@@ -26,12 +27,13 @@ vi.mock('@/components/hooks', async importOriginal => ({
 }));
 
 vi.mock('@/components/hooks/queries/useWebsitePageviewsQuery', () => ({
-  useWebsitePageviewsQuery: () => ({
-    data: { pageviews: [], sessions: [] },
-    isLoading: false,
-    isFetching: false,
-    error: null,
-  }),
+  useWebsitePageviewsQuery: () =>
+    mocks.query ?? {
+      data: { pageviews: [], sessions: [] },
+      isLoading: false,
+      isFetching: false,
+      error: null,
+    },
 }));
 
 vi.mock('@/components/metrics/PageviewsChart', () => ({
@@ -45,6 +47,7 @@ beforeEach(() => {
   mocks.push.mockClear();
   mocks.unit = 'day';
   mocks.chartProps = null;
+  mocks.query = null;
 });
 
 test('makes bars clickable when the page opts in', () => {
@@ -58,4 +61,11 @@ test('keeps bar clicks off unless the page opts in', () => {
   render(<WebsiteChart websiteId="website-1" />);
 
   expect(mocks.chartProps.onBarClick).toBeUndefined();
+});
+
+test('shows the chart placeholder while the data loads', () => {
+  mocks.query = { data: undefined, isLoading: true, isFetching: true, error: null };
+  render(<WebsiteChart websiteId="website-1" />);
+
+  expect(mocks.chartProps.loading).toBe(true);
 });
