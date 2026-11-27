@@ -13,6 +13,7 @@ import {
   useTeamQuery,
   useTwoFactorStatusQuery,
 } from '@/components/hooks';
+import { useSystemTheme } from '@/components/hooks/useThemeMode';
 import { PasswordChangeRequiredModal } from '@/components/modals/PasswordChangeRequiredModal';
 import { TwoFactorSetupModal } from '@/components/modals/TwoFactorSetupModal';
 import { LAST_TEAM_CONFIG } from '@/lib/constants';
@@ -20,6 +21,7 @@ import { removeItem, setItem } from '@/lib/storage';
 import { UpdateNotice } from './UpdateNotice';
 
 export function App({ children }) {
+  useSystemTheme();
   const { user, isLoading, error } = useLoginQuery();
   const config = useConfig();
   const { pathname, router, teamId } = useNavigation();

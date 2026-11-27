@@ -16,10 +16,10 @@ import {
   Tooltip,
   TooltipContent,
   TooltipTrigger,
-  useTheme,
 } from '@umami/react-zen';
 import { useRouter } from 'next/navigation';
 import { useConfig, useLoginQuery, useMessages, useMobile } from '@/components/hooks';
+import { useThemeMode } from '@/components/hooks/useThemeMode';
 import {
   BookText,
   ExternalLink,
@@ -27,13 +27,21 @@ import {
   LifeBuoy,
   LockKeyhole,
   LogOut,
+  Monitor,
   Moon,
   Sun,
   SunMoon,
   UserCircle,
 } from '@/components/icons';
 import { LanguageMenu } from '@/components/input/LanguageMenu';
+import type { ThemeMode } from '@/components/input/ThemeModeSelector';
 import { DOCS_URL } from '@/lib/constants';
+
+const THEME_OPTIONS = [
+  { mode: 'system', Icon: Monitor },
+  { mode: 'light', Icon: Sun },
+  { mode: 'dark', Icon: Moon },
+] as const;
 
 export interface UserButtonProps {
   showText?: boolean;
@@ -44,7 +52,7 @@ export function UserButton({ showText = true, onClose }: UserButtonProps) {
   const { user } = useLoginQuery();
   const { cloudMode } = useConfig();
   const { t, labels } = useMessages();
-  const { theme, setTheme } = useTheme();
+  const { mode, setThemeMode } = useThemeMode();
   const { isMobile } = useMobile();
   const router = useRouter();
 
@@ -64,8 +72,8 @@ export function UserButton({ showText = true, onClose }: UserButtonProps) {
     }
   };
 
-  const handleSelectTheme = (key: 'light' | 'dark') => {
-    setTheme(key);
+  const handleSelectTheme = (mode: ThemeMode) => {
+    setThemeMode(mode);
     onClose?.();
   };
 
@@ -146,27 +154,20 @@ export function UserButton({ showText = true, onClose }: UserButtonProps) {
             side={isMobile ? 'bottom' : 'right'}
             align={isMobile ? 'start' : 'end'}
           >
-            <DropdownMenuRadioGroup value={theme}>
-              <DropdownMenuRadioItem
-                value="light"
-                closeOnClick
-                onClick={() => handleSelectTheme('light')}
-              >
-                <Icon>
-                  <Sun />
-                </Icon>
-                <Text weight={theme === 'light' ? 'bold' : undefined}>Light</Text>
-              </DropdownMenuRadioItem>
-              <DropdownMenuRadioItem
-                value="dark"
-                closeOnClick
-                onClick={() => handleSelectTheme('dark')}
-              >
-                <Icon>
-                  <Moon />
-                </Icon>
-                <Text weight={theme === 'dark' ? 'bold' : undefined}>Dark</Text>
-              </DropdownMenuRadioItem>
+            <DropdownMenuRadioGroup value={mode}>
+              {THEME_OPTIONS.map(({ mode: option, Icon: ThemeIcon }) => (
+                <DropdownMenuRadioItem
+                  key={option}
+                  value={option}
+                  closeOnClick
+                  onClick={() => handleSelectTheme(option)}
+                >
+                  <Icon>
+                    <ThemeIcon />
+                  </Icon>
+                  <Text weight={mode === option ? 'bold' : undefined}>{t(labels[option])}</Text>
+                </DropdownMenuRadioItem>
+              ))}
             </DropdownMenuRadioGroup>
           </DropdownMenuSubContent>
         </DropdownMenuSub>

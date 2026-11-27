@@ -1,6 +1,6 @@
 import { SidebarProvider } from '@umami/react-zen';
 import type { ReactElement } from 'react';
-import { expect, test, vi } from 'vitest';
+import { afterEach, expect, test, vi } from 'vitest';
 import { render, screen } from '@/test/render';
 import { UserButton } from './UserButton';
 
@@ -16,11 +16,14 @@ vi.mock('@/components/hooks', () => ({
     t: (value: string) => value,
     labels: {
       admin: 'Admin',
+      dark: 'Dark',
       documentation: 'Documentation',
       language: 'Language',
+      light: 'Light',
       logout: 'Logout',
       settings: 'Settings',
       support: 'Support',
+      system: 'System',
       theme: 'Theme',
     },
   }),
@@ -31,6 +34,8 @@ vi.mock('@/components/hooks', () => ({
 function renderButton(ui: ReactElement) {
   return render(<SidebarProvider>{ui}</SidebarProvider>);
 }
+
+afterEach(() => localStorage.removeItem('theme'));
 
 test('renders as a sidebar menu button and opens its menu', async () => {
   const { user } = renderButton(<UserButton />);
@@ -74,4 +79,29 @@ test('closes the menu after selecting logout', async () => {
   await user.click(screen.getByRole('menuitem', { name: 'Logout' }));
 
   expect(screen.queryByRole('menuitem', { name: 'Logout' })).not.toBeInTheDocument();
+});
+
+test('selects and remembers System even when the device is already using the saved theme', async () => {
+  localStorage.setItem('theme', 'light');
+  const { user } = renderButton(<UserButton />);
+  const button = screen.getByRole('button', { name: 'admin' });
+
+  async function openThemeMenu() {
+    button.focus();
+    await user.keyboard('{Enter}');
+    screen.getByRole('menuitem', { name: 'Theme' }).focus();
+    await user.keyboard('{ArrowRight}');
+    return screen.findByRole('menuitemradio', { name: 'System' });
+  }
+
+  const system = await openThemeMenu();
+  expect(screen.getByRole('menuitemradio', { name: 'Light' })).toBeChecked();
+  expect(screen.getByRole('menuitemradio', { name: 'Dark' })).not.toBeChecked();
+  expect(system).not.toBeChecked();
+
+  await user.click(system);
+
+  expect(localStorage.getItem('theme')).toBeNull();
+  expect(screen.queryByRole('menuitem', { name: 'Theme' })).not.toBeInTheDocument();
+  expect(await openThemeMenu()).toBeChecked();
 });
