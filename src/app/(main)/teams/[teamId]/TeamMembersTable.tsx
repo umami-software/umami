@@ -1,4 +1,4 @@
-import { DataColumn, DataTable, Row } from '@umami/react-zen';
+import { DataColumn, DataTable, type DataTableProps, Row } from '@umami/react-zen';
 import { useMessages } from '@/components/hooks';
 import { ROLES } from '@/lib/constants';
 import { TeamMemberEditButton } from './TeamMemberEditButton';
@@ -8,7 +8,8 @@ export function TeamMembersTable({
   data = [],
   teamId,
   allowEdit = false,
-}: {
+  ...props
+}: DataTableProps & {
   data: any[];
   teamId: string;
   allowEdit: boolean;
@@ -23,7 +24,7 @@ export function TeamMembersTable({
   };
 
   return (
-    <DataTable data={data}>
+    <DataTable {...props} data={data}>
       <DataColumn id="username" label={t(labels.username)}>
         {(row: any) => row?.user?.username}
       </DataColumn>

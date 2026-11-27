@@ -22,7 +22,7 @@ import {
   useState,
 } from 'react';
 import { Empty } from '@/components/common/Empty';
-import { LoadingPanel } from '@/components/common/LoadingPanel';
+import { ErrorMessage } from '@/components/common/ErrorMessage';
 import { Pager } from '@/components/common/Pager';
 import { useMessages, useMobile, useNavigation } from '@/components/hooks';
 import { getItem, setItem } from '@/lib/storage';
@@ -124,7 +124,47 @@ export function DataGrid({
     return () => window.clearTimeout(timer);
   }, [queryParams?.search, router, search, searchDelay, updateParams]);
 
-  const child = data ? (typeof children === 'function' ? children(data) : children) : null;
+  const isPending = isLoading || isFetching;
+  // While loading, render the table with an empty page so it can show its own placeholder rows.
+  const pageData = data ?? { data: [], count: 0, page: 1, pageSize: 0 };
+  const rowCount = Array.isArray(data?.data) ? data.data.length : 0;
+  const child = typeof children === 'function' ? children(pageData) : children;
+
+  const renderContent = () => {
+    if (!isPending && error) {
+      return <ErrorMessage />;
+    }
+
+    if (!isPending && !data) {
+      return null;
+    }
+
+    if (!isPending && !rowCount) {
+      return renderEmpty();
+    }
+
+    return (
+      <div
+        style={{
+          display: 'grid',
+          gridTemplateColumns: 'minmax(0, 1fr)',
+          overflowX: 'auto',
+        }}
+      >
+        <Column>
+          {isValidElement(child)
+            ? cloneElement(child as ReactElement<any>, {
+                displayMode,
+                cardMinWidth,
+                loading: isPending,
+                // Keep the height steady when refetching a page that already has rows.
+                loadingRows: rowCount || undefined,
+              })
+            : child}
+        </Column>
+      </div>
+    );
+  };
 
   const viewToggleButton = (
     <Tooltip>
@@ -174,29 +214,7 @@ export function DataGrid({
           {!isMobile && viewToggleButton}
         </Row>
       </Row>
-      <LoadingPanel
-        data={data?.data}
-        isLoading={isLoading}
-        isFetching={isFetching}
-        error={error}
-        renderEmpty={renderEmpty}
-      >
-        {data && (
-          <div
-            style={{
-              display: 'grid',
-              gridTemplateColumns: 'minmax(0, 1fr)',
-              overflowX: 'auto',
-            }}
-          >
-            <Column>
-              {isValidElement(child)
-                ? cloneElement(child as ReactElement<any>, { displayMode, cardMinWidth })
-                : child}
-            </Column>
-          </div>
-        )}
-      </LoadingPanel>
+      {renderContent()}
       {showPager && (
         <Row marginTop="4">
           <Pager

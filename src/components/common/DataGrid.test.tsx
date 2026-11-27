@@ -1,4 +1,5 @@
 import { act, fireEvent } from '@testing-library/react';
+import { DataColumn, DataTable } from '@umami/react-zen';
 import { afterEach, beforeEach, expect, test, vi } from 'vitest';
 import { getTestRouter, setTestUrl } from '@/test/navigation';
 import { render, screen } from '@/test/render';
@@ -83,4 +84,53 @@ test('copies a URL matching a push that never landed', () => {
   landUrl('/websites?search=shop');
 
   expect(search).toHaveValue('shop');
+});
+
+const columns = (data: any) => (
+  <DataTable data={data.data}>
+    <DataColumn id="name" label="Name" />
+  </DataTable>
+);
+
+test('shows placeholder rows in the table while loading', () => {
+  // The headers stay put so the page does not jump when the rows arrive.
+  const { container } = render(
+    <DataGrid query={{ data: undefined, isLoading: true, isFetching: true } as any}>
+      {columns}
+    </DataGrid>,
+    { route: '/websites' },
+  );
+
+  expect(screen.getByText('Name')).toBeInTheDocument();
+  expect(container.querySelectorAll('[data-slot="skeleton"]').length).toBeGreaterThan(0);
+});
+
+test('keeps the row count steady while refetching', () => {
+  const data = {
+    data: [
+      { id: '1', name: 'a' },
+      { id: '2', name: 'b' },
+    ],
+    count: 2,
+    page: 1,
+    pageSize: 10,
+  };
+  const { container } = render(
+    <DataGrid query={{ data, isLoading: false, isFetching: true } as any}>{columns}</DataGrid>,
+    { route: '/websites' },
+  );
+
+  expect(container.querySelectorAll('tbody tr')).toHaveLength(2);
+  expect(screen.queryByText('a')).not.toBeInTheDocument();
+});
+
+test('shows the rows once loaded', () => {
+  const data = { data: [{ id: '1', name: 'a' }], count: 1, page: 1, pageSize: 10 };
+  const { container } = render(
+    <DataGrid query={{ data, isLoading: false, isFetching: false } as any}>{columns}</DataGrid>,
+    { route: '/websites' },
+  );
+
+  expect(screen.getByText('a')).toBeInTheDocument();
+  expect(container.querySelectorAll('[data-slot="skeleton"]')).toHaveLength(0);
 });

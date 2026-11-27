@@ -1,4 +1,4 @@
-import { DataColumn, DataTable, Row } from '@umami/react-zen';
+import { DataColumn, DataTable, type DataTableProps, Row } from '@umami/react-zen';
 import { TeamMemberEditButton } from '@/app/(main)/teams/[teamId]/TeamMemberEditButton';
 import { TeamMemberRemoveButton } from '@/app/(main)/teams/[teamId]/TeamMemberRemoveButton';
 import Link from '@/components/common/Link';
@@ -10,7 +10,8 @@ export function TeamWebsitesTable({
   teamId,
   data = [],
   allowEdit,
-}: {
+  ...props
+}: DataTableProps & {
   teamId: string;
   data: any[];
   allowEdit: boolean;
@@ -18,7 +19,7 @@ export function TeamWebsitesTable({
   const { t, labels } = useMessages();
 
   return (
-    <DataTable data={data}>
+    <DataTable {...props} data={data}>
       <DataColumn id="name" label={<SortableLabel label={t(labels.name)} sortKey="name" />}>
         {(row: any) => <Link href={`/teams/${teamId}/websites/${row.id}`}>{row.name}</Link>}
       </DataColumn>
