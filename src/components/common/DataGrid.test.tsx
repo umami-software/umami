@@ -134,3 +134,15 @@ test('shows the rows once loaded', () => {
   expect(screen.getByText('a')).toBeInTheDocument();
   expect(container.querySelectorAll('[data-slot="skeleton"]')).toHaveLength(0);
 });
+
+test('shows the empty message inside the table', () => {
+  // Swapping the table for a bare message would make the page jump after loading.
+  const data = { data: [], count: 0, page: 1, pageSize: 10 };
+  const { container } = render(
+    <DataGrid query={{ data, isLoading: false, isFetching: false } as any}>{columns}</DataGrid>,
+    { route: '/websites' },
+  );
+
+  expect(screen.getByText('Name')).toBeInTheDocument();
+  expect(container.querySelector('[data-slot="data-table-empty"]')).toHaveTextContent(/\S/);
+});

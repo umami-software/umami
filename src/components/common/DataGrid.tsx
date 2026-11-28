@@ -44,6 +44,7 @@ export interface DataGridProps {
   allowPaging?: boolean;
   autoFocus?: boolean;
   renderActions?: () => ReactNode;
+  /** Shown inside the table, below its headers, when there are no rows. */
   renderEmpty?: () => ReactNode;
   /** In card view, the minimum width of a card. Cards fill as many columns as fit. */
   cardMinWidth?: string;
@@ -58,11 +59,11 @@ export function DataGrid({
   allowPaging = true,
   autoFocus,
   renderActions,
-  renderEmpty = () => <Empty />,
+  renderEmpty,
   cardMinWidth = DEFAULT_CARD_MIN_WIDTH,
   children,
 }: DataGridProps) {
-  const { t, labels } = useMessages();
+  const { t, labels, messages } = useMessages();
   const { data, error, isLoading, isFetching } = query;
   const { router, updateParams, query: queryParams } = useNavigation();
   const [search, setSearch] = useState(queryParams?.search || data?.search || '');
@@ -140,8 +141,9 @@ export function DataGrid({
       return null;
     }
 
-    if (!isPending && !rowCount) {
-      return renderEmpty();
+    // Without a table to hold it, show the empty message on its own.
+    if (!isPending && !rowCount && !isValidElement(child)) {
+      return renderEmpty ? renderEmpty() : <Empty />;
     }
 
     return (
@@ -153,6 +155,8 @@ export function DataGrid({
                   displayMode,
                   cardMinWidth,
                   loading: isPending,
+                  // An empty result keeps the table's headers, matching the loading state.
+                  emptyState: renderEmpty ? renderEmpty() : t(messages.noDataAvailable),
                   // Keep the height steady when refetching a page that already has rows.
                   loadingRows: rowCount || undefined,
                 })
