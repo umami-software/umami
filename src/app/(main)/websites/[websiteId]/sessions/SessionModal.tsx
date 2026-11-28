@@ -1,7 +1,8 @@
 'use client';
-import { Column, Dialog, DialogContent } from '@umami/react-zen';
+import { Dialog, DialogContent } from '@umami/react-zen';
 import { SessionProfile } from '@/app/(main)/websites/[websiteId]/sessions/SessionProfile';
-import { useMobile, useNavigation } from '@/components/hooks';
+import { OverlayScrollArea } from '@/components/common/OverlayScrollArea';
+import { useNavigation } from '@/components/hooks';
 import { useApp } from '@/store/app';
 
 export interface SessionModalProps {
@@ -16,7 +17,6 @@ export function SessionModal({ websiteId, className }: SessionModalProps) {
     query: { session },
     updateParams,
   } = useNavigation();
-  const { isMobile } = useMobile();
   const isSharePage = pathname.includes('/share/');
   const shareParameters = useApp((state: any) => state.share?.parameters);
   // Session detail is only served to shares that include the Sessions section.
@@ -38,24 +38,20 @@ export function SessionModal({ websiteId, className }: SessionModalProps) {
           width: 'min(calc(100dvw - 48px), 1320px)',
           maxWidth: 'calc(100% - 2rem)',
           height: 'calc(100dvh - 80px)',
-          overflowY: 'auto',
+          gridTemplateRows: 'minmax(0, 1fr)',
+          padding: 0,
+          overflow: 'hidden',
         }}
         showCloseButton={false}
       >
-        <Column
-          paddingX={isMobile ? '6' : '10'}
-          paddingTop="6"
-          paddingBottom={isMobile ? '6' : '10'}
-          minWidth="0"
-          width="100%"
-        >
+        <OverlayScrollArea style={{ height: '100%' }}>
           <SessionProfile
             websiteId={websiteId}
             sessionId={session}
             showReplays={!isSharePage}
             onClose={() => handleOpenChange(false)}
           />
-        </Column>
+        </OverlayScrollArea>
       </DialogContent>
     </Dialog>
   );

@@ -1,13 +1,7 @@
-import {
-  Button,
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from '@umami/react-zen';
+import { Button, Dialog, DialogHeader, DialogTitle, DialogTrigger } from '@umami/react-zen';
 import { type ComponentProps, type CSSProperties, type ReactNode, useState } from 'react';
 import { IconLabel } from '@/components/common/IconLabel';
+import { ScrollableDialogContent } from '@/components/common/ScrollableDialogContent';
 import { useMobile } from '@/components/hooks';
 import styles from './DialogButton.module.css';
 
@@ -66,7 +60,6 @@ export function DialogButton({
     minHeight,
     maxWidth: 'calc(100% - 2rem)',
     maxHeight: 'min(80dvh, calc(100dvh - 40px))',
-    overflowY: 'auto',
   };
 
   if (isMobile) {
@@ -88,7 +81,7 @@ export function DialogButton({
           <IconLabel icon={icon} label={label} />
         </DialogTrigger>
       )}
-      <DialogContent
+      <ScrollableDialogContent
         showCloseButton={false}
         className={[styles.dialog, dialogClassName].filter(Boolean).join(' ')}
         style={style}
@@ -99,7 +92,7 @@ export function DialogButton({
           </DialogHeader>
         )}
         {typeof children === 'function' ? children({ close }) : children}
-      </DialogContent>
+      </ScrollableDialogContent>
     </Dialog>
   );
 }

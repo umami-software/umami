@@ -16,11 +16,11 @@ import {
   useRef,
   useState,
 } from 'react';
+import { OverlayScrollArea } from '@/components/common/OverlayScrollArea';
 import { ChevronRight } from '@/components/icons';
 
 const listStyle = {
   maxHeight: 'min(320px, calc(100dvh - 8rem))',
-  overflowY: 'auto' as const,
 };
 
 interface MultiSelectContextValue {
@@ -115,6 +115,8 @@ export function MultiSelect({
           style={{
             width: 'var(--anchor-width)',
             maxWidth: 'var(--available-width)',
+            // The list scrolls in its own scroll area, so the menu itself never does.
+            overflow: 'hidden',
           }}
         >
           {allowSearch && (
@@ -130,10 +132,12 @@ export function MultiSelect({
               }}
             />
           )}
-          <div style={listStyle}>
-            {children}
-            {Children.count(children) === 0 && renderEmptyState?.()}
-          </div>
+          <OverlayScrollArea style={listStyle}>
+            <div>
+              {children}
+              {Children.count(children) === 0 && renderEmptyState?.()}
+            </div>
+          </OverlayScrollArea>
         </DropdownMenuContent>
       </DropdownMenu>
     </MultiSelectContext.Provider>

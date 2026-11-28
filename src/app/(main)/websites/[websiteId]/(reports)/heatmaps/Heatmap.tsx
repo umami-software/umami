@@ -3,7 +3,6 @@ import {
   Button,
   Column,
   Dialog,
-  DialogContent,
   DialogHeader,
   DialogTitle,
   Grid,
@@ -23,6 +22,8 @@ import { Laptop, Monitor, Smartphone, Tablet } from 'lucide-react';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { IconLabel } from '@/components/common/IconLabel';
 import { LoadingPanel } from '@/components/common/LoadingPanel';
+import { OverlayScrollArea } from '@/components/common/OverlayScrollArea';
+import { ScrollableDialogContent } from '@/components/common/ScrollableDialogContent';
 import { useHeatmapQuery, useMobile } from '@/components/hooks';
 import { ListCheck } from '@/components/icons';
 import { formatLongNumber } from '@/lib/format';
@@ -188,7 +189,7 @@ export function Heatmap({ websiteId, urlPath, onUrlPathChange, mode, search }: H
           )}
 
           <Dialog open={isPagePickerOpen} onOpenChange={isOpen => setIsPagePickerOpen(isOpen)}>
-            <DialogContent
+            <ScrollableDialogContent
               showCloseButton
               style={{
                 width: '100%',
@@ -196,7 +197,6 @@ export function Heatmap({ websiteId, urlPath, onUrlPathChange, mode, search }: H
                 maxWidth: '100%',
                 maxHeight: '100%',
                 borderRadius: 0,
-                overflowY: 'auto',
                 padding: '24px',
               }}
             >
@@ -214,7 +214,7 @@ export function Heatmap({ websiteId, urlPath, onUrlPathChange, mode, search }: H
                 hasSearch={Boolean(search)}
                 showHeading={false}
               />
-            </DialogContent>
+            </ScrollableDialogContent>
           </Dialog>
         </Column>
       ) : (
@@ -278,25 +278,27 @@ function PageList({
   return (
     <Column className={styles.pageList} gap="1">
       {showHeading && <Heading size="lg">Pages</Heading>}
-      <Column className={styles.pageListItems} gap="2">
-        {pages.length === 0 && hasSearch && <Text color="muted">No matching pages</Text>}
-        {pages.map(page => (
-          <button
-            key={page.urlPath}
-            type="button"
-            onClick={() => onSelect(page.urlPath)}
-            title={page.urlPath}
-            className={`${styles.pageButton} ${selected === page.urlPath ? styles.pageButtonSelected : ''}`}
-          >
-            <Row alignItems="center" justifyContent="space-between" gap="2">
-              <Text truncate>{page.urlPath}</Text>
-              <Text color="muted" className={styles.pageMetric} title={getPageMetricTitle(page)}>
-                {formatLongNumber(page.sessions)}
-              </Text>
-            </Row>
-          </button>
-        ))}
-      </Column>
+      <OverlayScrollArea className={styles.pageListItems}>
+        <Column className={styles.pageListItemsContent} gap="2">
+          {pages.length === 0 && hasSearch && <Text color="muted">No matching pages</Text>}
+          {pages.map(page => (
+            <button
+              key={page.urlPath}
+              type="button"
+              onClick={() => onSelect(page.urlPath)}
+              title={page.urlPath}
+              className={`${styles.pageButton} ${selected === page.urlPath ? styles.pageButtonSelected : ''}`}
+            >
+              <Row alignItems="center" justifyContent="space-between" gap="2">
+                <Text truncate>{page.urlPath}</Text>
+                <Text color="muted" className={styles.pageMetric} title={getPageMetricTitle(page)}>
+                  {formatLongNumber(page.sessions)}
+                </Text>
+              </Row>
+            </button>
+          ))}
+        </Column>
+      </OverlayScrollArea>
     </Column>
   );
 }
@@ -728,68 +730,70 @@ function ClickHeatmapView({
         )}
       </Column>
 
-      <div ref={fit.wrapperRef} className={styles.canvasWrapper}>
-        <div
-          className={styles.canvas}
-          style={{
-            width: canvasWidth,
-            height: canvasHeight,
-            aspectRatio: `${Math.max(1, renderWidth)} / ${Math.max(1, renderHeight)}`,
-          }}
-        >
-          {showLoading ? (
-            <CanvasLoading />
-          ) : !viewport || visible.length === 0 ? (
-            <EmptyState message="No click data for this page yet." />
-          ) : (
-            <div
-              className={styles.canvasSurface}
-              style={{
-                width: Math.max(1, renderWidth),
-                height: Math.max(1, renderHeight),
-                transform: `scale(${fit.scale})`,
-              }}
-            >
-              <div className={styles.snapshotClip}>
-                {shouldRenderSnapshot && !snapshotReady && <CanvasLoading />}
-                {shouldRenderSnapshot && snapshot && (
-                  <SnapshotPreview snapshot={snapshot} onReady={handleSnapshotReady} />
+      <OverlayScrollArea className={styles.canvasScroll}>
+        <div ref={fit.wrapperRef} className={styles.canvasWrapper}>
+          <div
+            className={styles.canvas}
+            style={{
+              width: canvasWidth,
+              height: canvasHeight,
+              aspectRatio: `${Math.max(1, renderWidth)} / ${Math.max(1, renderHeight)}`,
+            }}
+          >
+            {showLoading ? (
+              <CanvasLoading />
+            ) : !viewport || visible.length === 0 ? (
+              <EmptyState message="No click data for this page yet." />
+            ) : (
+              <div
+                className={styles.canvasSurface}
+                style={{
+                  width: Math.max(1, renderWidth),
+                  height: Math.max(1, renderHeight),
+                  transform: `scale(${fit.scale})`,
+                }}
+              >
+                <div className={styles.snapshotClip}>
+                  {shouldRenderSnapshot && !snapshotReady && <CanvasLoading />}
+                  {shouldRenderSnapshot && snapshot && (
+                    <SnapshotPreview snapshot={snapshot} onReady={handleSnapshotReady} />
+                  )}
+                </div>
+                {showOverlay && (
+                  <div className={styles.overlay}>
+                    {visible.map((point, index) => {
+                      const intensity = Math.min(1, point.count / maxCount);
+                      const desiredSize = 24 + intensity * 36;
+                      const size = desiredSize;
+                      const centerX = Math.max(0, Math.min(overlayPageW, point.pageX));
+                      // Don't clamp to the canvas height: points below the real
+                      // content overflow and are clipped by the canvas instead of
+                      // piling up on the bottom edge.
+                      const centerY = Math.max(0, point.pageY);
+
+                      return (
+                        <div
+                          key={`${point.pageX}-${point.pageY}-${index}`}
+                          className={styles.dot}
+                          style={{
+                            left: centerX,
+                            top: centerY,
+                            width: size,
+                            height: size,
+                            transform: 'translate(-50%, -50%)',
+                            opacity: 0.25 + intensity * 0.55,
+                          }}
+                          title={`${point.count} click${point.count === 1 ? '' : 's'}`}
+                        />
+                      );
+                    })}
+                  </div>
                 )}
               </div>
-              {showOverlay && (
-                <div className={styles.overlay}>
-                  {visible.map((point, index) => {
-                    const intensity = Math.min(1, point.count / maxCount);
-                    const desiredSize = 24 + intensity * 36;
-                    const size = desiredSize;
-                    const centerX = Math.max(0, Math.min(overlayPageW, point.pageX));
-                    // Don't clamp to the canvas height: points below the real
-                    // content overflow and are clipped by the canvas instead of
-                    // piling up on the bottom edge.
-                    const centerY = Math.max(0, point.pageY);
-
-                    return (
-                      <div
-                        key={`${point.pageX}-${point.pageY}-${index}`}
-                        className={styles.dot}
-                        style={{
-                          left: centerX,
-                          top: centerY,
-                          width: size,
-                          height: size,
-                          transform: 'translate(-50%, -50%)',
-                          opacity: 0.25 + intensity * 0.55,
-                        }}
-                        title={`${point.count} click${point.count === 1 ? '' : 's'}`}
-                      />
-                    );
-                  })}
-                </div>
-              )}
-            </div>
-          )}
+            )}
+          </div>
         </div>
-      </div>
+      </OverlayScrollArea>
     </Column>
   );
 }
@@ -911,76 +915,78 @@ function ScrollHeatmapView({
         </Row>
       )}
 
-      <div ref={fit.wrapperRef} className={styles.canvasWrapper}>
-        <div
-          className={styles.canvas}
-          style={{
-            width: canvasWidth,
-            height: canvasHeight,
-            aspectRatio: `${Math.max(1, renderWidth)} / ${Math.max(1, renderHeight)}`,
-          }}
-        >
-          {showLoading ? (
-            <CanvasLoading />
-          ) : !hasScrollData ? (
-            <EmptyState message="No scroll data for this page yet." />
-          ) : (
-            <div
-              className={styles.canvasSurface}
-              style={{
-                width: Math.max(1, renderWidth),
-                height: Math.max(1, renderHeight),
-                transform: `scale(${fit.scale})`,
-              }}
-            >
-              {/* Same snapshotClip wrapper as the click view: it carries the
+      <OverlayScrollArea className={styles.canvasScroll}>
+        <div ref={fit.wrapperRef} className={styles.canvasWrapper}>
+          <div
+            className={styles.canvas}
+            style={{
+              width: canvasWidth,
+              height: canvasHeight,
+              aspectRatio: `${Math.max(1, renderWidth)} / ${Math.max(1, renderHeight)}`,
+            }}
+          >
+            {showLoading ? (
+              <CanvasLoading />
+            ) : !hasScrollData ? (
+              <EmptyState message="No scroll data for this page yet." />
+            ) : (
+              <div
+                className={styles.canvasSurface}
+                style={{
+                  width: Math.max(1, renderWidth),
+                  height: Math.max(1, renderHeight),
+                  transform: `scale(${fit.scale})`,
+                }}
+              >
+                {/* Same snapshotClip wrapper as the click view: it carries the
                   Safari compositing isolation (z-index 0 + isolation) so the
                   iframe snapshot cannot paint above the overlay while
                   scrolling .canvasWrapper. See issue #4624. */}
-              <div className={styles.snapshotClip}>
-                {shouldRenderSnapshot && !snapshotReady && <CanvasLoading />}
-                {shouldRenderSnapshot && snapshot && (
-                  <SnapshotPreview snapshot={snapshot} onReady={handleSnapshotReady} />
+                <div className={styles.snapshotClip}>
+                  {shouldRenderSnapshot && !snapshotReady && <CanvasLoading />}
+                  {shouldRenderSnapshot && snapshot && (
+                    <SnapshotPreview snapshot={snapshot} onReady={handleSnapshotReady} />
+                  )}
+                </div>
+                {showOverlay && (
+                  <div className={styles.overlay}>
+                    {bands.map(band => {
+                      const intensity = band.ratio;
+                      const hue = Math.round(60 - intensity * 60);
+
+                      return (
+                        <div
+                          key={band.fromPct}
+                          className={styles.scrollBand}
+                          style={{
+                            top: `${band.fromPct}%`,
+                            height: `${Math.max(0, band.toPct - band.fromPct)}%`,
+                            background:
+                              intensity > 0
+                                ? `hsla(${hue}, 90%, 55%, ${0.12 + intensity * 0.45})`
+                                : 'none',
+                          }}
+                          title={`${band.toPct}% depth - ${formatLongNumber(band.reached)} sessions reached`}
+                        >
+                          <span
+                            className={styles.scrollBandLabel}
+                            // Counter-scale the label by the inverse of the canvas
+                            // scale so its on-screen size stays constant while the
+                            // bands resize with the rest of the overlay.
+                            style={{ transform: `scale(${1 / fit.scale})` }}
+                          >
+                            {band.toPct}% depth - {Math.round(intensity * 100)}% reached
+                          </span>
+                        </div>
+                      );
+                    })}
+                  </div>
                 )}
               </div>
-              {showOverlay && (
-                <div className={styles.overlay}>
-                  {bands.map(band => {
-                    const intensity = band.ratio;
-                    const hue = Math.round(60 - intensity * 60);
-
-                    return (
-                      <div
-                        key={band.fromPct}
-                        className={styles.scrollBand}
-                        style={{
-                          top: `${band.fromPct}%`,
-                          height: `${Math.max(0, band.toPct - band.fromPct)}%`,
-                          background:
-                            intensity > 0
-                              ? `hsla(${hue}, 90%, 55%, ${0.12 + intensity * 0.45})`
-                              : 'none',
-                        }}
-                        title={`${band.toPct}% depth - ${formatLongNumber(band.reached)} sessions reached`}
-                      >
-                        <span
-                          className={styles.scrollBandLabel}
-                          // Counter-scale the label by the inverse of the canvas
-                          // scale so its on-screen size stays constant while the
-                          // bands resize with the rest of the overlay.
-                          style={{ transform: `scale(${1 / fit.scale})` }}
-                        >
-                          {band.toPct}% depth - {Math.round(intensity * 100)}% reached
-                        </span>
-                      </div>
-                    );
-                  })}
-                </div>
-              )}
-            </div>
-          )}
+            )}
+          </div>
         </div>
-      </div>
+      </OverlayScrollArea>
     </Column>
   );
 }

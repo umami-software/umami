@@ -13,6 +13,7 @@ import {
   TextField,
 } from '@umami/react-zen';
 import { useEffect, useMemo, useState } from 'react';
+import { OverlayScrollArea } from '@/components/common/OverlayScrollArea';
 import { useApi, useMessages } from '@/components/hooks';
 import { useModified } from '@/components/hooks/useModified';
 import { LinkSelect } from '@/components/input/LinkSelect';
@@ -315,147 +316,94 @@ export function BoardComponentSelect({
   return (
     <Column gap="4">
       <Row gap="6" style={{ height: 600 }}>
-        <Column gap="3" style={{ width: 280, flexShrink: 0, overflowY: 'auto' }}>
-          <Text weight="bold">{t(labels.properties)}</Text>
+        <OverlayScrollArea style={{ width: 280, flexShrink: 0 }}>
+          <Column gap="3">
+            <Text weight="bold">{t(labels.properties)}</Text>
 
-          {needsWebsite && isOpenType && (
-            <>
-              <Column gap="2">
-                <Text size="sm" color="muted">
-                  {t(labels.type)}
-                </Text>
-                <Select
-                  items={entityTypeItems}
-                  value={selectedEntityType}
-                  onValueChange={value => handleEntityTypeChange(value as string)}
-                >
-                  <SelectTrigger className="w-full">
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent alignItemWithTrigger={false}>
-                    <SelectGroup>
-                      {entityTypeItems.map(item => (
-                        <SelectItem key={item.value} value={item.value}>
-                          {item.label}
-                        </SelectItem>
-                      ))}
-                    </SelectGroup>
-                  </SelectContent>
-                </Select>
-              </Column>
-              <Column gap="2">
-                <Text size="sm" color="muted">
-                  {selectedEntityType === BOARD_ENTITY_TYPES.pixel
-                    ? t(labels.pixel)
-                    : selectedEntityType === BOARD_ENTITY_TYPES.link
-                      ? t(labels.link)
-                      : t(labels.website)}
-                </Text>
-                {selectedEntityType === BOARD_ENTITY_TYPES.pixel ? (
-                  <PixelSelect
-                    pixelId={selectedEntityId}
-                    teamId={teamId}
-                    placeholder={t(labels.selectPixel)}
-                    onChange={value => setSelectedEntityId(value as string)}
-                  />
-                ) : selectedEntityType === BOARD_ENTITY_TYPES.link ? (
-                  <LinkSelect
-                    linkId={selectedEntityId}
-                    teamId={teamId}
-                    placeholder={t(labels.selectLink)}
-                    onChange={value => setSelectedEntityId(value as string)}
-                  />
-                ) : (
-                  <WebsiteSelect
-                    websiteId={selectedEntityId}
-                    teamId={teamId}
-                    placeholder={t(labels.selectWebsite)}
-                    onChange={value => setSelectedEntityId(value as string)}
-                  />
-                )}
-              </Column>
-            </>
-          )}
-
-          <Column gap="2">
-            <Text size="sm" color="muted">
-              {t(labels.title)}
-            </Text>
-            <TextField value={title} onValueChange={setTitle} autoComplete="off" />
-          </Column>
-
-          <Column gap="2">
-            <Text size="sm" color="muted">
-              {t(labels.description)}
-            </Text>
-            <TextField value={description} onValueChange={setDescription} autoComplete="off" />
-          </Column>
-
-          {selectedDef?.configFields && selectedDef.configFields.length > 0 && (
-            <Column gap="3">
-              {selectedDef.configFields.map((field: ConfigField) => (
-                <Column key={field.name} gap="2">
+            {needsWebsite && isOpenType && (
+              <>
+                <Column gap="2">
                   <Text size="sm" color="muted">
-                    {field.label}
+                    {t(labels.type)}
                   </Text>
-
-                  {field.type === 'select' && (
-                    <Select
-                      items={field.optionsByEntityType?.[activeEntityType] ?? field.options}
-                      value={String(configValues[field.name] ?? field.defaultValue ?? '')}
-                      onValueChange={value => handleConfigChange(field.name, value as string)}
-                    >
-                      <SelectTrigger className="w-full">
-                        <SelectValue />
-                      </SelectTrigger>
-                      <SelectContent
-                        alignItemWithTrigger={false}
-                        style={{ width: 220, maxHeight: 300 }}
-                      >
-                        <SelectGroup>
-                          {(field.optionsByEntityType?.[activeEntityType] ?? field.options)?.map(
-                            option => (
-                              <SelectItem key={option.value} value={option.value}>
-                                {option.label}
-                              </SelectItem>
-                            ),
-                          )}
-                        </SelectGroup>
-                      </SelectContent>
-                    </Select>
-                  )}
-
-                  {field.type === 'text' && (
-                    <TextField
-                      value={String(configValues[field.name] ?? field.defaultValue ?? '')}
-                      onValueChange={(value: string) => handleConfigChange(field.name, value)}
+                  <Select
+                    items={entityTypeItems}
+                    value={selectedEntityType}
+                    onValueChange={value => handleEntityTypeChange(value as string)}
+                  >
+                    <SelectTrigger className="w-full">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent alignItemWithTrigger={false}>
+                      <SelectGroup>
+                        {entityTypeItems.map(item => (
+                          <SelectItem key={item.value} value={item.value}>
+                            {item.label}
+                          </SelectItem>
+                        ))}
+                      </SelectGroup>
+                    </SelectContent>
+                  </Select>
+                </Column>
+                <Column gap="2">
+                  <Text size="sm" color="muted">
+                    {selectedEntityType === BOARD_ENTITY_TYPES.pixel
+                      ? t(labels.pixel)
+                      : selectedEntityType === BOARD_ENTITY_TYPES.link
+                        ? t(labels.link)
+                        : t(labels.website)}
+                  </Text>
+                  {selectedEntityType === BOARD_ENTITY_TYPES.pixel ? (
+                    <PixelSelect
+                      pixelId={selectedEntityId}
+                      teamId={teamId}
+                      placeholder={t(labels.selectPixel)}
+                      onChange={value => setSelectedEntityId(value as string)}
+                    />
+                  ) : selectedEntityType === BOARD_ENTITY_TYPES.link ? (
+                    <LinkSelect
+                      linkId={selectedEntityId}
+                      teamId={teamId}
+                      placeholder={t(labels.selectLink)}
+                      onChange={value => setSelectedEntityId(value as string)}
+                    />
+                  ) : (
+                    <WebsiteSelect
+                      websiteId={selectedEntityId}
+                      teamId={teamId}
+                      placeholder={t(labels.selectWebsite)}
+                      onChange={value => setSelectedEntityId(value as string)}
                     />
                   )}
+                </Column>
+              </>
+            )}
 
-                  {field.type === 'number' && (
-                    <TextField
-                      type="number"
-                      value={String(configValues[field.name] ?? field.defaultValue ?? '')}
-                      onValueChange={(value: string) => handleConfigChange(field.name, value)}
-                    />
-                  )}
+            <Column gap="2">
+              <Text size="sm" color="muted">
+                {t(labels.title)}
+              </Text>
+              <TextField value={title} onValueChange={setTitle} autoComplete="off" />
+            </Column>
 
-                  {field.type === 'textarea' && (
-                    <TextField
-                      asTextArea
-                      value={String(configValues[field.name] ?? field.defaultValue ?? '')}
-                      onValueChange={(value: string) => handleConfigChange(field.name, value)}
-                      style={{ minHeight: 200 }}
-                    />
-                  )}
+            <Column gap="2">
+              <Text size="sm" color="muted">
+                {t(labels.description)}
+              </Text>
+              <TextField value={description} onValueChange={setDescription} autoComplete="off" />
+            </Column>
 
-                  {field.type === 'report' && (
-                    <>
+            {selectedDef?.configFields && selectedDef.configFields.length > 0 && (
+              <Column gap="3">
+                {selectedDef.configFields.map((field: ConfigField) => (
+                  <Column key={field.name} gap="2">
+                    <Text size="sm" color="muted">
+                      {field.label}
+                    </Text>
+
+                    {field.type === 'select' && (
                       <Select
-                        items={(reportOptionsByType[field.reportType ?? ''] ?? []).map(option => ({
-                          value: option.id,
-                          label: option.name,
-                        }))}
+                        items={field.optionsByEntityType?.[activeEntityType] ?? field.options}
                         value={String(configValues[field.name] ?? field.defaultValue ?? '')}
                         onValueChange={value => handleConfigChange(field.name, value as string)}
                       >
@@ -467,79 +415,138 @@ export function BoardComponentSelect({
                           style={{ width: 220, maxHeight: 300 }}
                         >
                           <SelectGroup>
-                            {(reportOptionsByType[field.reportType ?? ''] ?? []).map(option => (
-                              <SelectItem key={option.id} value={option.id}>
-                                {option.name}
-                              </SelectItem>
-                            ))}
+                            {(field.optionsByEntityType?.[activeEntityType] ?? field.options)?.map(
+                              option => (
+                                <SelectItem key={option.value} value={option.value}>
+                                  {option.label}
+                                </SelectItem>
+                              ),
+                            )}
                           </SelectGroup>
                         </SelectContent>
                       </Select>
-                      {isLoadingReportOptions && (
-                        <Text size="xs" color="muted">
-                          Loading options...
-                        </Text>
-                      )}
-                      {!isLoadingReportOptions &&
-                        resolvedEntityId &&
-                        (reportOptionsByType[field.reportType ?? '']?.length ?? 0) === 0 && (
+                    )}
+
+                    {field.type === 'text' && (
+                      <TextField
+                        value={String(configValues[field.name] ?? field.defaultValue ?? '')}
+                        onValueChange={(value: string) => handleConfigChange(field.name, value)}
+                      />
+                    )}
+
+                    {field.type === 'number' && (
+                      <TextField
+                        type="number"
+                        value={String(configValues[field.name] ?? field.defaultValue ?? '')}
+                        onValueChange={(value: string) => handleConfigChange(field.name, value)}
+                      />
+                    )}
+
+                    {field.type === 'textarea' && (
+                      <TextField
+                        asTextArea
+                        value={String(configValues[field.name] ?? field.defaultValue ?? '')}
+                        onValueChange={(value: string) => handleConfigChange(field.name, value)}
+                        style={{ minHeight: 200 }}
+                      />
+                    )}
+
+                    {field.type === 'report' && (
+                      <>
+                        <Select
+                          items={(reportOptionsByType[field.reportType ?? ''] ?? []).map(
+                            option => ({
+                              value: option.id,
+                              label: option.name,
+                            }),
+                          )}
+                          value={String(configValues[field.name] ?? field.defaultValue ?? '')}
+                          onValueChange={value => handleConfigChange(field.name, value as string)}
+                        >
+                          <SelectTrigger className="w-full">
+                            <SelectValue />
+                          </SelectTrigger>
+                          <SelectContent
+                            alignItemWithTrigger={false}
+                            style={{ width: 220, maxHeight: 300 }}
+                          >
+                            <SelectGroup>
+                              {(reportOptionsByType[field.reportType ?? ''] ?? []).map(option => (
+                                <SelectItem key={option.id} value={option.id}>
+                                  {option.name}
+                                </SelectItem>
+                              ))}
+                            </SelectGroup>
+                          </SelectContent>
+                        </Select>
+                        {isLoadingReportOptions && (
                           <Text size="xs" color="muted">
-                            No saved items found.
+                            Loading options...
                           </Text>
                         )}
-                    </>
-                  )}
-                </Column>
-              ))}
-            </Column>
-          )}
-        </Column>
+                        {!isLoadingReportOptions &&
+                          resolvedEntityId &&
+                          (reportOptionsByType[field.reportType ?? '']?.length ?? 0) === 0 && (
+                            <Text size="xs" color="muted">
+                              No saved items found.
+                            </Text>
+                          )}
+                      </>
+                    )}
+                  </Column>
+                ))}
+              </Column>
+            )}
+          </Column>
+        </OverlayScrollArea>
 
         <Column gap="3" height="100%" style={{ width: 280, flexShrink: 0, minWidth: 0 }}>
           <Text weight="bold">Components</Text>
           <Column border="left" paddingLeft="4" height="100%" style={{ minHeight: 0 }}>
             {hasSelectedEntity ? (
-              <Column gap="1" height="100%" style={{ overflowY: 'auto', minHeight: 0 }}>
-                {groupedDefinitions.map(({ group, definitions }) => (
-                  <Column key={group} gap="1" paddingBottom="2">
-                    <Text size="sm" color="muted" weight="bold">
-                      {group}
-                    </Text>
-                    {definitions.map(def => {
-                      const Icon = def.icon;
+              <OverlayScrollArea style={{ height: '100%', minHeight: 0 }}>
+                <Column gap="1">
+                  {groupedDefinitions.map(({ group, definitions }) => (
+                    <Column key={group} gap="1" paddingBottom="2">
+                      <Text size="sm" color="muted" weight="bold">
+                        {group}
+                      </Text>
+                      {definitions.map(def => {
+                        const Icon = def.icon;
 
-                      return (
-                        <Row
-                          key={def.type}
-                          tabIndex={0}
-                          gap="3"
-                          alignItems="flex-start"
-                          paddingX="3"
-                          paddingY="2"
-                          borderRadius
-                          backgroundColor={selectedDef?.type === def.type ? 'muted' : undefined}
-                          hover={{ backgroundColor: 'muted' }}
-                          style={{ cursor: 'pointer' }}
-                          onClick={() => handleSelectComponent(def)}
-                        >
-                          <Icon size={16} />
-                          <Column gap="1">
-                            <Text
-                              size="sm"
-                              weight={selectedDef?.type === def.type ? 'bold' : undefined}
-                            >
-                              {def.name}
-                            </Text>
-                            <Text size="xs" color="muted">
-                              {def.description}
-                            </Text>
-                          </Column>
-                        </Row>
-                      );
-                    })}
-                  </Column>
-                ))}
-              </Column>
+                        return (
+                          <Row
+                            key={def.type}
+                            tabIndex={0}
+                            gap="3"
+                            alignItems="flex-start"
+                            paddingX="3"
+                            paddingY="2"
+                            borderRadius
+                            backgroundColor={selectedDef?.type === def.type ? 'muted' : undefined}
+                            hover={{ backgroundColor: 'muted' }}
+                            style={{ cursor: 'pointer' }}
+                            onClick={() => handleSelectComponent(def)}
+                          >
+                            <Icon size={16} />
+                            <Column gap="1">
+                              <Text
+                                size="sm"
+                                weight={selectedDef?.type === def.type ? 'bold' : undefined}
+                              >
+                                {def.name}
+                              </Text>
+                              <Text size="xs" color="muted">
+                                {def.description}
+                              </Text>
+                            </Column>
+                          </Row>
+                        );
+                      })}
+                    </Column>
+                  ))}
+                </Column>
+              </OverlayScrollArea>
             ) : (
               <Column alignItems="center" justifyContent="center" height="100%">
                 <Text color="muted">{t(messages.selectBoardEntityFirst)}</Text>

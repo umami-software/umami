@@ -11,6 +11,7 @@ import {
 import { useMemo, useState } from 'react';
 import { firstBy } from 'thenby';
 import { LoadingPanel } from '@/components/common/LoadingPanel';
+import { OverlayScrollArea } from '@/components/common/OverlayScrollArea';
 import { useEscapeKey, useJourneyQuery, useMessages } from '@/components/hooks';
 import { File } from '@/components/icons';
 import { Lightning } from '@/components/svg';
@@ -171,139 +172,143 @@ export function Journey({ websiteId, steps, startStep, endStep, view }: JourneyP
   return (
     <LoadingPanel data={data} isLoading={isLoading} error={error} height="100%">
       <div className={styles.container}>
-        <div className={styles.view}>
-          {columns.map(({ visitorCount, nodes }, columnIndex) => {
-            return (
-              <div
-                key={columnIndex}
-                className={cn(styles.column, {
-                  [styles.selected]: selectedNode,
-                  [styles.active]: activeNode,
-                })}
-              >
-                <div className={styles.header}>
-                  <div className={styles.num}>{columnIndex + 1}</div>
-                  <div className={styles.stats}>
-                    <div className={styles.visitors} title={visitorCount}>
-                      {formatLongNumber(visitorCount)} {t(labels.visitors)}
+        <OverlayScrollArea orientation="both" className={styles.view}>
+          <div className={styles.steps}>
+            {columns.map(({ visitorCount, nodes }, columnIndex) => {
+              return (
+                <div
+                  key={columnIndex}
+                  className={cn(styles.column, {
+                    [styles.selected]: selectedNode,
+                    [styles.active]: activeNode,
+                  })}
+                >
+                  <div className={styles.header}>
+                    <div className={styles.num}>{columnIndex + 1}</div>
+                    <div className={styles.stats}>
+                      <div className={styles.visitors} title={visitorCount}>
+                        {formatLongNumber(visitorCount)} {t(labels.visitors)}
+                      </div>
                     </div>
                   </div>
-                </div>
-                <div className={styles.nodes}>
-                  {nodes.map(
-                    ({
-                      name,
-                      totalCount,
-                      selected,
-                      active,
-                      paths,
-                      activeCount,
-                      selectedCount,
-                      lines,
-                    }) => {
-                      const nodeCount = selected
-                        ? active
-                          ? activeCount
-                          : selectedCount
-                        : totalCount;
+                  <div className={styles.nodes}>
+                    {nodes.map(
+                      ({
+                        name,
+                        totalCount,
+                        selected,
+                        active,
+                        paths,
+                        activeCount,
+                        selectedCount,
+                        lines,
+                      }) => {
+                        const nodeCount = selected
+                          ? active
+                            ? activeCount
+                            : selectedCount
+                          : totalCount;
 
-                      const remaining =
-                        columnIndex > 0
-                          ? Math.round((nodeCount / columns[columnIndex - 1]?.visitorCount) * 100)
-                          : 0;
+                        const remaining =
+                          columnIndex > 0
+                            ? Math.round((nodeCount / columns[columnIndex - 1]?.visitorCount) * 100)
+                            : 0;
 
-                      const dropped = 100 - remaining;
+                        const dropped = 100 - remaining;
 
-                      return (
-                        <div
-                          key={name}
-                          className={styles.wrapper}
-                          onMouseEnter={() =>
-                            selected && setActiveNode({ name, columnIndex, paths })
-                          }
-                          onMouseLeave={() => selected && setActiveNode(null)}
-                        >
+                        return (
                           <div
-                            className={cn(styles.node, {
-                              [styles.selected]: selected,
-                              [styles.active]: active,
-                            })}
-                            onClick={() => handleClick(name, columnIndex, paths)}
+                            key={name}
+                            className={styles.wrapper}
+                            onMouseEnter={() =>
+                              selected && setActiveNode({ name, columnIndex, paths })
+                            }
+                            onMouseLeave={() => selected && setActiveNode(null)}
                           >
-                            <Row alignItems="center" className={styles.name} title={name} gap>
-                              <Icon>{name.startsWith('/') ? <File /> : <Lightning />}</Icon>
-                              <Text truncate>{name}</Text>
-                            </Row>
-                            <div className={styles.count} title={nodeCount}>
-                              {columnIndex === 0 || (selectedNode && !selected) ? (
-                                <div>{formatLongNumber(nodeCount)}</div>
-                              ) : (
-                                <Tooltip>
-                                  <TooltipTrigger delay={0} render={<div tabIndex={0} />}>
-                                    {formatLongNumber(nodeCount)}
-                                  </TooltipTrigger>
-                                  <TooltipContent side="top" sideOffset={20}>
-                                    <Text transform="lowercase" color="red">
-                                      {`${dropped}% ${t(labels.dropoff)}`}
-                                    </Text>
-                                    <Column>
-                                      <Text transform="lowercase">
-                                        {`${remaining}% ${t(labels.conversion)}`}
-                                      </Text>
-                                    </Column>
-                                  </TooltipContent>
-                                </Tooltip>
-                              )}
-                            </div>
-                            {columnIndex < columns.length &&
-                              lines.map(([fromIndex, nodeIndex], i) => {
-                                const height =
-                                  (Math.abs(nodeIndex - fromIndex) + 1) * (NODE_HEIGHT + NODE_GAP) -
-                                  NODE_GAP;
-                                const midHeight =
-                                  (Math.abs(nodeIndex - fromIndex) - 1) * (NODE_HEIGHT + NODE_GAP) +
-                                  NODE_GAP +
-                                  LINE_WIDTH;
-                                const nodeName = columns[columnIndex - 1]?.nodes[fromIndex].name;
-
-                                return (
-                                  <div
-                                    key={`${fromIndex}${nodeIndex}${i}`}
-                                    className={cn(styles.line, {
-                                      [styles.active]:
-                                        active &&
-                                        activeNode?.paths.find(
-                                          (path: { items: any[] }) =>
-                                            path.items[columnIndex] === name &&
-                                            path.items[columnIndex - 1] === nodeName,
-                                        ),
-                                      [styles.up]: fromIndex < nodeIndex,
-                                      [styles.down]: fromIndex > nodeIndex,
-                                      [styles.flat]: fromIndex === nodeIndex,
-                                    })}
-                                    style={{ height }}
-                                  >
-                                    <div className={cn(styles.segment, styles.start)} />
-                                    <div
-                                      className={cn(styles.segment, styles.mid)}
-                                      style={{
-                                        height: midHeight,
-                                      }}
-                                    />
-                                    <div className={cn(styles.segment, styles.end)} />
-                                  </div>
-                                );
+                            <div
+                              className={cn(styles.node, {
+                                [styles.selected]: selected,
+                                [styles.active]: active,
                               })}
+                              onClick={() => handleClick(name, columnIndex, paths)}
+                            >
+                              <Row alignItems="center" className={styles.name} title={name} gap>
+                                <Icon>{name.startsWith('/') ? <File /> : <Lightning />}</Icon>
+                                <Text truncate>{name}</Text>
+                              </Row>
+                              <div className={styles.count} title={nodeCount}>
+                                {columnIndex === 0 || (selectedNode && !selected) ? (
+                                  <div>{formatLongNumber(nodeCount)}</div>
+                                ) : (
+                                  <Tooltip>
+                                    <TooltipTrigger delay={0} render={<div tabIndex={0} />}>
+                                      {formatLongNumber(nodeCount)}
+                                    </TooltipTrigger>
+                                    <TooltipContent side="top" sideOffset={20}>
+                                      <Text transform="lowercase" color="red">
+                                        {`${dropped}% ${t(labels.dropoff)}`}
+                                      </Text>
+                                      <Column>
+                                        <Text transform="lowercase">
+                                          {`${remaining}% ${t(labels.conversion)}`}
+                                        </Text>
+                                      </Column>
+                                    </TooltipContent>
+                                  </Tooltip>
+                                )}
+                              </div>
+                              {columnIndex < columns.length &&
+                                lines.map(([fromIndex, nodeIndex], i) => {
+                                  const height =
+                                    (Math.abs(nodeIndex - fromIndex) + 1) *
+                                      (NODE_HEIGHT + NODE_GAP) -
+                                    NODE_GAP;
+                                  const midHeight =
+                                    (Math.abs(nodeIndex - fromIndex) - 1) *
+                                      (NODE_HEIGHT + NODE_GAP) +
+                                    NODE_GAP +
+                                    LINE_WIDTH;
+                                  const nodeName = columns[columnIndex - 1]?.nodes[fromIndex].name;
+
+                                  return (
+                                    <div
+                                      key={`${fromIndex}${nodeIndex}${i}`}
+                                      className={cn(styles.line, {
+                                        [styles.active]:
+                                          active &&
+                                          activeNode?.paths.find(
+                                            (path: { items: any[] }) =>
+                                              path.items[columnIndex] === name &&
+                                              path.items[columnIndex - 1] === nodeName,
+                                          ),
+                                        [styles.up]: fromIndex < nodeIndex,
+                                        [styles.down]: fromIndex > nodeIndex,
+                                        [styles.flat]: fromIndex === nodeIndex,
+                                      })}
+                                      style={{ height }}
+                                    >
+                                      <div className={cn(styles.segment, styles.start)} />
+                                      <div
+                                        className={cn(styles.segment, styles.mid)}
+                                        style={{
+                                          height: midHeight,
+                                        }}
+                                      />
+                                      <div className={cn(styles.segment, styles.end)} />
+                                    </div>
+                                  );
+                                })}
+                            </div>
                           </div>
-                        </div>
-                      );
-                    },
-                  )}
+                        );
+                      },
+                    )}
+                  </div>
                 </div>
-              </div>
-            );
-          })}
-        </div>
+              );
+            })}
+          </div>
+        </OverlayScrollArea>
       </div>
     </LoadingPanel>
   );

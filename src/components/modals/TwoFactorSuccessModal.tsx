@@ -3,7 +3,6 @@ import {
   Button,
   Column,
   Dialog,
-  DialogContent,
   DialogFooter,
   DialogHeader,
   DialogTitle,
@@ -11,6 +10,7 @@ import {
   Text,
 } from '@umami/react-zen';
 import { useState } from 'react';
+import { ScrollableDialogContent } from '@/components/common/ScrollableDialogContent';
 import { useMessages } from '@/components/hooks';
 import styles from './TwoFactorSuccessModal.module.css';
 
@@ -41,12 +41,11 @@ export function TwoFactorSuccessModal({ backupCodes, onClose }: TwoFactorSuccess
 
   return (
     <Dialog open={true}>
-      <DialogContent
+      <ScrollableDialogContent
         className={styles.dialog}
         style={{
           maxWidth: 'calc(100% - 2rem)',
           maxHeight: 'calc(100dvh - 2rem)',
-          overflowY: 'auto',
         }}
         showCloseButton={false}
       >
@@ -92,7 +91,7 @@ export function TwoFactorSuccessModal({ backupCodes, onClose }: TwoFactorSuccess
             {t(labels.close)}
           </Button>
         </DialogFooter>
-      </DialogContent>
+      </ScrollableDialogContent>
     </Dialog>
   );
 }

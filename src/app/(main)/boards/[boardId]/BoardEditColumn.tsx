@@ -14,6 +14,7 @@ import {
 } from '@umami/react-zen';
 import { useMemo, useState } from 'react';
 import { Empty } from '@/components/common/Empty';
+import { OverlayScrollArea } from '@/components/common/OverlayScrollArea';
 import { Panel } from '@/components/common/Panel';
 import { useBoard, useMessages, useNavigation } from '@/components/hooks';
 import { Pencil, Plus, X } from '@/components/icons';
@@ -135,9 +136,14 @@ export function BoardEditColumn({
       )}
       {renderedComponent && (
         <Column width="100%" height="100%" style={{ minHeight: 0 }}>
-          <Box width="100%" flexGrow={1} overflow="auto" style={{ minHeight: 0 }}>
-            {renderedComponent}
-          </Box>
+          <OverlayScrollArea
+            orientation="both"
+            style={{ width: '100%', flexGrow: 1, minHeight: 0 }}
+          >
+            <Box width="100%" height="100%">
+              {renderedComponent}
+            </Box>
+          </OverlayScrollArea>
         </Column>
       )}
       {!isLoading && component && entityId && isUnavailable && (

@@ -12,13 +12,22 @@ import {
   TextField,
 } from '@umami/react-zen';
 import { type CSSProperties, useEffect, useState } from 'react';
+import { OverlayScrollArea } from '@/components/common/OverlayScrollArea';
 import { useMessages, useUpdateQuery, useWebsiteSegmentQuery } from '@/components/hooks';
 import { FieldFilters } from '@/components/input/FieldFilters';
 import { PropertyFilters } from '@/components/property-data/PropertyFilters';
 import type { SessionPropertyFilter } from '@/lib/types';
 
+// The tab content fills the remaining height and its scroll area takes all of it.
+const tabContentStyle: CSSProperties = {
+  display: 'grid',
+  gridTemplateRows: 'minmax(0, 1fr)',
+  minHeight: 0,
+  margin: -4,
+};
+
 // The padding keeps focus rings from being clipped by the scroll area.
-const scrollStyle: CSSProperties = { minHeight: 0, overflowY: 'auto', margin: -4, padding: 4 };
+const scrollBodyStyle: CSSProperties = { padding: 4 };
 
 export function SegmentEditForm({
   segmentId,
@@ -94,30 +103,38 @@ export function SegmentEditForm({
             <TabsTrigger value="filters">{t(labels.filters)}</TabsTrigger>
             <TabsTrigger value="sessionData">{t(labels.sessionData)}</TabsTrigger>
           </TabsList>
-          <TabsContent value="filters" style={scrollStyle}>
-            <FormField name="parameters.filters">
-              {({ field }) => (
-                <FieldFilters
-                  websiteId={websiteId}
-                  value={field.value}
-                  onChange={field.onChange}
-                  match={currentMatch}
-                  onMatchChange={setCurrentMatch}
-                />
-              )}
-            </FormField>
+          <TabsContent value="filters" style={tabContentStyle}>
+            <OverlayScrollArea>
+              <div style={scrollBodyStyle}>
+                <FormField name="parameters.filters">
+                  {({ field }) => (
+                    <FieldFilters
+                      websiteId={websiteId}
+                      value={field.value}
+                      onChange={field.onChange}
+                      match={currentMatch}
+                      onMatchChange={setCurrentMatch}
+                    />
+                  )}
+                </FormField>
+              </div>
+            </OverlayScrollArea>
           </TabsContent>
-          <TabsContent value="sessionData" style={scrollStyle}>
-            <FormField name="parameters.sessionPropertyFilters">
-              {({ field }) => (
-                <PropertyFilters
-                  source="session"
-                  websiteId={websiteId}
-                  value={field.value ?? []}
-                  onChange={field.onChange}
-                />
-              )}
-            </FormField>
+          <TabsContent value="sessionData" style={tabContentStyle}>
+            <OverlayScrollArea>
+              <div style={scrollBodyStyle}>
+                <FormField name="parameters.sessionPropertyFilters">
+                  {({ field }) => (
+                    <PropertyFilters
+                      source="session"
+                      websiteId={websiteId}
+                      value={field.value ?? []}
+                      onChange={field.onChange}
+                    />
+                  )}
+                </FormField>
+              </div>
+            </OverlayScrollArea>
           </TabsContent>
         </Tabs>
       )}

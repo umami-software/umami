@@ -4,6 +4,11 @@
   --overlay-scrollbar-thumb-hover: color-mix(in oklch, var(--foreground) 35%, var(--background));
   --overlay-scrollbar-viewport-padding-right: 0px;
   --overlay-scrollbar-vertical-margin-right: 2px;
+  /* Flex column so the viewport also shrinks to a max-height, not only a fixed height. */
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  min-height: 0;
 }
 
 .collapsed > [data-orientation] {
@@ -11,6 +16,8 @@
 }
 
 .root > :first-child {
+  flex: 1 1 auto;
+  min-height: 0;
   padding-right: var(--overlay-scrollbar-viewport-padding-right);
 }
 

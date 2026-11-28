@@ -1,7 +1,8 @@
 'use client';
-import { Column, Dialog, DialogContent } from '@umami/react-zen';
+import { Column, Dialog } from '@umami/react-zen';
 import { useEffect, useState } from 'react';
 import { ReplayPlayback } from '@/app/(main)/websites/[websiteId]/replays/[replayId]/ReplayPlayback';
+import { ScrollableDialogContent } from '@/components/common/ScrollableDialogContent';
 import { useNavigation } from '@/components/hooks';
 import { buildPath } from '@/lib/url';
 import type { ReplaySource } from '@/store/replays';
@@ -36,7 +37,7 @@ export function ReplayModal({ websiteId, replayId, replaySource, className }: Re
         : 'min(calc(100dvw - 48px), 1320px)',
     maxWidth: 'calc(100% - 2rem)',
     height: 'calc(100dvh - 80px)',
-    overflowY: 'auto' as const,
+    padding: 0,
   };
 
   const handleOpenChange = (isOpen: boolean) => {
@@ -54,7 +55,7 @@ export function ReplayModal({ websiteId, replayId, replaySource, className }: Re
 
   return (
     <Dialog open={!!activeReplayId} onOpenChange={handleOpenChange}>
-      <DialogContent className={className} style={modalStyle} showCloseButton={false}>
+      <ScrollableDialogContent className={className} style={modalStyle} showCloseButton={false}>
         <Column padding="6">
           {activeReplayId && (
             <ReplayPlayback
@@ -66,7 +67,7 @@ export function ReplayModal({ websiteId, replayId, replaySource, className }: Re
             />
           )}
         </Column>
-      </DialogContent>
+      </ScrollableDialogContent>
     </Dialog>
   );
 }

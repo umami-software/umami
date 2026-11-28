@@ -1,15 +1,8 @@
-import {
-  Button,
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  Icon,
-  Row,
-} from '@umami/react-zen';
+import { Button, Dialog, DialogHeader, DialogTitle, Icon, Row } from '@umami/react-zen';
 import { Edit, Trash } from 'lucide-react';
 import { useState } from 'react';
 import { ConfirmationForm } from '@/components/common/ConfirmationForm';
+import { ScrollableDialogContent } from '@/components/common/ScrollableDialogContent';
 import { useDeleteQuery, useMessages, useMobile, useModified } from '@/components/hooks';
 import { SharedSharesTable } from '@/components/share/SharedSharesTable';
 import { ShareEditForm } from './ShareEditForm';
@@ -44,7 +37,7 @@ export function SharesTable({ data = [] }: { data?: any[] }) {
         )}
       />
       <Dialog open={!!editShareId} onOpenChange={isOpen => !isOpen && setEditShareId(null)}>
-        <DialogContent
+        <ScrollableDialogContent
           showCloseButton={false}
           style={{
             width: isMobile ? '100%' : '600px',
@@ -52,7 +45,6 @@ export function SharesTable({ data = [] }: { data?: any[] }) {
             maxWidth: isMobile ? '100%' : 'calc(100% - 2rem)',
             maxHeight: isMobile ? '100%' : 'min(80dvh, calc(100dvh - 40px))',
             borderRadius: isMobile ? 0 : undefined,
-            overflowY: 'auto',
           }}
         >
           <DialogHeader>
@@ -61,7 +53,7 @@ export function SharesTable({ data = [] }: { data?: any[] }) {
           {editShareId && (
             <ShareEditForm shareId={editShareId} onClose={() => setEditShareId(null)} />
           )}
-        </DialogContent>
+        </ScrollableDialogContent>
       </Dialog>
       {deleteShare && (
         <ShareDeleteDialog
@@ -105,12 +97,11 @@ function ShareDeleteDialog({
 
   return (
     <Dialog open={!!share} onOpenChange={isOpen => !isOpen && onClose()}>
-      <DialogContent
+      <ScrollableDialogContent
         showCloseButton={false}
         style={{
           width: '400px',
           maxHeight: 'min(80dvh, calc(100dvh - 40px))',
-          overflowY: 'auto',
         }}
       >
         <DialogHeader>
@@ -130,7 +121,7 @@ function ShareDeleteDialog({
             buttonVariant="destructive"
           />
         )}
-      </DialogContent>
+      </ScrollableDialogContent>
     </Dialog>
   );
 }

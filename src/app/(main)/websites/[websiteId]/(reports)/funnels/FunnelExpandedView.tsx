@@ -3,7 +3,6 @@ import {
   Button,
   Column,
   Dialog,
-  DialogContent,
   Grid,
   Heading,
   Icon,
@@ -18,6 +17,7 @@ import {
   TooltipTrigger,
 } from '@umami/react-zen';
 import { useState } from 'react';
+import { ScrollableDialogContent } from '@/components/common/ScrollableDialogContent';
 import { useFunnelTimesQuery, useMessages } from '@/components/hooks';
 import { Clock, File, Maximize, X } from '@/components/icons';
 import { FilterButtons } from '@/components/input/FilterButtons';
@@ -76,7 +76,7 @@ export function FunnelMaximizeButton({
         <TooltipContent>{t(labels.maximize)}</TooltipContent>
       </Tooltip>
       <Dialog open={isOpen} onOpenChange={setIsOpen}>
-        <DialogContent
+        <ScrollableDialogContent
           aria-label={name}
           showCloseButton={false}
           style={{
@@ -86,7 +86,6 @@ export function FunnelMaximizeButton({
             maxHeight: '100%',
             borderRadius: 0,
             padding: '32px',
-            overflowY: 'auto',
           }}
         >
           <FunnelExpandedView
@@ -96,7 +95,7 @@ export function FunnelMaximizeButton({
             data={data}
             onClose={() => setIsOpen(false)}
           />
-        </DialogContent>
+        </ScrollableDialogContent>
       </Dialog>
     </>
   );

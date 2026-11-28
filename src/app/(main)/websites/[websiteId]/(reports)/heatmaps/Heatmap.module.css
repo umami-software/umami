@@ -23,11 +23,12 @@
 }
 
 .pageListItems {
-  overflow-y: auto;
+  max-height: 850px;
+}
+
+.pageListItemsContent {
   padding-top: 8px;
   padding-right: 8px;
-  max-height: 850px;
-  scrollbar-gutter: stable;
 }
 
 .pageButton {
@@ -162,14 +163,21 @@
   transform-origin: top right;
 }
 
+.canvasScroll {
+  width: 100%;
+  max-width: 100%;
+  max-height: 75vh;
+}
+
+.canvasScroll > [data-slot="scroll-area-viewport"] {
+  overflow-x: hidden;
+  overscroll-behavior: contain;
+}
+
 .canvasWrapper {
   width: 100%;
   min-width: 0;
   max-width: 100%;
-  max-height: 75vh;
-  overflow-x: hidden;
-  overflow-y: auto;
-  overscroll-behavior: contain;
 }
 
 .canvas {
@@ -304,7 +312,7 @@
     font-size: 12px;
   }
 
-  .canvasWrapper {
+  .canvasScroll {
     max-height: 70vh;
   }
 

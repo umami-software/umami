@@ -1,30 +1,67 @@
-.header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 16px;
+.profile {
+  position: relative;
+  display: grid;
+  grid-template-columns: 340px minmax(0, 1fr);
+  width: 100%;
+  height: 100%;
   min-width: 0;
+  min-height: 0;
+}
+
+.sidebar {
+  height: 100%;
+  background-color: var(--muted);
+  border-right: 1px solid var(--border);
+}
+
+.main {
+  height: 100%;
+}
+
+.sidebarContent,
+.mainContent {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.sidebarContent {
+  gap: 32px;
+  padding: 32px 28px;
+}
+
+.mainContent {
+  gap: 28px;
+  padding: 32px;
+}
+
+.sidebarContent > *,
+.mainContent > * {
+  flex-shrink: 0;
 }
 
 .identity {
   display: flex;
+  flex-direction: column;
   align-items: center;
-  gap: 14px;
+  gap: 16px;
   min-width: 0;
-  flex: 1;
 }
 
 .identityText {
   display: flex;
   flex-direction: column;
-  gap: 3px;
+  align-items: center;
+  gap: 4px;
+  text-align: center;
+  width: 100%;
   min-width: 0;
-  flex: 1;
 }
 
 .titleRow {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
+  justify-content: center;
   gap: 4px;
   min-width: 0;
 }
@@ -34,69 +71,41 @@
   font-weight: 600;
   color: var(--foreground);
   line-height: 1.3;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  overflow-wrap: anywhere;
+}
+
+.sessionIdPrimary,
+.sessionIdSecondary {
+  min-width: 0;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  word-break: break-all;
 }
 
 .sessionIdPrimary {
-  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-  font-size: 1rem;
+  font-size: 0.9375rem;
   font-weight: 600;
   color: var(--foreground);
-  line-height: 1.35;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  line-height: 1.4;
 }
 
 .sessionIdSecondary {
-  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-  font-size: 0.875rem;
+  font-size: 0.8125rem;
   color: var(--muted-foreground);
-  line-height: 1.4;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  line-height: 1.5;
 }
 
 .summary {
   font-size: 0.875rem;
   color: var(--muted-foreground);
-  line-height: 1.4;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  line-height: 1.45;
 }
 
 .actions {
   display: flex;
   align-items: center;
+  justify-content: flex-end;
   gap: 4px;
-  flex-shrink: 0;
-  align-self: flex-start;
-}
-
-.body {
-  display: grid;
-  grid-template-columns: 310px minmax(0, 1fr);
-  gap: 24px;
-  align-items: start;
-  width: 100%;
-  min-width: 0;
-}
-
-.sidebar {
-  min-width: 0;
-  position: sticky;
-  top: 0;
-}
-
-.main {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-  min-width: 0;
+  margin: -16px -16px -16px 0;
 }
 
 .tabLabel {
@@ -110,19 +119,38 @@
 }
 
 @media (max-width: 900px) {
-  .body {
+  .profile {
     grid-template-columns: minmax(0, 1fr);
-    gap: 20px;
+    height: auto;
+  }
+
+  .sidebar,
+  .main {
+    height: auto;
+  }
+
+  /* Anchor the absolutely positioned actions to the profile, not the main column. */
+  .main {
+    position: static;
   }
 
   .sidebar {
-    position: static;
+    border-right: none;
+    border-bottom: 1px solid var(--border);
   }
-}
 
-@media (max-width: 640px) {
-  .sessionIdPrimary {
-    white-space: normal;
-    word-break: break-all;
+  .sidebarContent {
+    padding: 24px 20px;
+  }
+
+  .mainContent {
+    padding: 20px;
+  }
+
+  .actions {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    margin: 0;
   }
 }

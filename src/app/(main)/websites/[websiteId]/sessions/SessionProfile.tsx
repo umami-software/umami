@@ -1,17 +1,9 @@
 'use client';
-import {
-  Badge,
-  Button,
-  Column,
-  Icon,
-  Tabs,
-  TabsContent,
-  TabsList,
-  TabsTrigger,
-} from '@umami/react-zen';
+import { Badge, Button, Icon, Tabs, TabsContent, TabsList, TabsTrigger } from '@umami/react-zen';
 import { Avatar } from '@/components/common/Avatar';
 import { CopyButton } from '@/components/common/CopyButton';
 import { LoadingPanel } from '@/components/common/LoadingPanel';
+import { OverlayScrollArea } from '@/components/common/OverlayScrollArea';
 import {
   useConfig,
   useFormat,
@@ -81,66 +73,66 @@ export function SessionProfile({
       loadingPlacement="absolute"
     >
       {data && (
-        <Column gap="6" width="100%" minWidth="0">
-          <div className={styles.header}>
-            <div className={styles.identity}>
-              <Avatar seed={data?.id} size={isMobile ? 48 : 56} />
-              <div className={styles.identityText}>
-                {singleDistinctId ? (
-                  <>
-                    <div className={styles.distinctTitle} title={singleDistinctId}>
-                      {singleDistinctId}
-                    </div>
+        <div className={styles.profile}>
+          <OverlayScrollArea className={styles.sidebar}>
+            <aside className={styles.sidebarContent}>
+              <div className={styles.identity}>
+                <Avatar seed={data?.id} size={isMobile ? 72 : 96} />
+                <div className={styles.identityText}>
+                  {singleDistinctId ? (
+                    <>
+                      <div className={styles.distinctTitle} title={singleDistinctId}>
+                        {singleDistinctId}
+                      </div>
+                      <div className={styles.titleRow}>
+                        <span className={styles.sessionIdSecondary} title={data.id}>
+                          {data.id}
+                        </span>
+                        <CopyButton value={data.id} label={t(labels.copy)} />
+                      </div>
+                    </>
+                  ) : (
                     <div className={styles.titleRow}>
-                      <span className={styles.sessionIdSecondary} title={data.id}>
+                      <span className={styles.sessionIdPrimary} title={data.id}>
                         {data.id}
                       </span>
                       <CopyButton value={data.id} label={t(labels.copy)} />
                     </div>
-                  </>
-                ) : (
-                  <div className={styles.titleRow}>
-                    <span className={styles.sessionIdPrimary} title={data.id}>
-                      {data.id}
-                    </span>
-                    <CopyButton value={data.id} label={t(labels.copy)} />
-                  </div>
-                )}
+                  )}
 
-                {summaryParts.length > 0 && (
-                  <div className={styles.summary} title={summaryParts.join(' · ')}>
-                    {summaryParts.join(' · ')}
-                  </div>
-                )}
+                  {summaryParts.length > 0 && (
+                    <div className={styles.summary} title={summaryParts.join(' · ')}>
+                      {summaryParts.join(' · ')}
+                    </div>
+                  )}
+                </div>
               </div>
-            </div>
 
-            {(onClose || showDeleteButton) && (
-              <div className={styles.actions}>
-                {showDeleteButton && (
-                  <SessionDeleteButton
-                    websiteId={websiteId}
-                    sessionId={sessionId}
-                    onSave={onClose}
-                  />
-                )}
-                {onClose && (
-                  <Button onClick={onClose} variant="ghost" aria-label={t(labels.close)}>
-                    <Icon>
-                      <X />
-                    </Icon>
-                  </Button>
-                )}
-              </div>
-            )}
-          </div>
-
-          <div className={styles.body}>
-            <aside className={styles.sidebar}>
               <SessionInfo data={data} layout="sidebar" showDistinctId={!singleDistinctId} />
             </aside>
+          </OverlayScrollArea>
 
-            <div className={styles.main}>
+          <OverlayScrollArea className={styles.main}>
+            <div className={styles.mainContent}>
+              {(onClose || showDeleteButton) && (
+                <div className={styles.actions}>
+                  {showDeleteButton && (
+                    <SessionDeleteButton
+                      websiteId={websiteId}
+                      sessionId={sessionId}
+                      onSave={onClose}
+                    />
+                  )}
+                  {onClose && (
+                    <Button onClick={onClose} variant="ghost" aria-label={t(labels.close)}>
+                      <Icon>
+                        <X />
+                      </Icon>
+                    </Button>
+                  )}
+                </div>
+              )}
+
               <SessionStats data={data} />
 
               <Tabs>
@@ -189,8 +181,8 @@ export function SessionProfile({
                 )}
               </Tabs>
             </div>
-          </div>
-        </Column>
+          </OverlayScrollArea>
+        </div>
       )}
     </LoadingPanel>
   );

@@ -1,5 +1,6 @@
 import { Button, Icon, Sheet, SheetContent, SheetTrigger } from '@umami/react-zen';
 import { type ComponentProps, type CSSProperties, type ReactNode, useState } from 'react';
+import { OverlayScrollArea } from '@/components/common/OverlayScrollArea';
 import { Menu } from '@/components/icons';
 
 export interface MobileMenuRenderProps {
@@ -40,11 +41,23 @@ export function MobileMenuButton({
       <SheetContent
         {...props}
         side="left"
-        style={{ width: '24rem', maxWidth: '100dvw', padding: 24, overflow: 'auto', ...style }}
+        style={{ width: '24rem', maxWidth: '100dvw', padding: 0, overflow: 'hidden', ...style }}
       >
-        {typeof children === 'function'
-          ? children({ close: () => handleOpenChange(false) })
-          : children}
+        <OverlayScrollArea style={{ flex: '1 1 auto', minHeight: 0 }}>
+          {/* Matches SheetContent's own flex column and gap. */}
+          <div
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+              gap: 'calc(var(--spacing) * 4)',
+              padding: 24,
+            }}
+          >
+            {typeof children === 'function'
+              ? children({ close: () => handleOpenChange(false) })
+              : children}
+          </div>
+        </OverlayScrollArea>
       </SheetContent>
     </Sheet>
   );

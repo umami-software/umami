@@ -8,7 +8,17 @@ export default async function ({
 }) {
   const { websiteId, sessionId } = await params;
 
-  return <SessionProfile websiteId={websiteId} sessionId={sessionId} />;
+  return (
+    <div
+      style={{
+        border: '1px solid var(--border)',
+        borderRadius: 'var(--radius-lg, 8px)',
+        overflow: 'clip',
+      }}
+    >
+      <SessionProfile websiteId={websiteId} sessionId={sessionId} />
+    </div>
+  );
 }
 
 export const metadata: Metadata = {

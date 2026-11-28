@@ -1,0 +1,20 @@
+.scroll {
+  flex: 1 1 auto;
+  min-height: 0;
+}
+
+/*
+ * Matches DialogContent's own gap. When the dialog is taller than its content (a fixed height or
+ * min height, or full screen on mobile), the last child grows to fill it so a footer sits at the
+ * bottom. Only grows, never forces a shrink, so taller content scrolls.
+ */
+.body {
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--spacing) * 6);
+  min-height: 100%;
+}
+
+.body > :last-child {
+  flex-grow: 1;
+}

@@ -23,6 +23,7 @@ import {
 } from 'react';
 import { Empty } from '@/components/common/Empty';
 import { ErrorMessage } from '@/components/common/ErrorMessage';
+import { OverlayScrollArea } from '@/components/common/OverlayScrollArea';
 import { Pager } from '@/components/common/Pager';
 import { useMessages, useMobile, useNavigation } from '@/components/hooks';
 import { getItem, setItem } from '@/lib/storage';
@@ -144,25 +145,21 @@ export function DataGrid({
     }
 
     return (
-      <div
-        style={{
-          display: 'grid',
-          gridTemplateColumns: 'minmax(0, 1fr)',
-          overflowX: 'auto',
-        }}
-      >
-        <Column>
-          {isValidElement(child)
-            ? cloneElement(child as ReactElement<any>, {
-                displayMode,
-                cardMinWidth,
-                loading: isPending,
-                // Keep the height steady when refetching a page that already has rows.
-                loadingRows: rowCount || undefined,
-              })
-            : child}
-        </Column>
-      </div>
+      <OverlayScrollArea orientation="horizontal">
+        <div style={{ display: 'grid', gridTemplateColumns: 'minmax(0, 1fr)' }}>
+          <Column>
+            {isValidElement(child)
+              ? cloneElement(child as ReactElement<any>, {
+                  displayMode,
+                  cardMinWidth,
+                  loading: isPending,
+                  // Keep the height steady when refetching a page that already has rows.
+                  loadingRows: rowCount || undefined,
+                })
+              : child}
+          </Column>
+        </div>
+      </OverlayScrollArea>
     );
   };
 

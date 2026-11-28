@@ -1,5 +1,6 @@
 import { Button, Column, DialogFooter, List, ListItem, ListSection } from '@umami/react-zen';
 import { useState } from 'react';
+import { OverlayScrollArea } from '@/components/common/OverlayScrollArea';
 import { type FieldGroup, useFields, useMessages } from '@/components/hooks';
 
 export function FieldSelectForm({
@@ -40,22 +41,24 @@ export function FieldSelectForm({
 
   return (
     <Column gap="6">
-      <Column gap="3" overflowY="auto" maxHeight="400px">
-        <List value={selected} onValueChange={handleChange} selectionMode="multiple">
-          {groupLabels.map(({ key: groupKey, label }) => {
-            const groupFields = groupedFields[groupKey];
-            return (
-              <ListSection key={groupKey} title={label}>
-                {groupFields.map(field => (
-                  <ListItem key={field.name} value={field.name}>
-                    {field.filterLabel}
-                  </ListItem>
-                ))}
-              </ListSection>
-            );
-          })}
-        </List>
-      </Column>
+      <OverlayScrollArea style={{ maxHeight: 400 }}>
+        <Column gap="3">
+          <List value={selected} onValueChange={handleChange} selectionMode="multiple">
+            {groupLabels.map(({ key: groupKey, label }) => {
+              const groupFields = groupedFields[groupKey];
+              return (
+                <ListSection key={groupKey} title={label}>
+                  {groupFields.map(field => (
+                    <ListItem key={field.name} value={field.name}>
+                      {field.filterLabel}
+                    </ListItem>
+                  ))}
+                </ListSection>
+              );
+            })}
+          </List>
+        </Column>
+      </OverlayScrollArea>
       <DialogFooter>
         <Button variant="outline" onClick={onClose}>
           {t(labels.cancel)}

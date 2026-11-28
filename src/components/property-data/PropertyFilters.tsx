@@ -3,7 +3,6 @@ import {
   Button,
   Column,
   DropdownMenu,
-  DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
   Grid,
@@ -15,6 +14,8 @@ import {
 import { format } from 'date-fns';
 import { Empty } from '@/components/common/Empty';
 import { LoadingPanel } from '@/components/common/LoadingPanel';
+import { OverlayScrollArea } from '@/components/common/OverlayScrollArea';
+import { ScrollableDropdownMenuContent } from '@/components/common/ScrollableDropdownMenuContent';
 import { useMessages, useMobile, usePropertyFieldsQuery } from '@/components/hooks';
 import type { PropertyDataSource } from '@/components/hooks/queries/usePropertyFieldsQuery';
 import { Plus } from '@/components/icons';
@@ -118,10 +119,10 @@ export function PropertyFilters({
                 <Plus />
               </Icon>
             </DropdownMenuTrigger>
-            <DropdownMenuContent
+            <ScrollableDropdownMenuContent
               side="bottom"
               align="start"
-              style={{ width: 'auto', maxHeight: 'calc(100vh - 2rem)', overflowY: 'auto' }}
+              style={{ width: 'auto', maxHeight: 'calc(100vh - 2rem)' }}
             >
               {(fields as any[]).map(field => (
                 <DropdownMenuItem
@@ -133,7 +134,7 @@ export function PropertyFilters({
                   </span>
                 </DropdownMenuItem>
               ))}
-            </DropdownMenuContent>
+            </ScrollableDropdownMenuContent>
           </DropdownMenu>
         </Row>
         <Column
@@ -157,36 +158,38 @@ export function PropertyFilters({
             ))}
           </List>
         </Column>
-        <Column overflow="auto" gapY="4" style={{ contain: 'layout' }}>
-          {value.map((filter, index) => (
-            <PropertyFilterRecord
-              key={`${filter.propertyName}-${index}`}
-              source={source}
-              websiteId={websiteId}
-              eventName={eventName}
-              filter={filter}
-              filters={value}
-              onChange={nextFilter =>
-                onChange(value.map((item, i) => (i === index ? nextFilter : item)))
-              }
-              onRemove={() => onChange(value.filter((_, i) => i !== index))}
-            />
-          ))}
-          {!value.length &&
-            (isMobile ? (
-              <Row
-                color="muted"
-                justifyContent="center"
-                width="100%"
-                minHeight="70px"
-                style={{ paddingTop: '24px' }}
-              >
-                {t(messages.nothingSelected)}
-              </Row>
-            ) : (
-              <Empty message={t(messages.nothingSelected)} />
+        <OverlayScrollArea style={{ contain: 'layout' }}>
+          <Column gapY="4">
+            {value.map((filter, index) => (
+              <PropertyFilterRecord
+                key={`${filter.propertyName}-${index}`}
+                source={source}
+                websiteId={websiteId}
+                eventName={eventName}
+                filter={filter}
+                filters={value}
+                onChange={nextFilter =>
+                  onChange(value.map((item, i) => (i === index ? nextFilter : item)))
+                }
+                onRemove={() => onChange(value.filter((_, i) => i !== index))}
+              />
             ))}
-        </Column>
+            {!value.length &&
+              (isMobile ? (
+                <Row
+                  color="muted"
+                  justifyContent="center"
+                  width="100%"
+                  minHeight="70px"
+                  style={{ paddingTop: '24px' }}
+                >
+                  {t(messages.nothingSelected)}
+                </Row>
+              ) : (
+                <Empty message={t(messages.nothingSelected)} />
+              ))}
+          </Column>
+        </OverlayScrollArea>
       </Grid>
     </LoadingPanel>
   );

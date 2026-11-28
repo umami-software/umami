@@ -8,6 +8,7 @@ import {
   TabsTrigger,
 } from '@umami/react-zen';
 import { useState } from 'react';
+import { OverlayScrollArea } from '@/components/common/OverlayScrollArea';
 import { useFilters, useMessages, useMobile, useNavigation } from '@/components/hooks';
 import { FieldFilters } from '@/components/input/FieldFilters';
 import { SegmentFilters } from '@/components/input/SegmentFilters';
@@ -97,12 +98,14 @@ export function FilterEditForm({ websiteId, onChange, onClose }: FilterEditFormP
     setCurrentCohort(type === 'cohort' ? id : undefined);
   };
 
-  // Grid so the panel's content (including the loading state) stretches to fill the min height.
+  // The panel's scroll area fills it, and the grid body stretches the content (including the
+  // loading state) to fill the min height.
   const panelStyle = {
     display: 'grid',
-    overflowY: 'auto',
+    gridTemplateRows: 'minmax(0, 1fr)',
     minHeight: isMobile ? 0 : 'min(400px, 50dvh)',
   } as const;
+  const panelBodyStyle = { display: 'grid', minHeight: '100%' } as const;
   const mobileTabListStyle = isMobile
     ? ({
         overflowX: 'auto',
@@ -152,52 +155,72 @@ export function FilterEditForm({ websiteId, onChange, onClose }: FilterEditFormP
           )}
         </TabsList>
         <TabsContent value="fields" style={panelStyle}>
-          <FieldFilters
-            websiteId={websiteId}
-            value={currentFilters}
-            match={currentMatch}
-            onChange={setCurrentFilters}
-            onMatchChange={setCurrentMatch}
-            exclude={excludedFields}
-          />
+          <OverlayScrollArea>
+            <div style={panelBodyStyle}>
+              <FieldFilters
+                websiteId={websiteId}
+                value={currentFilters}
+                match={currentMatch}
+                onChange={setCurrentFilters}
+                onMatchChange={setCurrentMatch}
+                exclude={excludedFields}
+              />
+            </div>
+          </OverlayScrollArea>
         </TabsContent>
         {!isPixelLink && websiteId && (
           <TabsContent value="segments" style={panelStyle}>
-            <SegmentFilters
-              websiteId={websiteId}
-              segmentId={currentSegment}
-              onChange={handleSegmentChange}
-            />
+            <OverlayScrollArea>
+              <div style={panelBodyStyle}>
+                <SegmentFilters
+                  websiteId={websiteId}
+                  segmentId={currentSegment}
+                  onChange={handleSegmentChange}
+                />
+              </div>
+            </OverlayScrollArea>
           </TabsContent>
         )}
         {!isPixelLink && websiteId && (
           <TabsContent value="cohorts" style={panelStyle}>
-            <SegmentFilters
-              type="cohort"
-              websiteId={websiteId}
-              segmentId={currentCohort}
-              onChange={handleSegmentChange}
-            />
+            <OverlayScrollArea>
+              <div style={panelBodyStyle}>
+                <SegmentFilters
+                  type="cohort"
+                  websiteId={websiteId}
+                  segmentId={currentCohort}
+                  onChange={handleSegmentChange}
+                />
+              </div>
+            </OverlayScrollArea>
           </TabsContent>
         )}
         {!isPixelLink && websiteId && isEventsPath && (
           <TabsContent value="event-properties" style={panelStyle}>
-            <PropertyFilters
-              source="event"
-              websiteId={websiteId}
-              value={currentEventPropertyFilters}
-              onChange={setCurrentEventPropertyFilters}
-            />
+            <OverlayScrollArea>
+              <div style={panelBodyStyle}>
+                <PropertyFilters
+                  source="event"
+                  websiteId={websiteId}
+                  value={currentEventPropertyFilters}
+                  onChange={setCurrentEventPropertyFilters}
+                />
+              </div>
+            </OverlayScrollArea>
           </TabsContent>
         )}
         {!isPixelLink && websiteId && (
           <TabsContent value="session-data" style={panelStyle}>
-            <PropertyFilters
-              source="session"
-              websiteId={websiteId}
-              value={currentSessionPropertyFilters}
-              onChange={setCurrentSessionPropertyFilters}
-            />
+            <OverlayScrollArea>
+              <div style={panelBodyStyle}>
+                <PropertyFilters
+                  source="session"
+                  websiteId={websiteId}
+                  value={currentSessionPropertyFilters}
+                  onChange={setCurrentSessionPropertyFilters}
+                />
+              </div>
+            </OverlayScrollArea>
           </TabsContent>
         )}
       </Tabs>

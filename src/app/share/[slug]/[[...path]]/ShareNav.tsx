@@ -12,6 +12,7 @@ import {
 import { SectionNavGroup } from '@/app/(main)/websites/[websiteId]/WebsiteNav';
 import { IconLabel } from '@/components/common/IconLabel';
 import Link from '@/components/common/Link';
+import { OverlayScrollArea } from '@/components/common/OverlayScrollArea';
 import {
   isMetricsPath,
   type NavItem,
@@ -218,75 +219,81 @@ export function ShareNav({
           </Button>
         )}
       </Row>
-      <Column flexGrow={1} marginTop="2" overflowY="auto" gap="2">
-        {items.map(({ label: sectionLabel, items: sectionItems }, index) => (
-          <Column key={`${sectionLabel}${index}`} gap="1" marginBottom="1">
-            {!collapsed && sectionLabel && (
-              <Row paddingX="3" marginTop="2">
-                <Text weight="bold">{sectionLabel}</Text>
-              </Row>
-            )}
-            {sectionItems.map(({ id, path, label, icon, children }) => {
-              // When collapsed the sub-items are hidden, so the parent shows their selection.
-              const isSelected =
-                selectedKey === id ||
-                (collapsed && !!children?.some(child => child.id === selectedKey));
-              if (!collapsed && children?.length > 0) {
-                return (
-                  <SectionNavGroup
-                    key={id}
-                    item={{ id, path, label, icon, children }}
-                    selectedKey={selectedKey}
-                    onItemClick={onItemClick}
-                    minHeight="40px"
-                  />
-                );
-              }
-
-              return (
-                <Link key={id} href={path} role="button" onClick={onItemClick}>
-                  {collapsed ? (
-                    <Tooltip>
-                      <TooltipTrigger
-                        delay={0}
-                        render={
-                          <Row
-                            tabIndex={0}
-                            alignItems="center"
-                            justifyContent="center"
-                            hover={{ backgroundColor: 'muted' }}
-                            backgroundColor={isSelected ? 'muted' : undefined}
-                            borderRadius
-                            minHeight="40px"
-                          />
-                        }
-                      >
-                        <IconLabel icon={icon} label="" weight={isSelected ? 'bold' : undefined} />
-                      </TooltipTrigger>
-                      <TooltipContent side="right">{label}</TooltipContent>
-                    </Tooltip>
-                  ) : (
-                    <Row
-                      alignItems="center"
-                      hover={{ backgroundColor: 'muted' }}
-                      backgroundColor={isSelected ? 'muted' : undefined}
-                      borderRadius
+      <OverlayScrollArea style={{ flexGrow: 1, minHeight: 0 }}>
+        <Column marginTop="2" gap="2">
+          {items.map(({ label: sectionLabel, items: sectionItems }, index) => (
+            <Column key={`${sectionLabel}${index}`} gap="1" marginBottom="1">
+              {!collapsed && sectionLabel && (
+                <Row paddingX="3" marginTop="2">
+                  <Text weight="bold">{sectionLabel}</Text>
+                </Row>
+              )}
+              {sectionItems.map(({ id, path, label, icon, children }) => {
+                // When collapsed the sub-items are hidden, so the parent shows their selection.
+                const isSelected =
+                  selectedKey === id ||
+                  (collapsed && !!children?.some(child => child.id === selectedKey));
+                if (!collapsed && children?.length > 0) {
+                  return (
+                    <SectionNavGroup
+                      key={id}
+                      item={{ id, path, label, icon, children }}
+                      selectedKey={selectedKey}
+                      onItemClick={onItemClick}
                       minHeight="40px"
-                    >
-                      <IconLabel
-                        icon={icon}
-                        label={label}
-                        weight={isSelected ? 'bold' : undefined}
-                        padding
-                      />
-                    </Row>
-                  )}
-                </Link>
-              );
-            })}
-          </Column>
-        ))}
-      </Column>
+                    />
+                  );
+                }
+
+                return (
+                  <Link key={id} href={path} role="button" onClick={onItemClick}>
+                    {collapsed ? (
+                      <Tooltip>
+                        <TooltipTrigger
+                          delay={0}
+                          render={
+                            <Row
+                              tabIndex={0}
+                              alignItems="center"
+                              justifyContent="center"
+                              hover={{ backgroundColor: 'muted' }}
+                              backgroundColor={isSelected ? 'muted' : undefined}
+                              borderRadius
+                              minHeight="40px"
+                            />
+                          }
+                        >
+                          <IconLabel
+                            icon={icon}
+                            label=""
+                            weight={isSelected ? 'bold' : undefined}
+                          />
+                        </TooltipTrigger>
+                        <TooltipContent side="right">{label}</TooltipContent>
+                      </Tooltip>
+                    ) : (
+                      <Row
+                        alignItems="center"
+                        hover={{ backgroundColor: 'muted' }}
+                        backgroundColor={isSelected ? 'muted' : undefined}
+                        borderRadius
+                        minHeight="40px"
+                      >
+                        <IconLabel
+                          icon={icon}
+                          label={label}
+                          weight={isSelected ? 'bold' : undefined}
+                          padding
+                        />
+                      </Row>
+                    )}
+                  </Link>
+                );
+              })}
+            </Column>
+          ))}
+        </Column>
+      </OverlayScrollArea>
       <Column
         flexGrow={collapsed ? 1 : undefined}
         justifyContent="flex-end"

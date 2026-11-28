@@ -29,7 +29,6 @@ export function SegmentFilters({
       isLoading={isLoading}
       isFetching={isFetching}
       isEmpty={!data?.data?.length}
-      overflowY="auto"
     >
       <List selectionMode="single" value={[segmentId]} onValueChange={ids => handleChange(ids[0])}>
         {data?.data?.map(item => {

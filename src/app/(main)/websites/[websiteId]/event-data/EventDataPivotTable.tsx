@@ -6,6 +6,7 @@ import { DateDistance } from '@/components/common/DateDistance';
 import { Empty } from '@/components/common/Empty';
 import Link from '@/components/common/Link';
 import { LoadingPanel } from '@/components/common/LoadingPanel';
+import { OverlayScrollArea } from '@/components/common/OverlayScrollArea';
 import { Pager } from '@/components/common/Pager';
 import {
   useEventDataPivotQuery,
@@ -121,9 +122,7 @@ export function EventDataPivotTable({
               </DataColumn>
             </DataTable>
           ) : (
-            <div
-              style={{ width: '100%', maxWidth: '100%', overflowX: 'auto', overflowY: 'hidden' }}
-            >
+            <OverlayScrollArea orientation="horizontal" style={{ width: '100%', maxWidth: '100%' }}>
               <div style={{ width: tableMinWidth, minWidth: tableMinWidth }}>
                 <DataTable data={tableQuery?.data} style={{ width: '100%' }} displayMode="table">
                   <DataColumn id="session" label={t(labels.session)} width="72px">
@@ -146,7 +145,7 @@ export function EventDataPivotTable({
                   </DataColumn>
                 </DataTable>
               </div>
-            </div>
+            </OverlayScrollArea>
           )}
           {showPager && tableQuery && (
             <Row marginTop="6">

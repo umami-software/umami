@@ -8,7 +8,6 @@ import {
   Code,
   Column,
   Dialog,
-  DialogContent,
   DialogFooter,
   DialogHeader,
   DialogTitle,
@@ -22,6 +21,7 @@ import {
 import { LucideCopy } from 'lucide-react';
 import { type ReactNode, useEffect, useState } from 'react';
 import { OtpInput } from '@/components/common/OtpInput';
+import { ScrollableDialogContent } from '@/components/common/ScrollableDialogContent';
 import { useMessages, useUpdateQuery } from '@/components/hooks';
 import styles from './TwoFactorSetupModal.module.css';
 import { TwoFactorSuccessModal } from './TwoFactorSuccessModal';
@@ -125,12 +125,11 @@ export function TwoFactorSetupModal({ required, onClose }: TwoFactorSetupModalPr
 
   return (
     <Dialog open={true}>
-      <DialogContent
+      <ScrollableDialogContent
         className={styles.twoFactorSetupModal}
         style={{
           maxWidth: 'calc(100% - 2rem)',
           maxHeight: 'calc(100dvh - 2rem)',
-          overflowY: 'auto',
         }}
         showCloseButton={false}
       >
@@ -219,7 +218,7 @@ export function TwoFactorSetupModal({ required, onClose }: TwoFactorSetupModalPr
             {t(labels.confirm)}
           </Button>
         </DialogFooter>
-      </DialogContent>
+      </ScrollableDialogContent>
     </Dialog>
   );
 }

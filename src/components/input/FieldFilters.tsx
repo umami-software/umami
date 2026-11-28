@@ -2,7 +2,6 @@ import {
   Button,
   Column,
   DropdownMenu,
-  DropdownMenuContent,
   DropdownMenuGroup,
   DropdownMenuItem,
   DropdownMenuLabel,
@@ -26,6 +25,8 @@ import { endOfDay, subMonths } from 'date-fns';
 import type { Key } from 'react';
 import { Empty } from '@/components/common/Empty';
 import { FilterRecord } from '@/components/common/FilterRecord';
+import { OverlayScrollArea } from '@/components/common/OverlayScrollArea';
+import { ScrollableDropdownMenuContent } from '@/components/common/ScrollableDropdownMenuContent';
 import { type FieldGroup, useFields, useMessages, useMobile } from '@/components/hooks';
 import { Plus } from '@/components/icons';
 
@@ -101,10 +102,10 @@ export function FieldFilters({
               <Plus />
             </Icon>
           </DropdownMenuTrigger>
-          <DropdownMenuContent
+          <ScrollableDropdownMenuContent
             side={isMobile ? 'left' : 'bottom'}
             align={isMobile ? undefined : 'start'}
-            style={{ maxHeight: 'calc(100vh - 2rem)', overflowY: 'auto' }}
+            style={{ maxHeight: 'calc(100vh - 2rem)' }}
           >
             {groupLabels.map(({ key: groupKey, label }) => {
               const groupFields = groupedFields[groupKey];
@@ -122,7 +123,7 @@ export function FieldFilters({
                 </DropdownMenuGroup>
               );
             })}
-          </DropdownMenuContent>
+          </ScrollableDropdownMenuContent>
         </DropdownMenu>
       </Row>
       <Column
@@ -154,62 +155,64 @@ export function FieldFilters({
           })}
         </List>
       </Column>
-      <Column overflow="auto" gapY="4" style={{ contain: 'layout' }}>
-        {onMatchChange && (
-          <Row alignItems="center" gap>
-            <Field>
-              <FieldLabel>{t(labels.match)}</FieldLabel>
-              <Select
-                items={matchItems}
-                value={match}
-                onValueChange={value => onMatchChange(value as string)}
-              >
-                <SelectTrigger style={{ width: 150 }}>
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent alignItemWithTrigger={false}>
-                  <SelectGroup>
-                    {matchItems.map(item => (
-                      <SelectItem key={item.value} value={item.value}>
-                        {item.label}
-                      </SelectItem>
-                    ))}
-                  </SelectGroup>
-                </SelectContent>
-              </Select>
-            </Field>
-          </Row>
-        )}
-        {value.map((filter, index) => {
-          return (
-            <FilterRecord
-              key={`${filter.name}-${index}`}
-              websiteId={websiteId}
-              type={filter.name}
-              startDate={startDate}
-              endDate={endDate}
-              {...filter}
-              onSelect={(_name, operator) => handleSelect(index, operator)}
-              onRemove={() => handleRemove(index)}
-              onChange={(_name, val) => handleChange(index, val)}
-            />
-          );
-        })}
-        {!value.length &&
-          (isMobile ? (
-            <Row
-              color="muted"
-              justifyContent="center"
-              width="100%"
-              minHeight="70px"
-              style={{ paddingTop: '24px' }}
-            >
-              {t(messages.nothingSelected)}
+      <OverlayScrollArea style={{ contain: 'layout' }}>
+        <Column gapY="4">
+          {onMatchChange && (
+            <Row alignItems="center" gap>
+              <Field>
+                <FieldLabel>{t(labels.match)}</FieldLabel>
+                <Select
+                  items={matchItems}
+                  value={match}
+                  onValueChange={value => onMatchChange(value as string)}
+                >
+                  <SelectTrigger style={{ width: 150 }}>
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent alignItemWithTrigger={false}>
+                    <SelectGroup>
+                      {matchItems.map(item => (
+                        <SelectItem key={item.value} value={item.value}>
+                          {item.label}
+                        </SelectItem>
+                      ))}
+                    </SelectGroup>
+                  </SelectContent>
+                </Select>
+              </Field>
             </Row>
-          ) : (
-            <Empty message={t(messages.nothingSelected)} />
-          ))}
-      </Column>
+          )}
+          {value.map((filter, index) => {
+            return (
+              <FilterRecord
+                key={`${filter.name}-${index}`}
+                websiteId={websiteId}
+                type={filter.name}
+                startDate={startDate}
+                endDate={endDate}
+                {...filter}
+                onSelect={(_name, operator) => handleSelect(index, operator)}
+                onRemove={() => handleRemove(index)}
+                onChange={(_name, val) => handleChange(index, val)}
+              />
+            );
+          })}
+          {!value.length &&
+            (isMobile ? (
+              <Row
+                color="muted"
+                justifyContent="center"
+                width="100%"
+                minHeight="70px"
+                style={{ paddingTop: '24px' }}
+              >
+                {t(messages.nothingSelected)}
+              </Row>
+            ) : (
+              <Empty message={t(messages.nothingSelected)} />
+            ))}
+        </Column>
+      </OverlayScrollArea>
     </Grid>
   );
 }

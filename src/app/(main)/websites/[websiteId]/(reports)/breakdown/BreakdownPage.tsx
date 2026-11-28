@@ -33,7 +33,7 @@ export function BreakdownPage({ websiteId }: { websiteId: string }) {
         paddingX="0"
         paddingY="0"
         height="900px"
-        overflow="auto"
+        overflow="hidden"
         allowFullscreen
         toolbar={<DownloadButton filename="breakdown" data={data} />}
       >

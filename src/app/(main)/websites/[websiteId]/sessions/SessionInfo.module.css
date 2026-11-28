@@ -11,7 +11,15 @@
 .sidebar {
   display: flex;
   flex-direction: column;
-  gap: 24px;
+  gap: 32px;
+}
+
+.sidebar .section {
+  gap: 14px;
+}
+
+.sidebar .rows {
+  gap: 12px;
 }
 
 .grid {

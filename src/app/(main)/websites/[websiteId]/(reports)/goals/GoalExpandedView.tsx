@@ -2,7 +2,6 @@ import {
   Button,
   Column,
   Dialog,
-  DialogContent,
   Heading,
   Icon,
   Row,
@@ -16,6 +15,7 @@ import {
   TooltipTrigger,
 } from '@umami/react-zen';
 import { useState } from 'react';
+import { ScrollableDialogContent } from '@/components/common/ScrollableDialogContent';
 import { useGoalChartQuery, useGoalSummaryQuery, useMessages } from '@/components/hooks';
 import { File, Maximize, X } from '@/components/icons';
 import { MetricCard } from '@/components/metrics/MetricCard';
@@ -54,7 +54,7 @@ export function GoalMaximizeButton(props: GoalViewProps) {
         <TooltipContent>{t(labels.maximize)}</TooltipContent>
       </Tooltip>
       <Dialog open={isOpen} onOpenChange={setIsOpen}>
-        <DialogContent
+        <ScrollableDialogContent
           aria-label={props.name}
           showCloseButton={false}
           style={{
@@ -64,11 +64,10 @@ export function GoalMaximizeButton(props: GoalViewProps) {
             maxHeight: '100%',
             borderRadius: 0,
             padding: '32px',
-            overflowY: 'auto',
           }}
         >
           <GoalExpandedView {...props} onClose={() => setIsOpen(false)} />
-        </DialogContent>
+        </ScrollableDialogContent>
       </Dialog>
     </>
   );
