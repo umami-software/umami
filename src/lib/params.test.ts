@@ -2,8 +2,10 @@ import { describe, expect, test } from 'vitest';
 import { DATA_TYPE, OPERATORS } from './constants';
 import {
   filtersObjectToArray,
+  parsePropertyFilters,
   parseSessionPropertyFilters,
   parseUniversalEventPropertyFilters,
+  serializePropertyFilters,
   serializeSessionPropertyFilters,
   serializeUniversalEventPropertyFilters,
 } from './params';
@@ -137,5 +139,34 @@ describe('filtersObjectToArray', () => {
     );
 
     expect(filter.prefix).toBe('e.');
+  });
+});
+
+describe('property filter params', () => {
+  const filter = (propertyName: string, value = 'x') => ({
+    propertyName,
+    dataType: DATA_TYPE.string,
+    operator: OPERATORS.equals,
+    value,
+  });
+
+  test('keeps the trailing digits of a property name', () => {
+    const filters = [filter('player-1'), filter('step2', 'b'), filter('item_10', 'c')];
+
+    expect(parsePropertyFilters(serializePropertyFilters(filters))).toEqual(filters);
+  });
+
+  test('tells repeated filters of one name from a name that ends in a digit', () => {
+    const filters = [filter('a', '1'), filter('a', '2'), filter('a1', '3'), filter('a1', '4')];
+    const params = serializePropertyFilters(filters);
+
+    expect(Object.keys(params)).toHaveLength(4);
+    expect(parsePropertyFilters(params)).toEqual(filters);
+  });
+
+  test('keeps the key format of names without a trailing digit', () => {
+    const params = serializePropertyFilters([filter('plan'), filter('plan'), filter('plan')]);
+
+    expect(Object.keys(params)).toEqual(['pf_plan', 'pf_plan1', 'pf_plan2']);
   });
 });
