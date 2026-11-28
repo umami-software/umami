@@ -148,7 +148,11 @@ export function parsePropertyFilters(
 
     const stringValue = String(val);
     const withoutPrefix = key.slice(prefix.length + 1);
-    const propertyName = withoutPrefix.replace(/\d+$/, ''); // strip trailing index digits
+    // A name that ends in a digit or a dot is serialized with an explicit ".<index>" suffix, so its
+    // own digits are kept. Other keys carry the index as bare trailing digits.
+    const propertyName = /\.\d+$/.test(withoutPrefix)
+      ? withoutPrefix.replace(/\.\d+$/, '')
+      : withoutPrefix.replace(/\d+$/, '');
     const prefixedDotMatch = stringValue.match(/^(\d+)\.([^.]+)\.(.*)$/);
     const untypedDotMatch = stringValue.match(/^([^.]+)\.(.*)$/);
     const explicitDataType = prefixedDotMatch ? Number(prefixedDotMatch[1]) : undefined;
@@ -262,10 +266,8 @@ export function serializePropertyFilters(
     filters.map(f => {
       const n = counts[f.propertyName] ?? 0;
       counts[f.propertyName] = n + 1;
-      return [
-        `${prefix}_${f.propertyName}${n > 0 ? n : ''}`,
-        `${f.dataType}.${f.operator}.${f.value}`,
-      ];
+      const index = /[\d.]$/.test(f.propertyName) ? `.${n}` : n > 0 ? n : '';
+      return [`${prefix}_${f.propertyName}${index}`, `${f.dataType}.${f.operator}.${f.value}`];
     }),
   );
 }
