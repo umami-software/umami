@@ -27,7 +27,7 @@ async function relationalQuery(
   propertyFilters: PropertyFilter[] = [],
 ) {
   const { timezone = 'utc' } = filters;
-  const { rawQuery, parseFilters, getPropertyFilterQuery } = prisma;
+  const { rawQuery, parseFilters, getPropertyFilterQuery, getDateSQL } = prisma;
   const { filterQuery, cohortQuery, joinSessionQuery, queryParams } = parseFilters({
     ...filters,
     websiteId,
@@ -83,15 +83,30 @@ async function relationalQuery(
     property_values as (
       select
         session_data.session_id,
-        session_data.string_value as value
+        case
+          when session_data.data_type = ${DATA_TYPE.number} then replace(session_data.string_value, '.0000', '')
+          when session_data.data_type = ${DATA_TYPE.date} then ${getDateSQL('session_data.date_value', 'hour')}
+          else session_data.string_value
+        end as value
       from session_data
       join filtered_sessions
         on filtered_sessions.session_id = session_data.session_id
         and filtered_sessions.website_id = session_data.website_id
       where session_data.website_id = {{websiteId::uuid}}
         and session_data.data_key = {{propertyName}}
-        and session_data.data_type = ${DATA_TYPE.string}
-        and coalesce(session_data.string_value, '') != ''
+        and session_data.data_type != ${DATA_TYPE.array}
+      union all
+      select
+        session_data.session_id,
+        array_item.value as value
+      from session_data
+      join filtered_sessions
+        on filtered_sessions.session_id = session_data.session_id
+        and filtered_sessions.website_id = session_data.website_id
+      cross join lateral jsonb_array_elements_text(coalesce(session_data.string_value, '[]')::jsonb) as array_item(value)
+      where session_data.website_id = {{websiteId::uuid}}
+        and session_data.data_key = {{propertyName}}
+        and session_data.data_type = ${DATA_TYPE.array}
     )
     select
       property_values.value as label,
@@ -102,9 +117,10 @@ async function relationalQuery(
       coalesce(sum(session_stats.events), 0) as events
     from property_values
     join session_stats on session_stats.session_id = property_values.session_id
+    where coalesce(property_values.value, '') != ''
     group by property_values.value
-    order by activity desc, property_values.value asc
-    limit 100
+    order by sessions desc, activity desc, property_values.value asc
+    limit 500
     `,
     { ...queryParams, websiteId, propertyName, ...pfParams },
     FUNCTION_NAME,
@@ -171,13 +187,25 @@ async function clickhouseQuery(
     property_values as (
       select
         session_data.session_id,
-        session_data.string_value as value
+        multiIf(
+          session_data.data_type = ${DATA_TYPE.number}, replaceAll(session_data.string_value, '.0000', ''),
+          session_data.data_type = ${DATA_TYPE.date}, toString(date_trunc('hour', session_data.date_value)),
+          session_data.string_value
+        ) as value
       from session_data final
       join filtered_sessions on filtered_sessions.session_id = session_data.session_id
       where session_data.website_id = {websiteId:UUID}
         and session_data.data_key = {propertyName:String}
-        and session_data.data_type = ${DATA_TYPE.string}
-        and ifNull(session_data.string_value, '') != ''
+        and session_data.data_type != ${DATA_TYPE.array}
+      union all
+      select
+        session_data.session_id,
+        arrayJoin(JSONExtract(ifNull(session_data.string_value, '[]'), 'Array(String)')) as value
+      from session_data final
+      join filtered_sessions on filtered_sessions.session_id = session_data.session_id
+      where session_data.website_id = {websiteId:UUID}
+        and session_data.data_key = {propertyName:String}
+        and session_data.data_type = ${DATA_TYPE.array}
     )
     select
       property_values.value as label,
@@ -188,9 +216,10 @@ async function clickhouseQuery(
       ifNull(sum(session_stats.events), 0) as events
     from property_values
     join session_stats on session_stats.session_id = property_values.session_id
+    where ifNull(property_values.value, '') != ''
     group by property_values.value
-    order by activity desc, property_values.value asc
-    limit 100
+    order by sessions desc, activity desc, property_values.value asc
+    limit 500
     `,
     { ...queryParams, websiteId, propertyName, ...pfParams },
     FUNCTION_NAME,

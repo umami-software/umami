@@ -241,6 +241,7 @@ export const labels: Record<string, string> = {
   max: 'label.max',
   unique: 'label.unique',
   value: 'label.value',
+  values: 'label.values',
   overview: 'label.overview',
   totalRecords: 'label.total-records',
   insight: 'label.insight',

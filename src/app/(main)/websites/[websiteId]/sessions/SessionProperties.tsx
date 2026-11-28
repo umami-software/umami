@@ -1,61 +1,125 @@
-import { Column, Grid, Row } from '@umami/react-zen';
-import { useMemo, useState } from 'react';
+'use client';
+import {
+  Column,
+  DataColumn,
+  DataTable,
+  Grid,
+  Row,
+  SearchField,
+  Tabs,
+  TabsContent,
+  TabsList,
+  TabsTrigger,
+  Text,
+} from '@umami/react-zen';
+import { useCallback, useMemo, useState } from 'react';
 import { ComboBox } from '@/components/common/ComboBox';
+import { Empty } from '@/components/common/Empty';
 import { LoadingPanel } from '@/components/common/LoadingPanel';
 import {
+  useFilters,
   useMessages,
-  usePropertyFieldsQuery,
+  useNavigation,
   useSessionDataPropertiesQuery,
+  useShare,
 } from '@/components/hooks';
-import { PropertyChart } from '@/components/property-data/PropertyChart';
-import { PropertyDateChart } from '@/components/property-data/PropertyDateChart';
-import { PropertyFilterBar } from '@/components/property-data/PropertyFilterBar';
-import { PropertyFilterButton } from '@/components/property-data/PropertyFilterButton';
-import { PropertyNumericChart } from '@/components/property-data/PropertyNumericChart';
-import { DATA_TYPE } from '@/lib/constants';
-import type { PropertyFilter } from '@/lib/types';
-import { SessionDataPivotTable } from '../session-data/SessionDataPivotTable';
-import { SessionPropertyChart } from '../session-data/SessionPropertyChart';
+import { DATA_TYPE, DATA_TYPES, OPERATORS } from '@/lib/constants';
+import { formatLongNumber } from '@/lib/format';
+import { serializeSessionPropertyFilters } from '@/lib/params';
+import { allowShareFilter } from '@/lib/share';
+import { SessionPropertyBreakdown } from '../session-data/SessionPropertyBreakdown';
+import { SessionPropertyValues } from '../session-data/SessionPropertyValues';
+
+interface SessionPropertyField {
+  propertyName: string;
+  dataType: number;
+  total: number;
+}
 
 export function SessionProperties({ websiteId }: { websiteId: string }) {
   const [propertyName, setPropertyName] = useState('');
-  const [propertyFilters, setPropertyFilters] = useState<PropertyFilter[]>([]);
+  const [tab, setTab] = useState<'values' | 'breakdown'>('values');
+  const [search, setSearch] = useState('');
   const { t, labels } = useMessages();
-  const { data, isLoading, isFetching, error } = usePropertyFieldsQuery('session', websiteId);
-  const { data: scopedData } = useSessionDataPropertiesQuery(
-    websiteId,
-    propertyName ? { propertyName, propertyFilters } : undefined,
-    { enabled: !!propertyName },
-  );
+  const { router, updateParams, query } = useNavigation();
+  const { sessionPropertyFilters } = useFilters();
+  const share = useShare();
+  const canFilter = allowShareFilter(share?.parameters);
 
-  const properties = useMemo(() => {
+  const { data, isLoading, isFetching, error } = useSessionDataPropertiesQuery(websiteId);
+
+  const properties = useMemo<SessionPropertyField[]>(() => {
     if (!data) return [];
     const seen = new Set<string>();
 
-    return data.filter((field: { propertyName: string; dataType: number }) => {
-      if (seen.has(field.propertyName)) return false;
-      seen.add(field.propertyName);
-      return true;
-    });
+    return data
+      .filter((field: SessionPropertyField) => {
+        if (seen.has(field.propertyName)) return false;
+        seen.add(field.propertyName);
+        return true;
+      })
+      .map((field: SessionPropertyField) => ({
+        propertyName: field.propertyName,
+        dataType: field.dataType,
+        total: Number(field.total ?? 0),
+      }));
   }, [data]);
 
   const selectedProperty = useMemo(
-    () => properties.find((field: { propertyName: string }) => field.propertyName === propertyName),
+    () => properties.find(field => field.propertyName === propertyName),
     [properties, propertyName],
   );
-  const scopedProperties = useMemo(() => {
-    if (!scopedData) return [];
-    const seen = new Set<string>();
 
-    return scopedData.filter((field: { propertyName: string }) => {
-      if (seen.has(field.propertyName)) return false;
-      seen.add(field.propertyName);
-      return true;
-    });
-  }, [scopedData]);
-  const scopedPropertyKeys = useMemo(
-    () => scopedProperties.map((field: { propertyName: string }) => field.propertyName),
-    [scopedProperties],
+  const filteredProperties = useMemo(() => {
+    const term = search.trim().toLowerCase();
+    if (!term) return properties;
+    return properties.filter(field => field.propertyName.toLowerCase().includes(term));
+  }, [properties, search]);
+
+  const handleSelectValue = useCallback(
+    (value: string) => {
+      if (!canFilter || !selectedProperty || selectedProperty.dataType === DATA_TYPE.date) {
+        return;
+      }
+
+      const operator =
+        selectedProperty.dataType === DATA_TYPE.array ? OPERATORS.contains : OPERATORS.equals;
+
+      const exists = sessionPropertyFilters.some(
+        filter =>
+          filter.propertyName === selectedProperty.propertyName &&
+          filter.operator === operator &&
+          filter.value === value,
+      );
+
+      if (exists) {
+        return;
+      }
+
+      const clearedSessionPropertyFilters = Object.fromEntries(
+        Object.keys(query)
+          .filter(key => /^spf\d+$/.test(key))
+          .map(key => [key, undefined]),
+      );
+
+      const nextFilters = [
+        ...sessionPropertyFilters,
+        {
+          propertyName: selectedProperty.propertyName,
+          dataType: selectedProperty.dataType,
+          operator,
+          value,
+        },
+      ];
+
+      router.push(
+        updateParams({
+          ...clearedSessionPropertyFilters,
+          ...serializeSessionPropertyFilters(nextFilters),
+        }),
+      );
+    },
+    [canFilter, selectedProperty, sessionPropertyFilters, query, router, updateParams],
   );
 
   return (
@@ -69,94 +133,95 @@ export function SessionProperties({ websiteId }: { websiteId: string }) {
       <Column gap="6" minWidth="0">
         {data && (
           <Grid
-            columns={{ base: '1fr', md: '1fr auto' }}
+            columns={{ base: '1fr', md: 'repeat(auto-fill, minmax(300px, 1fr))' }}
             gap
-            alignItems="end"
-            marginBottom="3"
             width="100%"
             style={{ minWidth: 0 }}
           >
-            <Grid
-              columns={{ base: '1fr', md: 'repeat(auto-fill, minmax(300px, 1fr))' }}
-              gap
-              width="100%"
-              style={{ flex: 1, minWidth: 0 }}
-            >
-              <ComboBox
-                label={t(labels.property)}
-                className="min-w-0"
-                items={properties.map((field: { propertyName: string }) => field.propertyName)}
-                inputValue={propertyName}
-                onInputValueChange={setPropertyName}
-              />
-            </Grid>
-            {propertyName && (
-              <Row
-                width={{ base: '100%', md: 'auto' }}
-                marginTop={{ base: '2', md: '0' }}
-                style={{ minWidth: 0 }}
-              >
-                <PropertyFilterButton
-                  source="session"
-                  websiteId={websiteId}
-                  fields={scopedProperties}
-                  filters={propertyFilters}
-                  onApply={setPropertyFilters}
-                />
-              </Row>
-            )}
+            <ComboBox
+              label={t(labels.property)}
+              className="min-w-0"
+              items={properties.map(field => field.propertyName)}
+              inputValue={propertyName}
+              onInputValueChange={setPropertyName}
+              showClear
+            />
           </Grid>
         )}
-        {propertyName && (
-          <PropertyFilterBar filters={propertyFilters} onChange={setPropertyFilters} />
-        )}
-        {propertyName && selectedProperty?.dataType === DATA_TYPE.number && (
-          <PropertyNumericChart
-            source="session"
-            websiteId={websiteId}
-            propertyName={propertyName}
-            propertyFilters={propertyFilters}
-          />
-        )}
-        {propertyName && selectedProperty?.dataType === DATA_TYPE.date && (
-          <PropertyDateChart
-            source="session"
-            websiteId={websiteId}
-            propertyName={propertyName}
-            propertyFilters={propertyFilters}
-          />
-        )}
-        {propertyName && selectedProperty?.dataType === DATA_TYPE.string && (
-          <SessionPropertyChart
-            websiteId={websiteId}
-            propertyName={propertyName}
-            propertyFilters={propertyFilters}
-          />
-        )}
-        {propertyName && selectedProperty?.dataType === DATA_TYPE.boolean && (
-          <PropertyChart
-            source="session"
-            websiteId={websiteId}
-            propertyName={propertyName}
-            propertyFilters={propertyFilters}
-          />
-        )}
-        {propertyName && selectedProperty?.dataType === DATA_TYPE.array && (
-          <PropertyChart
-            source="session"
-            websiteId={websiteId}
-            propertyName={propertyName}
-            propertyFilters={propertyFilters}
-            seriesType="array"
-          />
-        )}
-        {propertyName && (
-          <SessionDataPivotTable
-            websiteId={websiteId}
-            propertyName={propertyName}
-            propertyKeys={scopedPropertyKeys}
-            propertyFilters={propertyFilters}
-          />
+        {!selectedProperty ? (
+          properties.length === 0 ? (
+            <Empty />
+          ) : (
+            <Column gap="4" minWidth="0">
+              {properties.length > 10 && (
+                <div style={{ width: '100%', maxWidth: 280 }}>
+                  <SearchField
+                    value={search}
+                    onSearch={setSearch}
+                    delay={0}
+                    placeholder={t(labels.search)}
+                    className="w-full"
+                  />
+                </div>
+              )}
+              <DataTable
+                data={filteredProperties.map(field => ({ ...field, id: field.propertyName }))}
+                pageSize={20}
+              >
+                <DataColumn id="propertyName" label={t(labels.property)} width="minmax(180px, 2fr)">
+                  {(row: SessionPropertyField) => (
+                    <Row overflow="hidden" minWidth="0">
+                      <button
+                        type="button"
+                        onClick={() => setPropertyName(row.propertyName)}
+                        title={row.propertyName}
+                        className="truncate text-left font-medium hover:underline cursor-pointer"
+                      >
+                        {row.propertyName}
+                      </button>
+                    </Row>
+                  )}
+                </DataColumn>
+                <DataColumn id="dataType" label={t(labels.type)} width="120px">
+                  {(row: SessionPropertyField) => (
+                    <Text color="muted">{DATA_TYPES[row.dataType] ?? ''}</Text>
+                  )}
+                </DataColumn>
+                <DataColumn id="total" label={t(labels.visitors)} align="end" width="120px">
+                  {(row: SessionPropertyField) => formatLongNumber(row.total)}
+                </DataColumn>
+              </DataTable>
+            </Column>
+          )
+        ) : (
+          <Tabs
+            value={tab}
+            onValueChange={value => setTab(String(value) as 'values' | 'breakdown')}
+            style={{ minWidth: 0, width: '100%' }}
+          >
+            <TabsList>
+              <TabsTrigger value="values">{t(labels.values)}</TabsTrigger>
+              <TabsTrigger value="breakdown">{t(labels.breakdown)}</TabsTrigger>
+            </TabsList>
+            <TabsContent value="values" style={{ minWidth: 0, width: '100%' }}>
+              <SessionPropertyValues
+                key={selectedProperty.propertyName}
+                websiteId={websiteId}
+                propertyName={selectedProperty.propertyName}
+                dataType={selectedProperty.dataType}
+                onSelectValue={canFilter ? handleSelectValue : undefined}
+              />
+            </TabsContent>
+            <TabsContent value="breakdown" style={{ minWidth: 0, width: '100%' }}>
+              <SessionPropertyBreakdown
+                key={selectedProperty.propertyName}
+                websiteId={websiteId}
+                propertyName={selectedProperty.propertyName}
+                dataType={selectedProperty.dataType}
+                onSelectValue={canFilter ? handleSelectValue : undefined}
+              />
+            </TabsContent>
+          </Tabs>
         )}
       </Column>
     </LoadingPanel>
