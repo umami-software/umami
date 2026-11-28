@@ -193,6 +193,27 @@ test.describe('Teams', () => {
     }
   });
 
+  test('concurrent join and admin add creates only one membership', async ({
+    admin,
+    viewer,
+    seed,
+  }) => {
+    const [joinRes, addRes] = await Promise.all([
+      viewer.post('/api/teams/join', { accessCode }),
+      admin.post(`/api/teams/${teamId}/users`, {
+        userId: seed.viewer.id,
+        role: 'team-member',
+      }),
+    ]);
+
+    expect([joinRes.status, addRes.status].sort()).toEqual([200, 400]);
+
+    const listRes = await admin.get(`/api/teams/${teamId}/users?pageSize=100`);
+    expect(listRes.status).toBe(200);
+    const viewerMemberships = listRes.body.data.filter((m: any) => m.userId === seed.viewer.id);
+    expect(viewerMemberships).toHaveLength(1);
+  });
+
   test('DELETE /api/teams/{teamId} deletes the team', async ({ admin, user }) => {
     const denied = await user.del(`/api/teams/${teamId}`);
     const response = await admin.del(`/api/teams/${teamId}`);
