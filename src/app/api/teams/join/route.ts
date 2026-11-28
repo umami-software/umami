@@ -34,7 +34,15 @@ export async function POST(request: Request) {
     return badRequest({ message: 'User is already a team member.' });
   }
 
-  const user = await createTeamUser(auth.user.id, team.id, ROLES.teamMember);
+  try {
+    const user = await createTeamUser(auth.user.id, team.id, ROLES.teamMember);
 
-  return json(user);
+    return json(user);
+  } catch (e: unknown) {
+    if ((e as { code?: string })?.code === 'P2002') {
+      return badRequest({ message: 'User is already a team member.' });
+    }
+
+    throw e;
+  }
 }
