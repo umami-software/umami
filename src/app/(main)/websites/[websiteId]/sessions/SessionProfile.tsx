@@ -1,22 +1,24 @@
 'use client';
 import {
+  Badge,
   Button,
   Column,
   Icon,
-  Row,
   Tabs,
   TabsContent,
   TabsList,
   TabsTrigger,
-  TextField,
 } from '@umami/react-zen';
 import { Avatar } from '@/components/common/Avatar';
+import { CopyButton } from '@/components/common/CopyButton';
 import { LoadingPanel } from '@/components/common/LoadingPanel';
 import {
   useConfig,
+  useFormat,
   useMessages,
   useMobile,
   useNavigation,
+  useSessionDataQuery,
   useWebsiteSessionQuery,
 } from '@/components/hooks';
 import { X } from '@/components/icons';
@@ -24,6 +26,7 @@ import { SessionActivity } from './SessionActivity';
 import { SessionData } from './SessionData';
 import { SessionDeleteButton } from './SessionDeleteButton';
 import { SessionInfo } from './SessionInfo';
+import styles from './SessionProfile.module.css';
 import { SessionReplaysDataTable } from './SessionReplaysDataTable';
 import { SessionStats } from './SessionStats';
 
@@ -39,14 +42,35 @@ export function SessionProfile({
   onClose?: () => void;
 }) {
   const { data, isLoading, error } = useWebsiteSessionQuery(websiteId, sessionId);
+  const { data: propertiesData } = useSessionDataQuery(websiteId, sessionId);
   const config = useConfig();
   const { t, labels } = useMessages();
+  const { formatValue } = useFormat();
   const { isMobile } = useMobile();
   const { pathname } = useNavigation();
   const isSharePage = pathname.includes('/share/');
   const showDeleteButton = Boolean(
     !isSharePage && config?.sessionDeletionEnabled && data?.canDelete,
   );
+
+  const singleDistinctId = data?.distinctIds?.length > 1 ? '' : data?.distinctId?.trim() || '';
+
+  const locationSummary = [data?.city, data?.country ? formatValue(data.country, 'country') : '']
+    .filter(Boolean)
+    .join(', ');
+
+  const summaryParts = [
+    locationSummary,
+    data?.browser ? formatValue(data.browser, 'browser') : '',
+    data?.os ? formatValue(data.os, 'os') : '',
+  ].filter(Boolean);
+
+  const activityCount =
+    data && (data.views !== undefined || data.events !== undefined)
+      ? Number(data.views ?? 0) + Number(data.events ?? 0)
+      : undefined;
+
+  const propertiesCount = Array.isArray(propertiesData) ? propertiesData.length : undefined;
 
   return (
     <LoadingPanel
@@ -57,67 +81,115 @@ export function SessionProfile({
       loadingPlacement="absolute"
     >
       {data && (
-        <Column gap width="100%" minWidth="0" position="relative">
-          {onClose && (
-            // Overlaid in the corner so the actions don't push the profile down.
-            <Row
-              justifyContent="flex-end"
-              gap="1"
-              style={{ position: 'absolute', top: 0, right: 0, zIndex: 1 }}
-            >
-              {showDeleteButton && (
-                <SessionDeleteButton websiteId={websiteId} sessionId={sessionId} onSave={onClose} />
-              )}
-              <Button onClick={onClose} variant="ghost">
-                <Icon>
-                  <X />
-                </Icon>
-              </Button>
-            </Row>
-          )}
-          <Column gap="6" width="100%" minWidth="0">
-            <Row
-              justifyContent="center"
-              alignItems="center"
-              gap="6"
-              style={{ flexWrap: isMobile ? 'wrap' : 'nowrap' }}
-            >
-              <Avatar seed={data?.id} size={isMobile ? 80 : 128} />
-              <Column width={isMobile ? '100%' : '360px'} minWidth="0" maxWidth="360px">
-                <TextField label="ID" value={data?.id} allowCopy />
-              </Column>
-            </Row>
-            <SessionStats data={data} />
-            <SessionInfo data={data} />
+        <Column gap="6" width="100%" minWidth="0">
+          <div className={styles.header}>
+            <div className={styles.identity}>
+              <Avatar seed={data?.id} size={isMobile ? 48 : 56} />
+              <div className={styles.identityText}>
+                {singleDistinctId ? (
+                  <>
+                    <div className={styles.distinctTitle} title={singleDistinctId}>
+                      {singleDistinctId}
+                    </div>
+                    <div className={styles.titleRow}>
+                      <span className={styles.sessionIdSecondary} title={data.id}>
+                        {data.id}
+                      </span>
+                      <CopyButton value={data.id} label={t(labels.copy)} />
+                    </div>
+                  </>
+                ) : (
+                  <div className={styles.titleRow}>
+                    <span className={styles.sessionIdPrimary} title={data.id}>
+                      {data.id}
+                    </span>
+                    <CopyButton value={data.id} label={t(labels.copy)} />
+                  </div>
+                )}
 
-            <Tabs>
-              <TabsList>
-                <TabsTrigger value="activity">{t(labels.activity)}</TabsTrigger>
-                <TabsTrigger value="properties">{t(labels.properties)}</TabsTrigger>
-                {showReplays && <TabsTrigger value="replays">{t(labels.replays)}</TabsTrigger>}
-              </TabsList>
-              <TabsContent value="activity">
-                <SessionActivity
-                  websiteId={websiteId}
-                  sessionId={sessionId}
-                  startDate={data?.firstAt}
-                  endDate={data?.lastAt}
-                  distinctId={data?.distinctId}
-                />
-              </TabsContent>
-              <TabsContent value="properties">
-                <SessionData sessionId={sessionId} websiteId={websiteId} />
-              </TabsContent>
-              {showReplays && (
-                <TabsContent
-                  value="replays"
-                  style={{ width: '100%', minWidth: 0, overflowX: 'hidden' }}
-                >
-                  <SessionReplaysDataTable websiteId={websiteId} sessionId={sessionId} />
+                {summaryParts.length > 0 && (
+                  <div className={styles.summary} title={summaryParts.join(' · ')}>
+                    {summaryParts.join(' · ')}
+                  </div>
+                )}
+              </div>
+            </div>
+
+            {(onClose || showDeleteButton) && (
+              <div className={styles.actions}>
+                {showDeleteButton && (
+                  <SessionDeleteButton
+                    websiteId={websiteId}
+                    sessionId={sessionId}
+                    onSave={onClose}
+                  />
+                )}
+                {onClose && (
+                  <Button onClick={onClose} variant="ghost" aria-label={t(labels.close)}>
+                    <Icon>
+                      <X />
+                    </Icon>
+                  </Button>
+                )}
+              </div>
+            )}
+          </div>
+
+          <div className={styles.body}>
+            <aside className={styles.sidebar}>
+              <SessionInfo data={data} layout="sidebar" showDistinctId={!singleDistinctId} />
+            </aside>
+
+            <div className={styles.main}>
+              <SessionStats data={data} />
+
+              <Tabs>
+                <TabsList>
+                  <TabsTrigger value="activity">
+                    <span className={styles.tabLabel}>
+                      <span>{t(labels.activity)}</span>
+                      {activityCount !== undefined && (
+                        <Badge variant="secondary" className={styles.tabBadge}>
+                          {activityCount}
+                        </Badge>
+                      )}
+                    </span>
+                  </TabsTrigger>
+                  <TabsTrigger value="properties">
+                    <span className={styles.tabLabel}>
+                      <span>{t(labels.properties)}</span>
+                      {propertiesCount !== undefined && (
+                        <Badge variant="secondary" className={styles.tabBadge}>
+                          {propertiesCount}
+                        </Badge>
+                      )}
+                    </span>
+                  </TabsTrigger>
+                  {showReplays && <TabsTrigger value="replays">{t(labels.replays)}</TabsTrigger>}
+                </TabsList>
+                <TabsContent value="activity">
+                  <SessionActivity
+                    websiteId={websiteId}
+                    sessionId={sessionId}
+                    startDate={data?.firstAt}
+                    endDate={data?.lastAt}
+                    distinctId={data?.distinctId}
+                  />
                 </TabsContent>
-              )}
-            </Tabs>
-          </Column>
+                <TabsContent value="properties">
+                  <SessionData sessionId={sessionId} websiteId={websiteId} />
+                </TabsContent>
+                {showReplays && (
+                  <TabsContent
+                    value="replays"
+                    style={{ width: '100%', minWidth: 0, overflowX: 'hidden' }}
+                  >
+                    <SessionReplaysDataTable websiteId={websiteId} sessionId={sessionId} />
+                  </TabsContent>
+                )}
+              </Tabs>
+            </div>
+          </div>
         </Column>
       )}
     </LoadingPanel>

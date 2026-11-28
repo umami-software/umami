@@ -38,6 +38,8 @@ export interface MetricCardProps {
   selected?: boolean;
   /** Shows placeholders for the value and change, keeping the card's size. */
   loading?: boolean;
+  /** De-emphasize the metric value (e.g. for zero or empty metrics). */
+  muted?: boolean;
 }
 
 export const MetricCard = ({
@@ -54,6 +56,7 @@ export const MetricCard = ({
   onClick,
   selected = false,
   loading = false,
+  muted = false,
 }: MetricCardProps) => {
   const joined = useMetricsBarJoined();
   const bordered = borderedProp ?? !joined;
@@ -125,7 +128,13 @@ export const MetricCard = ({
           )}
         </Row>
       )}
-      <Text size="4xl" weight="bold" wrap="nowrap">
+      <Text
+        size="4xl"
+        weight="bold"
+        wrap="nowrap"
+        color={muted ? 'muted' : undefined}
+        style={{ fontVariantNumeric: 'tabular-nums' }}
+      >
         {loading ? (
           // Inline and 1em tall, so the line keeps the height the number would have.
           <Skeleton

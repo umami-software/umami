@@ -1,128 +1,243 @@
-import { Column, Grid, Icon, Row, Text } from '@umami/react-zen';
+import { Icon, Text } from '@umami/react-zen';
 import type { ReactNode } from 'react';
 import { DateDistance } from '@/components/common/DateDistance';
 import { Favicon } from '@/components/common/Favicon';
 import { TypeIcon } from '@/components/common/TypeIcon';
-import { useFormat, useLocale, useMessages, useRegionNames } from '@/components/hooks';
-import {
-  AppWindow,
-  Calendar,
-  Cpu,
-  Earth,
-  KeyRound,
-  Landmark,
-  Laptop,
-  MapPin,
-  Share2,
-} from '@/components/icons';
-import { Network } from '@/components/svg';
+import { useFormat, useLocale, useMessages, useRegionNames, useTimezone } from '@/components/hooks';
+import { AppWindow, Cpu, Earth, Globe, Laptop, Monitor } from '@/components/icons';
 import { decodePunycodeDomain } from '@/lib/format';
+import styles from './SessionInfo.module.css';
 
-export function SessionInfo({ data }) {
+export interface SessionInfoProps {
+  data: Record<string, any>;
+  layout?: 'sidebar' | 'grid';
+  showDistinctId?: boolean;
+}
+
+export function SessionInfo({
+  data,
+  layout = 'grid',
+  showDistinctId = layout === 'grid',
+}: SessionInfoProps) {
   const { locale } = useLocale();
   const { t, labels } = useMessages();
   const { formatValue } = useFormat();
   const { getRegionName } = useRegionNames(locale);
+  const { formatTimezoneDate } = useTimezone();
+
   const distinctId =
     data?.distinctIds?.length > 1
       ? `${data.distinctIds.length} linked IDs`
       : data?.distinctId?.trim();
   const stitchedSessionCount = data?.stitchedSessionCount;
 
+  const firstDate = data?.firstAt ? new Date(data.firstAt) : null;
+  const lastDate = data?.lastAt ? new Date(data.lastAt) : null;
+  const isSameTimestamp = Boolean(
+    firstDate && lastDate && Math.abs(lastDate.getTime() - firstDate.getTime()) < 1000,
+  );
+
+  const countryName = data?.country ? formatValue(data.country, 'country') : '';
+  const regionName = data?.region ? getRegionName(data.region) : '';
+  const cityName = data?.city || '';
+  const subLocation = [cityName, regionName].filter(Boolean).join(', ');
+  const primaryLocation = subLocation || countryName;
+  const secondaryLocation = subLocation && countryName ? countryName : '';
+
+  const formattedScreen = data?.screen ? String(data.screen).replace(/x/i, ' × ') : '';
+  const languageName = data?.language ? formatValue(data.language, 'language') : '';
+  const formattedLanguage =
+    data?.language && languageName && languageName !== data.language
+      ? `${languageName} (${data.language})`
+      : languageName || data?.language || '';
+
   return (
-    <Grid columns="repeat(auto-fit, minmax(200px, 1fr)" gap>
-      <Info label={t(labels.distinctId)} icon={<KeyRound />}>
-        {distinctId ? <span style={{ overflowWrap: 'anywhere' }}>{distinctId}</span> : '—'}
-      </Info>
+    <div
+      className={
+        layout === 'grid' ? `${styles.container} ${styles.containerGrid}` : styles.container
+      }
+    >
+      <div className={layout === 'sidebar' ? styles.sidebar : styles.grid}>
+        <section className={styles.section}>
+          <div className={styles.sectionTitle}>{t(labels.session)}</div>
+          <div className={styles.rows}>
+            {firstDate && (
+              <InfoRow label={t(labels.firstSeen)}>
+                <div className={styles.rowValueStacked}>
+                  <DateDistance date={firstDate} />
+                  {isSameTimestamp && (
+                    <span className={styles.subValue}>
+                      {formatTimezoneDate(firstDate.toISOString(), 'PP · p')}
+                    </span>
+                  )}
+                </div>
+              </InfoRow>
+            )}
 
-      <Info label={t(labels.lastSeen)} icon={<Calendar />}>
-        <DateDistance date={new Date(data.lastAt)} />
-      </Info>
+            {lastDate && !isSameTimestamp && (
+              <InfoRow label={t(labels.lastSeen)}>
+                <DateDistance date={lastDate} />
+              </InfoRow>
+            )}
 
-      <Info label={t(labels.firstSeen)} icon={<Calendar />}>
-        <DateDistance date={new Date(data.firstAt)} />
-      </Info>
+            <InfoRow label={t(labels.referrer)}>
+              {data?.referrerDomain ? (
+                <>
+                  <span className={styles.icon}>
+                    <Favicon domain={data.referrerDomain} />
+                  </span>
+                  <a
+                    className={styles.referrerLink}
+                    href={`https://${data.referrerDomain}`}
+                    target="_blank"
+                    rel="noreferrer noopener"
+                    title={data.referrerDomain}
+                  >
+                    {decodePunycodeDomain(data.referrerDomain)}
+                  </a>
+                </>
+              ) : (
+                <span className={styles.muted}>{t(labels.direct)}</span>
+              )}
+            </InfoRow>
 
-      <Info
-        label={t(labels.referrer)}
-        icon={data?.referrerDomain ? <Favicon domain={data.referrerDomain} /> : <Share2 />}
-      >
-        {data?.referrerDomain && (
-          <Text truncate title={data.referrerDomain}>
-            <a href={`https://${data.referrerDomain}`} target="_blank" rel="noreferrer noopener">
-              {decodePunycodeDomain(data.referrerDomain)}
-            </a>
-          </Text>
-        )}
-      </Info>
+            {showDistinctId && distinctId && (
+              <InfoRow label={t(labels.distinctId)}>
+                <span style={{ overflowWrap: 'anywhere' }}>{distinctId}</span>
+              </InfoRow>
+            )}
 
-      <Info
-        label={t(labels.country)}
-        icon={data?.country ? <TypeIcon type="country" value={data.country} /> : <Earth />}
-      >
-        {data?.country && formatValue(data.country, 'country')}
-      </Info>
+            {distinctId && stitchedSessionCount > 1 && (
+              <InfoRow label="Linked sessions">
+                <span className={styles.tabular}>{stitchedSessionCount}</span>
+              </InfoRow>
+            )}
+          </div>
+        </section>
 
-      <Info label={t(labels.region)} icon={<MapPin />}>
-        {getRegionName(data?.region)}
-      </Info>
+        <section className={styles.section}>
+          <div className={styles.sectionTitle}>{t(labels.location)}</div>
+          <div className={styles.locationBlock}>
+            <span className={styles.locationIcon}>
+              <Icon size="sm">
+                {data?.country ? <TypeIcon type="country" value={data.country} /> : <Earth />}
+              </Icon>
+            </span>
+            <div className={styles.locationText}>
+              <span className={primaryLocation ? styles.locationPrimary : styles.muted}>
+                {primaryLocation || '—'}
+              </span>
+              {secondaryLocation && (
+                <span className={styles.locationSecondary}>{secondaryLocation}</span>
+              )}
+            </div>
+          </div>
+        </section>
 
-      <Info label={t(labels.city)} icon={<Landmark />}>
-        {data?.city}
-      </Info>
+        <section className={styles.section}>
+          <div className={styles.sectionTitle}>{t(labels.system)}</div>
+          <div className={styles.rows}>
+            <InfoRow label={t(labels.os)}>
+              {data?.os ? (
+                <>
+                  <span className={styles.icon}>
+                    <Icon size="sm">
+                      <TypeIcon type="os" value={data.os.toLowerCase().replaceAll(/\W/g, '-')} />
+                    </Icon>
+                  </span>
+                  <Text truncate>{formatValue(data.os, 'os')}</Text>
+                </>
+              ) : (
+                <>
+                  <span className={styles.icon}>
+                    <Icon size="sm">
+                      <Cpu />
+                    </Icon>
+                  </span>
+                  <span className={styles.muted}>—</span>
+                </>
+              )}
+            </InfoRow>
 
-      <Info
-        label={t(labels.browser)}
-        icon={data?.browser ? <TypeIcon type="browser" value={data.browser} /> : <AppWindow />}
-      >
-        {data?.browser && formatValue(data.browser, 'browser')}
-      </Info>
+            <InfoRow label={t(labels.browser)}>
+              {data?.browser ? (
+                <>
+                  <span className={styles.icon}>
+                    <Icon size="sm">
+                      <TypeIcon type="browser" value={data.browser} />
+                    </Icon>
+                  </span>
+                  <Text truncate>{formatValue(data.browser, 'browser')}</Text>
+                </>
+              ) : (
+                <>
+                  <span className={styles.icon}>
+                    <Icon size="sm">
+                      <AppWindow />
+                    </Icon>
+                  </span>
+                  <span className={styles.muted}>—</span>
+                </>
+              )}
+            </InfoRow>
 
-      <Info
-        label={t(labels.os)}
-        icon={
-          data?.os ? (
-            <TypeIcon type="os" value={data.os.toLowerCase().replaceAll(/\W/g, '-')} />
-          ) : (
-            <Cpu />
-          )
-        }
-      >
-        {data?.os && formatValue(data.os, 'os')}
-      </Info>
+            <InfoRow label={t(labels.device)}>
+              {data?.device ? (
+                <>
+                  <span className={styles.icon}>
+                    <Icon size="sm">
+                      <TypeIcon type="device" value={data.device} />
+                    </Icon>
+                  </span>
+                  <Text truncate>{formatValue(data.device, 'device')}</Text>
+                </>
+              ) : (
+                <>
+                  <span className={styles.icon}>
+                    <Icon size="sm">
+                      <Laptop />
+                    </Icon>
+                  </span>
+                  <span className={styles.muted}>—</span>
+                </>
+              )}
+            </InfoRow>
 
-      <Info
-        label={t(labels.device)}
-        icon={data?.device ? <TypeIcon type="device" value={data.device} /> : <Laptop />}
-      >
-        {data?.device && formatValue(data.device, 'device')}
-      </Info>
+            {formattedScreen && (
+              <InfoRow label={t(labels.screen)}>
+                <span className={styles.icon}>
+                  <Icon size="sm">
+                    <Monitor />
+                  </Icon>
+                </span>
+                <span className={styles.tabular}>{formattedScreen}</span>
+              </InfoRow>
+            )}
 
-      {distinctId && stitchedSessionCount > 1 && (
-        <Info label="Linked sessions" icon={<Network />}>
-          {stitchedSessionCount}
-        </Info>
-      )}
-    </Grid>
+            {formattedLanguage && (
+              <InfoRow label={t(labels.language)}>
+                <span className={styles.icon}>
+                  <Icon size="sm">
+                    <Globe />
+                  </Icon>
+                </span>
+                <Text truncate title={formattedLanguage}>
+                  {formattedLanguage}
+                </Text>
+              </InfoRow>
+            )}
+          </div>
+        </section>
+      </div>
+    </div>
   );
 }
 
-const Info = ({
-  label,
-  icon,
-  children,
-}: {
-  label: string;
-  icon?: ReactNode;
-  children: ReactNode;
-}) => {
+function InfoRow({ label, children }: { label: string; children: ReactNode }) {
   return (
-    <Column gap="2" minWidth="0">
-      <Text weight="bold">{label}</Text>
-      <Row alignItems="center" gap>
-        {icon && <Icon>{icon}</Icon>}
-        {children || '—'}
-      </Row>
-    </Column>
+    <div className={styles.row}>
+      <span className={styles.rowLabel}>{label}</span>
+      <span className={styles.rowValue}>{children}</span>
+    </div>
   );
-};
+}
